@@ -1,0 +1,1539 @@
+{
+  "summary": [
+    {
+      "strategy": "oracle (nhan dung)",
+      "exact": 60,
+      "under": 0,
+      "over": 0,
+      "under2": 0,
+      "cost": 180,
+      "mix": "20/20/20",
+      "overhead_ms": 0,
+      "n": 60
+    },
+    {
+      "strategy": "manual: always opus",
+      "exact": 20,
+      "under": 0,
+      "over": 40,
+      "under2": 0,
+      "cost": 300,
+      "mix": "0/0/60",
+      "overhead_ms": 0,
+      "n": 60
+    },
+    {
+      "strategy": "manual: always sonnet",
+      "exact": 20,
+      "under": 20,
+      "over": 20,
+      "under2": 0,
+      "cost": 180,
+      "mix": "0/60/0",
+      "overhead_ms": 0,
+      "n": 60
+    },
+    {
+      "strategy": "laya proxy, min_prob=0.0",
+      "exact": 48,
+      "under": 2,
+      "over": 10,
+      "under2": 0,
+      "cost": 196,
+      "mix": "18/16/26",
+      "overhead_ms": 520,
+      "n": 60,
+      "fallbacks": 0
+    },
+    {
+      "strategy": "laya proxy, min_prob=0.4",
+      "exact": 43,
+      "under": 2,
+      "over": 15,
+      "under2": 0,
+      "cost": 206,
+      "mix": "13/21/26",
+      "overhead_ms": 520,
+      "n": 60,
+      "fallbacks": 7
+    },
+    {
+      "strategy": "laya proxy, min_prob=0.5",
+      "exact": 40,
+      "under": 2,
+      "over": 18,
+      "under2": 0,
+      "cost": 212,
+      "mix": "5/34/21",
+      "overhead_ms": 520,
+      "n": 60,
+      "fallbacks": 30
+    },
+    {
+      "strategy": "laya proxy, min_prob=0.6",
+      "exact": 35,
+      "under": 6,
+      "over": 19,
+      "under2": 0,
+      "cost": 206,
+      "mix": "2/43/15",
+      "overhead_ms": 520,
+      "n": 60,
+      "fallbacks": 42
+    },
+    {
+      "strategy": "laya proxy, min_prob=0.7",
+      "exact": 24,
+      "under": 16,
+      "over": 20,
+      "under2": 0,
+      "cost": 188,
+      "mix": "0/56/4",
+      "overhead_ms": 520,
+      "n": 60,
+      "fallbacks": 56
+    }
+  ],
+  "decisions": [
+    {
+      "session": "fb9e43801a977568",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.495,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.495,
+        "sonnet": 0.3252,
+        "opus": 0.1797
+      },
+      "laya_ms": 525,
+      "state": {
+        "request": "Rename the variable usrNm to userName everywhere in utils.js.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:35"
+    },
+    {
+      "session": "897d8aa75ab57124",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.4409,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4409,
+        "sonnet": 0.3703,
+        "opus": 0.1888
+      },
+      "laya_ms": 508,
+      "state": {
+        "request": "Write a commit message for a change that fixes a typo in the login button label.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:36"
+    },
+    {
+      "session": "8681fcc55cc35cd0",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.4776,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4776,
+        "sonnet": 0.3556,
+        "opus": 0.1668
+      },
+      "laya_ms": 544,
+      "state": {
+        "request": "Add a docstring to the function calculate_tax in billing.py.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:36"
+    },
+    {
+      "session": "7d539656876b869e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.3824,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3824,
+        "sonnet": 0.3209,
+        "opus": 0.2968
+      },
+      "laya_ms": 498,
+      "state": {
+        "request": "Convert this small JSON config to YAML.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:37"
+    },
+    {
+      "session": "ad98ceae10a1a933",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.4243,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4243,
+        "sonnet": 0.2196,
+        "opus": 0.3561
+      },
+      "laya_ms": 503,
+      "state": {
+        "request": "What does the git command 'git stash pop' do?",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:37"
+    },
+    {
+      "session": "7776ad8de249e4eb",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.4497,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4497,
+        "sonnet": 0.3508,
+        "opus": 0.1995
+      },
+      "laya_ms": 478,
+      "state": {
+        "request": "Sort the imports alphabetically in main.py.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:38"
+    },
+    {
+      "session": "58aa9e8f985dbc72",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.3672,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.2787,
+        "sonnet": 0.3672,
+        "opus": 0.354
+      },
+      "laya_ms": 491,
+      "state": {
+        "request": "Write a regex that matches a 10 digit phone number.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:38"
+    },
+    {
+      "session": "ff2e36c6105a2440",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.473,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.473,
+        "sonnet": 0.3498,
+        "opus": 0.1772
+      },
+      "laya_ms": 500,
+      "state": {
+        "request": "Change the button color from blue to green in styles.css.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:39"
+    },
+    {
+      "session": "ec9d8f207267627e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-haiku-4-5-20251001",
+      "tier": "haiku",
+      "laya_tier": "haiku",
+      "top_prob": 0.5564,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.5564,
+        "sonnet": 0.2715,
+        "opus": 0.1721
+      },
+      "laya_ms": 505,
+      "state": {
+        "request": "Translate these three code comments from Vietnamese to English.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:39"
+    },
+    {
+      "session": "97d586b87b029503",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-haiku-4-5-20251001",
+      "tier": "haiku",
+      "laya_tier": "haiku",
+      "top_prob": 0.6121,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.6121,
+        "sonnet": 0.2372,
+        "opus": 0.1507
+      },
+      "laya_ms": 528,
+      "state": {
+        "request": "Bump the version number in package.json from 1.4.2 to 1.4.3.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:40"
+    },
+    {
+      "session": "034a2a5b2bbeac6e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-haiku-4-5-20251001",
+      "tier": "haiku",
+      "laya_tier": "haiku",
+      "top_prob": 0.5573,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.5573,
+        "sonnet": 0.2631,
+        "opus": 0.1796
+      },
+      "laya_ms": 500,
+      "state": {
+        "request": "Give me a one line summary of what this 20 line function does.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:40"
+    },
+    {
+      "session": "d86b273720327ba9",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.3839,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3839,
+        "sonnet": 0.287,
+        "opus": 0.329
+      },
+      "laya_ms": 507,
+      "state": {
+        "request": "Add a .gitignore entry for the node_modules and dist folders.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:41"
+    },
+    {
+      "session": "a93ce54227f7a6d5",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.3912,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3912,
+        "sonnet": 0.378,
+        "opus": 0.2309
+      },
+      "laya_ms": 490,
+      "state": {
+        "request": "Format this SQL query so it is easier to read.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:41"
+    },
+    {
+      "session": "ca53351e3cfd4a58",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-haiku-4-5-20251001",
+      "tier": "haiku",
+      "laya_tier": "haiku",
+      "top_prob": 0.6575,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.6575,
+        "sonnet": 0.2114,
+        "opus": 0.1311
+      },
+      "laya_ms": 498,
+      "state": {
+        "request": "Fix the spelling mistakes in README.md.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:42"
+    },
+    {
+      "session": "d6a8235054ecd4e5",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.3574,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3574,
+        "sonnet": 0.2983,
+        "opus": 0.3443
+      },
+      "laya_ms": 535,
+      "state": {
+        "request": "What is the difference between let and const in JavaScript?",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:42"
+    },
+    {
+      "session": "fe5d3ecebf8373cf",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-haiku-4-5-20251001",
+      "tier": "haiku",
+      "laya_tier": "haiku",
+      "top_prob": 0.5017,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.5017,
+        "sonnet": 0.3213,
+        "opus": 0.177
+      },
+      "laya_ms": 519,
+      "state": {
+        "request": "Remove the unused import statements from helpers.ts.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:43"
+    },
+    {
+      "session": "d322ee1b57446ac4",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.404,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.404,
+        "sonnet": 0.394,
+        "opus": 0.202
+      },
+      "laya_ms": 519,
+      "state": {
+        "request": "Write a bash one-liner to count the lines in all .py files.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:43"
+    },
+    {
+      "session": "fb0b74f22b76e255",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4397,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4134,
+        "sonnet": 0.4397,
+        "opus": 0.1468
+      },
+      "laya_ms": 499,
+      "state": {
+        "request": "Add a null check before accessing user.email in profile.js.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:44"
+    },
+    {
+      "session": "76862a3fa9dd53dc",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.5557,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.239,
+        "sonnet": 0.5557,
+        "opus": 0.2053
+      },
+      "laya_ms": 509,
+      "state": {
+        "request": "Generate a simple TypeScript interface for an object with id, name and email.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:44"
+    },
+    {
+      "session": "01712d3f8d9543c1",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.3654,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3654,
+        "sonnet": 0.3101,
+        "opus": 0.3245
+      },
+      "laya_ms": 496,
+      "state": {
+        "request": "Change the default page size constant from 20 to 50 in config.py.",
+        "files_mentioned": "1",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:45"
+    },
+    {
+      "session": "d4817b715b03c93b",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4453,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1597,
+        "sonnet": 0.4453,
+        "opus": 0.3951
+      },
+      "laya_ms": 523,
+      "state": {
+        "request": "Add a REST endpoint POST /api/orders that validates the payload and saves the order to the database.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:45"
+    },
+    {
+      "session": "9e87b92c83673908",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.6083,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.238,
+        "sonnet": 0.6083,
+        "opus": 0.1537
+      },
+      "laya_ms": 497,
+      "state": {
+        "request": "Write unit tests for the OrderService class covering the create, cancel and refund methods.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:46"
+    },
+    {
+      "session": "73bb68989a25840a",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.3535,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.344,
+        "sonnet": 0.3535,
+        "opus": 0.3026
+      },
+      "laya_ms": 545,
+      "state": {
+        "request": "The app crashes with a NullReferenceException in InvoiceController.GetById when the invoice has no customer. Find and fix the bug.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:46"
+    },
+    {
+      "session": "96597574b1540057",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "opus",
+      "top_prob": 0.4457,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1707,
+        "sonnet": 0.3836,
+        "opus": 0.4457
+      },
+      "laya_ms": 499,
+      "state": {
+        "request": "Add pagination and sorting to the product list page and its API.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:47"
+    },
+    {
+      "session": "22812cd25d4a1d67",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.466,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.2098,
+        "sonnet": 0.466,
+        "opus": 0.3242
+      },
+      "laya_ms": 502,
+      "state": {
+        "request": "Refactor the UserRepository class to use async/await instead of callbacks.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:47"
+    },
+    {
+      "session": "75afffacbf56fa6f",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.5591,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.2262,
+        "sonnet": 0.5591,
+        "opus": 0.2147
+      },
+      "laya_ms": 502,
+      "state": {
+        "request": "Implement a password reset flow with an emailed token that expires after one hour.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:48"
+    },
+    {
+      "session": "99f9a2316aef3a8e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "haiku",
+      "top_prob": 0.449,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.449,
+        "sonnet": 0.3577,
+        "opus": 0.1933
+      },
+      "laya_ms": 543,
+      "state": {
+        "request": "The date picker shows the wrong day for users in UTC+7. Here is the stack trace and the component code, please fix it.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:48"
+    },
+    {
+      "session": "be1bea2bb7c37555",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.5033,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.17,
+        "sonnet": 0.5033,
+        "opus": 0.3267
+      },
+      "laya_ms": 509,
+      "state": {
+        "request": "Add input validation with clear error messages to the registration form and the matching API.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:49"
+    },
+    {
+      "session": "7825096130b7db48",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4129,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.2758,
+        "sonnet": 0.4129,
+        "opus": 0.3113
+      },
+      "laya_ms": 521,
+      "state": {
+        "request": "Write a script that reads a CSV of customers and upserts them into the Postgres customers table.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:49"
+    },
+    {
+      "session": "3acad63497503c56",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5481,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1474,
+        "sonnet": 0.3044,
+        "opus": 0.5481
+      },
+      "laya_ms": 502,
+      "state": {
+        "request": "Add a caching layer with a 5 minute TTL to the getExchangeRates function.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:50"
+    },
+    {
+      "session": "daf0a29a032155e8",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "opus",
+      "top_prob": 0.437,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1664,
+        "sonnet": 0.3966,
+        "opus": 0.437
+      },
+      "laya_ms": 546,
+      "state": {
+        "request": "Create a React component for a file upload with progress bar and wire it to the existing upload API.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:50"
+    },
+    {
+      "session": "cc739752839cf50e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4118,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.4084,
+        "sonnet": 0.4118,
+        "opus": 0.1798
+      },
+      "laya_ms": 517,
+      "state": {
+        "request": "This integration test fails intermittently with a timeout. Here is the log, figure out why and fix the test.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:51"
+    },
+    {
+      "session": "4f45ef402956f6fe",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "opus",
+      "top_prob": 0.4868,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1502,
+        "sonnet": 0.363,
+        "opus": 0.4868
+      },
+      "laya_ms": 508,
+      "state": {
+        "request": "Add role based access checks to the admin endpoints using the existing auth middleware.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:51"
+    },
+    {
+      "session": "55d95a0bb54562d3",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6946,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0852,
+        "sonnet": 0.2203,
+        "opus": 0.6946
+      },
+      "laya_ms": 508,
+      "state": {
+        "request": "Write a database migration that adds a status column to orders and backfills existing rows.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:52"
+    },
+    {
+      "session": "f10ca7fafb175557",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5298,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.167,
+        "sonnet": 0.3032,
+        "opus": 0.5298
+      },
+      "laya_ms": 507,
+      "state": {
+        "request": "Replace the hand written HTTP calls in the billing module with the shared API client.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:52"
+    },
+    {
+      "session": "e83193b3b1c32f37",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4677,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1801,
+        "sonnet": 0.4677,
+        "opus": 0.3522
+      },
+      "laya_ms": 500,
+      "state": {
+        "request": "Add structured logging to the payment webhook handler and include the request id in each log line.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:53"
+    },
+    {
+      "session": "7688baf5be4a415d",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4307,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.3709,
+        "sonnet": 0.4307,
+        "opus": 0.1983
+      },
+      "laya_ms": 551,
+      "state": {
+        "request": "The export to Excel feature produces a corrupt file when a cell contains a comma. Fix it and add a test.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:54"
+    },
+    {
+      "session": "7aa99e0628197648",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "opus",
+      "top_prob": 0.4268,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1798,
+        "sonnet": 0.3934,
+        "opus": 0.4268
+      },
+      "laya_ms": 502,
+      "state": {
+        "request": "Implement a retry with exponential backoff for calls to the email service.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:54"
+    },
+    {
+      "session": "2af8936a8abc561d",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4258,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.2559,
+        "sonnet": 0.4258,
+        "opus": 0.3182
+      },
+      "laya_ms": 506,
+      "state": {
+        "request": "Add a dark mode toggle that remembers the user's choice across sessions.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:55"
+    },
+    {
+      "session": "66754fc629b68306",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4604,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1103,
+        "sonnet": 0.4604,
+        "opus": 0.4293
+      },
+      "laya_ms": 503,
+      "state": {
+        "request": "Write a GitHub Actions workflow that runs lint and tests on every pull request.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:55"
+    },
+    {
+      "session": "52d349d2a38c4a59",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.7003,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0857,
+        "sonnet": 0.214,
+        "opus": 0.7003
+      },
+      "laya_ms": 548,
+      "state": {
+        "request": "Design the architecture for splitting our monolith's billing module into a separate service, including data ownership, API contracts and a phased migration plan.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:56"
+    },
+    {
+      "session": "44ed30aab6eb884a",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "opus",
+      "top_prob": 0.4673,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1999,
+        "sonnet": 0.3328,
+        "opus": 0.4673
+      },
+      "laya_ms": 591,
+      "state": {
+        "request": "We have a race condition that corrupts account balances under high load. It happens about once a day in production across three services. Investigate the root cause and propose a fix.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:56"
+    },
+    {
+      "session": "ad07f77499ed3d26",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.629,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1045,
+        "sonnet": 0.2665,
+        "opus": 0.629
+      },
+      "laya_ms": 527,
+      "state": {
+        "request": "Plan and carry out a migration of the whole codebase from JavaScript to TypeScript with strict mode, in stages that keep the build green.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:57"
+    },
+    {
+      "session": "8467333474b61eb6",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5989,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1288,
+        "sonnet": 0.2723,
+        "opus": 0.5989
+      },
+      "laya_ms": 535,
+      "state": {
+        "request": "Audit our authentication and session handling across the API gateway and all backend services for security weaknesses and propose remediations.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:57"
+    },
+    {
+      "session": "c241757444c8b27f",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.7614,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.077,
+        "sonnet": 0.1616,
+        "opus": 0.7614
+      },
+      "laya_ms": 552,
+      "state": {
+        "request": "Memory usage of the worker service grows until it is killed after about 12 hours. Heap dumps are attached. Find the leak, which spans the queue client and our caching layer.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:58"
+    },
+    {
+      "session": "f9f897dbc56f73f4",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.647,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1143,
+        "sonnet": 0.2388,
+        "opus": 0.647
+      },
+      "laya_ms": 537,
+      "state": {
+        "request": "Redesign the database schema to support multi-tenancy with row level isolation, and describe how to migrate existing customers without downtime.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:58"
+    },
+    {
+      "session": "252fbe7662f56559",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5484,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1675,
+        "sonnet": 0.284,
+        "opus": 0.5484
+      },
+      "laya_ms": 533,
+      "state": {
+        "request": "Our p99 latency doubled after last month's release. Analyze the request path across gateway, service and database and identify the cause with evidence.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:59"
+    },
+    {
+      "session": "e942f170864dfa8e",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6582,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0801,
+        "sonnet": 0.2617,
+        "opus": 0.6582
+      },
+      "laya_ms": 526,
+      "state": {
+        "request": "Design an event driven order processing pipeline with exactly-once semantics, including failure handling, idempotency and replay.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:55:59"
+    },
+    {
+      "session": "e54c484645819e17",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-sonnet-5-5",
+      "tier": "sonnet",
+      "laya_tier": "sonnet",
+      "top_prob": 0.4394,
+      "fallback": true,
+      "probabilities": {
+        "haiku": 0.1549,
+        "sonnet": 0.4394,
+        "opus": 0.4057
+      },
+      "laya_ms": 512,
+      "state": {
+        "request": "Refactor the legacy reporting engine, around 15 thousand lines with no tests, into testable modules without changing behavior.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:00"
+    },
+    {
+      "session": "b392a114c11f9c47",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6289,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1024,
+        "sonnet": 0.2687,
+        "opus": 0.6289
+      },
+      "laya_ms": 541,
+      "state": {
+        "request": "A distributed deadlock occurs between the inventory and payment services during flash sales. Trace the lock ordering across both codebases and redesign it.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:00"
+    },
+    {
+      "session": "a502ea02e7f08ff6",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6868,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1187,
+        "sonnet": 0.1945,
+        "opus": 0.6868
+      },
+      "laya_ms": 542,
+      "state": {
+        "request": "Evaluate whether we should move from REST to gRPC for internal services, weighing performance, tooling, team skills and migration cost, and recommend a path.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:01"
+    },
+    {
+      "session": "dad4a06a8d096671",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.7643,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0838,
+        "sonnet": 0.1519,
+        "opus": 0.7643
+      },
+      "laya_ms": 535,
+      "state": {
+        "request": "Design a zero downtime upgrade of our Postgres cluster from version 12 to 16 including replication, cutover and rollback strategy.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:02"
+    },
+    {
+      "session": "e1bf934c92b16209",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6552,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0766,
+        "sonnet": 0.2682,
+        "opus": 0.6552
+      },
+      "laya_ms": 547,
+      "state": {
+        "request": "Implement a plugin system for our application with sandboxing, versioned APIs and backward compatibility guarantees.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:02"
+    },
+    {
+      "session": "0aa0a534cb9ad8e7",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5134,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.2555,
+        "sonnet": 0.2311,
+        "opus": 0.5134
+      },
+      "laya_ms": 551,
+      "state": {
+        "request": "Data in the analytics warehouse disagrees with the source system by about 2 percent. Investigate the whole ETL pipeline and find where records are lost or duplicated.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:03"
+    },
+    {
+      "session": "affdd3856e8bdbd7",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.5807,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1086,
+        "sonnet": 0.3107,
+        "opus": 0.5807
+      },
+      "laya_ms": 529,
+      "state": {
+        "request": "Create a threat model for our new public API and design rate limiting, abuse detection and tenant isolation accordingly.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:03"
+    },
+    {
+      "session": "1bc576b610f1e84c",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6051,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1322,
+        "sonnet": 0.2627,
+        "opus": 0.6051
+      },
+      "laya_ms": 580,
+      "state": {
+        "request": "Rewrite the synchronization engine of our offline-first mobile app to resolve conflicts correctly using CRDTs.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:04"
+    },
+    {
+      "session": "081cf25a6850bde8",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6782,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0949,
+        "sonnet": 0.2269,
+        "opus": 0.6782
+      },
+      "laya_ms": 529,
+      "state": {
+        "request": "Design a caching strategy across CDN, application and database layers for a catalog with 50 million items and strict consistency on price.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:04"
+    },
+    {
+      "session": "0e6929f729a7cc23",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6787,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1034,
+        "sonnet": 0.2179,
+        "opus": 0.6787
+      },
+      "laya_ms": 537,
+      "state": {
+        "request": "After enabling horizontal scaling, users randomly get logged out and some jobs run twice. Diagnose all the hidden assumptions of single instance state in the codebase.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:05"
+    },
+    {
+      "session": "a2e0245865f412df",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.7119,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.0691,
+        "sonnet": 0.2189,
+        "opus": 0.7119
+      },
+      "laya_ms": 532,
+      "state": {
+        "request": "Propose a complete observability design with tracing, metrics and alerting for our 20 microservices, and a rollout plan.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:05"
+    },
+    {
+      "session": "14bcfa3836bef0c4",
+      "requested_model": "claude-sonnet-5-5",
+      "turns": 1,
+      "action": "routed",
+      "model": "claude-opus-5-5",
+      "tier": "opus",
+      "laya_tier": "opus",
+      "top_prob": 0.6204,
+      "fallback": false,
+      "probabilities": {
+        "haiku": 0.1597,
+        "sonnet": 0.2198,
+        "opus": 0.6204
+      },
+      "laya_ms": 508,
+      "state": {
+        "request": "Review the architecture of our payment reconciliation system for correctness under partial failures and propose a redesign with formal invariants.",
+        "files_mentioned": "0",
+        "has_stack_trace": "no",
+        "conversation_turns": "1"
+      },
+      "ts": "2026-09-30T23:56:06"
+    }
+  ]
+}
