@@ -1,0 +1,1172 @@
+[
+ {
+  "id": 427,
+  "project": "PXP",
+  "type": "Task",
+  "title": "Build Product Prototype on Android",
+  "desc": "Currently the PXP Product Prototype can only be tested on iOS. We need an Android build to test the the prototype on Android.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 464,
+  "project": "PXP",
+  "type": "Task",
+  "title": "Child selection in Nova doesn't know answer",
+  "desc": "Before sending consent \"YES\" from user, missing child selection step to record which child -> which school id for case creation -> Need to know where child selected will be saved? -> Will any fields here be updated with child name? -> Need to investigate/ understand how the school ID will be saved with student ID",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 466,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE Form enhancement] validate phone number",
+  "desc": "Click Edit Student Profile and Edit Parent Profiles Edit on mobile phone number field of either these two edit profiles intent Actual: there's no validation of phone number on these two intent. User can enter text freely Expected: Validate phone number format, add with dashes and patterns per phone number format Actual: Phone number is validated and saved in BE but got error in loading profile Expected: Phone number changed to free text input, only check if field is emptied or not",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 488,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "[Copy from Varkey Board] [US 13263 ] Update medical and allergy information",
+  "desc": "AS A PARENT logged into PXP I WANT to update my childs medical and/or allergy information SO THAT the school has updated and accurate records about my child's health https://dev.azure.com/varkeyeducation/Product%20Development%20-%20PXP/_workitems/edit/13263",
+  "ac": "AC1: Intent Recognition for Edit Wellbeing Flow When a parent types or selects a phrase requesting to edit medical (optionally naming a child or field), the AI must detect the intent and initiate the Edit Medical flow. “Update medical plan/ [or any fields that wellbeing matched]” • “Update medical details” How to edit child medical details • “Change my child’s health details” “I want to update my child wellbeing” “Edit wellbeing information” → The AI recognizes the intent and initiates the Edit Medical flow . AC2: Multiple Children Handling If the parent has multiple children: AI prompts the parent to select a child first (before navigating) with this message: \" \"Which child's medical and allergy information would you like to update?\" If the parent has more than one child and no unique name is provided, the AI must prompt the parent to select one child before opening the edit screen. Accepted inputs include: “Select [child name]” “Choose [child name]” If user typed \"All children\" or mention multiple children, AI to respond \" Currently , I could only supports updating one child at a time. Please select to continue. AC2b: Skip Child Selection (If Child Already Named) If a unique child name is included in the request, the AI opens Edit Medical Information for that child directly. Examples: “Edit [child name] medical info” “Update [child name] medication required to Yes” “Change [child name] medication plan to [provided text]” Invalid child selection: AI prompts: “I couldn’t find that child. Please select from the list again” AC2c: Auto-skip for Single-Child Parents If the parent has only one linked child, the AI bypasses child selection and opens Edit Medical Information for that child directly. AC3: Display button to edit AI confirm with message like: “Sure, I'll help you update the medical information for [child's name].” AI displays a button : “Edit Medical Details” When the parent clicks the button, the systems open the Medical Information tab within the Student Profile. The UI when the tab is selected to be the same as Student Profile effect. In Medical Information tab, disable the Student Profile tab. Keep student photo to be view mode only In Edit mode, display X icon next to its header “Edit Medical Details”. Click this icon will show pop up dialog to ask user before closing: Header title: Discard unsaved changes “Discard” button: leave form and clear unsaved changes “Continue Editing” button: continue editing form At the bottom of the form, display two buttons: “Submit”: Button is inactive until the required field are filled “Cancel”: same above behavior as X icon If user chose to discard and/or cancel the update, AI message to response as “ It appears that your child medical update process was cancelled. If you would like to update your child's medical information in the future, please let me know and I can assist you. \" One user click Submit, AI message to response as “[Child name] medical information has been successfully updated in the system.” AC4: Displayed Fields for Wellbeing Missing data shows placeholder: “N/A.” Required fields must have asterisk icon next to the label In view mode, fields are formatted for readability. In edit mode, input types match field requirements Medical Information: include fields related such as: AC5: Error Handling System fails to open tab or retrieve data: AI message: “Sorry, we couldn’t open the wellbeing details right now. Please try again later.” Parent mentions a field that does not exist or is unsupported (e.g., “Update vaccination record”): AI message: “The field ‘[field name]’ is not available in the information to be updated. Please check the available fields or open the medical tab to view existing options.”",
+  "est": null
+ },
+ {
+  "id": 494,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "[Copy from Varkey Board] [US 13204 ]Ability  to ask the AI agent about the sibling discount policy",
+  "desc": "https://dev.azure.com/varkeyeducation/Product%20Development%20-%20PXP/_workitems/edit/13204 AS A parent , I WANT to ask the AI agent what sibling discounts are available , SO THAT I can understand potential savings when enrolling multiple children at the same school.",
+  "ac": "AC1: AI Intent Recognition & Initiation (with Classified Utterance Table) When a parent asks about sibling discounts, AI detects SiblingDiscountInfo and starts this flow. After recognition, proceed to AC3 (Retrieve Policy & Eligibility) . # Utterance Classified Intent Entities Expected Behavior 1 What sibling discounts are available? SiblingDiscountInfo FeeType=Unspecified Start flow 2 Do you offer sibling discount on tuition? SiblingDiscountInfo FeeType=Tuition Start flow 3 How much discount for my second child? SiblingDiscountInfo ChildOrder=2nd Start flow 4 Is there a discount if I enroll another child? SiblingDiscountInfo FutureChild=Yes Start flow 5 Show sibling discount policy SiblingDiscountInfo — Start flow 6 Does [Child name] get a sibling discount? SiblingDiscountInfo ChildName=[Child name] Scope to named child 7 Any discount for multiple kids? SiblingDiscountInfo — Start flow 8 sibing discunt info (typos) SiblingDiscountInfo — Normalize & start flow 9 Transport sibling discount? SiblingDiscountInfo FeeType=Transport Start flow; may show exclusion per policy 10 Early payment discount details EarlyPaymentDiscounts — Route to US-3 (not this flow) AC2 – Fee Type Validation If parent specifies a fee type (e.g., “tuition”, “transport”): Valid fee type (currently only Tuition Fees): continue to retrieve data. Invalid fee type: AI responds: “Sorry, sibling discount is currently only available for Tuition Fees.” If no fee type mentioned → default to Tuition Fees. AC3 – Data Retrieval AI retrieves sibling discount data for current school year (2025-2026) . Backend fetches sibling discount data for all children under the parent account where applicable. AI displays a table with the following headers: Child Name Child Order Discount (%) Applicable Fee Each row corresponds to one child with sibling discount applied. Summary Message: AI provides a summary of discount percentage for each child listed. If some children have no discount, only summarize children with discount . AC5 – No Discounts If no children have sibling discount, AI responds politely: “Currently, none of your children have a sibling discount applied for Tuition Fees.” AC6 – Actionable Suggestions AI displays message \"What would you like to know more about?\" with suggestion buttons to view outstanding fees for each child that has a sibling discount. Clicking a button leads to the Outstanding Fees View for that child.",
+  "est": null
+ },
+ {
+  "id": 506,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[Voice command][FE] Show pop-up dialog denied voice command",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 510,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] [Android] Icon work incorrectly with larger font size",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 514,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Student info is not cleared when using View topic flow",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 517,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE Prototype] Unable to open setting on iOS",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 520,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Need to tap on discard button twice to close dialog",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 530,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[AI] Switch language randomly without select language in Settings",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 535,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Zoom in/ out unstable in iOS",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 538,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Button cancel is disabled at Leave request form",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 542,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[fe] Chat space on the same line",
+  "desc": "Context: Only use mic and send icons on the chat Issue: Put those icons on the same line as chat space, when text is too long, the chat will be pushed up",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 563,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE Prototype] Update UI in View Event Detail",
+  "desc": "add Maximum Capacity",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 576,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE Prototype] Update UI in Timetable",
+  "desc": "1.When user ask for \" today \" in Timetable: Current: Show only today Expect: Show that week and expand on the today , other days are not expanded with the dropdown button; and prefill start-end date of that week instead of leaving empty 2. Add Next/ Previous week option 3. Add class info under student name 4. Date input: Current: When tapping the Date Range field, the text keyboard appears. Expect: Tapping the Date Range field should open the numeric keyboard to make date entry easier. 5. Screen Current: The screen continues to zoom and scroll unexpectedly during interaction. Expected: The screen should remain fixed with no unintended zooming or scrolling . 6. Date Range Filter Current: User cannot select a future date. Expected: User should be able to select future dates .",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 577,
+  "project": "PXP",
+  "type": "Task",
+  "title": "UI enhancements",
+  "desc": "Login screen in web Login screen when landscape mode",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 578,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE PXP] Update per Ginno's feedback",
+  "desc": "Make the T&C information sentence at the bottom Change text to Ok instead of understand on fees dialog Remove padding before the English drop down Attachment on Leave request Default edit button on Carbon When user first use the app, should show the view of list of topics Overtime then show list of prompts most commonly use Default icon for biometrics on Android and apple Have border around the editable fields on both Edit Profile intent slower animation floating on login screen, slower to 3-5 seconds Just use the fist name of student on every actionable button Check on Fees and edit button on view student profile => Need to update from BE/AI",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 641,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] [iOS] Login button is missing right margin",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 643,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE]  Apply Carbon Design Modal to all our Modal Dialog",
+  "desc": "Update all existing modal components to use the Carbon Design System Modal pattern. Replace our current custom modal implementation with Carbon’s modal structure, styling, and behavior (overlay, focus trap, header, body, footer actions). Current: The modal does not dim or blur the background. The screen behind stays fully visible, making the modal hard to see and easy to miss . The modal behavior (overlay, focus trap, header/footer layout) is custom and inconsistent . Accessibility (ESC to close, focus trap, proper ARIA roles) is not fully implemented . Expect: Replace our current modal with the Carbon Design System Modal . Modal – Carbon Design System Carbon’s modal automatically: Applies a dark overlay (scrim) to dim the background. Centers the modal clearly on the page. Provides consistent header, body, and footer structure. Handles accessibility (focus trap, ESC close, ARIA attributes). Prevents interaction with background while the modal is open. After applying Carbon Modal, the modal should be clearly visible, accessible, and consistent across the system.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 646,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "13131 - Excursion Bugs/ Enhancements",
+  "desc": "move to Bug 654 Event Detail View Bugs/Enhancement",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 654,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Event Detail View Bugs/Enhancement",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 655,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE] Event List View Screen",
+  "desc": "When user taps \"Explore Now\" to go to Event List View, open default: Excursion , Upcoming tab",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 664,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[AI] Email Statement of Account- Arabic mode",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 684,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE - Prototype] Develop prototype for Absentee percentage",
+  "desc": "AS A PARENT logged into PXP I WANT to request my child's current overall percentage attendance, as well as the percentage late, present, authorised leave, unauthorised leave SO THAT I can stay informed and act where necessary",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 689,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[AI] AI get wrong intent in payment flow",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 693,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Cannot switch to view outstanding fee after user prompting",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 741,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE Prototype] Show topic page and show list of prompts per Ginno feedback",
+  "desc": "Topic-Based Prompt Selection Please follow the UI on figma per this link, log in to acc Fred Xiontech for reference, contact a Phong Pham for login credentials: https://www.figma.com/design/VBD7VBl4y2wsrj5h5ryLEI/XP-UI?node-id=624-1084 Current Behavior When the user opens the app for the first time, the system displays all prompts/topics at once . Expected Behavior When the user opens the app for the first time, the system should display a list of topics only . When the user taps on a specific topic, the system should then display a list of prompts related to that selected topic . Still keep the topics in the Setting tabs. Only when system knows the user prompts then show common prompts on home screen",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 750,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Negative number is RTL-ed incorrectly",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 756,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Missing status pill in Events tab",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 777,
+  "project": "PXP",
+  "type": "Task",
+  "title": "Check event status logic does not have Extensibility",
+  "desc": "Currently, for each event type BE need to return a separated status field as below lead FE need to follow up. Suggestion: BE can only use 1 field like status, eventStatus, respondStatus,.... to return data to FE instead.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 788,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[BE] Remove Azure Redis Managed",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 799,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Forget to remove testing code of notification",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 807,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "13210 - Refund policy",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 811,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Detect intent incorrectly in policy flow",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 812,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Cannot open student medical profile when use close modals by swiping down",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 819,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Date picker issues",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 820,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[AI] Fee Balance cancel flow",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 825,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Time picker displayed wrong format",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 872,
+  "project": "PXP",
+  "type": "Task",
+  "title": "Enhance to have animation/loading to aware user when submitting form",
+  "desc": "Flow have form: Medical profile Someone pickup my child Leave request Late/early notice Parent profile Student profile Expect: Above screens should have animation/loading when user submit form.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 875,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FEES Topic] Add a prompt \"Pay for Outstanding fees\" to Fees topic",
+  "desc": "AC1: Add a prompt \"Pay for Outstanding fees\" to Fees topic ( Add 1 more \" I want to request a transfer certificate \" to Student topics) AC2: This prompt has the same flow as \"View outstanding fees\"",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 878,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[FE] Close button in modal instead of back",
+  "desc": "Copied from Repro Steps when changed from Bug to Task extra support flow Current: when click on policy modal, it shows back button Expect: close button 1st bottom sheet -> close button 2nd,.. bottom sheet -> back button reference:",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 926,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[AI] Skip to ask child in same chat thread",
+  "desc": "Current: App keep student profile in the header but still ask user about child Expect: If a pp keep student profile in the header, shouldn't ask user about child",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 948,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Submit button is not enabled after user edit data in student profile",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 953,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "miss roll group in student information section in volunteer form",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 965,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[BE] Notices intended for Parent are not shown",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 968,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Notification detail must tap X button 2 times to close",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 970,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] Swipe down to close notification detail modal will cause unexpected behaviors",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 979,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[BE] Missing Circular Document when response circular list to FE",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 989,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[BE] Push notification display information incorrectly",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 997,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Contact Teacher -> the chat is not scroll up when user tap on dropdown field",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 999,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[Enhancement] Teacher list -> Draft email",
+  "desc": "Expected: If only one teacher contact information, should skip asking which teacher, asking only more than 1 records in the list. This should be a global behavior",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1014,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[Day absent + absentee percentage",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1016,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[Late/early pickup] Could not submit the request",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1023,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Update parent profile not working",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1028,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE][iOS] SoA downloading animation work incorrectly",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1039,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[Camp/Excursion] Become volunteer button does not change status after success registration",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1049,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "[FE] UI are overlapped with bigger font size",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1059,
+  "project": "PXP",
+  "type": "Bug",
+  "title": "Interest tab of My Notices have no category",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1700,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "27736 - View Results for assignment with rubric",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1701,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "23960 - Prompting - Assignment results",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1735,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "Agent Setup",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1751,
+  "project": "PXP",
+  "type": "User Story",
+  "title": "13269: Team Tracker: Status of assignment",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1768,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[BE] Add status of assignment prompt to topic.json",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1785,
+  "project": "PXP",
+  "type": "Task",
+  "title": "[AI] Route Child Progress Snapshot requests to the Eduscope agent",
+  "desc": "AC2 of #13141. Nova must recognise requests to view or download a Progress Snapshot as one ViewChildProgressSnapshot intent and hand the request to the Eduscope agent. Add a claimed flow in pxp-ai that: - Subclasses Flow directly and carries the twelve AC2 utterances in its class docstring, which is what the router uses as the intent description. Include negative clauses against the four sibling flows for reading progress, speaking progress, assignment results and assignment rubrics, since those name specific reports while these rows name progress with no qualifier. - Treats a download request as the same intent, per AC2.1. - Claims the endpoint handle \"eduscope\". This is a different remote from \"team-tracker\" despite earlier notes in the repo saying otherwise. Until this story the Eduscope URL carried no handle and was card-routed through a generated agent. - Resolves the child through the shared selection component from #16892 before dialling, then dials with the parent's original utterance rather than their answer to the selection card. - Registers with its own failure message, capability hint and state namespace, and bumps the agent-count pins. Out of scope: AC4 timeframe rules, AC5 through AC9. Known gap to track separately: the resolved child is not forwarded to the remote, so a parent with several children is asked which one twice. AC2 asks for the detected entities to be passed on. Closing it means amending the architecture decision that currently keeps the entity on our side. Deployment dependency: the \"eduscope=\" handle must be added to the A2A_AGENT_ENDPOINTS variable in each environment's Azure DevOps variable group. Without it the flow answers as unavailable. Done when: - All twelve AC2 utterances route to this agent with no ambiguity, verified by running its routing table together with the four sibling tables against a live model. - The unit suite passes with the updated agent-count pins.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1623,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Setup demo for inattention detection",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1624,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop deployment script for model pipeline and solution",
+  "desc": "script to configure and auto deploy detectors on camera and edge. it should work with existing nvdia deep stream, pipeline (they may already provide)",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1625,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Prepare dataset and ground truth for fight detection",
+  "desc": "Capture videos in our office (including false positive cases as well) Label/auto label videos to have ground truth Test model with this dataset, output accuracy",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1626,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Make Google OR-tools demo",
+  "desc": "use Claude code to setup, run OR tools with samples and stories/prototype customer provided.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1627,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Make OCR demo and standalone service with handwriting papers (English, Arabic)",
+  "desc": "1. make a demo using Azure Doc intelligence with prebuilt models (layout, read) for English/Arabic handwriting images 2. try https://github.com/PADDLEPADDLE/PADDLEOCR and compare with doc intelligence on the same dataset. 3. can upload a batch of images, files...for OCR, then OCR with multiple workers / services. 4. package as a service using for many agents",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1628,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Make timetabling demo",
+  "desc": "Generate prd, sad, and full stack code for timetabling demo based on Varkey's prototype and stories , the demo should be runnable with solvers such as Google OR-Tools.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1629,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop smart command center",
+  "desc": "develop smart command center as a web app includes -video wall with detected objects overlayed -can connect to get results from many edges -deployed in cloud. can be accessed in command center room. -integrate with power bi or react charts to show data analytics from all sensors including cameras, lidar, radar, environment sensors. -the command center should work with all types of sensors including cctv, lidar, radar, environment sensors ... -can be deployed at the edge for only 1 edge or in cloud for all edge. for example, in a small shop, just need 1 edge, but in a big supermarket with many building, need many edges -use claude code to generate the solution -possible to base on a open source for smart command center or condo management to provide more context for claude",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1630,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Make demo for audio recognition when students or teachers submit audio for marking on Grader agent",
+  "desc": "Use some azure audio service to handle the use case of audio submission in https://stmeredithworkdemos.blob.core.windows.net/$web/Prototypes/D_Grader%20-%20prototype.html",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1653,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Optimize for ocr",
+  "desc": "## OCR pipeline — how it works Azure Content Understanding does the reading. This service is the machinery around it: staging, queuing, normalising and correcting. **Asynchronous by design.** A multi-page PDF outlives any HTTP timeout, and an ingress will cut a long request regardless — so submission returns `202` with a job id and callers poll. There is no synchronous path. **The engine is a port, not a vendor.** Adapters implement `describe()` / `availability()` / `analyze()` and register by name; `GET /v1/engines` publishes the catalogue. Nothing above the port knows Azure exists — the domain model carries no vendor types. Two adapters exist today: | Engine | Analyzer | Use for | | --- | --- | --- | | `azure-cu-read` | `prebuilt-read` | text only — cheaper, better for handwriting | | `azure-cu-layout` | `prebuilt-layout` | plus tables, formulas, selection marks | ### Correction is the accuracy lever `llm-fix` sends Azure OpenAI the text plus the words the engine itself scored low, and receives an **edit list**, not a rewritten document. Each edit quotes ~24 characters of surrounding context; an edit that cannot be located exactly in the source is rejected rather than guessed at, so a hallucinated fix fails to apply instead of silently corrupting the transcript. **Measured: 2.35% → 1.15% CER, a 51% relative reduction.** It was already implemented and unverified until this work. Enabling it is a real accuracy gain. ### Accuracy can now be measured `ocr_service.evaluation.metrics` (CER/WER) and `scripts/evaluate.py` score an engine and an optional correction pass over a corpus, caching responses so re-runs are free. The browser UI scores a single dropped page live against a `.txt` and shows a word-level diff. Before this, the service could produce output at any scale with no way to say whether it was right. ### Operational note A worker must consume the queue. `ROLE=api` serves routes and consumes nothing, so a job submitted to it stays `pending` forever. Use `ROLE=both`, or run a separate `ROLE=worker` process. ### Not claimed The IAM corpus accuracy figure is **withdrawn**. The form-splitting step places its boundary wrong often enough that ~17.6% of reported errors were the harness rather than the engine. `--split-handwriting` is marked experimental, and no corpus figure produced with it is quotable as engine accuracy. ### Outstanding - Solve the splitter boundary (needs repeat detection, not a single split point) - Pin the corpus to a commit SHA — it currently tracks a moving branch - The browser holds a second copy of the metrics, held in step by a differential test",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1683,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop grader agent",
+  "desc": "1-Develop grader agent based on https://stmeredithworkdemos.blob.core.windows.net/$web/Prototypes/D_Grader%20-%20prototype.html 2-Use same UI prototype of customer above. 3-Connect to OCR service to performance OCR https://dev.azure.com/XionTechs/XT-Smart-Platform/_workitems/edit/1627/ 4-Deploy grader agent to azure: https://portal.azure.com/#@xiontechs.com/resource/subscriptions/4b05a0b5-d9d1-41ad-a205-de73faed72c8/resourcegroups/grader/overview using bicep. Push bicep to repo.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1694,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop local LLM",
+  "desc": "Investigate & pick the best one, focus on reasoning , embedding, prompting tasks. Deploy and demo. Provide endpoint for other app. Finetuning with education dataset.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1699,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop model gateway",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1715,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Prototype - Handle stakeholder feedback",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1718,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "IOC - Architecture Proposal",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1719,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "IOC - Database design",
+  "desc": "**1. Current recommendation** ------------------------- | Topic | Decision | | --- | --- | | **Database product** | **PostgreSQL 18** — one relational database for governance, operations, and telemetry | | **Version pinning** | Pin a specific **18.x** minor per release bundle — not a floating `latest` tag | | **Time-series extension** | **Not at launch** — add **TimescaleDB** inside PostgreSQL only if triggers S1, S2, or S3 fire | * * * **2. Fleet model** -------------- | Profile | Sites | Devices/site | Total devices | | --- | --- | --- | --- | | Small | 1 | 6 | 6 | | Medium | 10 | 14 | 140 | | Large low | 50 | 30 | 1,500 | | Large mid | 200 | 75 | 15,000 | | Large high | 500 | 150 | 75,000 | “Large enterprise” spans **300 → 15,000 samples/s** at typical rates (50×). Validate against the **pilot** footprint, not the label. * * * **3. Message rates** ---------------- | Stream | Typical | Peak | Role | | --- | --- | --- | --- | | Telemetry per device | 0.2/s | 1.0/s | Dominates disk | | Events per site per hour | 100 | 200 | Operational | | Alerts | ~7.5% of events | — | Latency-sensitive | | Heartbeat | ~0.03/s per device | — | Health state | **Ingest** = devices × telemetry rate. Large mid: **3,000/s** typical, **15,000/s** peak. * * * **4. Pre-database shaping** ----------------------- | Mechanism | Reduces HTTP load | Reduces DB rows | | --- | --- | --- | | Batch ~5 s | Yes (~150×) | **No** | | Edge aggregate (cold, 1/60 s) | Yes | **Yes** | Large high after aggregate: **~1,250/s** ingest; **~160 MB** local buffer per 72 h offline (vs ~2 GB raw). Hot metrics (alerts, heartbeat, state) are not aggregated. Cold metrics (environmental, occupancy) may be. This classification sets database row rate — see section 10. * * *",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1720,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "IOC - BE APIs design",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1721,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "IOC - Frontend design",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1805,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Develop Xiontechs themes for PXP, SXP",
+  "desc": "1.add Xiontechs themes for PXP, SXP, set this theme as default in smart platform repo , not pxp or sxp repo 2.deploy and demo in Xiontechs smart platform infra",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1871,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Fork codebase from SXP-FE into  Smart School App",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1872,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Fork codebase from PXP-FE into  Smart School App",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1874,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Reading grading",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1875,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "class registration",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1876,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "design",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1877,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "requirement",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1878,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Inattention detection",
+  "desc": "As a teacher/principal, I want off-task classroom behaviour detected, so I can see which students are not engaged.",
+  "ac": "Detects 3 inattentive behaviours per student: turning (head turned away), using_phone and resting_on_desk. Draws a bounding box and a class label on each detected student. Works on live RTSP camera input.",
+  "est": null
+ },
+ {
+  "id": 1887,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SAF-001] Person collapse detection",
+  "desc": "As a head of safeguarding, I want an immediate alert when a person falls and stays down, so I can intervene in time.",
+  "ac": "Detect person down; alert only after a configurable persistence time; real-time alert; event shown on Safety Dashboard.",
+  "est": null
+ },
+ {
+  "id": 1888,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SAF-004] Fire/smoke cues and blocked exits/extinguishers",
+  "desc": "As a fire warden, I want fire cues and blocked exits/extinguishers detected.",
+  "ac": "Fire/smoke cue detection; blocked-exit and extinguisher-obstruction detection in configured zones; obstruction count per hour.",
+  "est": null
+ },
+ {
+  "id": 1889,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SEC-001] Gate SOP entry/exit window check",
+  "desc": "As a security manager, I want gate entry/exit windows checked against policy automatically.",
+  "ac": "Count entries/exits across a configured line; compare against policy time windows; log each violation.",
+  "est": null
+ },
+ {
+  "id": 1890,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[TRF-001] ANPR with vehicle whitelist",
+  "desc": "As a security manager, I want authorised vehicles recognised by licence plate and unknown vehicles flagged.",
+  "ac": "Licence plate recognition at gate cameras; manageable whitelist; alert on unknown vehicle.",
+  "est": null
+ },
+ {
+  "id": 1891,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[TRF-002] Wrong-way and speeding detection",
+  "desc": "As a traffic officer, I want wrong-way driving and speeding detected against campus policy.",
+  "ac": "Wrong-way detection per configured lane direction; speed estimation; thresholds configurable per camera.",
+  "est": null
+ },
+ {
+  "id": 1892,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[TRF-004] No-helmet and triple-riding detection",
+  "desc": "As a head of safeguarding, I want two-wheelers without helmets and triple riding detected.",
+  "ac": "Detect two-wheeler riders without helmet; detect 3+ riders on one vehicle; alert at gate cameras.",
+  "est": null
+ },
+ {
+  "id": 1893,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SAF-003] Distress hand-waving (hailing) detection",
+  "desc": "As a student or staff member, I want a hand-waving distress gesture recognised as a call for help.",
+  "ac": "Detect emergency hailing gesture; raise alert.",
+  "est": null
+ },
+ {
+  "id": 1894,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SEC-003] Camera tamper and signal-loss detection",
+  "desc": "As IT/security, I want camera tampering, obstruction and blind streams detected.",
+  "ac": "Flag tamper (moved/covered/blurred), obstruction and signal loss per camera.",
+  "est": null
+ },
+ {
+  "id": 1895,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SEC-004] Guard presence at posts",
+  "desc": "As a security manager, I want guard presence at posts measured, not assumed.",
+  "ac": "Detect guard presence per configured post zone; count absences and absence duration.",
+  "est": null
+ },
+ {
+  "id": 1896,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[OPS-002] Queue wait time and crowd density",
+  "desc": "As a facility manager, I want queue wait time and crowd density measured at canteen, reception and events.",
+  "ac": "Queue wait time per zone; crowd density per zone; overcrowding alert above a configurable threshold.",
+  "est": null
+ },
+ {
+  "id": 1897,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[OPS-003] PPE / attire check in labs",
+  "desc": "As a lab safety officer, I want PPE/attire checked in workshops and science labs.",
+  "ac": "Detect required PPE (lab coat, goggles, ...); flag missing PPE per configured lab zone.",
+  "est": null
+ },
+ {
+  "id": 1898,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[OPS-004] Waste overflow and abandoned object detection",
+  "desc": "As a housekeeping lead, I want waste overflow and leftover objects in halls detected.",
+  "ac": "Detect waste bin overflow; detect objects left unattended beyond a configurable time.",
+  "est": null
+ },
+ {
+  "id": 1900,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[SAF-002] Fight / violence detection",
+  "desc": "As a duty officer, I want fights and violence detected as they form, so I can stop them before they spread.",
+  "ac": "Violence detection; flag altercations early.",
+  "est": null
+ },
+ {
+  "id": 1902,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "[OPS-001] Recognised attendance and visitor flow",
+  "desc": "As a principal/COO, I want recognised attendance and visitor flows, live.",
+  "ac": "Recognised presence; visitor flow; distinguish staff and visitors.",
+  "est": null
+ },
+ {
+  "id": 1903,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Face masking for privacy",
+  "desc": "As organisation IT, I want faces masked in recorded data and demo output, so no identifiable face leaves the system without authorisation.",
+  "ac": "Faces masked before data reaches disk; masking fails closed; no pipeline slowdown in demos.",
+  "est": null
+ },
+ {
+  "id": 1905,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Consolidate the requirements",
+  "desc": "Reviewed the updated \"Learning Intervention Scenarios\" document from Surie Defined the gaps in exam preparation at tutoring centres, for Grade 9 to 10 and Grade 12 to university Mapped the current workflow of tutoring centres, step by step. Defined the business use cases from that workflow. Identified the problems at each step, with sources. Research market solution then identify each site business use cases and problems",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1907,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Develop prototype",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1908,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Build AI/ML as a core for AI Tutoring & Adaptive Learning",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1909,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Technical Solution Architecture",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1912,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Show only inattentive classes in the AI preview",
+  "desc": "Inattention is already integrated into the platform: the inattention group is in apps/platform/src/node_module.yml, it is switched on with LOAD_INATTENTION, and cameras are routed to it one by one. The AI preview (apps/platform/preview/render.py) still draws all 10 behaviour classes. The product decision is to show only the inattentive group, the same set as GROUPS in the demo: turning, using_phone, resting_on_desk. Filter in render.py only. The pipeline must keep emitting all 10 classes, so metadata stays complete for later features such as an inattention rate or events. Other features (person detection, face recognition) are drawn as before.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1913,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Verify the inattention preview on Jetson",
+  "desc": "Run the platform on the Jetson with LOAD_INATTENTION=on, using a classroom clip or an RTSP camera routed to inattention. Open the AI preview and confirm the changes from tasks 1 and 2 on real hardware. Record the results in docs/jetson-bringup.md.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1914,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Improve the restricted-zone configuration UI/UX and fix related bugs",
+  "desc": "The zone editor (ZoneEditor.tsx, zones.ts) lets an operator: draw polygons on the live preview close a shape with a double-click or Enter undo the last corner drag corners, or move them with the arrow keys apply the changes, then save them It refuses zones the node would reject: fewer than 3 or more than 32 corners, a corner outside the frame, or duplicate consecutive corners. Improve the editing experience and fix the bugs found while using it. Known pain points from the guide: The Savant (WHEP) preview shows the boxes only. Saved zones are drawn on the preview only on a CPU node, so on a Jetson the operator cannot see the zones over the live picture. A saved zone edit takes up to 10 s to apply (config cache TTL), with no feedback in the UI. \"Apply\" closes the editor but nothing is stored until \"Save\", so it is easy to lose edits. Collect the remaining UI/UX issues and bugs from internal testing, list them in the PR, and fix them.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1916,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Retire the office-head fight pipeline",
+  "desc": "The current detector (v4/v5) uses the engares A3 backbone frozen, plus our own head trained on office clips, run on 165-frame clips. Replace it with the full engares model. Remove from apps/fighting_detection and from the platform: the head training, sweep and public-data scripts the v4/v5 TFLite files and their references in module.yml and node_module.yml the 165-frame clip contract Keep the office dataset and ground truth (task 1625) as the evaluation set, and keep the school research docs. Record the v5 result (office test P 1.0000, R 0.6154) as the baseline to compare against.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1917,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Offline streaming inference with the engares model",
+  "desc": "Write a committed script (not a notebook) that runs the engares A3 stream checkpoint over a video, one frame at a time, carrying the model states between frames. It outputs a per-frame fight probability as CSV, and optionally an annotated mp4. Match the reference preprocessing exactly: resize_with_pad to 256×256 and float in [0, 1]. Determine the frame sampling rate the checkpoint was trained with (from movinet_training.ipynb) and document it; the rate matters for streaming. Pin the TF and tf-models-official versions.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1925,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Setup skeleton project",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1926,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Implement theme configuration",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1927,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Implement audio-scoring-service (local)",
+  "desc": "​Standalone FastAPI service: receives audio and a reference passage ( multipart/form-data ), scores it with Azure Pronunciation Assessment, and returns neutral scoring data for clients (e.g. the robot app). Spec: docs/scoring-requirements.md . Scope: local only, no deployment. Tasks: Audio normalization: decode in-process with PyAV (bundled libav, format detected from content; headerless PCM rejected) → 16 kHz mono 16-bit (anti-aliased), VAD trim of leading/trailing silence, validation and error codes. Segment aggregation: word-weighted fluency/prosody, completeness recomputed over the whole passage. Reference alignment: EnableMiscue = false, reference_text input (split on whitespace into reference tokens), per-token normalization, jiwer alignment → matched / substituted / omitted + insertions. Response contract: versioned schema, per-token results, timings in ms. Tests: unit tests per spec acceptance criteria; end-to-end with real audio. Acceptance: spec acceptance criteria pass; works in Swagger with real WAV / WebM / M4A; the response covers all metrics the robot currently uses. Dependencies: Azure Speech key.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1928,
+  "project": "SmartPlatform",
+  "type": "Feature",
+  "title": "ThingsBoard IoT Platform",
+  "desc": "",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1929,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Setup alarm for sensors and raise notifications",
+  "desc": "Sensors raise alarms when temperature or humidity leaves its range, a battery runs low, or a device stops reporting. The alarms show on the room overview and in ThingsBoard's alarm list, and reach command centers.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1931,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Raise climate alarms",
+  "desc": "As a person working in the office, I want an alarm when a room is too hot, too cold, too humid or too dry, so that someone acts before the room becomes uncomfortable. The rules go on the `climate-sensor` profile or any current profiles that also support temperature and humidity (FP300's `presence-sensor`). Any threshold crossing passes the 5-minute mark will raise an alarm.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1938,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Set hosted VM instance schedule",
+  "desc": "The hosted Azure VM runs only Monday to Friday, 08:30-18:30 UTC+7 (01:30-11:30 UTC). Outside those hours it is deallocated, which stops compute billing, and it starts itself before office hours with no human step.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1939,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Decide the VM stop/start mechanism",
+  "desc": "As the operator of the hosted instance, I want one decided mechanism that deallocates the VM outside of working hour, so that the schedule runs with no human step and no stored secret. Azure's built-in auto-shutdown only stops the VM, so starting it needs a second mechanism.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1940,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Setup VM shutdown schedule",
+  "desc": "Since Azure portal only supports a shutdown schedule, this will be setup first while waiting for #1939 to be worked on. VM will be manually turned on when needed. VM turns off automatically at 6:30PM daily if turned on.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1942,
+  "project": "SmartPlatform",
+  "type": "User Story",
+  "title": "Multi-profile for one device",
+  "desc": "Today a ThingsBoard device record has one `device_profile_id`. A device that is more than one kind (for example the FP300: presence and climate) takes the first matching rule in `PROFILE_RULES`. Its profile must also be added by hand to the other kind's dashboard alias (the FP300 in `Climate sensors`). This user story changes ThingsBoard itself so that one device can hold several profiles.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1943,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Store several profiles per device",
+  "desc": "As a platform developer, I want a device-to-profile join table next to the existing column, so that a device can hold extra profiles and the database still rejects profiles that do not exist.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1944,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Apply extra profiles in the server",
+  "desc": "As a platform user, I want alarm rules and dashboard aliases to see all of a device's profiles, so that a presence-and-climate sensor appears in both kinds of chart with no alias edit. Depends on #1943",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1945,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Show and edit extra profiles in the UI and from the gateway",
+  "desc": "As a tenant administrator, I want to see and change a device's extra profiles, and the forwarder to set them when a device is created, so that new mixed devices need no manual step. Depends on #1944",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1947,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Establish the adaptive learning core: shared BKT engine, content pipeline, classroom integration",
+  "desc": "Goal Make per-skill mastery tracing the core of the tutoring experience, and make it one implementation shared by the tutor and the AI classroom rather than something each side reimplements. Two learner models that disagree cannot be reconciled, so the model is extracted once and both consumers run it. Scope Extract the learner model. Bayesian Knowledge Tracing update, problem selection and lesson mastery, as pure functions with no UI or framework attached, consumed by the tutor and by the classroom. Content pipeline. Turn generated lesson material into tutor-ready problems: steps, scaffolded hint pathways, knowledge components and BKT priors. Nothing reaches the question bank without passing schema validation and a reviewer marking it approved. Classroom integration. A generated lesson can hand a learner to scaffolded practice, and the classroom can read back per-knowledge-component mastery to show progress. Out of scope (separate items) Durable server-side learner storage; accounts and parental consent; parent and teacher reporting; misconception taxonomy and error analysis; item difficulty and prerequisite metadata. Acceptance criteria The learner model exists as a single implementation used by both systems, with parity tests demonstrating it agrees with the code it replaces. Generated content is rejected before write if it fails validation, and cannot enter the question bank without reviewer approval. A classroom lesson runs practice end to end and displays per-knowledge-component mastery. Agreement between AI-assigned knowledge components and human labels is measured and reported, on a stated sample, so the assignment quality is evidenced rather than assumed. Notes / known constraints BKT priors ship uniform across all knowledge components, so mastery moves on very few observations. Calibration needs real response data and is not in this task. Item coverage is thin for many knowledge components, which limits how far adaptive selection can vary the next item. Mastery must continue to update only from graded item results, never from conversation with the AI tutor.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1957,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "Apply SonarQube quality gate to grader_agent",
+  "desc": "Why: The company SonarQube scan of grader-agent failed: 33.3k lines, 38 bugs, 38.5% duplication, 46.5% coverage. Most of that came from the scan's scope, not the code. With no sonar-project.properties, it scanned a build/ copy of src/, the prototype HTML, scripts and tests, and it had no coverage report. Done (branch sonar-prepush-gate, commit 40c0d45): Pre-push hook runs the SonarQube quality gate before every git push. Feature branches are scanned by a local SonarQube in Docker and judged only on new code. sonar-project.properties limits the scan to src and frontend/src. run_coverage.sh produces coverage for Python and frontend. Smoke test checks /healthz on the real entrypoint. CLAUDE.md holds the quality rules and Definition of Done (C0 100% / C1 ≥ 80% on changed lines, code review, smoke test). AGENTS.md is refreshed to match the code. Result with correct scope: 14.1k lines, 1 bug, 0 vulnerabilities, 86.4% coverage, 0% duplication. The gate passes, and it was verified to block on a real violation. Acceptance criteria: PR merged into develop, CI green. Agree with manager how the company Sonar server is re-scanned with the new scope.",
+  "ac": "",
+  "est": null
+ },
+ {
+  "id": 1959,
+  "project": "SmartPlatform",
+  "type": "Task",
+  "title": "SonarQube cleanup for va-edge: remove vendored Savant, reproducible scan, fix findings",
+  "desc": "The va-edge SonarQube project reported 14 Security and 33 Reliability issues (both rated E), 87 unreviewed hotspots and 0% coverage. No one was running the scan regularly, and nothing in the repo recorded how to run it. About half the findings came from the vendored `Savant/` tree, which is scratch code and was already planned for deletion. Scope: - Remove `Savant/` from the repo. The local copy moves to `source_code/Savant`. - Make the scan reproducible, with coverage (`sonar-project.properties` and `scripts/sonar_scan.py`). - Fix real Security and Reliability issues, and the Maintainability issues worth fixing. - Review every remaining finding and hotspot, and record the reason for each.",
+  "ac": "",
+  "est": null
+ }
+]

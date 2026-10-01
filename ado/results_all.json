@@ -3,1264 +3,2444 @@
   {
    "id": 688,
    "project": "PXP",
+   "type": "Bug",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.6355,
-   "probs": {
-    "haiku": 0.6355,
-    "sonnet": 0.2149,
-    "opus": 0.1496
-   },
-   "ms": 368,
+   "ms": 386,
    "desc_chars": 0
   },
   {
    "id": 801,
    "project": "PXP",
+   "type": "Bug",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.5258,
-   "probs": {
-    "haiku": 0.5258,
-    "sonnet": 0.312,
-    "opus": 0.1622
-   },
-   "ms": 371,
+   "ms": 395,
    "desc_chars": 0
   },
   {
    "id": 1757,
    "project": "PXP",
+   "type": "Task",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.5497,
-   "probs": {
-    "haiku": 0.5497,
-    "sonnet": 0.2946,
-    "opus": 0.1556
-   },
-   "ms": 431,
+   "ms": 421,
    "desc_chars": 867
   },
   {
    "id": 1783,
    "project": "PXP",
+   "type": "Task",
    "label": "haiku",
    "pred": "sonnet",
    "prob": 0.5147,
-   "probs": {
-    "haiku": 0.3229,
-    "sonnet": 0.5147,
-    "opus": 0.1625
-   },
-   "ms": 420,
+   "ms": 389,
    "desc_chars": 1230
   },
   {
    "id": 789,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.5913,
-   "probs": {
-    "haiku": 0.1118,
-    "sonnet": 0.2969,
-    "opus": 0.5913
-   },
-   "ms": 372,
+   "ms": 375,
    "desc_chars": 0
   },
   {
    "id": 805,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.5536,
-   "probs": {
-    "haiku": 0.5536,
-    "sonnet": 0.2937,
-    "opus": 0.1527
-   },
-   "ms": 358,
+   "ms": 387,
    "desc_chars": 0
   },
   {
    "id": 806,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.7037,
-   "probs": {
-    "haiku": 0.7037,
-    "sonnet": 0.2046,
-    "opus": 0.0917
-   },
-   "ms": 382,
+   "ms": 399,
    "desc_chars": 0
   },
   {
    "id": 814,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.483,
-   "probs": {
-    "haiku": 0.3483,
-    "sonnet": 0.483,
-    "opus": 0.1687
-   },
-   "ms": 469,
+   "ms": 468,
    "desc_chars": 201
   },
   {
    "id": 908,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.4923,
-   "probs": {
-    "haiku": 0.4923,
-    "sonnet": 0.302,
-    "opus": 0.2058
-   },
-   "ms": 421,
+   "ms": 424,
    "desc_chars": 411
   },
   {
    "id": 996,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.5926,
-   "probs": {
-    "haiku": 0.5926,
-    "sonnet": 0.2536,
-    "opus": 0.1538
-   },
-   "ms": 390,
+   "ms": 387,
    "desc_chars": 0
   },
   {
    "id": 1765,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4496,
-   "probs": {
-    "haiku": 0.3012,
-    "sonnet": 0.4496,
-    "opus": 0.2492
-   },
-   "ms": 396,
+   "ms": 428,
    "desc_chars": 1526
   },
   {
    "id": 1776,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4388,
-   "probs": {
-    "haiku": 0.2118,
-    "sonnet": 0.3495,
-    "opus": 0.4388
-   },
-   "ms": 379,
+   "ms": 403,
    "desc_chars": 1006
   },
   {
    "id": 1777,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.7681,
-   "probs": {
-    "haiku": 0.0721,
-    "sonnet": 0.1598,
-    "opus": 0.7681
-   },
-   "ms": 424,
+   "ms": 427,
    "desc_chars": 758
   },
   {
    "id": 1778,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.3675,
-   "probs": {
-    "haiku": 0.2868,
-    "sonnet": 0.3457,
-    "opus": 0.3675
-   },
-   "ms": 427,
+   "ms": 417,
    "desc_chars": 1266
   },
   {
    "id": 1787,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.698,
-   "probs": {
-    "haiku": 0.071,
-    "sonnet": 0.2311,
-    "opus": 0.698
-   },
-   "ms": 415,
+   "ms": 410,
    "desc_chars": 708
   },
   {
    "id": 1826,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.38,
-   "probs": {
-    "haiku": 0.3478,
-    "sonnet": 0.38,
-    "opus": 0.2722
-   },
-   "ms": 394,
+   "ms": 422,
    "desc_chars": 1810
   },
   {
    "id": 1828,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.5757,
-   "probs": {
-    "haiku": 0.5757,
-    "sonnet": 0.265,
-    "opus": 0.1593
-   },
-   "ms": 380,
+   "ms": 390,
    "desc_chars": 1298
   },
   {
    "id": 1870,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.472,
-   "probs": {
-    "haiku": 0.2223,
-    "sonnet": 0.472,
-    "opus": 0.3057
-   },
-   "ms": 425,
+   "ms": 406,
    "desc_chars": 0
   },
   {
    "id": 1697,
    "project": "PXP",
+   "type": "Bug",
    "label": "opus",
    "pred": "haiku",
    "prob": 0.5617,
-   "probs": {
-    "haiku": 0.5617,
-    "sonnet": 0.2828,
-    "opus": 0.1555
-   },
-   "ms": 398,
+   "ms": 377,
    "desc_chars": 0
   },
   {
    "id": 1712,
    "project": "PXP",
+   "type": "Bug",
    "label": "opus",
    "pred": "sonnet",
    "prob": 0.4419,
-   "probs": {
-    "haiku": 0.3003,
-    "sonnet": 0.4419,
-    "opus": 0.2578
-   },
-   "ms": 379,
+   "ms": 372,
    "desc_chars": 0
   },
   {
    "id": 1773,
    "project": "PXP",
+   "type": "User Story",
    "label": "opus",
    "pred": "haiku",
    "prob": 0.3467,
-   "probs": {
-    "haiku": 0.3467,
-    "sonnet": 0.3326,
-    "opus": 0.3207
-   },
-   "ms": 347,
+   "ms": 382,
    "desc_chars": 1903
   },
   {
    "id": 1774,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6067,
-   "probs": {
-    "haiku": 0.127,
-    "sonnet": 0.2662,
-    "opus": 0.6067
-   },
-   "ms": 374,
+   "ms": 385,
    "desc_chars": 2872
   },
   {
    "id": 1775,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.504,
-   "probs": {
-    "haiku": 0.134,
-    "sonnet": 0.362,
-    "opus": 0.504
-   },
-   "ms": 431,
+   "ms": 405,
    "desc_chars": 688
   },
   {
    "id": 1788,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "sonnet",
    "prob": 0.4073,
-   "probs": {
-    "haiku": 0.2625,
-    "sonnet": 0.4073,
-    "opus": 0.3302
-   },
-   "ms": 398,
+   "ms": 390,
    "desc_chars": 987
   },
   {
    "id": 1801,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.597,
-   "probs": {
-    "haiku": 0.1348,
-    "sonnet": 0.2683,
-    "opus": 0.597
-   },
-   "ms": 420,
+   "ms": 410,
    "desc_chars": 2180
   },
   {
    "id": 1922,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.4704,
-   "probs": {
-    "haiku": 0.4704,
-    "sonnet": 0.363,
-    "opus": 0.1666
-   },
-   "ms": 372,
+   "ms": 402,
    "desc_chars": 204
   },
   {
    "id": 1714,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4593,
-   "probs": {
-    "haiku": 0.2168,
-    "sonnet": 0.3239,
-    "opus": 0.4593
-   },
-   "ms": 432,
+   "ms": 421,
    "desc_chars": 231
   },
   {
    "id": 1918,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.3976,
-   "probs": {
-    "haiku": 0.2671,
-    "sonnet": 0.3353,
-    "opus": 0.3976
-   },
-   "ms": 406,
+   "ms": 380,
    "desc_chars": 403
   },
   {
    "id": 1920,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.3923,
-   "probs": {
-    "haiku": 0.2919,
-    "sonnet": 0.3923,
-    "opus": 0.3159
-   },
-   "ms": 385,
+   "ms": 375,
    "desc_chars": 257
   },
   {
    "id": 1932,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.4101,
-   "probs": {
-    "haiku": 0.4101,
-    "sonnet": 0.3081,
-    "opus": 0.2819
-   },
-   "ms": 375,
+   "ms": 374,
    "desc_chars": 185
   },
   {
    "id": 1933,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.6312,
-   "probs": {
-    "haiku": 0.6312,
-    "sonnet": 0.2317,
-    "opus": 0.1371
-   },
-   "ms": 376,
+   "ms": 384,
    "desc_chars": 329
   },
   {
    "id": 1934,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.3681,
-   "probs": {
-    "haiku": 0.2925,
-    "sonnet": 0.3681,
-    "opus": 0.3394
-   },
-   "ms": 374,
+   "ms": 406,
    "desc_chars": 157
   },
   {
    "id": 1937,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.3995,
-   "probs": {
-    "haiku": 0.27,
-    "sonnet": 0.3305,
-    "opus": 0.3995
-   },
-   "ms": 390,
+   "ms": 382,
    "desc_chars": 194
   },
   {
    "id": 1968,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4056,
-   "probs": {
-    "haiku": 0.2328,
-    "sonnet": 0.4056,
-    "opus": 0.3616
-   },
-   "ms": 419,
+   "ms": 404,
    "desc_chars": 2828
   },
   {
    "id": 1972,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4428,
-   "probs": {
-    "haiku": 0.391,
-    "sonnet": 0.4428,
-    "opus": 0.1662
-   },
-   "ms": 423,
+   "ms": 409,
    "desc_chars": 1271
   },
   {
    "id": 1973,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.3916,
-   "probs": {
-    "haiku": 0.3916,
-    "sonnet": 0.3185,
-    "opus": 0.2899
-   },
-   "ms": 365,
+   "ms": 405,
    "desc_chars": 128
   },
   {
    "id": 1974,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4339,
-   "probs": {
-    "haiku": 0.2348,
-    "sonnet": 0.3313,
-    "opus": 0.4339
-   },
-   "ms": 387,
+   "ms": 448,
    "desc_chars": 103
   },
   {
    "id": 1734,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.5125,
-   "probs": {
-    "haiku": 0.1893,
-    "sonnet": 0.2981,
-    "opus": 0.5125
-   },
-   "ms": 399,
+   "ms": 364,
    "desc_chars": 106
   },
   {
    "id": 1915,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "sonnet",
    "prob": 0.4021,
-   "probs": {
-    "haiku": 0.2267,
-    "sonnet": 0.4021,
-    "opus": 0.3711
-   },
-   "ms": 385,
+   "ms": 376,
    "desc_chars": 859
   },
   {
    "id": 1919,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.5026,
-   "probs": {
-    "haiku": 0.184,
-    "sonnet": 0.3134,
-    "opus": 0.5026
-   },
-   "ms": 390,
+   "ms": 377,
    "desc_chars": 411
   },
   {
    "id": 1921,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.4905,
-   "probs": {
-    "haiku": 0.1479,
-    "sonnet": 0.3616,
-    "opus": 0.4905
-   },
-   "ms": 367,
+   "ms": 385,
    "desc_chars": 506
   },
   {
    "id": 1923,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "sonnet",
    "prob": 0.5201,
-   "probs": {
-    "haiku": 0.3238,
-    "sonnet": 0.5201,
-    "opus": 0.1561
-   },
-   "ms": 379,
+   "ms": 409,
    "desc_chars": 338
   },
   {
    "id": 1941,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.4884,
-   "probs": {
-    "haiku": 0.1724,
-    "sonnet": 0.3392,
-    "opus": 0.4884
-   },
-   "ms": 404,
+   "ms": 385,
    "desc_chars": 522
   },
   {
    "id": 1958,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6865,
-   "probs": {
-    "haiku": 0.121,
-    "sonnet": 0.1925,
-    "opus": 0.6865
-   },
-   "ms": 402,
+   "ms": 382,
    "desc_chars": 669
   },
   {
    "id": 1966,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.5403,
-   "probs": {
-    "haiku": 0.1376,
-    "sonnet": 0.322,
-    "opus": 0.5403
-   },
-   "ms": 424,
+   "ms": 427,
    "desc_chars": 4129
+  },
+  {
+   "id": 466,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6242,
+   "ms": 386,
+   "desc_chars": 485
+  },
+  {
+   "id": 510,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.475,
+   "ms": 409,
+   "desc_chars": 0
+  },
+  {
+   "id": 520,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5266,
+   "ms": 381,
+   "desc_chars": 0
+  },
+  {
+   "id": 538,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5804,
+   "ms": 380,
+   "desc_chars": 0
+  },
+  {
+   "id": 542,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5504,
+   "ms": 371,
+   "desc_chars": 153
+  },
+  {
+   "id": 563,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6572,
+   "ms": 391,
+   "desc_chars": 20
+  },
+  {
+   "id": 577,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4041,
+   "ms": 392,
+   "desc_chars": 52
+  },
+  {
+   "id": 578,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4131,
+   "ms": 387,
+   "desc_chars": 650
+  },
+  {
+   "id": 641,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4943,
+   "ms": 381,
+   "desc_chars": 0
+  },
+  {
+   "id": 655,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5143,
+   "ms": 371,
+   "desc_chars": 93
+  },
+  {
+   "id": 756,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.537,
+   "ms": 378,
+   "desc_chars": 0
+  },
+  {
+   "id": 799,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4308,
+   "ms": 417,
+   "desc_chars": 0
+  },
+  {
+   "id": 825,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4608,
+   "ms": 382,
+   "desc_chars": 0
+  },
+  {
+   "id": 875,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5234,
+   "ms": 410,
+   "desc_chars": 197
+  },
+  {
+   "id": 878,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5931,
+   "ms": 381,
+   "desc_chars": 230
+  },
+  {
+   "id": 953,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.6342,
+   "ms": 379,
+   "desc_chars": 0
+  },
+  {
+   "id": 968,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.603,
+   "ms": 418,
+   "desc_chars": 0
+  },
+  {
+   "id": 1028,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4373,
+   "ms": 388,
+   "desc_chars": 0
+  },
+  {
+   "id": 1768,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4963,
+   "ms": 381,
+   "desc_chars": 0
+  },
+  {
+   "id": 427,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4258,
+   "ms": 359,
+   "desc_chars": 125
+  },
+  {
+   "id": 464,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4244,
+   "ms": 376,
+   "desc_chars": 314
+  },
+  {
+   "id": 488,
+   "project": "PXP",
+   "type": "User Story",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5004,
+   "ms": 431,
+   "desc_chars": 257
+  },
+  {
+   "id": 494,
+   "project": "PXP",
+   "type": "User Story",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4683,
+   "ms": 463,
+   "desc_chars": 267
+  },
+  {
+   "id": 506,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.446,
+   "ms": 386,
+   "desc_chars": 0
+  },
+  {
+   "id": 514,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.7084,
+   "ms": 390,
+   "desc_chars": 0
+  },
+  {
+   "id": 517,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4494,
+   "ms": 373,
+   "desc_chars": 0
+  },
+  {
+   "id": 535,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5249,
+   "ms": 412,
+   "desc_chars": 0
+  },
+  {
+   "id": 576,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5275,
+   "ms": 459,
+   "desc_chars": 784
+  },
+  {
+   "id": 664,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.6178,
+   "ms": 385,
+   "desc_chars": 0
+  },
+  {
+   "id": 684,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5183,
+   "ms": 392,
+   "desc_chars": 225
+  },
+  {
+   "id": 693,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.6176,
+   "ms": 411,
+   "desc_chars": 0
+  },
+  {
+   "id": 741,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5008,
+   "ms": 434,
+   "desc_chars": 710
+  },
+  {
+   "id": 750,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4398,
+   "ms": 395,
+   "desc_chars": 0
+  },
+  {
+   "id": 788,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5497,
+   "ms": 373,
+   "desc_chars": 0
+  },
+  {
+   "id": 807,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4258,
+   "ms": 365,
+   "desc_chars": 0
+  },
+  {
+   "id": 812,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4596,
+   "ms": 409,
+   "desc_chars": 0
+  },
+  {
+   "id": 819,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4163,
+   "ms": 400,
+   "desc_chars": 0
+  },
+  {
+   "id": 820,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4133,
+   "ms": 394,
+   "desc_chars": 0
+  },
+  {
+   "id": 872,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5638,
+   "ms": 400,
+   "desc_chars": 193
+  },
+  {
+   "id": 926,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.6408,
+   "ms": 377,
+   "desc_chars": 161
+  },
+  {
+   "id": 948,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.6484,
+   "ms": 408,
+   "desc_chars": 0
+  },
+  {
+   "id": 965,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4818,
+   "ms": 418,
+   "desc_chars": 0
+  },
+  {
+   "id": 970,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.6064,
+   "ms": 400,
+   "desc_chars": 0
+  },
+  {
+   "id": 979,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4154,
+   "ms": 408,
+   "desc_chars": 0
+  },
+  {
+   "id": 989,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4357,
+   "ms": 373,
+   "desc_chars": 0
+  },
+  {
+   "id": 997,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5097,
+   "ms": 400,
+   "desc_chars": 0
+  },
+  {
+   "id": 999,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5211,
+   "ms": 406,
+   "desc_chars": 162
+  },
+  {
+   "id": 1014,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5281,
+   "ms": 382,
+   "desc_chars": 0
+  },
+  {
+   "id": 1016,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.6392,
+   "ms": 406,
+   "desc_chars": 0
+  },
+  {
+   "id": 1023,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4401,
+   "ms": 361,
+   "desc_chars": 0
+  },
+  {
+   "id": 1039,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4326,
+   "ms": 399,
+   "desc_chars": 0
+  },
+  {
+   "id": 1049,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4674,
+   "ms": 418,
+   "desc_chars": 0
+  },
+  {
+   "id": 1059,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5855,
+   "ms": 388,
+   "desc_chars": 0
+  },
+  {
+   "id": 1785,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4793,
+   "ms": 382,
+   "desc_chars": 1935
+  },
+  {
+   "id": 530,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.4952,
+   "ms": 369,
+   "desc_chars": 0
+  },
+  {
+   "id": 643,
+   "project": "PXP",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.3791,
+   "ms": 389,
+   "desc_chars": 1077
+  },
+  {
+   "id": 689,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.3984,
+   "ms": 396,
+   "desc_chars": 0
+  },
+  {
+   "id": 777,
+   "project": "PXP",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4992,
+   "ms": 391,
+   "desc_chars": 220
+  },
+  {
+   "id": 811,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4074,
+   "ms": 366,
+   "desc_chars": 0
+  },
+  {
+   "id": 1625,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3903,
+   "ms": 371,
+   "desc_chars": 160
+  },
+  {
+   "id": 1626,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3502,
+   "ms": 364,
+   "desc_chars": 92
+  },
+  {
+   "id": 1630,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.48,
+   "ms": 420,
+   "desc_chars": 170
+  },
+  {
+   "id": 1805,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4311,
+   "ms": 415,
+   "desc_chars": 159
+  },
+  {
+   "id": 1912,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4384,
+   "ms": 377,
+   "desc_chars": 651
+  },
+  {
+   "id": 1913,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4878,
+   "ms": 379,
+   "desc_chars": 247
+  },
+  {
+   "id": 1914,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4093,
+   "ms": 389,
+   "desc_chars": 945
+  },
+  {
+   "id": 1917,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4364,
+   "ms": 391,
+   "desc_chars": 523
+  },
+  {
+   "id": 1624,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5048,
+   "ms": 415,
+   "desc_chars": 149
+  },
+  {
+   "id": 1627,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.5155,
+   "ms": 406,
+   "desc_chars": 360
+  },
+  {
+   "id": 1628,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.5082,
+   "ms": 363,
+   "desc_chars": 167
+  },
+  {
+   "id": 1629,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.424,
+   "ms": 367,
+   "desc_chars": 782
+  },
+  {
+   "id": 1653,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.4808,
+   "ms": 371,
+   "desc_chars": 2617
+  },
+  {
+   "id": 1683,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.3574,
+   "ms": 397,
+   "desc_chars": 483
+  },
+  {
+   "id": 1694,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4095,
+   "ms": 358,
+   "desc_chars": 165
+  },
+  {
+   "id": 1719,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6395,
+   "ms": 379,
+   "desc_chars": 1749
+  },
+  {
+   "id": 1916,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.3781,
+   "ms": 387,
+   "desc_chars": 587
+  },
+  {
+   "id": 1927,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.3967,
+   "ms": 372,
+   "desc_chars": 1130
   }
  ],
  "title+desc": [
   {
    "id": 688,
    "project": "PXP",
+   "type": "Bug",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.5504,
-   "probs": {
-    "haiku": 0.5504,
-    "sonnet": 0.2751,
-    "opus": 0.1745
-   },
-   "ms": 448,
+   "ms": 479,
    "desc_chars": 0
   },
   {
    "id": 801,
    "project": "PXP",
+   "type": "Bug",
    "label": "haiku",
    "pred": "haiku",
    "prob": 0.5416,
-   "probs": {
-    "haiku": 0.5416,
-    "sonnet": 0.2933,
-    "opus": 0.165
-   },
-   "ms": 447,
+   "ms": 450,
    "desc_chars": 0
   },
   {
    "id": 1757,
    "project": "PXP",
+   "type": "Task",
    "label": "haiku",
    "pred": "sonnet",
    "prob": 0.5796,
-   "probs": {
-    "haiku": 0.2847,
-    "sonnet": 0.5796,
-    "opus": 0.1357
-   },
-   "ms": 1048,
+   "ms": 1030,
    "desc_chars": 867
   },
   {
    "id": 1783,
    "project": "PXP",
+   "type": "Task",
    "label": "haiku",
    "pred": "sonnet",
    "prob": 0.4615,
-   "probs": {
-    "haiku": 0.2815,
-    "sonnet": 0.4615,
-    "opus": 0.2569
-   },
-   "ms": 1341,
+   "ms": 1390,
    "desc_chars": 1230
   },
   {
    "id": 789,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.5695,
-   "probs": {
-    "haiku": 0.1448,
-    "sonnet": 0.2857,
-    "opus": 0.5695
-   },
-   "ms": 490,
+   "ms": 454,
    "desc_chars": 0
   },
   {
    "id": 805,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.4921,
-   "probs": {
-    "haiku": 0.4921,
-    "sonnet": 0.3157,
-    "opus": 0.1922
-   },
    "ms": 462,
    "desc_chars": 0
   },
   {
    "id": 806,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.5064,
-   "probs": {
-    "haiku": 0.5064,
-    "sonnet": 0.291,
-    "opus": 0.2025
-   },
-   "ms": 467,
+   "ms": 475,
    "desc_chars": 0
   },
   {
    "id": 814,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4115,
-   "probs": {
-    "haiku": 0.363,
-    "sonnet": 0.4115,
-    "opus": 0.2255
-   },
-   "ms": 655,
+   "ms": 640,
    "desc_chars": 201
   },
   {
    "id": 908,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.5891,
-   "probs": {
-    "haiku": 0.2014,
-    "sonnet": 0.5891,
-    "opus": 0.2095
-   },
-   "ms": 719,
+   "ms": 690,
    "desc_chars": 411
   },
   {
    "id": 996,
    "project": "PXP",
+   "type": "Bug",
    "label": "sonnet",
    "pred": "haiku",
    "prob": 0.5321,
-   "probs": {
-    "haiku": 0.5321,
-    "sonnet": 0.2965,
-    "opus": 0.1714
-   },
-   "ms": 463,
+   "ms": 506,
    "desc_chars": 0
   },
   {
    "id": 1765,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.539,
-   "probs": {
-    "haiku": 0.2181,
-    "sonnet": 0.539,
-    "opus": 0.2428
-   },
-   "ms": 1360,
+   "ms": 1349,
    "desc_chars": 1526
   },
   {
    "id": 1776,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.562,
-   "probs": {
-    "haiku": 0.1223,
-    "sonnet": 0.3157,
-    "opus": 0.562
-   },
-   "ms": 976,
+   "ms": 1032,
    "desc_chars": 1006
   },
   {
    "id": 1777,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.7228,
-   "probs": {
-    "haiku": 0.074,
-    "sonnet": 0.2032,
-    "opus": 0.7228
-   },
-   "ms": 926,
+   "ms": 890,
    "desc_chars": 758
   },
   {
    "id": 1778,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.487,
-   "probs": {
-    "haiku": 0.1013,
-    "sonnet": 0.4117,
-    "opus": 0.487
-   },
-   "ms": 1242,
+   "ms": 1290,
    "desc_chars": 1266
   },
   {
    "id": 1787,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.7281,
-   "probs": {
-    "haiku": 0.0654,
-    "sonnet": 0.2065,
-    "opus": 0.7281
-   },
-   "ms": 913,
+   "ms": 935,
    "desc_chars": 708
   },
   {
    "id": 1826,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.5426,
-   "probs": {
-    "haiku": 0.1341,
-    "sonnet": 0.5426,
-    "opus": 0.3233
-   },
-   "ms": 1878,
+   "ms": 1912,
    "desc_chars": 1810
   },
   {
    "id": 1828,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4982,
-   "probs": {
-    "haiku": 0.1691,
-    "sonnet": 0.4982,
-    "opus": 0.3327
-   },
-   "ms": 1419,
+   "ms": 1459,
    "desc_chars": 1298
   },
   {
    "id": 1870,
    "project": "PXP",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4372,
-   "probs": {
-    "haiku": 0.2094,
-    "sonnet": 0.4372,
-    "opus": 0.3534
-   },
-   "ms": 500,
+   "ms": 479,
    "desc_chars": 0
   },
   {
    "id": 1697,
    "project": "PXP",
+   "type": "Bug",
    "label": "opus",
    "pred": "haiku",
    "prob": 0.4908,
-   "probs": {
-    "haiku": 0.4908,
-    "sonnet": 0.3085,
-    "opus": 0.2007
-   },
-   "ms": 456,
+   "ms": 491,
    "desc_chars": 0
   },
   {
    "id": 1712,
    "project": "PXP",
+   "type": "Bug",
    "label": "opus",
    "pred": "sonnet",
    "prob": 0.4392,
-   "probs": {
-    "haiku": 0.3554,
-    "sonnet": 0.4392,
-    "opus": 0.2053
-   },
-   "ms": 444,
+   "ms": 471,
    "desc_chars": 0
   },
   {
    "id": 1773,
    "project": "PXP",
+   "type": "User Story",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6755,
-   "probs": {
-    "haiku": 0.0941,
-    "sonnet": 0.2305,
-    "opus": 0.6755
-   },
-   "ms": 1623,
+   "ms": 1670,
    "desc_chars": 1903
   },
   {
    "id": 1774,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6342,
-   "probs": {
-    "haiku": 0.0719,
-    "sonnet": 0.2939,
-    "opus": 0.6342
-   },
-   "ms": 1924,
+   "ms": 1980,
    "desc_chars": 2872
   },
   {
    "id": 1775,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.703,
-   "probs": {
-    "haiku": 0.0827,
-    "sonnet": 0.2143,
-    "opus": 0.703
-   },
-   "ms": 865,
+   "ms": 896,
    "desc_chars": 688
   },
   {
    "id": 1788,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.706,
-   "probs": {
-    "haiku": 0.0801,
-    "sonnet": 0.2139,
-    "opus": 0.706
-   },
-   "ms": 989,
+   "ms": 984,
    "desc_chars": 987
   },
   {
    "id": 1801,
    "project": "PXP",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.7068,
-   "probs": {
-    "haiku": 0.0791,
-    "sonnet": 0.2141,
-    "opus": 0.7068
-   },
-   "ms": 1994,
+   "ms": 1997,
    "desc_chars": 2180
   },
   {
    "id": 1922,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "haiku",
    "pred": "sonnet",
    "prob": 0.5912,
-   "probs": {
-    "haiku": 0.2364,
-    "sonnet": 0.5912,
-    "opus": 0.1725
-   },
-   "ms": 568,
+   "ms": 576,
    "desc_chars": 204
   },
   {
    "id": 1714,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4653,
-   "probs": {
-    "haiku": 0.1376,
-    "sonnet": 0.3971,
-    "opus": 0.4653
-   },
-   "ms": 637,
+   "ms": 618,
    "desc_chars": 231
   },
   {
    "id": 1918,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4363,
-   "probs": {
-    "haiku": 0.2059,
-    "sonnet": 0.3578,
-    "opus": 0.4363
-   },
-   "ms": 726,
+   "ms": 739,
    "desc_chars": 403
   },
   {
    "id": 1920,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.569,
-   "probs": {
-    "haiku": 0.0955,
-    "sonnet": 0.3355,
-    "opus": 0.569
-   },
-   "ms": 631,
+   "ms": 647,
    "desc_chars": 257
   },
   {
    "id": 1932,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.5604,
-   "probs": {
-    "haiku": 0.1386,
-    "sonnet": 0.301,
-    "opus": 0.5604
-   },
-   "ms": 549,
+   "ms": 582,
    "desc_chars": 185
   },
   {
    "id": 1933,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.4118,
-   "probs": {
-    "haiku": 0.1803,
-    "sonnet": 0.4118,
-    "opus": 0.4079
-   },
-   "ms": 666,
+   "ms": 645,
    "desc_chars": 329
   },
   {
    "id": 1934,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.3773,
-   "probs": {
-    "haiku": 0.2623,
-    "sonnet": 0.3773,
-    "opus": 0.3603
-   },
-   "ms": 527,
+   "ms": 573,
    "desc_chars": 157
   },
   {
    "id": 1937,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.6144,
-   "probs": {
-    "haiku": 0.091,
-    "sonnet": 0.2946,
-    "opus": 0.6144
-   },
-   "ms": 541,
+   "ms": 553,
    "desc_chars": 194
   },
   {
    "id": 1968,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.6013,
-   "probs": {
-    "haiku": 0.0855,
-    "sonnet": 0.3132,
-    "opus": 0.6013
-   },
-   "ms": 2166,
+   "ms": 2176,
    "desc_chars": 2828
   },
   {
    "id": 1972,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.6929,
-   "probs": {
-    "haiku": 0.0658,
-    "sonnet": 0.6929,
-    "opus": 0.2413
-   },
-   "ms": 1364,
+   "ms": 1359,
    "desc_chars": 1271
   },
   {
    "id": 1973,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "sonnet",
    "prob": 0.5252,
-   "probs": {
-    "haiku": 0.3119,
-    "sonnet": 0.5252,
-    "opus": 0.1629
-   },
-   "ms": 507,
+   "ms": 540,
    "desc_chars": 128
   },
   {
    "id": 1974,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "sonnet",
    "pred": "opus",
    "prob": 0.4033,
-   "probs": {
-    "haiku": 0.2265,
-    "sonnet": 0.3702,
-    "opus": 0.4033
-   },
-   "ms": 569,
+   "ms": 530,
    "desc_chars": 103
   },
   {
    "id": 1734,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6592,
-   "probs": {
-    "haiku": 0.127,
-    "sonnet": 0.2138,
-    "opus": 0.6592
-   },
-   "ms": 518,
+   "ms": 578,
    "desc_chars": 106
   },
   {
    "id": 1915,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6402,
-   "probs": {
-    "haiku": 0.0673,
-    "sonnet": 0.2925,
-    "opus": 0.6402
-   },
-   "ms": 1100,
+   "ms": 1073,
    "desc_chars": 859
   },
   {
    "id": 1919,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6651,
-   "probs": {
-    "haiku": 0.078,
-    "sonnet": 0.2569,
-    "opus": 0.6651
-   },
-   "ms": 717,
+   "ms": 731,
    "desc_chars": 411
   },
   {
    "id": 1921,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6286,
-   "probs": {
-    "haiku": 0.089,
-    "sonnet": 0.2824,
-    "opus": 0.6286
-   },
-   "ms": 738,
+   "ms": 777,
    "desc_chars": 506
   },
   {
    "id": 1923,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.5694,
-   "probs": {
-    "haiku": 0.1045,
-    "sonnet": 0.3261,
-    "opus": 0.5694
-   },
-   "ms": 658,
+   "ms": 641,
    "desc_chars": 338
   },
   {
    "id": 1941,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6501,
-   "probs": {
-    "haiku": 0.0827,
-    "sonnet": 0.2672,
-    "opus": 0.6501
-   },
-   "ms": 758,
+   "ms": 781,
    "desc_chars": 522
   },
   {
    "id": 1958,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6729,
-   "probs": {
-    "haiku": 0.1215,
-    "sonnet": 0.2056,
-    "opus": 0.6729
-   },
-   "ms": 850,
+   "ms": 844,
    "desc_chars": 669
   },
   {
    "id": 1966,
    "project": "SmartPlatform",
+   "type": "Task",
    "label": "opus",
    "pred": "opus",
    "prob": 0.6237,
-   "probs": {
-    "haiku": 0.0604,
-    "sonnet": 0.3159,
-    "opus": 0.6237
-   },
-   "ms": 2328,
+   "ms": 2396,
    "desc_chars": 4129
+  },
+  {
+   "id": 466,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6206,
+   "ms": 740,
+   "desc_chars": 485
+  },
+  {
+   "id": 510,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4717,
+   "ms": 466,
+   "desc_chars": 0
+  },
+  {
+   "id": 520,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4973,
+   "ms": 455,
+   "desc_chars": 0
+  },
+  {
+   "id": 538,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6228,
+   "ms": 455,
+   "desc_chars": 0
+  },
+  {
+   "id": 542,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5135,
+   "ms": 582,
+   "desc_chars": 153
+  },
+  {
+   "id": 563,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5319,
+   "ms": 505,
+   "desc_chars": 20
+  },
+  {
+   "id": 577,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4576,
+   "ms": 456,
+   "desc_chars": 52
+  },
+  {
+   "id": 578,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5226,
+   "ms": 813,
+   "desc_chars": 650
+  },
+  {
+   "id": 641,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5023,
+   "ms": 495,
+   "desc_chars": 0
+  },
+  {
+   "id": 655,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5287,
+   "ms": 532,
+   "desc_chars": 93
+  },
+  {
+   "id": 756,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5205,
+   "ms": 425,
+   "desc_chars": 0
+  },
+  {
+   "id": 799,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4085,
+   "ms": 466,
+   "desc_chars": 0
+  },
+  {
+   "id": 825,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4005,
+   "ms": 500,
+   "desc_chars": 0
+  },
+  {
+   "id": 875,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6064,
+   "ms": 636,
+   "desc_chars": 197
+  },
+  {
+   "id": 878,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.6282,
+   "ms": 578,
+   "desc_chars": 230
+  },
+  {
+   "id": 953,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.6185,
+   "ms": 560,
+   "desc_chars": 0
+  },
+  {
+   "id": 968,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5811,
+   "ms": 498,
+   "desc_chars": 0
+  },
+  {
+   "id": 1028,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4077,
+   "ms": 452,
+   "desc_chars": 0
+  },
+  {
+   "id": 1768,
+   "project": "PXP",
+   "type": "Task",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4707,
+   "ms": 466,
+   "desc_chars": 0
+  },
+  {
+   "id": 427,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4354,
+   "ms": 560,
+   "desc_chars": 125
+  },
+  {
+   "id": 464,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4186,
+   "ms": 623,
+   "desc_chars": 314
+  },
+  {
+   "id": 488,
+   "project": "PXP",
+   "type": "User Story",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4188,
+   "ms": 645,
+   "desc_chars": 257
+  },
+  {
+   "id": 494,
+   "project": "PXP",
+   "type": "User Story",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5607,
+   "ms": 690,
+   "desc_chars": 267
+  },
+  {
+   "id": 506,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.3774,
+   "ms": 501,
+   "desc_chars": 0
+  },
+  {
+   "id": 514,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5323,
+   "ms": 462,
+   "desc_chars": 0
+  },
+  {
+   "id": 517,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4394,
+   "ms": 447,
+   "desc_chars": 0
+  },
+  {
+   "id": 535,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.465,
+   "ms": 482,
+   "desc_chars": 0
+  },
+  {
+   "id": 576,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4221,
+   "ms": 912,
+   "desc_chars": 784
+  },
+  {
+   "id": 664,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4626,
+   "ms": 440,
+   "desc_chars": 0
+  },
+  {
+   "id": 684,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5869,
+   "ms": 607,
+   "desc_chars": 225
+  },
+  {
+   "id": 693,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5629,
+   "ms": 484,
+   "desc_chars": 0
+  },
+  {
+   "id": 741,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.6299,
+   "ms": 933,
+   "desc_chars": 710
+  },
+  {
+   "id": 750,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4759,
+   "ms": 458,
+   "desc_chars": 0
+  },
+  {
+   "id": 788,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5501,
+   "ms": 470,
+   "desc_chars": 0
+  },
+  {
+   "id": 807,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3628,
+   "ms": 454,
+   "desc_chars": 0
+  },
+  {
+   "id": 812,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4856,
+   "ms": 463,
+   "desc_chars": 0
+  },
+  {
+   "id": 819,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4498,
+   "ms": 438,
+   "desc_chars": 0
+  },
+  {
+   "id": 820,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3489,
+   "ms": 473,
+   "desc_chars": 0
+  },
+  {
+   "id": 872,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5319,
+   "ms": 593,
+   "desc_chars": 193
+  },
+  {
+   "id": 926,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5179,
+   "ms": 534,
+   "desc_chars": 161
+  },
+  {
+   "id": 948,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5796,
+   "ms": 469,
+   "desc_chars": 0
+  },
+  {
+   "id": 965,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5191,
+   "ms": 483,
+   "desc_chars": 0
+  },
+  {
+   "id": 970,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5516,
+   "ms": 499,
+   "desc_chars": 0
+  },
+  {
+   "id": 979,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4208,
+   "ms": 459,
+   "desc_chars": 0
+  },
+  {
+   "id": 989,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4735,
+   "ms": 465,
+   "desc_chars": 0
+  },
+  {
+   "id": 997,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4429,
+   "ms": 500,
+   "desc_chars": 0
+  },
+  {
+   "id": 999,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5574,
+   "ms": 555,
+   "desc_chars": 162
+  },
+  {
+   "id": 1014,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5604,
+   "ms": 439,
+   "desc_chars": 0
+  },
+  {
+   "id": 1016,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5857,
+   "ms": 452,
+   "desc_chars": 0
+  },
+  {
+   "id": 1023,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4006,
+   "ms": 471,
+   "desc_chars": 0
+  },
+  {
+   "id": 1039,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4041,
+   "ms": 504,
+   "desc_chars": 0
+  },
+  {
+   "id": 1049,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4303,
+   "ms": 476,
+   "desc_chars": 0
+  },
+  {
+   "id": 1059,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5386,
+   "ms": 453,
+   "desc_chars": 0
+  },
+  {
+   "id": 1785,
+   "project": "PXP",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5082,
+   "ms": 1671,
+   "desc_chars": 1935
+  },
+  {
+   "id": 530,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.4968,
+   "ms": 462,
+   "desc_chars": 0
+  },
+  {
+   "id": 643,
+   "project": "PXP",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6053,
+   "ms": 1081,
+   "desc_chars": 1077
+  },
+  {
+   "id": 689,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.3729,
+   "ms": 449,
+   "desc_chars": 0
+  },
+  {
+   "id": 777,
+   "project": "PXP",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.4956,
+   "ms": 592,
+   "desc_chars": 220
+  },
+  {
+   "id": 811,
+   "project": "PXP",
+   "type": "Bug",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.3666,
+   "ms": 488,
+   "desc_chars": 0
+  },
+  {
+   "id": 1625,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4894,
+   "ms": 567,
+   "desc_chars": 160
+  },
+  {
+   "id": 1626,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3859,
+   "ms": 538,
+   "desc_chars": 92
+  },
+  {
+   "id": 1630,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5362,
+   "ms": 661,
+   "desc_chars": 170
+  },
+  {
+   "id": 1805,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3873,
+   "ms": 645,
+   "desc_chars": 159
+  },
+  {
+   "id": 1912,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5771,
+   "ms": 872,
+   "desc_chars": 651
+  },
+  {
+   "id": 1913,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3984,
+   "ms": 661,
+   "desc_chars": 247
+  },
+  {
+   "id": 1914,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5041,
+   "ms": 1075,
+   "desc_chars": 945
+  },
+  {
+   "id": 1917,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5015,
+   "ms": 785,
+   "desc_chars": 523
+  },
+  {
+   "id": 1624,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5747,
+   "ms": 555,
+   "desc_chars": 149
+  },
+  {
+   "id": 1627,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5615,
+   "ms": 715,
+   "desc_chars": 360
+  },
+  {
+   "id": 1628,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.4762,
+   "ms": 562,
+   "desc_chars": 167
+  },
+  {
+   "id": 1629,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.7026,
+   "ms": 935,
+   "desc_chars": 782
+  },
+  {
+   "id": 1653,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.7154,
+   "ms": 1948,
+   "desc_chars": 2617
+  },
+  {
+   "id": 1683,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4576,
+   "ms": 895,
+   "desc_chars": 483
+  },
+  {
+   "id": 1694,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5733,
+   "ms": 561,
+   "desc_chars": 165
+  },
+  {
+   "id": 1719,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6342,
+   "ms": 2079,
+   "desc_chars": 1749
+  },
+  {
+   "id": 1916,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.456,
+   "ms": 824,
+   "desc_chars": 587
+  },
+  {
+   "id": 1927,
+   "project": "SmartPlatform",
+   "type": "Task",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4772,
+   "ms": 1211,
+   "desc_chars": 1130
   }
  ]
 }
