@@ -1,0 +1,272 @@
+[
+ {
+  "id": 688,
+  "type": "Bug",
+  "title": "[AI] Error message incorrect",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 789,
+  "type": "Task",
+  "title": "[BE] Create Azure Cache for Redis",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 801,
+  "type": "Bug",
+  "title": "[AI] Fix text plural/single",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 805,
+  "type": "Bug",
+  "title": "13096 - Teacher list issue",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 806,
+  "type": "Bug",
+  "title": "13095 - PE for today",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 814,
+  "type": "Task",
+  "title": "[AI] When user ask for a timeframe on PE uniform flow, AI should have a polite response to aware user only select specific day",
+  "desc": "Current: AI answer for Monday without any note to aware user Expect: AI should have a sentence like \"PE uniform should be ask by specific day. I can told you that there are no.... for January 19, 2026\"",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 908,
+  "type": "Task",
+  "title": "[Transfer certificate, Someone to pickup my child] No dialog shows when the request is submited successfully",
+  "desc": "Issue: No consistent among submit form in PXP USs. After submission, it should show a dialog and a button. In this requirement, show button OK and take user back to chat, Success message from AI should similar to one when successfully updating student profile Success case in Someone to collect my child Success message in AI Expectation: Please build component and apply it across USs, otherwise no consistency",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 996,
+  "type": "Bug",
+  "title": "[21315 Technology device and others ] Missing Student ID in the email",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1697,
+  "type": "Bug",
+  "title": "[AI] AI can not detect the intent",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1712,
+  "type": "Bug",
+  "title": "[AI] Inconsistency in Intent detect",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1749,
+  "type": "User Story",
+  "title": "25915 - ECA/ Activity enhancement",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1755,
+  "type": "User Story",
+  "title": "27621 - Eduscope: Download report",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1757,
+  "type": "Task",
+  "title": "[BE] Add Assignment Overview prompt to topics.json (en + ar)",
+  "desc": "Parents can already tap ready-made prompts in the Assignments area to ask about results, rubrics, speaking and reading. There is no prompt for an overview of how their children are doing across their assignments, so a parent has to know to type it themselves. Add a fifth prompt to that list, in English and Arabic, wording it the same way as the four already there: - Show Assignment Overview — \"Show my children's assignment overview\" - عرض نظرة عامة على الواجبات — \" أرني نظرة عامة على واجبات أطفالي \" The Arabic wording is a proposal and still needs sign-off. So is the decision to drop the full stop the story's acceptance criterion puts at the end of the English phrase — the existing four prompts don't use one. Done when a parent opens the Assignments area in either language and sees the new prompt alongside the other four, and tapping it sends the request.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1765,
+  "type": "Task",
+  "title": "[AI] Recognise assignment overview requests and pass them to Teams Tracker",
+  "desc": "Today a parent asking how their children are doing across their assignments gets no useful answer — Nova doesn't recognise the request. Teach Nova to recognise it and hand it to Teams Tracker, which holds the data. Nova doesn't answer the question itself and doesn't ask the parent anything first — it passes the request on and shows what comes back. Parents phrase this many ways. The story lists 12 approved phrasings — \"show my kids' assignment summary\", \"how are my children doing with their assignments\", \"what does Emma have due today\" — plus the two Arabic prompt wordings. Each should reach this feature. Four similar assignment features already share the same connection to Teams Tracker. This is the fifth, so it needs its own name and its own failure message in English and Arabic; otherwise a parent whose overview request fails is told something about grades or rubrics instead. The Arabic copy needs sign-off, as on the prompt itself. Needs a decision. \"How are my children doing with their assignments?\" is an approved phrasing on this feature and on the existing assignment-results feature. Both are signed off, so which one owns it is a call for the BA — the build can't settle it. Done when - Each of the 12 phrasings and both Arabic prompts reach this feature, and the other four still answer their own requests - A failed overview request tells the parent the overview couldn't be retrieved, in their language - A parent moving between two of these features in one conversation gets a clean start each time",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1773,
+  "type": "User Story",
+  "title": "Project Foundation",
+  "desc": "Problem. The platform is built for a single tenant. Dynamics 429 handling is per pod, so each replica rediscovers the same throttled credential and we take N times the 429s when we scale out. Deployment is not in source control: two classic release definitions do it, pxp-ai has no CD stage at all, and the environments differ from each other. Roughly 450 pipeline variables hold secrets with not one marked secret. The EduScope and team tracker agents answer without real content. Solution. Child tasks, one per item, scoped against the code first so estimates start from what exists rather than assumption. Several turned out to be already partly built, needing configuration or a shared store rather than new code. Acceptance criteria. Multi-tenancy has a chosen model and either a delivered slice or a sized plan. A credential throttled on one replica is known to the others. Every environment runs the credential pool with more than one app registration. Dev, staging and UAT deploy from pipelines held in source control, pxp-ai included. The EduScope and team tracker agents answer with real content, and Reward and Consequence has a written decision. Decisions now settled. Shared throttle state is Redis, not Cosmos DB - Cosmos exists nowhere in the estate and Redis is already a first-class dependency. Staging is the existing test environment, not a fourth environment, so only UAT remains after dev and test. Still open. What a tenant is - school, customer organisation, or Dynamics environment. Whether we can get the SXP backend repo: only its front-end POC is available locally, so the items described as ported from SXP have no source to port from. Blocker carried over from #27758 / #27761. The Terraform state location is still unknown - no backend block and no .tfbackend in the repo. No terraform apply is safe until that is answered, and the DB admin password exists only in tfstate.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1774,
+  "type": "Task",
+  "title": "[BE] Multi-tenant support",
+  "desc": "The rule Services are shared and run in Varkey. Every store holding customer data is per tenant, selected at runtime by the tid claim. No tenant column anywhere. Nothing is deployed into the customer tenant - only their data lives there. A request resolves: tid -> CustomerRegions -> region -> GlobalSettings -> CustomerEnvironment -> that tenant's stores. The region is the tenant's, never the deployment's. This mirrors SXP, required by the team lead on 2026-09-23. Status Built, and off. No environment sets TenantRegistry:Cosmos:Endpoint, so every deployment behaves exactly as it does today. Turning it on is a separate, deliberate act. PRs: pxp-data-aggregator !5215, pxp-ai !5214, pxp-infra !5213, pxp-workspace !5129 (docs). Done: tenant registry and its Cosmos source; per-request selection of SqlServer, Onelake and Redis, proved against real containers; per-directory Dataverse environment URL; typed 403 for an unregistered directory and 503 for an unreadable registry; issuer verification and a single-directory pin in pxp-ai; per-directory Dynamics credential cooldowns. Dev Cosmos account exists (pxp-cosmos-registry-dev). A code review found three high-severity defects, all fixed before the PRs opened, none deployed - including one that would have posted the Dynamics client secret to a customer-controlled host. Nine medium and seven low findings remain open, tracked in the spec. Stores Per tenant: Dataverse / D365, Power Automate, SQL Onelake, SQL SqlServer, Redis, Cosmos (pxp-ai). Shared, no split: Key Vault, Azure Monitor, Azure AI Search, ACS Email, Firebase FCM - none holds customer data. What is left This team: the sync strategies still write the process tenant's Redis (they have no request to resolve a directory from); the terraform module for the registry account has never been validated or applied; the identity half is off everywhere - AllowMultiTenant is false, both app registrations are single-tenant, and pxp_mobile hardcodes one tenant GUID in the sign-in authority. Customer IT: their Entra tenant and stores, the network path, and admin consent for the multi-tenant app registration. Open questions Sign-off on this architecture. Is pxp-ai in scope - its Cosmos holds full parent chat transcripts? Does the privacy policy cover Dataverse? Will the customer's SQL server enable Entra-only authentication, which would disable SQL authentication outright? Who grants admin consent? Deferred on purpose: what directory an API-key caller belongs to, and what the four anonymous database-touching routes serve once a second tenant exists. Both are harmless with one tenant; both need answers before a second. Detail Architecture note: docs/multi-tenant-architecture.md. Full spec with evidence and file:line citations: _bmad-output/implementation-artifacts/project-foundation/spec-1774-multi-tenant-support.md. Both in pxp-workspace.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1775,
+  "type": "Task",
+  "title": "[BE] D365 429 error handling with distributed state and app registration round robin",
+  "desc": "Problem. Dynamics 429 handling is per pod. Credential cooldowns, circuit-breaker state and the CE access-token cache all live in process, so each replica rediscovers the same throttled credential on its own and we take N times the 429s when we scale out. The in-process throttle handling itself already shipped earlier and is not rebuilt here. Solution. Move credential cooldown state behind ICredentialCooldownStore, backed by Redis and shared across replicas, with an in-memory implementation as the fallback so the service keeps serving when the store is unavailable. Redis rather than Cosmos DB: Cosmos exists nowhere in the estate, and Redis is already a first-class dependency here.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1776,
+  "type": "Task",
+  "title": "[Infra] Update infra scripts for multiple app registrations",
+  "desc": "Supply the extra Dynamics app registrations the credential pool already expects. Today: the pool reads Dynamics__ClientId2..64 and Key Vault slots pxp-dynamics-client-secret-{i}, but no tfvars file, no helm values file and no ADO variable group supplies index 2 or above. Every environment runs the pool with exactly one credential. UAT additionally has enable_app_registrations set to false. Work: add the extra registrations to the terraform app-registration map and enable them in UAT; create the Dataverse application users and security roles per environment; write the client ids and secrets to Key Vault using the naming the app already expects; extend the pipeline token list and the helm parameters files; then deploy to dev and capture evidence that consecutive CE calls use different pool indices. Blocked on: the Terraform state location is unknown (open item from #27761), so no apply is safe yet; and creating the Dataverse application users needs Dynamics admin access in the customer tenant.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1777,
+  "type": "Task",
+  "title": "[Infra] CI/CD pipeline for dev, staging and UAT",
+  "desc": "Problem. Deployment is not in source control. Two classic release definitions do the deploying, so what actually runs cannot be diffed or reviewed. pxp-ai has no CD stage at all and no per-environment values. Both repos' CI triggers name branches that do not exist. Solution. Add YAML deploy stages to both repos - DeployDev on develop, DeployTest on release/* - each rendering the chart's values template from the target environment's variable group. Record the classic definitions first, then disable rather than delete them, so a rollback path remains. Correct the trigger branch names. Staging is the existing test environment , not a fourth one. That was the open question on this item; with it settled, dev and staging are covered and only UAT remains.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1778,
+  "type": "Task",
+  "title": "[AI] Enhance context for EduScope, team tracker, reward and consequence",
+  "desc": "Switch on the external agent integrations. EduScope / team tracker is configuration, not development. Four agents already claim the team-tracker endpoint and are built and tested: reading progress, speaking progress, assignment results and assignment rubric. They answer \"unavailable\" in every environment because A2A_AGENT_ENDPOINTS is empty everywhere. This is tracked as E-7 / #27814. Work for EduScope: get the endpoint URL and token audience per environment from the agent team; set the endpoint, scope and OBO identity variables in dev, staging and UAT; verify the agent card fetch and allowlist check against the real endpoint; run one representative utterance per agent in dev in both English and Arabic and capture the evidence. Reward and Consequence is different. There is no data source and PXP holds no rewards data. The existing rewards_app_agent is navigation only, it fuzzy-matches an external app entry and renders a deep-link button. Establish where the data lives and whether it speaks A2A (cheap, same shape as EduScope) or needs a new pxp-data-aggregator wrapper first (much more expensive), then write the recommendation. Blocked on: the EduScope endpoint URL and audience from the agent team, and repo or API access for reward and consequence.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1783,
+  "type": "Task",
+  "title": "[BE] Add Child Progress Snapshot prompt to the Student topic",
+  "desc": "AC1 of #13141. Add a ninth prompt to the Student topic in the topics configuration served by the Data Aggregator, in both language blocks. File: pxp-data-aggregator/src/PXP.DataAggregator.API/config/topics.json Topic: Student (index 3) New prompt: index 9, pinned true, icon \"education\" en Title \"Child Progress Snapshot\" message \"Show my child's progress.\" ar Title \"لمحة عن تقدم الطفل\" message \"أرني لمحة عن تقدم طفلي\" Scope notes: - No mobile work. The same configuration feeds both the topics page and the in-chat topic chips, and tapping a prompt already sends its message down the same path as typing it, which satisfies AC1.2. - The Arabic message deliberately names the Snapshot rather than reading as a bare \"show my child's progress\". The bare form is an exact prefix of the speaking-progress prompt shipped by #23957, so a parent tapping this chip would have sent that row minus the word identifying it. Native-speaker sign-off on the Arabic copy is still outstanding. Done when: - Both language blocks carry the row at the same index. - The shipped file parses and en/ar prompt indices match, covered by test/PXP.DataAggregator.Test/Infrastructure/ShippedTopicsConfigTests.cs. - The endpoint returns 9 Student prompts.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1787,
+  "type": "Task",
+  "title": "[Infra] Auto build on PR, auto deploy on merge, with a UAT approval gate",
+  "desc": "Problem. No build runs on a pull request and no merge deploys anything. The YAML pr: trigger is present in both repos but Azure Repos ignores it, so it never fired. The classic releases have no trigger and no approval on any stage, and both pull artifact \"Latest\" with no branch filter - so a hand-created UAT release could deploy an unmerged feature branch. Solution. Make PR builds run through a build validation branch policy, which is the mechanism Azure Repos actually honours. Auto-deploy to dev on merge to develop, with no gate; test deploys from release/* branches. Keep the classic definitions disabled as the rollback. UAT requires an approval gate, which cannot be built until a UAT stage exists.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1788,
+  "type": "Task",
+  "title": "[Infra] Move runtime secrets out of pipeline variables into Key Vault",
+  "desc": "Problem. Roughly 450 pipeline variables across six groups hold secrets and not one is marked secret, so anyone who can view a pipeline reads them in plain text - including SQL and Redis connection strings and client secrets. Separately, the services reach Key Vault through the AKS node identity, which means every pod on every node in the cluster can read every secret in that spoke's vault over IMDS. Solution. Give each service its own Azure workload identity - a managed identity, a federated credential bound to the service account the chart creates, and a vault policy granting get and list on secrets only - then remove the node identity's policy from the vault, which is the step that actually closes the exposure. Delete the variables the vault is now primary for, and those no pipeline references. Values that are not secrets stay as ordinary pipeline variables. The application validates required secrets at start-up so it fails closed rather than running with an empty value.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1801,
+  "type": "Task",
+  "title": "[Infra] Build the pxp-platform chart delivery path and bring services.ai to parity",
+  "desc": "Build the delivery path for the pxp-platform umbrella chart, and bring its services.ai block to parity with what the service actually reads, so AD-9 can be honoured for pxp-ai . Why this exists. AD-9 says pxp-infra/helm/pxp-platform is the single chart tree and that pxp-ai/deployments/pxp-ai-svc/ is deleted. Enabler E-1 deferred that on 2026-09-11, because the umbrella chart cannot currently be delivered to a deployment. What is NOT wrong, checked 2026-09-11. The chart builds. helm template against it renders full manifests; its pxp-common dependency is already vendored at charts/pxp-common-1.0.0.tgz . An earlier assessment said it could not be built - that was incorrect. What is actually missing: No path from a pipeline to the chart. Deployment installs a chart the build copies into its own artifact drop. pxp-platform lives in pxp-infra , and across both service repos the string pxp-platform appears only as a Kubernetes label. Needs a cross-repo checkout or an OCI publish; neither has ever been built. services.ai cannot run the service. pxp-ai/config.py reads 72 environment keys. pxp-ai-svc supplies 61 of them. services.ai supplies 2, defines 23 keys config.py never reads, and ships enabled: false . The declared dependency points at a registry that does not exist. oci://acrpxphubuat101.azurecr.io/helm/library - no registry anywhere has hub in its name. Harmless today because of the vendored copy, fatal the first time anyone runs helm dependency update . Should become a local path. Blocked by: nothing external. No ADO permission, no other team. It needs a deploy to dev to prove it, which is the only part that cannot be checked statically. Sequencing, and the reason for it. Do this after ADO #1787's YAML deploy stages have run successfully on dev a few times. Doing both at once changes the chart and the deployment mechanism in the same path, and a failure would not be attributable to either. Definition of done: a merge deploys pxp-ai to dev from pxp-platform ; the resulting pod carries the same environment as the one pxp-ai-svc produces today; pxp-ai/deployments/pxp-ai-svc/ is deleted; and the AD-9 amendment is removed because the rule is met.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1817,
+  "type": "Task",
+  "title": "[Testing] - Notification for leave request approve/reject",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1826,
+  "type": "Task",
+  "title": "[AI] Send the download request to Eduscope after a snapshot",
+  "desc": "AC1, AC2, AC4 and AC5 of #27621. Builds on the #13141 snapshot flow in pxp-ai (ai_agents/flows/view_child_progress_snapshot.py). Intent (AC1) - After a successful snapshot, offer a \"Download update\" chip, and keep the next turn on the snapshot flow so a download does not restart it. Today any download phrasing re-runs child selection and a new snapshot. - Recognise the AC1 utterances as a download of the snapshot on screen: \"Download\", \"Download this update\", \"Download the Snapshot\", \"Save this report\", \"Can I download this?\". - A download asked for before any snapshot is shown keeps the #13141 behaviour: show the snapshot first (#13141 AC7). Request (AC2) - Send the download request to Eduscope over A2A, on the same conversation that produced the snapshot, so Eduscope knows which report is meant. Do not regenerate or modify the file. - Eduscope is expected to return a URL. The existing A2A mapping already turns a URL artifact into a file entry for the app; no new payload shape is needed. Context (AC4) - The download must not change the selected child, the displayed snapshot or the conversation state. Errors (AC5) - On failure, use the common retry pattern (#16893) with a new message: \"I'm unable to download the progress update right now. Please try again shortly.\" Add it as a Language(en, ar) constant. Depends on - #13141 merged. - #27734 (Eduscope: generate the file). Until Eduscope returns a URL, the request is sent and the failure path is what the parent sees. - How Eduscope signals a no-data snapshot, to hide \"Download update\" per #13141 AC8. Done when - Every AC1 utterance after a snapshot sends one download request and never re-runs child selection. - A failed or empty response shows the AC5 message with Retry. - Unit tests cover the chip, the routing and the failure path.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1828,
+  "type": "Task",
+  "title": "[FE] Download the Eduscope file returned in chat",
+  "desc": "AC3 and the app side of AC5 of #27621, in pxp_mobile. - Render an A2A file entry (componentType \"a2a:...\", data.file with uri, mimeType, name). Today A2AComponent drops anything that is not text/html, with a console warning. - Download it through the existing useClientFileDownload hook (downloadFromSource), which saves to the device and opens the file on iOS and Android. - Name the file: EduScope__<studentId>__ProgressUpdate__<YYYYMMDD>.pdf Open with the product owner: which date, where studentId comes from, and the fallback when it is missing or has characters invalid in a file name. - Offer Share as well as Open. AC3 names share; @capacitor/share is installed but unused. - Show an error when the download fails. The hook only sets isError today and no caller reads it, so a failure is currently silent. Depends on - The [27621][AI] task, and #27734 returning a URL. - The URL must be fetchable without a PXP token: the hook fetches it with no auth. Done when - A file entry saves and opens on a real iOS and Android device with the agreed name. - A failed download shows an error to the parent. - Unit tests cover the renderer, the file name and the failure path. - The interim VITE_A2A_FRAME_CONNECT_ORIGINS exception (feat/a2a-frame-connect-origins) is removed, since this replaces it.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1863,
+  "type": "Task",
+  "title": "[WS]Optimize Architecture spine",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1864,
+  "type": "User Story",
+  "title": "20157 - Multi-view calendar for one child",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1870,
+  "type": "Task",
+  "title": "[Testing] Verify Child Progress Snapshot ACs end to end",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ }
+]

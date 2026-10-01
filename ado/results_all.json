@@ -1,0 +1,1266 @@
+{
+ "title_only": [
+  {
+   "id": 688,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.6355,
+   "probs": {
+    "haiku": 0.6355,
+    "sonnet": 0.2149,
+    "opus": 0.1496
+   },
+   "ms": 368,
+   "desc_chars": 0
+  },
+  {
+   "id": 801,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5258,
+   "probs": {
+    "haiku": 0.5258,
+    "sonnet": 0.312,
+    "opus": 0.1622
+   },
+   "ms": 371,
+   "desc_chars": 0
+  },
+  {
+   "id": 1757,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5497,
+   "probs": {
+    "haiku": 0.5497,
+    "sonnet": 0.2946,
+    "opus": 0.1556
+   },
+   "ms": 431,
+   "desc_chars": 867
+  },
+  {
+   "id": 1783,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5147,
+   "probs": {
+    "haiku": 0.3229,
+    "sonnet": 0.5147,
+    "opus": 0.1625
+   },
+   "ms": 420,
+   "desc_chars": 1230
+  },
+  {
+   "id": 789,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5913,
+   "probs": {
+    "haiku": 0.1118,
+    "sonnet": 0.2969,
+    "opus": 0.5913
+   },
+   "ms": 372,
+   "desc_chars": 0
+  },
+  {
+   "id": 805,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5536,
+   "probs": {
+    "haiku": 0.5536,
+    "sonnet": 0.2937,
+    "opus": 0.1527
+   },
+   "ms": 358,
+   "desc_chars": 0
+  },
+  {
+   "id": 806,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.7037,
+   "probs": {
+    "haiku": 0.7037,
+    "sonnet": 0.2046,
+    "opus": 0.0917
+   },
+   "ms": 382,
+   "desc_chars": 0
+  },
+  {
+   "id": 814,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.483,
+   "probs": {
+    "haiku": 0.3483,
+    "sonnet": 0.483,
+    "opus": 0.1687
+   },
+   "ms": 469,
+   "desc_chars": 201
+  },
+  {
+   "id": 908,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4923,
+   "probs": {
+    "haiku": 0.4923,
+    "sonnet": 0.302,
+    "opus": 0.2058
+   },
+   "ms": 421,
+   "desc_chars": 411
+  },
+  {
+   "id": 996,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5926,
+   "probs": {
+    "haiku": 0.5926,
+    "sonnet": 0.2536,
+    "opus": 0.1538
+   },
+   "ms": 390,
+   "desc_chars": 0
+  },
+  {
+   "id": 1765,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4496,
+   "probs": {
+    "haiku": 0.3012,
+    "sonnet": 0.4496,
+    "opus": 0.2492
+   },
+   "ms": 396,
+   "desc_chars": 1526
+  },
+  {
+   "id": 1776,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4388,
+   "probs": {
+    "haiku": 0.2118,
+    "sonnet": 0.3495,
+    "opus": 0.4388
+   },
+   "ms": 379,
+   "desc_chars": 1006
+  },
+  {
+   "id": 1777,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.7681,
+   "probs": {
+    "haiku": 0.0721,
+    "sonnet": 0.1598,
+    "opus": 0.7681
+   },
+   "ms": 424,
+   "desc_chars": 758
+  },
+  {
+   "id": 1778,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3675,
+   "probs": {
+    "haiku": 0.2868,
+    "sonnet": 0.3457,
+    "opus": 0.3675
+   },
+   "ms": 427,
+   "desc_chars": 1266
+  },
+  {
+   "id": 1787,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.698,
+   "probs": {
+    "haiku": 0.071,
+    "sonnet": 0.2311,
+    "opus": 0.698
+   },
+   "ms": 415,
+   "desc_chars": 708
+  },
+  {
+   "id": 1826,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.38,
+   "probs": {
+    "haiku": 0.3478,
+    "sonnet": 0.38,
+    "opus": 0.2722
+   },
+   "ms": 394,
+   "desc_chars": 1810
+  },
+  {
+   "id": 1828,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5757,
+   "probs": {
+    "haiku": 0.5757,
+    "sonnet": 0.265,
+    "opus": 0.1593
+   },
+   "ms": 380,
+   "desc_chars": 1298
+  },
+  {
+   "id": 1870,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.472,
+   "probs": {
+    "haiku": 0.2223,
+    "sonnet": 0.472,
+    "opus": 0.3057
+   },
+   "ms": 425,
+   "desc_chars": 0
+  },
+  {
+   "id": 1697,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.5617,
+   "probs": {
+    "haiku": 0.5617,
+    "sonnet": 0.2828,
+    "opus": 0.1555
+   },
+   "ms": 398,
+   "desc_chars": 0
+  },
+  {
+   "id": 1712,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4419,
+   "probs": {
+    "haiku": 0.3003,
+    "sonnet": 0.4419,
+    "opus": 0.2578
+   },
+   "ms": 379,
+   "desc_chars": 0
+  },
+  {
+   "id": 1773,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.3467,
+   "probs": {
+    "haiku": 0.3467,
+    "sonnet": 0.3326,
+    "opus": 0.3207
+   },
+   "ms": 347,
+   "desc_chars": 1903
+  },
+  {
+   "id": 1774,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6067,
+   "probs": {
+    "haiku": 0.127,
+    "sonnet": 0.2662,
+    "opus": 0.6067
+   },
+   "ms": 374,
+   "desc_chars": 2872
+  },
+  {
+   "id": 1775,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.504,
+   "probs": {
+    "haiku": 0.134,
+    "sonnet": 0.362,
+    "opus": 0.504
+   },
+   "ms": 431,
+   "desc_chars": 688
+  },
+  {
+   "id": 1788,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4073,
+   "probs": {
+    "haiku": 0.2625,
+    "sonnet": 0.4073,
+    "opus": 0.3302
+   },
+   "ms": 398,
+   "desc_chars": 987
+  },
+  {
+   "id": 1801,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.597,
+   "probs": {
+    "haiku": 0.1348,
+    "sonnet": 0.2683,
+    "opus": 0.597
+   },
+   "ms": 420,
+   "desc_chars": 2180
+  },
+  {
+   "id": 1922,
+   "project": "SmartPlatform",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.4704,
+   "probs": {
+    "haiku": 0.4704,
+    "sonnet": 0.363,
+    "opus": 0.1666
+   },
+   "ms": 372,
+   "desc_chars": 204
+  },
+  {
+   "id": 1714,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4593,
+   "probs": {
+    "haiku": 0.2168,
+    "sonnet": 0.3239,
+    "opus": 0.4593
+   },
+   "ms": 432,
+   "desc_chars": 231
+  },
+  {
+   "id": 1918,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3976,
+   "probs": {
+    "haiku": 0.2671,
+    "sonnet": 0.3353,
+    "opus": 0.3976
+   },
+   "ms": 406,
+   "desc_chars": 403
+  },
+  {
+   "id": 1920,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3923,
+   "probs": {
+    "haiku": 0.2919,
+    "sonnet": 0.3923,
+    "opus": 0.3159
+   },
+   "ms": 385,
+   "desc_chars": 257
+  },
+  {
+   "id": 1932,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4101,
+   "probs": {
+    "haiku": 0.4101,
+    "sonnet": 0.3081,
+    "opus": 0.2819
+   },
+   "ms": 375,
+   "desc_chars": 185
+  },
+  {
+   "id": 1933,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.6312,
+   "probs": {
+    "haiku": 0.6312,
+    "sonnet": 0.2317,
+    "opus": 0.1371
+   },
+   "ms": 376,
+   "desc_chars": 329
+  },
+  {
+   "id": 1934,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3681,
+   "probs": {
+    "haiku": 0.2925,
+    "sonnet": 0.3681,
+    "opus": 0.3394
+   },
+   "ms": 374,
+   "desc_chars": 157
+  },
+  {
+   "id": 1937,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.3995,
+   "probs": {
+    "haiku": 0.27,
+    "sonnet": 0.3305,
+    "opus": 0.3995
+   },
+   "ms": 390,
+   "desc_chars": 194
+  },
+  {
+   "id": 1968,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4056,
+   "probs": {
+    "haiku": 0.2328,
+    "sonnet": 0.4056,
+    "opus": 0.3616
+   },
+   "ms": 419,
+   "desc_chars": 2828
+  },
+  {
+   "id": 1972,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4428,
+   "probs": {
+    "haiku": 0.391,
+    "sonnet": 0.4428,
+    "opus": 0.1662
+   },
+   "ms": 423,
+   "desc_chars": 1271
+  },
+  {
+   "id": 1973,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.3916,
+   "probs": {
+    "haiku": 0.3916,
+    "sonnet": 0.3185,
+    "opus": 0.2899
+   },
+   "ms": 365,
+   "desc_chars": 128
+  },
+  {
+   "id": 1974,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4339,
+   "probs": {
+    "haiku": 0.2348,
+    "sonnet": 0.3313,
+    "opus": 0.4339
+   },
+   "ms": 387,
+   "desc_chars": 103
+  },
+  {
+   "id": 1734,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5125,
+   "probs": {
+    "haiku": 0.1893,
+    "sonnet": 0.2981,
+    "opus": 0.5125
+   },
+   "ms": 399,
+   "desc_chars": 106
+  },
+  {
+   "id": 1915,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4021,
+   "probs": {
+    "haiku": 0.2267,
+    "sonnet": 0.4021,
+    "opus": 0.3711
+   },
+   "ms": 385,
+   "desc_chars": 859
+  },
+  {
+   "id": 1919,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5026,
+   "probs": {
+    "haiku": 0.184,
+    "sonnet": 0.3134,
+    "opus": 0.5026
+   },
+   "ms": 390,
+   "desc_chars": 411
+  },
+  {
+   "id": 1921,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.4905,
+   "probs": {
+    "haiku": 0.1479,
+    "sonnet": 0.3616,
+    "opus": 0.4905
+   },
+   "ms": 367,
+   "desc_chars": 506
+  },
+  {
+   "id": 1923,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.5201,
+   "probs": {
+    "haiku": 0.3238,
+    "sonnet": 0.5201,
+    "opus": 0.1561
+   },
+   "ms": 379,
+   "desc_chars": 338
+  },
+  {
+   "id": 1941,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.4884,
+   "probs": {
+    "haiku": 0.1724,
+    "sonnet": 0.3392,
+    "opus": 0.4884
+   },
+   "ms": 404,
+   "desc_chars": 522
+  },
+  {
+   "id": 1958,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6865,
+   "probs": {
+    "haiku": 0.121,
+    "sonnet": 0.1925,
+    "opus": 0.6865
+   },
+   "ms": 402,
+   "desc_chars": 669
+  },
+  {
+   "id": 1966,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5403,
+   "probs": {
+    "haiku": 0.1376,
+    "sonnet": 0.322,
+    "opus": 0.5403
+   },
+   "ms": 424,
+   "desc_chars": 4129
+  }
+ ],
+ "title+desc": [
+  {
+   "id": 688,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5504,
+   "probs": {
+    "haiku": 0.5504,
+    "sonnet": 0.2751,
+    "opus": 0.1745
+   },
+   "ms": 448,
+   "desc_chars": 0
+  },
+  {
+   "id": 801,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "haiku",
+   "prob": 0.5416,
+   "probs": {
+    "haiku": 0.5416,
+    "sonnet": 0.2933,
+    "opus": 0.165
+   },
+   "ms": 447,
+   "desc_chars": 0
+  },
+  {
+   "id": 1757,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5796,
+   "probs": {
+    "haiku": 0.2847,
+    "sonnet": 0.5796,
+    "opus": 0.1357
+   },
+   "ms": 1048,
+   "desc_chars": 867
+  },
+  {
+   "id": 1783,
+   "project": "PXP",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.4615,
+   "probs": {
+    "haiku": 0.2815,
+    "sonnet": 0.4615,
+    "opus": 0.2569
+   },
+   "ms": 1341,
+   "desc_chars": 1230
+  },
+  {
+   "id": 789,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5695,
+   "probs": {
+    "haiku": 0.1448,
+    "sonnet": 0.2857,
+    "opus": 0.5695
+   },
+   "ms": 490,
+   "desc_chars": 0
+  },
+  {
+   "id": 805,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.4921,
+   "probs": {
+    "haiku": 0.4921,
+    "sonnet": 0.3157,
+    "opus": 0.1922
+   },
+   "ms": 462,
+   "desc_chars": 0
+  },
+  {
+   "id": 806,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5064,
+   "probs": {
+    "haiku": 0.5064,
+    "sonnet": 0.291,
+    "opus": 0.2025
+   },
+   "ms": 467,
+   "desc_chars": 0
+  },
+  {
+   "id": 814,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4115,
+   "probs": {
+    "haiku": 0.363,
+    "sonnet": 0.4115,
+    "opus": 0.2255
+   },
+   "ms": 655,
+   "desc_chars": 201
+  },
+  {
+   "id": 908,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5891,
+   "probs": {
+    "haiku": 0.2014,
+    "sonnet": 0.5891,
+    "opus": 0.2095
+   },
+   "ms": 719,
+   "desc_chars": 411
+  },
+  {
+   "id": 996,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "haiku",
+   "prob": 0.5321,
+   "probs": {
+    "haiku": 0.5321,
+    "sonnet": 0.2965,
+    "opus": 0.1714
+   },
+   "ms": 463,
+   "desc_chars": 0
+  },
+  {
+   "id": 1765,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.539,
+   "probs": {
+    "haiku": 0.2181,
+    "sonnet": 0.539,
+    "opus": 0.2428
+   },
+   "ms": 1360,
+   "desc_chars": 1526
+  },
+  {
+   "id": 1776,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.562,
+   "probs": {
+    "haiku": 0.1223,
+    "sonnet": 0.3157,
+    "opus": 0.562
+   },
+   "ms": 976,
+   "desc_chars": 1006
+  },
+  {
+   "id": 1777,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.7228,
+   "probs": {
+    "haiku": 0.074,
+    "sonnet": 0.2032,
+    "opus": 0.7228
+   },
+   "ms": 926,
+   "desc_chars": 758
+  },
+  {
+   "id": 1778,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.487,
+   "probs": {
+    "haiku": 0.1013,
+    "sonnet": 0.4117,
+    "opus": 0.487
+   },
+   "ms": 1242,
+   "desc_chars": 1266
+  },
+  {
+   "id": 1787,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.7281,
+   "probs": {
+    "haiku": 0.0654,
+    "sonnet": 0.2065,
+    "opus": 0.7281
+   },
+   "ms": 913,
+   "desc_chars": 708
+  },
+  {
+   "id": 1826,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5426,
+   "probs": {
+    "haiku": 0.1341,
+    "sonnet": 0.5426,
+    "opus": 0.3233
+   },
+   "ms": 1878,
+   "desc_chars": 1810
+  },
+  {
+   "id": 1828,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4982,
+   "probs": {
+    "haiku": 0.1691,
+    "sonnet": 0.4982,
+    "opus": 0.3327
+   },
+   "ms": 1419,
+   "desc_chars": 1298
+  },
+  {
+   "id": 1870,
+   "project": "PXP",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4372,
+   "probs": {
+    "haiku": 0.2094,
+    "sonnet": 0.4372,
+    "opus": 0.3534
+   },
+   "ms": 500,
+   "desc_chars": 0
+  },
+  {
+   "id": 1697,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "haiku",
+   "prob": 0.4908,
+   "probs": {
+    "haiku": 0.4908,
+    "sonnet": 0.3085,
+    "opus": 0.2007
+   },
+   "ms": 456,
+   "desc_chars": 0
+  },
+  {
+   "id": 1712,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "sonnet",
+   "prob": 0.4392,
+   "probs": {
+    "haiku": 0.3554,
+    "sonnet": 0.4392,
+    "opus": 0.2053
+   },
+   "ms": 444,
+   "desc_chars": 0
+  },
+  {
+   "id": 1773,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6755,
+   "probs": {
+    "haiku": 0.0941,
+    "sonnet": 0.2305,
+    "opus": 0.6755
+   },
+   "ms": 1623,
+   "desc_chars": 1903
+  },
+  {
+   "id": 1774,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6342,
+   "probs": {
+    "haiku": 0.0719,
+    "sonnet": 0.2939,
+    "opus": 0.6342
+   },
+   "ms": 1924,
+   "desc_chars": 2872
+  },
+  {
+   "id": 1775,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.703,
+   "probs": {
+    "haiku": 0.0827,
+    "sonnet": 0.2143,
+    "opus": 0.703
+   },
+   "ms": 865,
+   "desc_chars": 688
+  },
+  {
+   "id": 1788,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.706,
+   "probs": {
+    "haiku": 0.0801,
+    "sonnet": 0.2139,
+    "opus": 0.706
+   },
+   "ms": 989,
+   "desc_chars": 987
+  },
+  {
+   "id": 1801,
+   "project": "PXP",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.7068,
+   "probs": {
+    "haiku": 0.0791,
+    "sonnet": 0.2141,
+    "opus": 0.7068
+   },
+   "ms": 1994,
+   "desc_chars": 2180
+  },
+  {
+   "id": 1922,
+   "project": "SmartPlatform",
+   "label": "haiku",
+   "pred": "sonnet",
+   "prob": 0.5912,
+   "probs": {
+    "haiku": 0.2364,
+    "sonnet": 0.5912,
+    "opus": 0.1725
+   },
+   "ms": 568,
+   "desc_chars": 204
+  },
+  {
+   "id": 1714,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4653,
+   "probs": {
+    "haiku": 0.1376,
+    "sonnet": 0.3971,
+    "opus": 0.4653
+   },
+   "ms": 637,
+   "desc_chars": 231
+  },
+  {
+   "id": 1918,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4363,
+   "probs": {
+    "haiku": 0.2059,
+    "sonnet": 0.3578,
+    "opus": 0.4363
+   },
+   "ms": 726,
+   "desc_chars": 403
+  },
+  {
+   "id": 1920,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.569,
+   "probs": {
+    "haiku": 0.0955,
+    "sonnet": 0.3355,
+    "opus": 0.569
+   },
+   "ms": 631,
+   "desc_chars": 257
+  },
+  {
+   "id": 1932,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.5604,
+   "probs": {
+    "haiku": 0.1386,
+    "sonnet": 0.301,
+    "opus": 0.5604
+   },
+   "ms": 549,
+   "desc_chars": 185
+  },
+  {
+   "id": 1933,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.4118,
+   "probs": {
+    "haiku": 0.1803,
+    "sonnet": 0.4118,
+    "opus": 0.4079
+   },
+   "ms": 666,
+   "desc_chars": 329
+  },
+  {
+   "id": 1934,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.3773,
+   "probs": {
+    "haiku": 0.2623,
+    "sonnet": 0.3773,
+    "opus": 0.3603
+   },
+   "ms": 527,
+   "desc_chars": 157
+  },
+  {
+   "id": 1937,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.6144,
+   "probs": {
+    "haiku": 0.091,
+    "sonnet": 0.2946,
+    "opus": 0.6144
+   },
+   "ms": 541,
+   "desc_chars": 194
+  },
+  {
+   "id": 1968,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.6013,
+   "probs": {
+    "haiku": 0.0855,
+    "sonnet": 0.3132,
+    "opus": 0.6013
+   },
+   "ms": 2166,
+   "desc_chars": 2828
+  },
+  {
+   "id": 1972,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.6929,
+   "probs": {
+    "haiku": 0.0658,
+    "sonnet": 0.6929,
+    "opus": 0.2413
+   },
+   "ms": 1364,
+   "desc_chars": 1271
+  },
+  {
+   "id": 1973,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "sonnet",
+   "prob": 0.5252,
+   "probs": {
+    "haiku": 0.3119,
+    "sonnet": 0.5252,
+    "opus": 0.1629
+   },
+   "ms": 507,
+   "desc_chars": 128
+  },
+  {
+   "id": 1974,
+   "project": "SmartPlatform",
+   "label": "sonnet",
+   "pred": "opus",
+   "prob": 0.4033,
+   "probs": {
+    "haiku": 0.2265,
+    "sonnet": 0.3702,
+    "opus": 0.4033
+   },
+   "ms": 569,
+   "desc_chars": 103
+  },
+  {
+   "id": 1734,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6592,
+   "probs": {
+    "haiku": 0.127,
+    "sonnet": 0.2138,
+    "opus": 0.6592
+   },
+   "ms": 518,
+   "desc_chars": 106
+  },
+  {
+   "id": 1915,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6402,
+   "probs": {
+    "haiku": 0.0673,
+    "sonnet": 0.2925,
+    "opus": 0.6402
+   },
+   "ms": 1100,
+   "desc_chars": 859
+  },
+  {
+   "id": 1919,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6651,
+   "probs": {
+    "haiku": 0.078,
+    "sonnet": 0.2569,
+    "opus": 0.6651
+   },
+   "ms": 717,
+   "desc_chars": 411
+  },
+  {
+   "id": 1921,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6286,
+   "probs": {
+    "haiku": 0.089,
+    "sonnet": 0.2824,
+    "opus": 0.6286
+   },
+   "ms": 738,
+   "desc_chars": 506
+  },
+  {
+   "id": 1923,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.5694,
+   "probs": {
+    "haiku": 0.1045,
+    "sonnet": 0.3261,
+    "opus": 0.5694
+   },
+   "ms": 658,
+   "desc_chars": 338
+  },
+  {
+   "id": 1941,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6501,
+   "probs": {
+    "haiku": 0.0827,
+    "sonnet": 0.2672,
+    "opus": 0.6501
+   },
+   "ms": 758,
+   "desc_chars": 522
+  },
+  {
+   "id": 1958,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6729,
+   "probs": {
+    "haiku": 0.1215,
+    "sonnet": 0.2056,
+    "opus": 0.6729
+   },
+   "ms": 850,
+   "desc_chars": 669
+  },
+  {
+   "id": 1966,
+   "project": "SmartPlatform",
+   "label": "opus",
+   "pred": "opus",
+   "prob": 0.6237,
+   "probs": {
+    "haiku": 0.0604,
+    "sonnet": 0.3159,
+    "opus": 0.6237
+   },
+   "ms": 2328,
+   "desc_chars": 4129
+  }
+ ]
+}

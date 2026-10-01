@@ -1,0 +1,272 @@
+[
+ {
+  "id": 1714,
+  "type": "Task",
+  "title": "Prototype - Import & Apply new design system",
+  "desc": "Fix situation list tracking layout (Done) ( https://dev.azure.com/XionTechs/XT-Smart-Platform/_git/ioc/pullrequest/5301?_a=files ) Redesign prototype base on new package of design system Regression testing after applying new design",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1734,
+  "type": "Task",
+  "title": "Support multiple backend for xp app",
+  "desc": "Currently XP app (sxp, pxp) work with D365 backend (CE and FnO). Need support to work with other backends.",
+  "ac": "",
+  "est": 40.0,
+  "sp": null
+ },
+ {
+  "id": 1901,
+  "type": "User Story",
+  "title": "[SEC-002] Perimeter intrusion detection",
+  "desc": "As a security manager, I want real-time monitoring of people where they should not be, including fence climbing.",
+  "ac": "Perimeter breach / intrusion detection.",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1915,
+  "type": "Task",
+  "title": "Test zone intrusion on Jetson and fix bugs",
+  "desc": "The Savant path of zone intrusion has never run on a Jetson. Bring the stack up from docker-compose.l4t.yml with person_detection on for at least one real camera. Execute the 7-step checklist in docs/restricted-zones.md (\"On a Jetson (not run yet)\"), and fix the bugs it finds. Items that are currently unverified: PeopleNet to ZoneIntrusion alerts end to end (zone_intrusion entered zone … in the module log, the record in events) pyds (Tegra libs), frame_meta.roi, as_ltrb_int and tag persistence The recorder: zone_alerts and clips_ready in _data/status.json rising, with clips_failed staying at 0 The clip mp4mux / dts path with B-frames from a real camera: ffprobe shows H.264 at the camera's own resolution and rate, and the clip plays and seeks in Chrome, Firefox and Safari from the Events tab Recorder RAM and CPU use, and pyfunc latency, on the Orin",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1918,
+  "type": "Task",
+  "title": "Evaluate the engares model on our data",
+  "desc": "The engares model has never been measured on our cameras. The reference reports 0.8466 for every metric of this checkpoint, including loss and AUC, so its evaluation is suspect. Using task 3, run it on: office test (task 1625), to compare with v5 AIRTLab hugs and high-fives, the play-fighting failure (v5 called 83.8% of them a fight) untrimmed ordinary footage, to measure false alarms per camera-hour",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1919,
+  "type": "Task",
+  "title": "Export the streaming model for Jetson and verify parity",
+  "desc": "Export the stream model with its state inputs and outputs to the Jetson runtime: TFLite first, or TensorRT if TFLite is too slow. The reference repository ships a model.tflite (39.5 MB). Check first what it is: which configuration, and whether it has stream states. Use it only if it matches the checkpoint chosen in task 4. The exported model must match TF frame by frame over a long stream, not just one clip.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1920,
+  "type": "Task",
+  "title": "Decision layer and per-camera threshold",
+  "desc": "Turn the per-frame fight probability into alerts: smoothing, then k-of-n or hysteresis, a per-camera threshold, and a cooldown after each alert. Tune it on the task 4 data, aiming for the highest event recall at an agreed false-alarm budget per camera-hour.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1921,
+  "type": "Task",
+  "title": "Integrate the streaming model into the platform",
+  "desc": "Re-add fighting to apps/platform using the exported stream model. Each camera keeps its own model state: states are created on connect, reset on reconnect or a gap in frames, and freed on disconnect, with a bounded number of cameras. Frames are sampled to the rate documented in task 3. Emit a fight event (declared in catalogue.yml emits), recorded with an evidence clip the same way as zone intrusion, and shown on the Events page. Product rules: action classification only, and no identity in the event.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1922,
+  "type": "Task",
+  "title": "Show the fight score in the AI preview",
+  "desc": "In apps/platform/preview/render.py, show the live fight probability for the camera, for example a bar with a number, and highlight the frame border while an alert is active. Nothing identifies any person.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1923,
+  "type": "Task",
+  "title": "Jetson test, bug fixing and soak",
+  "desc": "Run the full pipeline on the Jetson with several real cameras: camera, stream model, decision layer, event, clip, review queue. Fix the bugs found. Then run a soak test of at least 24 hours on ordinary footage to measure false alerts per camera-hour, throughput, thermals and restarts, and to confirm how many cameras one board can serve.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1930,
+  "type": "Task",
+  "title": "Decide the alarm catalogue and thresholds",
+  "desc": "Define alarm types, and their respective conditions to trigger. Current default trigger condition for each alarm types (subject to change): Alarm type Raise Clear HighTemperature WARNING > 27 °C, CRITICAL > 30 °C < 26.5 °C LowTemperature WARNING < 20 °C > 20.5 °C HighHumidity WARNING > 70 % < 68 % LowHumidity WARNING < 35 % > 38 % LowBattery WARNING < 20 %, CRITICAL < 10 % >= 25 % DeviceOffline WARNING when `active` goes false `active` t rue Each raise condition must hold for 5 minutes before the alarm is raised. The offline timeout is measured, not assumed, as Aqara sensors report rarely.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1932,
+  "type": "Task",
+  "title": "Raise the low-battery alarm",
+  "desc": "As the platform operator, I want an alarm when a sensor's battery runs low, so that the battery is replaced before the sensor goes silent. The rule applies to all profiles with battery.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1933,
+  "type": "Task",
+  "title": "Raise the offline alarm",
+  "desc": "As the platform operator, I want an alarm when a device stops reporting, so that a dead sensor or gateway is noticed before its data is missed. A device is offline when ThingsBoard's `active` attribute goes false after the device's `inactivityTimeout`. That timeout is set per device and is not inherited by auto-created devices.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1934,
+  "type": "Task",
+  "title": "Show alarms on the room overview",
+  "desc": "As a person looking at the room overview, I want open alarms shown per room and per device, so that I see a problem without opening ThingsBoard's alarm list.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1935,
+  "type": "Task",
+  "title": "Apply data model plan for Timetabling",
+  "desc": "After researching FET and other timetabling platform, I have made a plan for data model standardization. Purpose: Can apply for different schools in different countries Apply the outstanding concept (Building, floor plan, distance...) Expected output: Done applying the plan UI updated by adding new models concept Algorithms used and read the new data models",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1937,
+  "type": "Task",
+  "title": "Command centers receive real alarms",
+  "desc": "As a command center operator, I want to receive alarms along with telemetry when I pull from ThingsBoard. Currently ThingsBoard's pull API doesn't support real alarms yet, only the placeholders.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1941,
+  "type": "Task",
+  "title": "Apply local LLM to PXP AI and benchmark it",
+  "desc": "Make PXP able to run on the self-hosted model, switchable at one place, with the Azure path untouched when the switch is off. Confirm the local model can return the structured responses PXP's classifiers depend on — if it cannot, the comparison stops there. Build a benchmark that puts PXP's existing intent corpus through the real classifier on both models and records the answer and the time taken for each case. Run it and compare: accuracy against the expected decision, and response time per call. Report the outcome.",
+  "ac": "",
+  "est": 8.0,
+  "sp": null
+ },
+ {
+  "id": 1946,
+  "type": "Task",
+  "title": "Finance integration for Timetabling",
+  "desc": "The timetabling should be integrated with Finance aspect. Specifically, the generated timetable option should have Finance assessment. Purpose: Timetable manager can review the option Know budget taken of each options Finance concept must include any factors related to our scope Expected output: Finance aspect (Data, entities, constraints, logic) is included Real budget calculating and show on each option",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1958,
+  "type": "Task",
+  "title": "Deploy Audio Scoring Service to Azure with scalable infrastructure",
+  "desc": "Design the deployment architecture for the Audio Scoring Service: an asynchronous job model on Azure Container Apps, following the OCR service pattern. Write the infrastructure as code (Bicep) for the dev environment in the grader resource group. Deploy the infrastructure: storage (blob, table, queue), Container Apps environment, container registry, logging, and a Foundry resource for Speech (Southeast Asia). Rework the service to the asynchronous design: job API, queue worker with retries, Azure Storage, health checks and standard error responses. Add a Docker image and a test-gated deploy script. Deploy the service and verify end to end with a real recording.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1960,
+  "type": "User Story",
+  "title": "AI Compliance & Edu AI Strategy",
+  "desc": "Define the user flow and strict business rules for the \"Target School\" feature. Additionally, analyze global and local (Vietnam) AI compliance trends in education to shape our Edu AI strategy. The overarching goal is to provide objective data for users and build AI features that foster critical thinking, preventing students from becoming overly reliant on the tool.",
+  "ac": "Upcoming Tasks (To-do): Analyze Lucy's latest feedback regarding the \"Target School\" feature and AI compliance constraints. Draft the User Flow for \"Target School\", ensuring it strictly aligns with the objective data rule (providing historical data only, no score suggestions or recommendations). Conduct competitor research on various AI-based educational apps and web platforms to formulate Socratic AI guidelines (anti-lazy AI strategy).",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1961,
+  "type": "User Story",
+  "title": "Setup, Explore, and Master the BMAD Framework",
+  "desc": "Set up, explore the BMAD tool to optimize and automate future business analysis and domain research workflows.",
+  "ac": "1. Successfully install, configure, and set up the BMAD tool/framework on the local machine or workspace. 2. Explore its core features, configurations, and how it generates outputs (e.g., HTML reports, digests).",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1966,
+  "type": "Task",
+  "title": "[XT Parent] Install X-Tek, move to the xt-parent backend routes, and scope external-backend support",
+  "desc": "Repo: xt-parent-ai ( develop ) | Depends on: 1734 ( xt-parent feat/1734-backend-factory ) | Estimate: 16h Background xt-parent-ai was forked from pxp-ai develop ( 5053be0 , PR 5274). It still calls the PXP backend paths under /api/dynamics . On feat/1734-backend-factory , xt-parent moved every one of those routes to the backend-neutral /xp/api/v1/... surface. There are no aliases, so the AI's current paths return 404 against the new backend. The mapping is in xt-parent/docs/1734-route-map.md . Scope 1. Install X-Tek (about 3h) Apply the X-Tek skeleton ( x-tek-cc ) using the Tier 2 python-fastapi example: docs/PROJECT-STANDARDS.md , project-context.md , CLAUDE.md , docs/TIER1-CONFORMANCE.md , .agents/skills/ . Merge with the existing CLAUDE.md , _bmad and .agents content instead of overwriting. Fill in TIER1-CONFORMANCE.md with the evidence that already exists (CI pipeline, Sonar, tests). 2. Update the AI to the new backend endpoints (about 9h) Change all 37 backend calls to their new paths (per docs/1734-route-map.md ). All go through service/api_client.py . Replace DYNAMICS_API_BASE_URL with a backend-neutral key (for example XT_PARENT_API_BASE_URL ) pointing at the /xp/api/v1 root. Update config.py and the Helm values. Remove the URL string hacks: .replace(\"/dynamics\", \"\") ( policy_service.py:46,90 ), .replace('dynamics','external-apps') ( external_app_service.py:14 ), .replace('dynamics','parents') ( welcome_video_service.py:25 ). Method change: update-parent is sent as POST, but the route is PATCH /parents . Fix it or delete it (no agent calls it today). Update the tests and mocks that assert the old paths. Check the IEP downloadUrl pass-through against the new download paths ( cdf5dda ). 3. Investigate external-backend support (about 4h, output is a short doc + follow-up tickets) Answer: what must change so the AI works when xt-parent serves a tenant from a non-Dynamics (external) backend? Known points to confirm: - Tenant routing: the AI sends no tenant header. xt-parent takes the tenant from the token tid claim ( b5f03cf ) and refuses unmapped tenants (403/404) once BackendTenantMap:Tenants is set. Confirm the AI's forwarded token is enough for every flow, including background and A2A calls. - Dynamics-shaped payloads still in the AI: case creation ( case_service.py:30-40 ) sends CE fields ( CaseTitle , Customer , EmailParent ) with \"Origin\": \"PXP\" . The fee code reads F&O fields ( priceCurrencyCode , quantityUnitySymbol , pxpDisplay ). - Backend gaps in xt-parent: /students/cases has no neutral capability. PATCH /students still reads emergency contacts from Dynamics. Schools, policies, external-apps and topics are SQL-backed with no capability. The Odoo backend is not wired in yet ( d223c27 ). - No current OpenAPI spec for /xp/api/v1 ( docs/1734-pxp-openapi.json is pre-move). The AI needs one as its contract. - Confirm the AI targets xt-parent only, not xt-odoo directly (xt-odoo /xp/api/v1 is a different, CRUD-by-id API). Acceptance criteria X-Tek files are in the repo, and TIER1-CONFORMANCE.md is filled in with current evidence. No code in xt-parent-ai calls a /api/dynamics , CE/ , FNO/ or Nova path, and no code rewrites the base URL with string replace. The backend base URL comes from one backend-neutral config key, set in config.py and the Helm values. The unit tests pass. A smoke run against xt-parent feat/1734-backend-factory (dev) returns data for: attendance, timetable, events, fees due, school policy and welcome video. The investigation doc is in docs/ and lists each gap with an owner repo (xt-parent-ai or xt-parent). Follow-up tickets are created for it. Out of scope Rebranding pxp names (package name, Sonar key, pipeline, ACR, Helm chart, secret names, pxp_context ). This needs its own ticket, because renaming pxp_context changes checkpoint state keys. Fixing the backend gaps in xt-parent (they go to follow-up tickets). Risks The \"wire shapes unchanged\" claim comes from the 1734 commit messages plus a spot check, not a full JSON diff. The smoke run in AC 4 is the check. Blocked until feat/1734-backend-factory is deployed to a dev host.",
+  "ac": "",
+  "est": 16.0,
+  "sp": null
+ },
+ {
+  "id": 1967,
+  "type": "Task",
+  "title": "Review PXP Backend Design Document: business process flow",
+  "desc": "Review the BPMN diagrams in the Business Process Flow section of the PXP wiki page Backend Design Document (a table of business flows and one BPMN diagram per flow). Besco reads these diagrams, so they stay in the BA (business analyst) view: no login, token or API detail. Goal Find what is new or changed in PXP compared with the documented flows, then update the flow table and the BPMN diagrams. Add a BPMN skill so agents draw new diagrams the same way. Scope In scope: the Business Process Flow section only (flow table and diagrams), and a Word copy of it for Besco. Out of scope: all other sections of the page. Approach Requirements: the Epics, Features and User Stories in the PXP DevOps project. Current behaviour: develop branches of pxp-data-aggregator , pxp-ai and pxp_mobile . Diagram style: three lanes (Parent, PXP, D365), same level of detail as the existing diagrams. Acceptance criteria Every flow in the table has a BPMN diagram in BA view. New and changed flows are confirmed with Quy Nguyen before publishing. The wiki page is updated and the page history comment names this ticket. The BPMN skill is committed to xt-parent. The Word copy for Besco uses the customer names: P-Hub, S-Hub, ERP CRM, ERP FIN.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1968,
+  "type": "Task",
+  "title": "Apply the XionTech design system to the va-edge operator app",
+  "desc": "Goal Make the operator app (apps/platform/ui/web) look like the XionTech products by reusing @xiontech/design-system from xt-staff-fe (packages/design-system, v0.2.0) instead of its hand-written CSS, in a way that lets us take new design system versions quickly. How the package is consumed - The design system is not published to any registry. We pack it with `npm pack` and commit the tarball to va-edge: apps/platform/ui/web/vendor/xiontech-design-system-<version>.tgz - package.json depends on it as \"file:vendor/xiontech-design-system-<version>.tgz\". `npm ci` on a node needs no extra credentials. - Upgrade: pack the new version, `npm install` the new tarball, delete the old one, run the type check and tests, commit. - va-edge never edits design system code. A missing component or token is a PR to xt-staff-fe. - If an Azure Artifacts feed is set up later, only the dependency line changes. Scope Step 1 - tokens (whole app gets the XionTech look, markup unchanged) - Upgrade React 18 -> 19; add tailwindcss and @tailwindcss/vite. - Import @xiontech/design-system/styles.css; add @source for src/. - Theme switch: data-theme=\"xiontech\" fixed, light/dark through data-mode. - Point the variables at the top of src/styles.css to design system role tokens (colour, font, radius, shadow). Video-specific tokens (zone, box, video overlay) stay local; the design system has none. - Keep the existing XionTechs logo (the pack's brand components are StaffXP's). Step 2 - components (replace the hand-written ones, delete their CSS) - Modal -> dialog, Hint -> tooltip, Loading -> spinner/skeleton, segmented control -> toggle-group, AccountMenu -> dropdown-menu, buttons and inputs -> button / input / field. Out of scope - Rewriting page layouts (Live, Events, Cameras, Node, Users) in Tailwind classes. - apps/video_wall/web and the static HTML demos. Risks to check first (spike, before step 1) - styles/index.css imports shadcn/tailwind.css but `shadcn` is a devDependency of the package: needs a small PR to xt-staff-fe, or va-edge installs `shadcn` itself. - @tailwindcss/vite on Vite 8 (xt-staff-fe runs Vite 7). - The package ships .ts source, so va-edge's strict tsc also checks its code. - .gitignore must not exclude vendor/ or *.tgz. - The package version must be bumped upstream on every change; record the source commit of the tarball in the web README. Acceptance criteria - `npm ci && npm run build` and `npm test` pass in apps/platform/ui/web. - `python apps/platform/check.py` passes; SonarQube gate stays green. - Light and dark mode both work on every tab and on the sign-in page. - The app builds and runs on a Jetson node through `va.py build`. - web/README.md documents the upgrade steps and the tarball's source commit. - scripts/check-contrast.mjs is reduced to the tokens that remain local, or removed.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1969,
+  "type": "Task",
+  "title": "[Prototype] Wrokflow config feature",
+  "desc": "workflow add & delete, update on each step",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1970,
+  "type": "Task",
+  "title": "Research and analyze OATutor functions for MVP",
+  "desc": "",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1971,
+  "type": "Task",
+  "title": "User stories and datasets: list and match",
+  "desc": "List what an education assistant should do for each audience, independent of any app, and the public datasets that could teach it. Write the user stories, each with an input and the expected output. List only education datasets that clearly allow commercial use and hold no real people's personal data. Grade each match: usable as it is, needs its answers rewritten, source text only, or no fit.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1972,
+  "type": "Task",
+  "title": "SonarQube cleanup for xt-parent: fix the open findings on overall code",
+  "desc": "The SonarQube project xt-parent ( dashboard ) fails its quality gate. The last analysis (2026-09-29) lists 108 open findings: 1 bug, 6 vulnerabilities, 79 code smells and 22 security hotspots, in 52 files. Goal Clear the open findings on the overall code, so the quality gate passes on develop . Scope In scope: C# in src/ and test/ , the payment HTML pages, Python scripts in scripts/ , Dockerfiles, docs, Sonar configuration. _bmad/ (installed BMad Method files, 18 findings): excluded from the scan, not edited. Security hotspots: fixed when a small, safe code change clears them; otherwise each one gets a written reason, and the owner marks it Safe in SonarQube. Out of scope: refactors and behaviour changes beyond what each finding needs. Approach Fetch the open issues and hotspots through the SonarQube Web API. Fix them on one branch from develop with the bmad-build workflow; one PR. Verify with the strict build ( XT_SECURITY_STRICT=1 , --no-incremental ), the tests, and a new SonarQube analysis. Acceptance criteria Every open finding is fixed, excluded with a reason, or listed as a reviewed hotspot with a reason. No new SonarQube finding, build warning or test failure. The quality gate of xt-parent passes after the PR is merged and develop is analysed.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1973,
+  "type": "Task",
+  "title": "Prepare the dataset and its test set",
+  "desc": "Starts the first dataset. Convert it and write our own examples, all in chat format, with correct answers fixed before training.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ },
+ {
+  "id": 1974,
+  "type": "Task",
+  "title": "Train local LLM with QLoRA on the A100 40 GB",
+  "desc": "Fine-tune Qwen3-14B on the prepared dataset, starting with a small examples to measure memory and cost.",
+  "ac": "",
+  "est": null,
+  "sp": null
+ }
+]
