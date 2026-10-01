@@ -1,0 +1,132 @@
+[
+ {
+  "text": "API returns HTTP 500 when submitting a leave request.",
+  "exp": "a",
+  "got": "a",
+  "p": {
+   "a": 0.9552,
+   "b": 0.0225,
+   "c": 0.0223
+  },
+  "conf": 0.8053,
+  "model": "english",
+  "ms": 2417.821168899536
+ },
+ {
+  "text": "The employee profile page shows an incorrect date of birth.",
+  "exp": "a",
+  "got": "a",
+  "p": {
+   "a": 0.9508,
+   "b": 0.0239,
+   "c": 0.0253
+  },
+  "conf": 0.7904,
+  "model": "english",
+  "ms": 2329.967498779297
+ },
+ {
+  "text": "Add an option to export leave history to Excel.",
+  "exp": "b",
+  "got": "b",
+  "p": {
+   "a": 0.0734,
+   "b": 0.819,
+   "c": 0.1076
+  },
+  "conf": 0.4583,
+  "model": "english",
+  "ms": 2333.3420753479004
+ },
+ {
+  "text": "Implement a new notification center for employees.",
+  "exp": "b",
+  "got": "c",
+  "p": {
+   "a": 0.043,
+   "b": 0.4147,
+   "c": 0.5423
+  },
+  "conf": 0.2426,
+  "model": "english",
+  "ms": 2319.861650466919
+ },
+ {
+  "text": "Refactor the Redis cache repository to improve code maintainability.",
+  "exp": "c",
+  "got": "c",
+  "p": {
+   "a": 0.0621,
+   "b": 0.2242,
+   "c": 0.7136
+  },
+  "conf": 0.3186,
+  "model": "english",
+  "ms": 2340.2864933013916
+ },
+ {
+  "text": "Update API documentation for the Performance Review endpoints.",
+  "exp": "c",
+  "got": "b",
+  "p": {
+   "a": 0.2635,
+   "b": 0.372,
+   "c": 0.3645
+  },
+  "conf": 0.0104,
+  "model": "english",
+  "ms": 2321.0461139678955
+ },
+ {
+  "text": "The Leave History API returns records in the wrong order.",
+  "exp": "a",
+  "got": "a",
+  "p": {
+   "a": 0.9598,
+   "b": 0.0194,
+   "c": 0.0208
+  },
+  "conf": 0.8212,
+  "model": "english",
+  "ms": 2308.095693588257
+ },
+ {
+  "text": "Add filtering by department to the employee list.",
+  "exp": "b",
+  "got": "b",
+  "p": {
+   "a": 0.0565,
+   "b": 0.8397,
+   "c": 0.1038
+  },
+  "conf": 0.5048,
+  "model": "english",
+  "ms": 2303.142786026001
+ },
+ {
+  "text": "Upgrade the project from .NET 8 to .NET 9.",
+  "exp": "c",
+  "got": "c",
+  "p": {
+   "a": 0.1498,
+   "b": 0.2998,
+   "c": 0.5504
+  },
+  "conf": 0.1132,
+  "model": "english",
+  "ms": 2330.9125900268555
+ },
+ {
+  "text": "Push notifications are being sent twice for the same event.",
+  "exp": "a",
+  "got": "a",
+  "p": {
+   "a": 0.9501,
+   "b": 0.0241,
+   "c": 0.0257
+  },
+  "conf": 0.7882,
+  "model": "english",
+  "ms": 2330.610752105713
+ }
+]

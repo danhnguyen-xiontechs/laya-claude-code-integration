@@ -1,3 +1,8 @@
 proxy/decisions.jsonl
 __pycache__/
 *.pyc
+.venv/
+dist/
+laya-installer.zip
+serve.py.patched
+benchmark/results/server.log

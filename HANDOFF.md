@@ -1,6 +1,18 @@
-# Laya decision engine: handoff (cập nhật 2026-09-30, máy ADMIN)
+# Laya decision engine: handoff (cập nhật 2026-10-01, đã đồng bộ hai máy)
 
-Tài liệu này tóm tắt toàn bộ bối cảnh để tiếp tục ở một session khác. Thư mục làm việc: `D:\XionTechs\Laya`. Máy: Windows 10, PowerShell, user `ADMIN`. Đây là máy thứ hai; máy đầu (`LENOVO2`, thư mục `D:\Laya`) giữ các file benchmark CPU và bài routing 4 tầng cũ, **không có trên máy này**.
+Tài liệu này tóm tắt toàn bộ bối cảnh để tiếp tục ở một session khác. Repo: https://github.com/danhnguyen-xiontechs/laya-claude-code-integration (nhánh `main`).
+
+Dự án được làm trên hai máy:
+
+| | LENOVO2 | ADMIN |
+|---|---|---|
+| Thư mục | `D:\Laya` | `D:\XionTechs\Laya` |
+| OS | Windows 11 | Windows 10 |
+| CPU / GPU | Ryzen AI 7 350, không có GPU NVIDIA | có RTX 3070 (chưa dùng) |
+| `HF_HOME` | `D:\hf-cache` | `E:\hf-cache` |
+| Python của tool Laya | `C:\Users\LENOVO2\AppData\Roaming\uv\tools\laya\Scripts\python.exe` | `C:\Users\ADMIN\AppData\Roaming\uv\tools\laya\Scripts\python.exe` |
+
+Ngày 2026-10-01 repo đã được kéo về `D:\Laya` trên LENOVO2. Bước A và bước D đã chạy lại ở đó và cho **đúng cùng kết quả** (47/60, 50/60, bảng chiến lược giống hệt); chỉ latency khác (trung vị 405 / 467 ms cho A, 482 ms cho proxy). Các file benchmark CPU của LENOVO2 nằm trong `D:\Laya` nhưng **chưa commit vào repo** (xem mục 4).
 
 ## 1. Mục tiêu
 
@@ -12,7 +24,7 @@ Use case đang theo đuổi: **model routing** trước LLM call.
 Claude Code -> ANTHROPIC_BASE_URL -> router_proxy (Laya chọn tầng) -> Opus / Sonnet / Haiku -> LLM Gateway
 ```
 
-Hai plan gốc của người dùng (`laya_model_routing_implementation_plan.md`, `laya_self_hosted_performance_benchmark_plan.md`) nằm trên máy LENOVO2 trong `Downloads`, **chưa có trên máy này**. Criteria Phase 1 của plan vì thế chưa được dùng; criteria hiện tại do Claude tự viết (xem mục 5).
+Hai plan gốc của người dùng (`laya_model_routing_implementation_plan.md`, `laya_self_hosted_performance_benchmark_plan.md`) nằm trên máy LENOVO2 trong `C:\Users\LENOVO2\Downloads`, chưa có trong repo. Criteria Phase 1 của plan vì thế chưa được dùng; criteria hiện tại do Claude tự viết (xem mục 5).
 
 Gateway của X-Tek có 4 model: Haiku 4.5, Sonnet 5.5, Opus 5.5, Fable 5.5. Plan routing chỉ dùng 3: Opus / Sonnet / Haiku.
 
@@ -33,7 +45,11 @@ Gateway của X-Tek có 4 model: Haiku 4.5, Sonnet 5.5, Opus 5.5, Fable 5.5. Pla
 - Khi nạp model có cảnh báo temperature không hợp lệ cho `choice` từ 11 lựa chọn trở lên; confidence ở đó coi như chưa calibrate.
 - **Trường `confidence` của Laya với câu `choice` không phải xác suất cao nhất** và rất thấp (0.00–0.37 trong bài test). Mọi ngưỡng trong dự án này dùng **xác suất cao nhất** (`max(probabilities)`).
 
-## 3. Cài đặt hiện tại trên máy này
+## 3. Cài đặt
+
+Trên LENOVO2: cài tay bằng `uv tool install --python 3.12 "laya[serve,mcp]"` (0.3.21), `serve.py` đã vá, MCP đã đăng ký scope user, `HF_HOME=D:\hf-cache`, `LAYA_DEVICE=cpu`. `D:\Laya\.venv` là venv cũ bị hỏng, không dùng.
+
+Trên ADMIN:
 
 - Cài ngày 2026-09-30 bằng `install-laya.ps1` (gói trong thư mục này): `uv tool install --python 3.12 "laya[serve,mcp]==0.3.21"`, torch 2.14.0+cpu. Máy có **RTX 3070** nhưng đang chạy CPU; chưa thử `-Device cuda` (torch bản CPU, có thể phải cài lại torch CUDA).
 - Python của tool: `C:\Users\ADMIN\AppData\Roaming\uv\tools\laya\Scripts\python.exe`. Exe: `C:\Users\ADMIN\.local\bin\laya-serve.exe`, `laya-mcp-server.exe`.
@@ -41,9 +57,10 @@ Gateway của X-Tek có 4 model: Haiku 4.5, Sonnet 5.5, Opus 5.5, Fable 5.5. Pla
 - `serve.py` trong bản cài đã được vá (route `POST /v1/systemone/form` cho Swagger). Nâng cấp Laya sẽ mất bản vá; bản gốc là `serve.py` trong thư mục này.
 - MCP `laya` đã đăng ký với Claude Code scope user, có `HF_HOME=E:\hf-cache` trong env (không có thì timeout khi connect). Plan routing **không** dùng MCP.
 - Script cài kết thúc với exit code 1 chỉ vì `claude mcp remove` báo chưa có server để xóa; các bước trước đều xong.
-- Trên máy này không cần `laya-serve`: proxy và các script nạp Laya trực tiếp qua Python SDK.
+- Proxy và các script routing không cần `laya-serve`: chúng nạp Laya trực tiếp qua Python SDK.
+- Các script **không còn ghi cứng** `HF_HOME=E:\hf-cache` (đã bỏ ngày 2026-10-01, chưa commit). Chúng dựa vào biến `HF_HOME` do script cài đặt đặt; nếu biến này thiếu, Laya sẽ tải lại model vào `~/.cache`.
 
-## 4. File trong `D:\XionTechs\Laya`
+## 4. File trong repo
 
 | Đường dẫn | Nội dung |
 |---|---|
@@ -55,6 +72,21 @@ Gateway của X-Tek có 4 model: Haiku 4.5, Sonnet 5.5, Opus 5.5, Fable 5.5. Pla
 | `proxy/decisions.jsonl` | Log mọi quyết định của proxy |
 | `benchmark/run_benchmark.py` | Bước D bản offline: 60 prompt qua proxy, so chiến lược, quét ngưỡng |
 | `benchmark/report.md`, `benchmark/results.json` | Kết quả bước D |
+
+File chỉ có ở `D:\Laya` trên LENOVO2, **chưa commit**:
+
+| Đường dẫn | Nội dung |
+|---|---|
+| `benchmark/laya_benchmark.py`, `benchmark/maxlen_test.py` | Script benchmark hiệu năng CPU (tự mở `laya-serve` ở cổng 8011). Chạy: `uv run --with psutil python laya_benchmark.py [--device cuda]` |
+| `benchmark/results/` | CSV thô của benchmark hiệu năng, `environment.json`, `cpu_maxlen.csv` |
+| `benchmark/report.summary.md` | Bản tóm tắt hiệu năng tiếng Anh để gửi team (có mục Model và Input length) |
+| `benchmark/report.en.md` | Báo cáo hiệu năng bản dài tiếng Anh; chưa có mục Model và `max_len` |
+| `test-results.md`, `results10.json` | 10 case Bug/Feature/Task |
+| `dist/`, `laya-installer.zip`, `serve.py.patched` | Bản gốc của gói cài; trùng nội dung với các file ở gốc repo |
+
+Đã mất khi kéo repo về LENOVO2 (bị ghi đè, không có bản sao): báo cáo hiệu năng bản dài **tiếng Việt** (trước đây là `benchmark/report.md`, nay tên đó là báo cáo bước D) và bài routing 4 tầng cũ (`routing/prompts.csv`, `run_routing.py`, `report.md` phiên bản cũ). Số liệu chính của cả hai còn ở mục 8 và trong `report.en.md`.
+
+Lưu ý: thư mục `benchmark/` hiện chứa hai thứ khác nhau (benchmark routing bước D và benchmark hiệu năng CPU). Nên tách benchmark hiệu năng sang thư mục riêng trước khi commit.
 
 ## 5. Bước A: routing 3 tầng (đã xong)
 
@@ -85,14 +117,33 @@ Hoạt động:
 - Log JSONL vào `decisions.jsonl`; trạng thái ở `GET /router/status`. Streaming (SSE) hỗ trợ cả dry-run lẫn chuyển tiếp.
 - Env: `ROUTER_UPSTREAM` (trống = dry-run), `ROUTER_PORT`, `ROUTER_MIN_PROB`, `ROUTER_MODE=laya|off`, `ROUTER_MODEL_HAIKU/SONNET/OPUS`, `ROUTER_LOG`.
 
-Đã test dry-run: route, sticky, bỏ qua call haiku, stream. Mỗi lần gọi Laya khoảng 0.5 s.
+**2026-10-01, LENOVO2: đã chạy thật end to end với `ROUTER_UPSTREAM=https://api.anthropic.com`**, qua đăng nhập gói thuê bao công ty (Max) của Claude Code, không dùng API key. Người dùng chạy `claude -p ... --output-format json` với `$env:ANTHROPIC_BASE_URL="http://localhost:8787"` từ PowerShell của họ (CLI gọi từ shell của Claude trong app desktop luôn báo OAuth hết hạn, không dùng được). Kết quả: route sang Haiku và Sonnet đều chạy, `--resume` bám đúng session, 0 lỗi sau các sửa dưới đây.
+
+Những gì đã học và đã sửa trong `router_proxy.py` (chưa commit):
+- **Chốt chi phí**: request mang `x-api-key` bị từ chối 403 (trừ khi `ROUTER_ALLOW_API_KEY=1`). Chỉ cho đi qua OAuth của gói thuê bao.
+- Claude Code gửi **header `x-claude-code-session-id`**, proxy dùng nó làm khóa session. Vấn đề `/compact` đổi câu đầu không còn.
+- Claude Code của tài khoản này mặc định `claude-opus-5[1m]`: gửi `model=claude-opus-5` + beta `context-1m`. Mỗi `claude -p` tạo 2 request: một call phụ không tool (preflight, đi thẳng Opus, ~1.2k token) và request chính có ~37 tool. **Chỉ request có `tools` mới được route**; không dùng "model là haiku" làm dấu hiệu call nền nữa, vì khi `--resume` Claude Code tự gửi lại model proxy đã chọn ở lượt trước.
+- **Haiku 4.5 từ chối** những gì Claude Code gửi cho Opus; không chuẩn hóa thì Claude Code tự thử lại 3 lần (3 lỗi 400, +1.4 s) rồi mới chạy. `adapt_for_model` cho tầng haiku: bỏ beta `context-1m`, `effort-*`, `mid-conversation-system`; bỏ `output_config.effort`; `thinking adaptive` -> `enabled` với `budget_tokens` 4096 (**không** được tắt hẳn: `context_management.clear_thinking` đòi thinking bật); message role `system` -> `user`. Sonnet 5.5 nhận nguyên request của Opus, không cần sửa.
+- Tầng trùng với tầng model đang yêu cầu -> giữ nguyên request (`*_same_tier`).
+- **UsageTap** đọc model thật và token (input / cache read / cache creation / output) từ response SSE hoặc JSON, ghi dòng `action: usage` vào log. Phải ép `accept-encoding: identity` (httpx tự thêm gzip). `modelUsage` và `costUSD` trong JSON của Claude Code là **do client tự suy ra**, không phản ánh model thật; chỉ tin log của proxy.
+- Log thêm `shape` của request (stream, max_tokens, thinking, số tool, số message, beta, extra_keys).
+- Số đo: Laya ~460 ms/quyết định trên CPU; Haiku trả lời "one" với 3.7k input + 32k cache read.
+
+Thêm cùng ngày (phiên tương tác thật + chuỗi `-p --resume` 3 lượt, chạy được từ shell của Claude sau khi người dùng `/login` lại CLI, với env `CLAUDE_*`/`ANTHROPIC_*` của app desktop bị unset):
+- Phiên tương tác gửi `max_tokens` 128000 (Haiku tối đa 64000) và message role `system` mang `output_config` -> thêm 2 quy tắc chuẩn hóa cho haiku (cap max_tokens, bỏ `output_config` khi đổi role). Tổng cộng 7 quy tắc trong `adapt_for_model`.
+- **Câu đầu của phiên thật là "hi"** -> Laya khóa Haiku cho cả phiên dù việc thật đến sau. Thêm `ROUTER_REEVAL=1` (mặc định): mỗi câu mới của người dùng (không phải vòng tool) được Laya đánh giá lại, **chỉ nâng tầng, không hạ**. Đã thấy hoạt động: "hi" -> haiku, câu tóm tắt README giữ haiku, câu phân tích concurrency -> **nâng lên sonnet**; khi nâng, cache_read về 0 và cache_creation 47.5k token = **chi phí đổi model đo được**.
+- **Tiếng Việt**: Laya tự route sang checkpoint `multilingual`, checkpoint này xếp gần như mọi câu tiếng Việt vào haiku (3/8 đúng, 8 câu thử). Ép checkpoint `english` cho tiếng Việt được 5/8 và sai theo hướng nâng tầng. Proxy giờ ép `english` (`ROUTER_LAYA_CHECKPOINT=english`, đặt `auto` để Laya tự chọn). Mẫu rất nhỏ; cần test thêm.
+- Tầng Opus mặc định `claude-opus-5` (ID Claude Code đang gửi; người dùng đồng ý giữ mặc định đó). Log cũng thấy `claude-opus-5-5` tồn tại (một call phụ trả về model này).
+- Người dùng **đã xác nhận extra usage tắt** trên tài khoản công ty.
+- `proxy/router_log.py`: tóm tắt theo session (Laya chọn gì, model nào thật sự trả lời, token), có `--watch`. Claude Code không tự hiện model thật.
+- Có 1 lỗi 429 (rate limit) trên call phụ, Claude Code tự thử lại được.
+- Khi chạy chuỗi `-p --resume`, mỗi process `claude` tạo cache mới (cache_read 0 ở đầu mỗi lượt); phiên tương tác thì cache nối tiếp. Đo cache nên dùng phiên tương tác.
 
 **Chưa xử lý / chưa test:**
-- Nhận biết task mới trong cùng hội thoại: model chọn ở câu đầu giữ suốt session.
-- Sau `/compact` câu đầu đổi, session bị coi là mới.
-- Đổi model có thể làm hỏng request dùng tham số model đích không hỗ trợ (thinking, beta header).
 - Session lưu trong RAM.
-- **Chuyển tiếp tới upstream thật chưa chạy lần nào** (chưa có gateway, không có API key).
+- Chất lượng routing tiếng Việt (mẫu 8 câu). Criteria vẫn là bản Claude tự viết, chưa dùng Phase 1 của plan.
+- Subagent của Claude Code đi qua proxy thế nào (chưa quan sát).
+- Benchmark Phase 7 thật (A/B/C) chưa chạy; cần bộ task và hạn mức.
 
 ## 7. Bước D: benchmark (bản offline, đã chạy)
 
@@ -116,24 +167,28 @@ Kết luận tạm:
 - Số lần chuyển model = 0 theo thiết kế, chưa đo được thực tế.
 - LLM routing (Haiku làm router): **chưa chạy**, không có API. `claude -p` trên máy này báo OAuth hết hạn.
 
-## 8. Kết quả từ máy LENOVO2 (không tái tạo được ở đây)
+## 8. Kết quả từ máy LENOVO2 (script và dữ liệu thô ở `D:\Laya`, chưa commit)
 
 - Bug/Feature/Task 10 case: 8/10. Routing 4 tầng 60 prompt cũ: 28/60, nghiêng opus, Fable không tách được khỏi opus.
 - CPU Ryzen AI 7 350: RAM 2.0 GB với `LAYA_MODELS=english`; cold start 9.5 s; warm 110 token p50 314 ms; concurrency không tăng throughput; 10 phút tải 1425 request 0 lỗi; `max_len` 512 -> 1.1 s, 1024 -> 2.7 s, 2048 -> 6.0 s, 4096 -> 15.3 s.
-- GPU và tiếng Việt chưa đo. Báo cáo dài (`benchmark/report.md`, `report.en.md`) trên máy đó chưa cập nhật mục Model và `max_len`.
+- RAM 4.9 GB khi nạp cả 3 checkpoint; inference dùng 8 nhân; khoảng 3.2 req/s; `max_len` 7636 token -> 40.5 s, 12.2 GB RAM.
+- GPU và tiếng Việt chưa đo. Báo cáo dài `benchmark/report.en.md` chưa cập nhật mục Model và `max_len`; bản tóm tắt `report.summary.md` thì đã có.
 
 ## 9. Việc tiếp theo
 
 1. **Có upstream** (gateway X-Tek hoặc API key): đặt `ROUTER_UPSTREAM`, chạy proxy thật với Claude Code, xác nhận request đổi model không bị lỗi tham số; chạy D thật (token, chi phí, chất lượng câu trả lời, số lần chuyển model); thêm chiến lược LLM routing (Haiku) vào `run_benchmark.py`, có thể dùng chính proxy với `ROUTER_MODE=off`.
 2. Thay giá giả định 1:3:5 bằng giá thật của gateway.
-3. Lấy plan gốc từ máy LENOVO2, thay criteria Phase 1 rồi chạy lại A và D.
+3. Thay criteria Phase 1 của plan gốc (file plan ở `C:\Users\LENOVO2\Downloads`) rồi chạy lại A và D. Làm được ngay trên LENOVO2.
+3b. Commit phần của LENOVO2 vào repo: bỏ dòng `HF_HOME` ghi cứng (đã sửa, chưa commit), thêm benchmark hiệu năng CPU vào thư mục riêng, thêm hai file plan.
 4. Dataset thật 50–100 task từ ADO; nhãn theo tiêu chí kỹ thuật thống nhất.
 5. Nhận biết task mới trong session; xử lý `/compact`; lưu session ra file.
 6. Đo GPU (RTX 3070) với torch CUDA; test tiếng Việt / checkpoint multilingual.
 7. Hỏi security xem dữ liệu có được gửi ra ngoài không, để biết có thử Jev được không.
 
-## 10. Lưu ý khi làm việc trên máy này
+## 10. Lưu ý khi làm việc
 
+- Chạy lại `run_routing.py` hay `run_benchmark.py` sẽ ghi đè `report.md` / `results.json` đã commit (latency khác theo máy). Dùng `git checkout -- <file>` nếu không muốn đổi.
+- Sửa file bằng `sed -i` trong Git Bash đổi CRLF thành LF trên cả file; tránh dùng.
 - PowerShell 5.1: `curl` là alias khác, dùng `curl.exe` hoặc `Invoke-RestMethod`. Không có `&&`. `claude mcp add ... -- <exe>` bị PowerShell nuốt `--`, chạy bằng Git Bash.
 - `python` không có trên PATH; dùng Python của tool Laya (mục 3), đặt `PYTHONIOENCODING=utf-8` để in bảng.
 - Proxy in-process giữ một lock inference; benchmark dùng cổng 8787 của proxy, không cần `laya-serve`.

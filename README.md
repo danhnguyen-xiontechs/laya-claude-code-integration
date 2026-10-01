@@ -37,3 +37,5 @@ Swagger: http://localhost:8000/docs
 - `install-laya.ps1`  script cai dat
 - `serve.py`          ban va cua laya/serve.py (laya 0.3.21)
 - `start-laya.bat`    chay server bang 1 cu click
+
+Laya la mot nen tang routing thong minh cho LLM, toi uu hoa cost va toc do bam vao dac diem cua tung request.

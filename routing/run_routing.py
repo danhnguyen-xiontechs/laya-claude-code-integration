@@ -4,7 +4,6 @@ import csv, json, os, time
 from collections import Counter
 from pathlib import Path
 
-os.environ.setdefault("HF_HOME", r"E:\hf-cache")
 os.environ.setdefault("LAYA_DEVICE", "cpu")
 os.environ.setdefault("LAYA_MODELS", "english")
 from laya import Router
@@ -22,6 +21,15 @@ QUESTION = {"model": {
 }}
 
 
+# Criteria nguyen van tu Phase 1 cua laya_model_routing_implementation_plan.md (de so sanh voi ban tren)
+PLAN_CRITERIA = {
+    "opus": "Use for complex reasoning, architecture, difficult debugging, or broad cross-cutting changes",
+    "sonnet": "Use for normal coding, implementation, refactoring, and standard debugging",
+    "haiku": "Use for simple edits, lookups, formatting, or lightweight repetitive tasks",
+}
+QUESTION_PLAN = {"model": {"type": "choice", "instructions": "Which model should handle this task?", "criteria": PLAN_CRITERIA}}
+
+
 def state_request(row):
     return {"request": row["prompt"]}
 
@@ -31,11 +39,11 @@ def state_signals(row):
             "has_stack_trace": row["stack_trace"], "conversation_turns": row["turns"]}
 
 
-def run(router, rows, make_state):
+def run(router, rows, make_state, question=QUESTION):
     out = []
     for row in rows:
         t = time.perf_counter()
-        res = router.predict(make_state(row), QUESTION, max_len=1024)
+        res = router.predict(make_state(row), question, model="english", max_len=1024)
         ms = (time.perf_counter() - t) * 1000
         a = res["answers"]["model"]
         probs = a["probabilities"]
@@ -73,7 +81,9 @@ def main():
     router = Router()
     router.predict({"request": "warm up"}, QUESTION)
     results = {"request_only": run(router, rows, state_request),
-               "request_plus_signals": run(router, rows, state_signals)}
+               "request_plus_signals": run(router, rows, state_signals),
+               "plan_criteria_request_only": run(router, rows, state_request, QUESTION_PLAN),
+               "plan_criteria_plus_signals": run(router, rows, state_signals, QUESTION_PLAN)}
     (HERE / "results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
     report = "# Laya routing, 3 tiers, 60 synthetic prompts\n\n" + "\n".join(summarize(k, v) for k, v in results.items())
     (HERE / "report.md").write_text(report, encoding="utf-8")
