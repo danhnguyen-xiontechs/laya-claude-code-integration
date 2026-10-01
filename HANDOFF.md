@@ -174,9 +174,26 @@ Kết luận tạm:
 - RAM 4.9 GB khi nạp cả 3 checkpoint; inference dùng 8 nhân; khoảng 3.2 req/s; `max_len` 7636 token -> 40.5 s, 12.2 GB RAM.
 - GPU và tiếng Việt chưa đo. Báo cáo dài `benchmark/report.en.md` chưa cập nhật mục Model và `max_len`; bản tóm tắt `report.summary.md` thì đã có.
 
+## 8b. Benchmark thật 15 task x 4 chiến lược (2026-10-01, chạy ở LENOVO2, tổng kết 2026-10-02)
+
+Chi tiết: `benchmark/live/full-20261001-1717/report.md` (sinh bằng `benchmark/summarize_live.py`, chấm lại từ `results.rescored.jsonl`). Claude Code thật qua proxy, gói thuê bao, 5 task mỗi tầng haiku/sonnet/opus.
+
+| Chiến lược | Pass | Turns | Wall (s) | Cache-read tok | Model thật trả lời (h/s/o, request) |
+|---|---|---|---|---|---|
+| Cố định Sonnet | 15/15 | 102 | 519 | 3.1M | 0/66/0 |
+| LLM routing (Haiku) | 14/15 | 132 | 873 | 5.8M | 29/17/52 |
+| **Laya routing** | **15/15** | 140 | 852 | 5.6M | 34/42/30 |
+| Cố định Opus | 13/15 (2 lỗi) | 118 | 800 | 4.9M | 0/0/86 |
+
+- **Chất lượng:** Laya 15/15, ngang cố định Sonnet; hơn LLM routing 14/15 (rớt 1 task haiku). Laya chọn đúng tầng nhãn 7/15, thấp hơn nhãn 4, cao hơn nhãn 4 (LLM routing: 13 đúng, 2 thấp) nhưng vẫn qua hết, nghĩa là nhãn tầng chưa chắc là tầng tối thiểu cần thiết.
+- **Chi phí/thời gian:** cả hai kiểu routing đều **chậm và tốn token hơn cố định Sonnet** (wall 850–870 s so với 519 s; cache-read gấp khoảng 1.8x). Nguyên nhân khả dĩ: đổi model giữa phiên làm mất cache (đã đo 47.5k token cache tạo lại mỗi lần nâng tầng) và chạy nhiều turn hơn. Laya rẻ hơn LLM routing theo `summary.json` (5064 so với 6078) nhưng đắt hơn cố định Sonnet (3552).
+- **Không tin được:** cột `cost` trong `summary.json` không rõ đơn vị, và dòng `fixed_opus` rõ ràng sai (824, toàn bộ tính vào haiku dù 86 request chạy Opus). Cần tính lại từ log thô `proxy/decisions.jsonl` (log này không có trong repo). Hai run `fixed_opus` h4, h5 lỗi sau vài giây (nghi rate limit), chưa chạy lại.
+- **Cỡ mẫu:** 15 task do Claude viết, 1 lần chạy mỗi chiến lược, nên chênh 14 và 15 không có ý nghĩa thống kê.
+
 ## 9. Việc tiếp theo
 
-1. **Có upstream** (gateway X-Tek hoặc API key): đặt `ROUTER_UPSTREAM`, chạy proxy thật với Claude Code, xác nhận request đổi model không bị lỗi tham số; chạy D thật (token, chi phí, chất lượng câu trả lời, số lần chuyển model); thêm chiến lược LLM routing (Haiku) vào `run_benchmark.py`, có thể dùng chính proxy với `ROUTER_MODE=off`.
+0. **Khuyến nghị tạm (chờ tính lại chi phí): pilot further.** Chất lượng Laya đạt mức cố định Sonnet trên 15 task, nhưng routing chưa tiết kiệm được so với cố định Sonnet vì mất cache khi đổi model. Nếu tính lại chi phí vẫn cao hơn cố định Sonnet thì lợi ích chỉ còn ở việc không phải chọn tay.
+1. (Đã làm bản thật ở mục 8b.) **Có upstream** (gateway X-Tek hoặc API key): đặt `ROUTER_UPSTREAM`, chạy proxy thật với Claude Code, xác nhận request đổi model không bị lỗi tham số; chạy D thật (token, chi phí, chất lượng câu trả lời, số lần chuyển model); thêm chiến lược LLM routing (Haiku) vào `run_benchmark.py`, có thể dùng chính proxy với `ROUTER_MODE=off`.
 2. Thay giá giả định 1:3:5 bằng giá thật của gateway.
 3. Thay criteria Phase 1 của plan gốc (file plan ở `C:\Users\LENOVO2\Downloads`) rồi chạy lại A và D. Làm được ngay trên LENOVO2.
 3b. Commit phần của LENOVO2 vào repo: bỏ dòng `HF_HOME` ghi cứng (đã sửa, chưa commit), thêm benchmark hiệu năng CPU vào thư mục riêng, thêm hai file plan.
