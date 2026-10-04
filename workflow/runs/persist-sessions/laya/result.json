@@ -1,0 +1,125 @@
+{
+ "duration_api_ms": 237175,
+ "stop_reason": "end_turn",
+ "session_id": "f423f395-1f76-482f-8707-898facc74941",
+ "total_cost_usd": 0.9694303000000002,
+ "usage": {
+  "input_tokens": 4,
+  "cache_creation_input_tokens": 1352,
+  "cache_read_input_tokens": 45239,
+  "output_tokens": 875,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 1352,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 4,
+    "output_tokens": 875,
+    "cache_read_input_tokens": 45239,
+    "cache_creation_input_tokens": 1352,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 1352
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "modelUsage": {
+  "claude-sonnet-5-5": {
+   "inputTokens": 48,
+   "outputTokens": 11684,
+   "cacheReadInputTokens": 455783,
+   "cacheCreationInputTokens": 60055,
+   "webSearchRequests": 0,
+   "costUSD": 0.4016911000000001,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 829,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-opus-5-5": {
+   "inputTokens": 20,
+   "outputTokens": 16878,
+   "cacheReadInputTokens": 142971,
+   "cacheCreationInputTokens": 40301,
+   "webSearchRequests": 0,
+   "costUSD": 0.5677392,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 3770,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "origin": {
+  "kind": "task-notification",
+  "producer": "session-task"
+ },
+ "subagent_stats": {
+  "spawned": 5,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 5
+  },
+  "started_in_background": 5,
+  "max_depth": 1,
+  "spawned_by_subagents": 0,
+  "completed": 5,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {
+   "wf-explore": 1,
+   "wf-plan": 1,
+   "wf-implement": 1,
+   "wf-verify": 1,
+   "wf-review": 1
+  }
+ },
+ "is_error": false,
+ "num_turns": 1,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "Routing decisions now survive a proxy restart. The 17 tests in `proxy/test_sessions.py` pass with the command you gave.\n\n**What changed**\n- **`proxy/session_store.py` (new):** this holds the load and save logic.\n  - **Loading:** `load` returns `{}` for a missing, empty, corrupt or wrong-shaped file, and skips bad entries. It drops sessions older than 24 hours.\n  - **Writing:** a write goes to a temp file, is synced to disk, then swapped in with `os.replace`. It retries on a Windows `PermissionError` and removes the temp file on failure.\n  - **Event loop:** a background writer coalesces saves and runs the actual write in a worker thread. The last state is always written.\n- **`proxy/router_proxy.py`:**\n  - **Config:** the file path is `ROUTER_SESSIONS_FILE`, defaulting to `proxy/sessions.json`.\n  - **Load and flush:** sessions load in a FastAPI startup hook, and any pending save is flushed on shutdown.\n  - **Saves:** the proxy saves when a session is created, when a re-evaluation changes it or its turn count, and after `clear_sessions`. New and re-evaluated sessions get a `ts` timestamp. Routing logic is otherwise unchanged.\n- **`.gitignore`:** now ignores `proxy/sessions.json` and its `.tmp` files.\n- **`proxy/test_sessions.py` (new):** covers load, save, corrupt files, bad entries, expiry, atomic-write failures and write coalescing.\n\n**Verification**\n- **Tests:** 17 passed. The smoke test also ran: the proxy started with a corrupt sessions file, and `clear_sessions` then left a valid `{}` file. No stray files were left in the repo.\n- **Not tested:** no running proxy handled a real request, so nothing exercised a save from `route()`.\n\n**Review findings (none fixed, none blocking)**\n1. `ts` marks the last routing decision, not the last use. A session still in use after 24 hours is dropped at the next restart and re-routed.\n2. `TIERS` in `session_store.py` is hardcoded and kept in sync with the router's tier list only by a comment. A new tier would make its saved sessions load as invalid.\n3. The saved `model` is reused as-is. If `MODELS` changes between restarts, old sessions keep the old model for up to 24 hours.\n4. No test covers the `router_proxy.py` wiring, such as the startup load or the `saver.mark()` calls. Removing one of those calls would not fail the suite.",
+ "ttft_ms": 6676,
+ "type": "result",
+ "duration_ms": 6693,
+ "uuid": "253a6845-0898-4234-b511-09b9f1cdc89b",
+ "ttft_stream_ms": 899,
+ "time_to_request_ms": 75,
+ "first_content_frame_ms": 899,
+ "queued_turn_count": 0,
+ "result_index": 5,
+ "wall_s": 271,
+ "config": "laya",
+ "model": "sonnet"
+}

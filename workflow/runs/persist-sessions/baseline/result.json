@@ -1,0 +1,110 @@
+{
+ "duration_api_ms": 104651,
+ "stop_reason": "end_turn",
+ "session_id": "ca00646a-e60a-41f3-9bae-e3223a031909",
+ "total_cost_usd": 0.5339902000000001,
+ "usage": {
+  "input_tokens": 22,
+  "cache_creation_input_tokens": 31332,
+  "cache_read_input_tokens": 427731,
+  "output_tokens": 9885,
+  "output_tokens_details": {
+   "thinking_tokens": 2354
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 31332,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 941,
+    "cache_read_input_tokens": 46749,
+    "cache_creation_input_tokens": 369,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 369
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 22,
+   "outputTokens": 9885,
+   "cacheReadInputTokens": 427731,
+   "cacheCreationInputTokens": 31332,
+   "webSearchRequests": 0,
+   "costUSD": 0.5339902000000001,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 2354,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [
+  {
+   "tool_name": "PowerShell",
+   "tool_use_id": "toolu_01KodHDoQDKQfdYTFX2kjxtr",
+   "tool_input": {
+    "command": "& C:\\Users\\LENOVO2\\AppData\\Roaming\\uv\\tools\\laya\\Scripts\\python.exe -m pytest proxy/test_sessions.py -q",
+    "description": "Run session persistence tests"
+   }
+  }
+ ],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 19,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "Routing decisions now survive a proxy restart. The 15 tests in `proxy/test_sessions.py` pass with the command you gave, and `router_proxy.py` imports fine with a missing sessions file. I didn't start a live proxy and send it real requests.\n\n**What I changed**\n- **New `proxy/session_store.py`.** The load/save code lives here, apart from the proxy, so the tests don't have to import fastapi or laya.\n  - **Loading:** if the file is missing, unreadable, not valid JSON or not an object, the proxy prints a warning and starts with no sessions. It also drops any entry without a numeric `ts` or older than 24 hours.\n  - **Crash-safe saving:** each save writes a temp file in the same folder, flushes it to disk, then swaps it in for the old file in one step. If anything fails partway, the temp file is deleted and the old file is left untouched.\n  - **Not blocking:** the dict is turned into JSON on the event loop, but the disk write runs in a background thread. A lock keeps writes in order, so an older version can't overwrite a newer one. A failed write only prints a warning; the request carries on.\n- **`router_proxy.py`:**\n  - The path is `sessions.json` next to the proxy unless `ROUTER_SESSIONS_FILE` is set.\n  - Sessions are loaded at startup.\n  - A new session gets a `ts` and is saved straight away. An upgrade refreshes `ts` and saves.\n  - Nothing else about routing changed.\n- **`.gitignore`:** I added `proxy/sessions.json`.\n\n**Two things I added beyond what you asked for**\n- **Saving after a re-evaluation that doesn't upgrade.** That step changes `turns`. Without saving it, the first request after a restart would re-evaluate a message that was already evaluated, which could upgrade the tier when an unrestarted proxy wouldn't have. `ts` is not refreshed in this case.\n- **Saving after `clear_sessions` on `/router/config`.** Otherwise a restart would bring back the sessions you just cleared.\n\n**Expiry detail:** `ts` is the time of the last add or upgrade, not of the last request. A session that stays at the same tier for more than 24 hours is forgotten at the next restart and gets routed again from scratch.\n\n**Tests** cover a missing file, save and reload, saves staying in order, six kinds of corrupt file, invalid entries, expiry exactly at the 24-hour mark, a crash just before the swap and during the write (old file intact, no temp file left), a failed save not raising, and the write running off the event loop.\n\nSeparately, the Gmail, Google Calendar and Google Drive connectors need to be authorized in your claude.ai connector settings before they can be used. They weren't needed for this task.",
+ "ttft_ms": 2875,
+ "type": "result",
+ "duration_ms": 113468,
+ "uuid": "d5dd6d31-5505-4422-900e-8d062cfe7bd8",
+ "ttft_stream_ms": 2244,
+ "time_to_request_ms": 152,
+ "first_content_frame_ms": 2244,
+ "queued_turn_count": 0,
+ "result_index": 0,
+ "wall_s": 118,
+ "config": "baseline",
+ "model": "opus"
+}

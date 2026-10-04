@@ -58,8 +58,8 @@ prompt = task if a.config == "baseline" else f"/wf {task}"
 model = a.baseline_model if a.config == "baseline" else a.main_model
 tools = "Agent,Read,Edit,Write,Grep,Glob,Bash" if a.config != "baseline" else "Read,Edit,Write,Grep,Glob,Bash"
 t0 = time.perf_counter()
-p = run(["claude", "-p", prompt, "--model", model, "--allowedTools", tools, "--permission-mode", "acceptEdits",
-         "--max-turns", str(a.max_turns), "--output-format", "json"], cwd=work, env=env, stdin=subprocess.DEVNULL, timeout=3000, shell=True)
+p = run([shutil.which("claude") or "claude", "-p", prompt, "--model", model, "--allowedTools", tools, "--permission-mode", "acceptEdits",
+         "--max-turns", str(a.max_turns), "--output-format", "json"], cwd=work, env=env, stdin=subprocess.DEVNULL, timeout=3000)
 wall = round(time.perf_counter() - t0)
 try:
     res = json.loads(p.stdout)

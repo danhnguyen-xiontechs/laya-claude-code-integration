@@ -1,0 +1,7 @@
+In proxy/router_proxy.py the `sessions` dict (session id -> chosen tier and model) lives only in memory, so restarting the proxy forgets every routing decision. Make it persistent:
+- Store it in a JSON file next to the proxy (default sessions.json; the path can be overridden with the environment variable ROUTER_SESSIONS_FILE). Load it at startup and save it whenever a session is added or upgraded.
+- Writes must be crash-safe (never leave a half-written file behind) and must not block the event loop for long.
+- A missing or corrupt file must never stop the proxy from starting.
+- Each session gets a timestamp; sessions older than 24 hours are dropped when the file is loaded.
+- Do not change routing behaviour in any other way.
+Add pytest tests in proxy/test_sessions.py covering load, save, a corrupt file, expiry and the atomic write. Run them with C:\Users\LENOVO2\AppData\Roaming\uv\tools\laya\Scripts\python.exe -m pytest proxy/test_sessions.py -q and make sure they pass before you finish.
