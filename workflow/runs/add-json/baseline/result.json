@@ -1,0 +1,101 @@
+{
+ "duration_api_ms": 57895,
+ "stop_reason": "end_turn",
+ "session_id": "da7cfe15-915b-48e7-878a-3c24fbbe773a",
+ "total_cost_usd": 0.24018300000000004,
+ "usage": {
+  "input_tokens": 14,
+  "cache_creation_input_tokens": 17060,
+  "cache_read_input_tokens": 195035,
+  "output_tokens": 3232,
+  "output_tokens_details": {
+   "thinking_tokens": 306
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 17060,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 526,
+    "cache_read_input_tokens": 32560,
+    "cache_creation_input_tokens": 286,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 286
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {
+   "inputTokens": 14,
+   "outputTokens": 3232,
+   "cacheReadInputTokens": 195035,
+   "cacheCreationInputTokens": 17060,
+   "webSearchRequests": 0,
+   "costUSD": 0.24018300000000004,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 306,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "subagent_stats": {
+  "spawned": 0,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 0
+  },
+  "started_in_background": 0,
+  "max_depth": 0,
+  "spawned_by_subagents": 0,
+  "completed": 0,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {}
+ },
+ "is_error": false,
+ "num_turns": 9,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "`proxy/router_log.py` now has a `--json` flag that prints the per-session summary as a JSON array. Without the flag, the text output is unchanged.\n\n**What changed:**\n- A new `show_json()` function next to `show()`. It gives one object per session with these fields: `session` (the full id), `first`, `last`, `requests`, `errors`, `decision`, `models` (model name \u2192 count) and `tokens` (the four totals).\n- `-n` works with `--json` too, so `--json -n 5` gives the last 5 sessions.\n- The header comment lists the new usage line.\n\n**Choices I made:**\n- If a session has no Laya decision, `decision` is `null`. The text report prints the placeholder `- (chi co call phu)` instead.\n- The task text (`task:` line) isn't in the JSON because it wasn't on your list. It would be a one-line addition if you want it.\n- `--watch` still prints its live lines as plain text, even with `--json`.\n\n**How I checked it:** There was no existing `proxy/decisions.jsonl`, so nothing real was overwritten. I created a sample with three sessions covering a successful request, a failed request, a bad JSON line, a session with no decision and a fallback decision.\n- I saved the text output (all sessions and `-n 2`) before editing and compared it after: both were identical.\n- `--json` gave valid JSON with the correct counts and totals, and `--json -n 1` returned only the last session.\n- Afterwards I deleted the sample file and the saved outputs. `git status` shows only `proxy/router_log.py` as modified, and nothing is committed.",
+ "ttft_ms": 9603,
+ "type": "result",
+ "duration_ms": 65646,
+ "uuid": "77647234-9adc-452b-813d-5af3063ba158",
+ "ttft_stream_ms": 9128,
+ "time_to_request_ms": 173,
+ "first_content_frame_ms": 9129,
+ "queued_turn_count": 0,
+ "result_index": 0,
+ "wall_s": 71,
+ "config": "baseline",
+ "model": "opus"
+}

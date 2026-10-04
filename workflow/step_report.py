@@ -135,6 +135,10 @@ def render(r: dict) -> str:
     if hooked:
         t = sorted(s["decision"]["total_ms"] for s in hooked)
         L.append(f"Hook time per subagent call: median {t[len(t) // 2]} ms, max {t[-1]} ms (n={len(t)}).")
+    failed = [s for s in r["steps"] if s["decision"].get("error")]
+    if failed:
+        L.append(f"WARNING: {len(failed)} step(s) had NO Laya decision (hook error or timeout, so the step ran on the default model): "
+                 + ", ".join(f"{s['agent']} ({s['decision']['error'][:40]})" for s in failed) + ". This run is not a valid Laya run.")
     mism = [s for s in r["steps"] if s["decision"].get("tier") and tier_of(s["actual_model"] or "") != s["decision"]["tier"]]
     if mism:
         L.append(f"WARNING: {len(mism)} step(s) ran on a different model than the hook chose: " + ", ".join(s["agent"] for s in mism))

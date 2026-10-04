@@ -1,0 +1,49 @@
+diff --git a/proxy/router_log.py b/proxy/router_log.py
+index 97231f6..e00f5fc 100644
+--- a/proxy/router_log.py
++++ b/proxy/router_log.py
+@@ -2,6 +2,7 @@
+ # Chay:  python router_log.py            -> tom tat moi session
+ #        python router_log.py -n 5       -> 5 session gan nhat
+ #        python router_log.py --watch    -> in tiep khi co quyet dinh moi (Ctrl+C de dung)
++#        python router_log.py --json     -> JSON array
+ import argparse, json, sys, time
+ from collections import OrderedDict
+ from pathlib import Path
+@@ -51,12 +52,26 @@ def show(sessions, n):
+               f"cache_new={t['cache_creation_input_tokens']}  out={t['output_tokens']}")
+ 
+ 
++def to_json(sessions, n):
++    items = list(sessions.items())[-n:] if n else list(sessions.items())
++    return [{"session": sid, "first": s["first"], "last": s["last"],
++             "requests": s["requests"], "errors": s["errors"],
++             "decision": s.get("decision"), "models": dict(s["models"]),
++             "tokens": dict(s["tok"])} for sid, s in items]
++
++
+ if __name__ == "__main__":
+     ap = argparse.ArgumentParser()
+     ap.add_argument("-n", type=int, default=0, help="chi in N session gan nhat")
+     ap.add_argument("--watch", action="store_true")
++    ap.add_argument("--json", action="store_true", help="in JSON array thay vi text")
+     a = ap.parse_args()
+-    show(load(), a.n)
++    if a.json and a.watch:
++        ap.error("--json khong dung chung voi --watch")
++    if a.json:
++        print(json.dumps(to_json(load(), a.n), ensure_ascii=False, indent=2))
++    else:
++        show(load(), a.n)
+     if a.watch:
+         seen = LOG.stat().st_size if LOG.exists() else 0
+         print("\n... dang theo doi (Ctrl+C de dung)")
+
+--- untracked ---
+.claude/agents/wf-explore.md
+.claude/agents/wf-implement.md
+.claude/agents/wf-plan.md
+.claude/agents/wf-review.md
+.claude/agents/wf-verify.md
+.claude/commands/wf.md
+.claude/settings.local.json

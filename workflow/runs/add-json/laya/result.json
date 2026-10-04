@@ -1,0 +1,125 @@
+{
+ "duration_api_ms": 120093,
+ "stop_reason": "end_turn",
+ "session_id": "daeb53d9-b4aa-4965-a810-f1c586eb2212",
+ "total_cost_usd": 0.4939974000000001,
+ "usage": {
+  "input_tokens": 4,
+  "cache_creation_input_tokens": 1052,
+  "cache_read_input_tokens": 41528,
+  "output_tokens": 673,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 1052,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 4,
+    "output_tokens": 673,
+    "cache_read_input_tokens": 41528,
+    "cache_creation_input_tokens": 1052,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 1052
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "modelUsage": {
+  "claude-sonnet-5-5": {
+   "inputTokens": 52,
+   "outputTokens": 14219,
+   "cacheReadInputTokens": 431700,
+   "cacheCreationInputTokens": 51492,
+   "webSearchRequests": 0,
+   "costUSD": 0.394813,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 253,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-opus-5-5": {
+   "inputTokens": 8,
+   "outputTokens": 1720,
+   "cacheReadInputTokens": 27687,
+   "cacheCreationInputTokens": 11843,
+   "webSearchRequests": 0,
+   "costUSD": 0.09918439999999999,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 32,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "origin": {
+  "kind": "task-notification",
+  "producer": "session-task"
+ },
+ "subagent_stats": {
+  "spawned": 5,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 5
+  },
+  "started_in_background": 5,
+  "max_depth": 1,
+  "spawned_by_subagents": 0,
+  "completed": 5,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {
+   "wf-explore": 1,
+   "wf-plan": 1,
+   "wf-implement": 1,
+   "wf-verify": 1,
+   "wf-review": 1
+  }
+ },
+ "is_error": false,
+ "num_turns": 1,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "`proxy/router_log.py` now has a `--json` flag, and the check against a sample log passed.\n\n**What changed** (only this file; the diff is 16 lines added, 1 removed):\n- A new `to_json(sessions, n)` returns a list with one object per session. Each object has `session`, `first`, `last`, `requests`, `errors`, `decision` (null if there is no Laya call), `models` (a model-to-count map) and `tokens` (the four totals).\n- `--json` prints that list as indented JSON. Without it, `show(load(), a.n)` runs as before.\n- `-n` limits the sessions in JSON mode the same way as in text mode.\n- `--json` together with `--watch` is rejected with an argparse error (exit code 2). You didn't ask for this; I added it so the watch loop can't mix text into the JSON.\n- The header comment has a new usage line.\n\n**Verification:**\n- I ran the script against a sample `decisions.jsonl` with two sessions, one non-200 response and two answering models.\n- Text output is byte-identical to the original, both with no flags and with `-n 1`.\n- The JSON values matched what I expected for both sessions.\n- `-n 1 --json` returns only the last session.\n- With the log missing, `--json` prints `[]`.\n- The sample file and the temporary copy of the original script were removed. `git status` shows only the modified `proxy/router_log.py`, plus the `.claude/` folder that was already untracked.\n\n**Review:** I found no blocking issues. Two minor notes were not acted on:\n- `ensure_ascii=False` could raise an encoding error on a non-UTF-8 console if a session id were non-ASCII. Session ids are normally ASCII uuids. Dropping that argument would remove the risk.\n- The `-n` slicing logic is duplicated between `show` and `to_json`.\n\nThe `--json` flag also fits the existing benchmark check for it (task m2 in `benchmark/tasks.json`), and the rename task (e1) should be unaffected, though I didn't run either.",
+ "ttft_ms": 5331,
+ "type": "result",
+ "duration_ms": 5369,
+ "uuid": "6ed89cba-ff04-42ce-9089-f3d9bdb24d55",
+ "ttft_stream_ms": 792,
+ "time_to_request_ms": 37,
+ "first_content_frame_ms": 792,
+ "queued_turn_count": 0,
+ "result_index": 5,
+ "wall_s": 148,
+ "config": "laya",
+ "model": "sonnet"
+}

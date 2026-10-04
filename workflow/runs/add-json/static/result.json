@@ -1,0 +1,139 @@
+{
+ "duration_api_ms": 236011,
+ "stop_reason": "end_turn",
+ "session_id": "2ae5e154-bd8e-4f56-92f9-d29226e76a01",
+ "total_cost_usd": 0.6338866000000001,
+ "usage": {
+  "input_tokens": 4,
+  "cache_creation_input_tokens": 915,
+  "cache_read_input_tokens": 42259,
+  "output_tokens": 553,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 915,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "not_available",
+  "iterations": [
+   {
+    "input_tokens": 4,
+    "output_tokens": 553,
+    "cache_read_input_tokens": 42259,
+    "cache_creation_input_tokens": 915,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 915
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "modelUsage": {
+  "claude-sonnet-5-5": {
+   "inputTokens": 56,
+   "outputTokens": 8912,
+   "cacheReadInputTokens": 490357,
+   "cacheCreationInputTokens": 51273,
+   "webSearchRequests": 0,
+   "costUSD": 0.3565679,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 270,
+   "canonicalModel": "claude-sonnet-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-haiku-4-5-20251001": {
+   "inputTokens": 260,
+   "outputTokens": 9689,
+   "cacheReadInputTokens": 428861,
+   "cacheCreationInputTokens": 40684,
+   "webSearchRequests": 0,
+   "costUSD": 0.14244609999999996,
+   "contextWindow": 200000,
+   "maxOutputTokens": 32000,
+   "thinkingTokens": 2317,
+   "canonicalModel": "claude-haiku-4-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  },
+  "claude-opus-5-5": {
+   "inputTokens": 6,
+   "outputTokens": 4282,
+   "cacheReadInputTokens": 13018,
+   "cacheCreationInputTokens": 9321,
+   "webSearchRequests": 0,
+   "costUSD": 0.1348726,
+   "contextWindow": 1000000,
+   "maxOutputTokens": 128000,
+   "thinkingTokens": 1224,
+   "canonicalModel": "claude-opus-5-5",
+   "provider": "firstParty",
+   "costBasis": "list"
+  }
+ },
+ "permission_denials": [],
+ "terminal_reason": "completed",
+ "fast_mode_state": "off",
+ "fast_mode_disabled_reason": "sdk_opt_in_required",
+ "origin": {
+  "kind": "task-notification",
+  "producer": "session-task"
+ },
+ "subagent_stats": {
+  "spawned": 5,
+  "requested": {
+   "background": 0,
+   "foreground": 0,
+   "unset": 5
+  },
+  "started_in_background": 5,
+  "max_depth": 1,
+  "spawned_by_subagents": 0,
+  "completed": 5,
+  "failed": 0,
+  "killed": {
+   "parent": 0,
+   "user": 0,
+   "system": 0
+  },
+  "refused": {
+   "depth_limit": 0,
+   "concurrency_limit": 0,
+   "budget": 0
+  },
+  "by_type": {
+   "wf-explore": 1,
+   "wf-plan": 1,
+   "wf-implement": 1,
+   "wf-verify": 1,
+   "wf-review": 1
+  }
+ },
+ "is_error": false,
+ "num_turns": 1,
+ "subtype": "success",
+ "api_error_status": null,
+ "result": "`proxy/router_log.py` now has a `--json` flag. With it, the script prints a JSON array with one object per session instead of the text report. Without the flag, the output is unchanged.\n\n**What changed:** only `proxy/router_log.py` (13 lines added, 1 removed).\n- A new `show_json()` sits next to `show()`, and `show()` and the watch loop are untouched.\n- Each object has `session`, `first`, `last`, `requests`, `errors`, `request`, `decision`, `models`, `tokens`.\n  - `session`, `first` and `last` are the full values, not the shortened ones the text report shows.\n  - `decision` and `request` are `null` for a session with no routed record.\n  - `tokens` holds the four totals under their full names.\n- `-n` slices the same way as in the text report.\n- Using `--json` together with `--watch` is rejected with an argparse error (exit code 2), since watch output is a text stream.\n\n**Verification**, run on a temporary sample `decisions.jsonl` with two sessions and one junk line:\n- The no-flag output and the `-n 1` output match the pre-edit baselines byte for byte.\n- `--json` gives valid JSON with two objects. The request counts, error count, model counts and token totals match the sample.\n- `--json -n 1` returns only the last session.\n- The sample and the temporary baseline files are deleted. `git status` shows only the modified script plus the `.claude/` folder that was already untracked.\n\n**Review:** no defects found. One note, not fixed: the objects include a `request` field (the task text) that you didn't list. It mirrors the \"task:\" line in the text report, so I left it in. Say if you want it dropped.",
+ "ttft_ms": 5335,
+ "type": "result",
+ "duration_ms": 5348,
+ "uuid": "d25eebbf-4f76-4e78-a662-d119e5799b3b",
+ "ttft_stream_ms": 1126,
+ "time_to_request_ms": 47,
+ "first_content_frame_ms": 1126,
+ "queued_turn_count": 0,
+ "result_index": 5,
+ "wall_s": 271,
+ "config": "static",
+ "model": "sonnet"
+}
