@@ -190,17 +190,25 @@ Chi tiết: `benchmark/live/full-20261001-1717/report.md` (sinh bằng `benchmar
 - **Chi phí tính lại** (`benchmark/estimate_cost.py`, ước tính, không phải từ log thô vì `decisions.jsonl` của lần chạy không có trên máy ADMIN; token chia theo tỉ lệ số request mỗi model, giá giả định haiku:sonnet:opus = 1:3:5, cache-read 0.1x, cache-write 1.25x, output 5x): cố định Sonnet 1.00x, **Laya 1.43x**, LLM routing 1.71x, cố định Opus 2.13x. Tổng của ba dòng đầu khớp với `summary.json` (3552 / 5064 / 6078), nên đơn vị của summary là công thức này; dòng `fixed_opus` trong summary (824) sai, đúng ra khoảng 7580. Phần chia theo model của summary không khớp ước tính này, nên số theo từng tầng chưa chắc. Hai run `fixed_opus` h4, h5 lỗi sau vài giây (nghi rate limit), chưa chạy lại.
 - **Cỡ mẫu:** 15 task do Claude viết, 1 lần chạy mỗi chiến lược, nên chênh 14 và 15 không có ý nghĩa thống kê.
 
-## 9. Việc tiếp theo
+## 9. Trạng thái hiện tại và việc dang dở (cập nhật 2026-10-04, chuyển sang máy khác)
 
-0. **Khuyến nghị tạm (chờ tính lại chi phí): pilot further.** Chất lượng Laya đạt mức cố định Sonnet trên 15 task, nhưng routing chưa tiết kiệm được so với cố định Sonnet vì mất cache khi đổi model. Nếu tính lại chi phí vẫn cao hơn cố định Sonnet thì lợi ích chỉ còn ở việc không phải chọn tay.
-1. (Đã làm bản thật ở mục 8b.) **Có upstream** (gateway X-Tek hoặc API key): đặt `ROUTER_UPSTREAM`, chạy proxy thật với Claude Code, xác nhận request đổi model không bị lỗi tham số; chạy D thật (token, chi phí, chất lượng câu trả lời, số lần chuyển model); thêm chiến lược LLM routing (Haiku) vào `run_benchmark.py`, có thể dùng chính proxy với `ROUTER_MODE=off`.
-2. Thay giá giả định 1:3:5 bằng giá thật của gateway.
-3. Thay criteria Phase 1 của plan gốc (file plan ở `C:\Users\LENOVO2\Downloads`) rồi chạy lại A và D. Làm được ngay trên LENOVO2.
-3b. Commit phần của LENOVO2 vào repo: bỏ dòng `HF_HOME` ghi cứng (đã sửa, chưa commit), thêm benchmark hiệu năng CPU vào thư mục riêng, thêm hai file plan.
-4. Dataset thật 50–100 task từ ADO; nhãn theo tiêu chí kỹ thuật thống nhất.
-5. Nhận biết task mới trong session; xử lý `/compact`; lưu session ra file.
-6. Đo GPU (RTX 3070) với torch CUDA; test tiếng Việt / checkpoint multilingual.
-7. Hỏi security xem dữ liệu có được gửi ra ngoài không, để biết có thử Jev được không.
+**Hướng đang theo đuổi:** chọn model **theo từng bước** của một task bằng subagent + hook (mục 11), thay cho routing theo request bằng proxy (mục 6-8b, đã cho thấy tốn hơn cố định Sonnet: Laya 1.43x). Nhãn do Claude gắn (60 prompt, ADO 122 task) **không phải ground truth**; ground truth phải là chạy thật một task thật và chính người dùng review.
+
+**Dang dở, theo thứ tự làm:**
+1. **Chạy một task thật** (mục 11, bước 4 của plan): người dùng chọn task + repo (cỡ vừa, có test/build). Cài workflow: `workflow/setup_workflow.ps1 -Target <repo>`. Chạy 3 cấu hình trong 3 bản sao riêng: `LAYA_STEP_MODE=static`, `laya`, và baseline một luồng Opus. Dùng `workflow/step_report.py <session_id> --out runs/<ten>/report.md --review runs/<ten>/review.md`; **người dùng điền review.md** (model đủ / thừa / thiếu từng bước + đánh giá diff). Cần `laya-serve` ở cổng 8000 cho chế độ laya. Xem thanh Usage trước khi chạy (hai cửa sổ 5 giờ đã cạn ngày 2026-10-01, xem PROGRESS-2026-10-01.md và mục quota bên dưới).
+2. **Mốc phải thắng:** bảng model tĩnh theo loại bước (explore=haiku, plan=opus, implement=sonnet, verify=haiku, review=sonnet). Laya chỉ có giá trị nếu phân biệt được bước dễ/khó **trong cùng loại bước** tốt hơn bảng này. Smoke test mới cho Laya chọn Sonnet cả 5 bước.
+3. **Chi phí chia bước:** task tầm thường tốn khoảng 3 lần một luồng Sonnet (334 vs 115 đơn vị quy đổi, một lần chạy). Cần task đủ lớn để thấy chia bước có lời không; xem cột chi phí trong báo cáo từng bước.
+4. Lỗi phụ cần xử lý khi chạy `-p` tự động: subagent chạy nền, không hỏi được quyền, lệnh ghép `cd ... && git diff` bị từ chối (cho phép `Bash` rộng trong bản sao dùng một lần).
+5. Commit và đồng bộ: cả hai máy (LENOVO2, ADMIN) dùng chung repo; đường dẫn Python của tool Laya và `HF_HOME` khác nhau theo máy (mục đầu file).
+
+**Chưa làm / chưa rõ:**
+- Gateway X-Tek (upstream thật) và giá thật để thay giá giả định 1:3:5.
+- Re-label một mẫu ADO bằng dev thật; test tiếng Việt (checkpoint multilingual xếp gần như mọi câu vào haiku, đã thấy 3/8 đúng); GPU (RTX 3070 trên ADMIN, chưa thử CUDA).
+- Task mới trong cùng hội thoại, lưu session ra file, subagent đi qua proxy thế nào: chỉ liên quan hướng proxy, đang gác lại.
+- Hỏi security xem dữ liệu có được gửi ra ngoài không (để biết có thử Jev được không).
+- Khuyến nghị hiện tại: **pilot further**, ưu tiên Laya như **gợi ý cho người duyệt** (ado/report.md) hơn là router tự động.
+
+**Quota (bài học 2026-10-01):** hai lần chạm giới hạn session (17:58 reset 18:40; 21:33 reset 00:00). Đọc log: chat dùng Fable 5.1 với ngữ cảnh khoảng 316k token mỗi lượt chiếm khoảng một nửa lượng quy đổi; benchmark live tốn 23.6k đơn vị trong đó chiến lược luôn-Opus 32%. Có lượng dùng từ nơi khác không thấy trong log (cửa sổ session bắt đầu 13:40 và 19:00 mà máy này không có hoạt động). Quota là của cả tài khoản. Trước mỗi lần chạy lớn: xem Usage, đặt `--max-turns` thấp, không chạy baseline Opus đầy đủ.
 
 ## 10. Lưu ý khi làm việc
 
@@ -210,3 +218,18 @@ Chi tiết: `benchmark/live/full-20261001-1717/report.md` (sinh bằng `benchmar
 - `python` không có trên PATH; dùng Python của tool Laya (mục 3), đặt `PYTHONIOENCODING=utf-8` để in bảng.
 - Proxy in-process giữ một lock inference; benchmark dùng cổng 8787 của proxy, không cần `laya-serve`.
 - Người dùng giao tiếp bằng tiếng Việt; báo cáo gửi team viết tiếng Anh, ngắn gọn dạng gạch đầu dòng.
+
+## 11. Workflow theo bước: subagent + hook (2026-10-02, LENOVO2)
+
+Yêu cầu mới của người dùng: (1) nhãn do Claude/Fable gắn (60 prompt, ADO) **không phải ground truth**, ground truth phải là chạy thật một task thật và chính người dùng review; (2) chọn model theo cả work item là quá thô, cần **đổi model giữa các bước trong cùng một task** (người dùng nghiêng về subagent của Claude Code, chưa chốt); (3) hỏi compact trước khi gọi Laya có lâu không.
+
+Đã làm (thư mục `workflow/`, xem `workflow/README.md`):
+- Cơ chế xác nhận thật: hook `PreToolUse` (matcher `Agent|Task`) chạy cả ở `claude -p`; `tool_input` có `description`, `prompt`, `subagent_type`, `run_in_background`; trả `updatedInput` với `model` thì model của subagent đổi (đối chứng: không hook thì kế thừa Sonnet). Liên kết hook <-> transcript luồng chính <-> transcript subagent bằng `tool_use_id` (`meta.json` của subagent có `toolUseId`; `toolUseResult` trong transcript chính có `resolvedModel`, `totalTokens`, `totalDurationMs`).
+- `hooks/laya_step_router.py` (3 chế độ `LAYA_STEP_MODE`: off / static / laya; fail-open; chỉ chạm subagent `wf-*`), `hooks/laya_common.py` (QUESTION, regex, compact state; **proxy cũng import từ đây**, đã kiểm hành vi không đổi), 5 agent `agents/wf-*.md`, lệnh `commands/wf.md`, `setup_workflow.ps1` (cài/gỡ, idempotent, merge `settings.local.json`; đã bắt và sửa lỗi BOM của PowerShell 5.1), `step_report.py` (báo cáo theo bước + mẫu `review.md`).
+- Smoke test `/wf` trên task đổi tên hàm trong bản sao repo: 5 bước chạy, Laya chọn Sonnet cho cả 5 (p 0.50-0.62), model thật khớp, diff đúng.
+- Câu hỏi 3: compact 0.03 ms; Laya 450-630 ms (brief ngắn) tới 750-1230 ms (brief 500-970 ký tự do luồng chính viết); cộng 0.5-1.2 s mỗi lần gọi subagent.
+- Chi phí: task tầm thường tốn khoảng 3 lần so với một luồng Sonnet (334 vs 115 đơn vị quy đổi), một lần chạy.
+
+Chưa làm: chạy một **task thật** của X-Tek (người dùng chọn task + repo, tự review `runs/<ten>/review.md`); so ba cấu hình static / laya / baseline Opus; chưa có bằng chứng Laya phân biệt bước dễ/khó tốt hơn bảng tĩnh theo loại bước (mốc bắt buộc phải thắng).
+
+Bẫy gặp phải: Git Bash đổi `/wf` thành `C:/Program Files/Git/wf` (dùng `MSYS_NO_PATHCONV=1`); subagent ở `-p` chạy nền và không hỏi được quyền, lệnh ghép `cd ... && git diff` bị từ chối với quy tắc Bash hẹp; `proxy` giờ phụ thuộc `workflow/hooks/laya_common.py`.

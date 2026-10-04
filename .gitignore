@@ -6,3 +6,5 @@ dist/
 laya-installer.zip
 serve.py.patched
 benchmark/results/server.log
+workflow/hooks/step_decisions.jsonl
+workflow/hooks/probe_log.jsonl

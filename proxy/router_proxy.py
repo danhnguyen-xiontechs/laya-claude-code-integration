@@ -11,7 +11,7 @@
 #   ROUTER_ALLOW_API_KEY 1 de cho request mang x-api-key di qua (mac dinh tu choi: tranh tinh tien theo token)
 #   ROUTER_MODEL_HAIKU / ROUTER_MODEL_SONNET / ROUTER_MODEL_OPUS   model id cua tung tang
 #   ROUTER_LOG           file log quyet dinh (JSONL), mac dinh decisions.jsonl canh file nay
-import asyncio, hashlib, json, os, re, time
+import asyncio, hashlib, json, os, re, sys, time
 from pathlib import Path
 
 os.environ.setdefault("LAYA_DEVICE", "cpu")
@@ -23,6 +23,10 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 from starlette.background import BackgroundTask
 from laya import Router
 
+# Phan dung chung voi hook chon model theo buoc (workflow/hooks): cau hoi, criteria, regex, compact state.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "workflow" / "hooks"))
+from laya_common import FILE_RE, MAX_REQUEST_CHARS, QUESTION, TIER_RANK, TRACE_RE, compact_state as _compact  # noqa: E402
+
 UPSTREAM = os.environ.get("ROUTER_UPSTREAM", "").rstrip("/")
 PORT = int(os.environ.get("ROUTER_PORT", "8787"))
 MIN_PROB = float(os.environ.get("ROUTER_MIN_PROB", "0.5"))
@@ -33,7 +37,6 @@ MODELS = {
     "opus": os.environ.get("ROUTER_MODEL_OPUS", "claude-opus-5"),  # ID Claude Code dang gui (ban 1m), da chay that
 }
 FALLBACK = "sonnet"
-TIER_RANK = {"haiku": 0, "sonnet": 1, "opus": 2}
 LAYA_CHECKPOINT = os.environ.get("ROUTER_LAYA_CHECKPOINT", "english")  # "auto" = de Laya tu chon theo ngon ngu
 if LAYA_CHECKPOINT == "auto":
     LAYA_CHECKPOINT = None
@@ -41,20 +44,7 @@ MAX_OUTPUT = {"haiku": 64000}  # gioi han output token cua model dich (quan sat 
 REEVAL = os.environ.get("ROUTER_REEVAL", "1") == "1"  # danh gia lai o moi cau moi cua nguoi dung, chi nang tang
 ALLOW_API_KEY = os.environ.get("ROUTER_ALLOW_API_KEY") == "1"
 LOG = Path(os.environ.get("ROUTER_LOG", Path(__file__).parent / "decisions.jsonl"))
-MAX_REQUEST_CHARS = 2000  # giu compact state nho (muc tieu duoi ~250 token)
 
-QUESTION = {"model": {
-    "type": "choice",
-    "instructions": "Which model tier should handle this coding request?",
-    "criteria": {
-        "haiku": "Trivial, mechanical or lookup task: a small edit in one file, formatting, renaming, a short factual question. No design or debugging needed.",
-        "sonnet": "Standard development task: implement a well defined feature, fix a localized bug, write tests or refactor within a few files.",
-        "opus": "Hard task: architecture or system design, large migration, root cause analysis across many files or services, security or performance investigation.",
-    },
-}}
-
-FILE_RE = re.compile(r"[\w./\\-]+\.(?:py|js|jsx|ts|tsx|cs|java|go|rs|rb|php|sql|json|ya?ml|md|css|html|sh|ps1|toml|xml)\b", re.I)
-TRACE_RE = re.compile(r"Traceback \(most recent call last\)|^\s+at [\w.$<>]+\(|Exception\b.*:|\bError: .+\n\s+at ", re.M)
 HOP_HEADERS = {"host", "content-length", "connection", "transfer-encoding", "keep-alive"}
 
 app = FastAPI(title="Laya routing proxy")
@@ -88,9 +78,7 @@ def session_key(request: Request, body: dict, texts: list[str]) -> str:
 
 
 def compact_state(texts: list[str]) -> dict:
-    req = texts[-1] if texts else ""
-    return {"request": req[:MAX_REQUEST_CHARS], "files_mentioned": str(len(set(FILE_RE.findall(req)))),
-            "has_stack_trace": "yes" if TRACE_RE.search(req) else "no", "conversation_turns": str(len(texts))}
+    return _compact(texts[-1] if texts else "", turns=len(texts))
 
 
 async def decide_llm(state: dict, headers: dict) -> dict:
