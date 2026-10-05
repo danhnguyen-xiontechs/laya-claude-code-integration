@@ -1,0 +1,1 @@
+{"hooks": {"PreToolUse": [{"matcher": "Read", "hooks": [{"type": "command", "command": "\"C:\\Users\\ADMIN\\AppData\\Roaming\\uv\\tools\\laya\\Scripts\\python.exe\" \"D:\\XionTechs\\Laya-router-research\\research\\ab-1697\\read_gate.py\"", "timeout": 15}]}]}}

@@ -1,0 +1,50 @@
+{
+ "config": "launcher",
+ "run": 2,
+ "base": "6252ba6d2115881600ebbf8c441a8acbe483c8d6",
+ "launcher": {
+  "intent": "bugfix",
+  "prob": 0.6013,
+  "probs": {
+   "bugfix": 0.6013,
+   "feature": 0.1522,
+   "refactor": 0.0844,
+   "docs": 0.0238,
+   "question": 0.0116,
+   "infra": 0.1268
+  },
+  "profile": {
+   "tools": [
+    "Read",
+    "Edit",
+    "Write",
+    "Grep",
+    "Glob",
+    "Bash"
+   ],
+   "strict_mcp": true,
+   "no_skills": true
+  },
+  "ms": 1205
+ },
+ "extra_args": [
+  "--tools",
+  "Read,Edit,Write,Grep,Glob,Bash",
+  "--strict-mcp-config",
+  "--mcp-config",
+  "D:\\XionTechs\\Laya-router-research\\research\\ab-1697\\runs\\launcher-2\\mcp_empty.json",
+  "--disable-slash-commands"
+ ],
+ "wall_s": 192,
+ "changed_files": [
+  "ai_agents/flows/assignment_results.py",
+  "ai_agents/flows/assignment_rubric.py",
+  "tests/unit/flows/test_assignment_results_routing.py",
+  "tests/unit/flows/test_assignment_rubric_routing.py"
+ ],
+ "semantic": {
+  "C1_results_excludes_rubric": true,
+  "C2_rubric_not_self_excluded": true,
+  "pass": true
+ }
+}
