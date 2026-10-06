@@ -8,3 +8,4 @@ serve.py.patched
 benchmark/results/server.log
 workflow/hooks/step_decisions.jsonl
 workflow/hooks/probe_log.jsonl
+hooks/cache_expiry_gate.log.jsonl

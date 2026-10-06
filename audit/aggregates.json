@@ -1,0 +1,29 @@
+{
+ "total_cost": 295.4399,
+ "opportunities": {
+  "Session continuity": 46.23776000000001,
+  "Effort / thinking": 7.055955,
+  "Review gate": 16.60334945,
+  "Tool output gate": 4.438567950000002,
+  "Documentation gate": 6.4256255
+ },
+ "non_laya": {
+  "Cache expiry (not a Laya decision)": 36.731300000000005,
+  "Subagent fan-out (not a Laya decision)": 133.26009965
+ },
+ "output_cost": 47.0397,
+ "think_share": 0.1876206057872616,
+ "tool_carry": 44.854486200000004,
+ "dead_cost": 46.23776000000001,
+ "expiry_events": 17,
+ "flagged_switches": 39,
+ "candidates": 131,
+ "labels": {
+  "SAME_TASK": 42,
+  "NEW_TASK": 2,
+  "UNCLEAR": 6
+ },
+ "sub_cost": 133.26009965,
+ "review_cost": 16.60334945,
+ "wf_cost": 32.493142
+}

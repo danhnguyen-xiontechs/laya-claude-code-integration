@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:/Users/ADMIN/AppData/Roaming/uv/tools/laya/Scripts/python.exe\" \"D:/XionTechs/Laya/hooks/cache_expiry_gate.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

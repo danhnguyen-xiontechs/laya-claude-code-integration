@@ -1,0 +1,83 @@
+{
+ "model": "multilingual",
+ "n": 44,
+ "new_task": 2,
+ "rule_baseline": {
+  "tp": 2,
+  "fp": 27,
+  "fn": 0,
+  "tn": 15,
+  "precision": 0.069,
+  "recall": 1.0,
+  "accuracy": 0.386
+ },
+ "laya_by_threshold": {
+  "0.2": {
+   "tp": 2,
+   "fp": 40,
+   "fn": 0,
+   "tn": 2,
+   "precision": 0.048,
+   "recall": 1.0,
+   "accuracy": 0.091
+  },
+  "0.3": {
+   "tp": 2,
+   "fp": 38,
+   "fn": 0,
+   "tn": 4,
+   "precision": 0.05,
+   "recall": 1.0,
+   "accuracy": 0.136
+  },
+  "0.4": {
+   "tp": 2,
+   "fp": 38,
+   "fn": 0,
+   "tn": 4,
+   "precision": 0.05,
+   "recall": 1.0,
+   "accuracy": 0.136
+  },
+  "0.5": {
+   "tp": 2,
+   "fp": 36,
+   "fn": 0,
+   "tn": 6,
+   "precision": 0.053,
+   "recall": 1.0,
+   "accuracy": 0.182
+  },
+  "0.6": {
+   "tp": 2,
+   "fp": 28,
+   "fn": 0,
+   "tn": 14,
+   "precision": 0.067,
+   "recall": 1.0,
+   "accuracy": 0.364
+  },
+  "0.7": {
+   "tp": 2,
+   "fp": 24,
+   "fn": 0,
+   "tn": 18,
+   "precision": 0.077,
+   "recall": 1.0,
+   "accuracy": 0.455
+  },
+  "0.8": {
+   "tp": 2,
+   "fp": 14,
+   "fn": 0,
+   "tn": 28,
+   "precision": 0.125,
+   "recall": 1.0,
+   "accuracy": 0.682
+  }
+ },
+ "laya_latency_s": {
+  "median": 0.25641280000127153,
+  "max": 0.4915422000012768
+ }
+}

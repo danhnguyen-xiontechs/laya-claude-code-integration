@@ -1,0 +1,332 @@
+{
+ "tests_run": 29,
+ "failures": 0,
+ "errors": 0,
+ "skipped": 0,
+ "checks": [
+  {
+   "test": "A large ctx + expired (1h TTL) -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "B first attempt -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "B same prompt again within window -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C2 retry after confirm window expired -> BLOCK again",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C3 confirmation in session A does not unlock session B -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C4 flow: block",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C4 flow: retry",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C4 flow: next prompt after Claude answered -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "C different prompt within window -> ALLOW (confirmation is per session)",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "D2 ctx 50k with MIN_CONTEXT=40000 -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "D ctx 50k + expired -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "E ctx 200k, idle 30 min < 1h TTL -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "F slash command '/compact' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "F slash command '/clear' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "F slash command '/compact keep the plan' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "I warn mode -> WARN (systemMessage, not blocked)",
+   "expected": "WARN",
+   "actual": "WARN",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "J off mode -> ALLOW, no log",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "G missing transcript -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "H malformed stdin #0 '{not json' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "H malformed stdin #1 '' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "H malformed stdin #2 'null' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "H malformed stdin #3 '[]' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "H malformed stdin #4 '\"text\"' -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unparseable timestamp -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "empty transcript (new session) -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "malformed transcript lines -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "no cache TTL metadata, idle 10 min -> ALLOW (unknown TTL treated as 1h)",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "no cache TTL metadata, idle 3h -> BLOCK (expired under any TTL)",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "usage without input/cache fields (ctx=0) -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unreadable transcript (directory) -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unexpected stdin structure #0 -> no crash",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unexpected stdin structure #1 -> no crash",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unexpected stdin structure #2 -> no crash",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unexpected stdin structure #3 -> no crash",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "unknown model -> still BLOCK, cost text degrades",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "real transcripts read-only (33 MB largest)",
+   "expected": "no crash",
+   "actual": "no crash",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "recent sidechain request ignored, main idle 2h -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "TTL 1h writes, idle 10 min -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "1h write earlier, last request read-only, idle 10 min -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "TTL 5m writes, idle 10 min -> BLOCK",
+   "expected": "BLOCK",
+   "actual": "BLOCK",
+   "rc": 0,
+   "stderr": ""
+  },
+  {
+   "test": "TTL 5m writes, idle 2 min -> ALLOW",
+   "expected": "ALLOW",
+   "actual": "ALLOW",
+   "rc": 0,
+   "stderr": ""
+  }
+ ],
+ "latency": {
+  "blocked": {
+   "n": 14,
+   "min_ms": 66.8,
+   "median_ms": 79.8,
+   "p95_ms": 90.4,
+   "max_ms": 96.5
+  },
+  "allowed-retry": {
+   "n": 3,
+   "min_ms": 71.2,
+   "median_ms": 72.5,
+   "p95_ms": 78.3,
+   "max_ms": 78.3
+  },
+  "normal": {
+   "n": 26,
+   "min_ms": 62.0,
+   "median_ms": 70.6,
+   "p95_ms": 83.0,
+   "max_ms": 87.2
+  },
+  "real-large-session": {
+   "n": 10,
+   "min_ms": 79.1,
+   "median_ms": 81.0,
+   "p95_ms": 90.9,
+   "max_ms": 90.9
+  },
+  "real-small-session": {
+   "n": 10,
+   "min_ms": 63.9,
+   "median_ms": 66.1,
+   "p95_ms": 68.7,
+   "max_ms": 68.7
+  }
+ }
+}

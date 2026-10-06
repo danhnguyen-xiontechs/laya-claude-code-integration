@@ -1,0 +1,8 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [01:32<00:00, 18.56s/it]Fetching 5 files: 100%|██████████| 5/5 [01:32<00:00, 18.56s/it]
+C:\Users\ADMIN\AppData\Roaming\uv\tools\laya\Lib\site-packages\laya\router.py:456: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  agent = Agent(repo, **kwargs)
+INFO:     Started server process [812]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+WARNING:  Invalid HTTP request received.
