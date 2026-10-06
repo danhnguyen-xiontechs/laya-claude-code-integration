@@ -65,6 +65,31 @@ python laya_launch.py --task-file task.txt --profile feature -- --model sonnet -
 **Sửa theo project:** nếu project cần một MCP (ví dụ ADO, database), ghi cấu hình MCP đó vào `mcp` của profile tương ứng
 thay vì `{}`. Nếu cần skill, bỏ `no_skills`. Bảng này mới là thứ mang giá trị; Laya chỉ chọn dòng nào trong bảng.
 
+## Dùng như lệnh `claude` (shim)
+
+`claude-shim.ps1` định nghĩa hàm PowerShell **`claude`** đè lên lệnh thật (bản thật vẫn gọi được bằng `claude-full`).
+Cài: thêm vào `$PROFILE` một dòng `. D:\XionTechs\Laya-router-research\laya-launcher\claude-shim.ps1`, mở PowerShell mới. Gỡ: xóa dòng đó.
+
+```
+claude                       # menu: session cũ của repo này (resume, vẫn cắt) · [n] đề bài mới · [f] nguyên bản
+claude "fix bug X"           # Laya chọn profile (≈0.6 s khi laya-serve đã nóng, ≈17 s lần đầu) → xác nhận → phiên tương tác
+claude -y "fix bug X"        # không hỏi xác nhận
+claude -P bugfix "..."       # ép profile
+claude --full ...            # bỏ qua Laya, claude nguyên bản
+claude -c | -r <id>          # resume, cắt theo intent đã ghi (hoặc hỏi Laya trên đề bài đầu của session)
+claude -p / mcp / --version  # đi thẳng claude thật
+claude "..." -- --model sonnet   # cờ sau "--" chuyển cho claude
+```
+
+Màn hình đầu: `Laya intent=bugfix p=0.97 -> profile bugfix: 6 tool · 0 MCP · 0 skill` rồi `[Enter] chạy [f] nguyên bản [p] đổi profile [q] thoát`.
+Mỗi phiên mở qua shim có `--session-id` do shim sinh và được ghi vào `~/.laya/sessions.jsonl` (id, intent, profile, 300 ký tự đầu đề bài)
+để lần resume không hỏi Laya lại. `laya-serve` được tự bật nền nếu cổng 8000 chưa mở (log `~/.laya/laya-serve.log`); không lên kịp → profile `default`.
+
+Lưu ý:
+- Resume là tiến trình mới nên gắn cờ cắt được (đã kiểm chứng `-r <id> --tools ... --strict-mcp-config --disable-slash-commands`); prompt cache dù sao cũng phải dựng lại khi resume.
+- Profile `question` là read-only (3 tool). Laya xếp "explain X, no code changes" vào đó với p 0.53, sát `min_prob` 0.5; nếu hay bị cắt nhầm, nâng `min_prob` hoặc bỏ profile `question` để rơi về `default`.
+- Claude Desktop (tab Code) không đi qua shim; không áp dụng được.
+
 ## Cách nó hoạt động
 
 ```
