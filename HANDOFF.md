@@ -2,6 +2,10 @@
 
 Tài liệu này tóm tắt toàn bộ bối cảnh để tiếp tục ở một session khác. Repo: https://github.com/danhnguyen-xiontechs/laya-claude-code-integration (nhánh `main`).
 
+> **Hướng hiện tại (2026-10-08): `ado-classify/`**, gợi ý module code cho một task ADO bằng BM25 + Laya. Xem mục 12 và `ado-classify/README.md`. Các hướng chọn model (proxy, chia bước) ở mục 6–11 đang gác lại.
+>
+> **Cảnh báo dữ liệu:** repo này đang **public**, nhưng `ado/items*.json` (title và mô tả thật của khoảng 250 work item PXP / XT-Smart-Platform) đã được commit lên `main` (commit `511b253`). `ado/report.md` ghi "git-ignored" là sai. Cần chuyển repo sang private hoặc xóa các file đó khỏi lịch sử git.
+
 Dự án được làm trên hai máy:
 
 | | LENOVO2 | ADMIN |
@@ -235,3 +239,47 @@ Yêu cầu mới của người dùng: (1) nhãn do Claude/Fable gắn (60 promp
 Chưa làm: chạy một **task thật** của X-Tek (người dùng chọn task + repo, tự review `runs/<ten>/review.md`); so ba cấu hình static / laya / baseline Opus; chưa có bằng chứng Laya phân biệt bước dễ/khó tốt hơn bảng tĩnh theo loại bước (mốc bắt buộc phải thắng).
 
 Bẫy gặp phải: Git Bash đổi `/wf` thành `C:/Program Files/Git/wf` (dùng `MSYS_NO_PATHCONV=1`); subagent ở `-p` chạy nền và không hỏi được quyền, lệnh ghép `cd ... && git diff` bị từ chối với quy tắc Bash hẹp; `proxy` giờ phụ thuộc `workflow/hooks/laya_common.py`.
+
+## 12. ado-classify: gợi ý module code cho một task ADO (2026-10-07 → 10-08, ADMIN)
+
+Chi tiết: `ado-classify/README.md` và `ado-classify/docs/`.
+
+**Vì sao chọn hướng này.** Ngày 2026-10-07 đã review 3 plan mới:
+- Chặn subagent thừa: chỉ có 43 lần gọi Agent trên máy này, phần lớn có chủ đích.
+- Chọn mức review / phạm vi test: input là số và boolean, rule làm tốt hơn Laya.
+- Notes Router: chỉ bớt vài lượt tìm kiếm.
+
+Kết luận: Laya chỉ làm tốt việc **đọc đoạn văn bản ngắn và chọn một trong vài lựa chọn cố định**. Người dùng chọn hướng phân loại task ADO. Plan v1 (dataset lớn) được thu nhỏ thành scope v2: một task, gợi ý module để Claude Code bắt đầu code.
+
+**Cách C (đang dùng).** Danh mục 27 module lấy từ `ess-be/docs/features/*.md`. Với mỗi task:
+- BM25 (tự viết, dưới 1 ms) chọn 8 module liên quan nhất.
+- Laya (`english`, `max_len` 1024, `head_max_len` 192) chọn 1 trong 8.
+- Trả top 3 kèm xác suất và đường dẫn code.
+
+Questions file của Laya (`criteria`) được sinh tự động mỗi lần, không viết tay.
+
+**Kết quả** (20 task lịch sử ESS, đáp án tự động = feature có doc nhắc tới file `.cs` mà commit của task đã sửa):
+
+| Cách | Đúng top 1 | Thời gian |
+|---|---|---|
+| A. Laya đọc đủ 27 lựa chọn (2048 / 768) | 6/20 | 2.7 s |
+| B. Chỉ BM25 | 9/20 (top 8: 20/20) | dưới 1 ms |
+| **C. BM25 top 8 → Laya** | **18/20** | 1.1 s |
+
+Test trước đó với 24 mục `##` của `docs/DOMAIN.md` (2048 / 768): Laya 9/17, BM25 12/17. `DOMAIN.md` là danh mục bảng D365, thiếu Performance Review / Calibration / Talent, nên đã bỏ.
+
+**Đã học:**
+- Mọi lựa chọn dùng chung ngân sách `head_max_len`; nhiều lựa chọn thì mỗi cái bị cắt còn vài token.
+- Từ 11 lựa chọn trở lên, temperature của checkpoint bị chặn (`TEMP_MIN` 0.5) nên xác suất chưa calibrate.
+- Laya nhạy với chữ trùng giữa câu hỏi và tên lựa chọn: câu hỏi có "work item" thì 11/21 chọn "Tasks & Work Items".
+- `max_len` là tổng chuỗi, `head_max_len` nằm bên trong nó (không cộng thêm).
+
+**ADO.** Task ESS nằm ở org ADO của khách hàng, không ở org `XionTechs`. Tài khoản công ty của người dùng đọc được qua `az account get-access-token --tenant <tenant của org đó>`. Org và tenant chỉ ghi trong `ado-classify/config.local.json` (gitignored). Chỉ đọc. Lọc 2 bước: chỉ lấy nội dung item đúng project và có "ESS" trong Area / Iteration (item 18111 bị loại). Trong `az` còn tài khoản của người khác: **không dùng**, chỉ dùng tài khoản của người dùng.
+
+**Dữ liệu:** `E:\laya-data\ado-classify\ess-be\` (modules.json, tasks.json, eval_results.json, eval_report.md). Không commit, vì có title / mô tả task.
+
+**Việc tiếp theo:**
+1. MCP server bọc `classify()`. Gọi bằng dòng lệnh mất 8–12 s vì nạp lại model và token mỗi lần, trong khi phân loại chỉ khoảng 1 s.
+2. So với Haiku trên cùng 20 task.
+3. A/B khi code: có và không có gợi ý.
+4. Cải thiện mô tả module, task tiếng Việt, `ess-fe`.

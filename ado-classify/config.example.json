@@ -1,0 +1,19 @@
+{
+  "repo": "D:\\XionTechs\\ess-be",
+  "features_dir": "docs/features",
+  "data_dir": "E:\\laya-data\\ado-classify\\ess-be",
+  "ado": {
+    "org": "<ten-org-ADO-cua-khach-hang>",
+    "tenant": "<tenant-id-Entra-cua-org-do>",
+    "project": "<ten-project-ADO>",
+    "scope_keyword": "ESS"
+  },
+  "laya": {
+    "checkpoint": "english",
+    "shortlist_k": 8,
+    "max_len": 1024,
+    "head_max_len": 192,
+    "instructions": "Which feature of the HR system does this request mainly concern?"
+  },
+  "catalog_overrides": {}
+}
