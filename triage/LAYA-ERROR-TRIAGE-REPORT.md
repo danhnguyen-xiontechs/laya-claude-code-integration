@@ -13,7 +13,7 @@
 | **Mục tiêu** | Một việc nhỏ: giúp Claude tập trung đúng chỗ khi log lỗi dài và nhiều nhiễu. Không nhằm tiết kiệm quota. |
 | **Tích hợp** | Hook `PostToolUseFailure` (matcher `Bash`) trong `.claude/settings.json`. Không cần MCP, không cần Claude tự gọi tool. |
 | **Đã xác minh** | Lệnh lỗi bắn `PostToolUseFailure`. Hook trả `additionalContext` thì Claude đọc được (thử thật bằng `claude -p`). |
-| **Kết quả đo hiện tại** | Laya **kém hơn** regex đơn giản: phân loại 36% so với 87%, chọn đoạn log 38% so với 93%, mất khoảng 1.9 s mỗi lần. Thí nghiệm phụ với 4 cách hỏi khác nhau: tốt nhất chỉ đạt 49% (mục 8). |
+| **Kết quả đo hiện tại** | Laya **kém hơn** regex đơn giản: phân loại 36% so với 87%, chọn đoạn log 38% so với 93%, mất khoảng 1.9 s mỗi lần. Thí nghiệm phụ với 4 cách hỏi khác nhau: tốt nhất chỉ đạt 49%. Thí nghiệm phụ 2 (chia nhỏ category theo tên lỗi cụ thể): tốt nhất 73%, vẫn dưới ngưỡng 75% (mục 8). |
 
 ---
 
@@ -165,6 +165,8 @@ triage/
   chunker.py                    # làm sạch log, cắt đoạn (regex thuần, < 1 ms)
   eval.py                       # đo Laya so với baseline → eval_results.json
   eval_results.json             # kết quả eval lần 1
+  ablate.py / ablate_results.json    # thí nghiệm phụ 1: độ dài input, có/không `other`
+  ablate2.py / ablate2_results.json  # thí nghiệm phụ 2: cách viết mô tả category
   dataset/
     build_dataset.py            # sinh log lỗi THẬT bằng cách chạy thật các lệnh lỗi
     cases.jsonl                 # 45 case: lệnh, output, nhóm đúng, chuỗi đánh dấu nguyên nhân
@@ -190,7 +192,7 @@ Hook `PostToolUseFailure` trả về `additionalContext` chứa một chuỗi đ
 
 ---
 
-## 8. Bước 2 – Dataset và đánh giá (ĐANG CHẠY)
+## 8. Bước 2 – Dataset và đánh giá (ĐÃ XONG)
 
 ### Dataset
 - 45 case, chia đều 8 nhóm, **log thật**: mỗi case tạo file trong thư mục tạm rồi chạy lệnh thật (Python 3.14, Node 24, pytest qua `uv`, dotnet 10, tsc qua `npx`, git).
@@ -230,20 +232,40 @@ Mục đích: kiểm tra xem kết quả kém là do cách hỏi hay do bản th
 
 - Rút ngắn input và bỏ `other` giúp Laya tăng khoảng 10–13 điểm, nhưng mức cao nhất vẫn **dưới 50%**.
 - Khi bỏ `other`, Laya chuyển sang đoán bừa một nhóm khác, thường là `dependency_missing` hoặc `timeout_or_resource`. Lỗi gốc là Laya không hiểu log, chứ không phải do có sẵn lựa chọn `other`.
-- **Kết luận: lỗi nằm ở model với bài toán này, không phải ở cách hỏi.**
+- Kết luận tạm thời lúc đó: lỗi nằm ở model, không phải ở độ dài input hay lựa chọn `other`. Thí nghiệm phụ 2 cho thấy **cách viết category** vẫn còn ảnh hưởng lớn.
+
+### Thí nghiệm phụ 2 (ĐÃ XONG – `triage/ablate2.py`, `ablate2_results.json`)
+Mục đích: kiểm tra xem bộ category (mô tả quá trừu tượng) có phải nguyên nhân không. Hai cách viết lại, chạy trên 2 kiểu input, cùng 45 case:
+- **A:** giữ 8 nhóm, mô tả liệt kê tên lỗi cụ thể (`ModuleNotFoundError`, `ECONNREFUSED`...).
+- **B:** tách thành 23 nhóm con hẹp (vd. "Node: Cannot find module 'pkg'", "DNS failure"), Laya chọn nhóm con rồi gộp về 8 nhóm.
+- Mọi mô tả ≤ 41 token, không bị Laya cắt ở 48 token.
+
+| Biến thể | Input | Laya đúng | Độ trễ p50 |
+|---|---|---|---|
+| A: 8 nhóm, mô tả cụ thể | 30 dòng cuối | 47% | 1.9 s |
+| A | Đoạn nhiều từ khoá lỗi nhất | 44% | 0.72 s |
+| B: 23 nhóm con → 8 | 30 dòng cuối | 62% | 1.8 s |
+| B | Đoạn nhiều từ khoá lỗi nhất | **73%** | 0.66 s |
+| *Regex từ khoá (để so sánh)* | | ***87%*** | *< 1 ms* |
+
+Lọc theo độ tin cậy (B + đoạn nhiều từ khoá nhất): xác suất ≥ 0.6 → gợi ý cho 91% case, đúng 76%.
+
+- **A gần như không giúp:** nhồi nhiều tên lỗi vào một mô tả dài, Laya vẫn dồn về `dependency_missing`.
+- **B giúp rõ (+24 điểm so với mức tốt nhất trước):** mỗi lựa chọn hẹp và cụ thể thì Laya khớp tốt hơn. Phần còn sai chủ yếu ở `permission_or_network` và nhầm `import_or_path` với `dependency_missing`.
+- **Lưu ý:** 23 nhóm con được viết sau khi đã xem marker của dataset, nên 73% có thể cao hơn thực tế trên log mới. (Regex cũng được viết theo cách này.)
 
 ---
 
 ## 9. Kết luận
 
-> **Bước 2 KHÔNG ĐẠT ngưỡng (75%).** Biến thể tốt nhất của Laya đạt 49% về phân loại; chọn đoạn log đạt 38%. Regex đạt 87% và 93%.
-> Đề xuất: **không dùng Laya cho error triage.** Nếu vẫn muốn có hook triage thì làm theo hướng (a) dưới đây, không cần Laya.
+> **Bước 2 KHÔNG ĐẠT ngưỡng (75%).** Biến thể tốt nhất của Laya đạt 73% về phân loại (category chia nhỏ, thí nghiệm phụ 2); chọn đoạn log đạt 38%. Regex đạt 87% và 93%.
+> Đề xuất: **không dùng Laya làm bộ phân loại chính.** Nếu làm hook triage thì theo hướng (a); nếu muốn giữ Laya thì chỉ theo hướng (b) với bộ category B.
 
 1. **Cơ chế tích hợp ổn.** Hook `PostToolUseFailure` + `additionalContext` là cách đúng, rẻ và tự động.
 2. **Laya là mắt xích yếu của bài toán này.** Log lỗi chứa rất nhiều tín hiệu từ khoá rõ ràng (`ModuleNotFoundError`, `AssertionError`, `ECONNREFUSED`...). Regex khai thác các tín hiệu đó tốt hơn, nhanh hơn khoảng 2000 lần, và không cần server.
-3. **Nếu thí nghiệm phụ không đưa Laya lên khoảng 75% trở lên**, có hai hướng trung thực:
-   - **(a)** Vẫn làm hook triage, nhưng dùng regex + chọn đoạn theo từ khoá. Tool hữu ích, nhưng không còn liên quan tới Laya.
-   - **(b)** Kết hợp: regex trước, chỉ gọi Laya khi regex không khớp (rơi vào `other`), và chỉ dùng kết quả khi xác suất ≥ 0.6. Phần Laya đóng góp sẽ rất nhỏ.
+3. **Cách viết category quan trọng với Laya:** nhóm con hẹp, cụ thể (B) tốt hơn hẳn nhóm rộng, trừu tượng. Nhưng kể cả vậy vẫn dưới ngưỡng và dưới regex. Hai hướng còn lại:
+   - **(a)** Vẫn làm hook triage, nhưng dùng regex + chọn đoạn theo từ khoá. Tool hữu ích, nhưng không còn liên quan tới Laya. **(Khuyến nghị)**
+   - **(b)** Kết hợp: regex trước, chỉ gọi Laya (bộ category B, input là đoạn nhiều từ khoá nhất) khi regex rơi vào `other`, và chỉ dùng kết quả khi xác suất ≥ 0.6. Phần Laya đóng góp sẽ nhỏ.
 4. **Bài học cho các ý tưởng Laya tiếp theo:** Laya có lợi thế khi tín hiệu nằm ở **ngữ nghĩa** mà từ khoá không bắt được, ví dụ đánh giá ý định hay độ khó của một yêu cầu bằng ngôn ngữ tự nhiên. Laya không có lợi thế khi input đã có sẵn từ khoá rõ ràng như log lỗi.
 
 ---
@@ -259,4 +281,10 @@ python triage/dataset/build_dataset.py
 
 # 3. Đánh giá (khoảng 5–8 phút trên CPU)
 python triage/eval.py
+
+# 4. Thí nghiệm phụ (mỗi cái khoảng 5–8 phút)
+python triage/ablate.py
+python triage/ablate2.py
+
+# 5. Xong thì tắt laya-serve
 ```
