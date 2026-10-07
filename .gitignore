@@ -9,3 +9,6 @@ benchmark/results/server.log
 workflow/hooks/step_decisions.jsonl
 workflow/hooks/probe_log.jsonl
 hooks/cache_expiry_gate.log.jsonl
+
+# triage v2: real logs from Claude Code transcripts / internal projects - keep local
+triage/v2/data/
