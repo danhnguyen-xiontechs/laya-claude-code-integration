@@ -1,0 +1,4 @@
+{"hooks":{
+ "PostToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"python D:/Laya/triage/probe/event_probe.py PostToolUse"}]}],
+ "PostToolUseFailure":[{"matcher":"Bash","hooks":[{"type":"command","command":"python D:/Laya/triage/probe/event_probe.py PostToolUseFailure"}]}]
+}}

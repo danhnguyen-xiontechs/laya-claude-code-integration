@@ -1,0 +1,1054 @@
+{
+ "n": 45,
+ "category": {
+  "laya": 0.35555555555555557,
+  "keyword_baseline": 0.8666666666666667
+ },
+ "chunk": {
+  "laya_choice": 0.14285714285714285,
+  "laya_noul": 0.38095238095238093,
+  "last": 0.5714285714285714,
+  "kwc": 0.9285714285714286,
+  "n_multi": 42
+ },
+ "latency_ms": {
+  "category": {
+   "p50": 1901,
+   "p90": 3284,
+   "n": 45
+  },
+  "chunk_choice": {
+   "p50": 2129,
+   "p90": 3332,
+   "n": 42
+  },
+  "chunk_noul": {
+   "p50": 462,
+   "p90": 1346,
+   "n": 176
+  }
+ },
+ "thresholds": [
+  {
+   "min_p": 0.0,
+   "coverage": 1.0,
+   "accuracy": 0.35555555555555557
+  },
+  {
+   "min_p": 0.3,
+   "coverage": 0.9111111111111111,
+   "accuracy": 0.36585365853658536
+  },
+  {
+   "min_p": 0.4,
+   "coverage": 0.7555555555555555,
+   "accuracy": 0.4411764705882353
+  },
+  {
+   "min_p": 0.5,
+   "coverage": 0.4888888888888889,
+   "accuracy": 0.6363636363636364
+  },
+  {
+   "min_p": 0.6,
+   "coverage": 0.3333333333333333,
+   "accuracy": 0.8
+  },
+  {
+   "min_p": 0.7,
+   "coverage": 0.28888888888888886,
+   "accuracy": 0.8461538461538461
+  }
+ ],
+ "confusion": {
+  "dependency_missing -> other": 3,
+  "dependency_missing -> test_assertion": 1,
+  "import_or_path -> other": 4,
+  "import_or_path -> syntax_or_type": 1,
+  "syntax_or_type -> other": 4,
+  "env_or_config -> other": 4,
+  "env_or_config -> syntax_or_type": 1,
+  "env_or_config -> dependency_missing": 1,
+  "permission_or_network -> timeout_or_resource": 1,
+  "permission_or_network -> syntax_or_type": 1,
+  "permission_or_network -> other": 4,
+  "timeout_or_resource -> other": 3,
+  "timeout_or_resource -> dependency_missing": 1
+ },
+ "rows": [
+  {
+   "id": "d01",
+   "gold": "dependency_missing",
+   "laya": "other",
+   "laya_p": 0.37,
+   "kw": "permission_or_network",
+   "lines": 32,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.593,
+    0.872,
+    0.847,
+    0.554
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "d02",
+   "gold": "dependency_missing",
+   "laya": "other",
+   "laya_p": 0.379,
+   "kw": "dependency_missing",
+   "lines": 46,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.642,
+    0.761,
+    0.778,
+    0.822,
+    0.665
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "d03",
+   "gold": "dependency_missing",
+   "laya": "test_assertion",
+   "laya_p": 0.423,
+   "kw": "permission_or_network",
+   "lines": 15,
+   "n_chunks": 4,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.688,
+    0.736,
+    0.195,
+    0.697
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "d04",
+   "gold": "dependency_missing",
+   "laya": "dependency_missing",
+   "laya_p": 0.476,
+   "kw": "dependency_missing",
+   "lines": 11,
+   "n_chunks": 4,
+   "gold_chunks": [
+    0,
+    2
+   ],
+   "laya_choice": 2,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.32,
+    0.796,
+    0.819,
+    0.085
+   ],
+   "last": 3,
+   "kwc": 2
+  },
+  {
+   "id": "d05",
+   "gold": "dependency_missing",
+   "laya": "other",
+   "laya_p": 0.351,
+   "kw": "permission_or_network",
+   "lines": 52,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 3,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.126,
+    0.741,
+    0.732,
+    0.869,
+    0.495
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "d06",
+   "gold": "dependency_missing",
+   "laya": "dependency_missing",
+   "laya_p": 0.672,
+   "kw": "dependency_missing",
+   "lines": 19,
+   "n_chunks": 3,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 2,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.23,
+    0.887,
+    0.097
+   ],
+   "last": 2,
+   "kwc": 1
+  },
+  {
+   "id": "i01",
+   "gold": "import_or_path",
+   "laya": "other",
+   "laya_p": 0.406,
+   "kw": "permission_or_network",
+   "lines": 22,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.651,
+    0.737,
+    0.833,
+    0.712
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "i02",
+   "gold": "import_or_path",
+   "laya": "other",
+   "laya_p": 0.34,
+   "kw": "import_or_path",
+   "lines": 51,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.591,
+    0.715,
+    0.803,
+    0.806,
+    0.547
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "i03",
+   "gold": "import_or_path",
+   "laya": "other",
+   "laya_p": 0.428,
+   "kw": "permission_or_network",
+   "lines": 41,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 2,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.698,
+    0.697,
+    0.788,
+    0.444,
+    0.337
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "i04",
+   "gold": "import_or_path",
+   "laya": "import_or_path",
+   "laya_p": 0.268,
+   "kw": "import_or_path",
+   "lines": 17,
+   "n_chunks": 3,
+   "gold_chunks": [
+    2
+   ],
+   "laya_choice": 0,
+   "laya_noul": 0,
+   "noul_scores": [
+    0.871,
+    0.84,
+    0.359
+   ],
+   "last": 2,
+   "kwc": 2
+  },
+  {
+   "id": "i05",
+   "gold": "import_or_path",
+   "laya": "syntax_or_type",
+   "laya_p": 0.935,
+   "kw": "import_or_path",
+   "lines": 10,
+   "n_chunks": 3,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 1,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.622,
+    0.699,
+    0.097
+   ],
+   "last": 2,
+   "kwc": 1
+  },
+  {
+   "id": "i06",
+   "gold": "import_or_path",
+   "laya": "other",
+   "laya_p": 0.575,
+   "kw": "import_or_path",
+   "lines": 1,
+   "n_chunks": 1,
+   "gold_chunks": [
+    0
+   ]
+  },
+  {
+   "id": "s01",
+   "gold": "syntax_or_type",
+   "laya": "syntax_or_type",
+   "laya_p": 0.996,
+   "kw": "syntax_or_type",
+   "lines": 4,
+   "n_chunks": 2,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 0,
+   "laya_noul": 0,
+   "noul_scores": [
+    0.689,
+    0.63
+   ],
+   "last": 1,
+   "kwc": 1
+  },
+  {
+   "id": "s02",
+   "gold": "syntax_or_type",
+   "laya": "other",
+   "laya_p": 0.368,
+   "kw": "syntax_or_type",
+   "lines": 41,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.735,
+    0.702,
+    0.78,
+    0.726,
+    0.293
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "s03",
+   "gold": "syntax_or_type",
+   "laya": "other",
+   "laya_p": 0.404,
+   "kw": "syntax_or_type",
+   "lines": 48,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.562,
+    0.668,
+    0.609,
+    0.853,
+    0.113
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "s04",
+   "gold": "syntax_or_type",
+   "laya": "other",
+   "laya_p": 0.46,
+   "kw": "syntax_or_type",
+   "lines": 11,
+   "n_chunks": 4,
+   "gold_chunks": [
+    0,
+    2
+   ],
+   "laya_choice": 2,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.418,
+    0.796,
+    0.795,
+    0.098
+   ],
+   "last": 3,
+   "kwc": 2
+  },
+  {
+   "id": "s05",
+   "gold": "syntax_or_type",
+   "laya": "syntax_or_type",
+   "laya_p": 0.714,
+   "kw": "syntax_or_type",
+   "lines": 4,
+   "n_chunks": 2,
+   "gold_chunks": [
+    0
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.719,
+    0.726
+   ],
+   "last": 1,
+   "kwc": 0
+  },
+  {
+   "id": "s06",
+   "gold": "syntax_or_type",
+   "laya": "other",
+   "laya_p": 0.41,
+   "kw": "syntax_or_type",
+   "lines": 43,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 2,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.467,
+    0.515,
+    0.855,
+    0.695,
+    0.404
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "t01",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 0.989,
+   "kw": "test_assertion",
+   "lines": 13,
+   "n_chunks": 5,
+   "gold_chunks": [
+    2,
+    4
+   ],
+   "laya_choice": 3,
+   "laya_noul": 4,
+   "noul_scores": [
+    0.547,
+    0.584,
+    0.187,
+    0.454,
+    0.616
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "t02",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 1.0,
+   "kw": "test_assertion",
+   "lines": 45,
+   "n_chunks": 5,
+   "gold_chunks": [
+    2
+   ],
+   "laya_choice": 0,
+   "laya_noul": 4,
+   "noul_scores": [
+    0.76,
+    0.728,
+    0.662,
+    0.606,
+    0.791
+   ],
+   "last": 4,
+   "kwc": 2
+  },
+  {
+   "id": "t03",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 0.96,
+   "kw": "test_assertion",
+   "lines": 30,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 2,
+   "laya_noul": 0,
+   "noul_scores": [
+    0.707,
+    0.417,
+    0.245,
+    0.46,
+    0.51
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "t04",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 0.746,
+   "kw": "test_assertion",
+   "lines": 25,
+   "n_chunks": 5,
+   "gold_chunks": [
+    1,
+    4
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.35,
+    0.642,
+    0.806,
+    0.706,
+    0.577
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "t05",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 0.999,
+   "kw": "test_assertion",
+   "lines": 41,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 4,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.649,
+    0.663,
+    0.521,
+    0.739,
+    0.202
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "t06",
+   "gold": "test_assertion",
+   "laya": "test_assertion",
+   "laya_p": 0.703,
+   "kw": "test_assertion",
+   "lines": 13,
+   "n_chunks": 5,
+   "gold_chunks": [
+    2,
+    4
+   ],
+   "laya_choice": 3,
+   "laya_noul": 4,
+   "noul_scores": [
+    0.463,
+    0.578,
+    0.602,
+    0.461,
+    0.636
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "e01",
+   "gold": "env_or_config",
+   "laya": "other",
+   "laya_p": 0.353,
+   "kw": "env_or_config",
+   "lines": 32,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.739,
+    0.773,
+    0.794,
+    0.724
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "e02",
+   "gold": "env_or_config",
+   "laya": "syntax_or_type",
+   "laya_p": 0.24,
+   "kw": "env_or_config",
+   "lines": 43,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.608,
+    0.711,
+    0.639,
+    0.77,
+    0.126
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "e03",
+   "gold": "env_or_config",
+   "laya": "other",
+   "laya_p": 0.346,
+   "kw": "env_or_config",
+   "lines": 41,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.743,
+    0.814,
+    0.788,
+    0.122,
+    0.305
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "e04",
+   "gold": "env_or_config",
+   "laya": "dependency_missing",
+   "laya_p": 0.881,
+   "kw": "env_or_config",
+   "lines": 5,
+   "n_chunks": 5,
+   "gold_chunks": [
+    0
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.71,
+    0.772,
+    0.132,
+    0.644,
+    0.39
+   ],
+   "last": 4,
+   "kwc": 0
+  },
+  {
+   "id": "e05",
+   "gold": "env_or_config",
+   "laya": "other",
+   "laya_p": 0.45,
+   "kw": "env_or_config",
+   "lines": 1,
+   "n_chunks": 1,
+   "gold_chunks": [
+    0
+   ]
+  },
+  {
+   "id": "e06",
+   "gold": "env_or_config",
+   "laya": "other",
+   "laya_p": 0.59,
+   "kw": "env_or_config",
+   "lines": 14,
+   "n_chunks": 2,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 0,
+   "laya_noul": 0,
+   "noul_scores": [
+    0.841,
+    0.161
+   ],
+   "last": 1,
+   "kwc": 1
+  },
+  {
+   "id": "n01",
+   "gold": "permission_or_network",
+   "laya": "timeout_or_resource",
+   "laya_p": 0.494,
+   "kw": "timeout_or_resource",
+   "lines": 78,
+   "n_chunks": 5,
+   "gold_chunks": [
+    2
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.718,
+    0.46,
+    0.263,
+    0.821,
+    0.462
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "n02",
+   "gold": "permission_or_network",
+   "laya": "syntax_or_type",
+   "laya_p": 0.578,
+   "kw": "permission_or_network",
+   "lines": 24,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.435,
+    0.244,
+    0.258,
+    0.545
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "n03",
+   "gold": "permission_or_network",
+   "laya": "other",
+   "laya_p": 0.282,
+   "kw": "permission_or_network",
+   "lines": 28,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.617,
+    0.797,
+    0.832,
+    0.061
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "n04",
+   "gold": "permission_or_network",
+   "laya": "other",
+   "laya_p": 0.677,
+   "kw": "permission_or_network",
+   "lines": 2,
+   "n_chunks": 2,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 0,
+   "laya_noul": 0,
+   "noul_scores": [
+    0.8,
+    0.675
+   ],
+   "last": 1,
+   "kwc": 1
+  },
+  {
+   "id": "n05",
+   "gold": "permission_or_network",
+   "laya": "other",
+   "laya_p": 0.435,
+   "kw": "permission_or_network",
+   "lines": 23,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 1,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.578,
+    0.747,
+    0.805,
+    0.063
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "n06",
+   "gold": "permission_or_network",
+   "laya": "other",
+   "laya_p": 0.549,
+   "kw": "permission_or_network",
+   "lines": 38,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.537,
+    0.329,
+    0.673,
+    0.829,
+    0.26
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "r01",
+   "gold": "timeout_or_resource",
+   "laya": "other",
+   "laya_p": 0.526,
+   "kw": "timeout_or_resource",
+   "lines": 33,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 1,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.473,
+    0.757,
+    0.811,
+    0.677
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "r02",
+   "gold": "timeout_or_resource",
+   "laya": "other",
+   "laya_p": 0.481,
+   "kw": "timeout_or_resource",
+   "lines": 27,
+   "n_chunks": 4,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.746,
+    0.831,
+    0.836,
+    0.881
+   ],
+   "last": 3,
+   "kwc": 3
+  },
+  {
+   "id": "r03",
+   "gold": "timeout_or_resource",
+   "laya": "dependency_missing",
+   "laya_p": 0.293,
+   "kw": "timeout_or_resource",
+   "lines": 31,
+   "n_chunks": 5,
+   "gold_chunks": [
+    3
+   ],
+   "laya_choice": 3,
+   "laya_noul": 3,
+   "noul_scores": [
+    0.642,
+    0.778,
+    0.751,
+    0.822,
+    0.118
+   ],
+   "last": 4,
+   "kwc": 3
+  },
+  {
+   "id": "r04",
+   "gold": "timeout_or_resource",
+   "laya": "timeout_or_resource",
+   "laya_p": 0.548,
+   "kw": "timeout_or_resource",
+   "lines": 38,
+   "n_chunks": 4,
+   "gold_chunks": [
+    2,
+    3
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.644,
+    0.81,
+    0.809,
+    0.492
+   ],
+   "last": 3,
+   "kwc": 2
+  },
+  {
+   "id": "r05",
+   "gold": "timeout_or_resource",
+   "laya": "other",
+   "laya_p": 0.445,
+   "kw": "timeout_or_resource",
+   "lines": 61,
+   "n_chunks": 5,
+   "gold_chunks": [
+    1
+   ],
+   "laya_choice": 0,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.722,
+    0.766,
+    0.884,
+    0.829,
+    0.832
+   ],
+   "last": 4,
+   "kwc": 1
+  },
+  {
+   "id": "r06",
+   "gold": "timeout_or_resource",
+   "laya": "timeout_or_resource",
+   "laya_p": 0.877,
+   "kw": "timeout_or_resource",
+   "lines": 64,
+   "n_chunks": 5,
+   "gold_chunks": [
+    4
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.778,
+    0.855,
+    0.541,
+    0.816,
+    0.132
+   ],
+   "last": 4,
+   "kwc": 4
+  },
+  {
+   "id": "o01",
+   "gold": "other",
+   "laya": "other",
+   "laya_p": 0.988,
+   "kw": "other",
+   "lines": 5,
+   "n_chunks": 3,
+   "gold_chunks": [
+    2
+   ],
+   "laya_choice": 0,
+   "laya_noul": 1,
+   "noul_scores": [
+    0.383,
+    0.525,
+    0.136
+   ],
+   "last": 2,
+   "kwc": 2
+  },
+  {
+   "id": "o02",
+   "gold": "other",
+   "laya": "other",
+   "laya_p": 0.905,
+   "kw": "other",
+   "lines": 1,
+   "n_chunks": 1,
+   "gold_chunks": [
+    0
+   ]
+  },
+  {
+   "id": "o03",
+   "gold": "other",
+   "laya": "other",
+   "laya_p": 0.515,
+   "kw": "other",
+   "lines": 21,
+   "n_chunks": 3,
+   "gold_chunks": [
+    2
+   ],
+   "laya_choice": 1,
+   "laya_noul": 2,
+   "noul_scores": [
+    0.311,
+    0.711,
+    0.819
+   ],
+   "last": 2,
+   "kwc": 2
+  }
+ ]
+}
