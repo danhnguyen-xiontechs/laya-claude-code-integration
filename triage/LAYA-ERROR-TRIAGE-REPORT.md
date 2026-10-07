@@ -1,6 +1,6 @@
 # Laya Error Triage – Báo cáo tính năng và kết quả đánh giá
 
-> Branch: `feat/laya-error-triage` · Ngày: 2026-10-07 · Trạng thái: **ĐÃ DỪNG** – bước 2 cho thấy Laya không đạt ngưỡng; không viết hook thật.
+> Branch: `feat/laya-error-triage` · Ngày: 2026-10-07 · Trạng thái: **ĐÃ DỪNG** – bước 2 cho thấy Laya không đạt ngưỡng; không viết hook thật. Vòng 2 (log lỗi thật, nhãn người duyệt, mục 9) xác nhận: Laya đúng 28%, thấp hơn cả bộ luật đơn giản.
 > Nguồn ý tưởng: `idea/03-laya-error-triager-mcp.md` (đã điều chỉnh: hook thay cho MCP, bộ category mở rộng được).
 
 ---
@@ -14,6 +14,7 @@
 | **Tích hợp** | Hook `PostToolUseFailure` (matcher `Bash`) trong `.claude/settings.json`. Không cần MCP, không cần Claude tự gọi tool. |
 | **Đã xác minh** | Lệnh lỗi bắn `PostToolUseFailure`. Hook trả `additionalContext` thì Claude đọc được (thử thật bằng `claude -p`). |
 | **Kết quả đo hiện tại** | Laya **kém hơn** regex đơn giản: phân loại 36% so với 87%, chọn đoạn log 38% so với 93%, mất khoảng 1.9 s mỗi lần. Thí nghiệm phụ với 4 cách hỏi khác nhau: tốt nhất chỉ đạt 49%. Thí nghiệm phụ 2 (chia nhỏ category theo tên lỗi cụ thể): tốt nhất 73%, vẫn dưới ngưỡng 75% (mục 8). |
+| **Kết quả trên log thật (vòng 2)** | 89 log lỗi thật (lịch sử Claude Code + issue GitHub), nhãn đã được người duyệt, bộ nhóm theo plan chi tiết. Laya đúng **28%** (25/89), bộ luật đơn giản đúng 33%, đoán bừa khoảng 14%, ngưỡng plan 80% (mục 9). |
 
 ---
 
@@ -175,6 +176,13 @@ triage/
     ctx_probe.py                # bước 1: kiểm tra additionalContext tới được Claude
     settings*.json              # cấu hình hook dùng cho probe
   (chưa có) laya_triage.py      # hook thật – chỉ viết nếu bước 2 đạt
+  v2/                           # vòng 2: log lỗi thật, theo plan chi tiết (mục 9)
+    categories.py               # 8 nhóm theo hướng debug (đóng băng trước khi xem dữ liệu)
+    rules.py                    # bộ luật đơn giản ~6 dòng regex (đóng băng trước khi xem dữ liệu)
+    extract_transcripts.py      # trích lệnh Bash/PowerShell bị lỗi từ lịch sử Claude Code
+    build_label_file.py         # gộp log + Sonnet gợi ý nhãn → data/to_label.json
+    eval.py / results.json      # chấm Laya vs luật (results.json chỉ chứa id + nhãn, không có log)
+    data/                       # log thật + file nhãn – nằm trong .gitignore, không lên repo
 ```
 
 ---
@@ -256,7 +264,96 @@ Lọc theo độ tin cậy (B + đoạn nhiều từ khoá nhất): xác suất 
 
 ---
 
-## 9. Kết luận
+## 9. Vòng 2 – Test lại trên log lỗi thật (theo plan chi tiết) (ĐÃ XONG)
+
+### Vì sao phải làm lại
+Kết quả ở mục 8 có ba điểm không khách quan:
+1. **Log tự dựng:** 45 case do chính mình tạo bằng cách chạy lệnh lỗi trong thư mục tạm, không phải lỗi gặp khi làm việc thật.
+2. **"Học tủ":** regex và bộ nhóm con B được viết **sau khi** đã xem đề. Khi thử trên 40 log mới chưa ai xem trước, cùng cấu hình Laya B tụt từ 73% xuống 57,5%.
+3. **Nhãn do LLM gán:** plan chi tiết (`laya_error_triager_mcp_detailed_plan.md`, mục 14) yêu cầu nhãn do người gán, không dùng LLM làm nguồn đáp án duy nhất.
+
+Vòng 2 làm đúng theo plan: phase 2 (dataset), phase 3 (Laya offline) và mục 16 (so với bộ luật đơn giản).
+
+### Cách làm
+| Bước | Làm gì | Bằng chứng |
+|---|---|---|
+| 1. Bộ nhóm theo plan | 8 nhóm theo **hướng debug** (nên nhìn vào đâu), không theo tên lỗi. Mỗi mô tả ≤ 29 token | `v2/categories.py` |
+| 2. Bộ luật đơn giản | ~6 dòng regex, "cố ý đơn giản" như plan mục 16 | `v2/rules.py` |
+| 3. Đóng băng | Commit bước 1 và 2 **trước khi** thu thập hay xem bất kỳ log nào | commit `2f2b51f` |
+| 4. Thu log thật | 49 lần lệnh lỗi trong lịch sử Claude Code (ess-be, ess-fe, Act01, Laya…) + 55 log người dùng dán trong issue GitHub (React 14, Node 13, .NET 14, Python 14), có kèm nguyên nhân thật từ thread | `v2/extract_transcripts.py`, `v2/data/` |
+| 5. Gán nhãn | Claude gán nhãn kèm ghi chú chỗ mơ hồ; **người dùng duyệt và chấp thuận** | `v2/data/to_label.json` |
+| 6. Chấm | Cùng input cho cả hai: ~50 dòng log cuối đã làm sạch (plan mục 11) | `v2/eval.py` |
+
+**Lọc và gộp trước khi chấm** (người dùng đã duyệt):
+- Bỏ 12 case không phải lỗi của lệnh: prompt xin quyền, harness chặn lệnh, lệnh bị ngắt.
+- Bỏ 3 case `UNKNOWN`: quá ít để đo, và log gần như trống. Laya vẫn được chọn `UNKNOWN` trong danh sách.
+- Gộp `FLAKY_TEST` vào `ENVIRONMENT` khi chấm, vì chỉ có 1 case (plan mục 7: nhóm khó tách thì gộp).
+- Lệnh do Claude gõ sai (đường dẫn, dấu nháy, cú pháp `sed`/PowerShell) xếp vào `CODE_BUG`.
+
+→ Còn **89 case**, cả hai thí sinh làm cùng 89 case này.
+
+### Kết quả
+
+| | Đúng / 89 | Accuracy | Macro F1 |
+|---|---|---|---|
+| Đoán bừa (1 trong 7 nhóm) | ~13 | ~14% | – |
+| **Laya** | **25** | **28%** | **0,26** |
+| Bộ luật đơn giản | 29 | 33% | 0,33 |
+| *Ngưỡng plan (mục 17)* | *71* | *80%* | |
+
+- **Accuracy** = tỷ lệ case đoán đúng trên toàn bộ 89 case.
+- **Macro F1** = điểm tính riêng cho từng nhóm rồi lấy trung bình đều. Nhóm nào bị bỏ qua hoàn toàn sẽ kéo điểm xuống, nên chỉ số này không bị nhóm đông case che lấp.
+
+**Accuracy tách theo nguồn** (vẫn là 89 case trên, chỉ đếm riêng):
+
+| Nguồn | Số case | Laya | Luật |
+|---|---|---|---|
+| Lịch sử Claude Code | 34 | 32% | 26% |
+| Issue GitHub | 55 | 25% | 36% |
+
+**F1 theo từng nhóm:**
+
+| Nhóm | Số case | Laya | Luật |
+|---|---|---|---|
+| BUILD_TOOLCHAIN | 19 | 0,39 | 0,47 |
+| ENVIRONMENT (đã gộp FLAKY_TEST) | 17 | 0,28 | 0,48 |
+| DEPENDENCY_MISSING | 16 | 0,32 | 0,48 |
+| CODE_BUG | 14 | 0,32 | 0,33 |
+| EXPECTED_FAILURE | 14 | 0,24 | 0,00 |
+| CONFIGURATION | 9 | **0,00** | 0,21 |
+
+**Độ tin cậy và độ trễ của Laya:**
+
+| Xác suất cao nhất ≥ | Tỷ lệ case được gợi ý | Độ chính xác |
+|---|---|---|
+| 0.0 | 100% | 28% |
+| 0.4 | 29% | 38% |
+| 0.5 | 10% | 56% |
+| 0.6 | 6% | 60% |
+| 0.7 | 3% | 33% |
+
+Độ trễ p50 / p90: 2,1 s / 3,3 s, so với luật dưới 1 ms.
+
+### Laya sai thế nào
+- **Dồn câu trả lời vào `EXPECTED_FAILURE`:** chọn 27 lần, trong khi chỉ có 14 case thật. Lỗi môi trường (7/17), lỗi code (5/14) và thiếu dependency (5/16) bị coi là "lỗi vô hại". Đây đúng là kiểu sai nguy hiểm mà plan mục 23 cảnh báo: Claude có thể bỏ qua một lỗi thật.
+- **Không nhận ra `CONFIGURATION` lần nào:** 4/9 case cấu hình bị xếp vào `DEPENDENCY_MISSING`.
+- **Độ tin cậy không dùng để lọc được:** chỉ 10% case có xác suất ≥ 0.5, và ngay cả nhóm đó cũng chỉ đúng 56%. Có 2 case Laya tự tin ≥ 0.7 mà vẫn sai.
+
+### Lưu ý về bài test
+- **Bộ luật cũng chỉ đạt 33%.** Log thật khó hơn nhiều so với log tự dựng ở mục 8, và ranh giới giữa các nhóm của plan không rõ ràng. Lúc gán nhãn, Claude và Sonnet bất đồng ở 17/92 case.
+- **Nhãn do Claude gán, người dùng duyệt nhanh**, chưa phải người gán từ đầu.
+- **Khoảng một nửa case GitHub là lỗi của chính công cụ** (npm, pytest, Vite…). Vì vậy `BUILD_TOOLCHAIN` có thể nhiều hơn thực tế ở công ty.
+
+Dù có các lưu ý trên, kết luận về Laya vẫn không đổi: Laya thấp hơn bộ luật và cách rất xa ngưỡng 80%.
+
+---
+
+## 10. Kết luận
+
+> **Kết luận cuối (vòng 2, log thật):** Laya đúng **28%** trên 89 log lỗi thật đã duyệt nhãn, thấp hơn bộ luật đơn giản (33%) và rất xa ngưỡng 80% của plan. Vòng 2 chạm các điều kiện dừng ở plan mục 27: accuracy không hơn bộ luật, nhầm lẫn giữa các nhóm cao, và độ trễ 2 s.
+> **Dừng hướng dùng Laya (zero-shot) cho error triage.** Không làm MCP và không chạy A/B (plan phase 4 chỉ làm khi offline đạt).
+
+**Kết luận vòng 1 (mục 8, giữ lại để tham khảo; các con số này cao hơn thực tế, xem mục 9):**
 
 > **Bước 2 KHÔNG ĐẠT ngưỡng (75%).** Biến thể tốt nhất của Laya đạt 73% về phân loại (category chia nhỏ, thí nghiệm phụ 2); chọn đoạn log đạt 38%. Regex đạt 87% và 93%.
 > Đề xuất: **không dùng Laya làm bộ phân loại chính.** Nếu làm hook triage thì theo hướng (a); nếu muốn giữ Laya thì chỉ theo hướng (b) với bộ category B.
@@ -270,7 +367,7 @@ Lọc theo độ tin cậy (B + đoạn nhiều từ khoá nhất): xác suất 
 
 ---
 
-## 10. Cách tái lập
+## 11. Cách tái lập
 
 ```bash
 # 1. Bật Laya
@@ -286,5 +383,11 @@ python triage/eval.py
 python triage/ablate.py
 python triage/ablate2.py
 
-# 5. Xong thì tắt laya-serve
+# 5. Vòng 2 – log thật (data/ không có trên repo; phải trích lại trên máy có lịch sử Claude Code)
+python triage/v2/extract_transcripts.py      # → v2/data/transcript_failures.jsonl
+#   (log GitHub: v2/data/github_failures.jsonl, thu thập bằng gh CLI, chỉ đọc)
+python triage/v2/build_label_file.py         # → v2/data/to_label.json (gán nhãn + duyệt)
+python triage/v2/eval.py                     # → v2/results.json
+
+# 6. Xong thì tắt laya-serve
 ```
