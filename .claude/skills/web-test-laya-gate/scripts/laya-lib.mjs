@@ -38,6 +38,55 @@ export function installed() {
   return ['laya-serve.exe', 'laya-serve'].some((f) => fs.existsSync(path.join(home, '.local', 'bin', f)));
 }
 
+const STATE_DIR = path.join(process.env.USERPROFILE || process.env.HOME || '', '.ess-web-test');
+export const PID_PATH = path.join(STATE_DIR, 'laya-serve.pid');
+export const SERVE_LOG = path.join(STATE_DIR, 'laya-serve.log');
+
+function serveExe() {
+  const home = process.env.USERPROFILE || process.env.HOME || '';
+  return ['laya-serve.exe', 'laya-serve'].map((f) => path.join(home, '.local', 'bin', f)).find((p) => fs.existsSync(p));
+}
+
+/**
+ * Start laya-serve in the background and wait until /health answers. The pid goes to PID_PATH so
+ * stop() only ever kills a server this skill started. Returns { ok, pid, waited } or { ok: false, reason }.
+ */
+export async function start(cfg, timeoutMs = 120000) {
+  const exe = serveExe();
+  if (!exe) return { ok: false, reason: 'not-installed' };
+  const { spawn } = await import('node:child_process');
+  fs.mkdirSync(STATE_DIR, { recursive: true });
+  const log = fs.openSync(SERVE_LOG, 'a');
+  const env = { ...process.env };
+  if (!env.LAYA_MODELS) env.LAYA_MODELS = cfg.model || 'english'; // load only the model the scripts use: faster start, less RAM
+  const port = new URL(cfg.url).port;
+  if (port && !env.LAYA_PORT) env.LAYA_PORT = port;
+  const child = spawn(exe, [], { detached: true, windowsHide: true, stdio: ['ignore', log, log], env });
+  child.unref();
+  fs.writeFileSync(PID_PATH, String(child.pid));
+  const t0 = Date.now();
+  while (Date.now() - t0 < timeoutMs) {
+    if (await alive(cfg.url)) return { ok: true, pid: child.pid, waited: Math.round((Date.now() - t0) / 1000) };
+    if (child.exitCode !== null) break;
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+  return { ok: false, reason: 'start-failed', pid: child.pid };
+}
+
+/** Stop the server start() launched (whole process tree). No-op when this skill did not start it. */
+export async function stop() {
+  let pid;
+  try { pid = Number(fs.readFileSync(PID_PATH, 'utf8').trim()); } catch { return { stopped: false, reason: 'not-started-by-skill' }; }
+  try {
+    if (process.platform === 'win32') {
+      const { execFileSync } = await import('node:child_process');
+      execFileSync('taskkill', ['/PID', String(pid), '/T', '/F'], { stdio: 'ignore' });
+    } else process.kill(-pid);
+  } catch { /* already gone */ }
+  fs.rmSync(PID_PATH, { force: true });
+  return { stopped: true, pid };
+}
+
 /**
  * One Laya call. questions: { name: { type: 'choice', instructions, criteria: {label: desc} } }.
  * Returns { name: { label, p, probabilities } } or null on any error (caller falls back to rules).

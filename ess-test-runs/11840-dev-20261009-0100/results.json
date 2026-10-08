@@ -1,0 +1,103 @@
+{
+  "ticket": {
+    "id": 11840,
+    "type": "Bug",
+    "title": "Total Hours is displayed inconsistently in Month View",
+    "state": "Resolved",
+    "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+  },
+  "environment": {
+    "key": "dev",
+    "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+  },
+  "browser": "chrome-devtools",
+  "tester": "danhnpc",
+  "startedAt": "2026-10-09T01:00:00+07:00",
+  "scope": "Fix: in Attendance Month View the Total/Scheduled-hours toolbar stat aggregates over the whole displayed month, not the active ISO week, so the value is stable regardless of week anchor. Covers read-only verification on dev as admin account; no writes.",
+  "cases": [
+    {
+      "id": "TC01",
+      "title": "Month View Total Hours is stable when revisiting the same month",
+      "ac": [
+        "AC1"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "happy",
+      "preconditions": "Attendance page reachable",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Open Attendance, switch to Month View, note Total Hours for the displayed month",
+          "expected": "Total Hours shown for the month",
+          "actual": "Month view October 2026: Scheduled hours 176, Total hours 0, Absence hours 48",
+          "status": "pass",
+          "screenshot": "shots/TC01-S01.png",
+          "at": "2026-10-08T18:03:31.970Z"
+        },
+        {
+          "n": 2,
+          "action": "Go to another month then back to the same month; re-read Total Hours",
+          "expected": "Same Total Hours value as step 1",
+          "actual": "Round trip Jun->Jul->Aug->Jul->Jun: June 2026 stayed Scheduled 160 / Total 0 / Absence 160; July 184 both visits",
+          "status": "pass",
+          "screenshot": "shots/TC01-S02.png",
+          "at": "2026-10-08T18:03:32.032Z"
+        }
+      ]
+    },
+    {
+      "id": "TC02",
+      "title": "Month Total Hours equals sum of daily hours across the month (not a single week)",
+      "ac": [
+        "AC1"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "happy",
+      "preconditions": "Month has attendance data",
+      "status": "blocked",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "In Month View compare Total Hours with sum of per-day hours/entries visible in the grid",
+          "expected": "Total equals sum over the whole month",
+          "actual": "Account has no attendance records (Total hours 0 in every month Jun-Oct 2026), so the sum of daily hours cannot be compared; needs an account with attendance data (ticket's 55h for June 2026)",
+          "status": "blocked",
+          "at": "2026-10-08T18:03:32.093Z"
+        }
+      ]
+    },
+    {
+      "id": "TC03",
+      "title": "Total Hours unchanged when switching Week -> Month and between weeks anchors",
+      "ac": [
+        "AC1"
+      ],
+      "role": "xiontechs",
+      "priority": "Medium",
+      "type": "regression",
+      "preconditions": "",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Switch to Week View, move to different weeks, then return to Month View for the same month",
+          "expected": "Month View Total Hours equals the value in TC01",
+          "actual": "Week view Scheduled 40 for 5-11, 12-18, 19-25 Oct; returning to Month view gives Scheduled 176 / Total 0, same as TC01 (month-wide, independent of week anchor)",
+          "status": "pass",
+          "screenshot": "shots/TC03-S01.png",
+          "at": "2026-10-08T18:03:32.155Z"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "Total hours is 0 for Jun-Oct 2026 on this account: no attendance records, so the Total-hours aggregation could not be exercised."
+  ],
+  "finishedAt": "2026-10-08T18:03:43.518Z"
+}

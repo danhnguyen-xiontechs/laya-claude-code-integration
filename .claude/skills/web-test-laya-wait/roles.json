@@ -1,0 +1,9 @@
+{
+  "default": "xiontechs",
+  "roles": {
+    "xiontechs": {
+      "account": "danh.nguyen@xiontechs.com",
+      "notes": "The user's company account. Full-rights admin on dev — use for happy-path cases of any role it can play (employee, HR, admin). Has no direct reports on dev, so manager/team cases are blocked with it."
+    }
+  }
+}

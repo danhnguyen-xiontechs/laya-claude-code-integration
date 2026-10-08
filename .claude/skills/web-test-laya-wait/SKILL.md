@@ -1,19 +1,19 @@
 ---
-name: web-test-laya
+name: web-test-laya-wait
 description:
-  Laya-assisted variant of web-test (optional local Laya decision model for page-wait / screen classification and a write-action gate with network audit; otherwise the same flow) — use when the user says `/web-test-laya` or asks to test with Laya. End-to-end manual-style web testing of an ESS (Employee Self-Service) ticket
+  Laya plan 1 variant of web-test: page wait and screen classification with an optional local Laya decision model (`wait.mjs`); otherwise the same flow as web-test. Use to test plan 1 on its own (plan 3, the write-action gate, is the `web-test-laya-gate` skill). End-to-end manual-style web testing of an ESS (Employee Self-Service) ticket
   against a chosen environment. Fetches the Azure DevOps work item (story/bug/
   task) from gemseducation/GEMS-HR-SCM via the az CLI, derives test cases from
   its acceptance criteria / repro steps, drives a real browser per role
   (chrome-devtools MCP, or playwright-cli as fallback) to execute each case,
   saves screenshot evidence per step straight to disk plus ESS API responses, and produces a self-contained HTML test
   report plus an execution log (step-by-step agent actions and real token
-  usage, as HTML). Trigger only on `/web-test-laya <ticket> <env>` or an explicit request to test with Laya; plain ticket-testing requests go to the `web-test` skill.
+  usage, as HTML). Trigger only on `/web-test-laya-wait <ticket> <env>` or an explicit request to test plan 1 / the Laya page wait; plain ticket-testing requests go to the `web-test` skill.
 ---
 
-# Web Test (ESS) — Laya variant
+# Web Test (ESS) — Laya plan 1: page wait
 
-This skill lives in the project (`.claude/skills/web-test-laya/`); script paths below are relative to the project root — run them from there.
+This skill lives in the project (`.claude/skills/web-test-laya-wait/`); script paths below are relative to the project root — run them from there.
 
 Turn one ADO ticket into an executed, evidenced test run:
 
@@ -26,7 +26,7 @@ For the Claude-in-Chrome variant (user's real Chrome, more tokens) see the `web-
 ## Invocation
 
 ```text
-/web-test-laya <ticketId> <env> [--role <role>] [--browser devtools|cli] [--review-plan]
+/web-test-laya-wait <ticketId> <env> [--role <role>] [--browser devtools|cli] [--review-plan]
 ```
 
 | Arg | Meaning | Default |
@@ -87,25 +87,20 @@ Derive cases from the ticket, not from what the UI happens to show:
 
 Keep it proportionate — a copy change needs 1–2 cases, a new workflow 8–12. Every expected result must be concrete and observable ("toast reads 'Leave request submitted'", "table shows 3 rows").
 
-Write the plan into `results.json` with every step `status: "not-run"` **and `writes: true|false`** (does performing this step create, change or delete data?), then show a compact table (`TC | AC | Role | Title | Priority`). Write one main verb per step action ("Submit the request", not "Complete the flow") — the gate reads the action text.
+Write the plan into `results.json` with every step `status: "not-run"`, then show a compact table (`TC | AC | Role | Title | Priority`).
 
-**Write-action gate:** any step that submits, approves, rejects, cancels, uploads or edits data goes to **D365 F&O, which is shared** — even from `local`, because the local BE talks to a shared D365. Prefer read-only verification when the AC allows it. Cross-check your `writes` flags, regardless of `--review-plan`:
-
-```bash
-node .claude/skills/web-test-laya/scripts/gate.mjs "<runDir>"
-```
-
-It checks each step's action with a keyword rule and Laya (when on) and never lowers your `true`. Exit 3 = **disputed** steps: you said read (or didn't say) but the rule or Laya says write. For each, look again — set `writes: true`, or keep `false` and add a one-line `writesReason` — and re-run until exit 0. Then ask the user **once**: list the `write` steps for OK, plus one line naming the steps you kept read-only against the gate ("overruled") so they can object. Execute no write step before that OK. (Laya alone flags many read steps as writes — that is why disputes come back to you first, not straight to the user.)
+**Write-action gate:** any case that submits, approves, rejects, cancels, uploads or edits data goes to **D365 F&O, which is shared** — even from `local`, because the local BE talks to a shared D365. List those steps and ask once for OK before executing them, regardless of `--review-plan`. Prefer read-only verification when the AC allows it.
 
 With `--review-plan`, stop here and wait.
 
 ## Step 3 — Prepare the browser
 
-**Laya pre-check (once per run, first thing in Step 3):** `node .claude/skills/web-test-laya/scripts/laya-check.mjs` prints one line; act on it and never mention Laya otherwise:
-- `laya=on` → nothing to do.
+**Laya pre-check (once per run).** Start it **in the background at the beginning of Step 1** — when Laya is installed but not running it starts `laya-serve` itself and waits for `/health` (~40 s on CPU), so it is ready by the time the browser is: `node .claude/skills/web-test-laya-wait/scripts/laya-check.mjs` (Bash `run_in_background`). Read its one line before the first page wait / gate call in Step 3, act on it, and never mention Laya otherwise:
+- `laya=on url=…` → already running (someone else started it): use it, leave it running.
+- `laya=on url=… started=<pid>` → this run started it: use it, and **stop it at the end of the run** (Step 5).
 - `reason=disabled` → say nothing.
-- `reason=ask` → ask the user **once**: Laya is an optional small local model (~2.2 GB download, a few minutes, runs on CPU) that lets this skill wait for pages and classify them without extra model turns; the skill works fully without it. Options: install now / never ask again / later. Record the answer with `laya-check.mjs --set true|false` (later = leave as is). "Install now" → run `powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/web-test-laya/scripts/laya/install-laya.ps1 -SkipMcp` **in the background** and continue this run in rule mode; it is used from the next run.
-- `reason=not-running` → one line: "Laya is installed but not running (`.claude/skills/web-test-laya/scripts/laya/start-laya.bat`); continuing without it." Then continue.
+- `reason=ask` → ask the user **once**: Laya is an optional small local model (~2.2 GB download, a few minutes, runs on CPU) that lets this skill wait for pages and classify them without extra model turns; the skill works fully without it. Options: install now / never ask again / later. Record the answer with `laya-check.mjs --set true|false` (later = leave as is). "Install now" → run `powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/web-test-laya-wait/scripts/laya/install-laya.ps1 -SkipMcp` **in the background** and continue this run in rule mode; it is used from the next run.
+- `reason=start-failed` → one line: "Laya is installed but did not start (log: `~/.ess-web-test/laya-serve.log`); continuing without it." Then continue.
 - `reason=not-installed` → offer the installer as above, continue.
 
 Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screenshots **out of the model context** — they are written straight to `shots/` — which is why this skill is cheaper than `web-test-chrome`.
@@ -114,8 +109,8 @@ Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screen
 
 1. Launch the role (one role owns port 9222 at a time; launching another role stops the current one):
    ```bash
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya/scripts/launch-role.ps1" status
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-wait/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-wait/scripts/launch-role.ps1" status
    ```
    It uses **Edge** (else Chrome, else Playwright's Chromium) with a dedicated persistent profile at `~/.ess-web-test/profiles/<role>`, and prints the role's account. It **cannot** use the user's everyday Edge profile: Edge 136+ ignores the debugging port on its default profile, and the running Edge would capture the launch. Act on its output:
    - `FIRST RUN` → the profile has never signed in: ask the user to sign in as the printed account in the opened window, wait, then continue.
@@ -138,12 +133,6 @@ It shares the same per-role profile as path A, so one sign-in serves both — st
 
 **Switching roles.** Each role has its own profile, so switching = launching the other role (A) or using the other `-s=<role>-<env>` session (B). At the start of each role's first case, check who is signed in to ESS (avatar / profile page) and compare with the role's account in `roles.json`; if it differs, stop and ask the user. Group cases by role to minimise switches.
 
-**Write recorder.** Once the role browser is up (path A or B on port 9222), start the recorder for the whole run; it logs every non-GET `/api/` request (method, path without query, status, time — never headers or bodies) and reconnects by itself after a role switch:
-
-```bash
-node .claude/skills/web-test-laya/scripts/netlog.mjs start "<runDir>"
-```
-
 **Local env pre-check.** For `local`, confirm both sides are up before testing — a dead backend makes every case fail for reasons unrelated to the ticket:
 - FE `http://localhost:3000` (`D:\Source\Ess\ess-fe`, `npm run dev`)
 - BE `http://localhost:5201/api/health` (`D:\Source\Ess\ess-be`, `dotnet run --project src/Ess-App.API/Ess-App.API.csproj`)
@@ -157,12 +146,12 @@ For each case, for each step:
 1. Act — prefer snapshot uids/refs over coordinates. **Snapshot only when you need uids to click/fill.** `navigate_page` (A) already returns the page content, so don't follow it with `take_snapshot` just to look. To *check* a value, use `wait_for` on the expected text, or `evaluate_script` returning only the few strings you need (e.g. the text of one cell or a list of chip labels) — never the whole DOM. One snapshot per page state; reuse its uids until the page changes. (Measured on 22063: `navigate_page` +7.4K tokens, each `take_snapshot` of an ESS table +2–3K, all re-read on every later turn.)
 2. Wait for the UI to settle — **one call, not a `wait_for` / snapshot loop** (path A; on path B use `find`):
    ```bash
-   node .claude/skills/web-test-laya/scripts/wait.mjs --expect "<text the AC expects>" --timeout 20 [--shot "<runDir>/shots/TC<nn>-S<nn>.png"]
+   node .claude/skills/web-test-laya-wait/scripts/wait.mjs --expect "<text the AC expects>" --timeout 20 [--shot "<runDir>/shots/TC<nn>-S<nn>.png"]
    ```
-   Pick an `--expect` string that only appears **once the data has loaded** (a day name, a holiday label, a row value) — not a heading or a month label, which render before the data (measured: `ready` at 0.7 s with an empty grid). It attaches read-only to the port-9222 browser, polls the visible text every 500 ms and prints one line: `status=ready|login|error|timeout screen=<id> login=<bool> expect=found|missing waited=<s> laya=on|idle|off`. `ready` = expected text present and no skeleton/spinner; `login` → the role needs signing in (Step 3); `error` → the page shows a global error, treat as a failed step and capture diagnostics; `timeout` → judge from the page yourself (one `take_snapshot`), don't just re-run it. `--shot` takes the step's screenshot in the same call once ready. With Laya on (see "Optional: Laya"), the script also classifies ambiguous pages (unknown sign-in or error wording, which ESS screen it is) when the text has stopped changing; without Laya it is rules only — the result line says which. ESS pages fan out several `/api/...` calls that each hit D365 — a screenshot of a skeleton is not evidence.
+   Pick an `--expect` string that only appears **once the data has loaded** (a day name, a holiday label, a row value) — not a heading or a month label, which render before the data (measured: `ready` at 0.7 s with an empty grid). **Copy it verbatim from text you have already seen on this page** (the `navigate_page` / snapshot output, or a value from the ticket's test data) — matching ignores case but not wording. Never guess a word the page might show (on 19358, `--expect "Cancel"` and a re-cased label each burned a 27 s timeout). If you have no such string yet, omit `--expect`: the script then waits only for spinners/skeletons to go away. It attaches read-only to the port-9222 browser, polls the visible text every 500 ms and prints one line: `status=ready|login|error|timeout screen=<id> login=<bool> expect=found|missing waited=<s> laya=on|idle|off`. `ready` = expected text present and no skeleton/spinner; `login` → the role needs signing in (Step 3); `error` → the page shows a global error, treat as a failed step and capture diagnostics; `timeout` → judge from the page yourself (one `take_snapshot`), don't just re-run it. `--shot` takes the step's screenshot in the same call once ready. With Laya on (see "Optional: Laya"), the script also classifies ambiguous pages (unknown sign-in or error wording, which ESS screen it is) when the text has stopped changing; without Laya it is rules only — the result line says which. ESS pages fan out several `/api/...` calls that each hit D365 — a screenshot of a skeleton is not evidence.
 3. **Screenshot straight to file**, never into the conversation: `take_screenshot` with `filePath: "<runDir>/shots/TC<nn>-S<nn>.png"` (A) or `playwright-cli -s=… screenshot --filename=shots/TC<nn>-S<nn>.png` (B). Every step with an expected result gets one; pure navigation steps may share the next step's shot. Don't view the image to judge the result — judge from the snapshot/text; open an image only when the check is purely visual (colour, layout).
    **File paths (A):** the MCP only writes inside its workspace roots, and `~/ess-test-runs` is outside them. If `filePath` / `responseFilePath` is refused, write to the session scratchpad instead and copy into `<runDir>/shots/` or `<runDir>/api/` before building the report — same file names.
-4. Record `actual` + `status` (`pass` / `fail` / `blocked` / `skipped`) in `results.json` immediately, so a crashed run still leaves partial evidence. Also set the step's `at` (ISO time, when you started acting on it) — the gate audit uses it to tie recorded write requests to steps.
+4. Record `actual` + `status` (`pass` / `fail` / `blocked` / `skipped`) in `results.json` immediately, so a crashed run still leaves partial evidence — one call per step, no hand-editing of the JSON: `node .claude/skills/web-test-laya-wait/scripts/record.mjs "<runDir>" TC<nn> <n> <status> --actual "<what the page showed>" [--shot shots/TC<nn>-S<nn>.png]`. It also updates the case status and prints how many steps are still `not-run`. Write `actual` from the page text you read (quote it), not a paraphrase of `expected`.
 5. **Network — only on a fail (as in the original skill).** A passing step needs no network evidence; the screenshot and the page text are the evidence.
    - List only: `list_network_requests` filtered to `fetch`/`xhr` (A) / `requests` (B), and `list_console_messages` (A) / `console error` (B).
    - Record into the step's `diagnostics` for each failed (4xx/5xx) `/api/...` call: method, path (strip query strings), status, and `code` + `traceId` from the ESS error body. The `traceId` lets a developer find the request in the BE Serilog logs — always include it when present.
@@ -189,17 +178,10 @@ Rules of honest reporting:
 
 ## Step 5 — Build the report
 
-First stop the recorder and audit the gate — any write request made during a step the gate called read-only is appended to `observations` as `[gate audit] …` and must be mentioned in the chat summary:
+If the Laya pre-check printed `started=<pid>`, stop the server this run started once the last page wait / gate call is done (it never touches a server it did not start): `node .claude/skills/web-test-laya-wait/scripts/laya-check.mjs --stop`.
 
 ```bash
-node .claude/skills/web-test-laya/scripts/netlog.mjs stop "<runDir>"
-node .claude/skills/web-test-laya/scripts/gate.mjs "<runDir>" --audit
-```
-
-Some ESS reads may use POST (search/filter endpoints); an audit finding is a prompt to look, not proof of a write.
-
-```bash
-node .claude/skills/web-test-laya/scripts/build_report.mjs "<runDir>"
+node .claude/skills/web-test-laya-wait/scripts/build_report.mjs "<runDir>"
 ```
 
 Reads `results.json` + `shots/`, recomputes statuses, writes `report.html` with images inlined. Do not send it yet — first build the execution log (Step 6), then send **both** `report.html` and `execution-log.html` in one `SendUserFile` call (`display: "render"`). In chat: overall verdict, pass/fail/blocked counts, one line per failed case with the likely cause (and `traceId` if any). Offer once to publish it as an Artifact for sharing.
@@ -226,7 +208,7 @@ Keep `steps` to the 8–15 meaningful milestones (not every tool call), and be h
 3. Build the log (run from the same working directory as the session, so the default transcript lookup finds it):
 
 ```bash
-node .claude/skills/web-test-laya/scripts/build_execution_log.mjs "<runDir>"
+node .claude/skills/web-test-laya-wait/scripts/build_execution_log.mjs "<runDir>"
 ```
 
 The script reads this session's Claude Code transcript (`~/.claude/projects/<cwd-slug>/*.jsonl`, newest file; pass `--transcript` / `--from` / `--to` to override) and writes one self-contained `<runDir>/execution-log.html`:
@@ -269,10 +251,6 @@ Internal reasoning is not logged, and token/password-looking values are redacted
           "actual": "…",
           "status": "pass",
           "screenshot": "shots/TC01-S01.png",
-          "writes": true,
-          "writesReason": "only when you keep writes:false against a gate dispute",
-          "at": "2026-10-08T10:05:12+07:00",
-          "gate": { "writes": "write | read | disputed", "rule": true, "laya": 0.73, "agent": true, "why": "agent" },
           "diagnostics": {
             "console": [],
             "network": [{ "method": "POST", "status": 500, "url": "/api/leave-requests", "excerpt": "code: … traceId: 00-…" }]
@@ -289,9 +267,9 @@ A case's `status` is the worst of its steps (fail > blocked > skipped > not-run 
 
 ## Optional: Laya
 
-[Laya](https://github.com/convaiinnovations/laya) is a small self-hosted decision model (fixed-choice answers with confidence, ~0.5 s per question on CPU, no quota). It is **optional**: every script falls back to plain rules when it is unreachable and prints `laya=off`. Shared defaults in [laya.json](laya.json); the per-machine answer (`enabled`, url override) is written to `laya.local.json` (gitignored). `LAYA_URL` env overrides the url. Installer and launcher ship in `scripts/laya/` (`install-laya.ps1 -SkipMcp`, `start-laya.bat`); the model goes to `D:\hf-cache` or `%LOCALAPPDATA%\laya\hf-cache`. To turn it back on after "never": edit `laya.json` or run `laya-check.mjs --laya`.
+[Laya](https://github.com/convaiinnovations/laya) is a small self-hosted decision model (fixed-choice answers with confidence, ~0.5 s per question on CPU, no quota). It is **optional**: every script falls back to plain rules when it is unreachable and prints `laya=off`. Shared defaults in [laya.json](laya.json); the per-machine answer (`enabled`, url override) is written to `laya.local.json` (gitignored). `LAYA_URL` env overrides the url. `laya-check.mjs` starts `laya-serve` in the background when it is installed but down (only the `model` from `laya.json`, port from its `url`; log `~/.ess-web-test/laya-serve.log`, pid `~/.ess-web-test/laya-serve.pid`) and `--stop` stops only that server; `--no-start` checks without starting. Installer and manual launcher ship in `scripts/laya/` (`install-laya.ps1 -SkipMcp`, `start-laya.bat`); the model goes to `D:\hf-cache` or `%LOCALAPPDATA%\laya\hf-cache`. To turn it back on after "never": edit `laya.json` or run `laya-check.mjs --laya`.
 
-What it is used for today: `gate.mjs` (plan 3) — a second opinion on which steps write data (Laya widens recall: on 24 held-out step texts it missed 1/12 writes vs 8/12 for the keyword rule, but flagged 9/12 reads, so disputes go back to the agent); and `wait.mjs` (plan 1) — recognising sign-in / error pages beyond the built-in patterns and naming the ESS screen. Every poll is appended to `~/.ess-web-test/wait-log.jsonl` (page text excerpt, rule view, Laya view) so Laya's answers can be scored offline before trusting it with more.
+What it is used for here (plan 1): `wait.mjs` — recognising sign-in / error pages beyond the built-in patterns and naming the ESS screen. Every poll is appended to `~/.ess-web-test/wait-log.jsonl` (page text excerpt, rule view, Laya view) so Laya's answers can be scored offline before trusting it with more. The write-action gate (plan 3) is the separate `web-test-laya-gate` skill.
 
 ## Environments
 

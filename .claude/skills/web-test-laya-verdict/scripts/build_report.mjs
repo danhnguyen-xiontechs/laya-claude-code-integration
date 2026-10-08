@@ -15,7 +15,8 @@ const outFile = path.resolve(runDir, outIdx >= 0 ? args[outIdx + 1] : 'report.ht
 const results = JSON.parse(fs.readFileSync(path.join(runDir, 'results.json'), 'utf8'));
 
 // Worst-status-wins, so a hand-edited case status can't mask a failed step.
-const RANK = { fail: 4, blocked: 3, skipped: 2, 'not-run': 1, pass: 0 };
+// 'review' = plan 2: Laya was unsure and the agent has not judged the step yet.
+const RANK = { fail: 5, review: 4, blocked: 3, skipped: 2, 'not-run': 1, pass: 0 };
 const worst = (statuses) =>
   statuses.reduce((w, s) => ((RANK[s] ?? 1) > (RANK[w] ?? 1) ? s : w), 'pass');
 
@@ -25,13 +26,35 @@ for (const c of cases) {
   if (steps.length) c.status = worst(steps.map((s) => s.status ?? 'not-run'));
   c.status ??= 'not-run';
 }
+// Steps left not-run although they were clearly executed (a screenshot exists or actual was written) mean
+// results.json was not updated during the run — the report would show the case as never run.
+const stale = cases.flatMap((c) => (c.steps ?? []).filter((s) => (s.status ?? 'not-run') === 'not-run' &&
+  (s.actual || (s.screenshot && fs.existsSync(path.join(runDir, s.screenshot))))).map((s) => `${c.id}-S${s.n}`));
+if (stale.length) {
+  console.error(`WARNING: ${stale.length} executed step(s) still not-run in results.json: ${stale.join(', ')} — judge them with verdict.mjs and rebuild`);
+  process.exitCode = 3;
+}
+const allSteps = cases.flatMap((c) => c.steps ?? []);
+const unresolved = allSteps.filter((s) => s.status === 'review').length;
+if (unresolved) {
+  console.error(`WARNING: ${unresolved} step(s) still 'review' — judge them with verdict.mjs --status … and rebuild`);
+  process.exitCode = 3;
+}
+// Plan 2 numbers: how often Laya decided, how often it was unsure, how often the agent overrode it.
+const judged = allSteps.filter((s) => s.verdict);
+const vstats = {
+  laya: judged.filter((s) => s.verdict.by === 'laya').length,
+  review: judged.filter((s) => s.verdict.review).length,
+  model: judged.filter((s) => s.verdict.by === 'model' && !s.verdict.override).length,
+  override: judged.filter((s) => s.verdict.override).length,
+};
 const count = (s) => cases.filter((c) => c.status === s).length;
 const totals = {
   pass: count('pass'),
   fail: count('fail'),
   blocked: count('blocked'),
   skipped: count('skipped'),
-  'not-run': count('not-run'),
+  'not-run': count('not-run') + count('review'),
 };
 const verdict = totals.fail
   ? 'FAIL'
@@ -65,6 +88,15 @@ function inlineImage(rel) {
 }
 
 const badge = (s) => `<span class="badge s-${esc(s)}">${esc(s)}</span>`;
+// "Judged by" chip for plan 2: who set the status, Laya's confidence, review / override flags.
+function verdictChip(v) {
+  if (!v) return '';
+  const p = v.laya?.p != null ? ` ${Number(v.laya.p).toFixed(2)}` : '';
+  const who = v.override ? `model (overrode Laya: ${esc(v.laya?.label)}${p})` : v.by === 'laya' ? `Laya${p}` : `model${v.laya ? ` (Laya unsure: ${esc(v.laya.label)}${p})` : ''}`;
+  const flags = [v.review ? '<span class="vflag review">review</span>' : '', v.override ? '<span class="vflag override">override</span>' : '',
+    v.confirmed ? '<span class="vflag">confirmed</span>' : ''].join('');
+  return `<span class="vby">judged by ${who}</span>${flags}${v.reason ? `<span class="vreason">${esc(v.reason)}</span>` : ''}`;
+}
 
 function diagnostics(d) {
   if (!d) return '';
@@ -91,8 +123,8 @@ function caseHtml(c) {
   const steps = (c.steps ?? [])
     .map(
       (s) => `
-      <div class="step s-${esc(s.status)}">
-        <div class="step-head"><span class="n">Step ${esc(s.n)}</span>${badge(s.status ?? 'not-run')}</div>
+      <div class="step s-${esc(s.status)}${s.verdict?.review || s.verdict?.override ? ' flagged' : ''}">
+        <div class="step-head"><span class="n">Step ${esc(s.n)}</span>${badge(s.status ?? 'not-run')}${verdictChip(s.verdict)}</div>
         <dl>
           <dt>Action</dt><dd>${esc(s.action)}</dd>
           <dt>Expected</dt><dd>${esc(s.expected)}</dd>
@@ -195,6 +227,10 @@ dt{color:var(--muted)}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .diag h5{margin:6px 0 2px}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;font-size:12px}
 .net td{font-size:12px}.url{overflow-wrap:anywhere}
 .muted{color:var(--muted)}
+.vby{margin-left:10px;color:var(--muted);font-size:12px}.vreason{margin-left:8px;font-size:12px;font-style:italic}
+.vflag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:999px;margin-left:6px;background:var(--skip-bg);color:var(--skip)}
+.vflag.review,.s-review.badge{background:var(--blocked-bg);color:var(--blocked)}.vflag.override{background:var(--fail-bg);color:var(--fail)}
+.step.flagged{background:var(--blocked-bg);border-radius:6px;padding:10px}
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9;cursor:zoom-out}
 #lb img{max-width:96vw;max-height:94vh}
 @media print{.filters{display:none}.case{break-inside:avoid}details{display:block}}
@@ -212,6 +248,12 @@ dt{color:var(--muted)}dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
   <div class="tile"><div class="k">Blocked</div><div class="v" style="color:var(--blocked)">${totals.blocked}</div></div>
   <div class="tile"><div class="k">Skipped / not run</div><div class="v">${totals.skipped + totals['not-run']}</div></div>
 </div>
+${judged.length ? `<div class="grid">
+  <div class="tile"><div class="k">Judged by Laya</div><div class="v">${vstats.laya}<span class="muted" style="font-size:14px"> / ${judged.length}</span></div></div>
+  <div class="tile"><div class="k">Flagged review</div><div class="v" style="color:var(--blocked)">${vstats.review}</div></div>
+  <div class="tile"><div class="k">Judged by model</div><div class="v">${vstats.model}</div></div>
+  <div class="tile"><div class="k">Laya overridden</div><div class="v" style="color:var(--fail)">${vstats.override}</div></div>
+</div>` : ''}
 
 <section><h2>Run details</h2><table>
 <tr><th>Started</th><td>${esc(fmt(results.startedAt))}</td><th>Finished</th><td>${esc(fmt(results.finishedAt))}</td></tr>
