@@ -12,3 +12,6 @@ hooks/cache_expiry_gate.log.jsonl
 
 # triage v2: real logs from Claude Code transcripts / internal projects - keep local
 triage/v2/data/
+
+# web-test-laya: per-machine Laya choice
+.claude/skills/web-test-laya/laya.local.json
