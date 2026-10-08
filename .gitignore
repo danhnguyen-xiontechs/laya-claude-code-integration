@@ -9,3 +9,7 @@ benchmark/results/server.log
 workflow/hooks/step_decisions.jsonl
 workflow/hooks/probe_log.jsonl
 hooks/cache_expiry_gate.log.jsonl
+
+# ado-classify: config that (org/tenant khach hang) va cache
+ado-classify/config.local.json
+ado-classify/__pycache__/
