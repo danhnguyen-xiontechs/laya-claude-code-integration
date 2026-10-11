@@ -15,3 +15,4 @@ triage/v2/data/
 
 # web-test-laya-*: per-machine Laya choice
 .claude/skills/web-test-laya-*/laya.local.json
+.claude/skills/review-pr-laya-classify/laya.local.json

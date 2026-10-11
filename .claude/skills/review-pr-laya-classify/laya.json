@@ -1,0 +1,7 @@
+{
+  "url": "http://localhost:8000",
+  "model": "english",
+  "mode": "shadow",
+  "threshold": null,
+  "notes": "Shared defaults. mode: off | shadow (log only) | recheck (needs a calibrated threshold from laya-eval.mjs). Per-machine overrides go to laya.local.json (gitignored). Env wins: XT_REVIEW_PR_LAYA, XT_REVIEW_PR_LAYA_THRESHOLD, LAYA_URL."
+}
