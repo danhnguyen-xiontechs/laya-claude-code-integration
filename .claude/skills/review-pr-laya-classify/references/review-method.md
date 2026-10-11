@@ -237,16 +237,18 @@ by hand. Laya takes no part.
 
 **Merge assessment** (replaces the old score-based decision):
 
-| Merge | Condition |
-|---|---|
-| `Blocked` | at least one Critical or Major |
-| `Eligible` | no Critical/Major; Minor and Suggestion findings do not block |
+| Merge | Condition | Meaning |
+|---|---|---|
+| 🔴 `Blocked` | at least one Critical or Major | should not merge |
+| 🟡 `Eligible with suggestions` | no Critical/Major, at least one Minor or Suggestion | can merge; findings still worth a look |
+| 🟢 `Eligible` | no findings, and the review is complete | the review found no issue |
 
-Examples: 1 Suggestion → score 99, `Approve with Suggestions`, `Eligible`. 1 Major → score 88,
-`Request Changes`, `Blocked`.
+Examples: 1 Suggestion → score 99, `Approve with Suggestions`, 🟡 `Eligible with suggestions`.
+1 Major → score 88, `Request Changes`, 🔴 `Blocked`. No findings → 100, `Approve`, 🟢 `Eligible`.
 
-Incomplete coverage (files not read, diff unavailable) does not change the merge assessment;
-say it in the report notes and in the coverage count.
+Incomplete coverage (files not read, diff unavailable) does not change the computed assessment,
+but `Eligible` assumes a complete review: `assess.mjs` warns when coverage is incomplete; say
+which files were not read in the report notes and in the coverage count.
 
 The verdict and merge assessment are written in the report. This skill never casts a vote on
 the PR; voting stays with a human reviewer.

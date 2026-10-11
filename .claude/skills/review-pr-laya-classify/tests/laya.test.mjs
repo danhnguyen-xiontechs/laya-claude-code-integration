@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import {
   buildQuestion, buildState, compareOne, counts, extractOverrides, loadConfig, merge, neutralize,
   pickRechecks, readFindings, ruleBaseline, score, verdict, askSeverity,
@@ -13,18 +14,20 @@ import { assess, finalizeLog, main as assessMain } from '../scripts/assess.mjs';
 import { evaluate, flagStats, hash01, pickThreshold, report, rowsFromLog, main as evalMain } from '../scripts/laya-eval.mjs';
 
 /** Fake laya-serve. answer(state) → { Critical, Major, Minor, Suggestion } probabilities, or null for HTTP 500. */
-function fakeLaya(answer, { up = true } = {}) {
+function fakeLaya(answer, { up = true, mergeAnswer = () => ({ Blocked: 0.7, 'Eligible with suggestions': 0.2, Eligible: 0.1 }) } = {}) {
   const calls = [];
+  const mergeCalls = [];
   const fetchImpl = async (url, opts = {}) => {
     if (!up) throw new Error('ECONNREFUSED');
     if (url.endsWith('/health')) return { ok: true, json: async () => ({ ok: true }) };
     const body = JSON.parse(opts.body);
-    calls.push(body);
-    const probs = answer(body.state, body);
+    const name = Object.keys(body.questions)[0]; // severity | merge_gate
+    (name === 'severity' ? calls : mergeCalls).push(body);
+    const probs = name === 'merge_gate' ? mergeAnswer(body.state, body) : answer(body.state, body);
     if (!probs) return { ok: false, json: async () => ({}) };
-    return { ok: true, json: async () => ({ answers: { severity: { probabilities: probs } } }) };
+    return { ok: true, json: async () => ({ answers: { [name]: { probabilities: probs } } }) };
   };
-  return { fetchImpl, calls };
+  return { fetchImpl, calls, mergeCalls };
 }
 
 const P = (label, p) => {
@@ -40,8 +43,8 @@ function tmp() { return fs.mkdtempSync(path.join(os.tmpdir(), 'rpl-')); }
 
 describe('verdict and merge (severity only)', () => {
   const cases = [
-    [{ Critical: 0, Major: 0, Minor: 0, Suggestion: 1 }, 99, 'Approve with Suggestions', 'Eligible'],
-    [{ Critical: 0, Major: 0, Minor: 2, Suggestion: 3 }, 89, 'Approve with Suggestions', 'Eligible'],
+    [{ Critical: 0, Major: 0, Minor: 0, Suggestion: 1 }, 99, 'Approve with Suggestions', 'Eligible with suggestions'],
+    [{ Critical: 0, Major: 0, Minor: 2, Suggestion: 3 }, 89, 'Approve with Suggestions', 'Eligible with suggestions'],
     [{ Critical: 0, Major: 0, Minor: 0, Suggestion: 0 }, 100, 'Approve', 'Eligible'],
     [{ Critical: 0, Major: 1, Minor: 0, Suggestion: 0 }, 88, 'Request Changes', 'Blocked'],
     [{ Critical: 1, Major: 0, Minor: 0, Suggestion: 9 }, 65, 'Request Changes', 'Blocked'],
@@ -58,7 +61,7 @@ describe('verdict and merge (severity only)', () => {
     const r = assess([F('F1', 'Suggestion')], { coverage: '3/3' });
     assert.deepEqual(r.header, [
       '## PR Review — Approve with Suggestions', '',
-      '**Score:** 99/100 · **Merge:** Eligible · **Coverage:** 3/3 files',
+      '**Score:** 99/100 · **Merge:** 🟡 Eligible with suggestions · **Coverage:** 3/3 files',
       '**Findings:** 🔴 Critical 0 · 🟠 Major 0 · 🟡 Minor 0 · 🔵 Suggestion 1',
     ]);
   });
@@ -215,7 +218,7 @@ describe('assess --laya', () => {
     fs.writeFileSync(ff, JSON.stringify([F('F1', 'Minor')]));
     const out = [];
     assert.equal(assessMain(['--findings', ff, '--coverage', '2/2'], { log: (l) => out.push(l), error: (l) => out.push(l) }), 0);
-    assert.match(out[0], /Approve with Suggestions[\s\S]*\*\*Merge:\*\* Eligible/);
+    assert.match(out[0], /Approve with Suggestions[\s\S]*\*\*Merge:\*\* 🟡 Eligible with suggestions/);
   });
 });
 
@@ -285,5 +288,109 @@ describe('laya-eval', () => {
     assert.equal(calls.length, 1); // only F2 had no Laya answer
     assert.ok(out.some((l) => l.startsWith('decision:')));
     assert.ok(fs.existsSync(path.join(d, 'ds.eval.json')));
+  });
+});
+
+describe('build_execution_log', () => {
+  it('cuts the review window from the transcript and writes the HTML', async () => {
+    const { execFileSync } = await import('node:child_process');
+    const d = tmp();
+    fs.writeFileSync(path.join(d, 'pr-42.json'), JSON.stringify({ id: 42, title: 'Add <b>thing</b>', repoPath: 'o/p/r', url: 'https://x/pr/42', sourceBranch: 'feat', targetBranch: 'main' }));
+    fs.writeFileSync(path.join(d, 'pr-42.findings.json'), JSON.stringify({ findings: [F('F1', 'Minor')] }));
+    fs.writeFileSync(path.join(d, 'pr-42.laya.json'), JSON.stringify({ mode: 'shadow', url: 'http://l', summary: { findings: 1, agree: 1, differs: 0, lowConfidence: 0, wouldFlag: 0, rechecks: 0, unavailable: 0, server: 'up', ms: 900 }, results: [] }));
+    fs.writeFileSync(path.join(d, 'pr-42.run-notes.json'), JSON.stringify({ objective: 'Review PR 42', steps: [{ title: 'Fetch PR', result: 'ok', status: 'ok' }] }));
+    const u = (ts, text) => ({ type: 'user', timestamp: ts, message: { content: text } });
+    const a = (ts, id, tool, usage = { input_tokens: 10, output_tokens: 5 }) => ({ type: 'assistant', timestamp: ts, message: { id, model: 'm', usage, content: [{ type: 'tool_use', id: `t${id}`, name: 'Bash', input: tool }] } });
+    const tr = [
+      u('2026-01-01T00:00:00Z', 'something earlier'),
+      a('2026-01-01T00:00:01Z', 'x0', { command: 'ls', description: 'earlier work' }),
+      u('2026-01-01T00:01:00Z', '/review-pr-laya-classify 42'),
+      a('2026-01-01T00:01:01Z', 'x1', { command: 'node pr-fetch.mjs https://x/pullrequest/42', description: 'Fetch PR 42' }),
+      a('2026-01-01T00:02:00Z', 'x2', { command: 'echo > pr-42.md', description: 'Write report' }),
+      u('2026-01-01T00:03:00Z', 'thanks, now something else'),
+      a('2026-01-01T00:03:01Z', 'x3', { command: 'ls', description: 'later work' }),
+    ];
+    const tf = path.join(d, 't.jsonl');
+    fs.writeFileSync(tf, tr.map((e) => JSON.stringify(e)).join('\n'));
+    const script = fileURLToPath(new URL('../scripts/build_execution_log.mjs', import.meta.url));
+    const out = execFileSync(process.execPath, [script, path.join(d, 'pr-42.json'), '--transcript', tf], { encoding: 'utf8' });
+    assert.match(out, /Turns: 2 /);
+    const html = fs.readFileSync(path.join(d, 'pr-42.execution-log.html'), 'utf8');
+    assert.match(html, /PR #42 — Add &lt;b&gt;thing&lt;\/b&gt;/);
+    assert.match(html, /Approve with Suggestions · Merge: Eligible with suggestions/);
+    assert.match(html, /Laya \(shadow\): 1 findings · agree 1/);
+    assert.match(html, /Fetch PR 42/);
+    assert.ok(!html.includes('earlier work') && !html.includes('later work'));
+  });
+});
+
+describe('merge question (merge_gate, S2)', () => {
+  it('state: one block per finding, worst first, with Claude severity; none when empty', async () => {
+    const { buildMergeState, buildMergeQuestion } = await import('../scripts/laya-severity.mjs');
+    const s = buildMergeState([F('F1', 'Minor', { rule: 'RATE' }), F('F2', 'Critical', { rule: 'AUTHZ' })]);
+    const blocks = s.text.split('\n\n');
+    assert.equal(blocks.length, 2);
+    assert.match(blocks[0], /^Claude severity: Critical Finding: issue F2 Evidence: evidence F2 Impact: impact F2 Project context: rule AUTHZ\.$/);
+    assert.match(blocks[1], /^Claude severity: Minor /);
+    assert.deepEqual(buildMergeState([]), { text: 'No findings. The review is complete.' });
+    assert.deepEqual(Object.keys(buildMergeQuestion().merge_gate.criteria), ['Blocked', 'Eligible with suggestions', 'Eligible']);
+  });
+
+  it('blocks at the threshold, not at the top label (a missed block costs more)', async () => {
+    const { decideMerge, MERGE_BLOCK_THRESHOLD } = await import('../scripts/laya-severity.mjs');
+    assert.equal(MERGE_BLOCK_THRESHOLD, 0.29);
+    const P3 = (b, ews, e) => ({ Blocked: b, 'Eligible with suggestions': ews, Eligible: e });
+    assert.equal(decideMerge(P3(0.30, 0.45, 0.25)), 'Blocked'); // EwS on top, still blocked
+    assert.equal(decideMerge(P3(0.28, 0.45, 0.27)), 'Eligible with suggestions');
+    assert.equal(decideMerge(P3(0.20, 0.25, 0.55)), 'Eligible');
+    assert.equal(decideMerge(P3(0.50, 0.30, 0.20), 0.6), 'Eligible with suggestions');
+  });
+
+  it('runs once per PR alongside severities and is compared with the rule', async () => {
+    const findings = [F('F1', 'Minor'), F('F2', 'Suggestion')]; // rule → Eligible with suggestions
+    const { fetchImpl, calls, mergeCalls } = fakeLaya(() => P('Major', 0.8), { mergeAnswer: () => ({ Blocked: 0.62, 'Eligible with suggestions': 0.3, Eligible: 0.08 }) });
+    const { log, lines } = await classify({ findings, cfg: cfg(), fetchImpl });
+    assert.equal(calls.length, 2);
+    assert.equal(mergeCalls.length, 1);
+    assert.equal(mergeCalls[0].max_len, 1024);
+    assert.match(mergeCalls[0].state.text, /^Claude severity: Minor /);
+    assert.deepEqual([log.merge.laya.label, log.merge.laya.topLabel, log.merge.rule, log.merge.status, log.merge.fromLayaSeverities],
+      ['Blocked', 'Blocked', 'Eligible with suggestions', 'differs', 'Blocked']);
+    assert.ok(lines.some((l) => /^laya merge: Blocked \(P\(Blocked\) 0\.62, blocked at ≥ 0\.29; Laya top: Blocked\); rule on Claude's severities: Eligible with suggestions — differs \(log only\)$/.test(l)), lines.join('\n'));
+  });
+
+  it('logs P(Blocked), the threshold and Laya\'s own top answer', async () => {
+    const { fetchImpl } = fakeLaya(() => P('Minor', 0.8), { mergeAnswer: () => ({ Blocked: 0.31, 'Eligible with suggestions': 0.5, Eligible: 0.19 }) });
+    const { log } = await classify({ findings: [F('F1', 'Major'), F('F2', 'Minor')], cfg: cfg(), fetchImpl });
+    assert.deepEqual([log.merge.laya.label, log.merge.laya.topLabel, log.merge.laya.pBlock, log.merge.laya.threshold, log.merge.status],
+      ['Blocked', 'Eligible with suggestions', 0.31, 0.29, 'agree']);
+  });
+
+  it('merge failure does not affect severities', async () => {
+    const { fetchImpl } = fakeLaya(() => P('Minor', 0.8), { mergeAnswer: () => null });
+    const { log } = await classify({ findings: [F('F1', 'Minor')], cfg: cfg(), fetchImpl });
+    assert.equal(log.merge.status, 'unavailable');
+    assert.equal(log.results[0].status, 'agree');
+  });
+
+  it('assess records the final merge comparison', () => {
+    const log = { merge: { laya: { label: 'Blocked', confidence: 0.6 }, implied: 'Blocked', rule: 'Eligible with suggestions', status: 'differs' }, results: [{ id: 'F1', claude: 'Minor' }] };
+    finalizeLog(log, [F('F1', 'Major', { recheck: { result: 'changed', from: 'Minor' } })]);
+    assert.deepEqual([log.merge.final, log.merge.finalStatus], ['Blocked', 'agree']);
+  });
+
+  it('eval: per-PR merge accuracy vs human, missed blocks', async () => {
+    const { mergeReport } = await import('../scripts/laya-eval.mjs');
+    const r = (pr, claude, human, label) => ({ pr, claude, human, prMerge: label ? { label, confidence: 0.6 } : null });
+    const m = mergeReport([
+      r('a', 'Major', 'Major', 'Blocked'),
+      r('b', 'Minor', 'Major', 'Eligible with suggestions'),
+      r('c', 'Minor', 'Minor', 'Blocked'),
+      r('d', 'Major', 'Minor', 'Eligible with suggestions'),
+    ]);
+    assert.deepEqual([m.prs, m.humanBlocked], [4, 2]);
+    assert.deepEqual([m.laya.accuracy, m.laya.missedBlock, m.laya.falseBlock], [0.5, 1, 1]);
+    assert.deepEqual([m.rule.accuracy, m.rule.missedBlock, m.rule.falseBlock], [0.5, 1, 1]);
+    assert.deepEqual(m.layaVsRule, { disagreements: 2, layaRightWhenDisagree: 1 });
   });
 });

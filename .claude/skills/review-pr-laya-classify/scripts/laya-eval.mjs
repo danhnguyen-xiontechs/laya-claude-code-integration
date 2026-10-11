@@ -19,8 +19,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
-  LABELS, alive, askWithRetry, buildQuestion, buildState, extractOverrides, isBlocking, loadConfig,
-  mapLimit, normLabel, ruleBaseline,
+  LABELS, MERGE_STATES, alive, askMerge, askWithRetry, buildMergeQuestion, buildMergeState, buildQuestion,
+  buildState, counts, extractOverrides, isBlocking, merge, loadConfig, mapLimit, normLabel, retry, ruleBaseline,
 } from './laya-severity.mjs';
 
 export const TARGET_PRECISION = 0.5;
@@ -52,8 +52,47 @@ export function rowsFromLog(log, file) {
     final: r.final ?? null,
     laya: r.laya ? { label: r.laya.label, confidence: r.laya.confidence } : null,
     ms: r.ms ?? null,
+    // Laya's answer to the per-PR merge question (same on every row of the PR).
+    prMerge: log.merge?.laya ? { label: log.merge.laya.label, confidence: log.merge.laya.confidence } : null,
     human: null,
   }));
+}
+
+/**
+ * Merge question, per PR. Reference = merge() on the human labels (Blocked / Eligible with suggestions / Eligible).
+ * Compares Laya's direct answer and the rule on Claude's severities with it.
+ */
+export function mergeReport(rows) {
+  const byPr = new Map();
+  for (const r of rows) {
+    if (!byPr.has(r.pr)) byPr.set(r.pr, []);
+    byPr.get(r.pr).push(r);
+  }
+  const prs = [...byPr.entries()].map(([pr, rs]) => ({
+    pr,
+    human: merge(counts(rs.map((r) => ({ severity: r.human })))),
+    rule: merge(counts(rs.map((r) => ({ severity: r.claude })))),
+    laya: rs[0].prMerge && MERGE_STATES.includes(rs[0].prMerge.label) ? rs[0].prMerge.label : null,
+    confidence: rs[0].prMerge?.confidence ?? null,
+  }));
+  const judge = (key) => {
+    const s = prs.filter((p) => p[key]);
+    return {
+      n: s.length,
+      accuracy: s.length ? r3(s.filter((p) => p[key] === p.human).length / s.length) : null,
+      missedBlock: s.filter((p) => p.human === 'Blocked' && p[key] !== 'Blocked').length,
+      falseBlock: s.filter((p) => p.human !== 'Blocked' && p[key] === 'Blocked').length,
+    };
+  };
+  const both = prs.filter((p) => p.laya);
+  return {
+    prs: prs.length,
+    humanBlocked: prs.filter((p) => p.human === 'Blocked').length,
+    laya: judge('laya'),
+    rule: judge('rule'),
+    layaVsRule: { disagreements: both.filter((p) => p.laya !== p.rule).length, layaRightWhenDisagree: both.filter((p) => p.laya !== p.rule && p.laya === p.human).length },
+    perPr: prs,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -170,6 +209,9 @@ export function report(rows, { latencies = [] } = {}) {
   const warn = [];
   if (held.length < 30) warn.push(`held-out set is small (${held.length}); treat the numbers as indicative`);
   if (rows.filter((r) => isBlocking(r.human)).length < 10) warn.push('fewer than 10 Critical/Major reference labels');
+  out.merge = mergeReport(rows);
+  if (out.merge.laya.missedBlock) warn.push(`Laya's merge answer let ${out.merge.laya.missedBlock} PR(s) through that the human labels block`);
+  if (out.merge.prs < 20) warn.push(`merge question judged on ${out.merge.prs} PR(s) only`);
   out.warnings = warn;
   out.stops = stops;
   out.decision = stops.length ? 'do not enable recheck (stay in shadow or remove the Laya step)' : `enable recheck with threshold ${chosen.threshold}`;
@@ -188,6 +230,8 @@ function printReport(o, log) {
   log(`rule baseline disagreements (held-out): ${o.ruleDisagreementHeldOut.disagreements}, precision=${pc(o.ruleDisagreementHeldOut.precision)}`);
   log(`confidence bins: ${o.reliability.map((b) => `${b.bin}:${b.n ? `${pc(b.accuracy)}/${b.n}` : '—'}`).join('  ')}`);
   log(`unavailable=${pc(o.unavailableRate)} latency p50=${o.latencyMs.p50 ?? '—'}ms p95=${o.latencyMs.p95 ?? '—'}ms`);
+  const m = o.merge;
+  log(`merge (per PR, n=${m.prs}, human-blocked=${m.humanBlocked}): laya acc=${pc(m.laya.accuracy)} missed-block=${m.laya.missedBlock} false-block=${m.laya.falseBlock} (answered ${m.laya.n}) · rule on Claude acc=${pc(m.rule.accuracy)} missed-block=${m.rule.missedBlock} false-block=${m.rule.falseBlock} · disagree=${m.layaVsRule.disagreements}, Laya right ${m.layaVsRule.layaRightWhenDisagree}`);
   for (const w of o.warnings) log(`warning: ${w}`);
   for (const s of o.stops) log(`stop: ${s}`);
   log(`decision: ${o.decision}`);
@@ -233,7 +277,8 @@ export async function main(argv = process.argv.slice(2), { log = console.log, er
       const claude = normLabel(r.claude);
       if (!human || !claude) { skipped++; continue; }
       rows.push({ ...r, key: r.key ?? `${r.pr ?? 'pr'}/${r.id}`, pr: r.pr ?? 'pr', human, claude,
-        laya: r.laya && normLabel(r.laya.label) ? { label: normLabel(r.laya.label), confidence: r.laya.confidence } : null });
+        laya: r.laya && normLabel(r.laya.label) ? { label: normLabel(r.laya.label), confidence: r.laya.confidence } : null,
+        prMerge: r.prMerge && MERGE_STATES.includes(r.prMerge.label) ? r.prMerge : null });
     }
     if (!rows.length) throw new Error('no row has both "human" and "claude" severities');
     const seed = String(a.seed ?? 1);
@@ -244,22 +289,30 @@ export async function main(argv = process.argv.slice(2), { log = console.log, er
     }
     const latencies = [];
     const todo = rows.filter((r) => a.relabel || !r.laya);
-    if (todo.length) {
+    const prsTodo = [...new Set(rows.filter((r) => a.relabel || !r.prMerge).map((r) => r.pr))];
+    if (todo.length || prsTodo.length) {
       const cfg = loadConfig({ env, overrides: { mode: 'shadow' } });
-      if (!(await alive(cfg.url, { fetchImpl }))) throw new Error(`${todo.length} rows need a Laya answer but no server answers at ${cfg.url} (start laya-serve)`);
-      const question = buildQuestion(extractOverrides(a.rules && fs.existsSync(a.rules) ? fs.readFileSync(a.rules, 'utf8') : ''));
+      if (!(await alive(cfg.url, { fetchImpl }))) throw new Error(`${todo.length} rows / ${prsTodo.length} PRs need a Laya answer but no server answers at ${cfg.url} (start laya-serve)`);
+      const overrides = extractOverrides(a.rules && fs.existsSync(a.rules) ? fs.readFileSync(a.rules, 'utf8') : '');
+      const question = buildQuestion(overrides);
       await mapLimit(todo, 2, async (r) => {
         const t0 = Date.now();
         const ans = await askWithRetry(cfg, buildState(r), question, { fetchImpl });
         latencies.push(Date.now() - t0);
         r.laya = ans ? { label: ans.label, confidence: ans.confidence } : null;
       });
+      // Merge question per PR, over the PR's rows in the dataset.
+      await mapLimit(prsTodo, 2, async (pr) => {
+        const prRows = rows.filter((r) => r.pr === pr);
+        const ans = await retry(() => askMerge(cfg, buildMergeState(prRows), buildMergeQuestion(), { fetchImpl, blockThreshold: cfg.mergeBlockThreshold }));
+        for (const r of prRows) r.prMerge = ans ? { label: ans.label, confidence: ans.confidence } : null;
+      });
     }
     const o = { skipped, ...report(rows, { latencies }) };
     if (skipped) log(`skipped ${skipped} rows without a human or claude label`);
     printReport(o, log);
     const out = path.resolve(a.out ?? a.data.replace(/\.jsonl$/i, '') + '.eval.json');
-    fs.writeFileSync(out, JSON.stringify({ ...o, rows: rows.map(({ key, split: s, claude, human, rules, laya }) => ({ key, split: s, claude, human, rules, laya })) }, null, 2) + '\n');
+    fs.writeFileSync(out, JSON.stringify({ ...o, rows: rows.map(({ key, pr, split: s, claude, human, rules, laya, prMerge }) => ({ key, pr, split: s, claude, human, rules, laya, prMerge })) }, null, 2) + '\n');
     log(`report: ${out}`);
     return 0;
   } catch (err) {

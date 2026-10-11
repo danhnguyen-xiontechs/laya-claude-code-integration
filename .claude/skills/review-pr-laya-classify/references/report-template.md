@@ -40,7 +40,7 @@ review-method.md. Laya's opinions never appear in the report.
 ````markdown
 ## PR Review — {Verdict}
 
-**Score:** {score}/100 · **Merge:** {Eligible | Blocked} · **Coverage:** {n}/{n} files
+**Score:** {score}/100 · **Merge:** {🔴 Blocked | 🟡 Eligible with suggestions | 🟢 Eligible} · **Coverage:** {n}/{n} files
 **Findings:** 🔴 Critical {c} · 🟠 Major {m} · 🟡 Minor {n} · 🔵 Suggestion {s}
 **Requirements:** {ticket link(s)} · ✅ {met}/{total} met{, 🔗 {k} in PR {other}}{, ❌ {x} not met}
 

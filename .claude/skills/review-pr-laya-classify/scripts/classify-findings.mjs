@@ -17,8 +17,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
-  alive, askWithRetry, buildQuestion, buildState, compareOne, extractOverrides, isBlocking, loadConfig,
-  mapLimit, normLabel, pickRechecks, readFindings, ruleBaseline,
+  alive, askMerge, askWithRetry, buildMergeQuestion, buildMergeState, buildQuestion, buildState,
+  compareOne, counts, extractOverrides, isBlocking, loadConfig, mapLimit, merge, normLabel, pickRechecks,
+  readFindings, retry, ruleBaseline,
 } from './laya-severity.mjs';
 
 export const SCHEMA = 'review-pr-laya/laya@1';
@@ -46,15 +47,27 @@ export async function classify({ findings, pr = null, rulesText = '', cfg, fetch
   if (cfg.mode === 'off') return { log: null, lines: ['laya: off — Claude severities kept'] };
 
   const up = await alive(cfg.url, { fetchImpl });
-  const question = buildQuestion(extractOverrides(rulesText));
+  const overrides = extractOverrides(rulesText);
+  const question = buildQuestion(overrides);
   const t0 = Date.now();
-  const answers = up
-    ? await mapLimit(findings, 2, async (f) => {
+  // The merge question (one call for the whole PR) runs alongside the per-finding severity calls.
+  const mergeCall = up
+    ? (async () => {
       const s = Date.now();
-      const laya = await askWithRetry(cfg, buildState(f), question, { fetchImpl });
+      const laya = await retry(() => askMerge(cfg, buildMergeState(findings), buildMergeQuestion(), { fetchImpl, blockThreshold: cfg.mergeBlockThreshold }));
       return { laya, ms: Date.now() - s };
-    })
-    : findings.map(() => ({ laya: null, ms: 0 }));
+    })()
+    : Promise.resolve({ laya: null, ms: 0 });
+  const [answers, mergeAns] = await Promise.all([
+    up
+      ? mapLimit(findings, 2, async (f) => {
+        const s = Date.now();
+        const laya = await askWithRetry(cfg, buildState(f), question, { fetchImpl });
+        return { laya, ms: Date.now() - s };
+      })
+      : findings.map(() => ({ laya: null, ms: 0 })),
+    mergeCall,
+  ]);
 
   const rows = findings.map((f, i) => {
     const { laya, ms } = answers[i];
@@ -91,7 +104,18 @@ export async function classify({ findings, pr = null, rulesText = '', cfg, fetch
     server: up ? 'up' : 'down',
     ms: Date.now() - t0,
   };
-  const log = { ...base, warning: cfg.warning, summary, results: rows };
+  // Merge: Laya's direct answer vs the rule on Claude's (initial) severities. Logged only —
+  // the merge assessment in the report always comes from assess.mjs.
+  const layaSevs = rows.map((r) => normLabel(r.laya?.label)).filter(Boolean);
+  const mergeLog = {
+    laya: mergeAns.laya,
+    implied: mergeAns.laya?.label ?? null,
+    rule: merge(counts(findings)),
+    fromLayaSeverities: layaSevs.length === rows.length ? merge(counts(layaSevs.map((severity) => ({ severity })))) : null,
+    ms: mergeAns.ms,
+  };
+  mergeLog.status = !mergeLog.laya ? 'unavailable' : mergeLog.implied === mergeLog.rule ? 'agree' : 'differs';
+  const log = { ...base, warning: cfg.warning, summary, merge: mergeLog, results: rows };
 
   const lines = [];
   if (!up) {
@@ -104,6 +128,9 @@ export async function classify({ findings, pr = null, rulesText = '', cfg, fetch
     lines.push(`recheck ${r.id}: Claude ${r.claude} → Laya ${r.laya.label} (${r.laya.confidence.toFixed(2)})${cross} ${r.file ?? ''}${r.line ? `:${r.line}` : ''}`);
   }
   const flagged = cfg.mode === 'recheck' ? ` recheck=${summary.rechecks}${summary.capped ? ` capped=${summary.capped}` : ''}` : ` wouldFlag=${summary.wouldFlag}`;
+  lines.push(mergeLog.laya
+    ? `laya merge: ${mergeLog.laya.label} (P(Blocked) ${mergeLog.laya.pBlock.toFixed(2)}, blocked at ≥ ${mergeLog.laya.threshold}; Laya top: ${mergeLog.laya.topLabel}); rule on Claude's severities: ${mergeLog.rule} — ${mergeLog.status} (log only)`
+    : 'laya merge: unavailable (log only)');
   lines.push(`laya: mode=${cfg.mode} findings=${summary.findings} agree=${summary.agree} differs=${summary.differs} low-confidence=${summary.lowConfidence}${flagged} unavailable=${summary.unavailable} ${(summary.ms / 1000).toFixed(1)}s`);
   return { log, lines };
 }

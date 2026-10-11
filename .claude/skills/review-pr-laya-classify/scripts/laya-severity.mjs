@@ -14,9 +14,9 @@ export const MAX_RECHECKS = 3;
 
 // Same meaning as references/review-method.md "Severity".
 export const RUBRIC = {
-  Critical: 'Must not merge: security hole, real secret, data loss or corruption, build break, severe production failure.',
-  Major: 'Should not merge: likely bug or regression, missing guard, broken contract, unmet requirement, mandatory project-rule violation, significant maintainability risk.',
-  Minor: 'Safe to merge but should be fixed: localised quality issue, small rule deviation.',
+  Critical: 'Must not merge: security hole, data leak or loss, build break.',
+  Major: 'Should not merge: likely bug, broken contract, required rule broken.',
+  Minor: 'Can merge, fix later: small quality or rule issue.',
   Suggestion: 'Optional improvement.',
 };
 
@@ -68,14 +68,70 @@ export function extractOverrides(rulesText) {
 
 /** The Laya question: one choice over the four labels, described by the rubric. */
 export function buildQuestion(overrides = '') {
-  const extra = overrides ? ` Project severity overrides (these win over the general rules): ${overrides}` : '';
+  const extra = overrides ? ` Project overrides: ${clip(overrides, 300)}` : '';
+  return { severity: { type: 'choice', instructions: `How severe is this code-review finding?${extra}`, criteria: { ...RUBRIC } } };
+}
+
+// ---------------------------------------------------------------------------
+// Merge question (merge_gate): one call per PR, over the findings' text and Claude's severities
+// ---------------------------------------------------------------------------
+
+// The three merge assessments (same policy as merge() below). Laya answers with these exact labels.
+export const MERGE_STATES = ['Blocked', 'Eligible with suggestions', 'Eligible'];
+export const MERGE_ICON = { Blocked: '🔴', 'Eligible with suggestions': '🟡', Eligible: '🟢' };
+
+const BY_SEVERITY = (a, b) => RANK[normLabel(b.severity ?? b.claude)] - RANK[normLabel(a.severity ?? a.claude)];
+
+/**
+ * The state Laya sees: one block per finding, worst first, so that a cut at max_len only drops
+ * the mildest findings:
+ *   Claude severity: <S> Finding: <issue> Evidence: <evidence> Impact: <impact> Project context: rule <rule>.
+ * No findings → "No findings. The review is complete."
+ */
+export function buildMergeState(findings) {
+  if (!findings.length) return { text: 'No findings. The review is complete.' };
+  const text = [...findings].sort(BY_SEVERITY).map((f) => [
+    `Claude severity: ${normLabel(f.severity ?? f.claude)}`,
+    `Finding: ${f.issue ?? ''}`,
+    f.evidence ? `Evidence: ${f.evidence}` : '',
+    f.impact ? `Impact: ${f.impact}` : '',
+    f.rule ? `Project context: rule ${f.rule}.` : '',
+  ].filter(Boolean).join(' ')).join('\n\n');
+  return { text };
+}
+
+/**
+ * One 3-label question whose labels are the skill's own merge states ("S2", 2026-10-11).
+ * On 4 sets x 16 severity combinations (real Laya): top label 59/64 but 5 missed blocks; with the
+ * block threshold below, 60/64 and no missed block (threshold chosen on sets A-C, set D 16/16).
+ */
+export function buildMergeQuestion() {
   return {
-    severity: {
+    merge_gate: {
       type: 'choice',
-      instructions: `How severe is this verified code-review finding for merging the pull request?${extra}`,
-      criteria: { ...RUBRIC },
+      instructions: 'Based on the findings and their severity, is the PR Blocked, Eligible with suggestions, or Eligible?',
+      criteria: {
+        Blocked: 'At least one Critical or Major finding exists. The PR must not be merged.',
+        'Eligible with suggestions': 'No Critical or Major findings exist, but one or more Minor or Suggestion findings exist. The PR can be merged with suggestions.',
+        Eligible: 'No findings exist, and the review is complete. The PR is eligible to merge.',
+      },
     },
   };
+}
+
+/**
+ * Block threshold, not the top label: letting a Critical/Major PR through costs far more than
+ * blocking a clean one. Default 0.29, chosen on sets A-C (lowest must-block P(Blocked) 0.299;
+ * the 4 errors left are Minor-only PRs blocked). The margin is thin: re-measure after any change
+ * to the wording or the Laya model.
+ */
+export const MERGE_BLOCK_THRESHOLD = 0.29;
+
+/** Blocked when P(Blocked) >= threshold; otherwise the more likely of the two eligible states. */
+export function decideMerge(probabilities, threshold = MERGE_BLOCK_THRESHOLD) {
+  const p = (k) => probabilities[k] ?? 0;
+  if (p('Blocked') >= threshold) return 'Blocked';
+  return p('Eligible with suggestions') >= p('Eligible') ? 'Eligible with suggestions' : 'Eligible';
 }
 
 // ---------------------------------------------------------------------------
@@ -146,8 +202,10 @@ export function verdict(c) {
   return 'Approve';
 }
 
+/** Merge assessment: Blocked (any Critical/Major) · Eligible with suggestions (only Minor/Suggestion) · Eligible (no findings). */
 export function merge(c) {
-  return c.Critical || c.Major ? 'Blocked' : 'Eligible';
+  if (c.Critical || c.Major) return 'Blocked';
+  return c.Minor || c.Suggestion ? 'Eligible with suggestions' : 'Eligible';
 }
 
 // ---------------------------------------------------------------------------
@@ -187,16 +245,18 @@ const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
  */
 export function loadConfig({ env = process.env, dir = SKILL_DIR, overrides = {} } = {}) {
   const cfg = {
-    url: 'http://localhost:8000', model: 'english', mode: 'shadow', threshold: null,
+    url: 'http://localhost:8000', model: 'english', mode: 'shadow', threshold: null, mergeBlockThreshold: MERGE_BLOCK_THRESHOLD,
     ...readJson(path.join(dir, 'laya.json')), ...readJson(path.join(dir, 'laya.local.json')),
   };
   if (env.LAYA_URL) cfg.url = env.LAYA_URL;
   if (env.XT_REVIEW_PR_LAYA) cfg.mode = env.XT_REVIEW_PR_LAYA;
   if (env.XT_REVIEW_PR_LAYA_THRESHOLD) cfg.threshold = Number(env.XT_REVIEW_PR_LAYA_THRESHOLD);
+  if (env.XT_REVIEW_PR_LAYA_MERGE_BLOCK) cfg.mergeBlockThreshold = Number(env.XT_REVIEW_PR_LAYA_MERGE_BLOCK);
   for (const [k, v] of Object.entries(overrides)) if (v !== undefined) cfg[k] = v;
   cfg.mode = String(cfg.mode).toLowerCase();
   if (!MODES.includes(cfg.mode)) throw new Error(`Laya mode must be one of ${MODES.join(', ')} (got "${cfg.mode}")`);
   if (cfg.threshold != null && !(cfg.threshold >= 0 && cfg.threshold <= 1)) throw new Error('threshold must be between 0 and 1');
+  if (!(cfg.mergeBlockThreshold >= 0 && cfg.mergeBlockThreshold <= 1)) throw new Error('mergeBlockThreshold must be between 0 and 1');
   cfg.warning = null;
   if (cfg.mode === 'recheck' && cfg.threshold == null) {
     cfg.mode = 'shadow';
@@ -214,11 +274,13 @@ export async function alive(url, { fetchImpl = fetch, timeoutMs = 1500 } = {}) {
 }
 
 /**
- * One Laya call for one finding. Returns { label, confidence, probabilities } or null on any
- * error, timeout or a label outside LABELS. confidence = top probability (Laya's answer
- * confidence; uncalibrated until laya-eval.mjs has been run).
+ * One Laya call for a single-question choice. Returns { label, confidence, probabilities } or
+ * null on any error, timeout or when no returned label is in `labels`. confidence = top
+ * probability (Laya's answer confidence; uncalibrated until laya-eval.mjs has been run).
  */
-export async function askSeverity(cfg, state, question, { fetchImpl = fetch, timeoutMs = 10000, maxLen = 512 } = {}) {
+export async function askChoice(cfg, state, question, { labels, fetchImpl = fetch, timeoutMs = 10000, maxLen = 512 } = {}) {
+  const name = Object.keys(question)[0];
+  const norm = (k) => labels.find((l) => l.toLowerCase() === String(k).trim().toLowerCase()) ?? null;
   try {
     const r = await fetchImpl(`${cfg.url.replace(/\/$/, '')}/v1/systemone`, {
       method: 'POST',
@@ -228,11 +290,11 @@ export async function askSeverity(cfg, state, question, { fetchImpl = fetch, tim
     });
     if (!r.ok) return null;
     const body = await r.json();
-    const probs = body?.answers?.severity?.probabilities;
+    const probs = body?.answers?.[name]?.probabilities;
     if (!probs || typeof probs !== 'object') return null;
     const clean = {};
     for (const [k, v] of Object.entries(probs)) {
-      const l = normLabel(k);
+      const l = norm(k);
       if (l && typeof v === 'number') clean[l] = Number(v.toFixed(4));
     }
     const label = Object.keys(clean).sort((a, b) => clean[b] - clean[a])[0];
@@ -241,9 +303,32 @@ export async function askSeverity(cfg, state, question, { fetchImpl = fetch, tim
   } catch { return null; }
 }
 
+/** Severity of one finding (labels = LABELS). */
+export function askSeverity(cfg, state, question, opts = {}) {
+  return askChoice(cfg, state, question, { ...opts, labels: LABELS });
+}
+
+/**
+ * The merge_gate question for the whole PR. Returns
+ * { label, confidence, pBlock, threshold, topLabel, probabilities } or null on any error.
+ * label uses the block threshold (decideMerge); topLabel is Laya's own top answer.
+ */
+export async function askMerge(cfg, state, questions, opts = {}) {
+  const a = await askChoice(cfg, state, questions, { maxLen: 1024, ...opts, labels: MERGE_STATES });
+  if (!a) return null;
+  const threshold = opts.blockThreshold ?? MERGE_BLOCK_THRESHOLD;
+  const label = decideMerge(a.probabilities, threshold);
+  return { label, confidence: a.probabilities[label] ?? 0, pBlock: a.probabilities.Blocked ?? 0, threshold, topLabel: a.label, probabilities: a.probabilities };
+}
+
+/** One call with one retry. */
+export async function retry(fn) {
+  return (await fn()) ?? (await fn());
+}
+
 /** askSeverity with one retry. */
 export async function askWithRetry(cfg, state, question, opts) {
-  return (await askSeverity(cfg, state, question, opts)) ?? (await askSeverity(cfg, state, question, opts));
+  return retry(() => askSeverity(cfg, state, question, opts));
 }
 
 /** Runs fn over items with at most `limit` in flight; keeps order. */

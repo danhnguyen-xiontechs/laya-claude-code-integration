@@ -3,9 +3,9 @@
 //   node assess.mjs --findings <pr-<id>.findings.json> [--coverage <read>/<ledger>] [--laya <pr-<id>.laya.json>]
 //
 // Verdict and merge use severity only (the score is informational):
-//   any Critical/Major          → Request Changes · Blocked
-//   only Minor/Suggestion       → Approve with Suggestions · Eligible
-//   no findings                 → Approve · Eligible
+//   any Critical/Major          → Request Changes · 🔴 Blocked
+//   only Minor/Suggestion       → Approve with Suggestions · 🟡 Eligible with suggestions
+//   no findings                 → Approve · 🟢 Eligible (with a warning when coverage is incomplete)
 // Laya takes no part. With --laya, the final severities and the re-check results recorded in
 // the findings file (finding.recheck = { result: "kept"|"changed", from, reason }) are written
 // back into the Laya log, so it can be used for evaluation.
@@ -13,7 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { counts, merge, readFindings, score, verdict } from './laya-severity.mjs';
+import { MERGE_ICON, counts, merge, readFindings, score, verdict } from './laya-severity.mjs';
 
 export function assess(findings, { coverage = null } = {}) {
   const c = counts(findings);
@@ -24,7 +24,7 @@ export function assess(findings, { coverage = null } = {}) {
   const header = [
     `## PR Review — ${v}`,
     '',
-    `**Score:** ${s}/100 · **Merge:** ${m}${cov}`,
+    `**Score:** ${s}/100 · **Merge:** ${MERGE_ICON[m]} ${m}${cov}`,
     `**Findings:** 🔴 Critical ${c.Critical} · 🟠 Major ${c.Major} · 🟡 Minor ${c.Minor} · 🔵 Suggestion ${c.Suggestion}`,
   ];
   return { counts: c, score: s, verdict: v, merge: m, header };
@@ -40,6 +40,10 @@ export function finalizeLog(log, findings) {
     r.final = f.severity;
     if (f.recheck) r.recheckResult = { result: f.recheck.result ?? null, from: f.recheck.from ?? r.claude, reason: f.recheck.reason ?? null };
     if (r.recheck === 'requested' && !f.recheck) warnings.push(`${r.id}: re-check was requested but no finding.recheck was recorded`);
+  }
+  if (log.merge) {
+    log.merge.final = merge(counts(findings));
+    log.merge.finalStatus = !log.merge.implied ? 'unavailable' : log.merge.implied === log.merge.final ? 'agree' : 'differs';
   }
   log.finalizedAt = new Date().toISOString();
   return warnings;
@@ -67,6 +71,10 @@ export function main(argv = process.argv.slice(2), { log = console.log, error = 
     const { findings } = readFindings(path.resolve(a.findings));
     const res = assess(findings, { coverage: a.coverage });
     const warnings = [];
+    if (a.coverage) {
+      const [read, ledger] = a.coverage.split('/').map(Number);
+      if (read < ledger && res.merge === 'Eligible') warnings.push(`coverage ${a.coverage}: Eligible assumes a complete review; say which files were not read`);
+    }
     if (a.laya && fs.existsSync(a.laya)) {
       const layaLog = JSON.parse(fs.readFileSync(a.laya, 'utf8'));
       warnings.push(...finalizeLog(layaLog, findings));

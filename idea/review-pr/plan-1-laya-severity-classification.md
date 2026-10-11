@@ -323,3 +323,144 @@ First smoke run (4 hand-written findings, real Laya, threshold 0.5 for the demo 
 Laya agreed on 2/4, rated a missing ownership check (Claude: Critical) as Major at 0.36
 (below threshold, logged only), and rated a naming suggestion as Minor at 0.59 (would be a
 re-check). Not evidence either way; section 9 decides.
+
+## 14. Merge question in parallel (2026-10-11)
+
+Added at the user's request: besides the per-finding severity, Laya answers one question per PR,
+`block` or `merge`, from the list of findings (issue + impact, no severities, severity words
+removed). It runs in parallel with the severity calls and is **log only** in every mode; the
+report's merge assessment still comes from Claude's final severities (`assess.mjs`).
+
+- Log: `pr-<id>.laya.json` → `merge: { laya, implied, rule, fromLayaSeverities, status, final, finalStatus }`.
+- Evaluation: `laya-eval.mjs run` reports per-PR merge accuracy against the human labels
+  (Blocked when any human label is Critical/Major), missed blocks and false blocks, for Laya's
+  answer and for the rule on Claude's severities.
+- Missed blocks (Laya says merge, reference says Blocked) are the costly error; the merge answer
+  must never be used to let a PR through without a separate decision.
+
+First run, PR 5240 (4 Critical, 7 Major; seeded defects, DO NOT MERGE): Laya answered
+`merge` at 0.64 — a missed block. The same PR reduced to its 4 Minor/Suggestion findings: `merge`
+at 0.59. One PR is not evidence, but it suggests the answer does not follow the findings.
+
+### 14.1 Shorter schemas, merge from severity counts (2026-10-11)
+
+At the user's request both questions were shortened:
+
+- Severity: instructions `How severe is this code-review finding?` (+ project overrides, max 300
+  chars); one short line per label.
+- Merge: input is only the severity counts of Claude's findings
+  (`{"severities": "4 Critical, 6 Major, 4 Minor, 1 Suggestion"}`); criteria
+  `block: At least one Critical or Major finding.` /
+  `merge: No Critical or Major finding; only Minor, Suggestion, or none.`; `max_len` 128.
+  This makes the merge question a counting test: the rule computes it exactly.
+
+Results with real Laya:
+- Merge, 10 count combinations: **7/10**. Wrong: `0 Critical, 1 Major` → merge (0.64);
+  `0 Critical, 2 Major, 5 Minor, 5 Suggestion` → merge (0.56); `no findings` → block (0.88).
+  PR 5240 (4/6/4/1) now → block (0.51), right.
+- Severity on PR 5240's 15 findings with the short rubric: 7/15 agree with Claude (9/15 with the
+  long rubric); D365-CLAIMS (Critical by project override) still → Minor.
+
+Reading: Laya misses Major-only PRs even when the criteria spell out the rule, so its merge answer
+must stay log only; shortening did not improve severities.
+
+### 14.2 Merge input as words, no counts (2026-10-11)
+
+Laya does not count, so the merge input is now the severities present, worst first, as words:
+`{"severities": "Critical, Major, Minor"}` (or `"none"`), with criteria
+`block: Critical or Major is in the list.` / `merge: Only Minor or Suggestion is in the list, or the list is none.`
+
+Measured on all 16 present/absent combinations of the four severities (real Laya):
+
+| Wording | Right |
+|---|---|
+| **list of severities (kept)** | **14/16** — wrong: `Critical, Minor, Suggestion` → merge (0.50), `Major, Minor, Suggestion` → merge (0.56) |
+| list + `Critical -> block` mapping in the criteria | 13/16 |
+| list + mapping in the instructions | 12/16 |
+| sentence ("This pull request has Critical and Minor findings.") | 7/16 |
+| counts (`4 Critical, 6 Major, ...`, 10 combos) | 7/10 |
+
+Still wrong on 2 of 16 cases that the rule gets right by construction, so the answer stays log only.
+
+### 14.3 Three-state merge policy (2026-10-11)
+
+The merge assessment now has three states, in the code (`assess.mjs`, report header) and in the
+Laya question:
+
+| Condition | Merge assessment |
+|---|---|
+| at least one Critical or Major | 🔴 Blocked |
+| no Critical/Major, at least one Minor or Suggestion | 🟡 Eligible with suggestions |
+| no findings and a complete review | 🟢 Eligible (`assess.mjs` warns when coverage is incomplete) |
+
+Laya wording, measured on the 16 combinations (real Laya):
+
+| Wording | Right |
+|---|---|
+| one 3-label question, list of severities | 5/16 |
+| one 3-label question, plain-language criteria | 8/16 |
+| one 3-label question, short labels (block / notes / clean) | 6/16 |
+| one 3-label question, worst severity only | 2/16 |
+| **two 2-label questions, combined in code (kept)**: block/merge + empty/has_findings | **14/16** |
+
+The empty/has_findings question was right 16/16; both errors come from block/merge
+(`Critical, Minor, Suggestion` → 0.50 and `Major, Minor, Suggestion` → 0.56, both let through).
+Correct single-severity blocks score 0.87–0.95, but some correct answers are as low as 0.50, so
+no confidence threshold separates the two errors cleanly. Laya's merge answer stays log only.
+
+### 14.4 Block threshold instead of the top label (2026-10-11)
+
+Both remaining errors were near-ties that fell on the merge side (a missed block). A missed block
+costs far more than a false block, so the decision is now `Blocked` when Laya's P(block) ≥
+`mergeBlockThreshold`, not when `block` is the top label.
+
+With the severity-list wording there are only 16 possible inputs, and Laya is deterministic, so
+measuring all 16 covers the whole input space for this model and wording (not a sample).
+
+P(block) on the 16 inputs: must-block 0.444–0.948; can-merge 0.306–0.495. The ranges overlap
+(0.444–0.495), so no threshold gets 16/16.
+
+| Threshold | Right | Missed blocks | False blocks |
+|---|---|---|---|
+| top label (≈ 0.50) | 14/16 | 2 (`Critical, Minor, Suggestion`, `Major, Minor, Suggestion`) | 0 |
+| **0.44 (default)** | **14/16** | **0** | 2 (`Minor` 0.495, `Suggestion` 0.460) |
+
+Same score, but every error is now on the safe side. The margin is thin (0.444 vs 0.460), so the
+threshold must be re-measured after any change to the wording or the Laya model
+(`XT_REVIEW_PR_LAYA_MERGE_BLOCK` or `laya.json` → `mergeBlockThreshold`). Still log only.
+
+### 14.5 merge_gate with the skill's own labels ("S2") — applied (2026-10-11)
+
+The user's manual test showed a better question: one 3-label `merge_gate` question over the
+findings' text (with Claude's severity), plain-language criteria. Labels were then renamed to the
+skill's own states so Laya answers exactly what the report shows.
+
+```json
+"state": { "text": "Claude severity: Critical Finding: ... Evidence: ... Impact: ... Project context: rule AUTHZ.\n\nClaude severity: Minor Finding: ..." },
+"questions": { "merge_gate": { "type": "choice",
+  "instructions": "Based on the findings and their severity, is the PR Blocked, Eligible with suggestions, or Eligible?",
+  "criteria": {
+    "Blocked": "At least one Critical or Major finding exists. The PR must not be merged.",
+    "Eligible with suggestions": "No Critical or Major findings exist, but one or more Minor or Suggestion findings exist. The PR can be merged with suggestions.",
+    "Eligible": "No findings exist, and the review is complete. The PR is eligible to merge." } } }
+```
+
+Findings are sorted worst first, so a cut at `max_len` (1024) only drops the mildest ones.
+Decision: `Blocked` when P(Blocked) ≥ 0.29, else the more likely eligible state.
+
+Measured on 4 finding sets x 16 severity combinations (real Laya; the input contains finding text,
+so these are samples, not the whole input space):
+
+| Question | Right | Missed blocks | False blocks |
+|---|---|---|---|
+| user's labels (block / merge_with_suggestions / merge), top label | 56/64 | 0 | 8 |
+| + "Minor does not block" sentences in the criteria (3 variants) | 52–54/64 | 0–3 | — |
+| skill labels, top label | 59/64 | 5 | 0 |
+| **skill labels, Blocked at ≥ 0.29** (threshold chosen on sets A-C; set D 16/16) | **60/64** | **0** | 4 |
+| same, through the skill's code (`buildMergeState` format) | 59/64 | 0 | 5 |
+
+PR 5240 (15 real findings): Blocked, P(Blocked) 0.54, agrees with the rule.
+
+Remaining errors are all Minor-only PRs blocked (safe side). The margin is thin (lowest
+must-block P(Blocked) 0.299 on sets A-C), so the threshold must be re-measured after any change to
+the wording or the Laya model. Still log only.
