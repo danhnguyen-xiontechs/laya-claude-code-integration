@@ -41,6 +41,22 @@ function findLogs(dir, out = []) {
   return out;
 }
 
+/**
+ * Every review run has its own folder, so one PR can have several logs. Keeps the newest log per PR
+ * (by createdAt, then file time) so a finding is never counted twice. Returns { logs: [{ log, file }], skipped }.
+ */
+export function latestPerPr(files) {
+  const best = new Map();
+  for (const file of files) {
+    const log = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const key = log.pr?.repoId && log.pr?.id != null ? `${log.pr.repoId}#${log.pr.id}` : path.basename(file);
+    const t = Date.parse(log.createdAt ?? '') || fs.statSync(file).mtimeMs;
+    const cur = best.get(key);
+    if (!cur || t > cur.t) best.set(key, { log, file, t });
+  }
+  return { logs: [...best.values()].map(({ log, file }) => ({ log, file })), skipped: files.length - best.size };
+}
+
 export function rowsFromLog(log, file) {
   const prKey = log.pr?.repoId && log.pr?.id != null ? `${log.pr.repoId}#${log.pr.id}` : path.basename(file).replace(/\.laya\.json$/, '');
   return (log.results ?? []).map((r) => ({
@@ -261,7 +277,9 @@ export async function main(argv = process.argv.slice(2), { log = console.log, er
   try {
     if (a._[0] === 'collect') {
       if (!a.logs) throw new Error('collect needs --logs <dir>');
-      const rows = findLogs(path.resolve(a.logs)).flatMap((f) => rowsFromLog(JSON.parse(fs.readFileSync(f, 'utf8')), f));
+      const { logs, skipped: older } = latestPerPr(findLogs(path.resolve(a.logs)));
+      const rows = logs.flatMap(({ log: l, file: f }) => rowsFromLog(l, f));
+      if (older) log(`kept the newest run per PR; skipped ${older} older run log(s)`);
       const out = path.resolve(a.out ?? 'laya-dataset.jsonl');
       fs.writeFileSync(out, rows.map((r) => JSON.stringify(r)).join('\n') + (rows.length ? '\n' : ''));
       log(`collected ${rows.length} findings → ${out}. Fill "human" with the reference severity, then run: node laya-eval.mjs run --data ${out}`);

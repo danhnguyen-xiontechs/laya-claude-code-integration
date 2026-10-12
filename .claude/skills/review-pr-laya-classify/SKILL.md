@@ -80,11 +80,11 @@ Read the user's custom instructions for this skill if they exist:
 ### 2. Fetch the PR
 
 ```
-node <skill-dir>/scripts/pr-fetch.mjs <pr-url | pr-id> --repo-dir <checkout>
+node <skill-dir>/scripts/pr-fetch.mjs <pr-url | pr-id> --repo-dir <checkout> [--label <tag>]
 ```
 
 It prints a summary JSON: `provider`, `repo`, `repoId`, `id`, `title`, branches, counts,
-`repoDirMatches`, and three paths: `json` (normalized PR), `patch` (unified diff) and
+`repoDirMatches`, `runDir` (this run's own folder, `pr-<id>/<YYYYMMDD-HHmmss>[-<label>]/`: every file of this review goes there, so earlier runs on the same PR are kept for comparison) and three paths: `json` (normalized PR), `patch` (unified diff) and
 `report` (where the report goes). Read the `json` file. It contains: metadata, `files[]`
 (path, change type, additions, deletions), `threads[]` (existing comments),
 `workItems[]` / `referencedWorkItems[]` (linked tickets), `possibleSecrets[]`,
@@ -188,8 +188,8 @@ Use its header lines as they are. Do not compute the verdict or the merge by han
 ### 5. Write the report
 
 Read `references/report-template.md`. Write the report to `--out` if given, else to the
-`report` path from step 2 (`~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.md`;
-overwrite an earlier draft for the same PR). Then print the chat summary described there.
+`report` path from step 2 (`~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.md`;
+each run has its own folder, so nothing from an earlier run is overwritten). Then print the chat summary described there.
 
 ### 6. Post (only with `--post`)
 
@@ -283,13 +283,16 @@ whose decision is "enable recheck".
 
 ## Files this skill writes
 
+`<run>` = `<YYYYMMDD-HHmmss>[-<label>]`: one folder per review run, created by `pr-fetch.mjs`.
+All other scripts write next to the PR JSON, so a run never overwrites another run.
+
 | Path | What |
 |---|---|
-| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.{json,patch,md}` | fetched PR, diff, report |
-| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.findings.json` | Claude's findings (initial, then final severities and re-check results) |
-| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.laya.json` | Laya log (answers, confidence, comparison, final severities) |
-| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.run-notes.json` | run summary for the execution log |
-| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.execution-log.html` | step-by-step execution log with real token usage |
+| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.{json,patch,md}` | fetched PR, diff, report |
+| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.findings.json` | Claude's findings (initial, then final severities and re-check results) |
+| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.laya.json` | Laya log (answers, confidence, comparison, final severities) |
+| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.run-notes.json` | run summary for the execution log |
+| `~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.execution-log.html` | step-by-step execution log with real token usage |
 | `~/.xt-skills/review-pr/projects/<repo-id>.md` | this user's rules for a project |
 | `<repo>/.xt-skills/review-pr.md` | team-shared rules (only when the user chooses it) |
 | `~/.xt-skills/review-pr/instructions.md` | the user's custom instructions (the user edits it) |

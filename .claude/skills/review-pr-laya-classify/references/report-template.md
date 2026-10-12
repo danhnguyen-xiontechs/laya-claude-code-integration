@@ -1,7 +1,7 @@
 # Report template
 
 The review report is one Markdown file, written to the `report` path printed by
-`pr-fetch.mjs` (`~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.md`) or to the user's
+`pr-fetch.mjs` (`~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.md`) or to the user's
 `--out` path. It is the same text that would be posted as the summary comment, so write it
 for the PR author: lead with the verdict, put every finding in one table, keep it readable
 in about a minute.

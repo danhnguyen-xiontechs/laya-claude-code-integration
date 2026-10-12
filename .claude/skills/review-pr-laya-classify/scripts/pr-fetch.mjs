@@ -1,6 +1,6 @@
 // pr-fetch.mjs — fetch one pull request into a normalized JSON file + a patch file.
 //
-//   node pr-fetch.mjs <pr-url | pr-id> [--repo-dir <dir>] [--out <file.json>]
+//   node pr-fetch.mjs <pr-url | pr-id> [--repo-dir <dir>] [--out <file.json>] [--label <run-label>]
 //                     [--provider azure-devops|github|gitlab] [--no-fetch] [--stdout]
 //
 // Provider comes from the PR URL, or (for a bare id) from the git remote of --repo-dir
@@ -8,8 +8,10 @@
 // Azure DevOps `git fetch` + `git diff` in --repo-dir when it is a checkout of the PR's repo
 // (--no-fetch skips that and prints the commands instead).
 //
-// Default output: ~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.json (+ .patch); the
-// suggested report path (.md) is printed in the summary. Prints a short JSON summary on
+// Default output: one folder per run, so re-reviewing a PR never overwrites an earlier run:
+//   ~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<YYYYMMDD-HHmmss>[-<label>]/pr-<id>.json (+ .patch)
+// --label tags the folder (e.g. laya, jev, rerun-2). The suggested report path (.md, same folder)
+// and the run folder are printed in the summary. Prints a short JSON summary on
 // stdout (or the full JSON with --stdout). Exit 0 ok, 2 CLI missing / not signed in, 1 other.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -110,10 +112,25 @@ export function mergeFiles(providerFiles, diffFiles) {
   return out;
 }
 
-/** Default file locations for a PR: <xt-home>/review-pr-laya-classify/reviews/<repo-id>/pr-<id>.{json,patch,md}. */
+/** Local time stamp for a run folder, e.g. 20261012-143005. */
+export function runStamp(now = new Date()) {
+  const p = (n) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}-${p(now.getHours())}${p(now.getMinutes())}${p(now.getSeconds())}`;
+}
+
+/**
+ * Default file locations for one review run:
+ *   <xt-home>/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<YYYYMMDD-HHmmss>[-<label>]/pr-<id>.{json,patch,md}
+ * Every run gets its own folder (a numeric suffix if the folder already exists), so the report,
+ * findings, decision log and execution log of earlier runs on the same PR are kept for comparison.
+ */
 export function defaultPaths(repoIdValue, id, opts = {}) {
-  const dir = path.join(xtHome(opts), 'review-pr-laya-classify', 'reviews', repoIdValue);
+  const label = opts.label ? `-${String(opts.label).replace(/[^\w.-]+/g, '-').slice(0, 40)}` : '';
+  const base = path.join(xtHome(opts), 'review-pr-laya-classify', 'reviews', repoIdValue, `pr-${id}`, `${runStamp(opts.now)}${label}`);
+  let dir = base;
+  for (let n = 2; fs.existsSync(dir); n++) dir = `${base}-${n}`;
   return {
+    dir,
     json: path.join(dir, `pr-${id}.json`),
     patch: path.join(dir, `pr-${id}.patch`),
     report: path.join(dir, `pr-${id}.md`),
@@ -194,7 +211,7 @@ function parseArgs(argv) {
   const a = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
-    if (t === '--repo-dir' || t === '--out' || t === '--provider') a[t.slice(2)] = argv[++i];
+    if (t === '--repo-dir' || t === '--out' || t === '--provider' || t === '--label') a[t.slice(2)] = argv[++i];
     else if (t === '--no-fetch') a.noFetch = true;
     else if (t === '--stdout') a.stdout = true;
     else if (t === '-h' || t === '--help') a.help = true;
@@ -203,7 +220,7 @@ function parseArgs(argv) {
   return a;
 }
 
-const USAGE = 'Usage: node pr-fetch.mjs <pr-url | pr-id> [--repo-dir <dir>] [--out <file.json>] [--provider azure-devops|github|gitlab] [--no-fetch] [--stdout]';
+const USAGE = 'Usage: node pr-fetch.mjs <pr-url | pr-id> [--repo-dir <dir>] [--out <file.json>] [--label <run-label>] [--provider azure-devops|github|gitlab] [--no-fetch] [--stdout]';
 
 /** CLI entry. Returns the exit code. */
 export function main(argv = process.argv.slice(2), { run = defaultRunner, log = console.log, error = console.error, env = process.env } = {}) {
@@ -213,7 +230,7 @@ export function main(argv = process.argv.slice(2), { run = defaultRunner, log = 
     const repoDir = path.resolve(a['repo-dir'] ?? process.cwd());
     const coords = resolveTarget(a._[0], { repoDir, provider: a.provider });
     const { pr, diffText } = fetchPr(coords, { run, repoDir, noFetch: a.noFetch });
-    const paths = defaultPaths(pr.repoId, pr.id, { env });
+    const paths = defaultPaths(pr.repoId, pr.id, { env, label: a.label });
     const jsonFile = a.out ? path.resolve(a.out) : paths.json;
     const patchFile = jsonFile.replace(/\.json$/i, '') + '.patch';
     if (diffText != null) {
@@ -246,6 +263,7 @@ export function main(argv = process.argv.slice(2), { run = defaultRunner, log = 
       workItems: pr.workItems.length,
       possibleSecrets: pr.possibleSecrets.length,
       repoDirMatches: pr.repoDirMatches,
+      runDir: path.dirname(jsonFile),
       json: jsonFile,
       patch: pr.diff.file,
       report: pr.reportPath,

@@ -1,0 +1,14 @@
+{
+  "dev": {
+    "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/",
+    "api": "https://gems-ess-app-dev.azurewebsites.net",
+    "shared": true,
+    "notes": "Default env. Tests what is already merged and deployed. The user's account is a full-rights admin here — role-restriction (negative) cases need a non-admin account."
+  },
+  "local": {
+    "url": "http://localhost:3000",
+    "api": "http://localhost:5201",
+    "shared": false,
+    "notes": "Tests an unmerged branch. FE: D:\\Source\\Ess\\ess-fe (npm run dev). BE: D:\\Source\\Ess\\ess-be (dotnet run --project src/Ess-App.API/Ess-App.API.csproj). Local BE calls whichever D365 environment appsettings points to (a shared D365), so writes are real D365 writes."
+  }
+}
