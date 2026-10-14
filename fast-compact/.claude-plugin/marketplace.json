@@ -1,0 +1,12 @@
+{
+  "name": "fast-compact",
+  "owner": { "name": "Danh Nguyen" },
+  "plugins": [
+    {
+      "name": "fast-compact",
+      "source": "./",
+      "description": "Opt-in deterministic verbatim compaction for Claude Code.",
+      "version": "0.1.1"
+    }
+  ]
+}
