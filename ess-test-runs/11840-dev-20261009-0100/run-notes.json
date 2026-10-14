@@ -1,0 +1,10 @@
+{"objective":"Verify bug 11840 (Month View Total Hours inconsistent) is fixed on dev: Month View toolbar stats aggregate over the whole month and stay stable.",
+"steps":[
+{"title":"Fetch ticket + comments + parent","result":"ReproSteps only; fix described in comment (month-wide aggregation). Parent 6678 ACs cover the attendance calendar, none on hours totals.","status":"ok"},
+{"title":"Plan 3 read-only cases","result":"No write actions, no gate needed.","status":"ok"},
+{"title":"Launch role xiontechs, attach devtools MCP","result":"Already signed in.","status":"ok"},
+{"title":"Open /attendance, switch to Month view","assumption":"Option list was not in the snapshot; found via DOM role=option.","result":"Month view shows Scheduled 176 for Oct 2026.","status":"ok"},
+{"title":"Navigate months by script","result":"Jun 160, Jul 184, Aug 168, Sep 160 scheduled; stable on revisit.","status":"pass"},
+{"title":"Week vs month cross-check","result":"Week 40 vs month 176, independent of week anchor.","status":"pass"},
+{"title":"Sum-of-daily-hours check","result":"Account has no attendance data, Total hours 0 everywhere.","status":"blocked"}],
+"insights":["First screenshot attempt to ~/ess-test-runs failed (outside MCP workspace roots) - write to scratchpad then copy.","Scripting month navigation via evaluate_script was far cheaper than snapshots.","Original repro (0 vs 55 in June 2026) needs an account with attendance records; the xiontechs admin has none."]}

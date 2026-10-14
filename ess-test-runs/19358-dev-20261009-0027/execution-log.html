@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Execution log 19358 dev</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fcfcfb;--fg:#1d1d1f;--muted:#6b6b70;--line:#e3e3e0;--grid:#ecebe8;
+--series:#2a78d6;--ok:#0ca30c;--ok-ink:#006300;--ok-bg:#e5f4ea;--err:#d03b3b;--err-bg:#fbe9e7;--warn:#8a5a00;--warn-bg:#fff3d6;--accent:#2a78d6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141416;--card:#1a1a19;--fg:#ececef;--muted:#9a9aa2;--line:#2e2e33;--grid:#262624;
+--series:#3987e5;--ok:#0ca30c;--ok-ink:#6fd08f;--ok-bg:#16301f;--err:#ff8a80;--err-bg:#3a1a18;--warn:#ffcc66;--warn-bg:#352a10;--accent:#8fb0ff}}
+:root[data-theme="dark"]{--bg:#141416;--card:#1a1a19;--fg:#ececef;--muted:#9a9aa2;--line:#2e2e33;--grid:#262624;
+--series:#3987e5;--ok:#0ca30c;--ok-ink:#6fd08f;--ok-bg:#16301f;--err:#ff8a80;--err-bg:#3a1a18;--warn:#ffcc66;--warn-bg:#352a10;--accent:#8fb0ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:0 0 10px}h3{font-size:14px;margin:14px 0 6px}
+a{color:var(--accent)}.muted{color:var(--muted)}.small{font-size:12px}
+.sub{color:var(--muted);margin:0 0 16px}
+.verdict{display:inline-block;font-weight:700;padding:4px 12px;border-radius:999px;font-size:13px;background:var(--warn-bg);color:var(--warn)}
+.v-PASS{background:var(--ok-bg);color:var(--ok-ink)}.v-FAIL{background:var(--err-bg);color:var(--err)}
+.grid6{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.tile .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.tile .v{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:16px 0}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:12px}.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+.chart{width:100%;height:220px;display:block}
+.chart .grid{stroke:var(--grid);stroke-width:1}.chart .tick{fill:var(--muted);font-size:11px}
+.chart .bar{fill:var(--series)}.chart .hit{fill:transparent;cursor:crosshair}.chart .hit:hover{fill:var(--grid);opacity:.5}
+.two{display:grid;grid-template-columns:1fr;gap:16px}
+.hbars{display:flex;flex-direction:column;gap:6px}
+.hrow{display:grid;grid-template-columns:minmax(120px,190px) 1fr 36px;gap:8px;align-items:center}
+.hk{font-family:ui-monospace,Consolas,monospace;font-size:12px;overflow-wrap:anywhere}
+.htrack{height:12px}.hbar{display:block;height:100%;background:var(--series);border-radius:0 4px 4px 0;min-width:2px}
+.hv{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.p-ok{background:var(--ok-bg);color:var(--ok-ink)}.p-err{background:var(--err-bg);color:var(--err)}.p-warn{background:var(--warn-bg);color:var(--warn)}.p-muted{color:var(--muted)}
+.nsteps{padding-left:20px;margin:0}.nsteps li{margin:0 0 10px}.nhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.filters button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:4px 12px;cursor:pointer;font:inherit}
+.filters button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.umsg{border-left:3px solid var(--accent);padding:6px 10px;margin:14px 0 8px;background:var(--bg);border-radius:0 6px 6px 0}
+.step{border:1px solid var(--line);border-radius:8px;margin:6px 0}
+.step[data-err="1"]{border-left:4px solid var(--err)}
+.step>summary{cursor:pointer;padding:8px 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;list-style:none}
+.step>summary::-webkit-details-marker{display:none}
+.sn{font-weight:700;font-family:ui-monospace,Consolas,monospace}.stools{flex:1;min-width:160px;font-size:13px}
+.stok{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.sbody{padding:0 12px 12px}
+blockquote{margin:6px 0 10px;padding:6px 10px;border-left:3px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
+.call{border-top:1px dashed var(--line);padding:8px 0}
+.tname{font-weight:600}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0;font-size:12px;background:var(--bg);padding:6px 8px;border-radius:6px}
+.res{font-size:12px;overflow-wrap:anywhere;margin-top:4px}.r-ok{color:var(--muted)}.r-err{color:var(--err)}
+#tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);padding:6px 8px;border-radius:6px;font-size:12px;white-space:pre;display:none;z-index:9;max-width:320px}
+@media print{.filters{display:none}details{display:block}}
+</style></head>
+<body><main>
+<h1>#19358 — WebESS - Time and Attendance – Cancelled Leave Is Still Displayed as Approved Leave</h1>
+<p class="sub">Execution log · dev · https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/ · claude-sonnet-5-5 · <a href="https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/19358">Open in ADO</a></p>
+<div><span class="verdict v-PASS">Test verdict: PASS</span> <span class="muted small">— 3 pass · 0 fail · 0 blocked (details in report.html)</span></div>
+<div class="grid6"><div class="tile"><div class="k">Model turns</div><div class="v">27</div></div><div class="tile"><div class="k">Input tokens</div><div class="v">2.4M</div><div class="muted small">2,448,117</div></div><div class="tile"><div class="k">Cache read share</div><div class="v">99.0%</div><div class="muted small">2,422,764 cached</div></div><div class="tile"><div class="k">Output tokens</div><div class="v">9k</div><div class="muted small">8,770</div></div><div class="tile"><div class="k">Tool calls</div><div class="v">35</div><div class="muted small">5 with error</div></div><div class="tile"><div class="k">Active time</div><div class="v">2 min</div><div class="muted small">00:27:23 → 00:29:35</div></div></div>
+
+<section><h2>Summary</h2>
+<p>Verify bug 19358: a leave date cancelled via a later Amount=0 transaction must not display as Approved Leave in Time and Attendance (dev).</p>
+<ol class="nsteps"><li><div class="nhead"><strong>Fetch ticket</strong><span class="pill p-ok">✓ ok</span></div>
+
+<div class="small"><span class="muted">Result:</span> Bug, Resolved; QA confirmed fixed on FAT and in comments.</div></li><li><div class="nhead"><strong>Browser</strong><span class="pill p-warn">! warn</span></div>
+<div class="small"><span class="muted">Assumption:</span> Account would own the 03/09/2026 repro data</div>
+<div class="small"><span class="muted">Result:</span> Not the case (03/09 shows No records, no leave).</div></li><li><div class="nhead"><strong>Find equivalent data</strong><span class="pill p-ok">✓ ok</span></div>
+
+<div class="small"><span class="muted">Result:</span> Time-off history had a 0-day cancellation on 24/03/2026 inside a 7-day completed leave.</div></li><li><div class="nhead"><strong>Check attendance 23–29 Mar</strong><span class="pill p-ok">✓ pass</span></div>
+
+<div class="small"><span class="muted">Result:</span> 24/03 No records; other days Casual leave · Approved.</div></li></ol>
+<h3>Cost &amp; debug insights</h3><ul><li>Screenshots must be written inside the MCP workspace roots (used scratchpad then copied).</li><li>Paging 28 weeks via script in evaluate_script saved many clicks.</li></ul>
+</section>
+
+<section><h2>Token usage by phase</h2>
+<p class="muted small">Real values from the API <code>usage</code> fields in the session transcript — not estimates. Input = uncached + cache write + cache read.</p>
+<div class="tablewrap"><table><tr><th>Phase (user message that started it)</th><th class="num">Turns</th><th class="num">Input</th><th class="num">Output</th><th class="num">Avg input / turn</th></tr>
+<tr><td>(start of window)</td><td class="num">27</td><td class="num">2,448,117</td><td class="num">8,770</td><td class="num">90,671</td></tr>
+<tr><th>Total</th><th class="num">27</th><th class="num">2,448,117</th><th class="num">8,770</th><th class="num">90,671</th></tr></table></div>
+<p class="muted small">Input split — uncached 54 · cache write 25,299 · cache read 2,422,764</p>
+</section>
+
+<section><h2>Input tokens per model turn</h2>
+<p class="muted small">Each turn re-reads the whole conversation, so this tracks context size. A high flat line means a long session before the run started.</p>
+<svg id="cin" class="chart" viewBox="0 0 1000 220" role="img" preserveAspectRatio="none"><line class="grid" x1="48" x2="992" y1="194" y2="194"/><text class="tick" x="42" y="198" text-anchor="end">0</text><line class="grid" x1="48" x2="992" y1="148" y2="148"/><text class="tick" x="42" y="152" text-anchor="end">25k</text><line class="grid" x1="48" x2="992" y1="102" y2="102"/><text class="tick" x="42" y="106" text-anchor="end">50k</text><line class="grid" x1="48" x2="992" y1="56" y2="56"/><text class="tick" x="42" y="60" text-anchor="end">75k</text><line class="grid" x1="48" x2="992" y1="10" y2="10"/><text class="tick" x="42" y="14" text-anchor="end">100k</text><path class="bar" d="M49,194V58.07535999999999Q49,54.07535999999999 53,54.07535999999999H77.96296296296296Q81.96296296296296,54.07535999999999 81.96296296296296,58.07535999999999V194Z"/><text class="tick" x="65.48148148148148" y="212" text-anchor="middle">1</text><rect class="hit" x="48" y="10" width="34.96296296296296" height="184" data-tip="Turn #1 · 00:27:23
+Input 76,046 · Output 344
+Bash"/><path class="bar" d="M83.96296296296296,194V54.94Q83.96296296296296,50.94 87.96296296296296,50.94H112.92592592592592Q116.92592592592592,50.94 116.92592592592592,54.94V194Z"/><rect class="hit" x="82.96296296296296" y="10" width="34.96296296296296" height="184" data-tip="Turn #2 · 00:27:28
+Input 77,750 · Output 1,585
+Bash, ToolSearch"/><path class="bar" d="M118.92592592592592,194V44.72800000000001Q118.92592592592592,40.72800000000001 122.92592592592592,40.72800000000001H147.88888888888889Q151.88888888888889,40.72800000000001 151.88888888888889,44.72800000000001V194Z"/><text class="tick" x="135.4074074074074" y="212" text-anchor="middle">3</text><rect class="hit" x="117.92592592592592" y="10" width="34.96296296296296" height="184" data-tip="Turn #3 · 00:27:36
+Input 83,300 · Output 202
+PowerShell"/><path class="bar" d="M153.88888888888889,194V44.181520000000006Q153.88888888888889,40.181520000000006 157.88888888888889,40.181520000000006H182.85185185185185Q186.85185185185185,40.181520000000006 186.85185185185185,44.181520000000006V194Z"/><rect class="hit" x="152.88888888888889" y="10" width="34.96296296296296" height="184" data-tip="Turn #4 · 00:27:44
+Input 83,597 · Output 39
+devtools:list_pages"/><path class="bar" d="M188.85185185185185,194V42.80336Q188.85185185185185,38.80336 192.85185185185185,38.80336H217.8148148148148Q221.8148148148148,38.80336 221.8148148148148,42.80336V194Z"/><text class="tick" x="205.33333333333331" y="212" text-anchor="middle">5</text><rect class="hit" x="187.85185185185185" y="10" width="34.96296296296296" height="184" data-tip="Turn #5 · 00:27:46
+Input 84,346 · Output 90
+devtools:take_snapshot"/><path class="bar" d="M223.8148148148148,194V38.38919999999999Q223.8148148148148,34.38919999999999 227.8148148148148,34.38919999999999H252.77777777777777Q256.77777777777777,34.38919999999999 256.77777777777777,38.38919999999999V194Z"/><rect class="hit" x="222.8148148148148" y="10" width="34.96296296296296" height="184" data-tip="Turn #6 · 00:27:53
+Input 86,745 · Output 180
+devtools:click"/><path class="bar" d="M258.77777777777777,194V37.92736000000002Q258.77777777777777,33.92736000000002 262.77777777777777,33.92736000000002H287.74074074074076Q291.74074074074076,33.92736000000002 291.74074074074076,37.92736000000002V194Z"/><text class="tick" x="275.25925925925924" y="212" text-anchor="middle">7</text><rect class="hit" x="257.77777777777777" y="10" width="34.96296296296296" height="184" data-tip="Turn #7 · 00:28:01
+Input 86,996 · Output 149
+devtools:evaluate_script"/><path class="bar" d="M293.74074074074076,194V37.482079999999996Q293.74074074074076,33.482079999999996 297.74074074074076,33.482079999999996H322.7037037037037Q326.7037037037037,33.482079999999996 326.7037037037037,37.482079999999996V194Z"/><rect class="hit" x="292.74074074074076" y="10" width="34.96296296296296" height="184" data-tip="Turn #8 · 00:28:03
+Input 87,238 · Output 137
+devtools:navigate_page"/><path class="bar" d="M328.7037037037037,194V37.00368Q328.7037037037037,33.00368 332.7037037037037,33.00368H357.66666666666663Q361.66666666666663,33.00368 361.66666666666663,37.00368V194Z"/><text class="tick" x="345.18518518518516" y="212" text-anchor="middle">9</text><rect class="hit" x="327.7037037037037" y="10" width="34.96296296296296" height="184" data-tip="Turn #9 · 00:28:05
+Input 87,498 · Output 64
+devtools:take_snapshot"/><path class="bar" d="M363.66666666666663,194V33.52424000000002Q363.66666666666663,29.52424000000002 367.66666666666663,29.52424000000002H392.62962962962956Q396.62962962962956,29.52424000000002 396.62962962962956,33.52424000000002V194Z"/><rect class="hit" x="362.66666666666663" y="10" width="34.96296296296296" height="184" data-tip="Turn #10 · 00:28:08
+Input 89,389 · Output 356
+devtools:take_screenshot, devtools:click"/><path class="bar" d="M398.6296296296296,194V32.38711999999998Q398.6296296296296,28.38711999999998 402.6296296296296,28.38711999999998H427.5925925925926Q431.5925925925926,28.38711999999998 431.5925925925926,32.38711999999998V194Z"/><text class="tick" x="415.1111111111111" y="212" text-anchor="middle">11</text><rect class="hit" x="397.6296296296296" y="10" width="34.96296296296296" height="184" data-tip="Turn #11 · 00:28:11
+Input 90,007 · Output 294
+devtools:take_screenshot, devtools:click"/><path class="bar" d="M433.5925925925926,194V31.450559999999996Q433.5925925925926,27.450559999999996 437.5925925925926,27.450559999999996H462.55555555555554Q466.55555555555554,27.450559999999996 466.55555555555554,31.450559999999996V194Z"/><rect class="hit" x="432.5925925925926" y="10" width="34.96296296296296" height="184" data-tip="Turn #12 · 00:28:15
+Input 90,516 · Output 343
+devtools:click, devtools:click, devtools:click"/><path class="bar" d="M468.55555555555554,194V30.515839999999997Q468.55555555555554,26.515839999999997 472.55555555555554,26.515839999999997H497.5185185185185Q501.5185185185185,26.515839999999997 501.5185185185185,30.515839999999997V194Z"/><text class="tick" x="485.037037037037" y="212" text-anchor="middle">13</text><rect class="hit" x="467.55555555555554" y="10" width="34.96296296296296" height="184" data-tip="Turn #13 · 00:28:19
+Input 91,024 · Output 198
+devtools:evaluate_script"/><path class="bar" d="M503.5185185185185,194V29.85712000000001Q503.5185185185185,25.85712000000001 507.5185185185185,25.85712000000001H532.4814814814814Q536.4814814814814,25.85712000000001 536.4814814814814,29.85712000000001V194Z"/><rect class="hit" x="502.5185185185185" y="10" width="34.96296296296296" height="184" data-tip="Turn #14 · 00:28:23
+Input 91,382 · Output 315
+devtools:take_screenshot, devtools:take_snapshot"/><path class="bar" d="M538.4814814814815,194V28.742079999999987Q538.4814814814815,24.742079999999987 542.4814814814815,24.742079999999987H567.4444444444445Q571.4444444444445,24.742079999999987 571.4444444444445,28.742079999999987V194Z"/><text class="tick" x="554.962962962963" y="212" text-anchor="middle">15</text><rect class="hit" x="537.4814814814815" y="10" width="34.96296296296296" height="184" data-tip="Turn #15 · 00:28:26
+Input 91,988 · Output 201
+Grep"/><path class="bar" d="M573.4444444444445,194V27.61967999999999Q573.4444444444445,23.61967999999999 577.4444444444445,23.61967999999999H602.4074074074074Q606.4074074074074,23.61967999999999 606.4074074074074,27.61967999999999V194Z"/><rect class="hit" x="572.4444444444445" y="10" width="34.96296296296296" height="184" data-tip="Turn #16 · 00:28:30
+Input 92,598 · Output 289
+devtools:navigate_page"/><path class="bar" d="M608.4074074074074,194V26.79903999999999Q608.4074074074074,22.79903999999999 612.4074074074074,22.79903999999999H637.3703703703703Q641.3703703703703,22.79903999999999 641.3703703703703,26.79903999999999V194Z"/><text class="tick" x="624.8888888888889" y="212" text-anchor="middle">17</text><rect class="hit" x="607.4074074074074" y="10" width="34.96296296296296" height="184" data-tip="Turn #17 · 00:28:32
+Input 93,044 · Output 160
+devtools:evaluate_script"/><path class="bar" d="M643.3703703703703,194V25.665600000000012Q643.3703703703703,21.665600000000012 647.3703703703703,21.665600000000012H672.3333333333333Q676.3333333333333,21.665600000000012 676.3333333333333,25.665600000000012V194Z"/><rect class="hit" x="642.3703703703703" y="10" width="34.96296296296296" height="184" data-tip="Turn #18 · 00:28:39
+Input 93,660 · Output 472
+devtools:navigate_page, devtools:take_snapshot"/><path class="bar" d="M678.3333333333333,194V24.274560000000008Q678.3333333333333,20.274560000000008 682.3333333333333,20.274560000000008H707.2962962962962Q711.2962962962962,20.274560000000008 711.2962962962962,24.274560000000008V194Z"/><text class="tick" x="694.8148148148148" y="212" text-anchor="middle">19</text><rect class="hit" x="677.3333333333333" y="10" width="34.96296296296296" height="184" data-tip="Turn #19 · 00:28:45
+Input 94,416 · Output 170
+Grep"/><path class="bar" d="M713.2962962962963,194V23.901039999999995Q713.2962962962963,19.901039999999995 717.2962962962963,19.901039999999995H742.2592592592592Q746.2592592592592,19.901039999999995 746.2592592592592,23.901039999999995V194Z"/><rect class="hit" x="712.2962962962963" y="10" width="34.96296296296296" height="184" data-tip="Turn #20 · 00:28:46
+Input 94,619 · Output 241
+devtools:wait_for, devtools:take_snapshot"/><path class="bar" d="M748.2592592592592,194V22.831999999999994Q748.2592592592592,18.831999999999994 752.2592592592592,18.831999999999994H777.2222222222222Q781.2222222222222,18.831999999999994 781.2222222222222,22.831999999999994V194Z"/><text class="tick" x="764.7407407407408" y="212" text-anchor="middle">21</text><rect class="hit" x="747.2592592592592" y="10" width="34.96296296296296" height="184" data-tip="Turn #21 · 00:28:50
+Input 95,200 · Output 173
+Grep"/><path class="bar" d="M783.2222222222222,194V22.324159999999978Q783.2222222222222,18.324159999999978 787.2222222222222,18.324159999999978H812.1851851851851Q816.1851851851851,18.324159999999978 816.1851851851851,22.324159999999978V194Z"/><rect class="hit" x="782.2222222222222" y="10" width="34.96296296296296" height="184" data-tip="Turn #22 · 00:28:52
+Input 95,476 · Output 394
+devtools:evaluate_script"/><path class="bar" d="M818.1851851851852,194V21.44096000000002Q818.1851851851852,17.44096000000002 822.1851851851852,17.44096000000002H847.1481481481482Q851.1481481481482,17.44096000000002 851.1481481481482,21.44096000000002V194Z"/><text class="tick" x="834.6666666666667" y="212" text-anchor="middle">23</text><rect class="hit" x="817.1851851851852" y="10" width="34.96296296296296" height="184" data-tip="Turn #23 · 00:28:55
+Input 95,956 · Output 191
+devtools:evaluate_script"/><path class="bar" d="M853.1481481481482,194V17.691039999999987Q853.1481481481482,13.691039999999987 857.1481481481482,13.691039999999987H882.1111111111111Q886.1111111111111,13.691039999999987 886.1111111111111,17.691039999999987V194Z"/><rect class="hit" x="852.1481481481482" y="10" width="34.96296296296296" height="184" data-tip="Turn #24 · 00:29:00
+Input 97,994 · Output 361
+devtools:evaluate_script"/><path class="bar" d="M888.1111111111111,194V16.487679999999983Q888.1111111111111,12.487679999999983 892.1111111111111,12.487679999999983H917.074074074074Q921.074074074074,12.487679999999983 921.074074074074,16.487679999999983V194Z"/><text class="tick" x="904.5925925925926" y="212" text-anchor="middle">25</text><rect class="hit" x="887.1111111111111" y="10" width="34.96296296296296" height="184" data-tip="Turn #25 · 00:29:05
+Input 98,648 · Output 350
+devtools:evaluate_script"/><path class="bar" d="M923.074074074074,194V15.532719999999983Q923.074074074074,11.532719999999983 927.074074074074,11.532719999999983H952.037037037037Q956.037037037037,11.532719999999983 956.037037037037,15.532719999999983V194Z"/><rect class="hit" x="922.074074074074" y="10" width="34.96296296296296" height="184" data-tip="Turn #26 · 00:29:25
+Input 99,167 · Output 221
+devtools:take_screenshot"/><path class="bar" d="M958.037037037037,194V14.888720000000006Q958.037037037037,10.888720000000006 962.037037037037,10.888720000000006H986.9999999999999Q990.9999999999999,10.888720000000006 990.9999999999999,14.888720000000006V194Z"/><text class="tick" x="974.5185185185185" y="212" text-anchor="middle">27</text><rect class="hit" x="957.037037037037" y="10" width="34.96296296296296" height="184" data-tip="Turn #27 · 00:29:35
+Input 99,517 · Output 1,251
+Bash"/></svg>
+<h2 style="margin-top:16px">Output tokens per model turn</h2>
+<svg id="cout" class="chart" viewBox="0 0 1000 220" role="img" preserveAspectRatio="none"><line class="grid" x1="48" x2="992" y1="194" y2="194"/><text class="tick" x="42" y="198" text-anchor="end">0</text><line class="grid" x1="48" x2="992" y1="148" y2="148"/><text class="tick" x="42" y="152" text-anchor="end">500</text><line class="grid" x1="48" x2="992" y1="102" y2="102"/><text class="tick" x="42" y="106" text-anchor="end">1k</text><line class="grid" x1="48" x2="992" y1="56" y2="56"/><text class="tick" x="42" y="60" text-anchor="end">2k</text><line class="grid" x1="48" x2="992" y1="10" y2="10"/><text class="tick" x="42" y="14" text-anchor="end">2k</text><path class="bar" d="M49,194V166.352Q49,162.352 53,162.352H77.96296296296296Q81.96296296296296,162.352 81.96296296296296,166.352V194Z"/><text class="tick" x="65.48148148148148" y="212" text-anchor="middle">1</text><rect class="hit" x="48" y="10" width="34.96296296296296" height="184" data-tip="Turn #1 · 00:27:23
+Input 76,046 · Output 344
+Bash"/><path class="bar" d="M83.96296296296296,194V52.18000000000001Q83.96296296296296,48.18000000000001 87.96296296296296,48.18000000000001H112.92592592592592Q116.92592592592592,48.18000000000001 116.92592592592592,52.18000000000001V194Z"/><rect class="hit" x="82.96296296296296" y="10" width="34.96296296296296" height="184" data-tip="Turn #2 · 00:27:28
+Input 77,750 · Output 1,585
+Bash, ToolSearch"/><path class="bar" d="M118.92592592592592,194V179.416Q118.92592592592592,175.416 122.92592592592592,175.416H147.88888888888889Q151.88888888888889,175.416 151.88888888888889,179.416V194Z"/><text class="tick" x="135.4074074074074" y="212" text-anchor="middle">3</text><rect class="hit" x="117.92592592592592" y="10" width="34.96296296296296" height="184" data-tip="Turn #3 · 00:27:36
+Input 83,300 · Output 202
+PowerShell"/><path class="bar" d="M153.88888888888889,194V194Q153.88888888888889,190.412 157.47688888888888,190.412H183.26385185185185Q186.85185185185185,190.412 186.85185185185185,194V194Z"/><rect class="hit" x="152.88888888888889" y="10" width="34.96296296296296" height="184" data-tip="Turn #4 · 00:27:44
+Input 83,597 · Output 39
+devtools:list_pages"/><path class="bar" d="M188.85185185185185,194V189.72Q188.85185185185185,185.72 192.85185185185185,185.72H217.8148148148148Q221.8148148148148,185.72 221.8148148148148,189.72V194Z"/><text class="tick" x="205.33333333333331" y="212" text-anchor="middle">5</text><rect class="hit" x="187.85185185185185" y="10" width="34.96296296296296" height="184" data-tip="Turn #5 · 00:27:46
+Input 84,346 · Output 90
+devtools:take_snapshot"/><path class="bar" d="M223.8148148148148,194V181.44Q223.8148148148148,177.44 227.8148148148148,177.44H252.77777777777777Q256.77777777777777,177.44 256.77777777777777,181.44V194Z"/><rect class="hit" x="222.8148148148148" y="10" width="34.96296296296296" height="184" data-tip="Turn #6 · 00:27:53
+Input 86,745 · Output 180
+devtools:click"/><path class="bar" d="M258.77777777777777,194V184.292Q258.77777777777777,180.292 262.77777777777777,180.292H287.74074074074076Q291.74074074074076,180.292 291.74074074074076,184.292V194Z"/><text class="tick" x="275.25925925925924" y="212" text-anchor="middle">7</text><rect class="hit" x="257.77777777777777" y="10" width="34.96296296296296" height="184" data-tip="Turn #7 · 00:28:01
+Input 86,996 · Output 149
+devtools:evaluate_script"/><path class="bar" d="M293.74074074074076,194V185.396Q293.74074074074076,181.396 297.74074074074076,181.396H322.7037037037037Q326.7037037037037,181.396 326.7037037037037,185.396V194Z"/><rect class="hit" x="292.74074074074076" y="10" width="34.96296296296296" height="184" data-tip="Turn #8 · 00:28:03
+Input 87,238 · Output 137
+devtools:navigate_page"/><path class="bar" d="M328.7037037037037,194V192.112Q328.7037037037037,188.112 332.7037037037037,188.112H357.66666666666663Q361.66666666666663,188.112 361.66666666666663,192.112V194Z"/><text class="tick" x="345.18518518518516" y="212" text-anchor="middle">9</text><rect class="hit" x="327.7037037037037" y="10" width="34.96296296296296" height="184" data-tip="Turn #9 · 00:28:05
+Input 87,498 · Output 64
+devtools:take_snapshot"/><path class="bar" d="M363.66666666666663,194V165.248Q363.66666666666663,161.248 367.66666666666663,161.248H392.62962962962956Q396.62962962962956,161.248 396.62962962962956,165.248V194Z"/><rect class="hit" x="362.66666666666663" y="10" width="34.96296296296296" height="184" data-tip="Turn #10 · 00:28:08
+Input 89,389 · Output 356
+devtools:take_screenshot, devtools:click"/><path class="bar" d="M398.6296296296296,194V170.952Q398.6296296296296,166.952 402.6296296296296,166.952H427.5925925925926Q431.5925925925926,166.952 431.5925925925926,170.952V194Z"/><text class="tick" x="415.1111111111111" y="212" text-anchor="middle">11</text><rect class="hit" x="397.6296296296296" y="10" width="34.96296296296296" height="184" data-tip="Turn #11 · 00:28:11
+Input 90,007 · Output 294
+devtools:take_screenshot, devtools:click"/><path class="bar" d="M433.5925925925926,194V166.444Q433.5925925925926,162.444 437.5925925925926,162.444H462.55555555555554Q466.55555555555554,162.444 466.55555555555554,166.444V194Z"/><rect class="hit" x="432.5925925925926" y="10" width="34.96296296296296" height="184" data-tip="Turn #12 · 00:28:15
+Input 90,516 · Output 343
+devtools:click, devtools:click, devtools:click"/><path class="bar" d="M468.55555555555554,194V179.784Q468.55555555555554,175.784 472.55555555555554,175.784H497.5185185185185Q501.5185185185185,175.784 501.5185185185185,179.784V194Z"/><text class="tick" x="485.037037037037" y="212" text-anchor="middle">13</text><rect class="hit" x="467.55555555555554" y="10" width="34.96296296296296" height="184" data-tip="Turn #13 · 00:28:19
+Input 91,024 · Output 198
+devtools:evaluate_script"/><path class="bar" d="M503.5185185185185,194V169.02Q503.5185185185185,165.02 507.5185185185185,165.02H532.4814814814814Q536.4814814814814,165.02 536.4814814814814,169.02V194Z"/><rect class="hit" x="502.5185185185185" y="10" width="34.96296296296296" height="184" data-tip="Turn #14 · 00:28:23
+Input 91,382 · Output 315
+devtools:take_screenshot, devtools:take_snapshot"/><path class="bar" d="M538.4814814814815,194V179.508Q538.4814814814815,175.508 542.4814814814815,175.508H567.4444444444445Q571.4444444444445,175.508 571.4444444444445,179.508V194Z"/><text class="tick" x="554.962962962963" y="212" text-anchor="middle">15</text><rect class="hit" x="537.4814814814815" y="10" width="34.96296296296296" height="184" data-tip="Turn #15 · 00:28:26
+Input 91,988 · Output 201
+Grep"/><path class="bar" d="M573.4444444444445,194V171.412Q573.4444444444445,167.412 577.4444444444445,167.412H602.4074074074074Q606.4074074074074,167.412 606.4074074074074,171.412V194Z"/><rect class="hit" x="572.4444444444445" y="10" width="34.96296296296296" height="184" data-tip="Turn #16 · 00:28:30
+Input 92,598 · Output 289
+devtools:navigate_page"/><path class="bar" d="M608.4074074074074,194V183.28Q608.4074074074074,179.28 612.4074074074074,179.28H637.3703703703703Q641.3703703703703,179.28 641.3703703703703,183.28V194Z"/><text class="tick" x="624.8888888888889" y="212" text-anchor="middle">17</text><rect class="hit" x="607.4074074074074" y="10" width="34.96296296296296" height="184" data-tip="Turn #17 · 00:28:32
+Input 93,044 · Output 160
+devtools:evaluate_script"/><path class="bar" d="M643.3703703703703,194V154.576Q643.3703703703703,150.576 647.3703703703703,150.576H672.3333333333333Q676.3333333333333,150.576 676.3333333333333,154.576V194Z"/><rect class="hit" x="642.3703703703703" y="10" width="34.96296296296296" height="184" data-tip="Turn #18 · 00:28:39
+Input 93,660 · Output 472
+devtools:navigate_page, devtools:take_snapshot"/><path class="bar" d="M678.3333333333333,194V182.36Q678.3333333333333,178.36 682.3333333333333,178.36H707.2962962962962Q711.2962962962962,178.36 711.2962962962962,182.36V194Z"/><text class="tick" x="694.8148148148148" y="212" text-anchor="middle">19</text><rect class="hit" x="677.3333333333333" y="10" width="34.96296296296296" height="184" data-tip="Turn #19 · 00:28:45
+Input 94,416 · Output 170
+Grep"/><path class="bar" d="M713.2962962962963,194V175.828Q713.2962962962963,171.828 717.2962962962963,171.828H742.2592592592592Q746.2592592592592,171.828 746.2592592592592,175.828V194Z"/><rect class="hit" x="712.2962962962963" y="10" width="34.96296296296296" height="184" data-tip="Turn #20 · 00:28:46
+Input 94,619 · Output 241
+devtools:wait_for, devtools:take_snapshot"/><path class="bar" d="M748.2592592592592,194V182.084Q748.2592592592592,178.084 752.2592592592592,178.084H777.2222222222222Q781.2222222222222,178.084 781.2222222222222,182.084V194Z"/><text class="tick" x="764.7407407407408" y="212" text-anchor="middle">21</text><rect class="hit" x="747.2592592592592" y="10" width="34.96296296296296" height="184" data-tip="Turn #21 · 00:28:50
+Input 95,200 · Output 173
+Grep"/><path class="bar" d="M783.2222222222222,194V161.752Q783.2222222222222,157.752 787.2222222222222,157.752H812.1851851851851Q816.1851851851851,157.752 816.1851851851851,161.752V194Z"/><rect class="hit" x="782.2222222222222" y="10" width="34.96296296296296" height="184" data-tip="Turn #22 · 00:28:52
+Input 95,476 · Output 394
+devtools:evaluate_script"/><path class="bar" d="M818.1851851851852,194V180.428Q818.1851851851852,176.428 822.1851851851852,176.428H847.1481481481482Q851.1481481481482,176.428 851.1481481481482,180.428V194Z"/><text class="tick" x="834.6666666666667" y="212" text-anchor="middle">23</text><rect class="hit" x="817.1851851851852" y="10" width="34.96296296296296" height="184" data-tip="Turn #23 · 00:28:55
+Input 95,956 · Output 191
+devtools:evaluate_script"/><path class="bar" d="M853.1481481481482,194V164.788Q853.1481481481482,160.788 857.1481481481482,160.788H882.1111111111111Q886.1111111111111,160.788 886.1111111111111,164.788V194Z"/><rect class="hit" x="852.1481481481482" y="10" width="34.96296296296296" height="184" data-tip="Turn #24 · 00:29:00
+Input 97,994 · Output 361
+devtools:evaluate_script"/><path class="bar" d="M888.1111111111111,194V165.8Q888.1111111111111,161.8 892.1111111111111,161.8H917.074074074074Q921.074074074074,161.8 921.074074074074,165.8V194Z"/><text class="tick" x="904.5925925925926" y="212" text-anchor="middle">25</text><rect class="hit" x="887.1111111111111" y="10" width="34.96296296296296" height="184" data-tip="Turn #25 · 00:29:05
+Input 98,648 · Output 350
+devtools:evaluate_script"/><path class="bar" d="M923.074074074074,194V177.668Q923.074074074074,173.668 927.074074074074,173.668H952.037037037037Q956.037037037037,173.668 956.037037037037,177.668V194Z"/><rect class="hit" x="922.074074074074" y="10" width="34.96296296296296" height="184" data-tip="Turn #26 · 00:29:25
+Input 99,167 · Output 221
+devtools:take_screenshot"/><path class="bar" d="M958.037037037037,194V82.90800000000002Q958.037037037037,78.90800000000002 962.037037037037,78.90800000000002H986.9999999999999Q990.9999999999999,78.90800000000002 990.9999999999999,82.90800000000002V194Z"/><text class="tick" x="974.5185185185185" y="212" text-anchor="middle">27</text><rect class="hit" x="957.037037037037" y="10" width="34.96296296296296" height="184" data-tip="Turn #27 · 00:29:35
+Input 99,517 · Output 1,251
+Bash"/></svg>
+<p class="muted small">x-axis: turn number. Hover a column for details; click to jump to that step.</p>
+</section>
+
+<section><h2>Tool calls by type</h2><div class="hbars"><div class="hrow" data-tip="devtools:evaluate_script: 7 calls"><span class="hk">devtools:evaluate_script</span><span class="htrack"><span class="hbar" style="width:100%"></span></span><span class="hv">7</span></div><div class="hrow" data-tip="devtools:click: 6 calls"><span class="hk">devtools:click</span><span class="htrack"><span class="hbar" style="width:85.71428571428571%"></span></span><span class="hv">6</span></div><div class="hrow" data-tip="devtools:take_snapshot: 5 calls"><span class="hk">devtools:take_snapshot</span><span class="htrack"><span class="hbar" style="width:71.42857142857143%"></span></span><span class="hv">5</span></div><div class="hrow" data-tip="devtools:take_screenshot: 4 calls"><span class="hk">devtools:take_screenshot</span><span class="htrack"><span class="hbar" style="width:57.14285714285714%"></span></span><span class="hv">4</span></div><div class="hrow" data-tip="Bash: 3 calls"><span class="hk">Bash</span><span class="htrack"><span class="hbar" style="width:42.857142857142854%"></span></span><span class="hv">3</span></div><div class="hrow" data-tip="devtools:navigate_page: 3 calls"><span class="hk">devtools:navigate_page</span><span class="htrack"><span class="hbar" style="width:42.857142857142854%"></span></span><span class="hv">3</span></div><div class="hrow" data-tip="Grep: 3 calls"><span class="hk">Grep</span><span class="htrack"><span class="hbar" style="width:42.857142857142854%"></span></span><span class="hv">3</span></div><div class="hrow" data-tip="ToolSearch: 1 call"><span class="hk">ToolSearch</span><span class="htrack"><span class="hbar" style="width:14.285714285714285%"></span></span><span class="hv">1</span></div><div class="hrow" data-tip="PowerShell: 1 call"><span class="hk">PowerShell</span><span class="htrack"><span class="hbar" style="width:14.285714285714285%"></span></span><span class="hv">1</span></div><div class="hrow" data-tip="devtools:list_pages: 1 call"><span class="hk">devtools:list_pages</span><span class="htrack"><span class="hbar" style="width:14.285714285714285%"></span></span><span class="hv">1</span></div><div class="hrow" data-tip="devtools:wait_for: 1 call"><span class="hk">devtools:wait_for</span><span class="htrack"><span class="hbar" style="width:14.285714285714285%"></span></span><span class="hv">1</span></div></div></section>
+
+<section><h2>Step-by-step log</h2>
+<p class="muted small">Every model turn with its visible narration, tool calls and a one-line result. Internal reasoning is not logged; token/password-like values are redacted.</p>
+<div class="filters"><button class="on" data-f="all">All (27)</button><button data-f="err">With errors (5)</button><button data-f="open">Expand all</button></div>
+<details class="step" data-err="0" id="s1">
+<summary><span class="sn">#1</span><span class="muted small">00:27:23</span><span class="stools">Bash</span><span class="stok">in 76k · out 344</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Bash</code> </div>
+<pre>cd ~/ess-test-runs/19358-dev-20261009-0027 &amp;&amp; node -e ' const t=require(&quot;./ticket.json&quot;),f=t.fields;const s=h=&gt;(h||&quot;&quot;).replace(/&lt;[^&gt;]+&gt;/g,&quot; &quot;).replace(/&amp;nbsp;/g,&quot; &quot;).replace(/\s+/g,&quot; &quot;).trim(); for(const k of [&quot;System.Title&quot;,&quot;System.WorkItemType&quot;,&quot;System.State&quot;,&quot;System.Description&quot;,&quot;Microsoft.VSTS.Common.AcceptanceCriteria&quot;,&quot;Microsoft.VSTS.TCM.ReproSteps&quot;])console.log(k,&quot;:&quot;,s(f[k])); console.log((</pre>
+<div class="res r-ok">✓ System.Title : WebESS - Time and Attendance � Cancelled Leave Is Still Displayed as Approved Leave System.WorkItemType : Bug System.State : Resolved System.Description : Microsoft.VSTS.Common.AcceptanceCriteria : Microsoft.VSTS.TCM.ReproSteps : An employee originally submitted a leave request for **03/09/2026** on **27/07/2026**. The leave was subsequently cancelled on **30/07/2026**. After the ca</div></div>
+<div class="muted small">Tokens — input 2 · cache write 1,828 · cache read 74,216 · output 344</div>
+</div></details><details class="step" data-err="1" id="s2">
+<summary><span class="sn">#2</span><span class="muted small">00:27:28</span><span class="stools">Bash, ToolSearch</span><span class="pill p-err">✕ error</span><span class="stok">in 78k · out 1,585</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Bash</code> </div>
+<pre>cd ~/ess-test-runs/19358-dev-20261009-0027 &amp;&amp; node -e ' const st=(a,e)=&gt;[{n:1,action:a,expected:e,actual:&quot;&quot;,status:&quot;not-run&quot;}]; const r={ticket:{id:19358,type:&quot;Bug&quot;,title:&quot;WebESS - Time and Attendance – Cancelled Leave Is Still Displayed as Approved Leave&quot;,state:&quot;Resolved&quot;,url:&quot;https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/19358&quot;}, environment:{key:&quot;dev&quot;,url:&quot;https://wonderful-tr</pre>
+<div class="res r-err">✕ Exit code 127 The argument '.claude/skills/web-test/scripts/launch-role.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter. Windows PowerShell Copyright (C) Microsoft Corporation. All rights reserved. Try the new cross-platform PowerShell https://aka.ms/pscore6</div></div><div class="call"><div><code class="tname">ToolSearch</code> select:mcp__chrome-devtools__list_pages,mcp__chrome-devtools__select_page,mcp__chrome-devtools__navigate_page,mcp__chrome-devtools__take_snapshot,mcp__chrome-devtools__take_screenshot,mcp__chrome-devtools__click,mcp__chrome-devtools__wait_for,mcp__chrome-devtools__list_network_requests,mcp__chrome-devtools__evaluate_script,mcp__chrome-devtools__list_console_messages</div>
+
+<div class="res r-ok">✓ </div></div>
+<div class="muted small">Tokens — input 2 · cache write 1,704 · cache read 76,044 · output 1,585</div>
+</div></details><details class="step" data-err="0" id="s3">
+<summary><span class="sn">#3</span><span class="muted small">00:27:36</span><span class="stools">PowerShell</span><span class="stok">in 83k · out 202</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">PowerShell</code> </div>
+<pre>cd D:\XionTechs\Laya; powershell -NoProfile -ExecutionPolicy Bypass -File &quot;.claude/skills/web-test/scripts/launch-role.ps1&quot; xiontechs &quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/&quot;</pre>
+<div class="res r-ok">✓ UP role=xiontechs | account=danh.nguyen@xiontechs.com | msedge.exe | profile C:\Users\ADMIN\.ess-web-test\profiles\xiontechs</div></div>
+<div class="muted small">Tokens — input 2 · cache write 5,550 · cache read 77,748 · output 202</div>
+</div></details><details class="step" data-err="0" id="s4">
+<summary><span class="sn">#4</span><span class="muted small">00:27:44</span><span class="stools">devtools:list_pages</span><span class="stok">in 84k · out 39</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:list_pages</code> {}</div>
+
+<div class="res r-ok">✓ ## Pages 1: https://login.microsoftonline.com/d2b3a7dc-d57e-417f-90ad-149b872e9aa1/oauth2/v2.0/authorize?client_id=d92b83d1-d8f7-432a-8886-6925192004bf&amp;scope=api%3a%2f%2fe4f16110-c556-4fb8-a982-896e9251e82a%2f.default+openid+profile+offline_access&amp;redirect_uri=https%3a%2f%2fwonderful-tree-03dc07f0f.3.azurestaticapps.net&amp;client-request-id=01a11c8e-7de5-7138-9d5c-18e15f206a4f&amp;response_mode=fragment&amp;</div></div>
+<div class="muted small">Tokens — input 2 · cache write 297 · cache read 83,298 · output 39</div>
+</div></details><details class="step" data-err="0" id="s5">
+<summary><span class="sn">#5</span><span class="muted small">00:27:46</span><span class="stools">devtools:take_snapshot</span><span class="stok">in 84k · out 90</span></summary>
+<div class="sbody">
+<blockquote>Checking the browser's sign-in state; the page is on the Microsoft login.</blockquote>
+<div class="call"><div><code class="tname">devtools:take_snapshot</code> {&quot;pageId&quot;:1}</div>
+
+<div class="res r-ok">✓ ## Latest page snapshot uid=1_0 RootWebArea &quot;ESS-System&quot; url=&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/&quot; uid=1_1 banner &quot;ESS System&quot; uid=1_2 link &quot;ESS System&quot; url=&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/&quot; uid=1_3 StaticText &quot;ESS&quot; uid=1_4 StaticText &quot;System&quot; uid=1_5 navigation &quot;Main Navigation&quot; uid=1_6 link &quot;Skills &amp; performance&quot; expandable haspopup=&quot;menu&quot; url=&quot;https:/</div></div>
+<div class="muted small">Tokens — input 2 · cache write 749 · cache read 83,595 · output 90</div>
+</div></details><details class="step" data-err="1" id="s6">
+<summary><span class="sn">#6</span><span class="muted small">00:27:53</span><span class="stools">devtools:click</span><span class="pill p-err">✕ error</span><span class="stok">in 87k · out 180</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;1_8&quot;,&quot;includeSnapshot&quot;:true}</div>
+
+<div class="res r-err">✕ Error: Failed to interact with the element with uid 1_8. The element did not become interactive within the configured timeout.</div></div>
+<div class="muted small">Tokens — input 2 · cache write 2,399 · cache read 84,344 · output 180</div>
+</div></details><details class="step" data-err="0" id="s7">
+<summary><span class="sn">#7</span><span class="muted small">00:28:01</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 87k · out 149</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;() =&gt; ({url: location.href, links: [...document.querySelectorAll('a[href]')].map(a=&gt;a.getAttribute('href')).filter(h=&gt;/attend|time/i.test(h))})&quot;}</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json {&quot;url&quot;:&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/&quot;,&quot;links&quot;:[&quot;/time-off-history&quot;]} ```</div></div>
+<div class="muted small">Tokens — input 2 · cache write 251 · cache read 86,743 · output 149</div>
+</div></details><details class="step" data-err="0" id="s8">
+<summary><span class="sn">#8</span><span class="muted small">00:28:03</span><span class="stools">devtools:navigate_page</span><span class="stok">in 87k · out 137</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:navigate_page</code> {&quot;pageId&quot;:1,&quot;type&quot;:&quot;url&quot;,&quot;url&quot;:&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance&quot;}</div>
+
+<div class="res r-ok">✓ Successfully navigated to https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance. ## Pages 1: ESS-System (https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance) [selected]</div></div>
+<div class="muted small">Tokens — input 2 · cache write 242 · cache read 86,994 · output 137</div>
+</div></details><details class="step" data-err="0" id="s9">
+<summary><span class="sn">#9</span><span class="muted small">00:28:05</span><span class="stools">devtools:take_snapshot</span><span class="stok">in 87k · out 64</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:take_snapshot</code> {&quot;pageId&quot;:1}</div>
+
+<div class="res r-ok">✓ ## Latest page snapshot uid=2_0 RootWebArea &quot;ESS-System&quot; url=&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance&quot; uid=2_1 banner &quot;ESS System&quot; uid=2_2 link &quot;ESS System&quot; url=&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/&quot; uid=2_3 StaticText &quot;ESS&quot; uid=2_4 StaticText &quot;System&quot; uid=2_5 navigation &quot;Main Navigation&quot; uid=2_6 link &quot;Skills &amp; performance&quot; expandable haspopup=&quot;menu&quot; ur</div></div>
+<div class="muted small">Tokens — input 2 · cache write 260 · cache read 87,236 · output 64</div>
+</div></details><details class="step" data-err="1" id="s10">
+<summary><span class="sn">#10</span><span class="muted small">00:28:08</span><span class="stools">devtools:take_screenshot, devtools:click</span><span class="pill p-err">✕ error</span><span class="stok">in 89k · out 356</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:take_screenshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\ess-test-runs\\19358-dev-20261009-0027\\shots\\TC01-S01.png&quot;}</div>
+
+<div class="res r-err">✕ Error: Access denied: path C:\Users\ADMIN\ess-test-runs\19358-dev-20261009-0027\shots\TC01-S01.png (canonical: C:\Users\ADMIN\ess-test-runs\19358-dev-20261009-0027\shots\TC01-S01.png) is not within any of the configured workspace roots.</div></div><div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;2_49&quot;}</div>
+
+<div class="res r-ok">✓ Successfully clicked on the element</div></div>
+<div class="muted small">Tokens — input 2 · cache write 1,891 · cache read 87,496 · output 356</div>
+</div></details><details class="step" data-err="0" id="s11">
+<summary><span class="sn">#11</span><span class="muted small">00:28:11</span><span class="stools">devtools:take_screenshot, devtools:click</span><span class="stok">in 90k · out 294</span></summary>
+<div class="sbody">
+<blockquote>Screenshots outside the workspace are refused, so I'm saving to the scratchpad and will copy them over. I'm also paging back to the week of 3 Sep.</blockquote>
+<div class="call"><div><code class="tname">devtools:take_screenshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\TC01-S01.png&quot;}</div>
+
+<div class="res r-ok">✓ Took a screenshot of the current page's viewport. Saved screenshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\TC01-S01.png.</div></div><div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;2_49&quot;}</div>
+
+<div class="res r-ok">✓ Successfully clicked on the element</div></div>
+<div class="muted small">Tokens — input 2 · cache write 618 · cache read 89,387 · output 294</div>
+</div></details><details class="step" data-err="0" id="s12">
+<summary><span class="sn">#12</span><span class="muted small">00:28:15</span><span class="stools">devtools:click, devtools:click, devtools:click</span><span class="stok">in 91k · out 343</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;2_49&quot;}</div>
+
+<div class="res r-ok">✓ Successfully clicked on the element</div></div><div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;2_49&quot;}</div>
+
+<div class="res r-ok">✓ Successfully clicked on the element</div></div><div class="call"><div><code class="tname">devtools:click</code> {&quot;pageId&quot;:1,&quot;uid&quot;:&quot;2_49&quot;}</div>
+
+<div class="res r-ok">✓ Successfully clicked on the element</div></div>
+<div class="muted small">Tokens — input 2 · cache write 509 · cache read 90,005 · output 343</div>
+</div></details><details class="step" data-err="0" id="s13">
+<summary><span class="sn">#13</span><span class="muted small">00:28:19</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 91k · out 198</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;() =&gt; [...document.querySelectorAll('button')].map(b=&gt;b.innerText.trim()).filter(t=&gt;/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) |Oct|Sep|Aug/.test(t))&quot;,&quot;waitForStableDom&quot;:true}</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json [&quot;31 Aug - 6 Sept&quot;,&quot;31 Aug\nMonday&quot;,&quot;1 Sept\nTuesday&quot;,&quot;2 Sept\nWednesday&quot;,&quot;3 Sept\nThursday&quot;,&quot;4 Sept\nFriday&quot;,&quot;5 Sept\nSaturday&quot;,&quot;6 Sept\nSunday&quot;,&quot;5 - 11 Oct&quot;,&quot;5 - 11 Oct&quot;] ```</div></div>
+<div class="muted small">Tokens — input 2 · cache write 508 · cache read 90,514 · output 198</div>
+</div></details><details class="step" data-err="0" id="s14">
+<summary><span class="sn">#14</span><span class="muted small">00:28:23</span><span class="stools">devtools:take_screenshot, devtools:take_snapshot</span><span class="stok">in 91k · out 315</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:take_screenshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\TC02-S01.png&quot;}</div>
+
+<div class="res r-ok">✓ Took a screenshot of the current page's viewport. Saved screenshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\TC02-S01.png.</div></div><div class="call"><div><code class="tname">devtools:take_snapshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\snap1.txt&quot;}</div>
+
+<div class="res r-ok">✓ Saved snapshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap1.txt.</div></div>
+<div class="muted small">Tokens — input 2 · cache write 358 · cache read 91,022 · output 315</div>
+</div></details><details class="step" data-err="0" id="s15">
+<summary><span class="sn">#15</span><span class="muted small">00:28:26</span><span class="stools">Grep</span><span class="stok">in 92k · out 201</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Grep</code> Mon|Tue|Wed|Thu|Fri|Sat|Sun|hours|leave|Leave C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap1.txt</div>
+
+<div class="res r-ok">✓ 36: uid=3_0 StaticText &quot;Scheduled hours:&quot; 39: uid=3_3 StaticText &quot;Total hours:&quot; 42: uid=3_6 StaticText &quot;Absence hours:&quot; 45: uid=3_9 StaticText &quot;Normal hours&quot; 47: uid=3_11 StaticText &quot;Actual hours&quot; 48: uid=3_12 StaticText &quot;Pending leave&quot; 55: uid=3_14 button &quot;Mon 31/08 · No records&quot; expandable haspopup=&quot;dialog&quot; 56: uid=3_15 button &quot;Tue 01/09 · (VN) National Day&quot; expandable haspopup=&quot;dialog&quot; 57: uid=</div></div>
+<div class="muted small">Tokens — input 2 · cache write 606 · cache read 91,380 · output 201</div>
+</div></details><details class="step" data-err="0" id="s16">
+<summary><span class="sn">#16</span><span class="muted small">00:28:30</span><span class="stools">devtools:navigate_page</span><span class="stok">in 93k · out 289</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:navigate_page</code> {&quot;pageId&quot;:1,&quot;type&quot;:&quot;url&quot;,&quot;url&quot;:&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/time-off-history&quot;}</div>
+
+<div class="res r-ok">✓ Successfully navigated to https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/time-off-history. ## Pages 1: ESS-System (https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/time-off-history) [selected]</div></div>
+<div class="muted small">Tokens — input 2 · cache write 610 · cache read 91,986 · output 289</div>
+</div></details><details class="step" data-err="0" id="s17">
+<summary><span class="sn">#17</span><span class="muted small">00:28:32</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 93k · out 160</span></summary>
+<div class="sbody">
+<blockquote>Checking this account's time-off history for any cancelled or approved leave to use as test data.</blockquote>
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;async () =&gt; { await new Promise(r=&gt;setTimeout(r,3000)); return document.querySelector('main').innerText.slice(0,2500); }&quot;}</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json &quot;Home\nTime Off History\nTime Off History\nTime off requests\nApproved time off\nRequest time off\nFilter\nSubmission date\n\t\nStart date\n\t\nEnd date\n\t\nType\n\t\nAmount\n\t\nUnit\n\t\nSubmitted by\n\t\nStatus\n\t\nActions\n\n19/08/2026\t17/08/2026\t17/08/2026\tSick Leave\t1\tDays\tAmol R Bhangale\t\nCompleted\n\t\n\n19/08/2026\t18/08/2026\t18/08/2026\</div></div>
+<div class="muted small">Tokens — input 2 · cache write 446 · cache read 92,596 · output 160</div>
+</div></details><details class="step" data-err="0" id="s18">
+<summary><span class="sn">#18</span><span class="muted small">00:28:39</span><span class="stools">devtools:navigate_page, devtools:take_snapshot</span><span class="stok">in 94k · out 472</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:navigate_page</code> {&quot;pageId&quot;:1,&quot;type&quot;:&quot;url&quot;,&quot;url&quot;:&quot;https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance&quot;}</div>
+
+<div class="res r-ok">✓ Successfully navigated to https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance. ## Pages 1: ESS-System (https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/attendance) [selected]</div></div><div class="call"><div><code class="tname">devtools:take_snapshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\snap2.txt&quot;}</div>
+
+<div class="res r-ok">✓ Saved snapshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap2.txt.</div></div>
+<div class="muted small">Tokens — input 2 · cache write 616 · cache read 93,042 · output 472</div>
+</div></details><details class="step" data-err="0" id="s19">
+<summary><span class="sn">#19</span><span class="muted small">00:28:45</span><span class="stools">Grep</span><span class="stok">in 94k · out 170</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Grep</code> Previous|View&quot; C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap2.txt</div>
+
+<div class="res r-ok">✓ No matches found</div></div>
+<div class="muted small">Tokens — input 2 · cache write 756 · cache read 93,658 · output 170</div>
+</div></details><details class="step" data-err="1" id="s20">
+<summary><span class="sn">#20</span><span class="muted small">00:28:46</span><span class="stools">devtools:wait_for, devtools:take_snapshot</span><span class="pill p-err">✕ error</span><span class="stok">in 95k · out 241</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:wait_for</code> {&quot;__unparsedToolInput&quot;:{&quot;raw&quot;:&quot;{\&quot;pageId\&quot;: 1, \&quot;text\&quot;: Previous week}&quot;,&quot;len&quot;:36}}</div>
+
+<div class="res r-err">✕ &lt;tool_use_error&gt;InputValidationError: mcp__chrome-devtools__wait_for was called with input that could not be parsed as JSON. You sent (first 36 of 36 bytes): {&quot;pageId&quot;: 1, &quot;text&quot;: Previous week} Common causes: unescaped backslashes in file paths (use / or \\), unescaped control characters, or truncated output. Retry with valid JSON.&lt;/tool_use_error&gt;</div></div><div class="call"><div><code class="tname">devtools:take_snapshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\snap2.txt&quot;}</div>
+
+<div class="res r-ok">✓ Saved snapshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap2.txt.</div></div>
+<div class="muted small">Tokens — input 2 · cache write 203 · cache read 94,414 · output 241</div>
+</div></details><details class="step" data-err="0" id="s21">
+<summary><span class="sn">#21</span><span class="muted small">00:28:50</span><span class="stools">Grep</span><span class="stok">in 95k · out 173</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Grep</code> Previous|&quot;View|Month C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\snap2.txt</div>
+
+<div class="res r-ok">✓ 50: uid=5_47 button &quot;Previous week&quot; 53: uid=5_50 StaticText &quot;View&quot; 54: uid=5_51 combobox &quot;View&quot; expandable haspopup=&quot;listbox&quot; value=&quot;Week view Open menu&quot;</div></div>
+<div class="muted small">Tokens — input 2 · cache write 581 · cache read 94,617 · output 173</div>
+</div></details><details class="step" data-err="1" id="s22">
+<summary><span class="sn">#22</span><span class="muted small">00:28:52</span><span class="stools">devtools:evaluate_script</span><span class="pill p-err">✕ error</span><span class="stok">in 95k · out 394</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;async () =&gt; { const b=[...document.querySelectorAll('button')].find(x=&gt;x.getAttribute('aria-label')==='Previous week'||x.innerText.trim()==='Previous week'); for(let i=0;i&lt;28;i</div>
+
+<div class="res r-err">✕ Error: Cannot read properties of undefined (reading 'click')</div></div>
+<div class="muted small">Tokens — input 2 · cache write 276 · cache read 95,198 · output 394</div>
+</div></details><details class="step" data-err="0" id="s23">
+<summary><span class="sn">#23</span><span class="muted small">00:28:55</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 96k · out 191</span></summary>
+<div class="sbody">
+<blockquote>The &quot;Previous week&quot; button isn't found by label, so I'm checking how it's exposed on the page.</blockquote>
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;() =&gt; [...document.querySelectorAll('button')].filter(x=&gt;/week|\\d+ - \\d+/i.test(x.outerHTML.slice(0,400))).map(x=&gt;x.outerHTML.slice(0,250))&quot;}</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json [&quot;&lt;button class=\&quot;attendance-table__date-button cds--btn cds--btn--ghost\&quot; type=\&quot;button\&quot;&gt;5 - 11 Oct&lt;svg focusable=\&quot;false\&quot; preserveAspectRatio=\&quot;xMidYMid meet\&quot; fill=\&quot;currentColor\&quot; aria-hidden=\&quot;true\&quot; width=\&quot;16\&quot; height=\&quot;16\&quot; viewBox=\&quot;0 0 32 32\&quot; class=\&quot;cds--bt&quot;,&quot;&lt;button type=\&quot;button\&quot; class=\&quot;cds--list-box__field\&quot; title=\&quot;Week view\&quot; aria-activ</div></div>
+<div class="muted small">Tokens — input 2 · cache write 480 · cache read 95,474 · output 191</div>
+</div></details><details class="step" data-err="0" id="s24">
+<summary><span class="sn">#24</span><span class="muted small">00:29:00</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 98k · out 361</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;async () =&gt; { const d=document.querySelector('.attendance-table__date-button'); const bar=d.parentElement; const btns=[...bar.querySelectorAll('button')]; const prev=btns[btns.</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json &quot;noprev &lt;div class=\&quot;attendance-table__date-picker-wrapper\&quot; dir=\&quot;auto\&quot;&gt;&lt;button class=\&quot;attendance-table__date-button cds--btn cds--btn--ghost\&quot; type=\&quot;button\&quot;&gt;5 - 11 Oct&lt;svg focusable=\&quot;false\&quot; preserveAspectRatio=\&quot;xMidYMid meet\&quot; fill=\&quot;currentColor\&quot; aria-hidden=\&quot;true\&quot; width=\&quot;16\&quot; height=\&quot;16\&quot; viewBox=\&quot;0 0 32 32\&quot; class=\&quot;cds--btn__icon\&quot; xmlns=</div></div>
+<div class="muted small">Tokens — input 2 · cache write 2,038 · cache read 95,954 · output 361</div>
+</div></details><details class="step" data-err="0" id="s25">
+<summary><span class="sn">#25</span><span class="muted small">00:29:05</span><span class="stools">devtools:evaluate_script</span><span class="stok">in 99k · out 350</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:evaluate_script</code> {&quot;pageId&quot;:1,&quot;function&quot;:&quot;async () =&gt; { const d=document.querySelector('.attendance-table__date-button'); const nav=d.closest('.attendance-table__date-picker-wrapper').parentElement; const btns=[...nav.</div>
+
+<div class="res r-ok">✓ Script ran on page and returned: ```json [&quot;23 - 29 Mar&quot;,&quot;Mon 23/03 · Casual leave · Approved&quot;,&quot;Tue 24/03 · No records&quot;,&quot;Wed 25/03 · Casual leave · Approved&quot;,&quot;Thu 26/03 · Casual leave · Approved&quot;,&quot;Fri 27/03 · Casual leave · Approved&quot;,&quot;Sat 28/03 · No records&quot;,&quot;Sun 29/03 · No records&quot;] ```</div></div>
+<div class="muted small">Tokens — input 2 · cache write 654 · cache read 97,992 · output 350</div>
+</div></details><details class="step" data-err="0" id="s26">
+<summary><span class="sn">#26</span><span class="muted small">00:29:25</span><span class="stools">devtools:take_screenshot</span><span class="stok">in 99k · out 221</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">devtools:take_screenshot</code> {&quot;pageId&quot;:1,&quot;filePath&quot;:&quot;C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya\\945f52ef-c247-4417-aa4e-130860090502\\scratchpad\\TC02-S02.png&quot;}</div>
+
+<div class="res r-ok">✓ Took a screenshot of the current page's viewport. Saved screenshot to C:\Users\ADMIN\AppData\Local\Temp\claude\D--XionTechs-Laya\945f52ef-c247-4417-aa4e-130860090502\scratchpad\TC02-S02.png.</div></div>
+<div class="muted small">Tokens — input 2 · cache write 519 · cache read 98,646 · output 221</div>
+</div></details><details class="step" data-err="0" id="s27">
+<summary><span class="sn">#27</span><span class="muted small">00:29:35</span><span class="stools">Bash</span><span class="stok">in 100k · out 1,251</span></summary>
+<div class="sbody">
+
+<div class="call"><div><code class="tname">Bash</code> </div>
+<pre>R=~/ess-test-runs/19358-dev-20261009-0027; S=/c/Users/ADMIN/AppData/Local/Temp/claude/D--XionTechs-Laya/945f52ef-c247-4417-aa4e-130860090502/scratchpad cp $S/TC01-S01.png $S/TC02-S01.png $S/TC02-S02.png $R/shots/; cp $R/shots/TC02-S02.png $R/shots/TC03-S01.png cd /d/XionTechs/Laya; rec=&quot;node .claude/skills/web-test/scripts/record.mjs $R&quot; $rec TC01 1 pass --actual &quot;Attendance page rendered (My atte</pre>
+</div>
+<div class="muted small">Tokens — input 2 · cache write 350 · cache read 99,165 · output 1,251</div>
+</div></details>
+</section>
+<p class="muted small">Transcript: 945f52ef-c247-4417-aa4e-130860090502.jsonl · window 2026-10-09T00:27:12+07:00 → 2026-10-08T17:29:36.608Z</p>
+</main>
+<div id="tip"></div>
+<script>
+const tipEl=document.getElementById('tip');
+document.querySelectorAll('[data-tip]').forEach(el=>{
+  el.addEventListener('mousemove',e=>{tipEl.textContent=el.dataset.tip;tipEl.style.display='block';
+    const x=Math.min(e.clientX+12,innerWidth-tipEl.offsetWidth-8);tipEl.style.left=x+'px';tipEl.style.top=(e.clientY+12)+'px'});
+  el.addEventListener('mouseleave',()=>tipEl.style.display='none');
+});
+document.querySelectorAll('.chart .hit').forEach((h,i,all)=>{const n=(i%(all.length/2))+1;h.addEventListener('click',()=>{const d=document.getElementById('s'+n);if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'})}})});
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
+  const f=b.dataset.f;
+  if(f==='open'){const open=b.textContent==='Expand all';document.querySelectorAll('.step').forEach(d=>d.open=open);b.textContent=open?'Collapse all':'Expand all';return}
+  document.querySelectorAll('.filters button:not([data-f=open])').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.step').forEach(d=>{d.style.display=(f==='all'||d.dataset.err==='1')?'':'none'});
+});
+</script>
+</body></html>

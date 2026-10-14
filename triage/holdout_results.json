@@ -1,0 +1,744 @@
+{
+ "summary": {
+  "n": 40,
+  "laya": {
+   "accuracy": 0.575,
+   "p50_ms": 720,
+   "p>=0.6": {
+    "coverage": 0.75,
+    "accuracy": 0.667
+   }
+  },
+  "sonnet": {
+   "accuracy": 0.975,
+   "p50_ms": 4814,
+   "avg_tokens": 3674,
+   "total_cost_usd_list_price": 0.282,
+   "invalid": 0
+  },
+  "per_category": {
+   "dependency_missing": {
+    "n": 5,
+    "laya": 2,
+    "sonnet": 5
+   },
+   "import_or_path": {
+    "n": 5,
+    "laya": 3,
+    "sonnet": 5
+   },
+   "syntax_or_type": {
+    "n": 5,
+    "laya": 3,
+    "sonnet": 5
+   },
+   "test_assertion": {
+    "n": 5,
+    "laya": 5,
+    "sonnet": 5
+   },
+   "env_or_config": {
+    "n": 5,
+    "laya": 1,
+    "sonnet": 4
+   },
+   "permission_or_network": {
+    "n": 5,
+    "laya": 1,
+    "sonnet": 5
+   },
+   "timeout_or_resource": {
+    "n": 5,
+    "laya": 4,
+    "sonnet": 5
+   },
+   "other": {
+    "n": 5,
+    "laya": 4,
+    "sonnet": 5
+   }
+  }
+ },
+ "rows": [
+  {
+   "id": "h_dep01",
+   "gold": "dependency_missing",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "py_missing_package",
+    "prob": 1.0,
+    "ms": 802
+   },
+   "sonnet": {
+    "pred": "dependency_missing",
+    "raw": "dependency_missing",
+    "ms": 4799,
+    "tokens": 3410,
+    "cost_usd": 0.0116662
+   }
+  },
+  {
+   "id": "h_dep02",
+   "gold": "dependency_missing",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "py_missing_package",
+    "prob": 0.993,
+    "ms": 591
+   },
+   "sonnet": {
+    "pred": "dependency_missing",
+    "raw": "dependency_missing",
+    "ms": 4936,
+    "tokens": 3394,
+    "cost_usd": 0.0116022
+   }
+  },
+  {
+   "id": "h_dep03",
+   "gold": "dependency_missing",
+   "laya": {
+    "pred": "env_or_config",
+    "raw": "missing_project_or_script",
+    "prob": 0.418,
+    "ms": 579
+   },
+   "sonnet": {
+    "pred": "dependency_missing",
+    "raw": "dependency_missing",
+    "ms": 6020,
+    "tokens": 3365,
+    "cost_usd": 0.0053454
+   }
+  },
+  {
+   "id": "h_dep04",
+   "gold": "dependency_missing",
+   "laya": {
+    "pred": "import_or_path",
+    "raw": "node_bad_import",
+    "prob": 0.711,
+    "ms": 694
+   },
+   "sonnet": {
+    "pred": "dependency_missing",
+    "raw": "dependency_missing",
+    "ms": 5000,
+    "tokens": 3666,
+    "cost_usd": 0.0126902
+   }
+  },
+  {
+   "id": "h_dep05",
+   "gold": "dependency_missing",
+   "laya": {
+    "pred": "import_or_path",
+    "raw": "py_bad_import",
+    "prob": 0.954,
+    "ms": 854
+   },
+   "sonnet": {
+    "pred": "dependency_missing",
+    "raw": "dependency_missing",
+    "ms": 4540,
+    "tokens": 3691,
+    "cost_usd": 0.0066494
+   }
+  },
+  {
+   "id": "h_imp01",
+   "gold": "import_or_path",
+   "laya": {
+    "pred": "import_or_path",
+    "raw": "py_bad_import",
+    "prob": 1.0,
+    "ms": 650
+   },
+   "sonnet": {
+    "pred": "import_or_path",
+    "raw": "import_or_path",
+    "ms": 4984,
+    "tokens": 4326,
+    "cost_usd": 0.0091834
+   }
+  },
+  {
+   "id": "h_imp02",
+   "gold": "import_or_path",
+   "laya": {
+    "pred": "import_or_path",
+    "raw": "file_not_found",
+    "prob": 0.899,
+    "ms": 1230
+   },
+   "sonnet": {
+    "pred": "import_or_path",
+    "raw": "import_or_path",
+    "ms": 4768,
+    "tokens": 4112,
+    "cost_usd": 0.008327399999999999
+   }
+  },
+  {
+   "id": "h_imp03",
+   "gold": "import_or_path",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "dotnet_missing_package",
+    "prob": 0.949,
+    "ms": 700
+   },
+   "sonnet": {
+    "pred": "import_or_path",
+    "raw": "import_or_path",
+    "ms": 4621,
+    "tokens": 3465,
+    "cost_usd": 0.0057394
+   }
+  },
+  {
+   "id": "h_imp04",
+   "gold": "import_or_path",
+   "laya": {
+    "pred": "syntax_or_type",
+    "raw": "undefined_name",
+    "prob": 0.501,
+    "ms": 962
+   },
+   "sonnet": {
+    "pred": "import_or_path",
+    "raw": "import_or_path",
+    "ms": 4521,
+    "tokens": 3509,
+    "cost_usd": 0.0059154
+   }
+  },
+  {
+   "id": "h_imp05",
+   "gold": "import_or_path",
+   "laya": {
+    "pred": "import_or_path",
+    "raw": "py_bad_import",
+    "prob": 0.994,
+    "ms": 569
+   },
+   "sonnet": {
+    "pred": "import_or_path",
+    "raw": "import_or_path",
+    "ms": 4828,
+    "tokens": 3936,
+    "cost_usd": 0.0076234
+   }
+  },
+  {
+   "id": "h_syn01",
+   "gold": "syntax_or_type",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.619,
+    "ms": 564
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 4483,
+    "tokens": 3288,
+    "cost_usd": 0.0050434
+   }
+  },
+  {
+   "id": "h_syn02",
+   "gold": "syntax_or_type",
+   "laya": {
+    "pred": "syntax_or_type",
+    "raw": "type_error",
+    "prob": 1.0,
+    "ms": 1110
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 4879,
+    "tokens": 4179,
+    "cost_usd": 0.0086074
+   }
+  },
+  {
+   "id": "h_syn03",
+   "gold": "syntax_or_type",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout",
+    "prob": 0.992,
+    "ms": 635
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 4711,
+    "tokens": 3382,
+    "cost_usd": 0.0054194
+   }
+  },
+  {
+   "id": "h_syn04",
+   "gold": "syntax_or_type",
+   "laya": {
+    "pred": "syntax_or_type",
+    "raw": "type_error",
+    "prob": 0.995,
+    "ms": 662
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 5466,
+    "tokens": 3430,
+    "cost_usd": 0.0056114
+   }
+  },
+  {
+   "id": "h_syn05",
+   "gold": "syntax_or_type",
+   "laya": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_error",
+    "prob": 0.663,
+    "ms": 778
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 6286,
+    "tokens": 3630,
+    "cost_usd": 0.0064114
+   }
+  },
+  {
+   "id": "h_tst01",
+   "gold": "test_assertion",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 1.0,
+    "ms": 1066
+   },
+   "sonnet": {
+    "pred": "test_assertion",
+    "raw": "test_assertion",
+    "ms": 4719,
+    "tokens": 3673,
+    "cost_usd": 0.0065714
+   }
+  },
+  {
+   "id": "h_tst02",
+   "gold": "test_assertion",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 1.0,
+    "ms": 698
+   },
+   "sonnet": {
+    "pred": "test_assertion",
+    "raw": "test_assertion",
+    "ms": 4607,
+    "tokens": 3579,
+    "cost_usd": 0.0061954
+   }
+  },
+  {
+   "id": "h_tst03",
+   "gold": "test_assertion",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 1.0,
+    "ms": 1068
+   },
+   "sonnet": {
+    "pred": "test_assertion",
+    "raw": "test_assertion",
+    "ms": 4533,
+    "tokens": 3833,
+    "cost_usd": 0.007211400000000001
+   }
+  },
+  {
+   "id": "h_tst04",
+   "gold": "test_assertion",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 0.93,
+    "ms": 895
+   },
+   "sonnet": {
+    "pred": "test_assertion",
+    "raw": "test_assertion",
+    "ms": 7282,
+    "tokens": 3476,
+    "cost_usd": 0.0057834
+   }
+  },
+  {
+   "id": "h_tst05",
+   "gold": "test_assertion",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 1.0,
+    "ms": 583
+   },
+   "sonnet": {
+    "pred": "test_assertion",
+    "raw": "test_assertion",
+    "ms": 5364,
+    "tokens": 3532,
+    "cost_usd": 0.0060074
+   }
+  },
+  {
+   "id": "h_env01",
+   "gold": "env_or_config",
+   "laya": {
+    "pred": "env_or_config",
+    "raw": "wrong_runtime_version",
+    "prob": 0.372,
+    "ms": 760
+   },
+   "sonnet": {
+    "pred": "env_or_config",
+    "raw": "env_or_config",
+    "ms": 4731,
+    "tokens": 3400,
+    "cost_usd": 0.005479400000000001
+   }
+  },
+  {
+   "id": "h_env02",
+   "gold": "env_or_config",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.449,
+    "ms": 646
+   },
+   "sonnet": {
+    "pred": "env_or_config",
+    "raw": "env_or_config",
+    "ms": 9676,
+    "tokens": 3256,
+    "cost_usd": 0.0049034000000000005
+   }
+  },
+  {
+   "id": "h_env03",
+   "gold": "env_or_config",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "node_missing_package",
+    "prob": 0.913,
+    "ms": 704
+   },
+   "sonnet": {
+    "pred": "env_or_config",
+    "raw": "env_or_config",
+    "ms": 4788,
+    "tokens": 3455,
+    "cost_usd": 0.0056994
+   }
+  },
+  {
+   "id": "h_env04",
+   "gold": "env_or_config",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "dotnet_missing_package",
+    "prob": 0.998,
+    "ms": 736
+   },
+   "sonnet": {
+    "pred": "env_or_config",
+    "raw": "env_or_config",
+    "ms": 5241,
+    "tokens": 3495,
+    "cost_usd": 0.0058594
+   }
+  },
+  {
+   "id": "h_env05",
+   "gold": "env_or_config",
+   "laya": {
+    "pred": "test_assertion",
+    "raw": "assert_failed",
+    "prob": 0.846,
+    "ms": 596
+   },
+   "sonnet": {
+    "pred": "syntax_or_type",
+    "raw": "syntax_or_type",
+    "ms": 4770,
+    "tokens": 3456,
+    "cost_usd": 0.0057154
+   }
+  },
+  {
+   "id": "h_net01",
+   "gold": "permission_or_network",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.455,
+    "ms": 1036
+   },
+   "sonnet": {
+    "pred": "permission_or_network",
+    "raw": "permission_or_network",
+    "ms": 5246,
+    "tokens": 3959,
+    "cost_usd": 0.0077214
+   }
+  },
+  {
+   "id": "h_net02",
+   "gold": "permission_or_network",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "stack_overflow",
+    "prob": 0.337,
+    "ms": 1063
+   },
+   "sonnet": {
+    "pred": "permission_or_network",
+    "raw": "permission_or_network",
+    "ms": 5666,
+    "tokens": 5868,
+    "cost_usd": 0.0153574
+   }
+  },
+  {
+   "id": "h_net03",
+   "gold": "permission_or_network",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.809,
+    "ms": 897
+   },
+   "sonnet": {
+    "pred": "permission_or_network",
+    "raw": "permission_or_network",
+    "ms": 4898,
+    "tokens": 3769,
+    "cost_usd": 0.0069613999999999995
+   }
+  },
+  {
+   "id": "h_net04",
+   "gold": "permission_or_network",
+   "laya": {
+    "pred": "other",
+    "raw": "git_state",
+    "prob": 0.51,
+    "ms": 699
+   },
+   "sonnet": {
+    "pred": "permission_or_network",
+    "raw": "permission_or_network",
+    "ms": 6593,
+    "tokens": 3324,
+    "cost_usd": 0.0051814
+   }
+  },
+  {
+   "id": "h_net05",
+   "gold": "permission_or_network",
+   "laya": {
+    "pred": "permission_or_network",
+    "raw": "connection_failed",
+    "prob": 1.0,
+    "ms": 785
+   },
+   "sonnet": {
+    "pred": "permission_or_network",
+    "raw": "permission_or_network",
+    "ms": 4800,
+    "tokens": 3778,
+    "cost_usd": 0.0069974
+   }
+  },
+  {
+   "id": "h_res01",
+   "gold": "timeout_or_resource",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "stack_overflow",
+    "prob": 1.0,
+    "ms": 675
+   },
+   "sonnet": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout_or_resource",
+    "ms": 4587,
+    "tokens": 3328,
+    "cost_usd": 0.0052093999999999994
+   }
+  },
+  {
+   "id": "h_res02",
+   "gold": "timeout_or_resource",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "stack_overflow",
+    "prob": 0.422,
+    "ms": 1536
+   },
+   "sonnet": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout_or_resource",
+    "ms": 5006,
+    "tokens": 5614,
+    "cost_usd": 0.0143534
+   }
+  },
+  {
+   "id": "h_res03",
+   "gold": "timeout_or_resource",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout",
+    "prob": 1.0,
+    "ms": 750
+   },
+   "sonnet": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout_or_resource",
+    "ms": 4489,
+    "tokens": 3389,
+    "cost_usd": 0.0054534
+   }
+  },
+  {
+   "id": "h_res04",
+   "gold": "timeout_or_resource",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.325,
+    "ms": 1083
+   },
+   "sonnet": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout_or_resource",
+    "ms": 4588,
+    "tokens": 3950,
+    "cost_usd": 0.0076974
+   }
+  },
+  {
+   "id": "h_res05",
+   "gold": "timeout_or_resource",
+   "laya": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout",
+    "prob": 1.0,
+    "ms": 939
+   },
+   "sonnet": {
+    "pred": "timeout_or_resource",
+    "raw": "timeout_or_resource",
+    "ms": 4875,
+    "tokens": 3549,
+    "cost_usd": 0.0060934
+   }
+  },
+  {
+   "id": "h_oth01",
+   "gold": "other",
+   "laya": {
+    "pred": "other",
+    "raw": "git_state",
+    "prob": 0.906,
+    "ms": 628
+   },
+   "sonnet": {
+    "pred": "other",
+    "raw": "other",
+    "ms": 5369,
+    "tokens": 3291,
+    "cost_usd": 0.0050194
+   }
+  },
+  {
+   "id": "h_oth02",
+   "gold": "other",
+   "laya": {
+    "pred": "other",
+    "raw": "git_state",
+    "prob": 0.998,
+    "ms": 821
+   },
+   "sonnet": {
+    "pred": "other",
+    "raw": "other",
+    "ms": 4409,
+    "tokens": 3359,
+    "cost_usd": 0.0052914
+   }
+  },
+  {
+   "id": "h_oth03",
+   "gold": "other",
+   "laya": {
+    "pred": "other",
+    "raw": "git_state",
+    "prob": 0.548,
+    "ms": 580
+   },
+   "sonnet": {
+    "pred": "other",
+    "raw": "other",
+    "ms": 4572,
+    "tokens": 3282,
+    "cost_usd": 0.0049834
+   }
+  },
+  {
+   "id": "h_oth04",
+   "gold": "other",
+   "laya": {
+    "pred": "other",
+    "raw": "git_state",
+    "prob": 1.0,
+    "ms": 569
+   },
+   "sonnet": {
+    "pred": "other",
+    "raw": "other",
+    "ms": 4862,
+    "tokens": 3246,
+    "cost_usd": 0.0048394
+   }
+  },
+  {
+   "id": "h_oth05",
+   "gold": "other",
+   "laya": {
+    "pred": "dependency_missing",
+    "raw": "missing_cli",
+    "prob": 0.873,
+    "ms": 659
+   },
+   "sonnet": {
+    "pred": "other",
+    "raw": "other",
+    "ms": 4694,
+    "tokens": 3318,
+    "cost_usd": 0.0051274
+   }
+  }
+ ]
+}

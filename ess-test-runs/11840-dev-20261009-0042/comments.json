@@ -1,0 +1,171 @@
+{
+  "comments": [
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "createdDate": "2026-06-23T07:00:52.533Z",
+      "format": "markdown",
+      "id": 15868415,
+      "mentions": [
+        {
+          "artifactId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B",
+          "artifactType": "Person",
+          "commentId": 15868415,
+          "targetId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "modifiedDate": "2026-06-23T07:00:52.533Z",
+      "renderedText": "",
+      "text": "Hi @<00D0FA42-4646-6DC6-A7A1-57F2CB433B8B> , Please verify in SIT.",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/11840/comments/15868415",
+      "version": 1,
+      "workItemId": 11840
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "createdDate": "2026-06-23T03:43:17.803Z",
+      "format": "html",
+      "id": 15866751,
+      "mentions": [
+        {
+          "artifactId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+          "artifactType": "Person",
+          "commentId": 15866751,
+          "targetId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+        },
+        {
+          "artifactId": "a72d135e-342d-426d-9417-d75ee8f7eeff",
+          "artifactType": "Person",
+          "commentId": 15866751,
+          "targetId": "a72d135e-342d-426d-9417-d75ee8f7eeff"
+        },
+        {
+          "artifactId": "b601817f-935c-4734-b5b1-02b9d1880ce1",
+          "artifactType": "Person",
+          "commentId": 15866751,
+          "targetId": "b601817f-935c-4734-b5b1-02b9d1880ce1"
+        },
+        {
+          "artifactId": "cea380a4-33cd-6e9c-af59-3313569b1a05",
+          "artifactType": "Person",
+          "commentId": 15866751,
+          "targetId": "cea380a4-33cd-6e9c-af59-3313569b1a05"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "modifiedDate": "2026-06-23T03:43:17.803Z",
+      "renderedText": "",
+      "text": "<div>Hi <a href=\"#\" data-vss-mention=\"version:2.0,ac0e3b74-ab66-4ec3-bacc-7e99ce316165\">@Danh Nguyen Thanh</a>&nbsp;it looks good. Please kindly deploy to higher environment. Thank you! </div><div><br> </div><div>cc <a href=\"#\" data-vss-mention=\"version:2.0,a72d135e-342d-426d-9417-d75ee8f7eeff\">@Nagendra Chitturi</a>, <a href=\"#\" data-vss-mention=\"version:2.0,b601817f-935c-4734-b5b1-02b9d1880ce1\">@Long Nguyen</a>, <a href=\"#\" data-vss-mention=\"version:2.0,cea380a4-33cd-6e9c-af59-3313569b1a05\">@Long Do</a> </div>",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/11840/comments/15866751",
+      "version": 1,
+      "workItemId": 11840
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "createdDate": "2026-06-22T01:44:19.52Z",
+      "format": "markdown",
+      "id": 15857709,
+      "mentions": [
+        {
+          "artifactId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B",
+          "artifactType": "Person",
+          "commentId": 15857709,
+          "targetId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B"
+        },
+        {
+          "artifactId": "B601817F-935C-4734-B5B1-02B9D1880CE1",
+          "artifactType": "Person",
+          "commentId": 15857709,
+          "targetId": "B601817F-935C-4734-B5B1-02B9D1880CE1"
+        },
+        {
+          "artifactId": "CEA380A4-33CD-6E9C-AF59-3313569B1A05",
+          "artifactType": "Person",
+          "commentId": 15857709,
+          "targetId": "CEA380A4-33CD-6E9C-AF59-3313569B1A05"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "modifiedDate": "2026-06-22T01:44:19.52Z",
+      "renderedText": "",
+      "text": "Hi @<00D0FA42-4646-6DC6-A7A1-57F2CB433B8B> ,\nCC: @<B601817F-935C-4734-B5B1-02B9D1880CE1> , @<CEA380A4-33CD-6E9C-AF59-3313569B1A05> ,\n\nIn Month View the Total/Scheduled-hours toolbar stat now aggregates over the **whole displayed month** instead of only the active ISO week, so the figure is stable regardless of the week anchor.",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/11840/comments/15857709",
+      "version": 1,
+      "workItemId": 11840
+    }
+  ],
+  "count": 3,
+  "totalCount": 3
+}

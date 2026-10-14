@@ -1,0 +1,96 @@
+{
+  "ticket": {
+    "id": 19358,
+    "type": "Bug",
+    "title": "WebESS - Time and Attendance – Cancelled Leave Is Still Displayed as Approved Leave",
+    "state": "Resolved",
+    "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/19358"
+  },
+  "environment": {
+    "key": "dev",
+    "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+  },
+  "browser": "chrome-devtools",
+  "tester": "danhnpc",
+  "startedAt": "2026-10-09T00:27:12+07:00",
+  "scope": "Bug: a leave date with an original Completed transaction (Amount=1) and a later cancellation transaction (Amount=0) must not show as Approved Leave in Time and Attendance. Read-only run on dev with the default admin account; the affected employee data (03/09/2026) may not belong to this account.",
+  "cases": [
+    {
+      "id": "TC01",
+      "title": "Time and Attendance page loads for the signed-in user (Sep 2026)",
+      "ac": [
+        "Repro"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "regression",
+      "preconditions": "Signed in as danh.nguyen@xiontechs.com",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Open Time and Attendance, navigate to September 2026",
+          "expected": "Calendar/list renders with no error; days display statuses",
+          "actual": "Attendance page rendered (My attendance, week view) with no error; day buttons e.g. 'Mon 05/10 · No records'; other week 31 Aug–6 Sep rendered 'Tue 01/09 · (VN) National Day'.",
+          "status": "pass",
+          "screenshot": "shots/TC01-S01.png",
+          "at": "2026-10-08T17:29:36.423Z"
+        }
+      ]
+    },
+    {
+      "id": "TC02",
+      "title": "Cancelled leave date (03/09/2026) is not shown as Approved Leave",
+      "ac": [
+        "Repro",
+        "Expected"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "happy",
+      "preconditions": "Account has a leave on a date later cancelled (Amount=0)",
+      "status": "pass",
+      "notes": "Original repro (03/09/2026) belongs to another employee; used equivalent data on this account (24/03/2026 cancellation Amount=0 inside completed 23–31/03 leave).",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Find a date in Time and Attendance that has a cancelled leave and check its status",
+          "expected": "Date is not labelled Approved Leave",
+          "actual": "Time-off history shows 23/03–31/03 Casual Leave 7 days Completed plus 24/03 Casual Leave 0 days Completed (cancellation). Attendance week 23–29 Mar: 'Tue 24/03 · No records' (not Approved Leave).",
+          "status": "pass",
+          "screenshot": "shots/TC02-S02.png",
+          "at": "2026-10-08T17:29:36.487Z"
+        }
+      ]
+    },
+    {
+      "id": "TC03",
+      "title": "Still-effective approved leave remains shown as Approved Leave",
+      "ac": [
+        "Expected"
+      ],
+      "role": "xiontechs",
+      "priority": "Medium",
+      "type": "regression",
+      "preconditions": "Account has an effective approved leave",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Find a date with an effective approved leave",
+          "expected": "Date still labelled Approved Leave",
+          "actual": "Same week: 'Mon 23/03 · Casual leave · Approved', 'Wed 25/03', 'Thu 26/03', 'Fri 27/03' all 'Casual leave · Approved'.",
+          "status": "pass",
+          "screenshot": "shots/TC03-S01.png",
+          "at": "2026-10-08T17:29:36.551Z"
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "Week summary on 5–11 Oct showed Absence hours 32 while every day read No records (not investigated)."
+  ],
+  "finishedAt": "2026-10-08T17:29:36.608Z"
+}

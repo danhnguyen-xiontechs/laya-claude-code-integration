@@ -1,0 +1,1 @@
+{"hooks":{"PostToolUseFailure":[{"matcher":"Bash","hooks":[{"type":"command","command":"python D:/Laya/triage/probe/ctx_probe.py"}]}]}}
