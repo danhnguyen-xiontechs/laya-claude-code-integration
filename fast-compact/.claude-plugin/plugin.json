@@ -1,0 +1,22 @@
+{
+  "name": "fast-compact",
+  "version": "0.1.1",
+  "description": "Opt-in deterministic verbatim compaction: /fast-compact arms the next /compact to trim old tool outputs and bulky inputs by fixed rules instead of summarizing.",
+  "author": {
+    "name": "Danh Nguyen"
+  },
+  "userConfig": {
+    "preserveRecentMessages": {
+      "type": "number",
+      "title": "Recent messages to preserve",
+      "description": "Newest messages never touched (the first message is always kept too).",
+      "default": 6
+    },
+    "minReductionRatio": {
+      "type": "number",
+      "title": "Minimum reduction ratio",
+      "description": "Below this character reduction, /compact falls back to the built-in summary.",
+      "default": 0.25
+    }
+  }
+}

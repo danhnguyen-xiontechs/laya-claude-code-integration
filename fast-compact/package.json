@@ -1,0 +1,13 @@
+{
+  "name": "fast-compact",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Opt-in deterministic verbatim compaction for Claude Code (function hook + skill).",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "test": "node --test \"tests/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "preview": "node scripts/preview.ts"
+  }
+}
