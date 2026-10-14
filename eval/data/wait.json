@@ -1,0 +1,667 @@
+[
+ {
+  "id": "home",
+  "set": "clean",
+  "url": "https://ess.example.test/home",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Home Welcome back, Jane Quick links Attendance Time off Payslips Approvals Announcements 3 new",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "home"
+  }
+ },
+ {
+  "id": "home+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/home",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Home Welcome back, Jane Quick links Attendance Time off Payslips Approvals Announcements 3 new",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "home"
+  }
+ },
+ {
+  "id": "profile",
+  "set": "clean",
+  "url": "https://ess.example.test/profile",
+  "title": "ESS",
+  "loading": 0,
+  "text": "My profile Personal details Jane Doe Employee ID E1042 Department Finance Contact info Work email jane.doe@example.com Phone +65 8123 4567 Address Dependents Education Identification",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "profile"
+  }
+ },
+ {
+  "id": "profile+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/profile",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization My profile Personal details Jane Doe Employee ID E1042 Department Finance Contact info Work email jane.doe@example.com Phone +65 8123 4567 Address Dependents Education Identification",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "profile"
+  }
+ },
+ {
+  "id": "time-off",
+  "set": "clean",
+  "url": "https://ess.example.test/time-off",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Time off Balances Annual leave 14.0 days Sick leave 6.0 days Requests New request Status Pending Approved",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "time-off+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/time-off",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Time off Balances Annual leave 14.0 days Sick leave 6.0 days Requests New request Status Pending Approved",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "attendance",
+  "set": "clean",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "My attendance Week 5 - 11 Oct Mon 05/10 · 8h Tue 06/10 · 8h Wed 07/10 · No records Scheduled hours 40 Total hours 24 Absence hours 0",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "attendance+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization My attendance Week 5 - 11 Oct Mon 05/10 · 8h Tue 06/10 · 8h Wed 07/10 · No records Scheduled hours 40 Total hours 24 Absence hours 0",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "payslips",
+  "set": "clean",
+  "url": "https://ess.example.test/payslips",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Payslips 2026 October September August Net pay 4,215.00 Download PDF",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "payslips"
+  }
+ },
+ {
+  "id": "payslips+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/payslips",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Payslips 2026 October September August Net pay 4,215.00 Download PDF",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "payslips"
+  }
+ },
+ {
+  "id": "hr-request",
+  "set": "clean",
+  "url": "https://ess.example.test/hr-request",
+  "title": "ESS",
+  "loading": 0,
+  "text": "HR requests New request Type Letter of employment Status Submitted Reference HR-2210",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "hr-request"
+  }
+ },
+ {
+  "id": "hr-request+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/hr-request",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization HR requests New request Type Letter of employment Status Submitted Reference HR-2210",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "hr-request"
+  }
+ },
+ {
+  "id": "approvals",
+  "set": "clean",
+  "url": "https://ess.example.test/approvals",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Approvals Pending (3) Leave A. Tan 12-13 Nov Overtime L. Wong 2h Approve Reject",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "approvals"
+  }
+ },
+ {
+  "id": "approvals+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/approvals",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Approvals Pending (3) Leave A. Tan 12-13 Nov Overtime L. Wong 2h Approve Reject",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "approvals"
+  }
+ },
+ {
+  "id": "employment",
+  "set": "clean",
+  "url": "https://ess.example.test/employment",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Employment Probation review Questionnaire due 30 Oct Calibration Overall rating Meets expectations",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "employment"
+  }
+ },
+ {
+  "id": "employment+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/employment",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Employment Probation review Questionnaire due 30 Oct Calibration Overall rating Meets expectations",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "employment"
+  }
+ },
+ {
+  "id": "courses",
+  "set": "clean",
+  "url": "https://ess.example.test/courses",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Courses Calendar October 2026 Excel advanced 14 Oct 09:00 Enrolled Safety induction Not started",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "courses"
+  }
+ },
+ {
+  "id": "courses+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/courses",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Courses Calendar October 2026 Excel advanced 14 Oct 09:00 Enrolled Safety induction Not started",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "courses"
+  }
+ },
+ {
+  "id": "manager-view-empty",
+  "set": "clean",
+  "url": "https://ess.example.test/manager-view",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Team view Direct reports 0 No team members to display",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "unknown"
+  }
+ },
+ {
+  "id": "manager-view-empty+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/manager-view",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Team view Direct reports 0 No team members to display",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "unknown"
+  }
+ },
+ {
+  "id": "attendance-month",
+  "set": "clean",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "My attendance Month view October 2026 Scheduled hours 176 Total hours 0 Absence hours 48 Mon Tue Wed Thu Fri Sat Sun 1 2 3 4 5 6 7 8 9 10",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "attendance-month+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization My attendance Month view October 2026 Scheduled hours 176 Total hours 0 Absence hours 48 Mon Tue Wed Thu Fri Sat Sun 1 2 3 4 5 6 7 8 9 10",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "time-off-form",
+  "set": "clean",
+  "url": "https://ess.example.test/time-off/new",
+  "title": "ESS",
+  "loading": 0,
+  "text": "New leave request Leave type Annual leave Start date End date Phone number Handover to Submit Cancel",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "time-off-form+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/time-off/new",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization New leave request Leave type Annual leave Start date End date Phone number Handover to Submit Cancel",
+  "truth": {
+   "state": "ready",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "shell-attendance",
+  "set": "clean",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS Home Time off Attendance Payslips Approvals Loading data",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "shell-attendance+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization ESS Home Time off Attendance Payslips Approvals Loading data",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "attendance"
+  }
+ },
+ {
+  "id": "shell-time-off",
+  "set": "clean",
+  "url": "https://ess.example.test/time-off",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Time off Balances Annual leave — Sick leave — Requests No data yet fetching…",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "shell-time-off+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/time-off",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Time off Balances Annual leave — Sick leave — Requests No data yet fetching…",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "time-off"
+  }
+ },
+ {
+  "id": "shell-payslips",
+  "set": "clean",
+  "url": "https://ess.example.test/payslips",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Payslips 2026 Please wait",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "payslips"
+  }
+ },
+ {
+  "id": "shell-payslips+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/payslips",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Payslips 2026 Please wait",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "payslips"
+  }
+ },
+ {
+  "id": "shell-approvals",
+  "set": "clean",
+  "url": "https://ess.example.test/approvals",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Approvals Pending ( ) Fetching your approvals",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "approvals"
+  }
+ },
+ {
+  "id": "shell-approvals+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/approvals",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization Approvals Pending ( ) Fetching your approvals",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "approvals"
+  }
+ },
+ {
+  "id": "shell-home",
+  "set": "clean",
+  "url": "https://ess.example.test/home",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS Quick links Attendance Time off Payslips",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "home"
+  }
+ },
+ {
+  "id": "shell-home+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/home",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization ESS Quick links Attendance Time off Payslips",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "home"
+  }
+ },
+ {
+  "id": "shell-profile",
+  "set": "clean",
+  "url": "https://ess.example.test/profile",
+  "title": "ESS",
+  "loading": 0,
+  "text": "My profile Personal details — — — — Loading",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "profile"
+  }
+ },
+ {
+  "id": "shell-profile+nav",
+  "set": "with-nav",
+  "url": "https://ess.example.test/profile",
+  "title": "ESS",
+  "loading": 0,
+  "text": "ESS System Skills & performance My work Remuneration My organisation 10 Skills & performance My work Remuneration My organisation Home Attendance Attendance My attendance Team attendance Attendance shortage Overtime Request attendance regularization My profile Personal details — — — — Loading",
+  "truth": {
+   "state": "loading",
+   "login": false,
+   "screen": "profile"
+  }
+ },
+ {
+  "id": "login-pick",
+  "set": "clean",
+  "url": "https://ess.example.test/login",
+  "title": "Sign in to your account",
+  "loading": 0,
+  "text": "Microsoft Pick an account jane.doe@example.com Use another account",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login"
+  }
+ },
+ {
+  "id": "login-stay",
+  "set": "clean",
+  "url": "https://ess.example.test/login",
+  "title": "Sign in",
+  "loading": 0,
+  "text": "Stay signed in? Do this to reduce the number of times you are asked to sign in. No Yes",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login"
+  }
+ },
+ {
+  "id": "login-code",
+  "set": "clean",
+  "url": "https://ess.example.test/login",
+  "title": "Sign in",
+  "loading": 0,
+  "text": "Enter code We texted your phone +65 •••• 12. Please enter the code to sign in. Resend code",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login"
+  }
+ },
+ {
+  "id": "login-authenticator",
+  "set": "clean",
+  "url": "https://ess.example.test/login",
+  "title": "Sign in",
+  "loading": 0,
+  "text": "Approve a request on your phone Open your Authenticator app and approve the request. Don't see it?",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login"
+  }
+ },
+ {
+  "id": "login-session",
+  "set": "clean",
+  "url": "https://ess.example.test/",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Your session has expired Please log in again to continue Log in",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login",
+   "debatable": true
+  }
+ },
+ {
+  "id": "login-continue",
+  "set": "clean",
+  "url": "https://ess.example.test/",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Welcome Sign-in required Use your work account to continue Continue with Microsoft",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login"
+  }
+ },
+ {
+  "id": "login-password",
+  "set": "clean",
+  "url": "https://ess.example.test/login",
+  "title": "Sign in",
+  "loading": 0,
+  "text": "Jane Doe jane.doe@example.com Forgot my password Sign in",
+  "truth": {
+   "state": "ready",
+   "login": true,
+   "screen": "login",
+   "debatable": true
+  }
+ },
+ {
+  "id": "error-went-wrong",
+  "set": "clean",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Something went wrong Please try again later. traceId 00-abc",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-denied",
+  "set": "clean",
+  "url": "https://ess.example.test/approvals",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Access denied You do not have permission to view this page",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-load",
+  "set": "clean",
+  "url": "https://ess.example.test/time-off",
+  "title": "ESS",
+  "loading": 0,
+  "text": "We couldn't load your data. Check your connection and try again. Retry",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-503",
+  "set": "clean",
+  "url": "https://ess.example.test/payslips",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Oops! Service temporarily unavailable (503) Please come back in a few minutes",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-support",
+  "set": "clean",
+  "url": "https://ess.example.test/profile",
+  "title": "ESS",
+  "loading": 0,
+  "text": "This page isn't working right now. Contact support with reference 8f31c2",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-500",
+  "set": "clean",
+  "url": "https://ess.example.test/attendance",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Request failed with status code 500",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-forbidden",
+  "set": "clean",
+  "url": "https://ess.example.test/employment",
+  "title": "ESS",
+  "loading": 0,
+  "text": "Forbidden You don't have permission to view this resource",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ },
+ {
+  "id": "error-404",
+  "set": "clean",
+  "url": "https://ess.example.test/hr-request/99",
+  "title": "ESS",
+  "loading": 0,
+  "text": "404 The page you're looking for doesn't exist Back to home",
+  "truth": {
+   "state": "error",
+   "login": false,
+   "screen": "error"
+  }
+ }
+]
