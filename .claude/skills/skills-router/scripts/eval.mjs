@@ -3,7 +3,8 @@
 //
 //   node eval.mjs [--cases ~/.skills-router/eval/cases.jsonl] [--providers none,laya,laya:multilingual,kev,jev]
 //                 [--project-root <fallback root>] [--dev-frac 0.6] [--salt skills-router-v1]
-//                 [--limit N] [--reuse] [--allow-hosted] [--out ~/.skills-router/eval/report.json]
+//                 [--limit N] [--reuse] [--allow-hosted] [--consistency 3] [--run-file <earlier run, scored offline>]
+//                 [--out ~/.skills-router/eval/report.json]
 //   node eval.mjs --scenarios eval/scenarios.jsonl --catalog-root <dir> [--catalog-extra eval/catalog-extra.json] ...
 //
 // Each case runs once per provider with the raw signals kept (BM25 scores, choice probabilities,
@@ -26,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { bareName, loadCatalog, STATE_DIR } from './catalog.mjs';
 import { hasPrUrl } from './context.mjs';
 import { loadConfig, parseArgs } from './decision-provider.mjs';
-import { DEFAULT_THRESHOLDS, finalize, route } from './route.mjs';
+import { combineRuns, DEFAULT_THRESHOLDS, finalize, route } from './route.mjs';
 import { readJsonl } from './mine-history.mjs';
 
 const SKILL_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -118,23 +119,70 @@ export function metrics(rows, th = {}) {
 
 const grid = (from, to, step) => { const out = []; for (let v = from; v <= to + 1e-9; v += step) out.push(Number(v.toFixed(3))); return out; };
 
-/** Threshold sets to try: BM25 score floor for bm25-only; gate × fit × none-first for providers. */
-export function thresholdGrid(mode) {
-  if (mode === 'bm25') return grid(0, 20, 0.5).map((bm25Min) => ({ bm25Min }));
+/**
+ * Threshold sets to try: BM25 score floor for bm25-only; gate × fit × none-first for providers, × a
+ * stability floor when the rows have several rounds. `fixed` (e.g. { agreement: 'abstain' }) is added
+ * to every set.
+ */
+export function thresholdGrid(mode, { stability = false, fixed = {} } = {}) {
+  if (mode === 'bm25') return grid(0, 20, 0.5).map((bm25Min) => ({ bm25Min, ...fixed }));
   const out = [];
-  for (const gateMin of grid(0, 0.95, 0.05)) for (const fitMin of grid(0, 0.95, 0.05)) for (const noneAbstain of [true, false]) out.push({ gateMin, fitMin, noneAbstain });
+  for (const gateMin of grid(0, 0.95, 0.05)) for (const fitMin of grid(0, 0.95, 0.05)) for (const noneAbstain of [true, false]) {
+    for (const stabilityMin of stability ? [0, 0.5, 0.67, 1] : [0]) out.push({ gateMin, fitMin, noneAbstain, ...(stability ? { stabilityMin } : {}), ...fixed });
+  }
   return out;
 }
 
 /** Best thresholds on rows: max balanced accuracy, then fewer wrong + needless, then the first (loosest) one. */
-export function pickThresholds(rows, mode) {
+export function pickThresholds(rows, mode, opts = {}) {
   let best = null;
-  for (const th of thresholdGrid(mode)) {
+  for (const th of thresholdGrid(mode, opts)) {
     const m = metrics(rows, th);
     const bad = (m.wrong + m.needless);
     if (!best || m.balanced > best.m.balanced || (m.balanced === best.m.balanced && bad < best.bad)) best = { th, m, bad };
   }
   return best?.th ?? {};
+}
+
+/**
+ * Rows re-scored as if the router had made only the first `k` of its rounds (self-consistency):
+ * k = 1 is round 0 alone (the BM25-ordered request), with its own latency and cost.
+ */
+export function withRounds(rows, k) {
+  return rows.map((r) => {
+    const runs = r.raw?.runs;
+    if (!runs?.length) return r;
+    const use = runs.slice(0, k);
+    const cost = use.reduce((s, x) => s + (typeof x.cost === 'number' ? x.cost : 0), 0);
+    const latencyMs = Math.max(...use.map((x) => x.latencyMs ?? 0));
+    const { runs: _runs, stability: _s, votes: _v, rounds: _r, ranking: _k, gate: _g, fits: _f, ...base } = r.raw;
+    if (use.length === 1) { const { latencyMs: _l, cost: _c, ...one } = use[0]; return { ...r, raw: { ...base, ...one }, latencyMs, cost }; }
+    return { ...r, raw: { ...base, ...combineRuns(use), runs: use }, latencyMs, cost };
+  });
+}
+
+/**
+ * Agreement gating, split by whether BM25's top-1 and the engine's top-1 agree, under thresholds `th`
+ * with gating off: per side, the cases where the engine suggests something, how many were right, wrong
+ * (another skill) or needless (none expected). `eitherRight` counts the cases where an expected skill
+ * is the engine's or BM25's top-1, i.e. among what the 'low' mode returns.
+ */
+export function agreementSplit(rows, th = {}) {
+  const side = () => ({ n: 0, right: 0, wrong: 0, needless: 0, eitherRight: 0 });
+  const out = { agree: side(), disagree: side() };
+  for (const r of rows) {
+    if (!r.covered || !r.raw || r.error || r.raw.mode !== 'provider') continue;
+    const f = finalize(r.raw, { ...th, agreement: 'off' });
+    if (f.abstain || f.agree === null) continue;
+    const s = f.agree ? out.agree : out.disagree;
+    s.n++;
+    if (!labelsOf(r.expected).length) s.needless++;
+    else if (matches(f.primaryId, r.expected)) s.right++;
+    else s.wrong++;
+    if (matches(f.primaryId, r.expected) || matches(r.raw.shortlist[0]?.id, r.expected)) s.eitherRight++;
+  }
+  for (const s of Object.values(out)) s.precision = r3(div(s.right, s.n));
+  return out;
 }
 
 /** Rows of one category that the router answers wrongly: [{ id, split, prompt, expected, got }]. */
@@ -162,11 +210,20 @@ export function scenarioCatalog(root, extraFile) {
 }
 
 /** `spec` is a provider, optionally with a model: none | laya | laya:multilingual | kev | jev:<model>. */
-async function runProvider({ spec, cases, cfg: baseCfg, catalogFor, reuse, tag = '' }) {
+async function runProvider({ spec, cases, cfg: baseCfg, catalogFor, reuse, tag = '', consistency = 1, runFile = null }) {
   const [provider, model] = spec.split(':');
   const cfg = !model ? baseCfg : provider === 'jev' ? { ...baseCfg, jevModel: model } : { ...baseCfg, [provider]: { ...baseCfg[provider], model } };
-  const file = path.join(EVAL_DIR, `run-${spec.replace(/[^\w.-]+/g, '_')}${tag}.jsonl`);
+  const rounds = provider === 'none' ? 1 : consistency;
+  const file = path.join(EVAL_DIR, `run-${spec.replace(/[^\w.-]+/g, '_')}${rounds > 1 ? `.k${rounds}` : ''}${tag}.jsonl`);
   const prior = new Map();
+  if (runFile) {
+    // Offline: score an earlier run as it is. Nothing is called and nothing is written.
+    for (const r of readJsonl(runFile)) prior.set(r.key, r);
+    const found = cases.map((c) => ({ c, r: prior.get(crypto.createHash('sha1').update(`${c.query}\u0000${c.cwd}`).digest('hex').slice(0, 16)) }))
+      .filter(({ r }) => r && r.raw && !r.error);
+    process.stderr.write(`  ${spec}: ${found.length} of ${cases.length} cases scored from ${runFile} (the rest are missing or errored there)\n`);
+    return found.map(({ c, r }) => ({ ...r, id: c.id, query: c.query, expected: c.expected, split: c.split, category: c.category, covered: covered(c.expected, catalogFor(c.cwd).entries), via: c.via }));
+  }
   if (reuse) for (const r of readJsonl(file)) if (!r.error) prior.set(r.key, r);
   fs.mkdirSync(EVAL_DIR, { recursive: true });
   const partial = `${file}.partial`;
@@ -182,7 +239,7 @@ async function runProvider({ spec, cases, cfg: baseCfg, catalogFor, reuse, tag =
     if (!r) {
       // Historical repo state is unknown; send only what the query itself shows.
       const context = { git_branch: null, working_tree_dirty: null, changed_extensions: [], bmad_output_artifacts: null, pr_url_in_query: hasPrUrl(c.query) };
-      const out = await route({ query: c.query, root: cat.root, provider, cfg, catalog: cat, context });
+      const out = await route({ query: c.query, root: cat.root, provider, cfg, catalog: cat, context, consistency: rounds });
       r = { key, raw: out.raw ?? null, latencyMs: out.latencyMs, cost: out.cost, error: out.error ?? null };
       if (provider !== 'none' && i % 25 === 0) process.stderr.write(`  ${spec}: ${i}/${cases.length}\n`);
     }
@@ -211,7 +268,10 @@ async function main(argv) {
   const scenariosFile = typeof a.scenarios === 'string' ? path.resolve(a.scenarios) : null;
   const casesFile = typeof a.cases === 'string' ? a.cases : path.join(EVAL_DIR, 'cases.jsonl');
   const providers = String(typeof a.providers === 'string' ? a.providers : 'none').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
-  if (providers.some((p) => p.split(':')[0] === 'jev')) {
+  // --run-file <jsonl>: score that earlier run of the (single) provider offline, with no calls.
+  const runFile = typeof a['run-file'] === 'string' ? path.resolve(a['run-file']) : null;
+  if (runFile && providers.length !== 1) { console.log(JSON.stringify({ error: '--run-file needs exactly one provider' })); return; }
+  if (!runFile && providers.some((p) => p.split(':')[0] === 'jev')) {
     if (!a['allow-hosted']) { console.log(JSON.stringify({ error: 'provider jev sends every prompt to OpenRouter: ask the user first, then pass --allow-hosted' })); return; }
     if (!scenariosFile && !a['allow-hosted-mined']) { console.log(JSON.stringify({ error: 'provider jev on MINED prompts needs --allow-hosted-mined too: those prompts are private' })); return; }
   }
@@ -242,22 +302,35 @@ async function main(argv) {
   }
   const tag = scenariosFile ? '.scn' : '';
   const report = { cases: scenariosFile || casesFile, n: cases.length, salt: scenariosFile ? null : salt, devFrac: scenariosFile ? null : devFrac, providers: {} };
+  const consistency = Math.max(1, Number(a.consistency) || 1);
   for (const provider of providers) {
-    const rows = await runProvider({ spec: provider, cases, cfg, catalogFor, reuse: Boolean(a.reuse), tag });
+    const allRows = await runProvider({ spec: provider, cases, cfg, catalogFor, reuse: Boolean(a.reuse), tag, consistency, runFile });
     const mode = provider === 'none' ? 'bm25' : 'provider';
-    const dev = rows.filter((r) => r.split === 'dev'), test = rows.filter((r) => r.split === 'test');
-    const th = pickThresholds(dev, mode);
-    const defaults = mode === 'bm25' ? { bm25Min: DEFAULT_THRESHOLDS.bm25Min } : { gateMin: 0.3, fitMin: 0.3, noneAbstain: true };
-    report.providers[provider] = {
-      thresholds: th,
-      dev: metrics(dev, th),
-      test: metrics(test, th),
-      all: metrics(rows, th),
-      testAtDefaults: metrics(test, defaults),
-      allAtDefaults: metrics(rows, defaults),
-      totalCost: rows.reduce((s, r) => s + (typeof r.cost === 'number' ? r.cost : 0), 0),
-      ...(scenariosFile ? { confusionOverlap: confusion(rows, th, 'overlap') } : {}),
-    };
+    // One provider run gives several configurations: k = 1 and k = --consistency, each without and
+    // with agreement gating ('+gate' abstains when BM25 and the engine disagree).
+    const configs = mode === 'bm25' ? [{ name: provider, k: 1 }]
+      : [1, ...(consistency > 1 ? [consistency] : [])].flatMap((k) => {
+        const name = k > 1 ? `${provider} k=${k}` : provider;
+        return [{ name, k }, { name: `${name} +gate`, k, agreement: 'abstain' }];
+      });
+    for (const cf of configs) {
+      const rows = withRounds(allRows, cf.k);
+      const dev = rows.filter((r) => r.split === 'dev'), test = rows.filter((r) => r.split === 'test');
+      const fixed = cf.agreement ? { agreement: cf.agreement } : {};
+      const th = pickThresholds(dev, mode, { stability: cf.k > 1, fixed });
+      const defaults = mode === 'bm25' ? { bm25Min: DEFAULT_THRESHOLDS.bm25Min } : { gateMin: 0.3, fitMin: 0.3, noneAbstain: true, ...fixed };
+      report.providers[cf.name] = {
+        thresholds: th,
+        dev: metrics(dev, th),
+        test: metrics(test, th),
+        all: metrics(rows, th),
+        testAtDefaults: metrics(test, defaults),
+        allAtDefaults: metrics(rows, defaults),
+        totalCost: rows.reduce((s, r) => s + (typeof r.cost === 'number' ? r.cost : 0), 0),
+        ...(mode === 'provider' && !cf.agreement ? { agreementSplit: { test: agreementSplit(test, th), all: agreementSplit(rows, th) } } : {}),
+        ...(scenariosFile ? { confusionOverlap: confusion(rows, th, 'overlap') } : {}),
+      };
+    }
   }
   const out = typeof a.out === 'string' ? a.out : path.join(EVAL_DIR, scenariosFile ? 'report-scenarios.json' : 'report.json');
   fs.mkdirSync(path.dirname(out), { recursive: true });

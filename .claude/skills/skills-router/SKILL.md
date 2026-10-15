@@ -29,14 +29,22 @@ Use `jev` only when the user picked it (flag, `DECISION_PROVIDER=jev`, or `jev.l
 
    ```
    node <skill-dir>/scripts/route.mjs --project-root <project-root> --query "<request>" [--provider none|laya|kev|jev]
+     [--consistency 3] [--stability-min 0.67] [--agreement off|low|abstain]
    ```
+
+   With a provider, `--consistency k` makes k decision calls with the shortlist shuffled (the same
+   shuffle for the same request) and uses how often the top answer won as its confidence;
+   `--agreement` compares the engine's top-1 with BM25's (`low`: keep both, confidence low;
+   `abstain`: no suggestion when they differ). Defaults come from `jev.json`.
 
    It prints one JSON object:
    - `suggestion`: `{ id, invocation, why, confidence, fit, source, kind }` or `null`;
    - `alternatives`: up to 2 more, same shape;
-   - `abstain`, `abstainReasons` (`gate`, `fit`, `none-first`, `bm25`, `empty`), `closest`;
+   - `abstain`, `abstainReasons` (`gate`, `fit`, `none-first`, `bm25`, `disagree`, `unstable`, `empty`), `closest`;
    - `overlaps`: `[{ id, invocation, differs }]` when the top candidates do the same job;
-   - `gate`, `mode` (`provider` or `bm25-only`), `confidenceLabel`, `shortlist`, `error`.
+   - `gate`, `mode` (`provider` or `bm25-only`), `confidenceLabel`, `shortlist`, `error`;
+   - with a provider, `agreement` (`{ bm25Top, agree, mode }`), and with `--consistency` > 1,
+     `consistency` (`{ rounds, stability, votes }`) and `suggestion.stability`.
 
    It never fails: on any error, `suggestion` is `null` and `error` says why. If the error is the
    provider (server down, no key, timeout), you may run it once more with `--provider none`.
@@ -49,6 +57,8 @@ Use `jev` only when the user picked it (flag, `DECISION_PROVIDER=jev`, or `jev.l
    - **Abstain, or a suggestion that does not fit:** answer the request directly, or do the work,
      without a skill. Do not push a skill the router abstained on.
    - `bm25-only` hints are keyword matches: trust them less than `provider` hints.
+   - `confidenceLabel: "low"` with `agreement.agree: false`: BM25 and the engine picked different
+     skills; both are listed (the engine's first). Choose between them from the request, or ask.
 
    Then, unless the user only asked which skill to use, carry on: invoke the chosen skill, or do the
    task.
