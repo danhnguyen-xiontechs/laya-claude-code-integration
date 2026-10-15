@@ -1,0 +1,1046 @@
+{
+  "d1-lru": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "haiku": 0,
+          "sonnet": 0.99,
+          "opus": 0.01
+        },
+        "nouls": {
+          "multi_file_design": 0.88,
+          "mechanical": 0.58,
+          "costly_failure": 0.74
+        },
+        "latencyMs": 1250,
+        "cost": 0.000035952
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.97,
+        "probabilities": {
+          "sonnet": 0.97,
+          "opus": 0.03,
+          "haiku": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.87,
+          "mechanical": 0.61,
+          "costly_failure": 0.75
+        },
+        "latencyMs": 1165,
+        "cost": 0.000035952
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.97,
+        "probabilities": {
+          "opus": 0.03,
+          "haiku": 0,
+          "sonnet": 0.97
+        },
+        "nouls": {
+          "multi_file_design": 0.88,
+          "mechanical": 0.58,
+          "costly_failure": 0.74
+        },
+        "latencyMs": 1163,
+        "cost": 0.000035952
+      }
+    ],
+    "wallMs": 1250
+  },
+  "d2-ratelimit": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "haiku": 0,
+          "sonnet": 1,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.73,
+          "mechanical": 0.73,
+          "costly_failure": 0.76
+        },
+        "latencyMs": 544,
+        "cost": 0.000034608
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "sonnet": 0.99,
+          "opus": 0,
+          "haiku": 0.01
+        },
+        "nouls": {
+          "multi_file_design": 0.74,
+          "mechanical": 0.75,
+          "costly_failure": 0.77
+        },
+        "latencyMs": 513,
+        "cost": 0.000034608
+      },
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0,
+          "sonnet": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.75,
+          "mechanical": 0.75,
+          "costly_failure": 0.76
+        },
+        "latencyMs": 521,
+        "cost": 0.000034608
+      }
+    ],
+    "wallMs": 544
+  },
+  "d3-maplimit": {
+    "kind": "debug",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.64,
+        "probabilities": {
+          "haiku": 0.01,
+          "sonnet": 0.64,
+          "opus": 0.35
+        },
+        "nouls": {
+          "multi_file_design": 0.85,
+          "mechanical": 0.12,
+          "costly_failure": 0.79
+        },
+        "latencyMs": 547,
+        "cost": 0.000030156
+      },
+      {
+        "tier": "opus",
+        "p": 0.54,
+        "probabilities": {
+          "sonnet": 0.45,
+          "opus": 0.54,
+          "haiku": 0.01
+        },
+        "nouls": {
+          "multi_file_design": 0.85,
+          "mechanical": 0.11,
+          "costly_failure": 0.77
+        },
+        "latencyMs": 510,
+        "cost": 0.000030156
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.56,
+        "probabilities": {
+          "opus": 0.43,
+          "haiku": 0.01,
+          "sonnet": 0.56
+        },
+        "nouls": {
+          "multi_file_design": 0.85,
+          "mechanical": 0.1,
+          "costly_failure": 0.78
+        },
+        "latencyMs": 510,
+        "cost": 0.000030156
+      }
+    ],
+    "wallMs": 547
+  },
+  "d4-expr": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "haiku": 0,
+          "sonnet": 1,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.84,
+          "mechanical": 0.47,
+          "costly_failure": 0.69
+        },
+        "latencyMs": 550,
+        "cost": 0.000032802
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "sonnet": 0.99,
+          "opus": 0.01,
+          "haiku": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.85,
+          "mechanical": 0.5,
+          "costly_failure": 0.69
+        },
+        "latencyMs": 1273,
+        "cost": 0.000032802
+      },
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0,
+          "sonnet": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.85,
+          "mechanical": 0.46,
+          "costly_failure": 0.71
+        },
+        "latencyMs": 555,
+        "cost": 0.000032802
+      }
+    ],
+    "wallMs": 1273
+  },
+  "d5-deps": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "haiku": 0,
+          "sonnet": 1,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.71,
+          "mechanical": 0.84,
+          "costly_failure": 0.69
+        },
+        "latencyMs": 521,
+        "cost": 0.000034104
+      },
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "sonnet": 1,
+          "opus": 0,
+          "haiku": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.73,
+          "mechanical": 0.83,
+          "costly_failure": 0.7
+        },
+        "latencyMs": 499,
+        "cost": 0.000034104
+      },
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0,
+          "sonnet": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.7,
+          "mechanical": 0.84,
+          "costly_failure": 0.68
+        },
+        "latencyMs": 566,
+        "cost": 0.000034104
+      }
+    ],
+    "wallMs": 568
+  },
+  "e1-locate": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "haiku": 1,
+          "sonnet": 0,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.87,
+          "costly_failure": 0.27
+        },
+        "latencyMs": 505,
+        "cost": 0.000027216
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "sonnet": 0,
+          "opus": 0,
+          "haiku": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.88,
+          "costly_failure": 0.28
+        },
+        "latencyMs": 537,
+        "cost": 0.000027216
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 1,
+          "sonnet": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.31,
+          "mechanical": 0.87,
+          "costly_failure": 0.27
+        },
+        "latencyMs": 525,
+        "cost": 0.000027216
+      }
+    ],
+    "wallMs": 537
+  },
+  "e2-count": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "haiku": 1,
+          "sonnet": 0,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.54,
+          "mechanical": 0.96,
+          "costly_failure": 0.35
+        },
+        "latencyMs": 518,
+        "cost": 0.000028434
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "sonnet": 0,
+          "opus": 0,
+          "haiku": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.53,
+          "mechanical": 0.96,
+          "costly_failure": 0.36
+        },
+        "latencyMs": 538,
+        "cost": 0.000028434
+      },
+      {
+        "tier": "haiku",
+        "p": 0.98,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.98,
+          "sonnet": 0.02
+        },
+        "nouls": {
+          "multi_file_design": 0.55,
+          "mechanical": 0.96,
+          "costly_failure": 0.34
+        },
+        "latencyMs": 511,
+        "cost": 0.000028434
+      }
+    ],
+    "wallMs": 539
+  },
+  "e3-importers": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "haiku": 1,
+          "sonnet": 0,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.57,
+          "mechanical": 0.96,
+          "costly_failure": 0.48
+        },
+        "latencyMs": 524,
+        "cost": 0.000028686
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "sonnet": 0,
+          "opus": 0,
+          "haiku": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.58,
+          "mechanical": 0.96,
+          "costly_failure": 0.49
+        },
+        "latencyMs": 500,
+        "cost": 0.000028686
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 1,
+          "sonnet": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.57,
+          "mechanical": 0.96,
+          "costly_failure": 0.5
+        },
+        "latencyMs": 522,
+        "cost": 0.000028686
+      }
+    ],
+    "wallMs": 524
+  },
+  "e4-config": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "haiku": 1,
+          "sonnet": 0,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.56,
+          "mechanical": 0.76,
+          "costly_failure": 0.41
+        },
+        "latencyMs": 509,
+        "cost": 0.000027342
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "sonnet": 0,
+          "opus": 0,
+          "haiku": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.57,
+          "mechanical": 0.74,
+          "costly_failure": 0.41
+        },
+        "latencyMs": 494,
+        "cost": 0.000027342
+      },
+      {
+        "tier": "haiku",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 1,
+          "sonnet": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.58,
+          "mechanical": 0.76,
+          "costly_failure": 0.42
+        },
+        "latencyMs": 1259,
+        "cost": 0.000027342
+      }
+    ],
+    "wallMs": 1259
+  },
+  "f1-paginate": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.53,
+        "probabilities": {
+          "haiku": 0.47,
+          "sonnet": 0.53,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.18,
+          "mechanical": 0.7,
+          "costly_failure": 0.37
+        },
+        "latencyMs": 534,
+        "cost": 0.000029148
+      },
+      {
+        "tier": "haiku",
+        "p": 0.64,
+        "probabilities": {
+          "sonnet": 0.36,
+          "opus": 0,
+          "haiku": 0.64
+        },
+        "nouls": {
+          "multi_file_design": 0.17,
+          "mechanical": 0.72,
+          "costly_failure": 0.37
+        },
+        "latencyMs": 495,
+        "cost": 0.000029148
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.55,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.45,
+          "sonnet": 0.55
+        },
+        "nouls": {
+          "multi_file_design": 0.18,
+          "mechanical": 0.7,
+          "costly_failure": 0.38
+        },
+        "latencyMs": 517,
+        "cost": 0.000029148
+      }
+    ],
+    "wallMs": 534
+  },
+  "f2-email": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.83,
+        "probabilities": {
+          "haiku": 0.17,
+          "sonnet": 0.83,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.74,
+          "costly_failure": 0.63
+        },
+        "latencyMs": 771,
+        "cost": 0.000030702
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.66,
+        "probabilities": {
+          "sonnet": 0.66,
+          "opus": 0,
+          "haiku": 0.34
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.73,
+          "costly_failure": 0.67
+        },
+        "latencyMs": 531,
+        "cost": 0.000030702
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.75,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.25,
+          "sonnet": 0.75
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.75,
+          "costly_failure": 0.66
+        },
+        "latencyMs": 606,
+        "cost": 0.000030702
+      }
+    ],
+    "wallMs": 771
+  },
+  "f3-days": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.9,
+        "probabilities": {
+          "haiku": 0.1,
+          "sonnet": 0.9,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.38,
+          "mechanical": 0.17,
+          "costly_failure": 0.75
+        },
+        "latencyMs": 545,
+        "cost": 0.000029022
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.87,
+        "probabilities": {
+          "sonnet": 0.87,
+          "opus": 0,
+          "haiku": 0.13
+        },
+        "nouls": {
+          "multi_file_design": 0.37,
+          "mechanical": 0.18,
+          "costly_failure": 0.76
+        },
+        "latencyMs": 498,
+        "cost": 0.000029022
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.93,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.07,
+          "sonnet": 0.93
+        },
+        "nouls": {
+          "multi_file_design": 0.4,
+          "mechanical": 0.17,
+          "costly_failure": 0.76
+        },
+        "latencyMs": 502,
+        "cost": 0.000029022
+      }
+    ],
+    "wallMs": 545
+  },
+  "f4-await": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.83,
+        "probabilities": {
+          "haiku": 0.17,
+          "sonnet": 0.83,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.31,
+          "mechanical": 0.4,
+          "costly_failure": 0.53
+        },
+        "latencyMs": 537,
+        "cost": 0.000028434
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.67,
+        "probabilities": {
+          "sonnet": 0.67,
+          "opus": 0.01,
+          "haiku": 0.32
+        },
+        "nouls": {
+          "multi_file_design": 0.33,
+          "mechanical": 0.43,
+          "costly_failure": 0.55
+        },
+        "latencyMs": 560,
+        "cost": 0.000028434
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.84,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.16,
+          "sonnet": 0.84
+        },
+        "nouls": {
+          "multi_file_design": 0.31,
+          "mechanical": 0.41,
+          "costly_failure": 0.55
+        },
+        "latencyMs": 512,
+        "cost": 0.000028434
+      }
+    ],
+    "wallMs": 560
+  },
+  "r1-rename": {
+    "kind": "refactor",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.59,
+        "probabilities": {
+          "haiku": 0.41,
+          "sonnet": 0.59,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.83,
+          "mechanical": 0.95,
+          "costly_failure": 0.41
+        },
+        "latencyMs": 487,
+        "cost": 0.000027594
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.59,
+        "probabilities": {
+          "sonnet": 0.59,
+          "opus": 0,
+          "haiku": 0.41
+        },
+        "nouls": {
+          "multi_file_design": 0.82,
+          "mechanical": 0.95,
+          "costly_failure": 0.42
+        },
+        "latencyMs": 561,
+        "cost": 0.000027594
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.72,
+        "probabilities": {
+          "opus": 0.01,
+          "haiku": 0.27,
+          "sonnet": 0.72
+        },
+        "nouls": {
+          "multi_file_design": 0.82,
+          "mechanical": 0.95,
+          "costly_failure": 0.44
+        },
+        "latencyMs": 526,
+        "cost": 0.000027594
+      }
+    ],
+    "wallMs": 561
+  },
+  "r2-extract": {
+    "kind": "refactor",
+    "rule": "sonnet",
+    "why": [],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "haiku": 0.02,
+          "sonnet": 0.98,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.85,
+          "costly_failure": 0.65
+        },
+        "latencyMs": 507,
+        "cost": 0.000029274
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "sonnet": 0.98,
+          "opus": 0,
+          "haiku": 0.02
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.86,
+          "costly_failure": 0.66
+        },
+        "latencyMs": 532,
+        "cost": 0.000029274
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.01,
+          "sonnet": 0.99
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.84,
+          "costly_failure": 0.67
+        },
+        "latencyMs": 520,
+        "cost": 0.000029274
+      }
+    ],
+    "wallMs": 532
+  },
+  "r3-promisify": {
+    "kind": "refactor",
+    "rule": "sonnet",
+    "why": [],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "haiku": 0.01,
+          "sonnet": 0.99,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.86,
+          "costly_failure": 0.65
+        },
+        "latencyMs": 551,
+        "cost": 0.000030786
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "sonnet": 0.99,
+          "opus": 0,
+          "haiku": 0.01
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.87,
+          "costly_failure": 0.65
+        },
+        "latencyMs": 526,
+        "cost": 0.000030786
+      },
+      {
+        "tier": "sonnet",
+        "p": 1,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0,
+          "sonnet": 1
+        },
+        "nouls": {
+          "multi_file_design": 0.93,
+          "mechanical": 0.86,
+          "costly_failure": 0.67
+        },
+        "latencyMs": 529,
+        "cost": 0.000030786
+      }
+    ],
+    "wallMs": 551
+  },
+  "t1-slugify-tests": {
+    "kind": "tests",
+    "rule": "haiku",
+    "why": [
+      "lookup"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "haiku": 0.02,
+          "sonnet": 0.98,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.6,
+          "mechanical": 0.76,
+          "costly_failure": 0.51
+        },
+        "latencyMs": 510,
+        "cost": 0.000029652
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.97,
+        "probabilities": {
+          "sonnet": 0.97,
+          "opus": 0,
+          "haiku": 0.03
+        },
+        "nouls": {
+          "multi_file_design": 0.63,
+          "mechanical": 0.74,
+          "costly_failure": 0.52
+        },
+        "latencyMs": 548,
+        "cost": 0.000029652
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.02,
+          "sonnet": 0.98
+        },
+        "nouls": {
+          "multi_file_design": 0.6,
+          "mechanical": 0.72,
+          "costly_failure": 0.52
+        },
+        "latencyMs": 523,
+        "cost": 0.000029652
+      }
+    ],
+    "wallMs": 549
+  },
+  "t2-csv-tests": {
+    "kind": "tests",
+    "rule": "haiku",
+    "why": [
+      "lookup"
+    ],
+    "answers": [
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "haiku": 0.02,
+          "sonnet": 0.98,
+          "opus": 0
+        },
+        "nouls": {
+          "multi_file_design": 0.58,
+          "mechanical": 0.71,
+          "costly_failure": 0.63
+        },
+        "latencyMs": 514,
+        "cost": 0.000029652
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.98,
+        "probabilities": {
+          "sonnet": 0.98,
+          "opus": 0,
+          "haiku": 0.02
+        },
+        "nouls": {
+          "multi_file_design": 0.58,
+          "mechanical": 0.68,
+          "costly_failure": 0.63
+        },
+        "latencyMs": 515,
+        "cost": 0.000029652
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.99,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.01,
+          "sonnet": 0.99
+        },
+        "nouls": {
+          "multi_file_design": 0.58,
+          "mechanical": 0.75,
+          "costly_failure": 0.62
+        },
+        "latencyMs": 530,
+        "cost": 0.000029652
+      }
+    ],
+    "wallMs": 531
+  }
+}

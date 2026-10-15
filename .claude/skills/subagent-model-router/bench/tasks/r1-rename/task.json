@@ -1,0 +1,1 @@
+{"id":"r1-rename","kind":"refactor","type":"general-purpose","prompt":"Rename the function `getUserName` to `fetchUserName` everywhere in this project (definition, imports, calls, re-exports and tests). Behaviour must not change. A different function `getUserNameLength` must keep its name. Run `node --test test/` afterwards."}

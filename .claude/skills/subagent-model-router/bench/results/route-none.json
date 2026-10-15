@@ -1,0 +1,164 @@
+{
+  "d1-lru": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "d2-ratelimit": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "d3-maplimit": {
+    "kind": "debug",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "d4-expr": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "d5-deps": {
+    "kind": "design",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "e1-locate": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "e2-count": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "e3-importers": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "e4-config": {
+    "kind": "explore",
+    "rule": "haiku",
+    "why": [
+      "lookup",
+      "cheap-type"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "f1-paginate": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "f2-email": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "f3-days": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "f4-await": {
+    "kind": "fix",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "r1-rename": {
+    "kind": "refactor",
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "r2-extract": {
+    "kind": "refactor",
+    "rule": "sonnet",
+    "why": [],
+    "answers": [],
+    "wallMs": 0
+  },
+  "r3-promisify": {
+    "kind": "refactor",
+    "rule": "sonnet",
+    "why": [],
+    "answers": [],
+    "wallMs": 0
+  },
+  "t1-slugify-tests": {
+    "kind": "tests",
+    "rule": "haiku",
+    "why": [
+      "lookup"
+    ],
+    "answers": [],
+    "wallMs": 0
+  },
+  "t2-csv-tests": {
+    "kind": "tests",
+    "rule": "haiku",
+    "why": [
+      "lookup"
+    ],
+    "answers": [],
+    "wallMs": 0
+  }
+}
