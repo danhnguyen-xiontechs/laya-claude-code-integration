@@ -197,6 +197,12 @@ After synthesis, write every finding to `pr-<id>.findings.json` (next to the PR 
 ## Re-check after a Laya flag
 
 Only for findings listed as `recheck <id>` by `classify-findings.mjs` (recheck mode, at most 3).
+With the default policy (`stable-disagreement`) a line reads
+`recheck F16: Claude Minor → Jev Major (stable 3/3, mean p 0.95) [merge boundary, possible missed block]`:
+the provider gave the same label on every one of k shuffled-order asks, it differs from yours,
+and it is on the other side of the merge boundary. "Possible missed block" lines come first.
+The yes/no answers in the log (`introduced_by_pr`, `already_raised`) are never a reason to
+re-check, drop or change a finding.
 
 1. Re-read the cited code (patch or `git show`) and the rubric below, with the project's
    severity overrides. Do not re-review the whole file and do not look for new findings.

@@ -40,10 +40,13 @@ const findingsRaw = readJson(`${stem}.findings.json`);
 const findings = (Array.isArray(findingsRaw) ? findingsRaw : findingsRaw?.findings ?? [])
   .map((f) => ({ ...f, severity: normLabel(f.severity) }))
   .filter((f) => f.severity);
-// A/B copy: the decision log is pr-<id>.laya.json or pr-<id>.jev.json; this run's is the newer one.
+// A/B copy: the decision log is pr-<id>.laya.json and/or pr-<id>.jev.json. When both exist (a
+// side-by-side run) the header shows one line per provider, newest first.
 const mtime = (f) => { try { return fs.statSync(path.join(runDir, f)).mtimeMs; } catch { return -1; } };
-const layaLog = [`${stem}.laya.json`, `${stem}.jev.json`].filter((f) => mtime(f) >= 0).sort((a, b) => mtime(b) - mtime(a)).map(readJson)[0] ?? null;
-const who = layaLog?.provider === 'jev' ? 'Jev' : 'Laya';
+const decisionLogs = [`${stem}.laya.json`, `${stem}.jev.json`].filter((f) => mtime(f) >= 0).sort((a, b) => mtime(b) - mtime(a))
+  .map((f) => ({ f, log: readJson(f) })).filter((x) => x.log)
+  .map(({ f, log }) => ({ ...log, provider: log.provider ?? (f.endsWith('.jev.json') ? 'jev' : 'laya') }));
+const whoOf = (l) => (l?.provider === 'jev' ? 'Jev' : 'Laya');
 const notes = readJson(`${stem}.run-notes.json`);
 
 // A transcript belongs to this review when it ran pr-fetch.mjs for this PR id.
@@ -238,17 +241,24 @@ const models = [...new Set(steps.map((s) => s.model).filter(Boolean))].join(', '
 // Review outcome, recomputed from the final findings exactly as assess.mjs does.
 const sev = findingsRaw ? counts(findings) : null;
 const outcome = sev ? { verdict: verdict(sev), merge: merge(sev), score: score(sev) } : null;
-const ls = layaLog?.summary;
-const layaLine = !layaLog
-  ? 'Laya/Jev: no log (off, or the step was skipped)'
-  : ls?.server === 'down'
-    ? `${who}: unavailable — ${layaLog.provider === 'jev' ? 'OPENROUTER_API_KEY not set' : `server down at ${layaLog.url}`}; all ${ls.findings} findings kept Claude's severity`
-    : `${who} (${layaLog.mode}): ${ls.findings} findings · agree ${ls.agree} · differs ${ls.differs} (low-confidence ${ls.lowConfidence}) · ${layaLog.mode === 'recheck' ? `re-checked ${ls.rechecks}` : `would flag ${ls.wouldFlag}`} · unavailable ${ls.unavailable} · ${(ls.ms / 1000).toFixed(1)}s${ls.costUsd != null ? ` · ${ls.inputTokens} input tokens · $${ls.costUsd}` : ''}`;
-const rechecks = (layaLog?.results ?? []).filter((r) => r.recheckResult);
-const lm = layaLog?.merge;
-const mergeLine = !lm ? '' : !lm.laya
-  ? `${who} merge question: unavailable`
-  : `${who} merge question: ${lm.laya.label} (P(Blocked) ${lm.laya.pBlock ?? '?'}, blocked at ≥ ${lm.laya.threshold ?? '?'}; ${who} top: ${lm.laya.topLabel ?? '?'}) · rule on final severities: ${lm.final ?? lm.rule} · ${lm.finalStatus ?? lm.status}${lm.fromLayaSeverities ? ` · implied by Laya's per-finding labels: ${lm.fromLayaSeverities}` : ''} (log only)`;
+function layaLineOf(layaLog) {
+  const who = whoOf(layaLog);
+  const ls = layaLog.summary;
+  if (ls?.server === 'down') return `${who}: unavailable — ${layaLog.provider === 'jev' ? 'OPENROUTER_API_KEY not set' : `server down at ${layaLog.url}`}; all ${ls.findings} findings kept Claude's severity`;
+  const policy = layaLog.policy === 'stable-disagreement' ? ` · stable ${ls.stable}/${ls.sampled} (k=${layaLog.k}) · stable-disagree ${ls.stableDisagree}` : '';
+  const qs = [ls.introducedByPr ? `introduced_by_pr yes ${ls.introducedByPr.yes}/${ls.introducedByPr.asked}` : '', ls.alreadyRaised ? `already_raised yes ${ls.alreadyRaised.yes}/${ls.alreadyRaised.asked}` : ''].filter(Boolean).join(' · ');
+  return `${who} (${layaLog.mode}${layaLog.policy ? `, ${layaLog.policy}` : ''}): ${ls.findings} findings · agree ${ls.agree} · differs ${ls.differs} (low-confidence ${ls.lowConfidence}) · ${layaLog.mode === 'recheck' ? `re-checked ${ls.rechecks}` : `would flag ${ls.wouldFlag}`}${policy} · unavailable ${ls.unavailable}${qs ? ` · ${qs}` : ''} · ${(ls.ms / 1000).toFixed(1)}s${ls.costUsd != null ? ` · ${ls.inputTokens} input tokens · $${ls.costUsd}` : ''}`;
+}
+function mergeLineOf(layaLog) {
+  const who = whoOf(layaLog);
+  const lm = layaLog.merge;
+  if (!lm) return '';
+  if (!lm.laya) return `${who} merge question: unavailable`;
+  return `${who} merge question: ${lm.laya.label} (P(Blocked) ${lm.laya.pBlock ?? '?'}, blocked at ≥ ${lm.laya.threshold ?? '?'}; ${who} top: ${lm.laya.topLabel ?? '?'}) · rule on final severities: ${lm.final ?? lm.rule} · ${lm.finalStatus ?? lm.status}${lm.fromLayaSeverities ? ` · implied by ${who}'s per-finding labels: ${lm.fromLayaSeverities}` : ''} (log only)`;
+}
+const layaLines = decisionLogs.length ? decisionLogs.map(layaLineOf) : ['Laya/Jev: no log (off, or the step was skipped)'];
+const mergeLines = decisionLogs.map(mergeLineOf).filter(Boolean);
+const rechecks = decisionLogs.flatMap((l) => (l.results ?? []).filter((r) => r.recheckResult).map((r) => ({ ...r, who: whoOf(l) })));
 
 // ---------- render helpers ----------
 const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -430,9 +440,9 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0;font-size:12px;back
 <h1>PR #${esc(pr.id ?? '')} — ${esc(pr.title ?? 'Execution log')}</h1>
 <p class="sub">Execution log · review-pr-jev-classify · ${esc(pr.repoPath ?? pr.repoId ?? '')}${pr.sourceBranch ? ` · ${esc(pr.sourceBranch)} → ${esc(pr.targetBranch ?? '')}` : ''} · ${esc(models)}${pr.url ? ` · <a href="${esc(pr.url)}">Open PR</a>` : ''}</p>
 ${outcome ? `<div><span class="verdict v-${outcome.merge === 'Blocked' ? 'FAIL' : outcome.merge === 'Eligible' ? 'PASS' : 'WARN'}">${esc(outcome.verdict)} · Merge: ${esc(outcome.merge)}</span> <span class="muted small">— score ${outcome.score}/100 · 🔴 ${sev.Critical} · 🟠 ${sev.Major} · 🟡 ${sev.Minor} · 🔵 ${sev.Suggestion} (details in ${esc(stem)}.md)</span></div>` : ''}
-<p class="small" style="margin:8px 0 0">${esc(layaLine)}</p>
-${mergeLine ? `<p class="small" style="margin:4px 0 0">${esc(mergeLine)}</p>` : ''}
-${rechecks.length ? `<ul class="small">${rechecks.map((r) => `<li>re-check ${esc(r.id)}: ${esc(r.recheckResult.result)} ${esc(r.recheckResult.from)}${r.final !== r.recheckResult.from ? ` → ${esc(r.final)}` : ''} (Laya ${esc(r.laya?.label ?? '?')} ${r.laya?.confidence ?? ''})${r.recheckResult.reason ? ` — ${esc(r.recheckResult.reason)}` : ''}</li>`).join('')}</ul>` : ''}
+${layaLines.map((l, i) => `<p class="small" style="margin:${i ? 4 : 8}px 0 0">${esc(l)}</p>`).join('')}
+${mergeLines.map((l) => `<p class="small" style="margin:4px 0 0">${esc(l)}</p>`).join('')}
+${rechecks.length ? `<ul class="small">${rechecks.map((r) => `<li>re-check ${esc(r.id)}: ${esc(r.recheckResult.result)} ${esc(r.recheckResult.from)}${r.final !== r.recheckResult.from ? ` → ${esc(r.final)}` : ''} (${esc(r.who)} ${esc(r.stability?.label ?? r.laya?.label ?? '?')} ${r.stability ? `stable ${r.stability.k}/${r.stability.k}` : r.laya?.confidence ?? ''})${r.recheckResult.reason ? ` — ${esc(r.recheckResult.reason)}` : ''}</li>`).join('')}</ul>` : ''}
 <div class="grid6">${tiles}</div>
 
 ${notesHtml}
