@@ -1,0 +1,130 @@
+{
+  "fields": {
+    "Microsoft.VSTS.Common.ActivatedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.ZTljMmQ0ZDktNmU4My03OGUzLWIwMTItNjIxZmM0NjYxYTU1"
+        }
+      },
+      "descriptor": "aad.ZTljMmQ0ZDktNmU4My03OGUzLWIwMTItNjIxZmM0NjYxYTU1",
+      "displayName": "Long Nguyen",
+      "id": "b601817f-935c-4734-b5b1-02b9d1880ce1",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.ZTljMmQ0ZDktNmU4My03OGUzLWIwMTItNjIxZmM0NjYxYTU1",
+      "uniqueName": "long.nguyen@xiontechs.com",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/b601817f-935c-4734-b5b1-02b9d1880ce1"
+    },
+    "Microsoft.VSTS.Common.ActivatedDate": "2026-06-19T09:37:07.817Z",
+    "Microsoft.VSTS.Common.Priority": 2,
+    "Microsoft.VSTS.Common.ResolvedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "Microsoft.VSTS.Common.ResolvedDate": "2026-07-14T05:58:05.697Z",
+    "Microsoft.VSTS.Common.Severity": "3 - Medium",
+    "Microsoft.VSTS.Common.StateChangeDate": "2026-07-14T05:58:05.697Z",
+    "Microsoft.VSTS.Common.ValueArea": "Business",
+    "Microsoft.VSTS.TCM.ReproSteps": "In Month View, the Total Hours field is displayed inconsistently. For the same month (June 2026), the value is shown as **0** in one instance and **55** in another instance.\n\n**Note:**  \nThe selected month and view remain the same, but the Total Hours value changes unexpectedly. This causes confusion for users as the displayed Total Hours cannot be reliably interpreted in Month View.\n\n![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/5b75d3b6-0de1-4e8b-822c-529045176c12?fileName=image.png) \n![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/cb9d404a-f6b6-44b5-975f-fe07df4003eb?fileName=image.png) ",
+    "System.AreaId": 166,
+    "System.AreaLevel1": "GEMS-HR-SCM",
+    "System.AreaLevel2": "ESS APP",
+    "System.AreaPath": "GEMS-HR-SCM\\ESS APP",
+    "System.AssignedTo": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.AuthorizedAs": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.AuthorizedDate": "2026-07-14T05:58:05.697Z",
+    "System.ChangedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.ChangedDate": "2026-07-14T05:58:05.697Z",
+    "System.CommentCount": 3,
+    "System.CreatedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.CreatedDate": "2026-06-19T09:02:39.777Z",
+    "System.Id": 11840,
+    "System.IterationId": 91,
+    "System.IterationLevel1": "GEMS-HR-SCM",
+    "System.IterationLevel2": "ESS - R2",
+    "System.IterationPath": "GEMS-HR-SCM\\ESS - R2",
+    "System.NodeName": "ESS APP",
+    "System.Parent": 6678,
+    "System.PersonId": 103525723,
+    "System.Reason": "Moved out of state Testing in SIT",
+    "System.Rev": 10,
+    "System.RevisedDate": "9999-01-01T00:00:00Z",
+    "System.State": "Resolved",
+    "System.Tags": "R2",
+    "System.TeamProject": "GEMS-HR-SCM",
+    "System.Title": "Total Hours is displayed inconsistently in Month View",
+    "System.Watermark": 58023,
+    "System.WorkItemType": "Bug"
+  },
+  "id": 11840,
+  "multilineFieldsFormat": {
+    "Microsoft.VSTS.TCM.ReproSteps": "markdown"
+  },
+  "relations": [
+    {
+      "attributes": {
+        "isLocked": false,
+        "name": "Parent"
+      },
+      "rel": "System.LinkTypes.Hierarchy-Reverse",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/6678"
+    }
+  ],
+  "rev": 10,
+  "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/11840"
+}
