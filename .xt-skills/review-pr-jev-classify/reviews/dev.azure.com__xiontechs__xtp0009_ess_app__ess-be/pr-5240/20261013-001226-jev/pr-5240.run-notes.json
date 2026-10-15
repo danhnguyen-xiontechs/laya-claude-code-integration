@@ -1,0 +1,12 @@
+{
+  "objective": "Review ESS BE PR 5240 (seeded-defect team leave calendar) against project rules, then run the Jev independent severity check in shadow mode.",
+  "steps": [
+    { "title": "Fetch PR", "result": "8 files, 360 diff lines, diff available.", "status": "ok" },
+    { "title": "Project rules", "result": "Saved user-level rules used.", "status": "ok" },
+    { "title": "Review inline", "assumption": "Small PR, reviewed inline.", "result": "17 findings written.", "status": "ok" },
+    { "title": "Findings file write", "assumption": "Bash heredoc would work with apostrophes.", "result": "Heredoc failed; rewrote with the Write tool.", "status": "warn" },
+    { "title": "Jev check", "result": "shadow: 11 agree, 6 differ, 0 would flag; merge Blocked agrees.", "status": "ok" },
+    { "title": "Assess and report", "result": "Request Changes, Blocked, score 0.", "status": "ok" }
+  ],
+  "insights": ["Use the Write tool for JSON with apostrophes instead of a Bash heredoc."]
+}

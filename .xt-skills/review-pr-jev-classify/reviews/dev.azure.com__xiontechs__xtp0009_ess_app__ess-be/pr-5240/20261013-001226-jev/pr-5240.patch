@@ -1,0 +1,359 @@
+diff --git a/src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs b/src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs
+new file mode 100644
+index 00000000..0a03c211
+--- /dev/null
++++ b/src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs
+@@ -0,0 +1,42 @@
++using Ess_App.Application.DTOs;
++using Ess_App.Application.DTOs.LeaveRequests;
++using Ess_App.Application.Interfaces.LeaveRequests;
++using FluentValidation;
++using Microsoft.AspNetCore.Authorization;
++using Microsoft.AspNetCore.Mvc;
++
++namespace Ess_App.API.Controllers.LeaveRequests;
++
++[Route("api/leave/team-calendar")]
++[ApiController]
++[Authorize]
++public class TeamLeaveCalendarController : ControllerBase
++{
++    private readonly ITeamLeaveCalendarService _teamLeaveCalendarService;
++
++    public TeamLeaveCalendarController(ITeamLeaveCalendarService teamLeaveCalendarService)
++    {
++        _teamLeaveCalendarService = teamLeaveCalendarService;
++    }
++
++    /// <summary>
++    /// Returns approved leave days of a manager's direct reports in a date range (max 31 days).
++    /// </summary>
++    [HttpGet]
++    [ProducesResponseType(typeof(PaginatedResponse<TeamLeaveEntryDto>), StatusCodes.Status200OK)]
++    [ProducesResponseType(StatusCodes.Status400BadRequest)]
++    public async Task<ActionResult<PaginatedResponse<TeamLeaveEntryDto>>> GetTeamLeaveCalendar(
++        [FromQuery] TeamLeaveCalendarQuery query,
++        CancellationToken cancellationToken)
++    {
++        try
++        {
++            var result = await _teamLeaveCalendarService.GetTeamLeaveCalendarAsync(query, cancellationToken);
++            return Ok(result);
++        }
++        catch (ValidationException ex)
++        {
++            return BadRequest(ex.Message);
++        }
++    }
++}
+diff --git a/src/Ess-App.Application/Constants/CacheKeys.cs b/src/Ess-App.Application/Constants/CacheKeys.cs
+index dc77ffc7..b997e61b 100644
+--- a/src/Ess-App.Application/Constants/CacheKeys.cs
++++ b/src/Ess-App.Application/Constants/CacheKeys.cs
+@@ -243,6 +243,10 @@ public static class CacheKeys
+     /// </summary>
+     public static string GetLeaveHistoryCacheKey(string personnelNumber) => $"LeaveHistory:{personnelNumber}";
+ 
++    /// <summary>Team leave calendar page for a manager. Usage: CacheKeys.GetTeamLeaveCalendarCacheKey(manager, from, to, page, perPage)</summary>
++    public static string GetTeamLeaveCalendarCacheKey(string managerPersonnelNumber, DateOnly from, DateOnly to, int page, int perPage)
++        => $"TeamLeave:{managerPersonnelNumber}:{from:yyyyMMdd}:{to:yyyyMMdd}:{page}:{perPage}";
++
+     /// <summary>
+     /// Generates a cache key for pending leave request count by personnel number.
+     /// Usage: CacheKeys.GetPendingLeaveCountCacheKey(personnelNumber)
+diff --git a/src/Ess-App.Application/DTOs/LeaveRequests/TeamLeaveCalendarDto.cs b/src/Ess-App.Application/DTOs/LeaveRequests/TeamLeaveCalendarDto.cs
+new file mode 100644
+index 00000000..426d513f
+--- /dev/null
++++ b/src/Ess-App.Application/DTOs/LeaveRequests/TeamLeaveCalendarDto.cs
+@@ -0,0 +1,28 @@
++namespace Ess_App.Application.DTOs.LeaveRequests;
++
++/// <summary>Query for the manager team leave calendar (approved leave of direct reports).</summary>
++public sealed record TeamLeaveCalendarQuery
++{
++    public string ManagerPersonnelNumber { get; init; } = string.Empty;
++    public DateOnly From { get; init; }
++    /// <summary>Inclusive last day of the range.</summary>
++    public DateOnly To { get; init; }
++    public string? LeaveTypeCode { get; init; }
++    public int Page { get; init; } = 1;
++    public int PerPage { get; init; } = 20;
++}
++
++/// <summary>One approved leave day of a direct report.</summary>
++public sealed record TeamLeaveEntryDto
++{
++    public string PersonnelNumber { get; init; } = string.Empty;
++    public string WorkerName { get; init; } = string.Empty;
++    public string RequestId { get; init; } = string.Empty;
++    public string LeaveType { get; init; } = string.Empty;
++    public DateOnly LeaveDate { get; init; }
++    public decimal Amount { get; init; }
++}
++// e2e stale C3
++// e2e stale C4
++// e2e stale C5
++// e2e stale C6
+diff --git a/src/Ess-App.Application/DependencyInjection/ServiceCollectionExtensions.cs b/src/Ess-App.Application/DependencyInjection/ServiceCollectionExtensions.cs
+index c542a4ea..ce19f2c2 100644
+--- a/src/Ess-App.Application/DependencyInjection/ServiceCollectionExtensions.cs
++++ b/src/Ess-App.Application/DependencyInjection/ServiceCollectionExtensions.cs
+@@ -129,6 +129,7 @@ public static class ServiceCollectionExtensions
+         services.AddScoped<IDirectoryService, DirectoryService>();
+         services.AddScoped<IWorkItemApprovalService, WorkItemApprovalService>();
+         services.AddScoped<ILeaveRequestsService, LeaveRequestsService>();
++        services.AddScoped<ITeamLeaveCalendarService, TeamLeaveCalendarService>();
+         services.AddScoped<ILeaveRequestsBatchService, LeaveRequestsBatchService>();
+         services.AddScoped<IDirectoryBatchService, DirectoryBatchService>();
+         services.AddScoped<IDelegationService, DelegationService>();
+diff --git a/src/Ess-App.Application/Interfaces/LeaveRequests/ITeamLeaveCalendarService.cs b/src/Ess-App.Application/Interfaces/LeaveRequests/ITeamLeaveCalendarService.cs
+new file mode 100644
+index 00000000..fd64b361
+--- /dev/null
++++ b/src/Ess-App.Application/Interfaces/LeaveRequests/ITeamLeaveCalendarService.cs
+@@ -0,0 +1,11 @@
++using Ess_App.Application.DTOs;
++using Ess_App.Application.DTOs.LeaveRequests;
++
++namespace Ess_App.Application.Interfaces.LeaveRequests;
++
++public interface ITeamLeaveCalendarService
++{
++    Task<PaginatedResponse<TeamLeaveEntryDto>> GetTeamLeaveCalendarAsync(
++        TeamLeaveCalendarQuery query,
++        CancellationToken cancellationToken = default);
++}
+diff --git a/src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs b/src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs
+new file mode 100644
+index 00000000..48db2215
+--- /dev/null
++++ b/src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs
+@@ -0,0 +1,131 @@
++using System.Globalization;
++using Ess_App.Application.Constants;
++using Ess_App.Application.DTOs;
++using Ess_App.Application.DTOs.LeaveRequests;
++using Ess_App.Application.Helpers;
++using Ess_App.Application.Interfaces;
++using Ess_App.Application.Interfaces.LeaveRequests;
++using FluentValidation;
++using Microsoft.Extensions.Logging;
++
++namespace Ess_App.Application.Services.LeaveRequests;
++
++/// <summary>
++/// Manager view: approved leave days of the manager's direct reports within a date range.
++/// </summary>
++public class TeamLeaveCalendarService : ITeamLeaveCalendarService
++{
++    private const string LeaveSelect = "PersonnelNumber,RequestId,Type,StartDate,Amount";
++
++    private readonly ID365Service _d365Service;
++    private readonly ICacheService _cacheService;
++    private readonly IValidator<TeamLeaveCalendarQuery> _validator;
++    private readonly ILogger<TeamLeaveCalendarService> _logger;
++
++    public TeamLeaveCalendarService(
++        ID365Service d365Service,
++        ICacheService cacheService,
++        IValidator<TeamLeaveCalendarQuery> validator,
++        ILogger<TeamLeaveCalendarService> logger)
++    {
++        _d365Service = d365Service;
++        _cacheService = cacheService;
++        _validator = validator;
++        _logger = logger;
++    }
++
++    public async Task<PaginatedResponse<TeamLeaveEntryDto>> GetTeamLeaveCalendarAsync(
++        TeamLeaveCalendarQuery query,
++        CancellationToken cancellationToken = default)
++    {
++        await _validator.ValidateAndThrowAsync(query, cancellationToken);
++
++        var cacheKey = CacheKeys.GetTeamLeaveCalendarCacheKey(
++            query.ManagerPersonnelNumber, query.From, query.To, query.Page, query.PerPage);
++        if (_cacheService.TryGet<PaginatedResponse<TeamLeaveEntryDto>>(cacheKey, out var cached) && cached != null)
++        {
++            return cached;
++        }
++
++        var manager = ODataFilterHelper.EscapeString(query.ManagerPersonnelNumber);
++        var reports = (await _d365Service.QueryRecordsAsync(
++            D365EntityNames.Workers,
++            filter: $"ManagerPersonnelNumber eq '{manager}'")).ToList();
++
++        _logger.LogInformation(
++            "Team leave calendar for manager {Manager}: {Count} direct reports",
++            query.ManagerPersonnelNumber, reports.Count);
++
++        var from = query.From.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
++        var to = query.To.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
++
++        var entries = new List<TeamLeaveEntryDto>();
++        foreach (var report in reports)
++        {
++            var personnelNumber = GetString(report, "PersonnelNumber");
++            var workerName = GetString(report, "Name");
++
++            var filter = $"PersonnelNumber eq '{ODataFilterHelper.EscapeString(personnelNumber)}'"
++                + $" and StartDate ge {from}T00:00:00Z and StartDate lt {to}T00:00:00Z";
++            if (!string.IsNullOrWhiteSpace(query.LeaveTypeCode))
++            {
++                filter += $" and Type eq '{ODataFilterHelper.EscapeString(query.LeaveTypeCode)}'";
++            }
++
++            try
++            {
++                var rows = await _d365Service.QueryRecordsAsync(
++                    D365EntityNames.LeaveApprovedRequests,
++                    filter: filter,
++                    select: LeaveSelect);
++
++                entries.AddRange(rows.Select(r => new TeamLeaveEntryDto
++                {
++                    PersonnelNumber = personnelNumber,
++                    WorkerName = workerName,
++                    RequestId = GetString(r, "RequestId"),
++                    LeaveType = GetString(r, "Type"),
++                    LeaveDate = DateOnly.FromDateTime(DateTime.Parse(GetString(r, "StartDate"), CultureInfo.InvariantCulture)),
++                    Amount = decimal.TryParse(GetString(r, "Amount"), NumberStyles.Number, CultureInfo.InvariantCulture, out var amount) ? amount : 0m
++                }));
++            }
++            catch (Exception ex)
++            {
++                _logger.LogWarning(ex, "Skipping leave of {PersonnelNumber}", personnelNumber);
++            }
++        }
++
++        var pageItems = entries
++            .Skip((query.Page - 1) * query.PerPage)
++            .Take(query.PerPage)
++            .OrderBy(e => e.LeaveDate)
++            .ThenBy(e => e.WorkerName)
++            .ToList();
++
++        var response = new PaginatedResponse<TeamLeaveEntryDto>
++        {
++            Success = true,
++            Message = "Team leave calendar retrieved successfully",
++            Data = pageItems,
++            Pagination = new PaginationMetadata
++            {
++                Page = query.Page,
++                PerPage = query.PerPage,
++                HasNextPage = entries.Count > query.Page * query.PerPage,
++                HasPreviousPage = query.Page > 1
++            }
++        };
++
++        _cacheService.Set(cacheKey, response, new CacheEntryOptions
++        {
++            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60)
++        });
++
++        return response;
++    }
++
++    private static string GetString(D365RecordDto record, string field)
++        => record.Properties != null && record.Properties.TryGetValue(field, out var value)
++            ? value?.ToString() ?? string.Empty
++            : string.Empty;
++}
+diff --git a/src/Ess-App.Application/Validators/LeaveRequests/TeamLeaveCalendarQueryValidator.cs b/src/Ess-App.Application/Validators/LeaveRequests/TeamLeaveCalendarQueryValidator.cs
+new file mode 100644
+index 00000000..5bc811c0
+--- /dev/null
++++ b/src/Ess-App.Application/Validators/LeaveRequests/TeamLeaveCalendarQueryValidator.cs
+@@ -0,0 +1,29 @@
++using Ess_App.Application.DTOs.LeaveRequests;
++using FluentValidation;
++
++namespace Ess_App.Application.Validators.LeaveRequests;
++
++public sealed class TeamLeaveCalendarQueryValidator : AbstractValidator<TeamLeaveCalendarQuery>
++{
++    public const int MaxRangeDays = 31;
++
++    public TeamLeaveCalendarQueryValidator()
++    {
++        RuleFor(x => x.ManagerPersonnelNumber)
++            .NotEmpty().WithMessage("ManagerPersonnelNumber is required.")
++            .MaximumLength(20);
++
++        RuleFor(x => x.To)
++            .GreaterThanOrEqualTo(x => x.From).WithMessage("To must be on or after From.");
++
++        RuleFor(x => x)
++            .Must(x => x.To.DayNumber - x.From.DayNumber < MaxRangeDays)
++            .WithMessage($"The date range must not exceed {MaxRangeDays} days.");
++
++        RuleFor(x => x.LeaveTypeCode)
++            .MaximumLength(20);
++
++        RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
++        RuleFor(x => x.PerPage).InclusiveBetween(1, 100);
++    }
++}
+diff --git a/src/Ess-App.Tests/Services/LeaveRequests/TeamLeaveCalendarServiceTests.cs b/src/Ess-App.Tests/Services/LeaveRequests/TeamLeaveCalendarServiceTests.cs
+new file mode 100644
+index 00000000..f87d1776
+--- /dev/null
++++ b/src/Ess-App.Tests/Services/LeaveRequests/TeamLeaveCalendarServiceTests.cs
+@@ -0,0 +1,55 @@
++namespace Ess_App.Tests.Services.LeaveRequests;
++
++using Ess_App.Application.Constants;
++using Ess_App.Application.DTOs;
++using Ess_App.Application.DTOs.LeaveRequests;
++using Ess_App.Application.Interfaces;
++using Ess_App.Application.Services.LeaveRequests;
++using Ess_App.Application.Validators.LeaveRequests;
++using Ess_App.Tests.Helpers;
++using FluentAssertions;
++using Microsoft.Extensions.Logging;
++using NSubstitute;
++
++public class TeamLeaveCalendarServiceTests
++{
++    private readonly ID365Service _d365Service = Substitute.For<ID365Service>();
++    private readonly InMemoryCacheService _cacheService = new();
++    private readonly TeamLeaveCalendarService _sut;
++
++    public TeamLeaveCalendarServiceTests()
++    {
++        _sut = new TeamLeaveCalendarService(
++            _d365Service,
++            _cacheService,
++            new TeamLeaveCalendarQueryValidator(),
++            Substitute.For<ILogger<TeamLeaveCalendarService>>());
++    }
++
++    [Fact]
++    public async Task GetTeamLeaveCalendarAsync_ReturnsLeaveOfDirectReports_OrderedByDate()
++    {
++        _d365Service.QueryRecordsAsync(D365EntityNames.Workers, Arg.Any<string?>(), Arg.Any<int?>(), Arg.Any<int?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>())
++            .Returns(new[] { Record(("PersonnelNumber", "100"), ("Name", "An")) });
++        _d365Service.QueryRecordsAsync(D365EntityNames.LeaveApprovedRequests, Arg.Any<string?>(), Arg.Any<int?>(), Arg.Any<int?>(), Arg.Any<string?>(), Arg.Any<string?>(), Arg.Any<string?>())
++            .Returns(new[]
++            {
++                Record(("RequestId", "R2"), ("Type", "AL"), ("StartDate", "2026-10-05T00:00:00Z"), ("Amount", "1")),
++                Record(("RequestId", "R1"), ("Type", "AL"), ("StartDate", "2026-10-02T00:00:00Z"), ("Amount", "0.5")),
++            });
++
++        var result = await _sut.GetTeamLeaveCalendarAsync(new TeamLeaveCalendarQuery
++        {
++            ManagerPersonnelNumber = "900",
++            From = new DateOnly(2026, 10, 1),
++            To = new DateOnly(2026, 10, 31),
++        });
++
++        result.Data.Select(e => e.RequestId).Should().Equal("R1", "R2");
++        result.Data.First().Amount.Should().Be(0.5m);
++        result.Pagination.HasNextPage.Should().BeFalse();
++    }
++
++    private static D365RecordDto Record(params (string Key, object Value)[] fields)
++        => new() { Properties = fields.ToDictionary(f => f.Key, f => f.Value) };
++}
