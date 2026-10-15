@@ -151,3 +151,19 @@ test('hook with a failing provider keeps the default model', async () => {
   const out = await handle(hookInput({ prompt: 'find x' }), { cfg: cfgOf({ mode: 'apply', provider: 'jev' }), decideImpl: failing, home: tmp });
   assert.equal(out, null);
 });
+
+// ess-be pilot (research/subagent-router-ess-be-pilot.md, finding 1): the fixed definition of done
+// said "Ignore those 17 and do not change them", which made coding stories look like lookups.
+test('read-only: a "do not change them" guard in a coding brief is not a lookup', () => {
+  const dod = 'Read its CLAUDE.md first. Definition of done: 0-warning build, the suite is green apart from the 17 tests that already fail on a clean checkout. Ignore those 17 and do not change them. Add tests, make one Conventional Commit, do not push.';
+  const s1 = `Validate leave request fields and dates up front. Add rules to CreateLeaveRequestRequestValidator: LegalEntityId/LeaveType required, StartDate not default, EndDate >= StartDate when present, Comment <= 1000 chars.\n${dod}`;
+  const f = ruleFeatures(s1);
+  assert.equal(f.readOnly, false);
+  assert.ok(!ruleTier(f).why.includes('lookup'));
+  assert.equal(ruleTier(f).tier, 'sonnet');
+  const s3 = `Bug: bank-account save returns 500. Fix the NRE when data is null and throw ApplicationException for a blank PersonnelNumber.\n${dod}`;
+  assert.equal(ruleFeatures(s3).readOnly, false);
+  // Genuine read-only tasks still are.
+  assert.equal(ruleFeatures('Read src/a.ts and summarise it. Do not change anything.').readOnly, true);
+  assert.equal(ruleFeatures('List the callers of foo. Read-only, no edits.').readOnly, true);
+});
