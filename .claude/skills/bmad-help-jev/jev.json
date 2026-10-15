@@ -1,0 +1,8 @@
+{
+  "provider": "jev",
+  "jevModel": "typesafe/jev-1.13",
+  "laya": { "url": "http://localhost:8000", "model": "english", "maxLen": 1024 },
+  "kev": { "url": "http://localhost:8001", "model": "kev-latest" },
+  "thresholds": { "gateMin": 0.3, "fitMin": 0.3, "topK": 3 },
+  "notes": "Shared defaults. provider: jev (TypeSafe Jev via OpenRouter, needs OPENROUTER_API_KEY in the environment, never stored here) | laya (local laya-serve) | kev (local Kev server, TypeSafe-compatible). --provider wins over env DECISION_PROVIDER, which wins over this file. Thresholds are the cookbook's starting values, not calibrated on BMad data: re-pick them with `suggest.mjs --eval`. Per-machine overrides go to jev.local.json (gitignored)."
+}

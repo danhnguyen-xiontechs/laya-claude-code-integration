@@ -1,0 +1,10 @@
+{
+  "provider": "jev",
+  "jevModel": "typesafe/jev-1.13",
+  "laya": { "url": "http://localhost:8000", "model": "english", "maxLen": 1024 },
+  "kev": { "url": "http://localhost:8001", "model": "kev-latest" },
+  "thresholds": { "flagMin": 0.6, "maxPairs": 400 },
+  "concurrency": 4,
+  "ignore": [],
+  "notes": "Shared defaults. provider: jev (TypeSafe Jev via OpenRouter, needs OPENROUTER_API_KEY in the environment, never stored here) | laya (local) | kev (local, TypeSafe-compatible). --provider wins over env DECISION_PROVIDER, which wins over this file. flagMin: P(violation) at or above which a (rule, hunk) pair becomes a finding; 0.6 is a starting value, re-pick it from verdicts.mjs --summary. maxPairs caps questions per review. ignore: extra globs of files never checked. Per-machine overrides and per-project data consent live in jev.local.json (gitignored)."
+}
