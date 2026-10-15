@@ -197,15 +197,50 @@ What the pilot shows:
 - Task prompts said `node --test test/`, which fails on Node 24 (a directory argument is not
   accepted). Every subagent noticed and ran the file instead; the prompts now say `node --test`.
 
-**Is the full 18 × 3 run worth it?** Not as designed: the 12 remaining tasks are of the same
-difficulty, so all-Haiku labels and the same ceiling are the likely outcome, for about $9 more.
-Better uses of quota, in order:
-1. **Haiku-first labelling** of the other 12 tasks: run Haiku only, and escalate a task to Sonnet
-   (then Opus) only when it fails. About $0.15 when Haiku passes, plus about $0.2–0.5 per failure.
-   This is the cascade itself, measured.
-2. **Harder tasks** that are not solved at every tier: multi-file changes in a real repo, or real
-   stories from the parallel-stories flow with their acceptance checks, run Haiku-first the same way.
-3. Repeats (2–3 runs per cell) only on tasks where tiers disagree, to measure variance.
+**Haiku-first labelling of the other 12 tasks (run 2026-10-15, approved by the user).** Instead of
+12 × 3 runs, each task ran on Haiku only and moved to the next tier only when its check failed (the
+cascade itself). Records: `bench/results/runs-hf.jsonl`.
+
+- 11/12 passed on Haiku ($0.009–0.017 each; d1-lru took 11 turns, d2-ratelimit 7).
+- **d5-deps failed on Haiku** on one assertion: for a missing target it wrote `required by root`,
+  not the literal `required by <root>`. The subagent had flagged that wording as ambiguous. It was
+  escalated once, and Sonnet passed ($0.19). Label: sonnet.
+- Several Haiku subagents wrote CommonJS (`module.exports`) where the fixtures implied ES modules;
+  the ESM import in the hidden tests still worked.
+- Spend: subagents $0.32 (13 runs). The parent session spent $1.00 in 8 messages, against $2.72 in
+  33 messages for the pilot, because all 12 ran as one foreground batch and returned in a single
+  turn. Total ≈ $1.32.
+
+**All 18 tasks: 17 haiku, 1 sonnet.** Scored with `node bench/bench.mjs score --run pilot,hf
+--impute`. Tiers that were not run are filled by monotonicity: a pass at a lower tier implies a
+pass above. Their cost is the measured mean per tier (Haiku $0.011, Sonnet $0.188, Opus $0.307).
+23 of the 54 cells are imputed.
+
+| router | pass (no retry) | cost vs opus | exact tier | under-routed | cascade pass | cascade cost vs opus | escalations |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| always-opus | 18/18 | 100% | 0 | 0 | 100% | 100% | 0% |
+| always-sonnet | 18/18 | 61% | 1 | 0 | 100% | 61% | 0% |
+| rules-only | 17/18 | **10%** | 15 | 1 (d5) | **100%** | **14%** | 6% (1/18) |
+| Jev single | 18/18 | 48% | 5 | 0 | 100% | 48% | 0% |
+| Jev + gate | 18/18 | 48% | 5 | 0 | 100% | 48% | 0% |
+| Jev + sc (k=3) | 18/18 | 51% | 5 | 0 | 100% | 51% | 0% |
+| Jev + gate + sc | 18/18 | 51% | 5 | 0 | 100% | 51% | 0% |
+
+Jev answered Sonnet on d5-deps (all 3 calls), so Jev was right on the one task Haiku failed. But it
+also said Sonnet on 12 tasks Haiku solved, which is where its extra cost comes from.
+
+**Conclusion on this benchmark.** For tasks that carry an automatic check, **rules + the
+escalate-once cascade** gives the same pass rate as always-opus at about **1/7 of the cost**. The Jev
+policies are safe (never under-route) but cost about 3.5× the rules + cascade policy. On
+small, checked tasks, a failed Haiku attempt costs about $0.01, so it is cheaper to let the cascade
+catch Haiku's misses than to predict them. Caveats: the tasks are small and synthetic, with one run
+per cell; the one Haiku failure was a spec-literalness slip, not a reasoning failure. The
+benchmark does not cover tasks without an automatic check, where a cascade cannot work and Jev's
+caution is worth paying for.
+
+Next, if more evidence is wanted: harder tasks (multi-file changes in a real repo, or real stories
+from the parallel-stories flow with their acceptance checks), run Haiku-first the same way, plus 2–3
+repeats on tasks where tiers disagree.
 
 How to run (from a Claude Code session, one tier per batch):
 ```bash

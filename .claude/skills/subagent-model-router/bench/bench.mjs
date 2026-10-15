@@ -145,16 +145,42 @@ export function score(runs, routes) {
   return { tasks, labels: Object.fromEntries(tasks.map((t) => [t, label(t)])), rows };
 }
 
+/** Runs of one or more run names ("pilot,hf"); the last record of a task × tier wins. */
 export function loadRuns(run) {
-  const f = path.join(RESULTS, `runs-${run}.jsonl`);
   const runs = {};
-  if (!fs.existsSync(f)) return runs;
-  for (const line of fs.readFileSync(f, 'utf8').split('\n')) {
-    if (!line.trim()) continue;
-    const r = JSON.parse(line);
-    (runs[r.task] ??= {})[r.tier] = r; // last record wins
+  for (const name of String(run).split(',')) {
+    const f = path.join(RESULTS, `runs-${name}.jsonl`);
+    if (!fs.existsSync(f)) continue;
+    for (const line of fs.readFileSync(f, 'utf8').split('\n')) {
+      if (!line.trim()) continue;
+      const r = JSON.parse(line);
+      (runs[r.task] ??= {})[r.tier] = r;
+    }
   }
   return runs;
+}
+
+/**
+ * Haiku-first labelling runs only up to the first passing tier. Fill the tiers above it, assuming
+ * monotonicity (a tier that passes implies every higher tier passes), at the mean measured cost of
+ * that tier. Imputed cells carry imputed: true. Tiers below a failure are never imputed.
+ */
+export function imputeAbove(runs) {
+  const mean = {};
+  for (const tier of TIERS) {
+    const cs = Object.values(runs).map((t) => t[tier]).filter((r) => r && typeof r.cost === 'number' && !r.imputed).map((r) => r.cost);
+    mean[tier] = cs.length ? cs.reduce((a, b) => a + b, 0) / cs.length : null;
+  }
+  const out = {};
+  for (const [task, byTier] of Object.entries(runs)) {
+    out[task] = { ...byTier };
+    let passedBelow = false;
+    for (const tier of TIERS) {
+      if (out[task][tier]) { passedBelow ||= out[task][tier].pass; continue; }
+      if (passedBelow && mean[tier] != null) out[task][tier] = { task, tier, pass: true, cost: mean[tier], imputed: true };
+    }
+  }
+  return { runs: out, mean };
 }
 
 async function main() {
@@ -179,8 +205,12 @@ async function main() {
   }
   if (cmd === 'score') {
     const routes = JSON.parse(fs.readFileSync(path.join(RESULTS, `route-${argOf('provider', 'jev')}.json`), 'utf8'));
-    const s = score(loadRuns(run), routes);
-    console.log(JSON.stringify(s, null, 2));
+    let runs = loadRuns(run);
+    let mean = null;
+    if (process.argv.includes('--impute')) ({ runs, mean } = imputeAbove(runs));
+    const s = score(runs, routes);
+    const imputed = Object.values(runs).flatMap((t) => Object.values(t)).filter((r) => r.imputed).length;
+    console.log(JSON.stringify({ ...s, imputedCells: imputed, meanCostPerTier: mean }, null, 2));
     return;
   }
   console.error('usage: bench.mjs validate | prepare <task> <tier> | check <task> <tier> [--agent id] | route | score');

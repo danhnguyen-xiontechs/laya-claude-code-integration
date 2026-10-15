@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { score } from '../bench/bench.mjs';
+import { score, imputeAbove } from '../bench/bench.mjs';
 import { usageCost, tierOf } from '../scripts/pricing.mjs';
 import { taskKind } from '../scripts/mine-history.mjs';
 
@@ -35,6 +35,18 @@ test('score: labels, pass rate, cost vs opus, cascade', () => {
   assert.equal(row('jev+gate').costVsOpus, 31 / 60);
   // jev-only under-routes c
   assert.equal(row('jev-only').under, 1);
+});
+
+test('imputeAbove: fills only above a pass, at the mean measured cost', () => {
+  const { runs: r, mean } = imputeAbove({
+    a: { haiku: run(true, 1), sonnet: run(true, 10), opus: run(true, 30) },
+    b: { haiku: run(true, 3) },
+    c: { haiku: run(false, 1), sonnet: run(true, 20) },
+  });
+  assert.equal(mean.sonnet, 15);
+  assert.deepEqual([r.b.sonnet.pass, r.b.sonnet.cost, r.b.sonnet.imputed, r.b.opus.cost], [true, 15, true, 30]);
+  assert.equal(r.c.haiku.pass, false);
+  assert.equal(r.c.opus.imputed, true);
 });
 
 test('pricing: tiers and a known claude -p usage', () => {

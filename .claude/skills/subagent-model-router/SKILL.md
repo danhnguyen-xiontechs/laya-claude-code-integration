@@ -36,6 +36,11 @@ node .claude/skills/subagent-model-router/scripts/route.mjs --escalate-from haik
 At most one retry per subagent; `opus` has no next tier, so report the failure. A subagent
 without an automatic check should not be routed below sonnet unless it is a read-only lookup.
 
+Which policy (benchmark, 18 small checked tasks, README §4b): for tasks WITH an automatic check,
+rules (`--provider none`) + the cascade matched always-opus's pass rate at ~14% of its cost. Jev
+gate+sc was also 100% but cost ~51%, because it sends most coding tasks to sonnet. Use Jev gate+sc for
+tasks WITHOUT an automatic check, where no cascade can catch a miss.
+
 **2. As a PreToolUse hook (automatic).** `scripts/hook-pretooluse.mjs` (matcher `Agent`) sets
 `model` when the caller did not set one and the agent definition has no `model` of its own.
 Shadow mode (the default) only logs. The README has the settings snippet; it is not
