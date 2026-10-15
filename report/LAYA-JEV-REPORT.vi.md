@@ -629,6 +629,38 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 ---
 
+<!-- BEGIN smart-context-trimming -->
+## Smart Context Trimming (Claude Code Mod + Jev, plan 01)
+
+**Là gì:** một Claude Code Mod (`smart-context-trimming/`) móc vào `tool.call` của Bash cho lệnh test/build (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). Khi output dài (≥250 dòng hoặc ≥20 KB), Claude chỉ nhận **các dòng gốc quan trọng**: lỗi, test fail kèm chi tiết assert, đầu exception + 6 frame đầu, dòng fatal, dòng tổng kết, exit status, cộng 5 dòng đầu và 15 dòng cuối. Toàn bộ output gốc được lưu ở `~/.claude/smart-context-trimming/raw/` và kết quả rút gọn có đường dẫn tới đó. Mặc định **observe** (chỉ đo, không đổi gì); `enforce` mới cắt; `/smart-trim off|observe|enforce|status` theo session, hoặc biến môi trường `SMART_TRIM_MODE`.
+
+**Vai trò của Jev (tuỳ chọn, chỉ ở enforce):** một quyết định cho mỗi output bị cắt: chọn chiến lược (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) và một câu có/không cho mỗi ứng viên *tuỳ chọn* (warning lặp, frame stack sâu), tối đa 12. Jev không bao giờ viết text. Bằng chứng bắt buộc luôn được giữ dù Jev nói gì, nên Jev trả lời sai chỉ làm output dài hơn. Text gửi Jev được che (key, Bearer token, password, connection string, JWT, chuỗi hex dài) và giới hạn 12 KB. Timeout 8 s; confidence < 0.6, JSON hỏng, chiến lược lạ, câu trả lời thừa hoặc ngoài phạm vi → dùng kết quả rule.
+
+**Phase 0 (CLI đã cài 2.1.300, types engine 2.1.295), chứng minh thật bằng `claude -p --plugin-dir`:**
+- Lệnh thành công: `{ result: { ...result, stdout } }` thay được nội dung Claude đọc ✔.
+- Exit khác 0: core trả `{ isError, result: string }`. Hook tự trả `{ isError, result }` bị **từ chối (lỗi schema)**; spread kết quả của core với `text` mới bị **bỏ qua**; `{ result: { stdout } }` **mất cờ lỗi** (không được phép). Chỉ `{ deny: text }` giữ cờ lỗi, nên mod dùng cách này cho lệnh fail.
+- Từ chối quyền, kết quả bị ngắt / chạy nền / ảnh / core đã lưu file, và lệnh không khớp đều đi qua nguyên vẹn.
+- **Phát hiện:** với lệnh fail, chính Claude Code đã cắt text còn khoảng 5 000 ký tự đầu + 5 000 ký tự cuối (`... [N characters truncated] ...`) **trước khi** hook nào thấy. Trong lần chạy thật, chỗ core cắt đã che mất 1 trong 3 test fail. Mod không khôi phục được nếu không sửa lệnh (ngoài phạm vi MVP), nên hiện phần lớn output fail nằm dưới ngưỡng.
+
+**Test nhanh (bộ 10 fixture + các nhánh Jev giả lỗi):**
+
+| fixture | gốc | rule | rule + Jev (thật) | mất chẩn đoán quan trọng |
+|---|---:|---:|---:|---:|
+| dotnet test pass dài | 27.4 KB | 1.6 KB (−94%) | — (không có ứng viên tuỳ chọn) | 0 |
+| 3 test fail | 22.9 KB | 3.4 KB (−85%) | — | 0 |
+| lỗi biên dịch dotnet | 19.7 KB | 1.5 KB (−93%) | — | 0 |
+| exception + stack 25 frame | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
+| 300 warning + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
+| chuỗi giống secret | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
+| log hỏng, output ngắn, lệnh không khớp, pipe qua `tail` | — | giữ nguyên từng byte | giữ nguyên | 0 |
+
+- Trung vị mức giảm trên output đủ điều kiện: **89% (rule) / 91% (rule + Jev)**. **0 chẩn đoán quan trọng bị mất** ở mọi nhánh, và mọi dòng giữ lại đều được kiểm là dòng gốc nguyên văn.
+- Các nhánh Jev lỗi (timeout, JSON hỏng, HTTP 500, lỗi mạng, chiến lược lạ, confidence thấp, "bỏ hết", `keep_full_output`) đều fallback đúng, không nhánh nào treo quá 2 s, và vẫn giữ đủ chẩn đoán. Secret không bao giờ xuất hiện trong request gửi Jev.
+- Tổng cộng **3 lần gọi Jev thật** (đều hợp lệ). 21 unit test Node và 7 engine test (`claude plugin test`) đều pass. Chạy e2e thật ở enforce: 27.4 KB → 1.7 KB kèm đường dẫn log gốc, và Claude đọc đúng dòng tổng kết.
+
+**Kết luận: PILOT (rule), Jev SHADOW.** Riêng rule đã tiết kiệm gần hết; Jev chỉ thêm khoảng 2 điểm, và chỉ với output có ứng viên tuỳ chọn. Chưa đo: token request thật, tỉ lệ hoàn thành task và tỉ lệ đọc lại log (Phase 4). Bước tiếp: wrapper exit-code (opt-in) để lệnh fail tránh bị core cắt 10 KB, rồi hiệu chỉnh ngưỡng trên session thật.
+<!-- END smart-context-trimming -->
+
 ## 12. Kết luận chung
 
 | Câu hỏi | Trả lời |
