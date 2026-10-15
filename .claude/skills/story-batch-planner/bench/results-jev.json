@@ -1,0 +1,204 @@
+{
+  "rows": [
+    {
+      "name": "independent",
+      "sepPairs": 0,
+      "falseParallel": [],
+      "orderPairs": 0,
+      "recalled": 0,
+      "indepPairs": 3,
+      "overSerial": [],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1,S-2,S-3"
+      ],
+      "jev": []
+    },
+    {
+      "name": "shared-module",
+      "sepPairs": 1,
+      "falseParallel": [],
+      "orderPairs": 0,
+      "recalled": 0,
+      "indepPairs": 0,
+      "overSerial": [],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1",
+        "S-2",
+        "S-3"
+      ],
+      "jev": [
+        {
+          "pair": "S-1|S-3",
+          "got": "shared_module_or_contract",
+          "p": 0.86,
+          "want": "shared_module_or_contract",
+          "ok": true
+        },
+        {
+          "pair": "S-2|S-3",
+          "got": "shared_module_or_contract",
+          "p": 0.89,
+          "want": "independent",
+          "ok": false
+        }
+      ]
+    },
+    {
+      "name": "api-dto",
+      "sepPairs": 2,
+      "falseParallel": [],
+      "orderPairs": 1,
+      "recalled": 1,
+      "indepPairs": 0,
+      "overSerial": [],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1",
+        "S-3",
+        "S-2"
+      ],
+      "jev": [
+        {
+          "pair": "S-2|S-3",
+          "got": "shared_module_or_contract",
+          "p": 0.75,
+          "want": null,
+          "ok": null
+        }
+      ]
+    },
+    {
+      "name": "migration",
+      "sepPairs": 2,
+      "falseParallel": [],
+      "orderPairs": 0,
+      "recalled": 0,
+      "indepPairs": 0,
+      "overSerial": [],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1",
+        "S-2,S-3"
+      ],
+      "jev": []
+    },
+    {
+      "name": "fixture-contention",
+      "sepPairs": 1,
+      "falseParallel": [],
+      "orderPairs": 0,
+      "recalled": 0,
+      "indepPairs": 2,
+      "overSerial": [
+        "S-2|S-3"
+      ],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1,S-3",
+        "S-2"
+      ],
+      "jev": []
+    },
+    {
+      "name": "explicit-dependency",
+      "sepPairs": 2,
+      "falseParallel": [],
+      "orderPairs": 2,
+      "recalled": 2,
+      "indepPairs": 3,
+      "overSerial": [
+        "S-2|S-4",
+        "S-3|S-4"
+      ],
+      "cycleOk": null,
+      "reviewOk": null,
+      "waves": [
+        "S-1,S-4",
+        "S-2",
+        "S-3"
+      ],
+      "jev": [
+        {
+          "pair": "S-2|S-3",
+          "got": "independent",
+          "p": 0.44,
+          "want": null,
+          "ok": null
+        }
+      ]
+    },
+    {
+      "name": "cycle",
+      "sepPairs": 4,
+      "falseParallel": [],
+      "orderPairs": 4,
+      "recalled": 4,
+      "indepPairs": 2,
+      "overSerial": [],
+      "cycleOk": true,
+      "reviewOk": null,
+      "waves": [
+        "S-5"
+      ],
+      "jev": []
+    },
+    {
+      "name": "incomplete-and-hidden",
+      "sepPairs": 1,
+      "falseParallel": [],
+      "orderPairs": 1,
+      "recalled": 0,
+      "indepPairs": 2,
+      "overSerial": [
+        "S-3|S-4"
+      ],
+      "cycleOk": null,
+      "reviewOk": true,
+      "waves": [
+        "S-1,S-4",
+        "S-3",
+        "S-2"
+      ],
+      "jev": [
+        {
+          "pair": "S-1|S-2",
+          "got": "unknown",
+          "p": 0.81,
+          "want": "unknown",
+          "ok": true
+        },
+        {
+          "pair": "S-1|S-3",
+          "got": "depends_on_A",
+          "p": 0.97,
+          "want": "depends_on_A",
+          "ok": true
+        },
+        {
+          "pair": "S-2|S-3",
+          "got": "depends_on_A",
+          "p": 0.75,
+          "want": "unknown",
+          "ok": false
+        }
+      ]
+    }
+  ],
+  "tot": {
+    "sepPairs": 13,
+    "falseParallel": 0,
+    "orderPairs": 8,
+    "recalled": 7,
+    "indepPairs": 12,
+    "overSerial": 4
+  },
+  "jevCalls": 7,
+  "jevCost": 0.000166
+}

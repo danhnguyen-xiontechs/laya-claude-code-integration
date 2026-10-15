@@ -1,0 +1,7 @@
+{
+  "maxConcurrency": 4,
+  "protectedKinds": ["schema", "migration"],
+  "incompleteMinWords": 8,
+  "ambiguousTokenOverlap": 2,
+  "jev": { "enabled": false, "provider": "jev", "maxCalls": 10, "timeoutMs": 10000 }
+}

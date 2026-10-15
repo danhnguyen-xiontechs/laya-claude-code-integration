@@ -673,6 +673,36 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 - **Giới hạn:** chỉ fixture tổng hợp; gán lỗi cho story dựa trên tên file trong output nên hay nêu cả hai story (story không bị nêu vẫn xuống REVIEW_REQUIRED, không bao giờ PASS); fixture chỉ một story sửa thì chỉ test gộp bắt được, luật chéo không bắt; chưa làm pha 4 (bộ đánh giá gán nhãn trên lô thật) và pha 6 (pilot có kiểm soát).
 - **Kết luận:** `PILOT` cho phần verifier tất định; Jev giữ ở `SHADOW`: trên tập nhỏ này nó không thêm gì cho quyết định, và trượt ca `test_data` duy nhất.
 <!-- END integration-verifier -->
+<!-- BEGIN story-batch-planner -->
+## `story-batch-planner`: story nào chạy song song được (build mới, Jev chế độ shadow)
+
+**Vì sao:** trước khi bật mỗi story một agent (ví dụ 20 story), cần biết story nào đụng chung module, API/DTO, schema hay test fixture, để các agent chạy song song không rơi vào cảnh mỗi cái pass riêng rồi ghép lại thì vỡ.
+
+**Đã làm gì** (`.claude/skills/story-batch-planner/`, phase 1 + 3 của plan):
+- **Luật (phase 1):** link ADO tường minh và câu "depends on S-2" trong mô tả → thứ tự cứng; endpoint/DTO một story thêm, story khác gọi → bên tạo làm trước, bên dùng làm sau; cùng file, fixture hay DTO bị cả hai sửa → chạy tuần tự; hai migration, hoặc migration + story đọc cùng bảng → tuần tự, đánh dấu *protected*; chỉ chung module, trùng chủ đề, hoặc story mô tả thiếu → `unknown`, chạy tuần tự và đưa người xem.
+- **Đồ thị:** báo chu trình (Tarjan); story trong chu trình và story phụ thuộc chúng không được xếp lịch (không tự bịa thứ tự). Story mô tả thiếu chạy riêng ở wave cuối. `maxConcurrency` (4) chia nhỏ wave rộng.
+- **Output:** JSON theo §6 (`stories`, `edges` có bằng chứng/nguồn/độ tin cậy, `waves`, `blocked_or_review_required`, `assumptions`) cùng `dispatch[]` (mỗi story một đoạn task, theo wave) để đưa vào `route.mjs` của `subagent-model-router`, kèm bản tóm tắt cho người đọc.
+- **Jev shadow (phase 3):** chỉ hỏi các cặp mơ hồ, nhãn đóng `independent / shared_module_or_contract / depends_on_A / depends_on_B / unknown`, tối đa 10 lần gọi mỗi plan. Câu trả lời lưu ở `jev_suggestion` (`applied:false`, có provenance) và không bao giờ đổi wave. Lỗi / timeout / nhãn sai / hết ngân sách → `unknown`. Cặp protected không bao giờ thành song song. Mặc định tắt Jev.
+
+**Test nhanh** (8 batch viết tay, 27 story: độc lập, chung module, API/DTO, migration, tranh chấp fixture, phụ thuộc tường minh, chu trình, mô tả thiếu + phụ thuộc ẩn). 14 unit test pass (provider giả, không gọi mạng).
+
+| Chỉ số (chỉ luật) | Kết quả |
+|---|---|
+| False-parallel (cặp phụ thuộc/xung đột nằm cùng wave) | **0 / 13** |
+| Dependency recall (tìm ra cạnh thứ tự) | **7 / 8** |
+| Báo chu trình / đưa story thiếu mô tả đi review | có / có |
+| Tuần tự hoá thừa (cặp độc lập bị tách wave) | 4 / 12 |
+
+- Phụ thuộc bị sót: "báo cáo overtime từ timesheet đã duyệt" cần "duyệt timesheet" nhưng không nêu file hay API chung. Luật vẫn đẩy nó sang wave sau dưới dạng `unknown` (không false-parallel), nhưng không biết chiều.
+- Tuần tự hoá thừa là cái giá của sự thận trọng: trùng chủ đề ("payslip", "leave balance") bị xếp tuần tự cho tới khi có người xác nhận.
+
+**Jev shadow, gọi thật** (7 cặp mơ hồ; lỡ chạy eval hai lần → tổng 14 lần gọi, $0.00034, mỗi lần khoảng 0.4–1 s):
+- Tìm ra phụ thuộc ẩn ở trên: `depends_on_A` 0.97 (cả hai lần).
+- Đúng nhãn 3/5 cặp có nhãn. Sai: hai story checkout chung module nhưng thật ra độc lập → `shared_module_or_contract` (0.84–0.89, sai theo hướng an toàn); story thiếu mô tả "Timesheet fixes / Misc." → `depends_on_A` 0.74 thay vì `unknown` (tự tin trên story mơ hồ).
+- Chưa lần nào gợi ý `independent` với xác suất cao; một cặp đổi nhãn giữa hai lần chạy (`shared_module_or_contract` 0.43 → `independent` 0.44).
+
+**Kết luận: SHADOW.** Bản luật dùng được ngay khi tắt Jev (0 false-parallel trên fixture). Jev giúp biết chiều của phụ thuộc ẩn, nhưng quá tự tin với story mơ hồ và không ổn định ở xác suất thấp, nên chỉ giữ làm gợi ý có log. **Giới hạn:** fixture tổng hợp viết tay, do chính Claude gán nhãn, 27 story, chưa có batch ADO thật; trích xuất bằng regex, chưa có index repo. **Tiếp theo:** chạy trên một sprint thật từ ADO, nhờ người gán nhãn, rồi so sánh thủ công / luật / luật + Jev (phase 2 của plan).
+<!-- END story-batch-planner -->
 
 ## 12. Kết luận chung
 

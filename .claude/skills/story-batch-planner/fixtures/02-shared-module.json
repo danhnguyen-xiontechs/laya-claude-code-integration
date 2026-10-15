@@ -1,0 +1,7 @@
+{ "name": "shared-module",
+  "stories": [
+    { "id": "S-1", "title": "Add discount code field to checkout", "description": "Checkout form gets a discount code input.", "files": ["web/checkout/CheckoutForm.tsx", "web/checkout/validation.ts"], "ac": ["Code applied to total"] },
+    { "id": "S-2", "title": "Validate postcode on checkout", "description": "Reject invalid UK postcodes before payment.", "files": ["web/checkout/validation.ts"], "ac": ["Invalid postcode shows error"] },
+    { "id": "S-3", "title": "Checkout progress indicator", "description": "Show step 1/2/3 at the top of checkout.", "modules": ["web/checkout"], "ac": ["Steps visible"] }
+  ],
+  "expected": { "order": [], "conflict": [["S-1","S-2"]], "ambiguous": { "S-1|S-3": "shared_module_or_contract", "S-2|S-3": "independent" }, "independent": [] } }

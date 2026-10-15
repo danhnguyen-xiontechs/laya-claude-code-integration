@@ -1,0 +1,7 @@
+{ "name": "api-dto",
+  "stories": [
+    { "id": "S-1", "title": "Leave balance API", "description": "Add endpoint GET /api/leave/balance returning LeaveBalanceDto with annual and sick days.", "ac": ["Returns 200 with LeaveBalanceDto"] },
+    { "id": "S-2", "title": "Show leave balance on dashboard", "description": "The dashboard widget calls GET /api/leave/balance and displays the remaining days.", "ac": ["Widget shows annual and sick days"] },
+    { "id": "S-3", "title": "Add carry-over days to leave balance", "description": "Extend LeaveBalanceDto with carryOverDays.", "ac": ["carryOverDays present in response"] }
+  ],
+  "expected": { "order": [["S-1","S-2"]], "conflict": [["S-1","S-3"]], "independent": [] } }

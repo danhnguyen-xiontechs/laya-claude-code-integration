@@ -1,0 +1,9 @@
+{ "name": "cycle",
+  "stories": [
+    { "id": "S-1", "title": "Org chart service", "description": "Service for org chart in org/OrgChart.cs.", "links": [{ "type": "depends_on", "id": "S-2" }] },
+    { "id": "S-2", "title": "Manager lookup", "description": "Manager lookup in org/ManagerLookup.cs.", "links": [{ "type": "depends_on", "id": "S-3" }] },
+    { "id": "S-3", "title": "Team roster", "description": "Team roster in org/Roster.cs.", "links": [{ "type": "depends_on", "id": "S-1" }] },
+    { "id": "S-4", "title": "Roster export", "description": "Export roster to Excel in reports/RosterExport.cs.", "links": [{ "type": "depends_on", "id": "S-3" }] },
+    { "id": "S-5", "title": "Holiday calendar import", "description": "Import public holidays from an ICS file into calendar/HolidayImport.cs." }
+  ],
+  "expected": { "order": [["S-2","S-1"],["S-3","S-2"],["S-1","S-3"],["S-3","S-4"]], "conflict": [], "cycle": ["S-1","S-2","S-3"], "independent": [["S-5","S-1"],["S-5","S-4"]] } }
