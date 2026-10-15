@@ -1,0 +1,199 @@
+{"id":"S001","category":"explicit","lang":"en","prompt":"/skill-creator draft a skill that summarizes meeting notes","expected":"anthropic-skills:skill-creator","split":"test"}
+{"id":"S002","category":"explicit","lang":"vi","prompt":"/loop 5m kiểm tra xem bản deploy đã xong chưa","expected":"loop","split":"test"}
+{"id":"S003","category":"explicit","lang":"en","prompt":"run /security-review on this branch before I open the PR","expected":"security-review","split":"dev"}
+{"id":"S004","category":"explicit","lang":"vi","prompt":"dùng /simplify dọn lại đoạn code vừa sửa giúp tôi","expected":"simplify","split":"dev"}
+{"id":"S005","category":"explicit","lang":"en","prompt":"/web-test 41872 staging","expected":"web-test","split":"test"}
+{"id":"S006","category":"explicit","lang":"vi","prompt":"/web-test-laya-gate 30915 dev, chạy thử write gate của Laya","expected":"web-test-laya-gate","split":"dev"}
+{"id":"S007","category":"explicit","lang":"en","prompt":"/web-test-jev-wait 28804 local","expected":"web-test-jev-wait","split":"test"}
+{"id":"S008","category":"explicit","lang":"vi","prompt":"chạy /review-pr-laya-classify 7342 giúp tôi","expected":"review-pr-laya-classify","split":"dev"}
+{"id":"S009","category":"explicit","lang":"en","prompt":"/review-pr-jev-classify https://github.com/acme/shop/pull/918","expected":"review-pr-jev-classify","split":"test"}
+{"id":"S010","category":"explicit","lang":"vi","prompt":"/init tạo CLAUDE.md cho repo này","expected":"init","split":"test"}
+{"id":"S011","category":"explicit","lang":"en","prompt":"use the pdf skill to pull the tables out of this invoice","expected":"anthropic-skills:pdf","split":"test"}
+{"id":"S012","category":"explicit","lang":"vi","prompt":"gọi skill xlsx để làm file báo cáo doanh thu theo tháng","expected":"anthropic-skills:xlsx","split":"test"}
+{"id":"S013","category":"explicit","lang":"en","prompt":"/schedule run the dependency audit every Monday at 8am","expected":"schedule","split":"test"}
+{"id":"S014","category":"explicit","lang":"vi","prompt":"dùng skill morning cho tôi xem morning brief","expected":"anthropic-skills:morning","split":"dev"}
+{"id":"S015","category":"explicit","lang":"en","prompt":"invoke the typesafe-ai skill and sketch a decision for routing refund requests","expected":"typesafe:typesafe-ai","split":"dev"}
+{"id":"S016","category":"explicit","lang":"vi","prompt":"/code-review mức high cho branch này","expected":"code-review","split":"dev"}
+{"id":"S017","category":"explicit","lang":"en","prompt":"/fewer-permission-prompts","expected":"fewer-permission-prompts","split":"test"}
+{"id":"S018","category":"explicit","lang":"vi","prompt":"/workflow-authoring viết workflow chạy 6 agent song song để rà soát tài liệu","expected":"workflow-authoring","split":"test"}
+{"id":"S019","category":"explicit","lang":"en","prompt":"/bmad-dev-story story 3.2","expected":"bmad-dev-story","split":"test"}
+{"id":"S020","category":"implicit","lang":"en","prompt":"turn this quarterly sales csv into a spreadsheet with a pivot and a chart","expected":"anthropic-skills:xlsx","split":"test"}
+{"id":"S021","category":"implicit","lang":"en","prompt":"merge these three PDFs and fill in the signature form","expected":"anthropic-skills:pdf","split":"test"}
+{"id":"S022","category":"implicit","lang":"en","prompt":"make a 10-slide deck for the board meeting about our Q3 results","expected":"anthropic-skills:pptx","split":"dev"}
+{"id":"S023","category":"implicit","lang":"en","prompt":"write a Word document with a cover page and a table of contents for the onboarding policy","expected":["anthropic-skills:docx","anthropic-skills:docs"],"why":"the prompt says Word, so docx fits; the docs skill describes itself as the default for any document","split":"dev"}
+{"id":"S024","category":"implicit","lang":"en","prompt":"research how other teams handle feature flags at scale and give me a sourced report","expected":"anthropic-skills:deep-research","split":"test"}
+{"id":"S025","category":"implicit","lang":"en","prompt":"check the diff on my branch for bugs before I merge","expected":"code-review","split":"test"}
+{"id":"S026","category":"implicit","lang":"en","prompt":"can you check this branch for injection holes and leaked secrets before the release","expected":"security-review","split":"test"}
+{"id":"S027","category":"implicit","lang":"en","prompt":"keep running the smoke tests every ten minutes until they go green","expected":"loop","split":"test"}
+{"id":"S028","category":"implicit","lang":"en","prompt":"I want an agent that summarizes the open issues every night and posts them somewhere","expected":"schedule","split":"dev"}
+{"id":"S029","category":"implicit","lang":"en","prompt":"set up this repo so Claude knows the build commands and our conventions","expected":"init","split":"test"}
+{"id":"S030","category":"implicit","lang":"en","prompt":"stop asking me for permission on git status and ls every single time","expected":"fewer-permission-prompts","split":"test"}
+{"id":"S031","category":"implicit","lang":"en","prompt":"add a hook that runs prettier after each file edit","expected":"update-config","split":"dev"}
+{"id":"S032","category":"implicit","lang":"en","prompt":"write a script that calls the Messages API with tool use and prompt caching","expected":"claude-api","split":"dev"}
+{"id":"S033","category":"implicit","lang":"en","prompt":"refactor this module to remove the duplicated helpers and make it simpler","expected":"simplify","split":"test"}
+{"id":"S034","category":"implicit","lang":"en","prompt":"start the dev server and show me a screenshot of the login page","expected":"run","split":"dev"}
+{"id":"S035","category":"implicit","lang":"en","prompt":"build a typed AI judgment that ranks support tickets by urgency","expected":"typesafe:typesafe-ai","split":"dev"}
+{"id":"S036","category":"implicit","lang":"en","prompt":"open the staging site in my Chrome where I'm already logged in and read the dashboard numbers","expected":"anthropic-skills:chrome-browser","split":"dev"}
+{"id":"S037","category":"implicit","lang":"en","prompt":"bring my notes from the other assistant into your memory","expected":"anthropic-skills:import-memory","split":"dev"}
+{"id":"S038","category":"implicit","lang":"en","prompt":"write a PRD for the new loyalty program feature","expected":"bmad-create-prd","split":"test"}
+{"id":"S039","category":"implicit","lang":"vi","prompt":"gộp 3 file pdf này lại rồi điền chữ ký vào form giúp tôi","expected":"anthropic-skills:pdf","split":"test"}
+{"id":"S040","category":"implicit","lang":"vi","prompt":"làm giúp tôi file bảng tính tổng hợp chi phí từng phòng ban, có biểu đồ cột","expected":"anthropic-skills:xlsx","split":"test"}
+{"id":"S041","category":"implicit","lang":"vi","prompt":"tạo bộ slide 8 trang thuyết trình kế hoạch quý sau cho sếp","expected":"anthropic-skills:pptx","split":"test"}
+{"id":"S042","category":"implicit","lang":"vi","prompt":"soạn tài liệu Word hướng dẫn nhân viên mới, có mục lục và header","expected":["anthropic-skills:docx","anthropic-skills:docs"],"why":"Word document: docx fits, docs is the general document skill","split":"test"}
+{"id":"S043","category":"implicit","lang":"vi","prompt":"tìm hiểu giúp tôi các cách làm rate limit phổ biến, tổng hợp thành báo cáo có nguồn","expected":"anthropic-skills:deep-research","split":"dev"}
+{"id":"S044","category":"implicit","lang":"vi","prompt":"xem giúp tôi nhánh này có bug không trước khi tôi merge","expected":"code-review","split":"test"}
+{"id":"S045","category":"implicit","lang":"vi","prompt":"rà lại thay đổi trên nhánh này xem có lộ secret hay lỗ hổng gì không","expected":"security-review","split":"test"}
+{"id":"S046","category":"implicit","lang":"vi","prompt":"cứ 15 phút kiểm tra pipeline một lần cho tới khi xanh","expected":"loop","split":"dev"}
+{"id":"S047","category":"implicit","lang":"vi","prompt":"đặt lịch mỗi sáng thứ hai tự tổng hợp các issue đang mở","expected":"schedule","split":"dev"}
+{"id":"S048","category":"implicit","lang":"vi","prompt":"tạo file hướng dẫn cho repo này để Claude biết cách build và test","expected":"init","split":"test"}
+{"id":"S049","category":"implicit","lang":"vi","prompt":"tôi mệt vì cứ bị hỏi quyền cho các lệnh chỉ đọc, giảm bớt giúp tôi","expected":"fewer-permission-prompts","split":"test"}
+{"id":"S050","category":"implicit","lang":"vi","prompt":"mỗi lần Claude sửa xong file thì tự chạy lint, cấu hình giúp tôi","expected":"update-config","split":"dev"}
+{"id":"S051","category":"implicit","lang":"vi","prompt":"viết đoạn code gọi API của Anthropic có streaming và tool use","expected":"claude-api","split":"test"}
+{"id":"S052","category":"implicit","lang":"vi","prompt":"đoạn code này lặp nhiều quá, gọn lại và bỏ phần thừa giúp tôi","expected":"simplify","split":"dev"}
+{"id":"S053","category":"implicit","lang":"vi","prompt":"chạy ứng dụng lên rồi chụp màn hình trang đăng nhập cho tôi xem","expected":"run","split":"test"}
+{"id":"S054","category":"implicit","lang":"vi","prompt":"kiểm tra ticket 52013 trên môi trường staging theo từng tiêu chí chấp nhận, có ảnh chụp làm bằng chứng","expected":"web-test","split":"test"}
+{"id":"S055","category":"implicit","lang":"vi","prompt":"viết skill mới giúp tôi tóm tắt biên bản họp rồi đo xem nó chạy tốt chưa","expected":"anthropic-skills:skill-creator","split":"test"}
+{"id":"S056","category":"implicit","lang":"vi","prompt":"viết story chi tiết để dev bắt đầu làm tính năng giỏ hàng","expected":"bmad-create-story","split":"dev"}
+{"id":"S057","category":"implicit","lang":"vi","prompt":"mở trình duyệt, vào trang quản trị và đọc giùm tôi số liệu","expected":["anthropic-skills:built-in-browser","anthropic-skills:chrome-browser"],"why":"the prompt does not say which browser; both browser skills fit","split":"dev"}
+{"id":"S058","category":"overlap","lang":"en","prompt":"review PR https://github.com/acme/shop/pull/1204 against our rules and give me a verdict","expected":["review-pr","code-review"],"why":"plain PR review: review-pr is the dedicated one, code-review also reviews a PR","split":"dev"}
+{"id":"S059","category":"overlap","lang":"vi","prompt":"review giúp tôi PR 8816 trên Azure DevOps theo rule của dự án","expected":["review-pr","code-review"],"why":"plain PR review","split":"dev"}
+{"id":"S060","category":"overlap","lang":"en","prompt":"review this PR and also run the Laya severity check on each finding","expected":"review-pr-laya-classify","why":"names Laya severity check, which is the explicit trigger of the laya variant","split":"test"}
+{"id":"S061","category":"overlap","lang":"vi","prompt":"review PR 6021 và dùng Laya để kiểm tra độc lập mức severity","expected":"review-pr-laya-classify","why":"names Laya severity check","split":"dev"}
+{"id":"S062","category":"overlap","lang":"en","prompt":"review PR 3377 and A/B Jev against Laya on the severities","expected":"review-pr-jev-classify","why":"the jev variant is the one that A/Bs Laya vs Jev","split":"dev"}
+{"id":"S063","category":"overlap","lang":"vi","prompt":"so sánh Laya với Jev khi chấm severity cho PR 4490","expected":"review-pr-jev-classify","why":"A/B Laya vs Jev on PR severity","split":"dev"}
+{"id":"S064","category":"overlap","lang":"en","prompt":"can you review the pull request at github.com/acme/api/pull/77?","expected":["review-pr","code-review"],"why":"plain PR review","split":"test"}
+{"id":"S065","category":"overlap","lang":"vi","prompt":"xem PR này có ổn để merge không","expected":["review-pr","code-review","none"],"why":"no PR given, so asking back is also reasonable","split":"dev"}
+{"id":"S066","category":"overlap","lang":"en","prompt":"adversarial review of my uncommitted changes with layered reviewers","expected":"bmad-code-review","split":"dev"}
+{"id":"S067","category":"overlap","lang":"vi","prompt":"review phản biện các thay đổi trong working tree theo kiểu BMad","expected":"bmad-code-review","split":"dev"}
+{"id":"S068","category":"overlap","lang":"en","prompt":"review the diff of my branch for correctness bugs, effort high","expected":"code-review","split":"test"}
+{"id":"S069","category":"overlap","lang":"en","prompt":"give me a merge assessment, Blocked or Eligible, for PR 2290","expected":"review-pr","why":"no variant is named, so the plain review-pr; the variants run only on explicit request","split":"dev"}
+{"id":"S070","category":"overlap","lang":"en","prompt":"test ticket 33018 on staging and give me a report with screenshots","expected":"web-test","split":"test"}
+{"id":"S071","category":"overlap","lang":"vi","prompt":"kiểm thử story 29461 trên môi trường dev, xuất báo cáo HTML có ảnh chụp","expected":"web-test","split":"test"}
+{"id":"S072","category":"overlap","lang":"en","prompt":"test ticket 40227 on local and gate every step that writes data using Jev","expected":"web-test-jev-gate","split":"test"}
+{"id":"S073","category":"overlap","lang":"vi","prompt":"chạy web test story 18890 trên dev, chặn các bước ghi dữ liệu bằng Laya","expected":"web-test-laya-gate","split":"dev"}
+{"id":"S074","category":"overlap","lang":"en","prompt":"test bug 37711 on dev and judge each step with a confidence verdict from Laya","expected":"web-test-laya-verdict","split":"dev"}
+{"id":"S075","category":"overlap","lang":"vi","prompt":"test ticket 24350, sau mỗi bước cho Jev chấm verdict kèm độ tin cậy","expected":"web-test-jev-verdict","split":"test"}
+{"id":"S076","category":"overlap","lang":"en","prompt":"run the ticket 51276 test with the Laya page wait that classifies the screen","expected":"web-test-laya-wait","split":"test"}
+{"id":"S077","category":"overlap","lang":"vi","prompt":"test ticket 12983, dùng Jev để đợi trang tải xong và phân loại màn hình","expected":"web-test-jev-wait","split":"test"}
+{"id":"S078","category":"overlap","lang":"en","prompt":"test ticket 46009 and use Laya to ground which element to click","expected":"web-test-laya-ground","split":"dev"}
+{"id":"S079","category":"overlap","lang":"vi","prompt":"test bug 30072, để Jev xác định phần tử cần click","expected":"web-test-jev-ground","split":"dev"}
+{"id":"S080","category":"overlap","lang":"en","prompt":"test ticket 22741 and have Jev read an observation after each step as the test oracle","expected":"web-test-jev-oracle","split":"test"}
+{"id":"S081","category":"overlap","lang":"vi","prompt":"test ticket 35519 với test oracle của Laya, đọc observation sau mỗi bước","expected":"web-test-laya-oracle","split":"dev"}
+{"id":"S082","category":"overlap","lang":"en","prompt":"just QA ticket 47750 on staging, the plain way, no experiments","expected":"web-test","split":"test"}
+{"id":"S083","category":"overlap","lang":"vi","prompt":"QA lại bug 19934 trên dev giúp tôi, làm theo cách bình thường","expected":"web-test","split":"test"}
+{"id":"S084","category":"overlap","lang":"en","prompt":"which is better for page waiting on ticket 28188, Laya or Jev? try both","expected":["web-test-laya-wait","web-test-jev-wait"],"why":"asks for an A/B of both providers on page wait; either variant is a valid start","split":"test"}
+{"id":"S085","category":"overlap","lang":"vi","prompt":"tôi muốn so sánh Laya và Jev ở bước write gate khi test ticket 41007","expected":["web-test-laya-gate","web-test-jev-gate"],"why":"A/B of both providers on the write gate","split":"dev"}
+{"id":"S086","category":"overlap","lang":"en","prompt":"implement story 2.4 from the sprint plan","expected":"bmad-dev-story","split":"test"}
+{"id":"S087","category":"overlap","lang":"vi","prompt":"triển khai story tiếp theo trong sprint giúp tôi","expected":"bmad-dev-story","split":"test"}
+{"id":"S088","category":"overlap","lang":"en","prompt":"write the next story file for epic 3","expected":"bmad-create-story","split":"test"}
+{"id":"S089","category":"none","lang":"en","prompt":"what does Promise.allSettled return?","expected":"none","split":"dev"}
+{"id":"S090","category":"none","lang":"vi","prompt":"giải thích giúp tôi sự khác nhau giữa mutex và semaphore","expected":"none","split":"dev"}
+{"id":"S091","category":"none","lang":"en","prompt":"rename the variable cnt to retryCount in this function","expected":"none","split":"test"}
+{"id":"S092","category":"none","lang":"vi","prompt":"sửa lỗi chính tả trong comment ở dòng 40","expected":"none","split":"test"}
+{"id":"S093","category":"none","lang":"en","prompt":"why is my docker build so slow?","expected":"none","split":"dev"}
+{"id":"S094","category":"none","lang":"vi","prompt":"tại sao test này lúc pass lúc fail nhỉ?","expected":"none","split":"test"}
+{"id":"S095","category":"none","lang":"en","prompt":"add a null check before dereferencing user.profile","expected":"none","split":"test"}
+{"id":"S096","category":"none","lang":"vi","prompt":"thêm tham số timeout vào hàm fetchOrders","expected":"none","split":"test"}
+{"id":"S097","category":"none","lang":"en","prompt":"commit these changes with a clear message","expected":"none","split":"dev"}
+{"id":"S098","category":"none","lang":"vi","prompt":"commit và push nhánh này lên giúp tôi","expected":"none","split":"test"}
+{"id":"S099","category":"none","lang":"en","prompt":"what's the difference between git merge and git rebase?","expected":"none","split":"test"}
+{"id":"S100","category":"none","lang":"vi","prompt":"ok làm tiếp đi","expected":"none","split":"dev"}
+{"id":"S101","category":"none","lang":"en","prompt":"thanks, that looks good","expected":"none","split":"dev"}
+{"id":"S102","category":"none","lang":"vi","prompt":"cảm ơn bạn, mình hiểu rồi","expected":"none","split":"test"}
+{"id":"S103","category":"none","lang":"en","prompt":"can you explain this stack trace?","expected":"none","split":"dev"}
+{"id":"S104","category":"none","lang":"vi","prompt":"đoạn regex này khớp với chuỗi nào?","expected":"none","split":"test"}
+{"id":"S105","category":"none","lang":"en","prompt":"write a unit test for the parseDate function","expected":"none","split":"test"}
+{"id":"S106","category":"none","lang":"vi","prompt":"viết thêm test cho trường hợp danh sách rỗng","expected":"none","split":"test"}
+{"id":"S107","category":"none","lang":"en","prompt":"convert this callback code to async/await","expected":"none","split":"test"}
+{"id":"S108","category":"none","lang":"vi","prompt":"đổi tên file utils.js thành helpers.js và sửa các import","expected":"none","split":"dev"}
+{"id":"S109","category":"none","lang":"en","prompt":"how do I undo my last commit but keep the changes?","expected":"none","split":"dev"}
+{"id":"S110","category":"none","lang":"vi","prompt":"cách nào để lấy 10 phần tử đầu của mảng trong Python?","expected":"none","split":"dev"}
+{"id":"S111","category":"none","lang":"en","prompt":"summarize what this function does in two sentences","expected":"none","split":"dev"}
+{"id":"S112","category":"none","lang":"vi","prompt":"tóm tắt file README này trong 3 câu","expected":"none","split":"dev"}
+{"id":"S113","category":"none","lang":"en","prompt":"fix the failing test in cart.spec.ts","expected":"none","split":"dev"}
+{"id":"S114","category":"none","lang":"vi","prompt":"chạy lại test và cho tôi biết kết quả","expected":"none","split":"test"}
+{"id":"S115","category":"none","lang":"en","prompt":"what port does Postgres use by default?","expected":"none","split":"test"}
+{"id":"S116","category":"none","lang":"vi","prompt":"SQL join và subquery khác nhau chỗ nào?","expected":"none","split":"test"}
+{"id":"S117","category":"none","lang":"en","prompt":"bump the lodash version in package.json","expected":"none","split":"dev"}
+{"id":"S118","category":"none","lang":"vi","prompt":"xóa đoạn code đã comment ở file này","expected":"none","split":"test"}
+{"id":"S119","category":"none","lang":"en","prompt":"is it safe to store session tokens in localStorage?","expected":"none","split":"test"}
+{"id":"S120","category":"none","lang":"vi","prompt":"nên đặt tên biến boolean như thế nào cho dễ đọc?","expected":"none","split":"dev"}
+{"id":"S121","category":"none","lang":"en","prompt":"show me the last five commits","expected":"none","split":"test"}
+{"id":"S122","category":"none","lang":"vi","prompt":"liệt kê các file đã thay đổi so với main","expected":"none","split":"test"}
+{"id":"S123","category":"none","lang":"en","prompt":"make this button blue","expected":"none","split":"test"}
+{"id":"S124","category":"none","lang":"vi","prompt":"căn giữa div này giúp tôi","expected":"none","split":"test"}
+{"id":"S125","category":"none","lang":"en","prompt":"what time complexity does this loop have?","expected":"none","split":"test"}
+{"id":"S126","category":"none","lang":"vi","prompt":"giải thích giúp tôi closure trong JavaScript","expected":"none","split":"test"}
+{"id":"S127","category":"none","lang":"en","prompt":"add logging around the payment call","expected":"none","split":"dev"}
+{"id":"S128","category":"none","lang":"vi","prompt":"thêm try catch quanh đoạn gọi API này","expected":"none","split":"dev"}
+{"id":"S129","category":"none","lang":"en","prompt":"open src/index.ts and tell me what it exports","expected":"none","split":"dev"}
+{"id":"S130","category":"none","lang":"vi","prompt":"đọc file config.yaml và cho tôi biết giá trị timeout","expected":"none","split":"dev"}
+{"id":"S131","category":"none","lang":"en","prompt":"I'm not sure which approach is better, what do you think?","expected":"none","split":"dev"}
+{"id":"S132","category":"none","lang":"vi","prompt":"bạn nghĩ nên dùng Redis hay Memcached cho cache này?","expected":"none","split":"dev"}
+{"id":"S133","category":"none","lang":"en","prompt":"undo that last change","expected":"none","split":"dev"}
+{"id":"S134","category":"none","lang":"vi","prompt":"quay lại phiên bản trước của hàm này","expected":"none","split":"dev"}
+{"id":"S135","category":"none","lang":"en","prompt":"what does the -rf flag do in rm?","expected":"none","split":"dev"}
+{"id":"S136","category":"none","lang":"vi","prompt":"tại sao hàm này trả về undefined?","expected":"none","split":"dev"}
+{"id":"S137","category":"none","lang":"en","prompt":"format this JSON","expected":"none","split":"dev"}
+{"id":"S138","category":"none","lang":"vi","prompt":"sắp xếp lại các import theo thứ tự chữ cái","expected":"none","split":"dev"}
+{"id":"S139","category":"none","lang":"en","prompt":"write a commit message for the staged changes","expected":"none","split":"dev"}
+{"id":"S140","category":"none","lang":"vi","prompt":"tạo một hàm kiểm tra email hợp lệ","expected":"none","split":"test"}
+{"id":"S141","category":"none","lang":"en","prompt":"help me name this class","expected":"none","split":"test"}
+{"id":"S142","category":"none","lang":"vi","prompt":"mình đang bí, nên bắt đầu từ đâu?","expected":"none","split":"test"}
+{"id":"S143","category":"none","lang":"en","prompt":"translate this error message into plain English","expected":"none","split":"test"}
+{"id":"S144","category":"none","lang":"vi","prompt":"dịch đoạn comment này sang tiếng Anh","expected":"none","split":"dev"}
+{"id":"S145","category":"none","lang":"en","prompt":"increase the retry count to five","expected":"none","split":"test"}
+{"id":"S146","category":"none","lang":"vi","prompt":"đổi màu nền sang xám nhạt","expected":"none","split":"test"}
+{"id":"S147","category":"none","lang":"en","prompt":"what's the best way to structure a monorepo?","expected":"none","split":"test"}
+{"id":"S148","category":"none","lang":"vi","prompt":"cho tôi ví dụ về dependency injection","expected":"none","split":"dev"}
+{"id":"S149","category":"none","lang":"en","prompt":"explain the diff you just made","expected":"none","split":"test"}
+{"id":"S150","category":"none","lang":"vi","prompt":"giải thích lỗi null reference này","expected":"none","split":"dev"}
+{"id":"S151","category":"none","lang":"en","prompt":"delete the temp branch locally","expected":"none","split":"test"}
+{"id":"S152","category":"none","lang":"vi","prompt":"tạo branch mới tên fix-login-bug","expected":"none","split":"test"}
+{"id":"S153","category":"none","lang":"en","prompt":"list the TODOs in this file","expected":"none","split":"dev"}
+{"id":"S154","category":"none","lang":"vi","prompt":"kiểm tra giúp tôi file này dùng tab hay space","expected":"none","split":"dev"}
+{"id":"S155","category":"none","lang":"en","prompt":"ok","expected":"none","split":"test"}
+{"id":"S156","category":"none","lang":"vi","prompt":"tiếp tục","expected":"none","split":"dev"}
+{"id":"S157","category":"none","lang":"en","prompt":"why did you choose a map instead of an array?","expected":"none","split":"dev"}
+{"id":"S158","category":"none","lang":"vi","prompt":"tại sao bạn sửa file đó?","expected":"none","split":"test"}
+{"id":"S159","category":"none","lang":"en","prompt":"increase the font size in the header","expected":"none","split":"test"}
+{"id":"S160","category":"none","lang":"vi","prompt":"thêm cột created_at vào bảng orders","expected":"none","split":"test"}
+{"id":"S161","category":"hard-negative","lang":"en","prompt":"what does PDF stand for?","expected":"none","split":"test"}
+{"id":"S162","category":"hard-negative","lang":"vi","prompt":"file pdf là gì và ra đời khi nào?","expected":"none","split":"test"}
+{"id":"S163","category":"hard-negative","lang":"en","prompt":"explain what a pivot table is","expected":"none","split":"test"}
+{"id":"S164","category":"hard-negative","lang":"vi","prompt":"excel và google sheets khác nhau thế nào?","expected":"none","split":"dev"}
+{"id":"S165","category":"hard-negative","lang":"en","prompt":"what should a good code review checklist item look like?","expected":"none","split":"dev"}
+{"id":"S166","category":"hard-negative","lang":"vi","prompt":"ai là người đầu tiên đề xuất code review?","expected":"none","split":"dev"}
+{"id":"S167","category":"hard-negative","lang":"en","prompt":"explain how a PR review process usually works at big companies","expected":"none","split":"test"}
+{"id":"S168","category":"hard-negative","lang":"vi","prompt":"pull request là gì, giải thích cho người mới","expected":"none","split":"dev"}
+{"id":"S169","category":"hard-negative","lang":"en","prompt":"what does a security review mean in SOC 2 terms?","expected":"none","split":"dev"}
+{"id":"S170","category":"hard-negative","lang":"vi","prompt":"viết email nhắc team họp lịch hàng tuần vào thứ hai","expected":"none","split":"test"}
+{"id":"S171","category":"hard-negative","lang":"en","prompt":"loop through this array and double each element","expected":"none","split":"dev"}
+{"id":"S172","category":"hard-negative","lang":"vi","prompt":"viết vòng lặp for in ra các số chẵn","expected":"none","split":"test"}
+{"id":"S173","category":"hard-negative","lang":"en","prompt":"how do I initialize a git repo?","expected":"none","split":"dev"}
+{"id":"S174","category":"hard-negative","lang":"vi","prompt":"khởi tạo mảng 10 phần tử bằng 0 trong C","expected":"none","split":"dev"}
+{"id":"S175","category":"hard-negative","lang":"en","prompt":"who invented the word processor?","expected":"none","split":"dev"}
+{"id":"S176","category":"hard-negative","lang":"vi","prompt":"viết CSS cho slide carousel trượt ngang","expected":"none","split":"test"}
+{"id":"S177","category":"hard-negative","lang":"en","prompt":"run the unit tests","expected":"none","split":"dev"}
+{"id":"S178","category":"hard-negative","lang":"vi","prompt":"tôi test thử ý tưởng này trên giấy trước","expected":"none","split":"test"}
+{"id":"S179","category":"hard-negative","lang":"en","prompt":"explain what a hook is in React","expected":"none","split":"dev"}
+{"id":"S180","category":"hard-negative","lang":"en","prompt":"what is a browser extension manifest?","expected":"none","split":"test"}
+{"id":"S181","category":"typo-short-vague","lang":"en","prompt":"revew my branch plz","expected":"code-review","split":"test"}
+{"id":"S182","category":"typo-short-vague","lang":"vi","prompt":"review lai nhanh nay giup toi","expected":"code-review","split":"dev"}
+{"id":"S183","category":"typo-short-vague","lang":"en","prompt":"merge pdfs","expected":"anthropic-skills:pdf","split":"test"}
+{"id":"S184","category":"typo-short-vague","lang":"vi","prompt":"lam file excel doanh thu","expected":"anthropic-skills:xlsx","split":"test"}
+{"id":"S185","category":"typo-short-vague","lang":"en","prompt":"slides for monday","expected":"anthropic-skills:pptx","split":"dev"}
+{"id":"S186","category":"typo-short-vague","lang":"en","prompt":"tets ticket 3188 on stagin","expected":"web-test","split":"dev"}
+{"id":"S187","category":"typo-short-vague","lang":"vi","prompt":"test ticket 7743 tren dev","expected":"web-test","split":"dev"}
+{"id":"S188","category":"typo-short-vague","lang":"en","prompt":"do it every 10 min","expected":["loop","none"],"why":"no antecedent: asking back is as valid as loop","split":"test"}
+{"id":"S189","category":"typo-short-vague","lang":"vi","prompt":"chạy cái đó đi","expected":"none","split":"dev"}
+{"id":"S190","category":"typo-short-vague","lang":"en","prompt":"check it","expected":"none","split":"dev"}
+{"id":"S191","category":"typo-short-vague","lang":"en","prompt":"security scan","expected":"security-review","split":"dev"}
+{"id":"S192","category":"typo-short-vague","lang":"vi","prompt":"scan bao mat nhanh nay","expected":"security-review","split":"dev"}
+{"id":"S193","category":"typo-short-vague","lang":"en","prompt":"write the prd","expected":"bmad-create-prd","split":"dev"}
+{"id":"S194","category":"typo-short-vague","lang":"en","prompt":"simplfy this","expected":"simplify","split":"dev"}
+{"id":"S195","category":"typo-short-vague","lang":"vi","prompt":"don dep code nay","expected":"simplify","split":"dev"}
+{"id":"S196","category":"typo-short-vague","lang":"en","prompt":"research this","expected":["deep-research","none"],"why":"no topic given","split":"dev"}
+{"id":"S197","category":"typo-short-vague","lang":"vi","prompt":"tao file claude.md","expected":"init","split":"test"}
+{"id":"S198","category":"typo-short-vague","lang":"en","prompt":"make a deck","expected":"anthropic-skills:pptx","split":"test"}
+{"id":"S199","category":"typo-short-vague","lang":"vi","prompt":"xem pr","expected":["review-pr","code-review","none"],"why":"no PR given","split":"test"}

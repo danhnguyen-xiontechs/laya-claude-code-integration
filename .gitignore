@@ -14,6 +14,9 @@ hooks/cache_expiry_gate.log.jsonl
 ado-classify/config.local.json
 ado-classify/__pycache__/
 
+# skills-router: per-machine config
+.claude/skills/skills-router/jev.local.json
+.claude/skills/skills-router/builtin.local.json
 # triage v2: real logs from Claude Code transcripts / internal projects - keep local
 triage/v2/data/
 
