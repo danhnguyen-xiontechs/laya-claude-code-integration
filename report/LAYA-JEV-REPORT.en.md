@@ -8,7 +8,7 @@
 > 🧪 **Unit test**: automated script tests only ·
 > 💡 **Idea**: design document only
 >
-> **Verdict labels:** `ADOPT` ready to use · `PILOT` keep trying, with conditions · `SHELVED` paused · `DROP` abandoned · `IDEA` not built
+> **Verdict labels:** `ADOPT` ready to use · `PILOT` keep trying, with conditions · `SHADOW` runs alongside, log only · `SHELVED` paused · `DROP` abandoned · `IDEA` not built
 
 ---
 
@@ -38,14 +38,15 @@
    - the write-gate network audit
    - the cache-expiry hook
    - fast-compact (254k → 57k tokens in 57 ms, with no model call)
-4. **review-pr + Jev is the strongest candidate among the skills.** On 10-15, PR 5240 was re-run as a controlled A/B: Claude reviewed once and found 18 findings, then both engines judged those same 18.
+4. **review-pr + Jev: good on a test PR, but failed the real test.** On 10-15, PR 5240 was re-run as a controlled A/B: Claude reviewed once and found 18 findings, then both engines judged those same 18.
    - **Jev:** agreed on 12/18. Every disagreement was an **upgrade** (the safe direction). It kept all 5 Critical findings at Critical. It cost $0.0006 and took 5.6 s per PR.
    - **Laya:** agreed on only 7/18. It downgraded 4 of the 5 Criticals and pushed 3 merge-blocking findings down to Suggestion.
-   - → `review-pr-jev-classify` with `--provider jev`: `PILOT` on real PRs. Laya: `DROP`.
+   - **Real test on 8 merged ess-be PRs:** only 2 of 8 of Jev's upward flags were real issues (25%, below the 50% random base rate).
+   - → `review-pr-jev-classify` moves back to `SHADOW`. Laya: `DROP`.
 5. **5 new skills built from scratch around Jev (`JEV` repo)** all work in real Claude Code: 7 sessions, Claude picked the right skill on its own, 84/84 unit tests pass → `PILOT`. Jev's contribution is uneven: high in `acceptance-criteria-coverage` and `dead-code-finder`, about 50/50 in `subagent-validator`, low in `git-risk-scanner` and `context-curator`.
 6. **2 BMad + Jev skills** (`bmad-help-jev`, `bmad-code-review-jev`) are built and well designed (BMad core untouched), but have **unit tests only** (17/17) and have never run against live Jev → they need a pilot before any verdict.
 7. **`skills-router`** (a broad skill-suggestion skill, new build): on 199 synthetic scenarios, after round 2, Jev is 91% accurate against BM25 75% and Laya 54–62%; but on 368 real prompts Jev only ties BM25 (50%) and labels are scarce. → `PILOT`: BM25 by default, Jev as an optional second stage.
-8. **`subagent-model-router`** (per-subagent model choice, new build): on 18 tasks with an automatic check, rules + escalate on failure pass 18/18 at **14% of the cost** of always using Opus (always-Sonnet 61%, Jev 48%). → `PILOT`, the largest quota-saving potential for running many stories in parallel.
+8. **`subagent-model-router`** (per-subagent model choice, new build): on 18 tasks with an automatic check, rules + escalate on failure pass 18/18 at **14% of the cost** of always using Opus (always-Sonnet 61%, Jev 48%). **Pilot on 6 real ess-be stories:** 6/6 passed, as with Sonnet, at **36% of subagent quota**. → `PILOT` with the best real evidence, the largest quota-saving potential for running many stories in parallel.
 
 **Recommendation:**
 - Do not use Laya as an automatic router or classifier.
@@ -75,7 +76,7 @@
 | # | Item | Kind | Engine | Test level | Verdict |
 |---|---|---|---|---|---|
 | A1 | `review-pr-laya-classify` | Applied to existing skill (`review-pr`) | Laya | ✅ PR 5240 ×2 · 🧪 42/42 | `DROP` (Laya falls short; A2 has all its features) |
-| A2 | `review-pr-jev-classify` | Applied to existing skill (A/B) | Laya / Jev | ✅ PR 5240 ×2 (one controlled A/B) · 🧪 51/51 | `PILOT` with `--provider jev`* |
+| A2 | `review-pr-jev-classify` | Applied to existing skill (A/B) | Laya / Jev | ✅ PR 5240 ×2 + 8 merged ess-be PRs · 🧪 87/87 | `SHADOW` (real test failed the criteria) |
 | A3 | `web-test-laya-wait` | Applied to `web-test` | Laya | ✅ dev + staging · 📊 | `DROP` model, `ADOPT` rules |
 | A4 | `web-test-laya-verdict` | Applied to `web-test` | Laya | ✅ dev + staging · 📊 | `DROP` |
 | A5 | `web-test-laya-gate` | Applied to `web-test` | Laya | ✅ staging (no write steps) · 📊 | `DROP` model, `ADOPT` audit |
@@ -103,7 +104,7 @@
 | D5 | `context-curator` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
 | D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `PILOT` |
 | E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `PILOT` (BM25 default, Jev optional) |
-| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ hook tested for real · 📊 18-task benchmark · 🧪 19/19 | `PILOT` (largest quota-saving potential) |
+| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `PILOT` (best real evidence) |
 | C1–C9 | Evaluation experiments (section 8) | Research | Laya / Jev | 📊 / ✅ | See section 8 |
 
 \* Provided Security approves sending data off the network. For the `web-test` skills, the "wrong tab" bug is fixed on branch `claude/web-test-fixes-4fdcd7` and needs a re-run on ESS.
@@ -200,6 +201,24 @@ Logs: `~/.xt-skills/review-pr-jev-classify/reviews/…/pr-5240/20261015-093824-a
 - **Labels from real outcomes** (`outcome-labels.mjs`): compares the commit at review time with the PR's final commit; a finding whose code region changed afterwards is labelled `fixed`. Tested only with fake data, not yet on a real PR.
 - **2 log bugs fixed:** the `rules` field now uses the project's rule ids and overrides; the execution-log header shows both providers.
 - 🧪 **87/87 tests pass.** Not merged, and `recheck` is not switched on for real PRs: it needs labels from many PRs to tell whether the flags are right.
+
+### 4.7 Real test on 8 merged ess-be PRs (2026-10-15, commit `515b077`)
+- **How:**
+  - 8 merged ess-be PRs: 5231, 5328, 4820, 5264, 5199, 4635, 4431, 4500.
+  - These PRs have almost no review threads on ADO, so Claude re-reviewed each PR blind, at the commit **before** the author's fixes. 14 findings in total.
+  - Jev ran in shadow mode (`stable-disagreement`, k=3, plus both yes/no questions).
+  - Labels came from `outcome-labels.mjs`: a finding the author later fixed counts as a real issue.
+- **Criterion A (≥ 50% of Jev's upward flags are real issues): failed.** Only 2 of 8 flags were later fixed (25%), while the base rate across all findings is 50%. So Jev's flags did **worse than random**. Jev rated 10 of 14 findings Major and was very stable: consistently wrong, not noisy.
+- **Criterion B (no merge-blocking finding downgraded): passed,** but it tests nothing, since Jev downgraded nothing.
+- **The labels may undercount:** 3 of the 7 "unchanged" findings were actually fixed in a doc or test file rather than at the cited line. Counting those, A would reach about 50–62%. That reading was not fixed before the run, so it is not used for the verdict.
+- **The 2 yes/no questions taught nothing:** `already_raised` was always no, because the PRs have no threads; `introduced_by_pr` was wrong both times it said no.
+- **Bright spot for Claude itself:** Claude's review matched what the developer later fixed on several PRs (5264, 5199).
+- **Cost:** Jev $0.002. Claude about 673k subagent tokens (against the Max quota).
+- **Limits:** only 14 findings on small PRs, which is weak evidence.
+
+**New verdict:** `review-pr-jev-classify` moves from `PILOT` to `SHADOW` (runs alongside, log only).
+- The idea "Jev only upgrades, so it can be a safety net" **does not hold on real PRs**: on PR 5240 the upgrades looked right because the PR had seeded defects, but on real PRs Jev mostly bumps everything to Major.
+- To try again: flag only when the project rule's default severity agrees with Jev, and count fixes made in the doc or test file the rule points to.
 
 ---
 
@@ -593,6 +612,34 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Next:** try it on a few real stories with ACs (`ess-be` / `ess-fe`), and switch the hook on in shadow mode to compare with the models actually used.
 
+### 11.1 Pilot on ess-be with real stories (2026-10-15, commit `5efd93a`)
+- **How:**
+  - Claude wrote 6 realistic user stories for ess-be (validation, search filter, a bug fix with a trap, a new endpoint, a 10-file refactor, a story needing a design decision), each with ACs and hidden tests.
+  - Each story was done by one subagent, comparing two arms on throwaway worktrees:
+    - A: always Sonnet;
+    - B: the router picks the model, with escalate-on-failure.
+- **Results:**
+
+| Story | A: Sonnet | B: Router | Escalated |
+|---|---|---|---|
+| S1 validation | ✅ $0.326 | Haiku ✅ $0.020 | no |
+| S2 search filter | ✅ $0.241 | Haiku ✅ $0.024 | no |
+| S3 bug fix with a trap | ✅ $0.428 | Haiku ✅ $0.023 | no |
+| S4 new endpoint | ✅ $0.763 | Haiku ✅ $0.029 | no |
+| S5 10-file refactor | ✅ $0.191 | Haiku ✅ $0.014 | no |
+| S6 design (build and suite only) | ✅ $0.229 | **Opus** ✅ $0.666 | no |
+| **Total** | **$2.18** | **$0.78 (36%)** | 0 |
+
+- **Both criteria met:** the router passed every story the Sonnet arm passed, with diff quality no worse (on S6, Opus followed ess-be's dependency-injection rule better); subagent quota was only **36%** of arm A's (the bar was ≤ 50%).
+- **Three caveats:**
+  - **4 of the 5 Haiku picks came from a bug** in the rules: the phrase "do not change them" in the prompt made the rules treat coding stories as read-only. Without it, S1, S2, S4 and S5 would have run on Sonnet. Even so, Haiku passed all 5 stories. The bug is fixed in commit `24bd4b6`, branch `claude/router-readonly-fix` (20/20 tests).
+  - **Escalation never triggered,** so the retry-one-tier-up path is still untested.
+  - **Subagents did not run through the real hook:** auto mode blocks launching `claude -p` sessions from a script, so the session spawned the subagents itself with the model `route.mjs` chose (the same routing logic as the hook). Also, ess-be already has 17 failing tests on a clean checkout, so "suite green" means no new failures.
+- **Verdict:** still `PILOT`, and now the `PILOT` with the best real evidence in the project.
+  - Stories with an automatic check: rules + escalate on failure.
+  - Stories without a check: never start on Haiku.
+  - Next: re-run on 15–20 real ADO stories after the bug fix, to see real misses and escalations.
+
 ---
 
 ## 12. Overall conclusions
@@ -627,7 +674,8 @@ All 199 scenarios, thresholds chosen on dev:
   - A comment in `jev-gate/scripts/gate.mjs` still quotes Laya's numbers.
   - `review-pr-jev-classify`: the `rules` field in the logs ignores the project's rule ids and overrides (log only). The execution-log header shows only the provider that `assess.mjs` ran last.
 
-- **`subagent-model-router`:** the benchmark only has small synthetic tasks with an automatic check; not yet tried on real stories or on tasks without a check.
+- **`subagent-model-router`:** the real pilot had only 6 stories, written by Claude; escalation never triggered; subagents did not run through the real hook.
+- **`review-pr-jev-classify`:** the real test had only 14 findings; labels count only fixes at the cited line, so they may miss fixes in doc/test files.
 - **`skills-router`:** the labels of the 199 scenarios were set by Claude; real prompts carry only 16 skill labels; the descriptions of the project's skills are also sent to Jev when it is used; the shadow hook is not switched on, and its real latency has not been measured.
 - **The 2 BMad + Jev skills:** never run against live Jev; the 0.3 thresholds come from the cookbook and have not been measured on our data.
 - **The 5 new Jev skills (`JEV` repo):** the code is uncommitted; numbers come from synthetic demos built by Claude; there is no comparison with Claude doing the work alone; each real scenario ran once.
@@ -645,7 +693,7 @@ All 199 scenarios, thresholds chosen on dev:
 7. The 5 new Jev skills: commit the code, run them on a real team repo, measure Claude doing the same work alone; run the hard log set h01–h08 for `jev_advisor`.
 8. Pilot the 2 BMad + Jev skills per the plan: about 60 labelled questions for `bmad-help-jev`; 10 merged `ess-fe` PRs for `bmad-code-review-jev`.
 9. `skills-router`: (the look-alike skills problem was fixed in round 2) switch on the shadow hook to collect real labels, pick the BM25 threshold per catalog; only then decide whether Jev should be the default second stage.
-10. `subagent-model-router`: try it on a few real stories with ACs, and switch the hook on in shadow mode.
+10. `subagent-model-router`: merge the bug fix (`claude/router-readonly-fix`), then re-run on 15–20 real ADO stories to see real misses and escalations; switch the hook on in shadow mode.
 11. Review and merge the new branches: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
 
 ---
@@ -698,6 +746,9 @@ All 199 scenarios, thresholds chosen on dev:
 | `feat/bmad-jev-skills` (pushed, not merged) | `bmad-help-jev`, `bmad-code-review-jev`, `idea/jev-applicability-plan.md` |
 | `claude/skills-router-62fc74` (not pushed) | `skills-router`, shadow hook, 199 scenarios, round 2 |
 | `claude/subagent-model-router-f7f0e3` (not pushed) | `subagent-model-router`, 18-task benchmark |
+| `claude/subagent-router-pilot-*` (not pushed) | ess-be pilot report (`research/subagent-router-ess-be-pilot.md`) |
+| `claude/router-readonly-fix` (not pushed) | Router "read-only" bug fix |
+| The real review-pr test session's branch (not pushed) | `research/review-pr-jev-real-eval.md` |
 | `claude/review-pr-jev-upgrade-2bbb34` (not pushed) | `review-pr-jev-classify` upgrade |
 | `claude/web-test-fixes-4fdcd7` (not pushed) | Bug fixes for the 11 `web-test` copies, per-click gate check |
 | `xt-skills` repo | The original `review-pr` |

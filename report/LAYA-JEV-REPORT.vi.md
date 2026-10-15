@@ -8,7 +8,7 @@
 > 🧪 **Unit test**: chỉ có test tự động của script ·
 > 💡 **Ý tưởng**: mới có tài liệu thiết kế
 >
-> **Kết luận dùng nhãn:** `ADOPT` dùng được ngay · `PILOT` thử tiếp có điều kiện · `SHELVED` gác lại · `DROP` bỏ · `IDEA` chưa làm
+> **Kết luận dùng nhãn:** `ADOPT` dùng được ngay · `PILOT` thử tiếp có điều kiện · `SHADOW` chạy song song chỉ ghi log · `SHELVED` gác lại · `DROP` bỏ · `IDEA` chưa làm
 
 ---
 
@@ -31,14 +31,15 @@
    - network audit trong write-gate
    - cache-expiry hook
    - fast-compact (rút gọn context 254k → 57k token trong 57 ms, không gọi model)
-4. **review-pr + Jev là ứng viên tốt nhất trong nhóm skill.** Ngày 15/10 đã chạy lại PR 5240 theo kiểu A/B có kiểm soát: Claude review 1 lần ra 18 lỗi, rồi cả hai engine chấm trên cùng 18 lỗi đó.
+4. **review-pr + Jev: tốt trên PR test, nhưng trượt khi test thật.** Ngày 15/10 đã chạy lại PR 5240 theo kiểu A/B có kiểm soát: Claude review 1 lần ra 18 lỗi, rồi cả hai engine chấm trên cùng 18 lỗi đó.
    - **Jev:** đồng ý 12/18. Mọi chỗ lệch đều là **nâng** mức (hướng an toàn). Giữ đúng 5/5 lỗi Critical. Tốn $0.0006 và 5.6 s mỗi PR.
    - **Laya:** chỉ đồng ý 7/18. Hạ 4 trong 5 lỗi Critical, và đẩy 3 lỗi chặn merge xuống Suggestion.
-   - → `review-pr-jev-classify` với `--provider jev`: `PILOT` trên PR thật. Laya: `DROP`.
+   - **Test thật trên 8 PR ess-be đã merge:** chỉ 2/8 cờ nâng mức của Jev là lỗi thật (25%, thấp hơn mức chọn ngẫu nhiên 50%).
+   - → `review-pr-jev-classify` chuyển về `SHADOW`. Laya: `DROP`.
 5. **5 skill mới build từ đầu quanh Jev (repo `JEV`)** đều chạy được trong Claude Code thật: 7 session, Claude tự chọn đúng skill, 84/84 unit test pass → `PILOT`. Mức Jev đóng góp không đều: cao ở `acceptance-criteria-coverage` và `dead-code-finder`, khoảng 50/50 ở `subagent-validator`, thấp ở `git-risk-scanner` và `context-curator`.
 6. **2 skill BMad + Jev** (`bmad-help-jev`, `bmad-code-review-jev`) đã build xong, thiết kế tốt (không sửa BMad core), nhưng **mới có unit test** (17/17), chưa chạy với Jev thật → cần pilot rồi mới kết luận.
 7. **`skills-router`** (skill gợi ý skill diện rộng, build mới): trên 199 scenario tự soạn, sau vòng 2 Jev đúng 91% so với BM25 75% và Laya 54–62%; nhưng trên 368 prompt thật Jev chỉ hòa BM25 (50%) và nhãn quá ít. → `PILOT`: mặc định BM25, Jev là bước thứ hai tùy chọn.
-8. **`subagent-model-router`** (chọn model cho từng subagent, build mới): trên 18 task có kiểm tra tự động, rule + leo model khi trượt pass 18/18 với **14% chi phí** so với luôn dùng Opus (luôn Sonnet 61%, Jev 48%). → `PILOT`, tiềm năng tiết kiệm quota lớn nhất cho kịch bản chạy song song nhiều story.
+8. **`subagent-model-router`** (chọn model cho từng subagent, build mới): trên 18 task có kiểm tra tự động, rule + leo model khi trượt pass 18/18 với **14% chi phí** so với luôn dùng Opus (luôn Sonnet 61%, Jev 48%). **Pilot trên 6 story ess-be thật:** pass 6/6 như bản Sonnet với **36% quota subagent**. → `PILOT` có bằng chứng thật tốt nhất, tiềm năng tiết kiệm quota lớn nhất cho kịch bản chạy song song nhiều story.
 
 **Khuyến nghị:**
 - Không đưa Laya vào làm router hoặc bộ phân loại tự động.
@@ -68,7 +69,7 @@
 | # | Hạng mục | Loại | Engine | Mức test | Kết luận |
 |---|---|---|---|---|---|
 | A1 | `review-pr-laya-classify` | Áp dụng vào skill có sẵn (`review-pr`) | Laya | ✅ PR 5240 ×2 · 🧪 42/42 | `DROP` (Laya không đạt; bản A2 đã có đủ tính năng) |
-| A2 | `review-pr-jev-classify` | Áp dụng vào skill có sẵn (A/B) | Laya / Jev | ✅ PR 5240 ×2 (có 1 lần A/B có kiểm soát) · 🧪 51/51 | `PILOT` với `--provider jev`* |
+| A2 | `review-pr-jev-classify` | Áp dụng vào skill có sẵn (A/B) | Laya / Jev | ✅ PR 5240 ×2 + 8 PR ess-be đã merge · 🧪 87/87 | `SHADOW` (test thật trượt tiêu chí) |
 | A3 | `web-test-laya-wait` | Áp dụng vào `web-test` | Laya | ✅ dev + staging · 📊 | `DROP` model, `ADOPT` rule |
 | A4 | `web-test-laya-verdict` | Áp dụng vào `web-test` | Laya | ✅ dev + staging · 📊 | `DROP` |
 | A5 | `web-test-laya-gate` | Áp dụng vào `web-test` | Laya | ✅ staging (không có bước ghi) · 📊 | `DROP` model, `ADOPT` audit |
@@ -96,7 +97,7 @@
 | D5 | `context-curator` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
 | D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `PILOT` |
 | E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `PILOT` (mặc định BM25, Jev tùy chọn) |
-| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ hook thử thật · 📊 benchmark 18 task · 🧪 19/19 | `PILOT` (tiềm năng tiết kiệm quota lớn nhất) |
+| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `PILOT` (bằng chứng thật tốt nhất) |
 | C1–C9 | Các thí nghiệm đánh giá (mục 8) | Nghiên cứu | Laya / Jev | 📊 / ✅ | Xem mục 8 |
 
 \* Với điều kiện Security cho phép gửi dữ liệu ra ngoài. Riêng các skill `web-test`: bug "đọc nhầm tab" đã sửa trên nhánh `claude/web-test-fixes-4fdcd7`, cần chạy lại trên ESS.
@@ -193,6 +194,24 @@ Log nằm ở `~/.xt-skills/review-pr-jev-classify/reviews/…/pr-5240/20261015-
 - **Lấy nhãn từ kết quả thật** (`outcome-labels.mjs`): so commit lúc review với commit cuối của PR; lỗi nào có vùng code bị sửa sau đó thì nhãn là `fixed`. Mới test bằng dữ liệu giả, chưa chạy trên PR thật.
 - **Sửa 2 bug log:** trường `rules` giờ dùng đúng rule id và override của dự án; header execution log hiện đủ cả hai provider.
 - 🧪 **87/87 test pass.** Chưa merge, chưa bật `recheck` trên PR thật: cần nhãn từ nhiều PR để biết các cờ có đúng không.
+
+### 4.7 Test thật trên 8 PR ess-be đã merge (2026-10-15, commit `515b077`)
+- **Cách làm:**
+  - 8 PR ess-be đã merge: 5231, 5328, 4820, 5264, 5199, 4635, 4431, 4500.
+  - Các PR này hầu như không có thread review trên ADO, nên Claude review lại từng PR ở commit **trước** khi tác giả sửa, mà không biết trước kết quả. Tổng cộng 14 lỗi.
+  - Jev chạy ở chế độ shadow (`stable-disagreement`, k=3, kèm 2 câu hỏi có/không).
+  - Nhãn lấy bằng `outcome-labels.mjs`: lỗi được tác giả sửa về sau là lỗi thật.
+- **Tiêu chí A (≥ 50% cờ nâng mức của Jev là lỗi thật): trượt.** Chỉ 2/8 cờ là lỗi đã được sửa (25%), trong khi tỉ lệ chung của mọi lỗi là 50%. Tức là cờ của Jev **kém hơn chọn ngẫu nhiên**. Jev gán Major cho 10/14 lỗi và rất ổn định: sai một cách nhất quán, không phải sai ngẫu nhiên.
+- **Tiêu chí B (không hạ mức lỗi chặn merge): đạt,** nhưng không chứng minh được gì, vì Jev không hạ mức lỗi nào.
+- **Nhãn có thể đang đếm thiếu:** 3/7 lỗi "không sửa" thực ra đã được sửa ở file doc hoặc test chứ không phải ở dòng được trích. Nếu tính cả những case này, A lên khoảng 50–62%. Cách tính đó không được chốt trước khi chạy nên không dùng để kết luận.
+- **2 câu hỏi có/không không cho thông tin gì:** `already_raised` luôn trả lời không, vì PR không có thread; `introduced_by_pr` trả lời sai cả 2 lần nói không.
+- **Điểm sáng của chính Claude:** review của Claude khớp với phần dev tự sửa sau này ở nhiều PR (5264, 5199).
+- **Chi phí:** Jev $0.002. Claude khoảng 673k token subagent (trừ vào quota Max).
+- **Hạn chế:** chỉ 14 lỗi trên các PR nhỏ, là bằng chứng yếu.
+
+**Kết luận mới:** `review-pr-jev-classify` chuyển từ `PILOT` sang `SHADOW` (chạy song song, chỉ ghi log).
+- Giả thuyết "Jev chỉ nâng mức nên làm lưới an toàn được" **không đứng vững trên PR thật**: trên PR 5240 các lần nâng mức trông hợp lý vì PR có lỗi cài sẵn, còn trên PR thật Jev chủ yếu nâng mọi thứ lên Major.
+- Nếu muốn thử tiếp: chỉ gắn cờ khi mức mặc định trong rule của dự án đồng ý với Jev, và tính cả các lần sửa ở file doc hoặc test mà rule chỉ đến.
 
 ---
 
@@ -580,6 +599,34 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 **Việc tiếp theo:** chạy thử trên vài story thật có AC (`ess-be` / `ess-fe`), và bật hook ở chế độ shadow để so với model đang thực sự được dùng.
 
+### 11.1 Pilot trên ess-be với story thật (2026-10-15, commit `5efd93a`)
+- **Cách làm:**
+  - Claude tự viết 6 user story thực tế cho ess-be (validation, filter tìm kiếm, sửa bug có bẫy, endpoint mới, refactor 10 file, một story cần quyết định thiết kế), mỗi story có AC và bộ test ẩn.
+  - Mỗi story do 1 subagent làm, so 2 cách trên các worktree nháp:
+    - A: luôn dùng Sonnet;
+    - B: router chọn model, kèm leo model khi trượt.
+- **Kết quả:**
+
+| Story | A: Sonnet | B: Router | Leo model |
+|---|---|---|---|
+| S1 validation | ✅ $0.326 | Haiku ✅ $0.020 | không |
+| S2 filter tìm kiếm | ✅ $0.241 | Haiku ✅ $0.024 | không |
+| S3 sửa bug có bẫy | ✅ $0.428 | Haiku ✅ $0.023 | không |
+| S4 endpoint mới | ✅ $0.763 | Haiku ✅ $0.029 | không |
+| S5 refactor 10 file | ✅ $0.191 | Haiku ✅ $0.014 | không |
+| S6 thiết kế (chỉ build và suite) | ✅ $0.229 | **Opus** ✅ $0.666 | không |
+| **Tổng** | **$2.18** | **$0.78 (36%)** | 0 |
+
+- **Cả hai tiêu chí đều đạt:** router pass mọi story mà bản Sonnet pass, chất lượng diff không kém hơn (ở S6, Opus còn bám quy ước dependency injection của ess-be tốt hơn); quota subagent chỉ bằng **36%** so với A (ngưỡng đặt ra là ≤ 50%).
+- **Ba lưu ý:**
+  - **4/5 lần chọn Haiku là do bug** ở rule: câu "do not change them" trong prompt khiến rule hiểu nhầm story code là việc chỉ đọc. Không có bug thì S1, S2, S4, S5 sẽ chạy Sonnet. Dù vậy, Haiku vẫn pass cả 5 story. Bug đã sửa ở commit `24bd4b6`, nhánh `claude/router-readonly-fix` (20/20 test).
+  - **Chưa lần nào phải leo model,** nên cơ chế "trượt thì leo lên model cao hơn" vẫn chưa được kiểm chứng.
+  - **Subagent không chạy qua hook thật:** chế độ auto chặn việc mở session `claude -p` từ script, nên session tự spawn subagent với model do `route.mjs` chọn (cùng logic chọn model với hook). Ngoài ra ess-be đã có sẵn 17 test fail trên bản sạch, nên "suite xanh" được hiểu là không có fail mới.
+- **Kết luận:** vẫn là `PILOT`, và giờ là `PILOT` có bằng chứng thật tốt nhất trong dự án.
+  - Story có kiểm tra tự động: dùng rule + leo model khi trượt.
+  - Story không có kiểm tra: không bao giờ bắt đầu bằng Haiku.
+  - Bước tiếp theo: chạy lại trên 15–20 story ADO thật sau khi sửa bug, để thấy các lần trượt và leo model thật.
+
 ---
 
 ## 12. Kết luận chung
@@ -614,7 +661,8 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
   - Comment trong `jev-gate/scripts/gate.mjs` vẫn còn số liệu của Laya.
   - `review-pr-jev-classify`: trường `rules` trong log bỏ qua rule id và override của dự án (chỉ ảnh hưởng log). Header của execution log chỉ hiện provider được `assess.mjs` chạy sau cùng.
 
-- **`subagent-model-router`:** benchmark chỉ gồm task nhỏ tự soạn, có kiểm tra tự động; chưa thử trên story thật hay task không có kiểm tra.
+- **`subagent-model-router`:** pilot thật chỉ có 6 story do Claude tự viết; cơ chế leo model chưa từng được kích hoạt; subagent chưa chạy qua hook thật.
+- **`review-pr-jev-classify`:** test thật chỉ có 14 lỗi; nhãn lấy từ việc dev sửa ở đúng dòng nên có thể đếm thiếu các lần sửa ở file doc/test.
 - **`skills-router`:** nhãn của 199 scenario do Claude tự đặt; trên prompt thật chỉ có 16 nhãn skill; mô tả skill của project cũng được gửi cho Jev khi dùng Jev; hook shadow chưa bật, độ trễ thật của hook chưa đo.
 - **2 skill BMad + Jev:** chưa chạy với Jev thật lần nào; ngưỡng 0.3 lấy từ cookbook, chưa đo trên dữ liệu của mình.
 - **5 skill Jev mới (repo `JEV`):** code chưa commit; số liệu đo trên demo tổng hợp do Claude dựng; chưa có bản để Claude tự làm để so sánh; mỗi kịch bản thật mới chạy 1 lần.
@@ -632,7 +680,7 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 7. 5 skill Jev mới: commit code, chạy trên repo thật của team, đo thêm bản Claude tự làm; chạy bộ log khó h01–h08 cho `jev_advisor`.
 8. Pilot 2 skill BMad + Jev theo plan: khoảng 60 câu hỏi có nhãn cho `bmad-help-jev`; 10 PR đã merge của `ess-fe` cho `bmad-code-review-jev`.
 9. `skills-router`: (lỗi nhóm skill trùng việc đã sửa ở vòng 2) bật hook shadow để gom nhãn thật, chọn ngưỡng BM25 theo từng catalog; chỉ sau đó mới chốt Jev có nên là bước thứ hai mặc định hay không.
-10. `subagent-model-router`: chạy thử trên vài story thật có AC, và bật hook ở chế độ shadow.
+10. `subagent-model-router`: merge bản sửa bug (`claude/router-readonly-fix`), rồi chạy lại trên 15–20 story ADO thật để thấy các lần trượt và leo model; bật hook ở chế độ shadow.
 11. Review và merge các nhánh mới: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
 
 ---
@@ -685,6 +733,9 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | `feat/bmad-jev-skills` (đã push, chưa merge) | `bmad-help-jev`, `bmad-code-review-jev`, `idea/jev-applicability-plan.md` |
 | `claude/skills-router-62fc74` (chưa push) | `skills-router`, hook shadow, 199 scenario, vòng 2 |
 | `claude/subagent-model-router-f7f0e3` (chưa push) | `subagent-model-router`, benchmark 18 task |
+| `claude/subagent-router-pilot-*` (chưa push) | Báo cáo pilot ess-be (`research/subagent-router-ess-be-pilot.md`) |
+| `claude/router-readonly-fix` (chưa push) | Sửa bug "chỉ đọc" của router |
+| Nhánh của session test review-pr thật (chưa push) | `research/review-pr-jev-real-eval.md` |
 | `claude/review-pr-jev-upgrade-2bbb34` (chưa push) | Nâng cấp `review-pr-jev-classify` |
 | `claude/web-test-fixes-4fdcd7` (chưa push) | Sửa bug 11 bản `web-test`, gate theo từng cú click |
 | Repo `xt-skills` | Bản gốc `review-pr` |
