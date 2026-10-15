@@ -70,4 +70,5 @@ a hash of the prompt; never the prompt text).
   `~/.claude/projects/**/subagents/`. Writes to `~/.subagent-model-router/history/` (prompts stay local).
 - `bench/bench.mjs`: 18 synthetic tasks with automatic checks; `validate`, `prepare`, `check`,
   `route`, `score`. See README.
-- Tests: `node --test test/router.test.mjs test/bench.test.mjs` (fake provider, no network).
+- `scripts/governor.mjs` (agent-budget-governor, opt-in): turns a routed tier into an execution profile (limits, per-story/batch caps, 20% verification reserve, concurrency queue, retry, review_required, reason_codes); JEV shadow-only, can never lower a high-risk tier. Policy in `governor.json` (no prices). Batch: `node scripts/govern.mjs --stories s.json [--provider jev --k 1]`.
+- Tests: `node --test test/router.test.mjs test/bench.test.mjs test/governor.test.mjs` (fake provider, no network).

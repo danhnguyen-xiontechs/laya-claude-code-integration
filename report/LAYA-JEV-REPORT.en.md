@@ -640,6 +640,25 @@ All 199 scenarios, thresholds chosen on dev:
   - Stories without a check: never start on Haiku.
   - Next: re-run on 15–20 real ADO stories after the bug fix, to see real misses and escalations.
 
+<!-- BEGIN agent-budget-governor -->
+### 11.2 `agent-budget-governor`: budget and concurrency policy under the router (2026-10-16)
+
+- **What:** a child module of `subagent-model-router` (`scripts/governor.mjs`, policy in `governor.json`, batch CLI `scripts/govern.mjs`). The router proposes a tier; the governor returns an `execution_profile` (model, max turns, timeout, retry limit, per-story cap, `review_required`, `reason_codes`, `fallback_mode`, run/queue/stop). Budgets are abstract units, no prices in code; usage is labelled `actual` or `estimated`, JEV/routing overhead counted separately, and a share of the batch (20%) is reserved for verification. JEV is shadow-only (recorded, not executed); in `guarded` mode it may only raise a tier. `route.mjs` behaviour is unchanged; the governed path is opt-in.
+- **Unit tests (no network, 9 new, 29/29 pass with the old ones):** security override beats a 0.99-confidence JEV "fast"; JEV lower answer ignored on high-risk; incomplete input → safe default + review; JEV failure → rules only; budget exhaustion → `needs_approval` stop with the reserve untouched; concurrency queue by priority, dequeued on release; retry bounded with one escalation; stall detection; estimated never reported as measured.
+- **Real JEV (5 calls, k=1, ~1.2 s each), 5 sample stories:**
+
+| Story | JEV tier | Governor tier | Slot | Reason |
+|---|---|---|---|---|
+| lookup | fast | fast | run | JEV agrees |
+| auth fix (security) | balanced | strong + review | run | JEV lower ignored (high risk) |
+| rename | balanced | balanced | run | JEV agrees |
+| DB migration | balanced | strong + review | queued | JEV lower ignored; concurrency 3 |
+| design, ambiguous ACs | strong | strong + review | queued | ambiguous → review |
+
+- Same batch with the key removed: every story got `fallback_mode: rules_only`, same tiers. No spawn blocked.
+- **Verdict:** `SHADOW`. JEV picked a lower tier than the risk rules on 2 of 5 stories (both high-risk), which is exactly what the governor must block; no evidence yet that JEV adds value over static tiers. Next: Phase 3 static-tier baseline on real batches with actual usage, then decide whether to keep the JEV call.
+<!-- END agent-budget-governor -->
+
 ---
 
 ## 12. Overall conclusions

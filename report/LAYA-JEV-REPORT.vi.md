@@ -627,6 +627,25 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
   - Story không có kiểm tra: không bao giờ bắt đầu bằng Haiku.
   - Bước tiếp theo: chạy lại trên 15–20 story ADO thật sau khi sửa bug, để thấy các lần trượt và leo model thật.
 
+<!-- BEGIN agent-budget-governor -->
+### 11.2 `agent-budget-governor`: chính sách ngân sách và song song dưới router (2026-10-16)
+
+- **Là gì:** module con của `subagent-model-router` (`scripts/governor.mjs`, chính sách trong `governor.json`, CLI cho cả batch `scripts/govern.mjs`). Router đề xuất tier; governor trả `execution_profile` (model, số lượt tối đa, timeout, số lần retry, trần mỗi story, `review_required`, `reason_codes`, `fallback_mode`, chạy/xếp hàng/dừng). Ngân sách là đơn vị trừu tượng, không có giá trong code; usage gắn nhãn `actual` hoặc `estimated`, chi phí JEV/routing tính riêng, giữ 20% batch cho kiểm thử. JEV chỉ chạy shadow (ghi lại, không thực thi); ở chế độ `guarded` chỉ được nâng tier. `route.mjs` giữ nguyên hành vi; nhánh có governor là tùy chọn.
+- **Unit test (không mạng, 9 test mới, 29/29 pass cùng test cũ):** luật bảo mật thắng JEV "fast" độ tin 0.99; JEV đề xuất thấp hơn bị bỏ qua ở story rủi ro cao; thiếu input → mặc định an toàn + review; JEV lỗi → chỉ dùng luật; hết ngân sách → dừng `needs_approval`, không đụng phần dự trữ; hàng đợi theo ưu tiên, nhả slot thì lấy story kế; retry có giới hạn, leo 1 tier; phát hiện treo; ước tính không bao giờ báo là đo thật.
+- **Jev thật (5 lời gọi, k=1, ~1,2 s mỗi lời), 5 story mẫu:**
+
+| Story | Tier JEV | Tier governor | Slot | Lý do |
+|---|---|---|---|---|
+| tra cứu | fast | fast | run | JEV đồng ý |
+| sửa auth (bảo mật) | balanced | strong + review | run | bỏ qua JEV thấp hơn (rủi ro cao) |
+| đổi tên | balanced | balanced | run | JEV đồng ý |
+| migration DB | balanced | strong + review | queued | bỏ qua JEV thấp hơn; song song 3 |
+| thiết kế, AC mơ hồ | strong | strong + review | queued | mơ hồ → review |
+
+- Cùng batch khi bỏ key: mọi story nhận `fallback_mode: rules_only`, tier không đổi. Không chặn spawn nào.
+- **Kết luận:** `SHADOW`. JEV chọn tier thấp hơn luật rủi ro ở 2/5 story (đều rủi ro cao), đúng thứ governor phải chặn; chưa có bằng chứng JEV hơn tier tĩnh. Tiếp: Phase 3 baseline tier tĩnh trên batch thật với usage thật, rồi quyết có giữ lời gọi JEV không.
+<!-- END agent-budget-governor -->
+
 ---
 
 ## 12. Kết luận chung
