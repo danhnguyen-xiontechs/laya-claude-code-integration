@@ -17,6 +17,8 @@ Node 18+ with the standard library only. No dependencies.
 | `scripts/mine-history.mjs` | Builds labelled cases from `~/.claude/projects/**/*.jsonl` |
 | `scripts/eval.mjs` | Scores BM25-only and each provider, picks thresholds on a dev split |
 | `scripts/shadow-hook.mjs`, `scripts/shadow-report.mjs` | Opt-in shadow-mode hook and the join with transcripts (see "Shadow mode") |
+| `scripts/shadow-replay.mjs` | Replays mined prompts through the shadow hook and report, as a sanity check |
+| `eval/` | Frozen synthetic scenario set (`scenarios.jsonl`, `scenarios.manifest.json`) and the synthetic extra catalog entries |
 | `builtin.json` | Claude Code's bundled skills (`code-review`, `loop`, …), which have no file on disk |
 | `jev.json` | Provider and thresholds. Per-machine overrides go in `jev.local.json` (gitignored) |
 
@@ -124,7 +126,7 @@ Metrics:
 | abstain precision | Abstentions where none was expected, over all abstentions |
 | latency, cost | p50 / p95 per case; total and per-case cost (Jev only) |
 
-## Results on this machine (2026-10-15)
+## Results on mined history (2026-10-15)
 
 **Catalog sizes** (raw entries per source → after dedupe):
 
@@ -174,6 +176,108 @@ Reading:
   something is expected. The dev-picked values fit passive routing of every prompt; use them if
   the shadow-mode hook (see "Shadow mode") is enabled.
 
+## Scenario evaluation (synthetic, 2026-10-15)
+
+The mined history has only 16 labelled skill cases, so a second, larger set was written by hand.
+**These labels are synthetic and written by Claude, and they are Claude's judgment.** They measure
+the router on constructed situations, not on real behaviour. The scenarios were written before any
+router output on them was seen, and the file was frozen (split and sha256 in
+`eval/scenarios.manifest.json`; `eval.mjs` refuses a changed file).
+
+- `eval/scenarios.jsonl`: 199 prompts, 104 English and 95 Vietnamese, with no real project names,
+  paths, ticket or PR numbers. Fields: `id, prompt, lang, category, expected, split`. `expected` is
+  an id, `none`, or a list of valid ids (with a `why`); `none` inside a list means abstaining is
+  also fine. The split is `sha1(salt + id) < 0.5`: 96 dev, 103 test.
+- Categories: explicit 19, implicit 38 (19 English, 19 Vietnamese), overlap 31 (review-pr family 12,
+  web-test family 16, BMad 3), none 72, hard-negative 20, typo/short/vague 19. 94 of the 199 expect no
+  skill, 12 accept several answers.
+- Catalog: this repository's (39 entries: 13 project skills, user, synced and plugin skills, bundled
+  skills), customer names scrubbed, plus 5 **synthetic** entries (`eval/catalog-extra.json`) because
+  this repository has no plain `review-pr` or BMad skills: `review-pr`, `bmad-code-review`,
+  `bmad-create-prd`, `bmad-create-story`, `bmad-dev-story`.
+- Overlap rule: the `-laya-classify`, `-jev-classify` and `web-test-*` variants are valid answers only
+  when the prompt asks for that variant (names the provider and the feature). A plain request has the
+  plain skill as its answer.
+
+```
+node scripts/eval.mjs --scenarios eval/scenarios.jsonl --catalog-root <repo> --catalog-extra eval/catalog-extra.json      --providers none,laya,laya:multilingual,jev --allow-hosted
+```
+
+Jev was run once on this set (199 calls, its test and dev splits together), against the scrubbed
+catalog only. Total cost from the API: **$0.00998** ($0.00005 per call). Jev was not run on the mined
+prompts.
+
+Thresholds are chosen on dev (max balanced accuracy). Test, then all 199:
+
+| Router | Dev-picked thresholds | top-1 | top-3 | wrong | needless | abstain prec. | accuracy | p50 | cost |
+|---|---|---|---|---|---|---|---|---|---|
+| BM25 only | bm25Min 10 | 0.67 / 0.64 | 0.83 / 0.77 | 0.05 / 0.07 | 0.02 / 0.02 | 0.65 / 0.68 | 0.72 / 0.73 | 5 ms | 0 |
+| Laya `english` | gate 0.85, fit 0.6, none-first off | 0.56 / 0.54 | 0.79 / 0.76 | 0.14 / 0.13 | 0.15 / 0.11 | 0.59 / 0.62 | 0.58 / 0.62 | 6.2 s | 0 |
+| Laya `multilingual` | gate 0.95, fit 0 | 0.26 / 0.31 | 0.70 / 0.65 | 0.14 / 0.12 | 0.11 / 0.10 | 0.54 / 0.56 | 0.52 / 0.54 | 2.9 s | 0 |
+| Jev | gate 0, fit 0, none-first on | 0.84 / 0.78 | 0.84 / 0.80 | 0.05 / 0.10 | 0.09 / 0.05 | 0.88 / 0.87 | 0.87 / 0.86 | 0.54 s | $0.0100 |
+
+With the shipped defaults (gate/fit 0.3, `bm25Min` 3), all 199:
+
+| Router | wrong | needless | abstain prec. | accuracy |
+|---|---|---|---|---|
+| BM25 only | 0.29 | 0.59 | 0.81 | 0.53 |
+| Laya `english` | 0.27 | 0.39 | 0.65 | 0.52 |
+| Laya `multilingual` | 0.62 | 0.68 | 0.79 | 0.31 |
+| Jev | 0.10 | 0.04 | 0.86 | 0.85 |
+
+Accuracy per category (all 199, dev-picked thresholds):
+
+| Router | explicit | implicit | overlap | none | hard-negative | typo/short/vague |
+|---|---|---|---|---|---|---|
+| BM25 only | 0.95 | 0.32 | 0.65 | 0.99 | 0.95 | 0.26 |
+| Laya `english` | 0.95 | 0.13 | 0.35 | 0.88 | 1.00 | 0.32 |
+| Laya `multilingual` | 0.89 | 0.00 | 0.10 | 0.92 | 0.85 | 0.26 |
+| Jev | 1.00 | 0.68 | 0.74 | 0.93 | 1.00 | 0.84 |
+
+Overlap confusions. Jev got 8 of 31 wrong and BM25 11; every Jev error has the same shape, the
+variant was asked for and the plain skill was suggested:
+
+| Expected | Suggested | Cases |
+|---|---|---|
+| `review-pr-laya-classify` | `review-pr` | S060, S061 |
+| `review-pr-jev-classify` | `review-pr` | S062, S063 |
+| `web-test-laya-gate` | `web-test` | S073 |
+| `web-test-jev-wait` | `web-test` | S077 |
+| `web-test-jev-ground` | `web-test` | S079 |
+| `web-test-laya-wait` or `web-test-jev-wait` | `web-test` | S084 |
+
+The cause is the explicit-only filter: a variant is shortlisted only when the query names it or
+contains every word of its name but one common word, and "classify" or "ground" is a rare word. So
+the router errs toward the plain skill. Whether a prompt like "run the Laya severity check" counts as
+asking for the variant is **my own judgment**; the descriptions say "explicit request". Only
+`overlap` has such judgment calls, plus the 12 multi-answer cases (each with a `why`).
+Full lists: `confusionOverlap` in the report files.
+
+Replay of the 383 mined prompts through the shadow hook and `shadow-report.mjs` (local only, shipped
+defaults, each prompt against its own project's catalog; `scripts/shadow-replay.mjs`):
+
+| Router | labelled | agreement | wrong | needless | abstain prec. |
+|---|---|---|---|---|---|
+| BM25 only | 383 | 0.24 | 3 of 16 | 0.78 | 1.00 |
+| Laya `english` | 383 | 0.48 | 4 of 16 | 0.53 | 1.00 |
+
+The direction matches the scenario numbers at defaults (needless 0.59 and 0.39): BM25 over-suggests
+the most, Laya less. Absolute numbers are higher on the mined set because its catalogs are larger
+and its prompts are mostly plain chat. The "invoked" label is what Claude chose.
+
+Reading:
+- **Jev is clearly the best router here**, on constructed prompts. It ranks the right skill first
+  more often (0.84 vs 0.67 for BM25 on test), handles implicit, vague and Vietnamese phrasing (implicit
+  0.68 vs 0.32), and its default thresholds are already near its dev-picked ones (accuracy 0.85 vs
+  0.86), so it needs no tuning. It costs about $0.00005 and 0.5 s per request.
+- **Laya does not beat BM25** on this task. Both Laya models are worse on top-1, wrong and needless
+  rates, at 3–6 s per call. `multilingual` fails on implicit prompts, including Vietnamese ones.
+- **BM25 is good at explicit and none**, weak at implicit and vague (0.3). Its shipped floor of 3
+  over-suggests (needless 0.59); a floor near 10 is better for passive use, but BM25 scores depend
+  on the catalog size, so pick it per catalog with `eval.mjs`.
+- Constructed prompts are cleaner than real ones. Expect real accuracy to be lower; the shadow hook
+  measures that.
+
 ## Data leaving the machine
 
 `none`, `laya` and `kev` keep everything local. `jev` sends:
@@ -186,7 +290,7 @@ Reading:
 ## Tests
 
 ```
-node --test .claude/skills/skills-router/tests/catalog.test.mjs .claude/skills/skills-router/tests/route.test.mjs .claude/skills/skills-router/tests/history-eval.test.mjs .claude/skills/skills-router/tests/shadow.test.mjs
+node --test .claude/skills/skills-router/tests/catalog.test.mjs .claude/skills/skills-router/tests/route.test.mjs .claude/skills/skills-router/tests/history-eval.test.mjs .claude/skills/skills-router/tests/shadow.test.mjs .claude/skills/skills-router/tests/scenarios.test.mjs
 ```
 
 Pass the files explicitly: Node 24 fails on a directory argument. The tests cover:

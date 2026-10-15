@@ -1,0 +1,15 @@
+{
+  "notes": "Used only by `eval.mjs --scenarios`. This repository has no plain review-pr or BMad skills, but the scenario set needs the review-pr and BMad families, so these five entries are SYNTHETIC: generic descriptions written for the eval (the BMad ones paraphrase the public BMAD-METHOD skills). `scrub` replaces customer-specific strings in the real descriptions before any router, local or hosted, sees them.",
+  "scrub": [
+    ["gemseducation\\/GEMS-HR-SCM", "<org>/<project>"],
+    ["GEMS-HR-SCM", "<project>"],
+    ["gemseducation", "<org>"]
+  ],
+  "entries": [
+    { "name": "review-pr", "description": "Review a pull request (GitHub, Azure DevOps, GitLab) against the project's rules and report findings by severity, with a verdict and a merge assessment. Plain PR reviews go here; the -laya-classify and -jev-classify variants run only on an explicit request." },
+    { "name": "bmad-code-review", "description": "Adversarial BMad code review of working-tree changes, a branch or a story, using layered reviewers (blind hunter, edge-case hunter, acceptance auditor). Use when the user asks for a BMad or adversarial code review." },
+    { "name": "bmad-create-prd", "description": "Create a new product requirements document (PRD) through guided discovery, or edit or validate an existing PRD." },
+    { "name": "bmad-create-story", "description": "Create the next story file from the epics and the sprint plan, with full context for the developer: acceptance criteria, tasks and dev notes." },
+    { "name": "bmad-dev-story", "description": "Execute story implementation following a context-filled story spec file: implement the tasks, write the tests, run the validations and mark the story ready for review." }
+  ]
+}

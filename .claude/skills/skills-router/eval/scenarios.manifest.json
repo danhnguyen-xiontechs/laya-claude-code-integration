@@ -1,0 +1,25 @@
+{
+  "note": "FROZEN. Synthetic prompts written by Claude before any router output on them; labels are Claude's judgment. Do not edit scenarios.jsonl; eval.mjs refuses a changed file unless --allow-modified.",
+  "salt": "skills-router-scenarios-v1",
+  "splitRule": "sha1(salt + NUL + id) first 32 bits / 2^32 < 0.5 → dev, else test",
+  "sha256": "5f7608b5ab1278f90ca730ec13874f860b2381fc683786d08f7dc3371bb1b23e",
+  "n": 199,
+  "byCategory": {
+    "explicit": 19,
+    "implicit": 38,
+    "overlap": 31,
+    "none": 72,
+    "hard-negative": 20,
+    "typo-short-vague": 19
+  },
+  "byLang": {
+    "en": 104,
+    "vi": 95
+  },
+  "bySplit": {
+    "test": 103,
+    "dev": 96
+  },
+  "none": 94,
+  "multiValid": 12
+}
