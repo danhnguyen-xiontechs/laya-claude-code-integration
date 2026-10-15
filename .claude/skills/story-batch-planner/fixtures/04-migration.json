@@ -1,0 +1,7 @@
+{ "name": "migration",
+  "stories": [
+    { "id": "S-1", "title": "Store employee nickname", "description": "Add column nickname to the employees table via a migration.", "ac": ["Nickname persisted"] },
+    { "id": "S-2", "title": "Soft delete departments", "description": "Add column deleted_at to the departments table (new migration) and filter deleted rows.", "ac": ["Deleted departments hidden"] },
+    { "id": "S-3", "title": "Employee search by nickname", "description": "Search reads the employees table and matches nickname too.", "ac": ["Search finds by nickname"] }
+  ],
+  "expected": { "order": [], "conflict": [["S-1","S-2"],["S-1","S-3"]], "independent": [] } }

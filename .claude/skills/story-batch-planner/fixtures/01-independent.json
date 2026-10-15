@@ -1,0 +1,7 @@
+{ "name": "independent",
+  "stories": [
+    { "id": "S-1", "title": "Change footer copyright year", "description": "Update the footer text in web/layout/Footer.tsx to show the current year dynamically.", "ac": ["Footer shows current year"] },
+    { "id": "S-2", "title": "Export invoices to CSV", "description": "Billing admins can download invoices as CSV from billing/export/CsvExporter.cs.", "ac": ["CSV has one row per invoice"] },
+    { "id": "S-3", "title": "Fix typo on password reset email", "description": "The reset email template in mail/templates/reset.html says 'pasword'; correct the spelling.", "ac": ["Email text spelled correctly"] }
+  ],
+  "expected": { "order": [], "conflict": [], "independent": [["S-1","S-2"],["S-1","S-3"],["S-2","S-3"]] } }

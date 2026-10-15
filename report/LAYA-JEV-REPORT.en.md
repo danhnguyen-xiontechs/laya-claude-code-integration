@@ -642,6 +642,37 @@ All 199 scenarios, thresholds chosen on dev:
 
 ---
 
+<!-- BEGIN story-batch-planner -->
+## `story-batch-planner`: which stories can run in parallel (new build, Jev shadow)
+
+**Why:** before spawning one agent per story (for example 20 stories), find which stories touch the same module, API/DTO, schema or test fixture, so parallel agents do not each pass alone and then fail to integrate.
+
+**What was built** (`.claude/skills/story-batch-planner/`, plan phases 1 + 3):
+- **Rules (phase 1):** explicit ADO links and "depends on S-2" in the text → hard order; an endpoint/DTO that one story adds and another calls → producer before consumer; same file, fixture or DTO changed by both → serialize; two migrations, or a migration + a reader of the same table → serialize, marked *protected*; same module only, topical overlap, or an incomplete story → `unknown`, serialized and sent to review.
+- **Graph:** cycles are reported (Tarjan); their members and dependents are not scheduled (no order invented). Incomplete stories run alone in a final wave. `maxConcurrency` (4) splits wide waves.
+- **Output:** the §6 JSON (`stories`, `edges` with evidence/source/confidence, `waves`, `blocked_or_review_required`, `assumptions`) plus `dispatch[]` (one task text per story, by wave) for `subagent-model-router`'s `route.mjs`, and a human summary.
+- **Jev shadow (phase 3):** ambiguous pairs only, closed labels `independent / shared_module_or_contract / depends_on_A / depends_on_B / unknown`, at most 10 calls per plan. The answer is stored in `jev_suggestion` (`applied:false`, with provenance) and never changes the waves. Error / timeout / invalid label / over budget → `unknown`. Protected pairs can never become parallel. Jev is off by default.
+
+**Quick test** (8 hand-written batches, 27 stories: independent, shared module, API/DTO, migration, fixture contention, explicit dependency, cycle, incomplete + hidden dependency). 14 unit tests pass (fake provider, no network).
+
+| Metric (rules only) | Result |
+|---|---|
+| False-parallel (dependent/conflicting pairs in the same wave) | **0 / 13** |
+| Dependency recall (ordering edges found) | **7 / 8** |
+| Cycle reported / incomplete story sent to review | yes / yes |
+| Over-serialized (independent pairs put in different waves) | 4 / 12 |
+
+- The missed dependency: "overtime report from approved timesheets" needs "timesheet approval" but names no shared file or API. Rules still put it in a later wave as `unknown` (no false-parallel), but without a direction.
+- Over-serialization is the price of being conservative: topical overlap ("payslip", "leave balance") is serialized until someone confirms.
+
+**Jev shadow, real calls** (7 ambiguous pairs; the eval was run twice by mistake → 14 calls, $0.00034 in total, about 0.4–1 s each):
+- Found the hidden dependency above: `depends_on_A` at 0.97 (both runs).
+- Matched the label on 3 of 5 labelled pairs. Misses: two checkout stories in the same module that are really independent → `shared_module_or_contract` (0.84–0.89, wrong in the safe direction); an incomplete story "Timesheet fixes / Misc." → `depends_on_A` 0.74 instead of `unknown` (confident on a vague story).
+- Never suggested `independent` with high probability; one pair flipped between runs (`shared_module_or_contract` 0.43 → `independent` 0.44).
+
+**Verdict: SHADOW.** The rule baseline is usable now with Jev off (0 false-parallel on the fixtures). Jev adds the direction of hidden dependencies, but it is overconfident on vague stories and unstable at low probability, so keep it as a logged suggestion only. **Limits:** hand-written synthetic fixtures labelled by the same author (Claude), 27 stories, no real ADO batch; regex extraction, no repository index. **Next:** run it on one real sprint batch from ADO, have a human label it, and compare manual / rules / rules + Jev (plan phase 2).
+<!-- END story-batch-planner -->
+
 ## 12. Overall conclusions
 
 | Question | Answer |

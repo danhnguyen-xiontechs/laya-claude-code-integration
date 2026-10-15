@@ -1,0 +1,7 @@
+{ "name": "fixture-contention",
+  "stories": [
+    { "id": "S-1", "title": "Approver delegation", "description": "Managers can delegate approvals. Update test fixture tests/fixtures/approvers.json with a delegate.", "ac": ["Delegate can approve"] },
+    { "id": "S-2", "title": "Approval reminder emails", "description": "Send reminders after 3 days. Extend tests/fixtures/approvers.json with overdue approvals.", "ac": ["Reminder sent after 3 days"] },
+    { "id": "S-3", "title": "Dark mode toggle", "description": "Settings page gets a dark mode toggle stored in web/settings/theme.ts.", "ac": ["Theme persists"] }
+  ],
+  "expected": { "order": [], "conflict": [["S-1","S-2"]], "independent": [["S-1","S-3"],["S-2","S-3"]] } }

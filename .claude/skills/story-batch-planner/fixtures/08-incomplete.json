@@ -1,0 +1,8 @@
+{ "name": "incomplete-and-hidden",
+  "stories": [
+    { "id": "S-1", "title": "Timesheet approval", "description": "Managers approve weekly timesheets.", "ac": ["Approved timesheets locked"] },
+    { "id": "S-2", "title": "Timesheet fixes", "description": "Misc." },
+    { "id": "S-3", "title": "Overtime report from approved timesheets", "description": "Monthly report summing overtime hours, counting only timesheets that a manager approved.", "ac": ["Only approved weeks counted"] },
+    { "id": "S-4", "title": "Profile photo upload", "description": "Employees upload a profile photo, resized to 256px.", "ac": ["Photo shown in header"] }
+  ],
+  "expected": { "order": [["S-1","S-3"]], "conflict": [], "review": ["S-2"], "ambiguous": { "S-1|S-3": "depends_on_A", "S-1|S-2": "unknown", "S-2|S-3": "unknown" }, "independent": [["S-1","S-4"],["S-3","S-4"]] } }
