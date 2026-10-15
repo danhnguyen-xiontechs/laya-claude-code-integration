@@ -629,6 +629,46 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 ---
 
+<!-- BEGIN retry-loop-breaker -->
+## Retry Loop Breaker: mod Claude Code (plan 02, Jev tùy chọn)
+
+**Vì sao:** Claude đôi khi chạy lại đúng lệnh test/build vừa lỗi mà không sửa gì, tốn lượt. Không phải lần chạy lại nào cũng thừa (sau khi sửa code, sau lỗi mạng, test chập chờn), nên mod phải phát hiện *không có tiến triển*, không chỉ "lệnh này từng lỗi".
+
+**Cách hoạt động:**
+- **Mod Claude Code** (`retry-loop-breaker/`, function hook, `tool.call` trên Bash). Chỉ xét lệnh kiểm tra đơn giản (`npm test`, `dotnet test/build`, `pytest`, `go test`, `cargo test`, `tsc`, … và danh sách cấu hình thêm). Lệnh có pipe, `&&`, chuyển hướng, biến môi trường, deploy/git/dữ liệu thì không bao giờ đụng tới.
+- **Sau lần chạy lỗi:** lưu một bản ghi nhỏ theo session (`$.state`): lệnh đã chuẩn hóa, dấu vân tay lỗi (hash FNV các dòng lỗi, đã che thời gian, thời lượng, đường dẫn tạm, hex, UUID), tóm tắt ngắn, mutation epoch; TTL 30 phút, tối đa 50 bản ghi. Không lưu log thô.
+- **Trước lần chạy tiếp:** cùng lệnh + cùng dấu vân tay + cùng epoch, đã gặp `maxIdenticalFailuresBeforeBlock` lần (mặc định 2) → chế độ `enforce` trả `{ deny }` kèm lý do và bước nên làm; chế độ `observe` (mặc định) chỉ ghi `would_block`.
+- **Thế nào là "có thay đổi":** Edit/Write/NotebookEdit thành công (từ bất kỳ agent nào), lệnh Bash không read-only theo chính engine, hoặc người dùng gõ "rerun / try again / chạy lại". Lỗi tạm thời (ECONNRESET, 429, 503, NuGet feed…) và test chập chờn (đã thấy cả pass lẫn fail) không bao giờ bị chặn. Bị từ chối quyền, bị ngắt, chạy nền thì không tính là lỗi.
+- **Jev chỉ khi mơ hồ:** lệnh *gần giống* (Jaccard token ≥ 0.6, cùng runner) một lệnh đã chạm ngưỡng. Enum cố định `allow_retry | block_redundant_retry | uncertain_allow`, kiểm tra chặt, timeout 4 s; chỉ chặn khi `block_redundant_retry` với p ≥ 0.8. Timeout, lỗi, output sai → cho chạy.
+- **Mặc định chỉ agent chính**; có `/retry-guard status` và `/retry-guard reset` (API đã cài hỗ trợ slash command).
+- **Phase 0 kiểm trên bản đã cài** (Claude Code 2.1.300, types sinh ra 2.1.295): input `tool.call` là tham số của tool cộng `agentId` (không có ở loop chính); exit code khác 0 trả về `isError: true` với `text` "Exit code N…"; trả `{ deny }` mà không gọi `next` thì lệnh bị từ chối và tool không chạy; `$.state` theo session, giữ qua hot reload. `claude plugin validate` đạt; `tsc` sạch.
+
+**Test nhanh (fixture nhỏ, chưa phải pilot):**
+
+| Trường hợp (§12) | Kết quả |
+|---|---|
+| Lặp đúng test lỗi, không đổi gì | chặn ở lần 3 (ngưỡng 2), lần 2 với ngưỡng 1 |
+| Cùng build, cùng lỗi biên dịch (thời gian khác) | chặn |
+| Chạy lại sau khi sửa code thành công | cho chạy |
+| Cùng lệnh, lỗi khác | cho chạy (đếm lại) |
+| Lỗi mạng tạm thời | cho chạy |
+| Test chập chờn (fail → pass → fail) | cho chạy |
+| Gần giống, khác test/project | Jev `allow_retry` 1.00, hoặc không đủ giống → cho chạy |
+| Gần giống, cùng test thêm một cờ | Jev `block_redundant_retry` 0.95–0.99 |
+| Bị từ chối quyền | không ghi nhận, cho chạy |
+| Lệnh có tác dụng phụ / ghép lệnh | không thuộc diện, không đụng |
+| Jev timeout / JSON sai / ngoài enum / độ tin thấp | cho chạy |
+| Người dùng yêu cầu chạy lại | epoch mới, cho chạy |
+| Session mới / workspace khác / hết TTL | không rò rỉ |
+
+- 8 test engine (`claude plugin test`, engine thật) + 14 unit test: đều đạt. **0 lần chặn sai.** 4 lần gọi Jev thật, mỗi lần khoảng 0.5–0.65 s.
+- Chưa đo: precision/recall trên session thật, token hay lượt tiết kiệm. Mod **chưa cài** ở đâu; mặc định `observe`.
+
+**Kết luận: PILOT** (chạy observe trên việc thật trước; chỉ bật enforce khi log would-block cho precision ≥ 80%).
+
+**Giới hạn:** epoch chỉ là xấp xỉ (sửa file ngoài tool của Claude, ví dụ trong IDE, không thấy; sửa file không liên quan cũng mở chặn); lệnh chạy qua script alias không thuộc diện; Jev chỉ thấy hai lệnh và một dòng tóm tắt lỗi.
+<!-- END retry-loop-breaker -->
+
 ## 12. Kết luận chung
 
 | Câu hỏi | Trả lời |
