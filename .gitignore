@@ -25,6 +25,8 @@ triage/v2/data/
 .claude/skills/review-pr-laya-classify/laya.local.json
 .claude/skills/review-pr-jev-classify/laya.local.json
 .claude/skills/web-test-jev-ground/laya.local.json
+.claude/skills/bmad-help-jev/jev.local.json
+.claude/skills/bmad-code-review-jev/jev.local.json
 
 # web-test-jev-*: per-machine consent to send compact text to Jev
 .claude/skills/web-test-jev-*/jev.local.json
