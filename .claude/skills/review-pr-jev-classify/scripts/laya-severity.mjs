@@ -16,6 +16,11 @@ export const LABELS = ['Critical', 'Major', 'Minor', 'Suggestion'];
 export const RANK = { Critical: 3, Major: 2, Minor: 1, Suggestion: 0 };
 export const MODES = ['off', 'shadow', 'recheck'];
 export const MAX_RECHECKS = 3;
+// Re-check policies: 'threshold' (differs and top probability >= a calibrated threshold) or
+// 'stable-disagreement' (k shuffled-order answers agree with each other, disagree with Claude and
+// cross the merge boundary; needs no threshold).
+export const POLICIES = ['threshold', 'stable-disagreement'];
+export const STABILITY_SCOPES = ['all', 'boundary'];
 
 // Same meaning as references/review-method.md "Severity".
 export const RUBRIC = {
@@ -246,12 +251,14 @@ const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 /**
  * laya.json (committed defaults) + laya.local.json (per machine, gitignored) + env:
  *   XT_REVIEW_PR_LAYA=off|shadow|recheck, XT_REVIEW_PR_LAYA_THRESHOLD=<0..1>, LAYA_URL.
- * recheck without a threshold falls back to shadow (warning set).
+ *   XT_REVIEW_PR_LAYA_POLICY=threshold|stable-disagreement, XT_REVIEW_PR_LAYA_K=<2..8>.
+ * recheck with policy 'threshold' and no threshold falls back to shadow (warning set);
+ * 'stable-disagreement' needs no threshold.
  */
 export function loadConfig({ env = process.env, dir = SKILL_DIR, overrides = {} } = {}) {
   const cfg = {
     url: 'http://localhost:8000', model: 'english', mode: 'shadow', threshold: null, mergeBlockThreshold: MERGE_BLOCK_THRESHOLD,
-    provider: 'laya', jevModel: JEV_MODEL,
+    provider: 'laya', jevModel: JEV_MODEL, policy: 'threshold', k: 3, stabilityScope: 'all',
     ...readJson(path.join(dir, 'laya.json')), ...readJson(path.join(dir, 'laya.local.json')),
   };
   // Provider: --provider (overrides) → XT_REVIEW_PR_DECIDER → DECISION_PROVIDER → config → laya.
@@ -261,13 +268,21 @@ export function loadConfig({ env = process.env, dir = SKILL_DIR, overrides = {} 
   if (env.XT_REVIEW_PR_LAYA) cfg.mode = env.XT_REVIEW_PR_LAYA;
   if (env.XT_REVIEW_PR_LAYA_THRESHOLD) cfg.threshold = Number(env.XT_REVIEW_PR_LAYA_THRESHOLD);
   if (env.XT_REVIEW_PR_LAYA_MERGE_BLOCK) cfg.mergeBlockThreshold = Number(env.XT_REVIEW_PR_LAYA_MERGE_BLOCK);
+  if (env.XT_REVIEW_PR_LAYA_POLICY) cfg.policy = env.XT_REVIEW_PR_LAYA_POLICY;
+  if (env.XT_REVIEW_PR_LAYA_K) cfg.k = Number(env.XT_REVIEW_PR_LAYA_K);
   for (const [k, v] of Object.entries(overrides)) if (v !== undefined && k !== 'provider') cfg[k] = v;
   cfg.mode = String(cfg.mode).toLowerCase();
   if (!MODES.includes(cfg.mode)) throw new Error(`Laya mode must be one of ${MODES.join(', ')} (got "${cfg.mode}")`);
   if (cfg.threshold != null && !(cfg.threshold >= 0 && cfg.threshold <= 1)) throw new Error('threshold must be between 0 and 1');
   if (!(cfg.mergeBlockThreshold >= 0 && cfg.mergeBlockThreshold <= 1)) throw new Error('mergeBlockThreshold must be between 0 and 1');
+  cfg.policy = String(cfg.policy ?? 'threshold').toLowerCase();
+  if (!POLICIES.includes(cfg.policy)) throw new Error(`policy must be one of ${POLICIES.join(', ')} (got "${cfg.policy}")`);
+  cfg.k = Number(cfg.k);
+  if (!(Number.isInteger(cfg.k) && cfg.k >= 2 && cfg.k <= 8)) throw new Error('k must be an integer from 2 to 8');
+  if (!STABILITY_SCOPES.includes(cfg.stabilityScope)) throw new Error(`stabilityScope must be one of ${STABILITY_SCOPES.join(', ')}`);
+  cfg.questions = { introducedByPr: true, alreadyRaised: true, ...(cfg.questions ?? {}) };
   cfg.warning = null;
-  if (cfg.mode === 'recheck' && cfg.threshold == null) {
+  if (cfg.mode === 'recheck' && cfg.policy === 'threshold' && cfg.threshold == null) {
     cfg.mode = 'shadow';
     cfg.warning = 'recheck needs a calibrated threshold; running in shadow mode';
   }

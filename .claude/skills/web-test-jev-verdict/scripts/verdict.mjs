@@ -28,7 +28,7 @@ if (!runDir || !caseId || !stepN || (actualArg === undefined && !statusArg) || (
 }
 
 const file = path.join(runDir, 'results.json');
-const results = JSON.parse(fs.readFileSync(file, 'utf8'));
+const results = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
 const c = (results.cases || []).find((x) => x.id === caseId);
 const s = c?.steps?.find((x) => String(x.n) === String(stepN));
 if (!s) { console.error(`no step ${caseId}-S${stepN} in ${file}`); process.exit(2); }

@@ -7,26 +7,39 @@
 //   agent false/missing, rule or Jev says write       → disputed: the agent must re-check it and set
 //                                                        writes:true, or writes:false + writesReason, then re-run
 //   all agree read                                    → read
-// Measured on 24 held-out step texts (idea/web-test/gate): the keyword rule missed 8/12 writes, Jev 1/12
-// but flagged 9/12 reads — so Jev is used to widen recall, the agent's own flag keeps the list short.
+// Measured on 24 held-out step texts (idea/web-test/gate, eval/REPORT.md): Jev missed 0/12 writes and flagged
+// 1/12 reads (Laya 1/12 and 9/12); the keyword rule missed 8/12 writes and flagged 5/12 reads. Jev widens recall,
+// the keyword rule is now the main source of false disputes, and the agent's own flag keeps the list short.
+//
+// Per click (--check-action): right before a click or submit, the same write/read question is asked on the
+// concrete action (label / role / url of what is about to be clicked). If it looks like a write while the step is
+// marked read, the agent stops and confirms (exit 3, like a dispute) instead of clicking.
 //
 // Usage:
 //   node gate.mjs <runDir>            check the plan, write step.gate into results.json, print the ask-list
+//   node gate.mjs <runDir> --check-action "<label/role/url about to be clicked>" --step TC01-S02 [--confirm-read "<why>"]
+//                                     right before a click/submit; --confirm-read = the agent re-checked: it only reads
 //   node gate.mjs <runDir> --audit    after the run: match recorded write requests (api/netlog.jsonl) to steps
 // Output ends with one summary line: gate: steps=N write=W disputed=D read=R overruled=O jev=on|off
-// Exit code: 0 when nothing is disputed, 3 while disputed steps remain.
+//   --check-action prints: gate-action=allow|allow-write|confirmed-read|stop step=<id> marked=read|write rule=<bool> p=<jev write probability|-> jev=on|off
+// Exit code: 0 when nothing is disputed, 3 while disputed steps remain or a checked action must not be clicked yet.
+// Every plan and action decision is appended to ~/.ess-web-test/gate-jev-log.jsonl.
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadConfig, ready, ask } from './jev-lib.mjs';
+import { loadConfig, ready, ask, STATE_DIR } from './jev-lib.mjs';
 
 const runDir = process.argv[2];
+const args = process.argv.slice(3);
+const opt = (k) => { const i = args.indexOf(k); return i === -1 ? undefined : args[i + 1]; };
 if (!runDir || !fs.existsSync(path.join(runDir, 'results.json'))) {
-  console.error('Usage: node gate.mjs <runDir> [--audit]   (runDir must contain results.json)');
+  console.error('Usage: node gate.mjs <runDir> [--audit | --check-action "<label/role/url>" --step <TC01-S02> [--confirm-read "<why>"]]   (runDir must contain results.json)');
   process.exit(2);
 }
-const AUDIT = process.argv.includes('--audit');
+const AUDIT = args.includes('--audit');
+const ACTION = opt('--check-action');
+const GATE_LOG = path.join(STATE_DIR, 'gate-jev-log.jsonl');
 const resultsPath = path.join(runDir, 'results.json');
-const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8').replace(/^\uFEFF/, ''));
 const steps = results.cases.flatMap((c) => (c.steps || []).map((s) => ({ c, s, id: `${c.id}-S${String(s.n).padStart(2, '0')}` })));
 
 // Frozen before the held-out check — don't tune on new data without re-checking.
@@ -39,8 +52,24 @@ const JEV_P = 0.5;
 
 const save = () => fs.writeFileSync(resultsPath, JSON.stringify(results, null, 2) + '\n');
 const pad = (s, n) => String(s).slice(0, n).padEnd(n);
+function log(entry) {
+  try {
+    fs.mkdirSync(path.dirname(GATE_LOG), { recursive: true });
+    fs.appendFileSync(GATE_LOG, JSON.stringify({ t: new Date().toISOString(), run: path.basename(path.resolve(runDir)), ...entry }) + '\n');
+  } catch { /* logging never breaks a run */ }
+}
+/** Keyword rule + Jev on one text: { rule, jev (write probability or null), write }. */
+async function classify(cfg, jevOn, text) {
+  const rule = WRITE_RE.test(text) && !LOOK_RE.test(text);
+  let jev = null;
+  if (jevOn) {
+    const ans = await ask(cfg, { step_action: text }, JEV_Q);
+    if (ans) jev = Number((ans.writes.probabilities.write ?? 0).toFixed(2));
+  }
+  return { rule, jev, write: rule || (jev !== null && jev >= JEV_P) };
+}
 
-if (AUDIT) audit(); else await check();
+if (AUDIT) audit(); else if (ACTION !== undefined) await checkAction(); else await check();
 
 async function check() {
   const cfg = loadConfig();
@@ -50,12 +79,7 @@ async function check() {
   const overruled = [];
   for (const { s, id } of steps) {
     const text = `${s.action || ''}`.trim();
-    const rule = WRITE_RE.test(text) && !LOOK_RE.test(text);
-    let jev = null;
-    if (jevOn) {
-      const ans = await ask(cfg, { step_action: text }, JEV_Q);
-      if (ans) jev = Number((ans.writes.probabilities.write ?? 0).toFixed(2));
-    }
+    const { rule, jev } = await classify(cfg, jevOn, text);
     const jevWrite = jev !== null && jev >= JEV_P;
     let verdict, why;
     if (s.writes === true) { verdict = 'write'; why = 'agent'; }
@@ -66,7 +90,8 @@ async function check() {
       verdict = 'disputed';
       why = [rule && 'keyword', jevWrite && `jev ${jev}`, s.writes === undefined ? 'agent did not mark' : 'agent said read'].filter(Boolean).join(', ');
     } else { verdict = 'read'; why = 'all agree'; }
-    s.gate = { writes: verdict, rule, jev, agent: s.writes ?? null, why };
+    s.gate = { writes: verdict, rule, jev, agent: s.writes ?? null, why, ...(s.gate?.actions ? { actions: s.gate.actions } : {}) };
+    log({ kind: 'plan', step: id, text, rule, jev, agent: s.writes ?? null, verdict });
     counts[verdict]++;
     if (verdict !== 'read') listed.push({ id, verdict, why, text });
   }
@@ -78,6 +103,40 @@ async function check() {
   for (const r of overruled) console.log(`overruled ${r.id}: "${r.text}" — ${r.why}`);
   console.log(`gate: steps=${steps.length} write=${counts.write} disputed=${counts.disputed} read=${counts.read} overruled=${overruled.length} jev=${jevOn ? 'on' : 'off'}`);
   if (counts.disputed) process.exitCode = 3;
+}
+
+// Right before a click/submit: does this concrete action write, and is its step cleared for writing?
+async function checkAction() {
+  const text = String(ACTION).trim();
+  const m = /^(.+)-S(\d+)$/i.exec(String(opt('--step') ?? '').trim());
+  const hit = m && steps.find(({ c, s }) => c.id.toLowerCase() === m[1].toLowerCase() && Number(s.n) === Number(m[2]));
+  if (!text || !hit) {
+    console.error(`Usage: node gate.mjs <runDir> --check-action "<label/role/url>" --step <TC01-S02> [--confirm-read "<why>"]` +
+      (m && !hit ? `\nno step ${opt('--step')} in ${resultsPath}` : ''));
+    process.exitCode = 2;
+    return;
+  }
+  const { s, id } = hit;
+  const confirmRead = opt('--confirm-read');
+  const cfg = loadConfig();
+  const jevOn = ready(cfg);
+  const { rule, jev, write } = await classify(cfg, jevOn, text);
+  const marked = s.writes === true || s.gate?.writes === 'write' ? 'write' : 'read';
+  let verdict;
+  if (marked === 'write') verdict = 'allow-write'; // the user already OKed this step's writes (Step 2)
+  else if (!write) verdict = 'allow';
+  else if (confirmRead) verdict = 'confirmed-read';
+  else verdict = 'stop';
+  s.gate ??= {};
+  s.gate.actions = [...(s.gate.actions || []), { t: new Date().toISOString(), action: text, rule, jev, verdict, ...(confirmRead ? { reason: confirmRead } : {}) }];
+  save();
+  log({ kind: 'action', step: id, text, rule, jev, marked, verdict, ...(confirmRead ? { reason: confirmRead } : {}) });
+  console.log(`gate-action=${verdict} step=${id} marked=${marked} rule=${rule} p=${jev ?? '-'} jev=${jevOn ? 'on' : 'off'}`);
+  if (verdict === 'stop') {
+    console.log(`STOP: "${text}" looks like a write but ${id} is marked read. Do not click yet. If it writes: set writes:true, ` +
+      're-run gate.mjs and get the user\'s OK first. If it only reads: re-run this check with --confirm-read "<why>".');
+    process.exitCode = 3;
+  }
 }
 
 function audit() {

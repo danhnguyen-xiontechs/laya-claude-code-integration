@@ -5,7 +5,7 @@
 //
 // Usage:
 //   node find.mjs --goal "<what to act on>" [--role button|link|tab|textbox|combobox|option|checkbox|any]
-//                 [--click | --fill "<text>"] [--allow-write] [--shot <file.png>] [--cdp <url>] [--provider laya|jev]
+//                 [--click | --fill "<text>"] [--allow-write] [--shot <file.png>] [--cdp <url>] [--url <route of the page under test>] [--provider laya|jev]
 //   node find.mjs --pick g7 [--click | --fill "<text>"] [--allow-write]     act on a candidate from the last list
 // Prints one line: found=<gN|none> by=<rule|laya|jev|none> p=<conf|-> role=<r> name="<n>" action=<clicked|filled|none|refused> candidates=<k> decider=laya|jev|off
 //   by=none → the next lines list the top candidates (gN role "name" [hint]) — pick one with --pick, or snapshot if none fits.
@@ -81,7 +81,7 @@ function log(entry) {
   } catch { /* best-effort */ }
 }
 
-const a = await attach(opt('--cdp'));
+const a = await attach(opt('--cdp'), { url: opt('--url') });
 if (a.error) { console.log(`found=none by=none action=none reason=${a.error}`); process.exit(1); }
 const { browser, page } = a;
 let layaOn = false;

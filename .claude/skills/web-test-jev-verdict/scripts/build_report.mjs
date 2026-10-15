@@ -12,7 +12,7 @@ if (!runDir) {
 }
 const outIdx = args.indexOf('--out');
 const outFile = path.resolve(runDir, outIdx >= 0 ? args[outIdx + 1] : 'report.html');
-const results = JSON.parse(fs.readFileSync(path.join(runDir, 'results.json'), 'utf8'));
+const results = JSON.parse(fs.readFileSync(path.join(runDir, 'results.json'), 'utf8').replace(/^\uFEFF/, ''));
 
 // Worst-status-wins, so a hand-edited case status can't mask a failed step.
 // 'review' = plan 2: Jev was unsure and the agent has not judged the step yet.

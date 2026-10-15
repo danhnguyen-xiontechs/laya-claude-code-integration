@@ -18,7 +18,7 @@ export const STATE_DIR = path.join(process.env.USERPROFILE || process.env.HOME |
 // One line per Jev call: latency, tokens, cost. Never the key, headers or the request text.
 export const USAGE_LOG = path.join(STATE_DIR, 'jev-usage.jsonl');
 
-const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return {}; } };
+const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8').replace(/^\uFEFF/, '')); } catch { return {}; } };
 
 export function loadConfig() {
   const cfg = { enabled: null, model: JEV_MODEL, ...readJson(CONFIG_PATH), ...readJson(LOCAL_PATH) };

@@ -107,7 +107,7 @@ Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screen
 
 1. Launch the role (one role owns port 9222 at a time; launching another role stops the current one):
    ```bash
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-ground/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-ground/scripts/launch-role.ps1" [role] <envUrl>   # either order works (the URL is detected); no role → roles.json default
    powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-ground/scripts/launch-role.ps1" status
    ```
    It uses **Edge** (else Chrome, else Playwright's Chromium) with a dedicated persistent profile at `~/.ess-web-test/profiles/<role>`, and prints the role's account. It **cannot** use the user's everyday Edge profile: Edge 136+ ignores the debugging port on its default profile, and the running Edge would capture the launch. Act on its output:
@@ -143,10 +143,11 @@ For each case, for each step:
 
 1. Act — **locate and act through `find.mjs` first (plan 02), not a snapshot** (path A, port-9222 browser):
    ```bash
-   node .claude/skills/web-test-laya-ground/scripts/find.mjs --goal "<visible name of the target>" [--role button|link|tab|textbox|combobox|option|checkbox] [--click | --fill "<text>"]
+   node .claude/skills/web-test-laya-ground/scripts/find.mjs --goal "<visible name of the target>" [--role button|link|tab|textbox|combobox|option|checkbox] [--click | --fill "<text>"] [--url "<route of the page under test>"]
    ```
    Name the target the way the page labels it ("Previous week", "Submission date from", "Apply filter") — copied from the ticket, an earlier `find` list or page text you already have. It extracts the visible interactive elements (name from aria-label / aria-labelledby tooltip / label / text / placeholder), keeps those sharing a word with the goal, and prints `found=<gN|none> by=<rule|laya|none> … action=<clicked|filled|none|refused>`:
    - `by=rule` → a unique exact name match; `by=laya` → Laya picked among ≥ 2 similar candidates (p ≥ 0.8 and well ahead of the runner-up). Acted on if you passed `--click` / `--fill`.
+   - Which tab: pass `--url "<route>"` with the route of the page under test (the path you navigated to, e.g. `/attendance`): the role browser can hold tabs the MCP does not list (in the 11840 runs a hidden ESS tab at `/` was polled instead of the test page). Without `--url` the script ignores hidden tabs, then takes the focused or most recently loaded one; when it still cannot tell, it stops with an `ambiguous: … open: <urls>` error instead of guessing — re-run with `--url`.
    - `found=none` with a short list (`gN role "name"`) → choose from it: `find.mjs --pick gN --click|--fill "…"` (ids are valid until the page re-renders; `stale-pick` → run `--goal` again).
    - `found=none` and no list → no element shares a word with the goal: take **one** `take_snapshot` and act by uid as usual.
    - `action=refused` → the target looks like a write (submit, approve, save, delete …): it is clicked only with `--allow-write`, which you add **only for steps the user OK'd** under the write-action gate (Step 2).

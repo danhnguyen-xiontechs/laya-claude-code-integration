@@ -95,7 +95,7 @@ Write the plan into `results.json` with every step `status: "not-run"` **and `wr
 node .claude/skills/web-test-laya-gate/scripts/gate.mjs "<runDir>"
 ```
 
-Run it only after the Laya pre-check (started in the background in Step 1, see Step 3) has printed its line — otherwise the gate runs rules-only while Laya is still loading. It checks each step's action with a keyword rule and Laya (when on) and never lowers your `true`. Exit 3 = **disputed** steps: you said read (or didn't say) but the rule or Laya says write. For each, look again — set `writes: true`, or keep `false` and add a one-line `writesReason` — and re-run until exit 0. Then ask the user **once**: list the `write` steps for OK, plus one line naming the steps you kept read-only against the gate ("overruled") so they can object. Execute no write step before that OK. (Laya alone flags many read steps as writes — that is why disputes come back to you first, not straight to the user.)
+Run it only after the Laya pre-check (started in the background in Step 1, see Step 3) has printed its line — otherwise the gate runs rules-only while Laya is still loading. It checks each step's action with a keyword rule and Laya (when on) and never lowers your `true`. Exit 3 = **disputed** steps: you said read (or didn't say) but the rule or Laya says write. For each, look again — set `writes: true`, or keep `false` and add a one-line `writesReason` — and re-run until exit 0. Then ask the user **once**: list the `write` steps for OK, plus one line naming the steps you kept read-only against the gate ("overruled") so they can object. Execute no write step before that OK. During execution, `--check-action` repeats the question on each concrete click (Step 4). (Laya alone flags many read steps as writes — that is why disputes come back to you first, not straight to the user.)
 
 With `--review-plan`, stop here and wait.
 
@@ -115,7 +115,7 @@ Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screen
 
 1. Launch the role (one role owns port 9222 at a time; launching another role stops the current one):
    ```bash
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-gate/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-gate/scripts/launch-role.ps1" [role] <envUrl>   # either order works (the URL is detected); no role → roles.json default
    powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-gate/scripts/launch-role.ps1" status
    ```
    It uses **Edge** (else Chrome, else Playwright's Chromium) with a dedicated persistent profile at `~/.ess-web-test/profiles/<role>`, and prints the role's account. It **cannot** use the user's everyday Edge profile: Edge 136+ ignores the debugging port on its default profile, and the running Edge would capture the launch. Act on its output:
@@ -155,7 +155,12 @@ If either is down, ask the user before starting it (run long-lived servers in th
 
 For each case, for each step:
 
-1. Act — prefer snapshot uids/refs over coordinates. **Snapshot only when you need uids to click/fill.** `navigate_page` (A) already returns the page content, so don't follow it with `take_snapshot` just to look. To *check* a value, use `wait_for` on the expected text, or `evaluate_script` returning only the few strings you need (e.g. the text of one cell or a list of chip labels) — never the whole DOM. One snapshot per page state; reuse its uids until the page changes. (Measured on 22063: `navigate_page` +7.4K tokens, each `take_snapshot` of an ESS table +2–3K, all re-read on every later turn.)
+1. Act — **run the per-click gate (below) right before every click or submit**; prefer snapshot uids/refs over coordinates. **Snapshot only when you need uids to click/fill.** `navigate_page` (A) already returns the page content, so don't follow it with `take_snapshot` just to look. To *check* a value, use `wait_for` on the expected text, or `evaluate_script` returning only the few strings you need (e.g. the text of one cell or a list of chip labels) — never the whole DOM. One snapshot per page state; reuse its uids until the page changes. (Measured on 22063: `navigate_page` +7.4K tokens, each `take_snapshot` of an ESS table +2–3K, all re-read on every later turn.)
+   **Per-click gate — right before every click or submit** (not before typing into a field, scrolling or navigating by URL), check the concrete control you are about to press:
+   ```bash
+   node .claude/skills/web-test-laya-gate/scripts/gate.mjs "<runDir>" --check-action "<role> \"<label>\" [<url or API it targets>]" --step TC<nn>-S<nn>
+   ```
+   e.g. `--check-action 'button "Approve" /approvals/123' --step TC02-S03`. It asks the same write/read question as the plan check (keyword rule + Laya) on that action and prints `gate-action=allow|allow-write|confirmed-read|stop step=<id> marked=read|write rule=<bool> p=<Laya write probability|-> laya=on|off`. `allow`, or `allow-write` (the step is a write the user already OKed) → click. **Exit 3 / `gate-action=stop`** → the control looks like a write but the step is marked read: **do not click**. Look again: if it really writes, set the step's `writes: true`, re-run `gate.mjs "<runDir>"` and get the user's OK first (as in Step 2); if it only reads (a filter, a tab, a "Next" arrow), re-run the check with `--confirm-read "<one-line why>"`, then click. Every check is stored on the step (`gate.actions`) and appended to `~/.ess-web-test/gate-log.jsonl`.
 2. Wait for the UI to settle: `wait_for` the expected text (A) or `find` it (B), and make sure loading skeletons/spinners are gone. ESS pages fan out several `/api/...` calls that each hit D365 — a screenshot of a skeleton is not evidence.
 3. **Screenshot straight to file**, never into the conversation: `take_screenshot` with `filePath: "<runDir>/shots/TC<nn>-S<nn>.png"` (A) or `playwright-cli -s=… screenshot --filename=shots/TC<nn>-S<nn>.png` (B). Every step with an expected result gets one; pure navigation steps may share the next step's shot. Don't view the image to judge the result — judge from the snapshot/text; open an image only when the check is purely visual (colour, layout).
    **File paths (A):** the MCP only writes inside its workspace roots, and `~/ess-test-runs` is outside them. If `filePath` / `responseFilePath` is refused, write to the session scratchpad instead and copy into `<runDir>/shots/` or `<runDir>/api/` before building the report — same file names.
@@ -271,7 +276,8 @@ Internal reasoning is not logged, and token/password-looking values are redacted
           "writes": true,
           "writesReason": "only when you keep writes:false against a gate dispute",
           "at": "2026-10-08T10:05:12+07:00",
-          "gate": { "writes": "write | read | disputed", "rule": true, "laya": 0.73, "agent": true, "why": "agent" },
+          "gate": { "writes": "write | read | disputed", "rule": true, "laya": 0.73, "agent": true, "why": "agent",
+                    "actions": [{ "t": "…", "action": "button \"Approve\"", "rule": true, "laya": 0.96, "verdict": "allow | allow-write | confirmed-read | stop", "reason": "only with --confirm-read" }] },
           "diagnostics": {
             "console": [],
             "network": [{ "method": "POST", "status": 500, "url": "/api/leave-requests", "excerpt": "code: … traceId: 00-…" }]
