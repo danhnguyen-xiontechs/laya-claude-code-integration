@@ -1,0 +1,1 @@
+{"id":"e1-locate","kind":"explore","type":"Explore","prompt":"In this project, which file defines (not just uses) the function `parseDuration`? Write only its path relative to the project root, using forward slashes, to a file named answer.txt in the project root. Do not change any other file."}
