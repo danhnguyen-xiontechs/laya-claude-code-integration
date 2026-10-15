@@ -742,6 +742,37 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 **Giới hạn:** epoch chỉ là xấp xỉ (sửa file ngoài tool của Claude, ví dụ trong IDE, không thấy; sửa file không liên quan cũng mở chặn); lệnh chạy qua script alias không thuộc diện; Jev chỉ thấy hai lệnh và một dòng tóm tắt lỗi.
 <!-- END retry-loop-breaker -->
+<!-- BEGIN codebase-task-explorer -->
+## Nhóm G: `codebase-task-explorer`: tìm chỗ bắt đầu trong codebase (build mới, Jev tùy chọn)
+
+**Mục tiêu:** trước khi điều tra bug, lần theo một tính năng, refactor hay thêm tính năng, đưa cho Claude một danh sách ngắn các file nên đọc trước, có bằng chứng, thay vì duyệt mò. Chỉ khám phá, không sửa.
+
+**Phase 0 — codemap (JordanCoin/codemap):** trước đó chưa cài. Đã cài bản phát hành **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, đã đối chiếu SHA-256 với `checksums.txt`, kèm `ast-grep`) vào `~/tools/codemap` (máy không có Go/brew/scoop). `codemap doctor`: binary OK; project config, Claude hooks và `.mcp.json` là MISS (chưa setup — cố ý, chỉ gọi CLI). Khả năng thấy được: `find -json -limit` (khớp từ vựng trên path + symbol, số importer, cờ hub), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` có **19 tool** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Mọi kết quả có trạng thái coverage: trên repo này là **partial** (2/238 import JS và 14/17 import Python không resolve được). Chưa thử trên repo C#.
+
+**Cách hoạt động** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
+- **Chế độ:** `bug`, `feature`, `refactor`, `new-feature`; đầu ra là bản bàn giao (điểm bắt đầu, bằng chứng, hướng điều tra, giả thuyết, điểm chưa rõ, đóng góp của Jev).
+- **Pool rộng:** mỗi query một lần `codemap find` (Claude đưa 3–6 bộ từ vựng khác nhau); gộp lại, giữ lý do mỗi file khớp. Không có codemap: **fallback có gắn nhãn** (git ls-files + rg, không có dữ liệu importer).
+- **Chỉ dọn cơ học:** bỏ trùng, bỏ vendor/build/generated/binary. **Rule (C):** điểm theo từng query + thưởng khớp nhiều query + ưu tiên theo chế độ.
+- **Jev (D):** các batch choice 24 lựa chọn + `none_of_these`, giữ top-4 mỗi batch theo thứ hạng *trong batch*, rồi xếp hạng lại toàn cục một lần; không bao giờ so xác suất giữa các batch. Giới hạn: ≤6 lần gọi, ≤24k ký tự mỗi request; lỗi bất kỳ → dùng thứ tự rule. Tắt: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; bỏ qua khi người dùng nêu đúng file/symbol. Jev chỉ thấy path, symbol khớp, số importer và **dòng comment đầu file** — không gửi thân mã nguồn.
+- 5 unit test (Jev giả lập: chia batch, giữ survivor, vòng toàn cục, giới hạn, fallback, none_of_these, dọn dẹp) đều pass.
+
+**Pilot nhanh** (5 task trên repo này, đủ 4 chế độ, nhãn = file đã biết; Recall@5; `eval/results-2026-10-16.json`):
+
+| Task | B: chỉ codemap | C: rule | D: rule + Jev |
+|---|---|---|---|
+| bug: verdict merge sai | 0.50 | 0.50 | 1.00 |
+| feature: chọn model cho subagent | 0.50 | 1.00 | 1.00 |
+| refactor: chữ ký `decide()` | 0.33 | 0.33 | 0.67 |
+| new-feature: thêm một write-gate | 0.00 | 0.50 | 1.00 |
+| bug: grounding bấm nhầm nút | 0.00 | 0.00 | 1.00 |
+| **Trung bình** | **0.27** | **0.47** | **0.93** |
+
+- Jev: **15 lần gọi** (3 mỗi task: 2 batch + toàn cục), ~0.6 s mỗi lần, tổng **$0.0011**. `none_of_these` chưa lần nào thắng. Chỉ dùng fallback (không codemap): B 0.17, C 0.27.
+
+**Lưu ý:** chỉ 5 task; task và nhãn do Claude tự viết trên chính repo này; D còn thấy dòng comment đầu file, C thì không (một phần mức tăng có thể đến từ dòng đó chứ không phải từ Jev); repo có các bản sao laya/jev nên nhãn "bản nào cũng được" dễ trúng hơn; chưa đo baseline A (Claude thường) và bước Claude kiểm chứng; chưa thử repo C#.
+
+**Kết luận: `PILOT`** — xếp hạng theo batch của Jev tốt hơn rõ so với rule trên bộ nhỏ này, chi phí rất thấp. Trước khi áp dụng: 30–50 task thật trên repo C#/.NET (thêm nhánh C + dòng header để tách hiệu ứng header), và đo A.
+<!-- END codebase-task-explorer -->
 
 ## 12. Kết luận chung
 

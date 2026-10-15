@@ -1,0 +1,27 @@
+{
+  "repo": "Laya (this repo)",
+  "notes": "Quick pilot. Each relevant group is satisfied by any one of its paths (the repo keeps laya/jev copies of the same skill). Recall@5 = groups hit in top 5 / groups. Queries are what Claude would extract at Stage 0; the first query (the task text) alone is baseline B.",
+  "tasks": [
+    { "id": "t1-bug-merge-verdict", "mode": "bug",
+      "task": "PR review says Eligible for merge even though a blocking severity finding exists",
+      "queries": ["merge assessment", "verdict eligible blocked", "severity score count"],
+      "relevant": [["review-pr-jev-classify/scripts/assess.mjs", "review-pr-laya-classify/scripts/assess.mjs"],
+                   ["review-pr-jev-classify/scripts/laya-severity.mjs", "review-pr-laya-classify/scripts/laya-severity.mjs"]] },
+    { "id": "t2-feature-model-hook", "mode": "feature",
+      "task": "How does the subagent router choose haiku, sonnet or opus before a subagent is spawned",
+      "queries": ["PreToolUse hook Agent model", "model tier router", "escalate cascade"],
+      "relevant": [["subagent-model-router/scripts/hook-pretooluse.mjs"], ["subagent-model-router/scripts/router.mjs"]] },
+    { "id": "t3-refactor-decide", "mode": "refactor",
+      "task": "Change the signature of decide() in the skills-router decision provider",
+      "queries": ["decision-provider decide", "resolveProvider loadConfig", "skills-router route shortlist"],
+      "relevant": [["skills-router/scripts/decision-provider.mjs"], ["skills-router/scripts/route.mjs"], ["skills-router/scripts/eval.mjs", "skills-router/scripts/shadow-hook.mjs", "skills-router/scripts/shadow-replay.mjs"]] },
+    { "id": "t4-newfeature-gate", "mode": "new-feature",
+      "task": "Add a new web-test check that asks for a second opinion before a step that changes data",
+      "queries": ["write action gate", "writes step cross-check", "jev ask helper"],
+      "relevant": [["web-test-jev-gate/scripts/gate.mjs", "web-test-laya-gate/scripts/gate.mjs"], ["web-test-jev-gate/scripts/jev-lib.mjs", "web-test-laya-gate/scripts/laya-lib.mjs"]] },
+    { "id": "t5-bug-grounding", "mode": "bug",
+      "task": "Clicking 'Apply filter' hits the wrong element when several buttons have similar labels",
+      "queries": ["element grounding", "candidates rerank click", "ground question"],
+      "relevant": [["web-test-jev-ground/scripts/find.mjs", "web-test-laya-ground/scripts/find.mjs"], ["web-test-jev-ground/scripts/ground-question.mjs"]] }
+  ]
+}
