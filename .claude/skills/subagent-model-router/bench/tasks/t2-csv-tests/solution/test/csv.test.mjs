@@ -1,0 +1,12 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { parseCsvLine } from '../src/csv.js';
+test('plain', () => assert.deepEqual(parseCsvLine('a,b,c'), ['a', 'b', 'c']));
+test('escaped quote', () => assert.deepEqual(parseCsvLine('"a""b",c'), ['a"b', 'c']));
+test('quote mid-field is literal', () => assert.deepEqual(parseCsvLine('a"b,c'), ['a"b', 'c']));
+test('custom sep', () => assert.deepEqual(parseCsvLine('a;b', ';'), ['a', 'b']));
+test('default sep is comma', () => assert.deepEqual(parseCsvLine('a;b'), ['a;b']));
+test('unterminated', () => assert.throws(() => parseCsvLine('"abc'), { message: 'unterminated quote' }));
+test('empty ends', () => assert.deepEqual(parseCsvLine(',a,'), ['', 'a', '']));
+test('spaces kept', () => assert.deepEqual(parseCsvLine(' a, b'), [' a', ' b']));
+test('spaces inside quotes kept', () => assert.deepEqual(parseCsvLine('" a ",b'), [' a ', 'b']));

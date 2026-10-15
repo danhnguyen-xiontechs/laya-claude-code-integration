@@ -1,0 +1,1 @@
+{"id":"e4-config","kind":"explore","type":"Explore","prompt":"Without running anything, work out which port the server in this project listens on when started with NODE_ENV=production and no other environment variables set. Read the code to find out. Write only the number to answer.txt in the project root. Do not change any other file."}

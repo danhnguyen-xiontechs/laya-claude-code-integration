@@ -1,0 +1,7 @@
+{
+  "mode": "shadow",
+  "provider": "none",
+  "policy": null,
+  "k": 3,
+  "timeoutMs": 8000
+}
