@@ -6,6 +6,9 @@
 //       severity (Critical|Major|Minor|Suggestion). Rows can also be added by hand from old
 //       reports (rule, issue, evidence, impact, claude, human; Deferred items excluded).
 //
+//   Rows from outcome-labels.mjs (source "outcome", human = fixed|unchanged) are scored separately:
+//   how often the code near a finding changed after the review, per predicted blocking/non-blocking.
+//
 //   node laya-eval.mjs run --data dataset.jsonl [--rules <rules.md>] [--split 0.7] [--seed 1]
 //                          [--relabel] [--out eval.json]
 //       Compares Claude, Laya and the rule baseline against the human labels; picks the
@@ -22,6 +25,7 @@ import {
   LABELS, MERGE_STATES, providerUp, providerWhere, askMerge, askWithRetry, buildMergeQuestion, buildMergeState, buildQuestion,
   buildState, counts, extractOverrides, isBlocking, merge, loadConfig, mapLimit, normLabel, retry, ruleBaseline,
 } from './laya-severity.mjs';
+import { projectRuleSeverities, projectRuleSeverity } from './finding-questions.mjs';
 
 export const TARGET_PRECISION = 0.5;
 export const MAX_FLAGS_PER_PR = 1;
@@ -109,6 +113,40 @@ export function mergeReport(rows) {
     layaVsRule: { disagreements: both.filter((p) => p.laya !== p.rule).length, layaRightWhenDisagree: both.filter((p) => p.laya !== p.rule && p.laya === p.human).length },
     perPr: prs,
   };
+}
+
+/**
+ * Outcome rows (human = fixed|unchanged): fixed rate when each predictor calls the finding blocking
+ * (Critical/Major) vs not, and on the findings where the provider and Claude disagree across the
+ * merge boundary (up = provider blocking, Claude not). A useful provider has a higher fixed rate on
+ * "up" than Claude's non-blocking findings overall.
+ */
+export function outcomeReport(rows) {
+  const rate = (s) => ({ n: s.length, fixed: s.filter((r) => r.human === 'fixed').length, rate: s.length ? r3(s.filter((r) => r.human === 'fixed').length / s.length) : null });
+  const split = (pred) => {
+    const s = rows.filter((r) => normLabel(pred(r)));
+    return { blocking: rate(s.filter((r) => isBlocking(normLabel(pred(r))))), nonBlocking: rate(s.filter((r) => !isBlocking(normLabel(pred(r))))) };
+  };
+  const both = rows.filter((r) => normLabel(r.laya?.label) && normLabel(r.claude));
+  return {
+    n: rows.length,
+    prs: new Set(rows.map((r) => r.pr)).size,
+    ...rate(rows),
+    byPredictor: { claude: split((r) => r.claude), final: split((r) => r.final ?? r.claude), laya: split((r) => r.laya?.label), rules: split((r) => r.rules) },
+    disagree: {
+      up: rate(both.filter((r) => isBlocking(normLabel(r.laya.label)) && !isBlocking(normLabel(r.claude)))),
+      down: rate(both.filter((r) => !isBlocking(normLabel(r.laya.label)) && isBlocking(normLabel(r.claude)))),
+    },
+  };
+}
+
+function printOutcome(o, log) {
+  const pc = (x) => (x == null ? '—' : `${Math.round(x * 100)}%`);
+  const g = (x) => `${pc(x.rate)} of ${x.n}`;
+  log(`outcome rows: ${o.n} findings on ${o.prs} PR(s), fixed ${g(o)}`);
+  for (const [name, x] of Object.entries(o.byPredictor)) log(`  ${name.padEnd(6)} fixed when blocking ${g(x.blocking)} · when not ${g(x.nonBlocking)}`);
+  log(`  provider vs Claude across the merge boundary: up (provider blocks) fixed ${g(o.disagree.up)} · down fixed ${g(o.disagree.down)}`);
+  if (o.n < 50) log(`warning: outcome labels on ${o.n} findings only; "fixed" means the code near the finding changed, not that it was right`);
 }
 
 // ---------------------------------------------------------------------------
@@ -288,32 +326,48 @@ export async function main(argv = process.argv.slice(2), { log = console.log, er
     if (a._[0] !== 'run') throw new Error(`Unknown command "${a._[0]}"`);
     if (!a.data) throw new Error('run needs --data <dataset.jsonl>');
     const all = fs.readFileSync(a.data, 'utf8').split(/\r?\n/).filter((l) => l.trim()).map((l) => JSON.parse(l));
+    const cfg = loadConfig({ env, overrides: { mode: 'shadow', provider: a.provider } });
+    const rulesText = a.rules && fs.existsSync(a.rules) ? fs.readFileSync(a.rules, 'utf8') : '';
+    const ruleMap = projectRuleSeverities(rulesText);
+    // A row may carry every provider's answer (outcome-labels.mjs): use the selected provider's.
+    const answerOf = (r) => { const x = r.answers && cfg.provider in r.answers ? r.answers[cfg.provider] : r.laya; return x && normLabel(x.label) ? { label: normLabel(x.label), confidence: x.confidence } : null; };
+    const outcomeRows = all.filter((r) => r.source === 'outcome' && (r.human === 'fixed' || r.human === 'unchanged'))
+      .map((r) => ({ ...r, pr: r.pr ?? 'pr', claude: normLabel(r.claude), final: normLabel(r.final), laya: answerOf(r), rules: projectRuleSeverity(r, ruleMap) ?? ruleBaseline(r) }));
+    const outcome = outcomeRows.length ? outcomeReport(outcomeRows) : null;
     const rows = [];
     let skipped = 0;
     for (const r of all) {
+      if (r.source === 'outcome') continue;
       const human = normLabel(r.human);
       const claude = normLabel(r.claude);
       if (!human || !claude) { skipped++; continue; }
       rows.push({ ...r, key: r.key ?? `${r.pr ?? 'pr'}/${r.id}`, pr: r.pr ?? 'pr', human, claude,
-        laya: r.laya && normLabel(r.laya.label) ? { label: normLabel(r.laya.label), confidence: r.laya.confidence } : null,
+        laya: answerOf(r),
         prMerge: r.prMerge && MERGE_STATES.includes(r.prMerge.label) ? r.prMerge : null });
+    }
+    if (!rows.length && outcome) {
+      log(`provider: ${cfg.provider} · no severity-labelled rows; outcome rows only`);
+      printOutcome(outcome, log);
+      const out = path.resolve(a.out ?? a.data.replace(/[.]jsonl$/i, '') + (cfg.provider === 'laya' ? '' : `.${cfg.provider}`) + '.eval.json');
+      fs.writeFileSync(out, JSON.stringify({ provider: cfg.provider, outcome }, null, 2) + '\n');
+      log(`report: ${out}`);
+      return 0;
     }
     if (!rows.length) throw new Error('no row has both "human" and "claude" severities');
     const seed = String(a.seed ?? 1);
     const split = Number(a.split ?? 0.7);
     for (const r of rows) {
-      r.rules = ruleBaseline(r);
+      r.rules = projectRuleSeverity(r, ruleMap) ?? ruleBaseline(r);
       r.split = hash01(`${seed}:${r.key}`) < split ? 'calibration' : 'held-out';
     }
     const latencies = [];
-    const cfg = loadConfig({ env, overrides: { mode: 'shadow', provider: a.provider } });
     const usage = { inputTokens: 0, outputTokens: 0, costUsd: 0, calls: 0 };
     const addUsage = (m) => { if (!m?.usage) return; usage.calls++; usage.inputTokens += m.usage.input_tokens ?? 0; usage.outputTokens += m.usage.output_tokens ?? 0; usage.costUsd += m.cost ?? 0; };
     const todo = rows.filter((r) => a.relabel || !r.laya);
     const prsTodo = [...new Set(rows.filter((r) => a.relabel || !r.prMerge).map((r) => r.pr))];
     if (todo.length || prsTodo.length) {
       if (!(await providerUp(cfg, { fetchImpl, env }))) throw new Error(`${todo.length} rows / ${prsTodo.length} PRs need a ${cfg.provider} answer: ${providerWhere(cfg)}${cfg.provider === 'laya' ? ' (start laya-serve)' : ''}`);
-      const overrides = extractOverrides(a.rules && fs.existsSync(a.rules) ? fs.readFileSync(a.rules, 'utf8') : '');
+      const overrides = extractOverrides(rulesText);
       const question = buildQuestion(overrides);
       await mapLimit(todo, 2, async (r) => {
         const t0 = Date.now();
@@ -335,6 +389,7 @@ export async function main(argv = process.argv.slice(2), { log = console.log, er
     log(`provider: ${o.provider} (${o.model})${o.usage ? ` · ${o.usage.calls} calls · tokens ${o.usage.inputTokens}/${o.usage.outputTokens} · $${o.usage.costUsd}` : ''}`);
     if (skipped) log(`skipped ${skipped} rows without a human or claude label`);
     printReport(o, log);
+    if (outcome) { o.outcome = outcome; printOutcome(outcome, log); }
     const out = path.resolve(a.out ?? a.data.replace(/\.jsonl$/i, '') + (cfg.provider === 'laya' ? '' : `.${cfg.provider}`) + '.eval.json');
     fs.writeFileSync(out, JSON.stringify({ ...o, rows: rows.map(({ key, pr, split: s, claude, human, rules, laya, prMerge }) => ({ key, pr, split: s, claude, human, rules, laya, prMerge })) }, null, 2) + '\n');
     log(`report: ${out}`);

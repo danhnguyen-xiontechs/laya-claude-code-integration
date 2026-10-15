@@ -18,8 +18,10 @@ fixed before it merges, judged against the rules this project has chosen.
 
 This variant adds, after Claude has verified and rated every finding, an **independent
 severity check by Laya** (a small local model). Claude's severity is always final. Laya only
-decides whether Claude takes one more look at a finding, and only above a calibrated
-confidence. The plan is `idea/review-pr/plan-1-laya-severity-classification.md`.
+decides whether Claude takes one more look at a finding, and only when its answer is stable
+across shuffled asks and crosses the merge boundary (or, with the old policy, above a
+calibrated confidence). Two more per-finding yes/no questions (`introduced_by_pr`,
+`already_raised`) are logged for calibration and change nothing. The plan is `idea/review-pr/plan-1-laya-severity-classification.md`.
 
 `<skill-dir>` below means the folder that contains this SKILL.md
 (`.claude/skills/review-pr-jev-classify/` in this project). Run scripts as
@@ -157,6 +159,9 @@ node <skill-dir>/scripts/classify-findings.mjs --findings <pr-<id>.findings.json
 
 One command, one batch: Laya gets each finding's rule, issue, evidence and impact plus the
 severity rubric and the project's severity overrides. It never sees Claude's severity.
+`--rules` also feeds the log's `rules` column: a finding whose rule is a project rule id gets
+that id's default severity from the rules file (overrides applied, `rulesSource: "project"`);
+other findings fall back to the frozen keyword baseline (`rulesSource: "baseline"`).
 The script prints one summary line, plus one `recheck <id>: ...` line per finding to re-check,
 and writes `pr-<id>.<provider>.json` (`pr-<id>.laya.json` or `pr-<id>.jev.json`). Read only that output, not the log.
 
@@ -167,6 +172,31 @@ and writes `pr-<id>.<provider>.json` (`pr-<id>.laya.json` or `pr-<id>.jev.json`)
 - `recheck <id>` lines (only in `recheck` mode, at most 3) → re-check each listed finding
   **once** as described in review-method.md "Re-check after a Laya flag", and record the
   result in the findings file. No other finding is re-opened because of Laya.
+
+**Re-check policy** (`policy` in `laya.json`, default `stable-disagreement`; see "Laya modes"):
+the severity question is asked k more times (default 3) with the option order shuffled; a
+finding is flagged only when all k answers give the same label, that label differs from
+Claude's, and it crosses the merge boundary (Minor/Suggestion ↔ Critical/Major). Flags are
+ordered upward first (a possible missed block), then by mean probability; still max 3 per PR.
+No threshold is needed. The stability of every finding is logged (`stability`: k labels,
+option orders, stable, mean probability).
+
+**Two yes/no questions per finding** (log only, every mode, both providers), asked when the
+PR JSON (`pr-<id>.json`) sits next to the findings file:
+
+- `introduced_by_pr` — "Is this problem introduced by this PR's change, rather than
+  pre-existing code?" Input: the finding's issue and evidence, plus whether the cited line(s)
+  are added, modified, unchanged context or not changed by the patch (computed in code from
+  `pr-<id>.patch`).
+- `already_raised` — "Is this point already raised in an existing review thread?" Input: the
+  finding, plus the 3 most similar passages of `threads[]` (local BM25; each comment split into
+  paragraphs, each passage cut to 400 characters). With no similar passage, the answer is a
+  local `no` and no call is made.
+
+The script prints `<provider> questions (log only): introduced_by_pr yes=.. no=..; already_raised yes=.. no=..`.
+Neither answer changes, drops or re-checks a finding, and neither appears in the report: step 4
+already handles existing threads (do not repeat an open point). They are logged as data for
+calibrating these questions.
 
 The same command also asks Laya **one merge question for the whole PR** (`merge_gate`), in
 parallel with the per-finding calls. Its input is every finding, worst first, as
@@ -239,7 +269,8 @@ skill, and it is never posted to the PR.
    It finds this session's transcript (the one that ran `pr-fetch.mjs` for this PR id; pass
    `--transcript` / `--from` / `--to` to override), cuts the window from the user message that
    started the review to the end of the report step, and writes one HTML file with: PR,
-   verdict, merge and the Laya summary (including re-check results); metric tiles (model
+   verdict, merge and one provider summary line per decision log (both when `pr-<id>.laya.json` and
+   `pr-<id>.jev.json` exist, including re-check results); metric tiles (model
    turns, input/output tokens, cache-read share, tool calls, active time); the run-notes
    summary; token usage by phase; per-turn token charts; tool calls by type; and the full
    step-by-step log, filterable to steps with errors.
@@ -259,7 +290,9 @@ skill, and it is never posted to the PR.
 | `scripts/find-rules.mjs [scan\|save\|where] [--repo-dir d] [--repo-id id] [--from f] [--repo-level]` | lists saved rules and candidate rule sources; saves the chosen project rules |
 | `scripts/post-comments.mjs --pr f.json --comments c.json [--json] [--post --confirm <id>]` | dry-run by default; posts the summary and inline comments per provider |
 | `scripts/providers.mjs` | shared provider code (URL parsing, CLI runner, diff parsing, secret scan) |
-| `scripts/classify-findings.mjs --findings f [--rules r] [--mode m] [--threshold t] [--provider laya\|jev]` | selected provider's independent severity per finding; compares with Claude in code; lists re-checks |
+| `scripts/classify-findings.mjs --findings f [--rules r] [--mode m] [--policy stable-disagreement\|threshold] [--k n] [--threshold t] [--provider laya\|jev] [--pr pr.json] [--patch p]` | selected provider's independent severity per finding (plus k shuffled-order samples under stable-disagreement) and the two yes/no questions; compares with Claude in code; lists re-checks |
+| `scripts/finding-questions.mjs` | patch line status, BM25 over threads, the yes/no questions, shuffled orders and stability, project rule ids |
+| `scripts/outcome-labels.mjs --pr <url\|id> --run <run folder> [--repo-dir d] [--context 5] [--provider laya\|jev] [--no-fetch]` | outcome labels for a reviewed PR that was later updated or completed (not used during a review) |
 | `scripts/assess.mjs --findings f [--coverage a/b] [--laya l]` | counts, score, verdict, merge assessment from final severities; finalizes the Laya log |
 | `scripts/laya-eval.mjs collect\|run ...` | shadow evaluation and threshold calibration (not used during a review) |
 | `scripts/build_execution_log.mjs <pr-<id>.json> [--transcript f] [--from ISO] [--to ISO]` | step-by-step execution log (HTML) of this review from the session transcript |
@@ -271,12 +304,22 @@ skill, and it is never posted to the PR.
 |---|---|
 | `off` | step 4b does nothing |
 | `shadow` (default) | Laya runs and is logged; no re-checks; the report is not affected |
-| `recheck` | flagged findings (differs and confidence ≥ threshold) are re-checked once, max 3 per PR |
+| `recheck` | flagged findings are re-checked once, max 3 per PR; what "flagged" means is the policy |
+
+| Policy | Flag when | Needs |
+|---|---|---|
+| `stable-disagreement` (default in `laya.json`) | all k shuffled-order answers give the same label, it differs from Claude, and it crosses the merge boundary; upward first | nothing to calibrate; k+1 severity calls per finding |
+| `threshold` (old) | differs and top probability ≥ `threshold` | a `threshold` from `laya-eval.mjs`; `recheck` without one runs as `shadow` |
+
+In `shadow` the policy only decides what `wouldFlag` means in the log. `k` (default 3, 2–8)
+and `stabilityScope` (`all`, or `boundary` = sample only findings whose first answer already
+crosses the merge boundary; cheaper, can miss a stable answer that differs from the first) are
+in `laya.json`; `questions` turns the two yes/no questions on or off.
 
 Set in `<skill-dir>/laya.json` (shared) or `laya.local.json` (this machine, gitignored);
-environment wins: `XT_REVIEW_PR_LAYA`, `XT_REVIEW_PR_LAYA_THRESHOLD`, `LAYA_URL`. `recheck`
-without a threshold runs as `shadow`. Set the threshold only from a `laya-eval.mjs run`
-whose decision is "enable recheck".
+environment wins: `XT_REVIEW_PR_LAYA`, `XT_REVIEW_PR_LAYA_POLICY`, `XT_REVIEW_PR_LAYA_K`,
+`XT_REVIEW_PR_LAYA_THRESHOLD`, `LAYA_URL`; `--mode`, `--policy`, `--k`, `--threshold` win over
+both. Set a threshold only from a `laya-eval.mjs run` whose decision is "enable recheck".
 
 ## Evaluation (outside a review)
 
@@ -287,6 +330,28 @@ whose decision is "enable recheck".
 4. `node <skill-dir>/scripts/laya-eval.mjs run --data laya-dataset.jsonl --rules <rules file>`
    → compares Claude, Laya and a rule baseline; picks the threshold on the calibration split,
    checks it on the held-out split, prints the stop/enable decision.
+
+### Outcome labels (no human labelling)
+
+For a PR that was reviewed and later updated or completed:
+
+```
+node <skill-dir>/scripts/outcome-labels.mjs --pr <url|id> --run <run folder> [--repo-dir <checkout>]
+```
+
+Read-only: one `az repos pr show` / `gh pr view` / `glab mr view` for the PR's state and current
+head, then `git diff -M -U0 <review head> <final head>` in a local checkout (`git fetch` only
+when a commit is missing; `--no-fetch` forbids it). The review head is `sourceCommit` in the
+run's `pr-<id>.json`. Each finding gets `fixed` (a later hunk touches the cited line ± 5, through
+`endLine`, renames followed), `unchanged` (no hunk touches it; the moved location is logged) or
+`file-removed` (left without a label: ambiguous). An open PR with no new commit has no outcome
+yet and nothing is written. Rows go to `<run>/pr-<id>.outcome.jsonl` with
+`human: fixed|unchanged`, `source: "outcome"`, every provider's answer and the yes/no answers.
+`laya-eval.mjs run --data <rows> [--provider laya|jev]` scores them apart from the severity rows:
+fixed rate when each predictor (Claude, final, provider, rules) calls a finding blocking or not,
+and on boundary disagreements (up = provider blocks, Claude does not). "Fixed" means the code
+near the finding changed, not that the finding was right; concatenate several PRs' files.
+Ask the user before running it on a PR (it reads that PR through the provider CLI).
 
 ## Files this skill writes
 
@@ -299,6 +364,7 @@ All other scripts write next to the PR JSON, so a run never overwrites another r
 | `~/.xt-skills/review-pr-jev-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.findings.json` | Claude's findings (initial, then final severities and re-check results) |
 | `~/.xt-skills/review-pr-jev-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.{laya,jev}.json` | provider log (answers, confidence, comparison, final severities) |
 | `~/.xt-skills/review-pr-jev-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.run-notes.json` | run summary for the execution log |
+| `~/.xt-skills/review-pr-jev-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.outcome.jsonl` | outcome-label rows (only when `outcome-labels.mjs` is run) |
 | `~/.xt-skills/review-pr-jev-classify/reviews/<repo-id>/pr-<id>/<run>/pr-<id>.execution-log.html` | step-by-step execution log with real token usage |
 | `~/.xt-skills/review-pr/projects/<repo-id>.md` | this user's rules for a project |
 | `<repo>/.xt-skills/review-pr.md` | team-shared rules (only when the user chooses it) |
@@ -354,5 +420,20 @@ provider; the key comes from `OPENROUTER_API_KEY` and is never logged.
   so per-class accuracy, flag precision, missed merge blocks, latency and cost compare directly.
 - The default stays `laya`, `mode` stays `shadow`. Jev never approves, votes, posts or changes a
   severity; nothing here enables automatic PR approval.
-- **Data leaving the machine.** With `jev`, finding text and evidence (code excerpts) are sent to
-  OpenRouter/TypeSafe. Use it only on repositories whose owners allow that.
+- **Same input, extra questions.** `introduced_by_pr`, `already_raised` and the shuffled-order
+  severity samples send the same state and questions to either provider; the patch status and
+  the thread passages are computed locally first.
+- **Data leaving the machine.** With `jev`, everything below goes to OpenRouter/TypeSafe; with
+  `laya` it stays on this machine. Use `jev` only on repositories whose owners allow that.
+  - Per finding: rule, issue, evidence (code excerpts) and impact, with severity words removed,
+    for the severity question — **k+1 times** under `stable-disagreement` (same text, different
+    option order).
+  - Per finding, `introduced_by_pr`: issue, evidence and one generated sentence naming the cited
+    file and line and whether the PR added or modified it.
+  - Per finding, `already_raised`: issue, evidence, the cited file:line, and up to **3 passages of
+    existing PR comments** (≤ 400 characters each, with thread file:line and status). These are
+    other people's words, including earlier bot reviews; nothing is sent when no passage matches.
+  - Per PR, `merge_gate`: every finding's text with Claude's severity.
+  - Never sent: the PR title, description, work items, the full patch, the key itself.
+  `outcome-labels.mjs` sends nothing to either provider: it only reads through `az`/`gh`/`glab` and git.
+  Set `"questions": { "alreadyRaised": false }` in `laya.local.json` to keep comment text local.
