@@ -642,6 +642,38 @@ All 199 scenarios, thresholds chosen on dev:
 
 ---
 
+<!-- BEGIN codebase-task-explorer -->
+## Group G: `codebase-task-explorer`: where to start in a codebase (new build, Jev optional)
+
+**Goal:** before a bug investigation, feature tracing, refactor or new feature, give Claude a short ranked list of files to read first, with evidence, instead of browsing blindly. Discovery only: no fixing.
+
+**Phase 0 — codemap (JordanCoin/codemap):** not installed before. Installed release **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, SHA-256 checked against `checksums.txt`, bundles `ast-grep`) into `~/tools/codemap` (no Go/brew/scoop on this machine). `codemap doctor`: binary OK; project config, Claude hooks and `.mcp.json` are MISS (not set up — on purpose, we only call the CLI). Capabilities seen: `find -json -limit` (lexical over paths + symbols, importer counts, hub flag), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` exposes **19 tools** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Every answer has a coverage status: on this repo **partial** (2/238 JS and 14/17 Python imports unresolved). Not tested on a C# repo.
+
+**How it works** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
+- **Modes:** `bug`, `feature`, `refactor`, `new-feature`; output is a handoff (starting points, evidence, path, hypotheses, unknowns, Jev contribution).
+- **Broad pool:** one `codemap find` per query (Claude gives 3–6 different vocabularies); merge, keep why each file matched. If codemap is missing: a **labelled fallback** (git ls-files + rg, no importer data).
+- **Mechanical cleanup only:** dedupe, drop vendor/build/generated/binary. **Rules (C):** per-query score + multi-query bonus + mode priors.
+- **Jev (D):** choice batches of 24 options + `none_of_these`, keep top-4 per batch by *local* rank, one global rerank of survivors; probabilities never compared across batches. Guards: ≤6 calls, ≤24k chars per request; any failure → rules order. Opt-out: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; skipped for exact file/symbol. Jev sees paths, matched symbols, importer counts and each file's **first header comment line** — no source bodies.
+- 5 unit tests (mocked Jev: batching, survivors, global pass, guards, fallback, none_of_these, cleanup) pass.
+
+**Quick pilot** (5 tasks on this repo covering all 4 modes, labels = known files; Recall@5; `eval/results-2026-10-16.json`):
+
+| Task | B: codemap-only | C: rules | D: rules + Jev |
+|---|---|---|---|
+| bug: merge verdict wrong | 0.50 | 0.50 | 1.00 |
+| feature: subagent model choice | 0.50 | 1.00 | 1.00 |
+| refactor: `decide()` signature | 0.33 | 0.33 | 0.67 |
+| new-feature: another write-gate | 0.00 | 0.50 | 1.00 |
+| bug: grounding clicks wrong button | 0.00 | 0.00 | 1.00 |
+| **Mean** | **0.27** | **0.47** | **0.93** |
+
+- Jev: **15 calls** (3 per task: 2 batches + global), ~0.6 s per call, **$0.0011** total. `none_of_these` never won. Fallback engine alone (no codemap): B 0.17, C 0.27.
+
+**Caveats:** only 5 tasks; tasks and labels were written by Claude on its own repo; D also sees the header comment line, C does not (part of the gain may come from that text, not Jev's judgment); the repo's laya/jev twin copies make "any copy" labels easier; baseline A (plain Claude) and the Claude verification step were not measured; no C# repo.
+
+**Verdict: `PILOT`** — Jev's batch ranking looks clearly better than rules on this small set, cheaply. Before adopting: 30–50 real tasks on a C#/.NET repo (with a C+header arm to separate the header effect), and measure A.
+<!-- END codebase-task-explorer -->
+
 ## 12. Overall conclusions
 
 | Question | Answer |
