@@ -10,7 +10,7 @@ const SKILL_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 export const CONFIG_PATH = path.join(SKILL_DIR, 'laya.json');
 export const LOCAL_PATH = path.join(SKILL_DIR, 'laya.local.json');
 
-const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return {}; } };
+const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8').replace(/^\uFEFF/, '')); } catch { return {}; } };
 
 export function loadConfig() {
   const cfg = { url: 'http://localhost:8000', enabled: null, model: 'english', ...readJson(CONFIG_PATH), ...readJson(LOCAL_PATH) };

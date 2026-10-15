@@ -107,7 +107,7 @@ Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screen
 
 1. Launch the role (one role owns port 9222 at a time; launching another role stops the current one):
    ```bash
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-oracle/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-oracle/scripts/launch-role.ps1" [role] <envUrl>   # either order works (the URL is detected); no role → roles.json default
    powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-oracle/scripts/launch-role.ps1" status
    ```
    It uses **Edge** (else Chrome, else Playwright's Chromium) with a dedicated persistent profile at `~/.ess-web-test/profiles/<role>`, and prints the role's account. It **cannot** use the user's everyday Edge profile: Edge 136+ ignores the debugging port on its default profile, and the running Edge would capture the launch. Act on its output:
@@ -147,9 +147,9 @@ For each case, for each step:
    **File paths (A):** the MCP only writes inside its workspace roots, and `~/ess-test-runs` is outside them. If `filePath` / `responseFilePath` is refused, write to the session scratchpad instead and copy into `<runDir>/shots/` or `<runDir>/api/` before building the report — same file names.
 4. **Oracle (plan 01).** Do not choose the status yourself first. Once the UI has settled, let the oracle read a compact observation of the page and decide, one call per step:
    ```bash
-   node .claude/skills/web-test-laya-oracle/scripts/oracle.mjs "<runDir>" TC<nn> <n> --observe [--observed "<page text you read>"] [--shot shots/TC<nn>-S<nn>.png]
+   node .claude/skills/web-test-laya-oracle/scripts/oracle.mjs "<runDir>" TC<nn> <n> --observe --url "<route of the page under test>" [--observed "<page text you read>"] [--shot shots/TC<nn>-S<nn>.png]
    ```
-   `--observe` attaches read-only to the role browser (port 9222) and collects only: path, loading indicators, toast/alert texts and the page lines that contain the expected's quoted strings — never the DOM. Add `--observed "<…>"` (repeatable) for values it cannot see that way, such as one table cell you read with `evaluate_script` — quote the page, never paraphrase `expected`. On playwright-cli (path B) there is no port-9222 browser: pass `--observed` only. It writes `actual`, `status` and `verdict` into `results.json` and prints `oracle=<status> by=<rule|laya|model> p=<conf> review=<bool> …`:
+   `--observe` attaches read-only to the role browser (port 9222) — Pass `--url "<route>"` with the route of the page under test (the path you navigated to, e.g. `/attendance`): the role browser can hold tabs the MCP does not list (in the 11840 runs a hidden ESS tab at `/` was polled instead of the test page). Without `--url` the script ignores hidden tabs, then takes the focused or most recently loaded one; when it still cannot tell, it stops with an `ambiguous: … open: <urls>` error instead of guessing — re-run with `--url`. It collects only: path, loading indicators, toast/alert texts and the page lines that contain the expected's quoted strings — never the DOM. Add `--observed "<…>"` (repeatable) for values it cannot see that way, such as one table cell you read with `evaluate_script` — quote the page, never paraphrase `expected`. On playwright-cli (path B) there is no port-9222 browser: pass `--observed` only. It writes `actual`, `status` and `verdict` into `results.json` and prints `oracle=<status> by=<rule|laya|model> p=<conf> review=<bool> …`:
    - `oracle=pass by=rule` → every quoted string is on the page, nothing loading, no error text. Move on.
    - `oracle=not_ready` → still loading: wait (`wait_for`), then run it again. The step stays `not-run`.
    - `by=laya` → Laya decided: a `pass` needs p ≥ 0.95, a `fail` p ≥ 0.85. Move on.

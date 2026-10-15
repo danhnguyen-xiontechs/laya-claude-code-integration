@@ -1,0 +1,84 @@
+{
+ "ticket": {
+  "id": 11840,
+  "type": "Bug",
+  "title": "Total Hours is displayed inconsistently in Month View",
+  "state": "Resolved",
+  "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+ },
+ "environment": {
+  "key": "dev",
+  "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+ },
+ "browser": "chrome-devtools",
+ "tester": "Claude",
+ "startedAt": "2026-10-12T23:50:00+07:00",
+ "scope": "Read-only check that Attendance > Month View toolbar stats (Scheduled/Total/Absence hours) are stable for the same month regardless of week anchor/navigation. Excludes verifying the reported value 55 (needs an account with logged hours in June 2026).",
+ "cases": [
+  {
+   "id": "TC01",
+   "title": "Month View stats stable for June 2026 after navigating away and back",
+   "ac": [
+    "Bug"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "happy",
+   "preconditions": "Signed in as xiontechs",
+   "status": "pass",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Attendance > Month view, observe current month (Oct 2026)",
+     "expected": "Toolbar shows month-wide stats, not one week (Scheduled hours > 40)",
+     "actual": "October 2026 Month view: Scheduled hours: 168, Total hours: 0, Absence hours: 48 (month-wide, not the 40 of a week)",
+     "status": "pass",
+     "screenshot": "shots/TC01-S01.png",
+     "at": "2026-10-12T16:52:35.530Z"
+    },
+    {
+     "n": 2,
+     "action": "Navigate back to June 2026 via Previous month, read stats",
+     "expected": "Stats shown for June 2026",
+     "actual": "June 2026: Scheduled hours: 160, Total hours: 0, Absence hours: 160",
+     "status": "pass",
+     "screenshot": "shots/TC01-S02.png",
+     "at": "2026-10-12T16:52:35.593Z"
+    },
+    {
+     "n": 3,
+     "action": "Next month then Previous month back to June 2026",
+     "expected": "Same Scheduled/Total/Absence values as step 2",
+     "actual": "After Next month then Previous month: June 2026 still Scheduled 160 / Total 0 / Absence 160 (identical)",
+     "status": "pass",
+     "screenshot": "shots/TC01-S02.png",
+     "at": "2026-10-12T16:52:35.650Z"
+    }
+   ]
+  },
+  {
+   "id": "TC02",
+   "title": "Total Hours shows 55 (non-zero) consistently for June 2026",
+   "ac": [
+    "Bug"
+   ],
+   "role": "user with logged hours",
+   "priority": "High",
+   "type": "regression",
+   "preconditions": "Account with ~55 logged hours in June 2026",
+   "status": "blocked",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open June 2026 Month view",
+     "expected": "Total hours equals month total on every visit",
+     "actual": "xiontechs account has no logged hours in June 2026 (Total hours 0, Absence 160); the reported 55 cannot be reproduced without an account with timesheet data",
+     "status": "blocked",
+     "at": "2026-10-12T16:52:35.713Z"
+    }
+   ]
+  }
+ ],
+ "observations": [],
+ "finishedAt": "2026-10-12T16:52:42.645Z"
+}

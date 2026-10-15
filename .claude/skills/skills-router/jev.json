@@ -1,0 +1,8 @@
+{
+  "provider": "none",
+  "jevModel": "typesafe/jev-1.13",
+  "laya": { "url": "http://localhost:8000", "model": "english", "maxLen": 1024 },
+  "kev": { "url": "http://localhost:8001", "model": "kev-latest" },
+  "thresholds": { "gateMin": 0.3, "fitMin": 0.3, "noneAbstain": true, "bm25Min": 3 },
+  "notes": "provider: none (BM25 only, nothing leaves the machine, no server needed) | laya (local laya-serve) | kev (local Kev, TypeSafe-compatible) | jev (TypeSafe Jev via OpenRouter, needs OPENROUTER_API_KEY in the environment, never stored here). --provider wins over env DECISION_PROVIDER, which wins over this file. Thresholds: see README (eval on mined history); re-pick them with scripts/eval.mjs. Per-machine overrides go to jev.local.json (gitignored)."
+}

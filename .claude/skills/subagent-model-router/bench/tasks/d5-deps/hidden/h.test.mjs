@@ -1,0 +1,13 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { work } from '../../../lib/check-util.mjs';
+const { resolveOrder } = await work('src/resolve.js');
+const P = { app: { deps: ['web', 'db'] }, web: { deps: ['http', 'log'] }, db: { deps: ['log'] }, http: { deps: [] }, log: { deps: [] }, unused: { deps: [] } };
+test('order', () => assert.deepEqual(resolveOrder(P, ['app']), ['http', 'log', 'db', 'web', 'app']));
+test('alphabetical tie-break, multiple targets, no duplicates', () => assert.deepEqual(resolveOrder(P, ['web', 'db']), ['http', 'log', 'db', 'web']));
+test('unused not included', () => assert.ok(!resolveOrder(P, ['app']).includes('unused')));
+test('missing dep', () => assert.throws(() => resolveOrder({ a: { deps: ['b'] } }, ['a']), { message: 'missing package: b (required by a)' }));
+test('missing target', () => assert.throws(() => resolveOrder({}, ['z']), { message: 'missing package: z (required by <root>)' }));
+test('cycle', () => assert.throws(() => resolveOrder({ x: { deps: ['a'] }, a: { deps: ['b'] }, b: { deps: ['c'] }, c: { deps: ['a'] } }, ['x']), { message: 'cycle: a -> b -> c -> a' }));
+test('self cycle', () => assert.throws(() => resolveOrder({ s: { deps: ['s'] } }, ['s']), { message: 'cycle: s -> s' }));
+test('diamond', () => assert.deepEqual(resolveOrder({ top: { deps: ['l', 'r'] }, l: { deps: ['base'] }, r: { deps: ['base'] }, base: { deps: [] } }, ['top']), ['base', 'l', 'r', 'top']));

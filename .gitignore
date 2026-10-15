@@ -10,6 +10,13 @@ workflow/hooks/step_decisions.jsonl
 workflow/hooks/probe_log.jsonl
 hooks/cache_expiry_gate.log.jsonl
 
+# ado-classify: config that (org/tenant khach hang) va cache
+ado-classify/config.local.json
+ado-classify/__pycache__/
+
+# skills-router: per-machine config
+.claude/skills/skills-router/jev.local.json
+.claude/skills/skills-router/builtin.local.json
 # triage v2: real logs from Claude Code transcripts / internal projects - keep local
 triage/v2/data/
 
@@ -20,3 +27,6 @@ triage/v2/data/
 .claude/skills/web-test-jev-ground/laya.local.json
 .claude/skills/bmad-help-jev/jev.local.json
 .claude/skills/bmad-code-review-jev/jev.local.json
+
+# web-test-jev-*: per-machine consent to send compact text to Jev
+.claude/skills/web-test-jev-*/jev.local.json

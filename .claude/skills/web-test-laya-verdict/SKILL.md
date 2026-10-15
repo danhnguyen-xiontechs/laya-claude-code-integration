@@ -109,7 +109,7 @@ Auto-pick, in this order (`--browser devtools|cli` forces one). Both keep screen
 
 1. Launch the role (one role owns port 9222 at a time; launching another role stops the current one):
    ```bash
-   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-verdict/scripts/launch-role.ps1" [role] <envUrl>   # no role → roles.json default
+   powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-verdict/scripts/launch-role.ps1" [role] <envUrl>   # either order works (the URL is detected); no role → roles.json default
    powershell -NoProfile -ExecutionPolicy Bypass -File ".claude/skills/web-test-laya-verdict/scripts/launch-role.ps1" status
    ```
    It uses **Edge** (else Chrome, else Playwright's Chromium) with a dedicated persistent profile at `~/.ess-web-test/profiles/<role>`, and prints the role's account. It **cannot** use the user's everyday Edge profile: Edge 136+ ignores the debugging port on its default profile, and the running Edge would capture the launch. Act on its output:

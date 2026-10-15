@@ -1,0 +1,57 @@
+{
+ "ticket": {
+  "id": 11840,
+  "type": "Bug",
+  "title": "Total Hours is displayed inconsistently in Month View",
+  "state": "Resolved",
+  "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+ },
+ "environment": {
+  "key": "dev",
+  "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+ },
+ "browser": "chrome-devtools",
+ "tester": "Claude",
+ "startedAt": "2026-10-12T23:55:00+07:00",
+ "scope": "Month View toolbar stats (Scheduled/Total/Absence hours) must aggregate over the displayed month and stay stable regardless of week anchor. Read-only; no writes. Test data on the admin account has no actual hours (Total = 0), so a non-zero total (e.g. 55) cannot be reproduced.",
+ "cases": [
+  {
+   "id": "TC01",
+   "title": "Month View June 2026 toolbar stable after week-view navigation",
+   "ac": [
+    "Bug repro"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "regression",
+   "preconditions": "Attendance > My attendance",
+   "status": "pass",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open Attendance, switch to Month view, go back to June 2026",
+     "expected": "Toolbar shows month-wide Scheduled/Total/Absence hours",
+     "actual": "Month view June 2026: 'Scheduled hours: 160, Total hours: 0, Absence hours: 160'",
+     "status": "pass",
+     "screenshot": "shots/TC01-S01.png",
+     "at": "2026-10-12T16:57:33.427Z"
+    },
+    {
+     "n": 2,
+     "action": "Switch to Week view, press Next week twice, switch back to Month view",
+     "expected": "Month view shows June 2026 with identical toolbar values",
+     "actual": "After Week view + Next week x2, Month view shows June 2026 again: 'Scheduled hours: 160, Total hours: 0, Absence hours: 160' (unchanged)",
+     "status": "pass",
+     "screenshot": "shots/TC01-S02.png",
+     "at": "2026-10-12T16:57:33.490Z"
+    }
+   ]
+  }
+ ],
+ "observations": [
+  "October 2026 Month view: Scheduled 168, Total 0, Absence 48 (different from week view 40/0/0 — expected per-scope).",
+  "Total hours was 0 in every month checked, so the original 55-vs-0 discrepancy was not exercised with real data."
+ ],
+ "finishedAt": "2026-10-12T16:57:40.090Z"
+}

@@ -10,5 +10,11 @@
     "api": "http://localhost:5201",
     "shared": false,
     "notes": "Tests an unmerged branch. FE: D:\\Source\\Ess\\ess-fe (npm run dev). BE: D:\\Source\\Ess\\ess-be (dotnet run --project src/Ess-App.API/Ess-App.API.csproj). Local BE calls whichever D365 environment appsettings points to (a shared D365), so writes are real D365 writes."
+  },
+  "staging": {
+    "url": "https://gray-ground-0b446f50f.4.azurestaticapps.net/",
+    "api": "https://gems-ess-app-staging.azurewebsites.net",
+    "shared": true,
+    "notes": "Same app as dev on another domain; use while dev is throttled (429 / D365 busy). Shared env: writes are real."
   }
 }

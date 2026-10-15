@@ -1,0 +1,16 @@
+{
+  "notes": "Skills bundled with Claude Code itself: they have no SKILL.md on disk, so the catalog cannot discover them. Short descriptions written for routing; lowest precedence (any project, user or plugin skill of the same name shadows them). Edit or empty this list freely; per-machine overrides go to builtin.local.json (same shape, replaces this list).",
+  "skills": [
+    { "name": "code-review", "description": "Review the current diff, a branch or a pull request for correctness bugs, with an effort level; can post inline PR comments or apply fixes." },
+    { "name": "simplify", "description": "Review changed code for reuse, simplification and efficiency cleanups and apply them. Quality only, not a bug hunt." },
+    { "name": "security-review", "description": "Security review of the pending changes on the current branch." },
+    { "name": "init", "description": "Create a CLAUDE.md file documenting the codebase for future sessions." },
+    { "name": "claude-api", "description": "Reference for building with the Claude API / Anthropic SDK: model ids, pricing, tool use, streaming, caching, agents, model migration." },
+    { "name": "workflow-authoring", "description": "Write and run a multi-agent workflow script that orchestrates many subagents (fan out, pipeline, verify)." },
+    { "name": "loop", "description": "Run a prompt or slash command repeatedly on an interval, or self-paced, e.g. poll a deploy every 5 minutes." },
+    { "name": "schedule", "description": "Create, list or run scheduled cloud agents (routines) on a cron schedule, or one-time at a set time." },
+    { "name": "run", "description": "Launch and drive this project's app (CLI, server, web, Electron) to see a change working, take screenshots." },
+    { "name": "update-config", "description": "Configure Claude Code settings.json: hooks for automated behaviours, permissions, environment variables." },
+    { "name": "fewer-permission-prompts", "description": "Scan transcripts for common read-only tool calls and add an allowlist to project settings to reduce permission prompts." }
+  ]
+}

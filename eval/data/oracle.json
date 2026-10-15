@@ -1,0 +1,900 @@
+[
+ {
+  "id": "real-11840-202610090042-TC01-S1",
+  "set": "real",
+  "expected": "Toolbar shows Scheduled/Total/Absence hours for June 2026, not the week-only values",
+  "observed": [
+   "Month view, June 2026: Scheduled hours: 160 / Total hours: 0 / Absence hours: 160 (month-wide values; week view showed Scheduled 40 for 5-11 Oct)"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090042-TC02-S1",
+  "set": "real",
+  "expected": "Total hours equals the TC01 value (no 0 vs 55 flip)",
+  "observed": [
+   "Next month: July 2026 Scheduled hours: 184, Total hours: 0. Back to June 2026: Scheduled hours: 160, Total hours: 0, Absence hours: 160 (same as first visit)"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090042-TC02-S2",
+  "set": "real",
+  "expected": "Total hours equals the TC01 value",
+  "observed": [
+   "Week view (1 - 7 Jun): Scheduled hours: 40, Total hours: 0. Back to Month view June 2026: Scheduled hours: 160, Total hours: 0, Absence hours: 160"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090042-TC03-S1",
+  "set": "real",
+  "expected": "Month view shows the same June 2026 Total hours as TC01",
+  "observed": [
+   "Week view anchored 1 - 7 Jun showed Scheduled hours: 40; Month view June 2026 then showed Scheduled hours: 160, Total hours: 0, identical to the first visit"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090100-TC01-S1",
+  "set": "real",
+  "expected": "Total Hours shown for the month",
+  "observed": [
+   "Month view October 2026: Scheduled hours 176, Total hours 0, Absence hours 48"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090100-TC01-S2",
+  "set": "real",
+  "expected": "Same Total Hours value as step 1",
+  "observed": [
+   "Round trip Jun->Jul->Aug->Jul->Jun: June 2026 stayed Scheduled 160 / Total 0 / Absence 160; July 184 both visits"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090100-TC02-S1",
+  "set": "real",
+  "expected": "Total equals sum over the whole month",
+  "observed": [
+   "Account has no attendance records (Total hours 0 in every month Jun-Oct 2026), so the sum of daily hours cannot be compared; needs an account with attendance data (ticket's 55h for June 2026)"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "real-11840-202610090100-TC03-S1",
+  "set": "real",
+  "expected": "Month View Total Hours equals the value in TC01",
+  "observed": [
+   "Week view Scheduled 40 for 5-11, 12-18, 19-25 Oct; returning to Month view gives Scheduled 176 / Total 0, same as TC01 (month-wide, independent of week anchor)"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090115-TC01-S1",
+  "set": "real",
+  "expected": "Month view shows 'October 2026' and 'Scheduled hours: 176' (whole month, not the week's 40)",
+  "observed": [
+   "October 2026 | Scheduled hours: 176"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090115-TC02-S1",
+  "set": "real",
+  "expected": "Header 'June 2026' with 'Scheduled hours: 160' and 'Total hours: 0', identical every time",
+  "observed": [
+   "June 2026 | Scheduled hours: 160 | Total hours: 0"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090115-TC03-S1",
+  "set": "real",
+  "expected": "Total hours equals sum of the weeks",
+  "observed": [],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "real-11840-202610090121-TC01-S1",
+  "set": "real",
+  "expected": "Toolbar shows month-wide Scheduled/Total/Absence hours for June 2026",
+  "observed": [
+   "June 2026 Month view toolbar: 'Scheduled hours: 160 / Total hours: 0 / Absence hours: 160' (month-wide; Oct 2026 month showed 176/0/48, week 5-11 Oct showed 40/0/32, so not the week value). Account has no actual hours in June so the 0-vs-55 value cannot be reproduced."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090121-TC02-S1",
+  "set": "real",
+  "expected": "Total hours equal the TC01 value",
+  "observed": [
+   "After Month->Week->Month on June 2026: Scheduled 160, Total 0, Absence 160, identical."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-11840-202610090121-TC02-S2",
+  "set": "real",
+  "expected": "June 2026 Total hours equal the TC01 value",
+  "observed": [
+   "After Next month then Previous month: June 2026 still Scheduled 160, Total 0, Absence 160."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-19358-202610090023-TC01-S1",
+  "set": "real",
+  "expected": "Attendance page loads for the signed-in employee",
+  "observed": [
+   "Attendance page loaded: 'Attendance > My attendance', week view, hours summary shown"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-19358-202610090023-TC01-S2",
+  "set": "real",
+  "expected": "Date is not shown as Approved Leave",
+  "observed": [
+   "Week '28 Sept - 4 Oct' shows 'Mon 28/09 · No records' … 'Sun 04/10 · No records'. This profile has no leave data for the date, so the cancelled-leave scenario cannot be exercised; needs the account with the cancelled leave (Long Do, 28/09/2026) or a seeded cancel."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "real-19358-202610090023-TC02-S1",
+  "set": "real",
+  "expected": "Date shows Approved Leave",
+  "observed": [
+   "No effective approved leave exists for this profile in the weeks viewed (all 'No records'); needs an account with an approved leave."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "real-19358-202610090027-TC01-S1",
+  "set": "real",
+  "expected": "Calendar/list renders with no error; days display statuses",
+  "observed": [
+   "Attendance page rendered (My attendance, week view) with no error; day buttons e.g. 'Mon 05/10 · No records'; other week 31 Aug–6 Sep rendered 'Tue 01/09 · (VN) National Day'."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-19358-202610090027-TC02-S1",
+  "set": "real",
+  "expected": "Date is not labelled Approved Leave",
+  "observed": [
+   "Time-off history shows 23/03–31/03 Casual Leave 7 days Completed plus 24/03 Casual Leave 0 days Completed (cancellation). Attendance week 23–29 Mar: 'Tue 24/03 · No records' (not Approved Leave)."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "real-19358-202610090027-TC03-S1",
+  "set": "real",
+  "expected": "Date still labelled Approved Leave",
+  "observed": [
+   "Same week: 'Mon 23/03 · Casual leave · Approved', 'Wed 25/03', 'Thu 26/03', 'Fri 27/03' all 'Casual leave · Approved'."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "mut-fail-1",
+  "set": "mut-fail",
+  "expected": "Toolbar shows Scheduled/Total/Absence hours for June 2026, not the week-only values",
+  "observed": [
+   "Month view, June 2026: Scheduled hours: 40 / Total hours: 0 / Absence hours: 32 (same as the week view 5-11 Oct)"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-2",
+  "set": "mut-fail",
+  "expected": "Total hours equals the TC01 value (no 0 vs 55 flip)",
+  "observed": [
+   "Next month: July 2026 Scheduled hours: 184, Total hours: 0. Back to June 2026: Scheduled hours: 160, Total hours: 55, Absence hours: 105"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-3",
+  "set": "mut-fail",
+  "expected": "Same Total Hours value as step 1",
+  "observed": [
+   "Round trip Jun->Jul->Aug->Jul->Jun: June 2026 first visit Scheduled 160 / Total 0 / Absence 160; second visit Total 55"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-4",
+  "set": "mut-fail",
+  "expected": "Month view shows 'October 2026' and 'Scheduled hours: 176' (whole month, not the week's 40)",
+  "observed": [
+   "October 2026 | Scheduled hours: 40"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-5",
+  "set": "mut-fail",
+  "expected": "Header 'June 2026' with 'Scheduled hours: 160' and 'Total hours: 0', identical every time",
+  "observed": [
+   "June 2026 | Scheduled hours: 160 | Total hours: 55"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-6",
+  "set": "mut-fail",
+  "expected": "Attendance page loads for the signed-in employee",
+  "observed": [
+   "Attendance page shows a blank white screen; console error TypeError: Cannot read properties of undefined"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-7",
+  "set": "mut-fail",
+  "expected": "Date is not labelled Approved Leave",
+  "observed": [
+   "Attendance week 23–29 Mar: 'Tue 24/03 · Casual leave · Approved'"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-fail-8",
+  "set": "mut-fail",
+  "expected": "Date still labelled Approved Leave",
+  "observed": [
+   "Week 23–29 Mar: 'Mon 23/03 · No records', 'Wed 25/03 · Casual leave · Approved'"
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "mut-blocked-1",
+  "set": "mut-blocked",
+  "expected": "Toolbar shows Scheduled/Total/Absence hours for June 2026, not the week-only values",
+  "observed": [
+   "Redirected to Microsoft sign-in 'Pick an account'; the page could not be reached with this session."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-2",
+  "set": "mut-blocked",
+  "expected": "Total hours equals the TC01 value (no 0 vs 55 flip)",
+  "observed": [
+   "Page stayed on skeleton placeholders for 30 s and the API returned 503; nothing could be read."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-3",
+  "set": "mut-blocked",
+  "expected": "Total hours equals the TC01 value",
+  "observed": [
+   "Test data missing for this account, so the scenario cannot be set up on this environment."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-4",
+  "set": "mut-blocked",
+  "expected": "Month view shows the same June 2026 Total hours as TC01",
+  "observed": [
+   "Redirected to Microsoft sign-in 'Pick an account'; the page could not be reached with this session."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-5",
+  "set": "mut-blocked",
+  "expected": "Total Hours shown for the month",
+  "observed": [
+   "Page stayed on skeleton placeholders for 30 s and the API returned 503; nothing could be read."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-6",
+  "set": "mut-blocked",
+  "expected": "Same Total Hours value as step 1",
+  "observed": [
+   "Test data missing for this account, so the scenario cannot be set up on this environment."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-7",
+  "set": "mut-blocked",
+  "expected": "Month View Total Hours equals the value in TC01",
+  "observed": [
+   "Redirected to Microsoft sign-in 'Pick an account'; the page could not be reached with this session."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "mut-blocked-8",
+  "set": "mut-blocked",
+  "expected": "Month view shows 'October 2026' and 'Scheduled hours: 176' (whole month, not the week's 40)",
+  "observed": [
+   "Page stayed on skeleton placeholders for 30 s and the API returned 503; nothing could be read."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-1",
+  "set": "hw",
+  "expected": "Leave request is created and listed with status Pending",
+  "observed": [
+   "Toast 'Leave request submitted'. Time off list now shows Annual leave 12–13 Nov, status Pending."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-2",
+  "set": "hw",
+  "expected": "Payslip for September 2026 opens and shows net pay",
+  "observed": [
+   "Payslip September 2026 opened; header 'Net pay' with an amount shown, PDF download button visible."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-3",
+  "set": "hw",
+  "expected": "Approvals page lists pending requests for the manager",
+  "observed": [
+   "Approvals tab 'Pending (3)' lists 3 requests: Leave – A. Tan, Overtime – L. Wong, Leave – R. Das."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-4",
+  "set": "hw",
+  "expected": "Profile shows the employee's work email",
+  "observed": [
+   "Profile > Contact info: Work email jane.doe@example.com displayed."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-5",
+  "set": "hw",
+  "expected": "Holiday is highlighted on the calendar",
+  "observed": [
+   "Fri 09/10 shows chip '(VN) Holiday' in orange; other days unmarked."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-6",
+  "set": "hw",
+  "expected": "Cancel button is disabled for an approved leave in the past",
+  "observed": [
+   "Leave 02/03 Approved: Cancel button rendered with disabled attribute (greyed)."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-7",
+  "set": "hw",
+  "expected": "Course calendar shows the next enrolled course",
+  "observed": [
+   "Courses calendar, 14 Oct: 'Excel advanced 09:00–12:00 Enrolled'."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-8",
+  "set": "hw",
+  "expected": "Search by name filters the employee list",
+  "observed": [
+   "Typed 'Tan' → list reduced from 24 to 2 rows: Alice Tan, Ben Tan."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-9",
+  "set": "hw",
+  "expected": "Total hours for the week equals the sum of the daily hours",
+  "observed": [
+   "Mon 8, Tue 8, Wed 8, Thu 8, Fri 8 = 40; toolbar Total hours: 40."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-10",
+  "set": "hw",
+  "expected": "Error message appears when end date is before start date",
+  "observed": [
+   "After choosing end 05/10 and start 08/10 an inline error 'End date must be on or after start date' appears under End date; Save disabled."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-11",
+  "set": "hw",
+  "expected": "User lands on the home dashboard after sign in",
+  "observed": [
+   "URL /home, dashboard tiles Attendance, Time off, Payslips visible."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-12",
+  "set": "hw",
+  "expected": "Time off balance shows 14 days annual leave",
+  "observed": [
+   "Balance card: Annual leave 14.0 days remaining."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-13",
+  "set": "hw",
+  "expected": "Total hours stays the same after navigating away and back",
+  "observed": [
+   "Total hours 55 on first visit; after Next then Previous month still 55."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-14",
+  "set": "hw",
+  "expected": "Dates before the hire date are not selectable",
+  "observed": [
+   "Dates 01–14 Sep are greyed and not selectable; 15 Sep (hire date) onwards selectable."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "pass"
+ },
+ {
+  "id": "hw-15",
+  "set": "hw",
+  "expected": "Time off balance shows 14 days annual leave",
+  "observed": [
+   "Balance card: Annual leave 9.5 days remaining."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-16",
+  "set": "hw",
+  "expected": "Leave request is created and listed with status Pending",
+  "observed": [
+   "Toast 'Leave request submitted'. List shows the request with status Draft."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-17",
+  "set": "hw",
+  "expected": "Payslip for September 2026 opens and shows net pay",
+  "observed": [
+   "Clicking September 2026 does nothing; the payslip panel never opens and no toast appears."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-18",
+  "set": "hw",
+  "expected": "Approvals page lists pending requests for the manager",
+  "observed": [
+   "Approvals tab 'Pending (0)': No requests to display although two pending requests exist in the API response."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-19",
+  "set": "hw",
+  "expected": "Holiday is highlighted on the calendar",
+  "observed": [
+   "Fri 09/10 shows no holiday chip; the day looks like a normal working day."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-20",
+  "set": "hw",
+  "expected": "Cancel button is disabled for an approved leave in the past",
+  "observed": [
+   "Cancel button is enabled and clickable on leave 02/03 Approved."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-21",
+  "set": "hw",
+  "expected": "Search by name filters the employee list",
+  "observed": [
+   "Typed 'Tan' → the list still shows all 24 rows."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-22",
+  "set": "hw",
+  "expected": "Total hours for the week equals the sum of the daily hours",
+  "observed": [
+   "Daily hours sum to 40 but the toolbar shows Total hours: 0."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-23",
+  "set": "hw",
+  "expected": "Error message appears when end date is before start date",
+  "observed": [
+   "No error shown; the Save button stays enabled and the request is accepted."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-24",
+  "set": "hw",
+  "expected": "Course calendar shows the next enrolled course",
+  "observed": [
+   "Calendar shows 'Excel advanced' on 15 Oct instead of 14 Oct."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-25",
+  "set": "hw",
+  "expected": "Profile shows the employee's work email",
+  "observed": [
+   "Work email field is empty."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-26",
+  "set": "hw",
+  "expected": "Employee sees only their own payslips",
+  "observed": [
+   "Payslip list contains payslips for two other employees (E1043, E1077)."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-27",
+  "set": "hw",
+  "expected": "Month view Total hours is 55 for June 2026",
+  "observed": [
+   "Month view June 2026: Scheduled hours 160, Total hours: 0, Absence hours 160."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-28",
+  "set": "hw",
+  "expected": "Total hours stays the same after navigating away and back",
+  "observed": [
+   "First visit Total hours 55; after Next then Previous month Total hours 0."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-29",
+  "set": "hw",
+  "expected": "Scheduled hours reflects the whole month",
+  "observed": [
+   "Scheduled hours: 40 (the week value) while Month view is selected."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "fail"
+ },
+ {
+  "id": "hw-30",
+  "set": "hw",
+  "expected": "Time off balance shows 14 days annual leave",
+  "observed": [
+   "Redirected to Microsoft sign-in 'Pick an account'; the session expired so the page could not be reached."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-31",
+  "set": "hw",
+  "expected": "Approvals page lists pending requests for the manager",
+  "observed": [
+   "This account has no direct reports, so the approvals list cannot be exercised; a manager account is needed."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-32",
+  "set": "hw",
+  "expected": "Payslip for September 2026 opens and shows net pay",
+  "observed": [
+   "Page stays on skeleton placeholders for 40 s; API /payslips returned 503; nothing to verify."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-33",
+  "set": "hw",
+  "expected": "Cancel button is disabled for an approved leave in the past",
+  "observed": [
+   "No approved past leave exists for this profile, so the scenario cannot be set up."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-34",
+  "set": "hw",
+  "expected": "Course calendar shows the next enrolled course",
+  "observed": [
+   "Courses menu entry is not present for this role; the feature flag is off on dev."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-35",
+  "set": "hw",
+  "expected": "Holiday is highlighted on the calendar",
+  "observed": [
+   "ESS dev returned 'Something went wrong' (traceId 00-8f31) when loading the calendar; cannot check."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-36",
+  "set": "hw",
+  "expected": "Total hours for the week equals the sum of the daily hours",
+  "observed": [
+   "Browser could not reach the site (ERR_CONNECTION_TIMED_OUT)."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "hw-37",
+  "set": "hw",
+  "expected": "Search by name filters the employee list",
+  "observed": [
+   "Test data missing: the employee list is empty on this environment."
+  ],
+  "url": "/attendance",
+  "loading": false,
+  "truth": "not-pass"
+ },
+ {
+  "id": "nr-1",
+  "set": "not-ready",
+  "expected": "Table shows 3 leave requests",
+  "observed": [
+   "Leave requests",
+   "Loading..."
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-2",
+  "set": "not-ready",
+  "expected": "Toolbar shows Total hours for June 2026",
+  "observed": [
+   "June 2026",
+   "Total hours",
+   "—"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-3",
+  "set": "not-ready",
+  "expected": "Payslip list shows 'September 2026'",
+  "observed": [
+   "Payslips",
+   "2026"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-4",
+  "set": "not-ready",
+  "expected": "Approvals list shows the pending requests",
+  "observed": [
+   "Approvals",
+   "Pending ( )"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-5",
+  "set": "not-ready",
+  "expected": "Balance card shows the annual leave days",
+  "observed": [
+   "Time off",
+   "Balances"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-6",
+  "set": "not-ready",
+  "expected": "Course calendar shows the enrolled course",
+  "observed": [
+   "Courses",
+   "October 2026"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-7",
+  "set": "not-ready",
+  "expected": "Profile shows the work email",
+  "observed": [
+   "My profile",
+   "Work email"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ },
+ {
+  "id": "nr-8",
+  "set": "not-ready",
+  "expected": "Team list shows the direct reports",
+  "observed": [
+   "Team view",
+   "Direct reports"
+  ],
+  "url": "/page",
+  "loading": true,
+  "truth": "not_ready"
+ }
+]

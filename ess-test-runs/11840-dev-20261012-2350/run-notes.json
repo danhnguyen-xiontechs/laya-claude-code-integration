@@ -1,0 +1,36 @@
+{
+ "objective": "Verify bug 11840 (Total Hours inconsistent in Month View) on dev: month-wide stats stable for the same month.",
+ "steps": [
+  {
+   "title": "Fetch ticket",
+   "result": "Bug, Resolved; real fix described in comments (month-wide aggregation)",
+   "status": "ok"
+  },
+  {
+   "title": "Launch browser, sign in",
+   "assumption": "launch-role.ps1 takes optional role first; passing only a URL failed",
+   "result": "Relaunched with role xiontechs",
+   "status": "warn"
+  },
+  {
+   "title": "Navigate to Attendance Month view via find.mjs",
+   "result": "My work menu, Attendance, View combobox, Month view all found by rule",
+   "status": "ok"
+  },
+  {
+   "title": "June 2026 stability",
+   "result": "160/0/160 identical after Next+Previous",
+   "status": "pass"
+  },
+  {
+   "title": "Reproduce value 55",
+   "result": "No logged hours on this account; blocked",
+   "status": "blocked"
+  }
+ ],
+ "insights": [
+  "launch-role.ps1 needs role before url in the skill examples (document it).",
+  "Wasted ~20s wait_for Month: the view label is Month view only after dropdown selection.",
+  "Verdict is limited: account has Total 0 everywhere, so a non-zero total was not verified."
+ ]
+}
