@@ -44,7 +44,8 @@
    - → `review-pr-jev-classify` with `--provider jev`: `PILOT` on real PRs. Laya: `DROP`.
 5. **5 new skills built from scratch around Jev (`JEV` repo)** all work in real Claude Code: 7 sessions, Claude picked the right skill on its own, 84/84 unit tests pass → `PILOT`. Jev's contribution is uneven: high in `acceptance-criteria-coverage` and `dead-code-finder`, about 50/50 in `subagent-validator`, low in `git-risk-scanner` and `context-curator`.
 6. **2 BMad + Jev skills** (`bmad-help-jev`, `bmad-code-review-jev`) are built and well designed (BMad core untouched), but have **unit tests only** (17/17) and have never run against live Jev → they need a pilot before any verdict.
-7. **`skills-router`** (a broad skill-suggestion skill, new build): on 199 synthetic scenarios Jev is 86% accurate against BM25 73% and Laya 54–62%; but on 368 real prompts Jev only ties BM25 (50%) and labels are scarce. → `PILOT`: BM25 by default, Jev as an optional second stage.
+7. **`skills-router`** (a broad skill-suggestion skill, new build): on 199 synthetic scenarios, after round 2, Jev is 91% accurate against BM25 75% and Laya 54–62%; but on 368 real prompts Jev only ties BM25 (50%) and labels are scarce. → `PILOT`: BM25 by default, Jev as an optional second stage.
+8. **`subagent-model-router`** (per-subagent model choice, new build): on 18 tasks with an automatic check, rules + escalate on failure pass 18/18 at **14% of the cost** of always using Opus (always-Sonnet 61%, Jev 48%). → `PILOT`, the largest quota-saving potential for running many stories in parallel.
 
 **Recommendation:**
 - Do not use Laya as an automatic router or classifier.
@@ -93,7 +94,7 @@
 | B4 | `ado-classify` (suggests code module) | New tool | BM25 + Laya | 📊 20 real ESS tasks | `PILOT` |
 | B5 | Cache-expiry gate hook | New tool | No model (rules) | ✅ in use · 🧪 29 tests | `ADOPT` |
 | B6 | `laya-launcher` (trims tools/context by intent) | New tool | Laya | ✅ manual + 5-run A/B | `PILOT` (as static flags) |
-| B7 | `fast-compact` plugin | New tool | Jev tried and dropped; runs on rules | ✅ 1 session · 📊 · 🧪 13 tests | `ADOPT` (branch to be merged) |
+| B7 | `fast-compact` plugin | New tool | Jev tried and dropped; runs on rules | ✅ 1 session · 📊 · 🧪 13 tests | `ADOPT` (merged into `main`, PR #3) |
 | B8 | Laya Windows install package | New tool | Laya | ✅ installed on 2 machines | `DONE` |
 | D1 | `acceptance-criteria-coverage` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
 | D2 | `dead-code-finder` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
@@ -101,10 +102,11 @@
 | D4 | `subagent-validator` (hook) | New skill (`JEV` repo) | Jev | ✅ 3 runs · 📊 · 🧪 | `PILOT` |
 | D5 | `context-curator` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
 | D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `PILOT` |
-| E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 46/46 | `PILOT` (BM25 default, Jev optional) |
+| E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `PILOT` (BM25 default, Jev optional) |
+| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ hook tested for real · 📊 18-task benchmark · 🧪 19/19 | `PILOT` (largest quota-saving potential) |
 | C1–C9 | Evaluation experiments (section 8) | Research | Laya / Jev | 📊 / ✅ | See section 8 |
 
-\* Provided Security approves sending data off the network. The `web-test` skills also need the "wrong tab" bug fixed.
+\* Provided Security approves sending data off the network. For the `web-test` skills, the "wrong tab" bug is fixed on branch `claude/web-test-fixes-4fdcd7` and needs a re-run on ESS.
 
 ---
 
@@ -186,6 +188,18 @@ Logs: `~/.xt-skills/review-pr-jev-classify/reviews/…/pr-5240/20261015-093824-a
 - The skill's other improvements are all in the Jev version too: 3-state verdict, findings file, execution log, one folder per review.
 
 **`merge_gate` question:** both engines were right in both runs, but it is log-only for now. Laya's margin is very thin: in trials the threshold was 0.29 and the lowest correct value was 0.299.
+
+### 4.6 Upgrade on 2026-10-15 (branch `claude/review-pr-jev-upgrade-2bbb34`, commit `1b56660`)
+- **Picking findings for Claude to re-check without a threshold** (`stable-disagreement` policy):
+  - Jev is asked 3 more times, with the option order shuffled each time.
+  - A finding is flagged only when all 3 answers match, differ from Claude's severity, and cross the merge boundary. At most 3 per PR.
+  - On PR 5240: 17/18 findings were stable 3/3. Only F14–F17 (Minor → Major) were flagged, filtering out 2 of Jev's 6 disagreements with Claude (F9 and F18 do not cross the merge boundary). $0.003 for 109 calls.
+- **2 new yes/no questions** (logged only; they do not change the review):
+  - `introduced_by_pr` ("caused by this PR?"): yes on 18/18. Correct, since every cited line is newly added, but this test PR cannot tell the question apart from always answering yes.
+  - `already_raised` ("already raised in a thread?"): yes on 17/18, matching the earlier AI review threads (5 findings checked by hand).
+- **Labels from real outcomes** (`outcome-labels.mjs`): compares the commit at review time with the PR's final commit; a finding whose code region changed afterwards is labelled `fixed`. Tested only with fake data, not yet on a real PR.
+- **2 log bugs fixed:** the `rules` field now uses the project's rule ids and overrides; the execution-log header shows both providers.
+- 🧪 **87/87 tests pass.** Not merged, and `recheck` is not switched on for real PRs: it needs labels from many PRs to tell whether the flags are right.
 
 ---
 
@@ -271,6 +285,13 @@ On ticket 11840 the test account has no actual hours, so the key "0 vs 55" bug c
 | jev-verdict | `DROP` as default: weak on steps that refer to other steps; consider merging into oracle |
 | **laya-ground** | `ADOPT`: **the variant most worth using.** Real runs on 11840: PASS both times; compared with the original it took fewer turns (16 vs 19), fewer input tokens (1.4M vs 1.7M), less time (2 vs 3 min), and never had to read a page snapshot. **The gain comes from the `find.mjs` rules, not from Laya:** of 77 logged element lookups, the rules solved 58 (75%) and 16 returned a short list for Claude to pick from. Laya decided only 3 times (during trials on 10-08) and **got all 3 wrong at p = 1.0**, including one pick for a "Submit" button. → Use this skill with Laya **off** (or merge `find.mjs` into the original `web-test`). Note: the baseline run covered 3 cases, the ground run 2. |
 | Remaining Laya versions (wait, verdict, gate, oracle) | `DROP` the model. Move the `wait.mjs` rules and the gate network audit into the original `web-test` (`ADOPT`) |
+
+### 5.7 Bug fixes on 2026-10-15 (branch `claude/web-test-fixes-4fdcd7`, commit `0adb7a7`)
+- **Wrong tab:** a new `page-select.mjs` picks the tab in a clear order (skip hidden tabs, prefer the focused tab, then the most recently loaded one), plus a `--url <route>` option to name the page. When it cannot tell, it stops and lists the tabs instead of guessing. Used by `wait.mjs`, `oracle --observe` and `find.mjs` in every copy.
+- **Other fixes:** the BOM in `results.json`, the argument order of `launch-role.ps1`, and the stale comment in `jev-gate/gate.mjs`.
+- **Gate check before every click** (`gate.mjs --check-action`), in both the Jev and Laya versions: if a click looks like a write on a step marked read-only, it stops and asks.
+- 🧪 **206/206 tests pass** across all 11 copies. The `live-wait` eval re-ran with identical results.
+- **Not re-run on ESS** (needs you to pick an environment), so the wait/oracle real-run results in section 5.4 are still from before the fix.
 
 ---
 
@@ -364,7 +385,7 @@ On ticket 11840 the test account has no actual hours, so the key "0 vs 55" bug c
 ### B7. `fast-compact` plugin · ✅ 1 real session · 🧪 13 tests · `ADOPT`
 - **Jev for choosing what to keep:** Jev kept 0 of 38 still-needed calls (none cleared p 0.5), while rules kept 38/38 → Jev dropped.
 - **Rule version:** 254k → 57k tokens (−77%) in 57 ms, with no model call.
-- **Verdict:** ready to use. The plugin is opt-in (the user invokes it), runs on rules, so it costs no tokens and sends no data out. Remaining: merge branch `claude/fast-jev-compaction-worktree-f61594` and watch it on a few more real sessions (only 1 so far).
+- **Verdict:** ready to use. The plugin is opt-in (the user invokes it), runs on rules, so it costs no tokens and sends no data out. Merged into `main` (PR #3, 2026-10-15). Remaining: watch it on a few more real sessions (only 1 so far).
 
 ### B8. Laya Windows install package · ✅ Installed on 2 machines · `DONE`
 - `install-laya.ps1` (uv + Python 3.12, `laya==0.3.21`), with a patched `serve.py` (adds a Swagger form) and `start-laya.bat`.
@@ -517,22 +538,78 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Data sent to Jev in the real-prompt run:** the prompt (first 600 characters), the names and descriptions of up to 8 candidate skills (with the first 500 characters of each SKILL.md), and a yes/no flag for whether the prompt contains a PR URL. No file paths, project names or file contents. The descriptions of the matching projects' skills also left the machine.
 
+### 10.5 Round 2 (2026-10-15, commit `5e23728`)
+- **Variant fix:** the router puts a variant on the shortlist when the prompt has words that set it apart from its base skill (laya, jev, "severity check", …). Jev now gets **31/31** look-alike scenarios (up from 23/31). Overall accuracy rose to **91%** (from 86%); BM25 75%.
+- **Agreement gating (idea 4):**
+  - On the scenarios it lowers accuracy to 82%, because whenever BM25 and Jev disagreed, Jev was right (19/19).
+  - On the 368 real prompts (computed offline, no new Jev calls), skipping disagreements cuts wrong suggestions from 13% to 6% and needless ones from 10% to 6%, at the cost of 2 of 8 correct suggestions.
+- **Self-consistency k=3 (idea 5) does not help:** only 4 of 169 prompts changed answer when the order was shuffled, at 3× the cost.
+- **Recommended setup:** when the user asks explicitly, Jev with k=1, marked "low confidence" on disagreement; for the shadow hook, skip on disagreement.
+- This round cost $0.03. 🧪 **65/65 tests pass.**
+
 ---
 
-## 11. Overall conclusions
+## 11. Group F: `subagent-model-router`: picking the model for each subagent (new build)
+
+**Why:**
+- If the company later runs about 20 subagents in parallel (one story each), quota will be spent mostly according to the subagents' models.
+- Per-request model choice lost because switching models breaks the prompt cache. A subagent has its own context, so choosing its model **does not break the main thread's cache**.
+
+**How it works:**
+- **A `PreToolUse` hook on the Agent tool:** sets `model` for a subagent when the caller has not set one. Tested for real with `claude -p`: the subagent ran on Haiku while the main thread stayed on Sonnet. There is also a `route.mjs` CLI for orchestrators.
+- **Tier choice:** by rules (subagent type, task verbs, number of files/ACs, whether tests exist), optionally with Jev plus agreement gating and self-consistency.
+- **Escalate on failure:** run at the chosen tier; if the automatic check fails, retry once one tier up.
+- **Defaults:** shadow mode (log only), rules only. The hook is not registered in `settings.json`.
+- **Code:** branch `claude/subagent-model-router-f7f0e3` (`c83ddf5`, `2b90d97`, `a487901`), not pushed.
+
+**Real history on this machine (132 subagents):**
+- Subagents were 28% of spend ($136 of $479, at list price).
+- 98% of subagents set no model, so they inherited the main thread's: Sonnet 75%, Opus 24%, Haiku almost 0%.
+- Per the price table used in the benchmark, Haiku costs about 1/20 of Sonnet per token, so the savings come mainly from moving light work to Haiku.
+
+**Benchmark of 18 tasks with an automatic check** (explore, small fix, refactor, test-writing, design/debug):
+
+| Model choice | Pass | Cost vs always-Opus |
+|---|---|---|
+| Always Opus | 18/18 | 100% |
+| Always Sonnet | 18/18 | 61% |
+| **Rules only + escalate on failure** | **18/18** | **14%** |
+| Jev | 18/18 | 48% |
+| Jev + gating + self-consistency | 18/18 | 51% |
+
+- **Haiku solved 17/18 tasks.** The remaining one (d5-deps) failed on Haiku because it took the spec too literally; escalated to Sonnet, it passed. A failed Haiku attempt costs about $0.01, cheaper than trying to predict it.
+- **Jev is cautious:** it never picked too low a tier, but it chose Sonnet for 12 tasks Haiku solved, so it costs about 3.5× rules + escalation. Jev was stable on 16/18 tasks when asked 3 times.
+- **Benchmark cost:** about $4 (pilot of 6 tasks × 3 models $2.72; round 2 labelling the other 12 tasks Haiku-first $1.32).
+
+**Verdict: `PILOT`, the largest quota-saving potential in the whole project.**
+- **Stories with tests or ACs:** rules + escalate on failure, no Jev needed.
+- **Stories without an automatic check:** Jev + agreement gating, since nothing would catch a wrong model choice.
+- **Collect subagent results in one batch** to wake the main thread less (round 2 cost a third of the pilot's main-thread spend this way).
+
+**Limits:**
+- Small synthetic tasks, one run per task and model.
+- 23 of 54 result cells are inferred, assuming "a pass at a lower tier means a pass above it".
+- Not tried on tasks without an automatic check, nor on real stories.
+
+**Next:** try it on a few real stories with ACs (`ess-be` / `ess-fe`), and switch the hook on in shadow mode to compare with the models actually used.
+
+---
+
+## 12. Overall conclusions
 
 | Question | Answer |
 |---|---|
 | Can Laya replace repeated LLM calls? | **Mostly no.** It works only on short text with ≤ 8–10 options and a pre-filter (ado-classify). It is weak on long logs, many options and Vietnamese, and its probabilities are too flat to set thresholds on. |
 | Is Jev better? | **Yes, clearly more accurate**, and cheap and fast. On review-pr it agreed 12/18 and only ever upgraded (Laya: 7/18). But it is over-confident, sends data off the network, and has not reduced tokens in real `web-test` agent runs. |
-| Does per-request or per-step model choice save money? | **No.** Switching models loses the prompt cache; always-Sonnet or single-thread Opus is cheaper. |
-| Is a broad skill router worth building? | **Yes, as an option.** `skills-router`: Jev is best on synthetic scenarios (86%) but only ties BM25 on real prompts. Laya has no place here. It needs more real labels via the shadow hook. |
+| Does per-request or per-step model choice save money? | **Per request or per step: no**, because switching models loses the prompt cache. **Per subagent: yes**, because a subagent has its own context; on the benchmark, rules + escalate on failure cost only 14% of always-Opus (section 11). |
+| Can agreement gating and self-consistency replace thresholds? | **Agreement gating: useful on noisy real data** (skills-router: wrong suggestions 13% → 6%), but harmful on clean data. **Self-consistency: no**, because Jev almost always gives the same answer when the order is shuffled (skills-router: only 4/169 prompts changed; review-pr: 17/18 stable). |
+| Is a broad skill router worth building? | **Yes, as an option.** `skills-router`: Jev is best on synthetic scenarios (91% after round 2) but only ties BM25 on real prompts. Laya has no place here. It needs more real labels via the shadow hook. |
 | What about the new skills built around Jev? | **They work and are decent, but Jev's contribution is uneven.** Jev does the main work in acceptance-criteria-coverage and dead-code-finder; about 50/50 in subagent-validator; little in git-risk-scanner and context-curator. All measured on synthetic demos so far. |
 | What delivered real value? | The **fixed rules and scripts**: `find.mjs`, the `wait.mjs` rules, the network audit, the cache-expiry gate, fast-compact, and limiting tools with static flags. |
 
 ---
 
-## 12. Risks and notes
+## 13. Risks and notes
 
 - **The repo is public** but contains real data:
   - `ado/items*.json`: 190 PXP / XT-Smart-Platform work items.
@@ -544,29 +621,32 @@ All 199 scenarios, thresholds chosen on dev:
   - Most labels were set by Claude; samples are small; each configuration usually ran once.
   - Costs use an assumed 1:3:5 price ratio, not real X-Tek gateway prices.
   - No **write** step has been tested in real ESS.
-- **Known bugs:**
+- **Known bugs** (the 4 below were fixed on 2026-10-15 on separate branches, not merged):
   - `wait.mjs` / `oracle --observe` read the wrong tab.
   - PowerShell writes `results.json` with a BOM, which breaks `record.mjs`.
   - A comment in `jev-gate/scripts/gate.mjs` still quotes Laya's numbers.
   - `review-pr-jev-classify`: the `rules` field in the logs ignores the project's rule ids and overrides (log only). The execution-log header shows only the provider that `assess.mjs` ran last.
 
+- **`subagent-model-router`:** the benchmark only has small synthetic tasks with an automatic check; not yet tried on real stories or on tasks without a check.
 - **`skills-router`:** the labels of the 199 scenarios were set by Claude; real prompts carry only 16 skill labels; the descriptions of the project's skills are also sent to Jev when it is used; the shadow hook is not switched on, and its real latency has not been measured.
 - **The 2 BMad + Jev skills:** never run against live Jev; the 0.3 thresholds come from the cookbook and have not been measured on our data.
 - **The 5 new Jev skills (`JEV` repo):** the code is uncommitted; numbers come from synthetic demos built by Claude; there is no comparison with Claude doing the work alone; each real scenario ran once.
 
 ---
 
-## 13. Open items and suggested next steps
+## 14. Open items and suggested next steps
 
 1. Ask Security whether data may be sent to Jev / OpenRouter, or measure **Kev** (a local Jev, not yet measured).
-2. Fix the wrong-tab bug, then repeat the agent runs 2–3 times per variant (estimated ~40M tokens).
+2. The wrong-tab bug is fixed (branch `claude/web-test-fixes-4fdcd7`); what remains is repeating the agent runs 2–3 times per variant (estimated ~40M tokens).
 3. `review-pr-jev-classify`: run Jev in shadow on 5–10 real PRs, have a person label the disagreements, then decide whether to switch on `recheck`.
 4. ado-classify: build the MCP server, compare with Haiku, and A/B it during real development.
-5. Move `find.mjs` and the `wait.mjs` rules into the original `web-test`; merge `fast-compact`.
+5. Move `find.mjs` and the `wait.mjs` rules into the original `web-test`; watch `fast-compact` on a few more real sessions (already merged into `main`).
 6. Remove the sensitive data from the public repo.
 7. The 5 new Jev skills: commit the code, run them on a real team repo, measure Claude doing the same work alone; run the hard log set h01–h08 for `jev_advisor`.
 8. Pilot the 2 BMad + Jev skills per the plan: about 60 labelled questions for `bmad-help-jev`; 10 merged `ess-fe` PRs for `bmad-code-review-jev`.
-9. `skills-router`: switch on the shadow hook to collect real labels, fix the look-alike skills problem, pick the BM25 threshold per catalog; only then decide whether Jev should be the default second stage.
+9. `skills-router`: (the look-alike skills problem was fixed in round 2) switch on the shadow hook to collect real labels, pick the BM25 threshold per catalog; only then decide whether Jev should be the default second stage.
+10. `subagent-model-router`: try it on a few real stories with ACs, and switch the hook on in shadow mode.
+11. Review and merge the new branches: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
 
 ---
 
@@ -586,7 +666,10 @@ All 199 scenarios, thresholds chosen on dev:
 | `fast-compact` | 13 | Per its branch report; not re-run |
 | 5 new Jev skills + `jev_advisor` (`JEV` repo) | 84 | 84 pass (re-run 2026-10-15) |
 | `bmad-help-jev` / `bmad-code-review-jev` | 9 / 8 | All pass, with a fake provider (re-run 2026-10-15) |
-| `skills-router` | 46 | 46 pass, with a fake provider (re-run 2026-10-15) |
+| `skills-router` | 65 | 65 pass, with a fake provider (round 2, 2026-10-15) |
+| `subagent-model-router` | 19 | 19 pass, with a fake provider |
+| `review-pr-jev-classify` (upgrade) | 87 | 87 pass |
+| 11 `web-test` copies (bug fixes) | 206 | 206 pass |
 
 ### B. Timeline
 
@@ -602,7 +685,7 @@ All 199 scenarios, thresholds chosen on dev:
 | 10-11 | `review-pr-laya-classify` |
 | 10-13 | Real run on PR 5240; `review-pr-jev-classify`, `web-test-jev-ground`; plan for Jev on BMad |
 | 10-14 | 4 `web-test-jev-*` skills; offline Laya vs Jev evaluation; `JEV` repo: smoke test, `jev_advisor`, A/B/C 30 runs |
-| 10-15 | Agent runs on ticket 11840 (dev + staging); `fast-compact`; controlled A/B re-run on PR 5240; 5 new Jev skills + 7-session real test; 2 BMad + Jev skills; `skills-router` (46 tests, evaluated on 199 scenarios and 368 real prompts) |
+| 10-15 | Agent runs on ticket 11840 (dev + staging); `fast-compact`; controlled A/B re-run on PR 5240; 5 new Jev skills + 7-session real test; 2 BMad + Jev skills; `skills-router` (evaluated on 199 scenarios and 368 real prompts, then round 2); `subagent-model-router` (18-task benchmark); `review-pr-jev-classify` upgrade; `web-test` bug fixes |
 
 ### C. Where the code lives
 
@@ -611,9 +694,12 @@ All 199 scenarios, thresholds chosen on dev:
 | `main` | Install package, routing, proxy, benchmark, workflow, ado, ado-classify, audit, hooks |
 | `claude/laya-jev-skill-comparison-fe1001` (latest, **not merged into main**) | All 12 skills, `eval/`, `triage/`, `ess-test-runs/` |
 | `research/laya-router-skill` (not merged) | Multi-signal routing, #1697 A/B, `laya-launcher` |
-| `claude/fast-jev-compaction-worktree-f61594` (not merged) | `fast-compact` |
+| `main` (merged from `claude/fast-jev-compaction-worktree-f61594`, PR #3) | `fast-compact` |
 | `feat/bmad-jev-skills` (pushed, not merged) | `bmad-help-jev`, `bmad-code-review-jev`, `idea/jev-applicability-plan.md` |
-| `claude/skills-router-62fc74` (not pushed) | `skills-router`, shadow hook, 199 scenarios |
+| `claude/skills-router-62fc74` (not pushed) | `skills-router`, shadow hook, 199 scenarios, round 2 |
+| `claude/subagent-model-router-f7f0e3` (not pushed) | `subagent-model-router`, 18-task benchmark |
+| `claude/review-pr-jev-upgrade-2bbb34` (not pushed) | `review-pr-jev-classify` upgrade |
+| `claude/web-test-fixes-4fdcd7` (not pushed) | Bug fixes for the 11 `web-test` copies, per-click gate check |
 | `xt-skills` repo | The original `review-pr` |
 | Repo `danhnguyen-xiontechs/JEV`, branch `jev` | Jev smoke test, `jev_advisor`, A/B/C |
 | `JEV` repo, worktree `claude/review-5-plans-idea-folder-ce4d36` (**uncommitted**) | 5 new Jev skills, demos/evals, `docs/runs/realtest/` |

@@ -37,7 +37,8 @@
    - → `review-pr-jev-classify` với `--provider jev`: `PILOT` trên PR thật. Laya: `DROP`.
 5. **5 skill mới build từ đầu quanh Jev (repo `JEV`)** đều chạy được trong Claude Code thật: 7 session, Claude tự chọn đúng skill, 84/84 unit test pass → `PILOT`. Mức Jev đóng góp không đều: cao ở `acceptance-criteria-coverage` và `dead-code-finder`, khoảng 50/50 ở `subagent-validator`, thấp ở `git-risk-scanner` và `context-curator`.
 6. **2 skill BMad + Jev** (`bmad-help-jev`, `bmad-code-review-jev`) đã build xong, thiết kế tốt (không sửa BMad core), nhưng **mới có unit test** (17/17), chưa chạy với Jev thật → cần pilot rồi mới kết luận.
-7. **`skills-router`** (skill gợi ý skill diện rộng, build mới): trên 199 scenario tự soạn, Jev đúng 86% so với BM25 73% và Laya 54–62%; nhưng trên 368 prompt thật Jev chỉ hòa BM25 (50%) và nhãn quá ít. → `PILOT`: mặc định BM25, Jev là bước thứ hai tùy chọn.
+7. **`skills-router`** (skill gợi ý skill diện rộng, build mới): trên 199 scenario tự soạn, sau vòng 2 Jev đúng 91% so với BM25 75% và Laya 54–62%; nhưng trên 368 prompt thật Jev chỉ hòa BM25 (50%) và nhãn quá ít. → `PILOT`: mặc định BM25, Jev là bước thứ hai tùy chọn.
+8. **`subagent-model-router`** (chọn model cho từng subagent, build mới): trên 18 task có kiểm tra tự động, rule + leo model khi trượt pass 18/18 với **14% chi phí** so với luôn dùng Opus (luôn Sonnet 61%, Jev 48%). → `PILOT`, tiềm năng tiết kiệm quota lớn nhất cho kịch bản chạy song song nhiều story.
 
 **Khuyến nghị:**
 - Không đưa Laya vào làm router hoặc bộ phân loại tự động.
@@ -86,7 +87,7 @@
 | B4 | `ado-classify` (gợi ý module code) | Công cụ mới | BM25 + Laya | 📊 20 task ESS thật | `PILOT` |
 | B5 | Cache-expiry gate hook | Công cụ mới | Không dùng model (rule) | ✅ đang dùng · 🧪 29 test | `ADOPT` |
 | B6 | `laya-launcher` (cắt bớt tools/context theo intent) | Công cụ mới | Laya | ✅ thử tay + A/B 5 run | `PILOT` (dùng flag tĩnh) |
-| B7 | `fast-compact` plugin | Công cụ mới | Đã thử Jev, bỏ; chạy bằng rule | ✅ 1 session · 📊 · 🧪 13 test | `ADOPT` (cần merge nhánh) |
+| B7 | `fast-compact` plugin | Công cụ mới | Đã thử Jev, bỏ; chạy bằng rule | ✅ 1 session · 📊 · 🧪 13 test | `ADOPT` (đã merge vào `main`, PR #3) |
 | B8 | Gói cài Laya cho Windows | Công cụ mới | Laya | ✅ cài thật 2 máy | `DONE` |
 | D1 | `acceptance-criteria-coverage` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
 | D2 | `dead-code-finder` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
@@ -94,10 +95,11 @@
 | D4 | `subagent-validator` (hook) | Skill mới (repo `JEV`) | Jev | ✅ 3 lần chạy · 📊 · 🧪 | `PILOT` |
 | D5 | `context-curator` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
 | D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `PILOT` |
-| E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 46/46 | `PILOT` (mặc định BM25, Jev tùy chọn) |
+| E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `PILOT` (mặc định BM25, Jev tùy chọn) |
+| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ hook thử thật · 📊 benchmark 18 task · 🧪 19/19 | `PILOT` (tiềm năng tiết kiệm quota lớn nhất) |
 | C1–C9 | Các thí nghiệm đánh giá (mục 8) | Nghiên cứu | Laya / Jev | 📊 / ✅ | Xem mục 8 |
 
-\* Với điều kiện Security cho phép gửi dữ liệu ra ngoài. Riêng các skill `web-test` cần sửa thêm bug "đọc nhầm tab".
+\* Với điều kiện Security cho phép gửi dữ liệu ra ngoài. Riêng các skill `web-test`: bug "đọc nhầm tab" đã sửa trên nhánh `claude/web-test-fixes-4fdcd7`, cần chạy lại trên ESS.
 
 ---
 
@@ -179,6 +181,18 @@ Log nằm ở `~/.xt-skills/review-pr-jev-classify/reviews/…/pr-5240/20261015-
 - Các cải tiến khác của skill vẫn có sẵn trong bản Jev: verdict 3 trạng thái, file findings, execution log, mỗi lần review một thư mục.
 
 **Câu `merge_gate`:** cả hai engine đều đúng ở cả 2 lần chạy, nhưng hiện chỉ ghi log. Biên của Laya rất mỏng: khi thử nghiệm, ngưỡng là 0.29 trong khi giá trị đúng thấp nhất là 0.299.
+
+### 4.6 Nâng cấp ngày 2026-10-15 (nhánh `claude/review-pr-jev-upgrade-2bbb34`, commit `1b56660`)
+- **Chọn lỗi để Claude xem lại mà không cần ngưỡng** (chính sách `stable-disagreement`):
+  - Hỏi Jev thêm 3 lần, mỗi lần đảo thứ tự lựa chọn.
+  - Chỉ gắn cờ khi Jev trả lời giống nhau cả 3 lần, khác mức của Claude, và vượt ranh giới merge. Tối đa 3 lỗi mỗi PR.
+  - Trên PR 5240: 17/18 lỗi ổn định 3/3. Chỉ gắn cờ F14–F17 (Minor → Major), lọc bớt 2 trong 6 chỗ Jev lệch với Claude (F9 và F18 không vượt ranh giới merge). Tốn $0.003 cho 109 lần gọi.
+- **2 câu hỏi có/không mới** (chỉ ghi log, không đổi kết quả review):
+  - `introduced_by_pr` ("lỗi do PR này gây ra?"): trả lời có 18/18. Câu trả lời đúng, vì mọi dòng được trích đều là dòng mới thêm, nhưng PR test này không đủ để phân biệt câu hỏi với việc luôn trả lời có.
+  - `already_raised` ("đã có ai nêu trong thread?"): trả lời có 17/18, khớp với các thread review AI trước đó (đã kiểm tra tay 5 lỗi).
+- **Lấy nhãn từ kết quả thật** (`outcome-labels.mjs`): so commit lúc review với commit cuối của PR; lỗi nào có vùng code bị sửa sau đó thì nhãn là `fixed`. Mới test bằng dữ liệu giả, chưa chạy trên PR thật.
+- **Sửa 2 bug log:** trường `rules` giờ dùng đúng rule id và override của dự án; header execution log hiện đủ cả hai provider.
+- 🧪 **87/87 test pass.** Chưa merge, chưa bật `recheck` trên PR thật: cần nhãn từ nhiều PR để biết các cờ có đúng không.
 
 ---
 
@@ -264,6 +278,13 @@ Trên ticket 11840, tài khoản test không có giờ thực tế, nên case l�
 | jev-verdict | `DROP` mặc định: kém với các bước tham chiếu chéo nhau; cân nhắc gộp vào oracle |
 | **laya-ground** | `ADOPT`: **biến thể đáng dùng nhất.** Chạy thật trên 11840: PASS cả 2 lần; so với bản gốc ít lượt hơn (16 so với 19), ít input token hơn (1.4M so với 1.7M), nhanh hơn (2 so với 3 phút), và không phải đọc snapshot trang. **Lợi ích đến từ rule `find.mjs`, không phải từ Laya:** trong 77 lần tìm element có log, rule tự giải 58 lần (75%), 16 lần trả danh sách ngắn cho Claude chọn, Laya chỉ quyết 3 lần (lúc thử nghiệm ngày 10-08) và **sai cả 3 với p = 1.0**, kể cả một lần chọn nhầm cho nút "Submit". → Dùng skill này với Laya **tắt** (hoặc gộp `find.mjs` vào `web-test` gốc). Lưu ý: run gốc so sánh có 3 case, run ground có 2 case. |
 | Bản Laya còn lại (wait, verdict, gate, oracle) | `DROP` model. Đưa rule của `wait.mjs` và network audit của gate về bản `web-test` gốc (`ADOPT`) |
+
+### 5.7 Sửa bug ngày 2026-10-15 (nhánh `claude/web-test-fixes-4fdcd7`, commit `0adb7a7`)
+- **Đọc nhầm tab:** `page-select.mjs` mới chọn tab theo thứ tự rõ ràng (bỏ tab ẩn, ưu tiên tab đang focus, rồi đến tab mới tải), có thêm `--url <route>` để chỉ định trang. Khi không chắc thì dừng và liệt kê các tab, không đoán. Áp dụng cho `wait.mjs`, `oracle --observe` và `find.mjs` ở mọi bản.
+- **Các lỗi khác đã sửa:** BOM trong `results.json`, thứ tự tham số của `launch-role.ps1`, comment sai trong `jev-gate/gate.mjs`.
+- **Gate trước mỗi cú click** (`gate.mjs --check-action`), có ở cả bản Jev và bản Laya: nếu cú click trông như ghi dữ liệu mà bước đó đánh dấu chỉ đọc thì dừng lại hỏi.
+- 🧪 **206/206 test pass** trên cả 11 bản. Eval `live-wait` chạy lại cho kết quả giống hệt.
+- **Chưa chạy lại trên ESS** (cần bạn chọn môi trường), nên kết quả chạy thật của wait/oracle ở mục 5.4 vẫn là bản trước khi sửa.
 
 ---
 
@@ -351,7 +372,7 @@ Trên ticket 11840, tài khoản test không có giờ thực tế, nên case l�
 ### B7. `fast-compact` plugin · ✅ 1 session thật · 🧪 13 test · `ADOPT`
 - **Đánh giá Jev cho việc chọn nội dung cần giữ:** Jev giữ đúng 0/38 lần gọi còn cần (không lần nào vượt p 0.5), còn rule giữ đúng 38/38 → bỏ Jev.
 - **Bản rule:** rút gọn 254k → 57k token (−77%) trong 57 ms, không gọi model.
-- **Kết luận:** dùng được ngay. Plugin là opt-in (người dùng tự gọi), chạy bằng rule nên không tốn token và không gửi dữ liệu ra ngoài. Việc còn lại: merge nhánh `claude/fast-jev-compaction-worktree-f61594` và theo dõi thêm trên vài session thật (hiện mới chạy 1 session).
+- **Kết luận:** dùng được ngay. Plugin là opt-in (người dùng tự gọi), chạy bằng rule nên không tốn token và không gửi dữ liệu ra ngoài. Đã merge vào `main` (PR #3, 2026-10-15). Việc còn lại: theo dõi thêm trên vài session thật (hiện mới chạy 1 session).
 
 ### B8. Gói cài Laya cho Windows · ✅ cài thật trên 2 máy · `DONE`
 - `install-laya.ps1` (uv + Python 3.12, `laya==0.3.21`), cùng `serve.py` đã vá (thêm form trên Swagger) và `start-laya.bat`.
@@ -504,22 +525,78 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 **Dữ liệu gửi cho Jev khi chạy lại trên prompt thật:** prompt (600 ký tự đầu), tên và mô tả của tối đa 8 skill ứng viên (kèm 500 ký tự đầu của SKILL.md), cùng một cờ có/không cho biết prompt có URL PR. Không gửi đường dẫn file, tên project hay nội dung file. Mô tả skill của các dự án tương ứng cũng được gửi.
 
+### 10.5 Vòng 2 (2026-10-15, commit `5e23728`)
+- **Sửa lỗi bản biến thể:** router đưa bản biến thể vào danh sách ứng viên khi prompt có từ phân biệt nó với skill gốc (laya, jev, "severity check", …). Jev đúng **31/31** scenario nhóm trùng việc (trước đó 23/31). Độ chính xác tổng lên **91%** (trước đó 86%); BM25 75%.
+- **Đồng thuận (ý 4):**
+  - Trên scenario, đồng thuận làm độ chính xác giảm còn 82%, vì mỗi lần BM25 và Jev chọn khác nhau thì Jev đều đúng (19/19).
+  - Trên 368 prompt thật (tính offline, không gọi Jev lại), bỏ qua các trường hợp không đồng thuận làm gợi ý sai giảm từ 13% xuống 6% và gợi ý thừa từ 10% xuống 6%, đổi lại mất 2 trong 8 gợi ý đúng.
+- **Self-consistency k=3 (ý 5) không giúp gì:** chỉ 4/169 prompt đổi câu trả lời khi đảo thứ tự, mà chi phí gấp 3.
+- **Cấu hình đề xuất:** khi người dùng chủ động hỏi thì dùng Jev k=1 và đánh dấu "độ tin cậy thấp" khi không đồng thuận; với hook shadow thì bỏ qua khi không đồng thuận.
+- Vòng này tốn $0.03. 🧪 **65/65 test pass.**
+
 ---
 
-## 11. Kết luận chung
+## 11. Nhóm F: `subagent-model-router`: chọn model cho từng subagent (build mới)
+
+**Vì sao làm:**
+- Nếu sau này công ty chạy song song khoảng 20 subagent (mỗi subagent một story), quota sẽ tiêu chủ yếu theo model của subagent.
+- Chọn model theo từng request đã thua vì đổi model làm mất prompt cache. Subagent thì có context riêng, nên chọn model cho nó **không làm mất cache** của luồng chính.
+
+**Cách hoạt động:**
+- **Hook `PreToolUse` gắn vào tool Agent:** đặt `model` cho subagent khi người gọi chưa đặt. Đã thử thật bằng `claude -p`: subagent chạy Haiku trong khi luồng chính là Sonnet. Có thêm CLI `route.mjs` cho orchestrator.
+- **Chọn tầng model:** bằng rule (loại subagent, động từ của task, số file/AC, có test hay không), tùy chọn thêm Jev kèm đồng thuận và self-consistency.
+- **Leo model khi trượt:** chạy ở tầng được chọn; nếu kiểm tra tự động fail thì chạy lại một lần ở tầng cao hơn.
+- **Mặc định:** chế độ shadow (chỉ ghi log), chỉ dùng rule. Hook chưa đăng ký vào `settings.json`.
+- **Code:** nhánh `claude/subagent-model-router-f7f0e3` (`c83ddf5`, `2b90d97`, `a487901`), chưa push.
+
+**Lịch sử thật trên máy này (132 subagent):**
+- Subagent chiếm 28% chi phí ($136 trên $479, tính theo giá list).
+- 98% subagent không đặt model nên dùng chung model của luồng chính: Sonnet 75%, Opus 24%, Haiku gần như 0%.
+- Theo bảng giá dùng trong benchmark, Haiku rẻ hơn Sonnet khoảng 20 lần mỗi token, nên khoản tiết kiệm chủ yếu đến từ việc chuyển việc nhẹ sang Haiku.
+
+**Benchmark 18 task có kiểm tra tự động** (explore, sửa lỗi nhỏ, refactor, viết test, thiết kế/debug):
+
+| Cách chọn model | Pass | Chi phí so với luôn dùng Opus |
+|---|---|---|
+| Luôn Opus | 18/18 | 100% |
+| Luôn Sonnet | 18/18 | 61% |
+| **Chỉ dùng rule + leo model khi trượt** | **18/18** | **14%** |
+| Jev | 18/18 | 48% |
+| Jev + đồng thuận + self-consistency | 18/18 | 51% |
+
+- **Haiku làm được 17/18 task.** Task còn lại (d5-deps) Haiku trượt vì hiểu đề quá sát chữ; leo lên Sonnet thì pass. Một lần Haiku trượt chỉ tốn khoảng $0.01, rẻ hơn việc cố đoán trước.
+- **Jev hơi thận trọng:** chưa lần nào chọn model quá thấp, nhưng chọn Sonnet cho 12 task mà Haiku làm được, nên tốn khoảng gấp 3.5 lần so với rule + leo model. Jev ổn định trên 16/18 task khi hỏi 3 lần.
+- **Chi phí benchmark:** khoảng $4 (pilot 6 task × 3 model $2.72; vòng 2 gán nhãn 12 task còn lại theo kiểu thử Haiku trước $1.32).
+
+**Kết luận: `PILOT`, tiềm năng tiết kiệm quota lớn nhất trong cả dự án.**
+- **Story có test hoặc AC:** dùng rule + leo model khi trượt, không cần Jev.
+- **Story không có kiểm tra tự động:** dùng Jev + đồng thuận, vì không có gì bắt được khi chọn sai model.
+- **Thu kết quả subagent theo lô** để giảm số lần đánh thức luồng chính (vòng 2 tốn chi phí luồng chính chỉ bằng 1/3 pilot nhờ cách này).
+
+**Hạn chế:**
+- Task nhỏ, tự soạn, mỗi task chạy 1 lần cho mỗi model.
+- 23/54 ô kết quả là suy ra, theo giả định "model thấp pass thì model cao cũng pass".
+- Chưa thử task không có kiểm tra tự động, chưa thử trên story thật.
+
+**Việc tiếp theo:** chạy thử trên vài story thật có AC (`ess-be` / `ess-fe`), và bật hook ở chế độ shadow để so với model đang thực sự được dùng.
+
+---
+
+## 12. Kết luận chung
 
 | Câu hỏi | Trả lời |
 |---|---|
 | Laya có thay được LLM call lặp lại không? | **Hầu như không.** Laya chỉ ổn với text ngắn và ≤ 8–10 lựa chọn, có bộ lọc trước (ado-classify). Laya kém với log dài, nhiều lựa chọn, tiếng Việt; xác suất không đủ tách bạch để đặt ngưỡng. |
 | Jev có tốt hơn không? | **Có, chính xác hơn rõ rệt**, lại rẻ và nhanh. Trên review-pr, Jev đồng ý 12/18 và chỉ nâng mức (Laya 7/18). Nhưng Jev quá tự tin, dữ liệu rời mạng, và khi chạy agent `web-test` thật chưa giảm được token. |
-| Chọn model theo request hoặc theo bước có tiết kiệm không? | **Không.** Đổi model làm mất prompt cache; dùng cố định Sonnet hoặc Opus một luồng rẻ hơn. |
-| Router skill diện rộng có đáng làm không? | **Có, ở dạng tùy chọn.** `skills-router`: Jev tốt nhất trên scenario tự soạn (86%), nhưng trên prompt thật chỉ hòa BM25. Laya không có chỗ đứng. Cần thêm nhãn thật qua hook shadow. |
+| Chọn model theo request hoặc theo bước có tiết kiệm không? | **Theo request hoặc theo bước: không**, vì đổi model làm mất prompt cache. **Theo từng subagent: có**, vì subagent có context riêng; trên benchmark, rule + leo model khi trượt chỉ tốn 14% so với luôn dùng Opus (mục 11). |
+| Đồng thuận và self-consistency có thay được ngưỡng không? | **Đồng thuận: có ích trên dữ liệu thật nhiều nhiễu** (skills-router: gợi ý sai 13% → 6%), nhưng có hại trên dữ liệu sạch. **Self-consistency: không**, vì Jev gần như luôn trả cùng một đáp án khi đảo thứ tự (skills-router: chỉ 4/169 prompt đổi; review-pr: 17/18 ổn định). |
+| Router skill diện rộng có đáng làm không? | **Có, ở dạng tùy chọn.** `skills-router`: Jev tốt nhất trên scenario tự soạn (91% sau vòng 2), nhưng trên prompt thật chỉ hòa BM25. Laya không có chỗ đứng. Cần thêm nhãn thật qua hook shadow. |
 | Skill mới build quanh Jev thì sao? | **Chạy được, không tệ, nhưng Jev đóng góp không đều.** Jev là phần chính ở acceptance-criteria-coverage và dead-code-finder; khoảng 50/50 ở subagent-validator; ít ở git-risk-scanner và context-curator. Tất cả mới đo trên demo tổng hợp. |
 | Cái gì mang lại giá trị thật? | Các phần **rule/script cố định**: `find.mjs`, rule của `wait.mjs`, network audit, cache-expiry gate, fast-compact, giới hạn tool bằng flag tĩnh. |
 
 ---
 
-## 12. Rủi ro và lưu ý
+## 13. Rủi ro và lưu ý
 
 - **Repo đang public** nhưng có dữ liệu thật:
   - `ado/items*.json`: 190 work item PXP / XT-Smart-Platform.
@@ -531,29 +608,32 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
   - Phần lớn nhãn do Claude gắn; mẫu nhỏ; mỗi cấu hình thường chỉ chạy 1 lần.
   - Giá dùng tỉ lệ giả định 1:3:5, không phải giá thật của gateway X-Tek.
   - Chưa có test nào trên bước **ghi** dữ liệu thật trong ESS.
-- **Bug đã biết:**
+- **Bug đã biết** (4 bug dưới đây đã sửa ngày 2026-10-15 trên nhánh riêng, chưa merge):
   - `wait.mjs` / `oracle --observe` đọc nhầm tab.
   - PowerShell ghi `results.json` có BOM, làm `record.mjs` lỗi.
   - Comment trong `jev-gate/scripts/gate.mjs` vẫn còn số liệu của Laya.
   - `review-pr-jev-classify`: trường `rules` trong log bỏ qua rule id và override của dự án (chỉ ảnh hưởng log). Header của execution log chỉ hiện provider được `assess.mjs` chạy sau cùng.
 
+- **`subagent-model-router`:** benchmark chỉ gồm task nhỏ tự soạn, có kiểm tra tự động; chưa thử trên story thật hay task không có kiểm tra.
 - **`skills-router`:** nhãn của 199 scenario do Claude tự đặt; trên prompt thật chỉ có 16 nhãn skill; mô tả skill của project cũng được gửi cho Jev khi dùng Jev; hook shadow chưa bật, độ trễ thật của hook chưa đo.
 - **2 skill BMad + Jev:** chưa chạy với Jev thật lần nào; ngưỡng 0.3 lấy từ cookbook, chưa đo trên dữ liệu của mình.
 - **5 skill Jev mới (repo `JEV`):** code chưa commit; số liệu đo trên demo tổng hợp do Claude dựng; chưa có bản để Claude tự làm để so sánh; mỗi kịch bản thật mới chạy 1 lần.
 
 ---
 
-## 13. Việc còn mở / bước tiếp theo đề xuất
+## 14. Việc còn mở / bước tiếp theo đề xuất
 
 1. Xin ý kiến Security về việc gửi dữ liệu ra Jev / OpenRouter (hoặc đo **Kev**, bản Jev chạy local, chưa đo).
-2. Sửa bug đọc nhầm tab, rồi chạy lại agent run 2–3 lần mỗi biến thể (ước tính ~40M token).
+2. Bug đọc nhầm tab đã sửa (nhánh `claude/web-test-fixes-4fdcd7`); còn lại là chạy lại agent run 2–3 lần mỗi biến thể (ước tính ~40M token).
 3. `review-pr-jev-classify`: chạy shadow với Jev trên 5–10 PR thật, nhờ người gắn nhãn các lỗi bị lệch, rồi mới quyết định bật `recheck`.
 4. ado-classify: làm MCP server, so với Haiku, A/B trong lúc dev code.
-5. Đưa `find.mjs` và rule của `wait.mjs` vào `web-test` gốc; merge `fast-compact`.
+5. Đưa `find.mjs` và rule của `wait.mjs` vào `web-test` gốc; theo dõi `fast-compact` trên vài session thật (đã merge vào `main`).
 6. Dọn dữ liệu nhạy cảm khỏi repo public.
 7. 5 skill Jev mới: commit code, chạy trên repo thật của team, đo thêm bản Claude tự làm; chạy bộ log khó h01–h08 cho `jev_advisor`.
 8. Pilot 2 skill BMad + Jev theo plan: khoảng 60 câu hỏi có nhãn cho `bmad-help-jev`; 10 PR đã merge của `ess-fe` cho `bmad-code-review-jev`.
-9. `skills-router`: bật hook shadow để gom nhãn thật, sửa lỗi nhóm skill trùng việc, chọn ngưỡng BM25 theo từng catalog; chỉ sau đó mới chốt Jev có nên là bước thứ hai mặc định hay không.
+9. `skills-router`: (lỗi nhóm skill trùng việc đã sửa ở vòng 2) bật hook shadow để gom nhãn thật, chọn ngưỡng BM25 theo từng catalog; chỉ sau đó mới chốt Jev có nên là bước thứ hai mặc định hay không.
+10. `subagent-model-router`: chạy thử trên vài story thật có AC, và bật hook ở chế độ shadow.
+11. Review và merge các nhánh mới: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
 
 ---
 
@@ -573,7 +653,10 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | `fast-compact` | 13 | Theo report của nhánh, chưa chạy lại |
 | 5 skill Jev mới + `jev_advisor` (repo `JEV`) | 84 | 84 pass (chạy lại 2026-10-15) |
 | `bmad-help-jev` / `bmad-code-review-jev` | 9 / 8 | Tất cả pass, dùng provider giả (chạy lại 2026-10-15) |
-| `skills-router` | 46 | 46 pass, dùng provider giả (chạy lại 2026-10-15) |
+| `skills-router` | 65 | 65 pass, dùng provider giả (vòng 2, 2026-10-15) |
+| `subagent-model-router` | 19 | 19 pass, dùng provider giả |
+| `review-pr-jev-classify` (bản nâng cấp) | 87 | 87 pass |
+| 11 bản `web-test` (bản sửa bug) | 206 | 206 pass |
 
 ### B. Dòng thời gian
 
@@ -589,7 +672,7 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | 10-11 | `review-pr-laya-classify` |
 | 10-13 | Chạy thật PR 5240; `review-pr-jev-classify`, `web-test-jev-ground`; plan áp Jev vào BMad |
 | 10-14 | 4 skill `web-test-jev-*`, đánh giá offline Laya và Jev; repo `JEV`: smoke test, `jev_advisor`, A/B/C 30 run |
-| 10-15 | Agent run trên ticket 11840 (dev + staging), `fast-compact`, chạy lại A/B có kiểm soát trên PR 5240; 5 skill Jev mới + test thực tế 7 session; 2 skill BMad + Jev; `skills-router` (46 test, đánh giá trên 199 scenario và 368 prompt thật) |
+| 10-15 | Agent run trên ticket 11840 (dev + staging), `fast-compact`, chạy lại A/B có kiểm soát trên PR 5240; 5 skill Jev mới + test thực tế 7 session; 2 skill BMad + Jev; `skills-router` (đánh giá trên 199 scenario và 368 prompt thật, rồi vòng 2); `subagent-model-router` (benchmark 18 task); nâng cấp `review-pr-jev-classify`; sửa bug `web-test` |
 
 ### C. Code nằm ở đâu
 
@@ -598,9 +681,12 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | `main` | Gói cài, routing, proxy, benchmark, workflow, ado, ado-classify, audit, hooks |
 | `claude/laya-jev-skill-comparison-fe1001` (mới nhất, **chưa merge vào main**) | Toàn bộ 12 skill, `eval/`, `triage/`, `ess-test-runs/` |
 | `research/laya-router-skill` (chưa merge) | Routing đa tín hiệu, A/B #1697, `laya-launcher` |
-| `claude/fast-jev-compaction-worktree-f61594` (chưa merge) | `fast-compact` |
+| `main` (merge từ `claude/fast-jev-compaction-worktree-f61594`, PR #3) | `fast-compact` |
 | `feat/bmad-jev-skills` (đã push, chưa merge) | `bmad-help-jev`, `bmad-code-review-jev`, `idea/jev-applicability-plan.md` |
-| `claude/skills-router-62fc74` (chưa push) | `skills-router`, hook shadow, 199 scenario |
+| `claude/skills-router-62fc74` (chưa push) | `skills-router`, hook shadow, 199 scenario, vòng 2 |
+| `claude/subagent-model-router-f7f0e3` (chưa push) | `subagent-model-router`, benchmark 18 task |
+| `claude/review-pr-jev-upgrade-2bbb34` (chưa push) | Nâng cấp `review-pr-jev-classify` |
+| `claude/web-test-fixes-4fdcd7` (chưa push) | Sửa bug 11 bản `web-test`, gate theo từng cú click |
 | Repo `xt-skills` | Bản gốc `review-pr` |
 | Repo `danhnguyen-xiontechs/JEV`, nhánh `jev` | Smoke test Jev, `jev_advisor`, A/B/C |
 | Repo `JEV`, worktree `claude/review-5-plans-idea-folder-ce4d36` (**chưa commit**) | 5 skill Jev mới, demo/eval, `docs/runs/realtest/` |
