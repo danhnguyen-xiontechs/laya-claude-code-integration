@@ -36,7 +36,7 @@ if (!transcript || !fs.existsSync(transcript)) {
 }
 const readJson = (f) => {
   try {
-    return JSON.parse(fs.readFileSync(path.join(runDir, f), 'utf8'));
+    return JSON.parse(fs.readFileSync(path.join(runDir, f), 'utf8').replace(/^\uFEFF/, ''));
   } catch {
     return null;
   }
