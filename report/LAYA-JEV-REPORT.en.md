@@ -786,6 +786,37 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Verdict: `PILOT`** — Jev's batch ranking looks clearly better than rules on this small set, cheaply. Before adopting: 30–50 real tasks on a C#/.NET repo (with a C+header arm to separate the header effect), and measure A.
 <!-- END codebase-task-explorer -->
+<!-- BEGIN smart-context-trimming -->
+## Smart Context Trimming (Claude Code Mod + Jev, plan 01)
+
+**What:** a Claude Code Mod (`smart-context-trimming/`) that hooks Bash `tool.call` for test/build commands (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). When the output is long (≥250 lines or ≥20 KB), Claude gets only the **original lines that matter**: errors, failed tests with their assertion details, exception heads with the first 6 frames, fatal lines, summaries and exit status, plus the first 5 and last 15 lines. The full raw output is saved under `~/.claude/smart-context-trimming/raw/` and the compact result points to it. Default **observe** (measures, changes nothing); `enforce` trims; `/smart-trim off|observe|enforce|status` per session, or the `SMART_TRIM_MODE` env variable.
+
+**Jev's role (optional, enforce only):** one decision per trimmed output: a strategy choice (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) and one yes/no per *optional* candidate (repeated warnings, deeper stack frames), at most 12. Jev never writes text. Mandatory evidence is kept whatever Jev says, so a wrong answer can only make the output longer. Candidate text is redacted (keys, Bearer tokens, passwords, connection strings, JWTs, long hex) and capped at 12 KB. Timeout 8 s; confidence < 0.6, invalid JSON, unknown strategy, extra or out-of-range answers → the rules result.
+
+**Phase 0 (installed CLI 2.1.300, engine types 2.1.295), proven live with `claude -p --plugin-dir`:**
+- Success: `{ result: { ...result, stdout } }` replaces what Claude reads ✔.
+- Non-zero exit: core answers `{ isError, result: string }`. A hook's own `{ isError, result }` is **refused (schema error)**; a spread of core's answer with a new `text` is **ignored**; `{ result: { stdout } }` **drops the error flag** (not allowed). Only `{ deny: text }` keeps the error flag, so that is what the mod returns for failed runs.
+- Permission denials, interrupted / background / image / core-persisted results and unmatched commands pass through untouched.
+- **Finding:** for a failed command, Claude Code itself has already cut the text to about 5 000 head + 5 000 tail characters (`... [N characters truncated] ...`) **before** any hook sees it. In a live run that core cut hid one of three failing tests. The mod cannot recover it without rewriting the command (outside the MVP), so most failed outputs are under the threshold today.
+
+**Quick test (10-fixture corpus + fake-Jev failure arms):**
+
+| fixture | baseline | rules | rules + Jev (real) | lost critical |
+|---|---:|---:|---:|---:|
+| long passing dotnet test | 27.4 KB | 1.6 KB (−94%) | — (no optional candidates) | 0 |
+| 3 failing tests | 22.9 KB | 3.4 KB (−85%) | — | 0 |
+| dotnet compiler errors | 19.7 KB | 1.5 KB (−93%) | — | 0 |
+| exception + 25-frame stack | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
+| 300 warnings + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
+| secret-like strings | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
+| malformed log, short, unmatched, piped to `tail` | — | unchanged byte-for-byte | unchanged | 0 |
+
+- Median reduction on eligible outputs: **89% (rules) / 91% (rules + Jev)**. **0 lost critical diagnostics** in every arm, and every kept line is checked to be an original line, verbatim.
+- Jev failure arms (timeout, invalid JSON, HTTP 500, transport error, unknown strategy, low confidence, "drop everything", `keep_full_output`) all fall back correctly, none stalls past 2 s, and the criticals stay. Secrets never appear in the Jev request.
+- **3 real Jev calls** in total (all valid). 21 Node unit tests and 7 engine tests (`claude plugin test`) pass. Live end-to-end in enforce: 27.4 KB → 1.7 KB with the raw-log pointer, and Claude read the summary correctly.
+
+**Verdict: PILOT (rules), Jev SHADOW.** The rules alone do almost all the saving; Jev adds about 2 points, and only on outputs that have optional candidates. Not measured yet: real request tokens, task success and re-read rate (Phase 4). Next: an opt-in exit-code wrapper so failed runs avoid core's 10 KB cut, then threshold calibration on real sessions.
+<!-- END smart-context-trimming -->
 
 ## 12. Overall conclusions
 
