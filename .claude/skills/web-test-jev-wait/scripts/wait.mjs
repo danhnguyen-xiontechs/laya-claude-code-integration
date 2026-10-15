@@ -4,18 +4,20 @@
 // shows an error, or the timeout elapses. Jev (optional) classifies the text; without it the
 // script uses rules only (expected text present + no spinner/skeleton).
 //
-// Usage: node wait.mjs [--expect "<text>"] [--timeout 20] [--shot <file.png>] [--cdp http://127.0.0.1:9222] [--json] [--log <file.jsonl>]
+// Usage: node wait.mjs [--url "<route or URL of the page under test>"] [--expect "<text>"] [--timeout 20] [--shot <file.png>] [--cdp http://127.0.0.1:9222] [--json] [--log <file.jsonl>]
 // Output (one line): status=ready|login|error|timeout screen=<id> login=<bool> expect=found|missing|- waited=<s> jev=on|idle|off [jev_p=…]
 //   jev=on → Jev was consulted for this verdict; idle → reachable but rules alone decided; off → disabled/unreachable.
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { selectPage } from './page-select.mjs';
 import { loadConfig, ready, ask } from './jev-lib.mjs';
 
 // ---- args
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const i = argv.indexOf(k); return i === -1 ? d : argv[i + 1]; };
 const EXPECT = opt('--expect', null);
+const URL_WANT = opt('--url', null); // which tab: see page-select.mjs (hidden tabs ignored, ambiguity is an error)
 const TIMEOUT = Number(opt('--timeout', 20)) * 1000;
 const SHOT = opt('--shot', null);
 const CDP = opt('--cdp', 'http://127.0.0.1:9222');
@@ -125,8 +127,19 @@ let browser;
 try { browser = await pw.chromium.connectOverCDP(CDP, { timeout: 5000 }); }
 catch (e) { console.log(`status=error reason=no-browser cdp=${CDP} detail=${e.message.split('\n')[0]}`); process.exitCode = 1; }
 
-const page = browser ? browser.contexts().flatMap((c) => c.pages()).find((p) => !p.url().startsWith('devtools://')) ?? null : null;
-if (browser && !page) { console.log('status=error reason=no-page'); await browser.close().catch(() => {}); process.exitCode = 1; }
+// The page under test, never just the first tab: the role browser can hold hidden tabs the MCP does not list.
+// With --url, a tab that has not reached the route yet is waited for (within --timeout); ambiguity fails at once.
+let page = null, pickedBy = null;
+if (browser) {
+  let pick;
+  for (;;) {
+    pick = await selectPage(browser, { url: URL_WANT });
+    if (!pick.error || !pick.error.startsWith('no-match') || Date.now() - t0 >= TIMEOUT) break;
+    await new Promise((r) => setTimeout(r, POLL));
+  }
+  if (pick.error) { console.log(`status=error reason=${pick.error}`); await browser.close().catch(() => {}); process.exitCode = 1; }
+  else { page = pick.page; pickedBy = pick.reason; }
+}
 if (page) await run();
 
 async function run() {
@@ -177,12 +190,13 @@ const out = {
   status: verdict, screen: last?.screen ?? 'unknown', login: !!last?.login,
   expect: EXPECT ? (last?.expect ? 'found' : 'missing') : '-', waited: Number(waited),
   jev: !jevOn ? 'off' : (last?.source === 'jev' ? 'on' : 'idle'), // on = consulted, idle = available but rules sufficed
-  jev_p: last?.p ?? null, shot, url: page.url(), note: lastErr,
+  jev_p: last?.p ?? null, shot, url: page.url(), tab: pickedBy, note: lastErr,
 };
 if (JSON_OUT) console.log(JSON.stringify(out));
 else {
   const parts = [`status=${out.status}`, `screen=${out.screen}`, `login=${out.login}`, `expect=${out.expect}`, `waited=${waited}s`, `jev=${out.jev}`];
   if (out.jev_p) parts.push(`jev_p=${Object.entries(out.jev_p).map(([k, v]) => `${k}:${(v ?? 0).toFixed(2)}`).join(',')}`);
+  parts.push(`url=${out.url}`, `tab=${out.tab}`);
   if (shot) parts.push(`shot=${shot}`);
   if (lastErr) parts.push(`note="${lastErr}"`);
   console.log(parts.join(' '));

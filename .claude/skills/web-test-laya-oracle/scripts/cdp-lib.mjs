@@ -2,6 +2,7 @@
 // Attaching never opens or closes tabs; browser.close() afterwards only disconnects.
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { selectPage } from './page-select.mjs';
 
 export function loadPlaywright() {
   const req = createRequire(import.meta.url);
@@ -13,17 +14,15 @@ export function loadPlaywright() {
   throw new Error('playwright-core not found: npm i -g playwright-core, or install playwright-cli');
 }
 
-/** { browser, page } or { error }. Picks the visible http(s) tab (not devtools:// or extension pages). */
-export async function attach(cdpUrl = 'http://127.0.0.1:9222') {
+/**
+ * { browser, page, reason } or { error }. Picks the page under test with page-select.mjs: http(s) only, hidden tabs
+ * ignored, `url` (a route like /attendance or a URL) narrows it down; an ambiguous choice is an error, not a guess.
+ */
+export async function attach(cdpUrl = 'http://127.0.0.1:9222', { url } = {}) {
   let browser;
   try { browser = await loadPlaywright().chromium.connectOverCDP(cdpUrl, { timeout: 5000 }); }
   catch (e) { return { error: `no-browser cdp=${cdpUrl} detail=${e.message.split('\n')[0]}` }; }
-  const pages = browser.contexts().flatMap((c) => c.pages()).filter((p) => /^https?:/.test(p.url()));
-  let page = null;
-  for (const p of pages) {
-    try { if ((await p.evaluate(() => document.visibilityState)) === 'visible') { page = p; break; } } catch { /* navigating */ }
-  }
-  page ??= pages.at(-1) ?? null;
-  if (!page) { await browser.close().catch(() => {}); return { error: 'no-page' }; }
-  return { browser, page };
+  const pick = await selectPage(browser, { url });
+  if (pick.error) { await browser.close().catch(() => {}); return { error: pick.error }; }
+  return { browser, page: pick.page, reason: pick.reason };
 }

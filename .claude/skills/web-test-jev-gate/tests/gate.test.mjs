@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
-import { fakeJev, run, tmpDir } from './fake-jev.mjs';
+import { fakeJev, run, tmpDir, readJsonl } from './fake-jev.mjs';
 
 const GATE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'scripts', 'gate.mjs');
 const plan = (steps) => {
@@ -64,5 +64,87 @@ describe('gate.mjs with Jev', () => {
     assert.equal(bad.code, 0);
     assert.match(bad.out, /read=1/);
     assert.equal(saved(dir)[0].gate.jev, null);
+  });
+});
+
+describe('gate.mjs --check-action (per click)', () => {
+  const GATE_LOG = (home) => path.join(home, '.ess-web-test', 'gate-jev-log.jsonl');
+  const twoSteps = () => plan([{ action: 'Open the attendance calendar', writes: false }, { action: 'Submit the leave request', writes: true }]);
+  const writey = jevSays((t) => (/submit|approve/i.test(t) ? 0.96 : 0.03));
+
+  it('write-looking click on a read step → stop, exit 3, recorded on the step and in the gate log', async () => {
+    const dir = twoSteps();
+    const fake = await fakeJev(writey);
+    const r = await run(GATE, [dir, '--check-action', 'button "Approve" (POST /api/approvals)', '--step', 'TC01-S01'], { url: fake.url });
+    await fake.close();
+    assert.equal(r.code, 3, r.out);
+    assert.match(r.out, /^gate-action=stop step=TC01-S01 marked=read rule=true p=0\.96 jev=on/m);
+    assert.match(r.out, /STOP: .*--confirm-read/);
+    const a = saved(dir)[0].gate.actions;
+    assert.equal(a.length, 1);
+    assert.equal(a[0].verdict, 'stop');
+    assert.equal(a[0].action, 'button "Approve" (POST /api/approvals)');
+    const logged = readJsonl(GATE_LOG(r.home));
+    assert.equal(logged.length, 1);
+    assert.equal(logged[0].kind, 'action');
+    assert.equal(logged[0].step, 'TC01-S01');
+    assert.equal(logged[0].verdict, 'stop');
+  });
+  it('Jev alone (no keyword) is enough to stop', async () => {
+    const dir = twoSteps();
+    const fake = await fakeJev(jevSays((t) => (/OK the claim/.test(t) ? 0.9 : 0.02)));
+    const r = await run(GATE, [dir, '--check-action', 'button "OK the claim"', '--step', 'TC01-S1'], { url: fake.url });
+    await fake.close();
+    assert.equal(r.code, 3, r.out);
+    assert.match(r.out, /gate-action=stop .*rule=false p=0\.9 /);
+  });
+  it('--confirm-read lets the agent go on as read, exit 0, reason kept', async () => {
+    const dir = twoSteps();
+    const fake = await fakeJev(writey);
+    const r = await run(GATE, [dir, '--check-action', 'button "Submit filter"', '--step', 'TC01-S01', '--confirm-read', 'only applies a list filter'], { url: fake.url });
+    await fake.close();
+    assert.equal(r.code, 0, r.out);
+    assert.match(r.out, /gate-action=confirmed-read/);
+    assert.equal(saved(dir)[0].gate.actions[0].reason, 'only applies a list filter');
+  });
+  it('read-looking click on a read step → allow, exit 0', async () => {
+    const dir = twoSteps();
+    const fake = await fakeJev(writey);
+    const r = await run(GATE, [dir, '--check-action', 'tab "Team attendance" /attendance/team', '--step', 'TC01-S01'], { url: fake.url });
+    await fake.close();
+    assert.equal(r.code, 0, r.out);
+    assert.match(r.out, /gate-action=allow step=TC01-S01 marked=read rule=false p=0\.03/);
+  });
+  it('write click on a step marked write (already OKed) → allow-write, exit 0', async () => {
+    const dir = twoSteps();
+    const fake = await fakeJev(writey);
+    const r = await run(GATE, [dir, '--check-action', 'button "Submit"', '--step', 'TC01-S02'], { url: fake.url });
+    await fake.close();
+    assert.equal(r.code, 0, r.out);
+    assert.match(r.out, /gate-action=allow-write step=TC01-S02 marked=write/);
+  });
+  it('Jev off → keyword rule only, still stops on an obvious write', async () => {
+    const dir = twoSteps();
+    const r = await run(GATE, [dir, '--check-action', 'button "Delete"', '--step', 'TC01-S01'], { enabled: '0' });
+    assert.equal(r.code, 3, r.out);
+    assert.match(r.out, /gate-action=stop .*rule=true p=- jev=off/);
+  });
+  it('unknown or missing step → usage error, exit 2, nothing written', async () => {
+    const dir = twoSteps();
+    const r1 = await run(GATE, [dir, '--check-action', 'button "Submit"', '--step', 'TC09-S01'], { enabled: '0' });
+    const r2 = await run(GATE, [dir, '--check-action', 'button "Submit"'], { enabled: '0' });
+    assert.equal(r1.code, 2);
+    assert.match(r1.err, /no step TC09-S01/);
+    assert.equal(r2.code, 2);
+    assert.equal(saved(dir)[0].gate, undefined);
+  });
+  it('re-running the plan check keeps the recorded action checks', async () => {
+    const dir = twoSteps();
+    await run(GATE, [dir, '--check-action', 'button "Delete"', '--step', 'TC01-S01'], { enabled: '0' });
+    const r = await run(GATE, [dir], { enabled: '0' });
+    assert.equal(r.code, 0, r.out);
+    const g = saved(dir)[0].gate;
+    assert.equal(g.writes, 'read');
+    assert.equal(g.actions.length, 1);
   });
 });

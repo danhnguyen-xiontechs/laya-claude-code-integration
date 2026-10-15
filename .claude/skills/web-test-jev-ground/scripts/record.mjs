@@ -15,7 +15,7 @@ if (!runDir || !caseId || !stepN || !STATUSES.includes(status)) {
 const opt = (name) => { const i = rest.indexOf(name); return i === -1 ? undefined : rest[i + 1]; };
 
 const file = path.join(runDir, 'results.json');
-const results = JSON.parse(fs.readFileSync(file, 'utf8'));
+const results = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
 const c = (results.cases || []).find((x) => x.id === caseId);
 if (!c) { console.error(`no case ${caseId} in ${file}`); process.exit(2); }
 const s = (c.steps || []).find((x) => String(x.n) === String(stepN));

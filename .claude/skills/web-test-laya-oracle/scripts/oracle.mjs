@@ -11,6 +11,8 @@
 //
 // Usage:
 //   node oracle.mjs <runDir> <caseId> <stepN> --observe [--observed "<text>" …] [--shot shots/TC01-S01.png]
+//        [--url "<route of the page under test>"]   which tab --observe reads (see page-select.mjs); give it whenever
+//        the role browser may hold more than one tab
 //        --observe reads the compact state from the role browser (port 9222): url, loading, toast/alert texts,
 //        and the page lines that contain the expected's quoted strings. --observed adds lines you read yourself
 //        (quote page text, never paraphrase expected). At least one of the two is required.
@@ -31,7 +33,7 @@ const [runDir, caseId, stepN] = argv;
 const rest = argv.slice(3);
 const opt = (k) => { const i = rest.indexOf(k); return i === -1 ? undefined : rest[i + 1]; };
 const all = (k) => rest.flatMap((a, i) => (a === k && rest[i + 1] !== undefined ? [rest[i + 1]] : []));
-const statusArg = opt('--status'), reason = opt('--reason'), shot = opt('--shot'), cdpUrl = opt('--cdp');
+const statusArg = opt('--status'), reason = opt('--reason'), shot = opt('--shot'), cdpUrl = opt('--cdp'), urlWant = opt('--url');
 const observeLive = rest.includes('--observe');
 const observedArg = all('--observed');
 if (!runDir || !caseId || !stepN || (!statusArg && !observeLive && !observedArg.length) || (statusArg && !STATUSES.includes(statusArg))) {
@@ -41,7 +43,7 @@ if (!runDir || !caseId || !stepN || (!statusArg && !observeLive && !observedArg.
 }
 
 const file = path.join(runDir, 'results.json');
-const results = JSON.parse(fs.readFileSync(file, 'utf8'));
+const results = JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
 const c = (results.cases || []).find((x) => x.id === caseId);
 const s = c?.steps?.find((x) => String(x.n) === String(stepN));
 if (!s) { console.error(`no step ${caseId}-S${stepN} in ${file}`); process.exit(2); }
@@ -56,7 +58,7 @@ function quoted(text) {
 }
 
 async function observe(frags) {
-  const a = await attach(cdpUrl);
+  const a = await attach(cdpUrl, { url: urlWant });
   if (a.error) return { error: a.error };
   try {
     return await a.page.evaluate((frags) => {

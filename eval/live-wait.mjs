@@ -81,10 +81,16 @@ for (const [id, p, expect, ideal] of SCENARIOS) {
     browser.kill();
     spawnSync('taskkill', ['/PID', String(browser.pid), '/T', '/F'], { stdio: 'ignore' });
     await new Promise((r) => setTimeout(r, 1200));
+    // Edge can outlive its launcher pid; a survivor would keep port PORT and serve the NEXT scenario its old page.
+    if (!(await portFree())) {
+      spawnSync('powershell', ['-NoProfile', '-Command', `Get-CimInstance Win32_Process -Filter "Name='msedge.exe' OR Name='chrome.exe'" | Where-Object { $_.CommandLine -like '*${path.basename(profile)}*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }`], { stdio: 'ignore' });
+      for (let i = 0; i < 40 && !(await portFree()); i++) await new Promise((r) => setTimeout(r, 250));
+      if (!(await portFree())) throw new Error(`port ${PORT} still in use after closing the browser; results would be wrong`);
+    }
   }
   results.push(row);
   console.log(id.padEnd(22), SKILLS.map(([k]) => `${k}: ${row.runs[k].status}/${row.runs[k].screen} ${row.runs[k].waitedS}s engine=${row.runs[k].engine}${row.runs[k].parseError ? ' ERR ' + row.runs[k].parseError : ''}`).join('  |  '));
 }
 server.close();
 fs.writeFileSync(path.join(here, 'results', 'live-wait.json'), JSON.stringify({ at: new Date().toISOString(), timeoutS: TIMEOUT, browser: path.basename(EDGE), results }, null, 2) + '\n');
-fs.rmSync(tmp, { recursive: true, force: true });
+try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { /* a browser may still hold a profile file; temp is cleaned later */ }

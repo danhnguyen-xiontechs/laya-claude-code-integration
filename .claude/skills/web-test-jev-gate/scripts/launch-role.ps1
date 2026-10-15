@@ -10,8 +10,11 @@
 
   Usage:
     powershell -NoProfile -ExecutionPolicy Bypass -File launch-role.ps1 [role] [url]
+    powershell -NoProfile -ExecutionPolicy Bypass -File launch-role.ps1 [url] [role]
     powershell -NoProfile -ExecutionPolicy Bypass -File launch-role.ps1 status
     powershell -NoProfile -ExecutionPolicy Bypass -File launch-role.ps1 stop
+
+  Role and URL may come in either order: an argument that looks like a URL (scheme://… or about:…) is the URL.
 
   Only one role can own port 9222 at a time: launching a different role stops the current one.
 #>
@@ -21,6 +24,15 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+# Either order: `launch-role.ps1 <url> [role]` is as valid as `launch-role.ps1 [role] <url>`.
+function Test-IsUrl([string]$s) { return $s -match '^(?i)([a-z][a-z0-9+.-]*://|about:)' }
+if (Test-IsUrl $Role) {
+  $second = if ($PSBoundParameters.ContainsKey('Url')) { $Url } else { '' }
+  if (Test-IsUrl $second) { throw "Two URLs given ('$Role', '$second'); pass one role and one URL." }
+  $Url = $Role
+  $Role = $second
+}
 $Port = 9222
 $ProfileRoot = Join-Path $HOME '.ess-web-test\profiles'
 $Marker = Join-Path $HOME '.ess-web-test\active-role.txt'
