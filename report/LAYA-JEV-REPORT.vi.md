@@ -648,6 +648,32 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 ---
 
+<!-- BEGIN integration-verifier -->
+## `integration-verifier`: kiểm tra chung một lô story chạy song song (build mới, Jev tuỳ chọn)
+
+- **Làm gì:** sau khi các agent làm story song song xong, kiểm tra **bằng chứng** (exit code + log) chứ không tin lời báo cáo, và kiểm tra **thay đổi gộp**: merge mọi nhánh story vào một integration worktree riêng rồi chạy build/test bắt buộc ở đó. Trạng thái: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, cho từng story và cả lô. Không bao giờ tự merge.
+- **Đã làm (pha 1, 2, 3, 5 của plan):** manifest kết quả cho từng story `.integration/<story>.json`; kiểm tra từng story (check bắt buộc không có log → BLOCKED, AC không có bằng chứng → REVIEW_REQUIRED); luật chéo giữa các story (cùng sửa một file fixture / migration / contract / config, trùng số phiên bản migration, contract khai báo không khớp, key config khác giá trị); chạy gộp; nhận diện lỗi môi trường (ECONNREFUSED, exit 127…) → BLOCKED thay vì FAIL. Dùng lại kết quả của `acceptance-criteria-coverage` và `review-pr-jev-classify`, không gọi lại. Code: `.claude/skills/integration-verifier/`.
+- **Jev (chỉ shadow):** một lệnh `choice` cho mỗi cụm lỗi mà luật không phân loại được, trong tập cố định (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). Gợi ý chỉ hiện như nhãn; **không trạng thái nào được tính từ nó**, nên Jev không thể biến FAIL / BLOCKED / thiếu bằng chứng thành PASS.
+- **Test nhanh (2026-10-16):** 10 lô fixture nhỏ gán nhãn bằng tay (repo git dùng một lần), cộng unit test cho các luật.
+
+| Ca | Kỳ vọng | Kết quả | Bắt bởi |
+|---|---|---|---|
+| tất cả xanh | PASS | PASS ✅ | — |
+| lệch contract (có khai báo) | FAIL | FAIL ✅ | `contract_mismatch` + test gộp |
+| lệch contract (không khai báo) | FAIL | FAIL ✅ | chỉ test gộp |
+| trùng migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (test vẫn xanh) |
+| fixture do một story sửa làm hỏng test của story khác | FAIL | FAIL ✅ | test gộp |
+| key config bị đặt khác nhau | FAIL | FAIL ✅ | `config_conflict` |
+| thiếu log / không có manifest / không chạy check | BLOCKED | BLOCKED ✅ | luật bằng chứng |
+| AC chỉ có lời báo + test riêng của story fail | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | luật bằng chứng |
+| lỗi chỉ do môi trường (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | dấu hiệu môi trường |
+| tất cả xanh + finding review mức High | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | finding dùng lại |
+
+- **Kết quả:** đúng 10/10, **0 PASS sai** (chỉ số chính). Jev: **3 lệnh gọi** (3 cụm lỗi chưa phân loại), mỗi lệnh ~0,5–1,2 s, ~$0.00002; trạng thái giống hệt khi bật và tắt Jev (có assert). Phân loại: 2/3 khớp nhãn tay; ca fixture (nhãn `test_data`) Jev trả `code_regression` p=0,90.
+- **Giới hạn:** chỉ fixture tổng hợp; gán lỗi cho story dựa trên tên file trong output nên hay nêu cả hai story (story không bị nêu vẫn xuống REVIEW_REQUIRED, không bao giờ PASS); fixture chỉ một story sửa thì chỉ test gộp bắt được, luật chéo không bắt; chưa làm pha 4 (bộ đánh giá gán nhãn trên lô thật) và pha 6 (pilot có kiểm soát).
+- **Kết luận:** `PILOT` cho phần verifier tất định; Jev giữ ở `SHADOW`: trên tập nhỏ này nó không thêm gì cho quyết định, và trượt ca `test_data` duy nhất.
+<!-- END integration-verifier -->
+
 ## 12. Kết luận chung
 
 | Câu hỏi | Trả lời |
