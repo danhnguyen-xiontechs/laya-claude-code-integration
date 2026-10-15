@@ -1,0 +1,137 @@
+{
+  "ticket": {
+    "id": 11840,
+    "type": "Bug",
+    "title": "Total Hours is displayed inconsistently in Month View",
+    "state": "Resolved",
+    "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+  },
+  "environment": {
+    "key": "dev",
+    "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+  },
+  "browser": "chrome-devtools",
+  "tester": "danhnpc",
+  "startedAt": "2026-10-08T17:34:03.267Z",
+  "scope": "Attendance > My attendance: in Month view the Scheduled/Total/Absence hours toolbar must aggregate the whole displayed month and stay stable (no 0 vs 55 flip) regardless of week anchor or navigation. Read-only; no data is written. Role: xiontechs account only.",
+  "cases": [
+    {
+      "id": "TC01",
+      "title": "Month view June 2026 shows a month-wide Total hours figure",
+      "ac": [
+        "Repro"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "happy",
+      "preconditions": "Account has attendance data in June 2026",
+      "status": "pass",
+      "notes": "Total hours 0 in June for this account: weak evidence for the original 55 value.",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Open Attendance > My attendance, switch Week view to Month view, go to June 2026",
+          "expected": "Toolbar shows Scheduled/Total/Absence hours for June 2026, not the week-only values",
+          "actual": "Month view, June 2026: Scheduled hours: 160 / Total hours: 0 / Absence hours: 160 (month-wide values; week view showed Scheduled 40 for 5-11 Oct)",
+          "status": "pass",
+          "screenshot": "shots/TC01-S01.png",
+          "at": "2026-10-08T17:45:03.141Z",
+          "verdict": {
+            "by": "model",
+            "laya": {
+              "label": "pass",
+              "p": 0.547
+            },
+            "review": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC02",
+      "title": "Total hours stays the same after navigating away and back and after switching views",
+      "ac": [
+        "Repro"
+      ],
+      "role": "xiontechs",
+      "priority": "High",
+      "type": "regression",
+      "preconditions": "",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "From June 2026 month view go to next month then back to June 2026",
+          "expected": "Total hours equals the TC01 value (no 0 vs 55 flip)",
+          "actual": "Next month: July 2026 Scheduled hours: 184, Total hours: 0. Back to June 2026: Scheduled hours: 160, Total hours: 0, Absence hours: 160 (same as first visit)",
+          "status": "pass",
+          "screenshot": "shots/TC02-S01.png",
+          "at": "2026-10-08T17:45:23.608Z",
+          "verdict": {
+            "by": "model",
+            "laya": {
+              "label": "fail",
+              "p": 0.478
+            },
+            "review": false
+          }
+        },
+        {
+          "n": 2,
+          "action": "Switch to Week view then back to Month view (June 2026)",
+          "expected": "Total hours equals the TC01 value",
+          "actual": "Week view (1 - 7 Jun): Scheduled hours: 40, Total hours: 0. Back to Month view June 2026: Scheduled hours: 160, Total hours: 0, Absence hours: 160",
+          "status": "pass",
+          "screenshot": "shots/TC02-S02.png",
+          "at": "2026-10-08T17:45:51.162Z",
+          "verdict": {
+            "by": "model",
+            "laya": {
+              "label": "fail",
+              "p": 0.405
+            },
+            "review": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC03",
+      "title": "Month figure does not depend on the week anchor",
+      "ac": [
+        "Repro"
+      ],
+      "role": "xiontechs",
+      "priority": "Medium",
+      "type": "edge",
+      "preconditions": "",
+      "status": "pass",
+      "notes": "",
+      "steps": [
+        {
+          "n": 1,
+          "action": "Open Week view on a different June week (e.g. 1-7 Jun), then switch to Month view",
+          "expected": "Month view shows the same June 2026 Total hours as TC01",
+          "actual": "Week view anchored 1 - 7 Jun showed Scheduled hours: 40; Month view June 2026 then showed Scheduled hours: 160, Total hours: 0, identical to the first visit",
+          "status": "pass",
+          "screenshot": "shots/TC03-S01.png",
+          "at": "2026-10-08T17:45:51.716Z",
+          "verdict": {
+            "by": "model",
+            "laya": {
+              "label": "pass",
+              "p": 0.415
+            },
+            "review": false
+          }
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "This account has no attendance in June 2026 (Total hours 0, Absence 160), so the reported 0-vs-55 flip could not be reproduced with real data; checks show the Scheduled/Absence figures are month-wide and stable. A matching-data account is needed to prove Total hours = 55.",
+    "Signed-in employee profile on dev shows as Amol R Bhangale, not the danh.nguyen account name; launch-role reported the expected account."
+  ],
+  "finishedAt": "2026-10-08T17:45:57.870Z"
+}

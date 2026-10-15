@@ -1,0 +1,13 @@
+{"t":"2026-10-15T11:07:57.379Z","run":"hf","task":"e1-locate","kind":"explore","tier":"haiku","pass":true,"cost":0.00894739,"turns":3,"output":33,"model":"claude-haiku-5-5","agent":"a06048eb9a052baee"}
+{"t":"2026-10-15T11:07:57.564Z","run":"hf","task":"e3-importers","kind":"explore","tier":"haiku","pass":true,"cost":0.009659495,"turns":4,"output":15,"model":"claude-haiku-5-5","agent":"a4f29033a7f42e95f"}
+{"t":"2026-10-15T11:07:57.744Z","run":"hf","task":"e4-config","kind":"explore","tier":"haiku","pass":true,"cost":0.00957969,"turns":4,"output":50,"model":"claude-haiku-5-5","agent":"ac9719064a3d59ddc"}
+{"t":"2026-10-15T11:07:58.056Z","run":"hf","task":"f2-email","kind":"fix","tier":"haiku","pass":true,"cost":0.010581940000000001,"turns":5,"output":57,"model":"claude-haiku-5-5","agent":"a8273d2215c544311"}
+{"t":"2026-10-15T11:07:58.426Z","run":"hf","task":"f4-await","kind":"fix","tier":"haiku","pass":true,"cost":0.010427675,"turns":5,"output":53,"model":"claude-haiku-5-5","agent":"a965a4eaab4326c14"}
+{"t":"2026-10-15T11:07:58.826Z","run":"hf","task":"r1-rename","kind":"refactor","tier":"haiku","pass":true,"cost":0.00981299,"turns":4,"output":17,"model":"claude-haiku-5-5","agent":"a1f50ce8a2b54c149"}
+{"t":"2026-10-15T11:07:59.272Z","run":"hf","task":"r2-extract","kind":"refactor","tier":"haiku","pass":true,"cost":0.00977429,"turns":4,"output":30,"model":"claude-haiku-5-5","agent":"a415e5728f70d84c3"}
+{"t":"2026-10-15T11:08:00.440Z","run":"hf","task":"t1-slugify-tests","kind":"tests","tier":"haiku","pass":true,"cost":0.01097735,"turns":5,"output":26,"model":"claude-haiku-5-5","agent":"a6f6db30cae083a3e"}
+{"t":"2026-10-15T11:08:01.159Z","run":"hf","task":"d1-lru","kind":"design","tier":"haiku","pass":true,"cost":0.016818935,"turns":11,"output":196,"model":"claude-haiku-5-5","agent":"a3cac6e75fe9cc01c"}
+{"t":"2026-10-15T11:08:01.470Z","run":"hf","task":"d2-ratelimit","kind":"design","tier":"haiku","pass":true,"cost":0.012281074999999999,"turns":7,"output":133,"model":"claude-haiku-5-5","agent":"a7e36cd17c1216ed2"}
+{"t":"2026-10-15T11:08:01.815Z","run":"hf","task":"d4-expr","kind":"design","tier":"haiku","pass":true,"cost":0.011416555,"turns":5,"output":127,"model":"claude-haiku-5-5","agent":"a8c5c8d525bacd8e6"}
+{"t":"2026-10-15T11:08:02.217Z","run":"hf","task":"d5-deps","kind":"design","tier":"haiku","pass":false,"cost":0.010258765000000001,"turns":4,"output":33,"model":"claude-haiku-5-5","agent":"af83e0750d17a9836"}
+{"t":"2026-10-15T11:08:40.241Z","run":"hf","task":"d5-deps","kind":"design","tier":"sonnet","pass":true,"cost":0.1939161,"turns":4,"output":64,"model":"claude-sonnet-5-5","agent":"a7d2c8f3237c4f792"}

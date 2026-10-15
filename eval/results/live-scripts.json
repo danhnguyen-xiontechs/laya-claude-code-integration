@@ -1,0 +1,842 @@
+{
+  "at": "2026-10-14T10:26:59.240Z",
+  "runs": 6,
+  "gate": {
+    "laya": {
+      "steps": 20,
+      "write": 0,
+      "disputed": 9,
+      "read": 11,
+      "engineOn": 6,
+      "runs": 6,
+      "lastLine": "gate: steps=3 write=0 disputed=3 read=0 overruled=0 laya=on",
+      "medianRunMs": 1237
+    },
+    "jev": {
+      "steps": 20,
+      "write": 0,
+      "disputed": 4,
+      "read": 16,
+      "engineOn": 6,
+      "runs": 6,
+      "lastLine": "gate: steps=3 write=0 disputed=2 read=1 overruled=0 jev=on",
+      "medianRunMs": 2265
+    }
+  },
+  "verdict": {
+    "laya": {
+      "steps": 19,
+      "decidedByEngineOrRule": 6,
+      "byRule": 0,
+      "byEngine": 6,
+      "toAgent": 13,
+      "flaggedReview": 17,
+      "agreeWithFinal": 4,
+      "wrongFinal": 2,
+      "medianStepMs": 568,
+      "rows": [
+        {
+          "run": "118400042",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.547,
+          "review": true,
+          "ms": 638
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.478,
+          "review": true,
+          "ms": 609
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.405,
+          "review": true,
+          "ms": 568
+        },
+        {
+          "run": "118400042",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.415,
+          "review": true,
+          "ms": 562
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.505,
+          "review": true,
+          "ms": 495
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "laya",
+          "p": 0.68,
+          "review": true,
+          "ms": 523
+        },
+        {
+          "run": "118400100",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.535,
+          "review": true,
+          "ms": 579
+        },
+        {
+          "run": "118400100",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.372,
+          "review": true,
+          "ms": 575
+        },
+        {
+          "run": "118400115",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "laya",
+          "p": 0.974,
+          "review": false,
+          "ms": 569
+        },
+        {
+          "run": "118400115",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "laya",
+          "p": 0.976,
+          "review": false,
+          "ms": 551
+        },
+        {
+          "run": "118400121",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.568,
+          "review": true,
+          "ms": 663
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "laya",
+          "p": 0.727,
+          "review": true,
+          "ms": 520
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.46,
+          "review": true,
+          "ms": 513
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "laya",
+          "p": 0.642,
+          "review": true,
+          "ms": 510
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S2",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.376,
+          "review": true,
+          "ms": 628
+        },
+        {
+          "run": "193580023",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.594,
+          "review": true,
+          "ms": 525
+        },
+        {
+          "run": "193580027",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.342,
+          "review": true,
+          "ms": 593
+        },
+        {
+          "run": "193580027",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.478,
+          "review": true,
+          "ms": 588
+        },
+        {
+          "run": "193580027",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "laya",
+          "p": 0.664,
+          "review": true,
+          "ms": 555
+        }
+      ]
+    },
+    "jev": {
+      "steps": 19,
+      "decidedByEngineOrRule": 17,
+      "byRule": 0,
+      "byEngine": 17,
+      "toAgent": 2,
+      "flaggedReview": 7,
+      "agreeWithFinal": 9,
+      "wrongFinal": 8,
+      "medianStepMs": 905,
+      "rows": [
+        {
+          "run": "118400042",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.91,
+          "review": false,
+          "ms": 1189
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.99,
+          "review": false,
+          "ms": 867
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.99,
+          "review": false,
+          "ms": 1092
+        },
+        {
+          "run": "118400042",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.93,
+          "review": false,
+          "ms": 834
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.85,
+          "review": false,
+          "ms": 914
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.98,
+          "review": false,
+          "ms": 893
+        },
+        {
+          "run": "118400100",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "blocked",
+          "by": "jev",
+          "p": 0.96,
+          "review": false,
+          "ms": 872
+        },
+        {
+          "run": "118400100",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.7,
+          "review": true,
+          "ms": 964
+        },
+        {
+          "run": "118400115",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.96,
+          "review": false,
+          "ms": 911
+        },
+        {
+          "run": "118400115",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.51,
+          "review": true,
+          "ms": 1190
+        },
+        {
+          "run": "118400121",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.72,
+          "review": true,
+          "ms": 1021
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.77,
+          "review": true,
+          "ms": 905
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.98,
+          "review": false,
+          "ms": 856
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.99,
+          "review": false,
+          "ms": 851
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S2",
+          "truth": "blocked",
+          "status": "blocked",
+          "by": "jev",
+          "p": 0.82,
+          "review": true,
+          "ms": 858
+        },
+        {
+          "run": "193580023",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.55,
+          "review": true,
+          "ms": 912
+        },
+        {
+          "run": "193580027",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.93,
+          "review": false,
+          "ms": 965
+        },
+        {
+          "run": "193580027",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.98,
+          "review": false,
+          "ms": 854
+        },
+        {
+          "run": "193580027",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.62,
+          "review": true,
+          "ms": 841
+        }
+      ]
+    }
+  },
+  "oracle": {
+    "laya": {
+      "steps": 19,
+      "decidedByEngineOrRule": 2,
+      "byRule": 2,
+      "byEngine": 0,
+      "toAgent": 17,
+      "flaggedReview": 17,
+      "agreeWithFinal": 2,
+      "wrongFinal": 0,
+      "medianStepMs": 605,
+      "rows": [
+        {
+          "run": "118400042",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.318,
+          "review": true,
+          "ms": 652
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.394,
+          "review": true,
+          "ms": 613
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.41,
+          "review": true,
+          "ms": 611
+        },
+        {
+          "run": "118400042",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.333,
+          "review": true,
+          "ms": 602
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.564,
+          "review": true,
+          "ms": 539
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.669,
+          "review": true,
+          "ms": 578
+        },
+        {
+          "run": "118400100",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.461,
+          "review": true,
+          "ms": 612
+        },
+        {
+          "run": "118400100",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.588,
+          "review": true,
+          "ms": 631
+        },
+        {
+          "run": "118400115",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "rule",
+          "p": null,
+          "review": false,
+          "ms": 67
+        },
+        {
+          "run": "118400115",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "rule",
+          "p": null,
+          "review": false,
+          "ms": 63
+        },
+        {
+          "run": "118400121",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.586,
+          "review": true,
+          "ms": 719
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.758,
+          "review": true,
+          "ms": 566
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.462,
+          "review": true,
+          "ms": 563
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.428,
+          "review": true,
+          "ms": 568
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S2",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.326,
+          "review": true,
+          "ms": 678
+        },
+        {
+          "run": "193580023",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.723,
+          "review": true,
+          "ms": 570
+        },
+        {
+          "run": "193580027",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.545,
+          "review": true,
+          "ms": 630
+        },
+        {
+          "run": "193580027",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.625,
+          "review": true,
+          "ms": 642
+        },
+        {
+          "run": "193580027",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.409,
+          "review": true,
+          "ms": 605
+        }
+      ]
+    },
+    "jev": {
+      "steps": 19,
+      "decidedByEngineOrRule": 10,
+      "byRule": 2,
+      "byEngine": 8,
+      "toAgent": 9,
+      "flaggedReview": 9,
+      "agreeWithFinal": 5,
+      "wrongFinal": 5,
+      "medianStepMs": 880,
+      "rows": [
+        {
+          "run": "118400042",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.88,
+          "review": true,
+          "ms": 880
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 1,
+          "review": false,
+          "ms": 830
+        },
+        {
+          "run": "118400042",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.96,
+          "review": false,
+          "ms": 1041
+        },
+        {
+          "run": "118400042",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.56,
+          "review": true,
+          "ms": 878
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.69,
+          "review": true,
+          "ms": 891
+        },
+        {
+          "run": "118400100",
+          "step": "TC01-S2",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.77,
+          "review": true,
+          "ms": 1058
+        },
+        {
+          "run": "118400100",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.98,
+          "review": false,
+          "ms": 880
+        },
+        {
+          "run": "118400100",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.59,
+          "review": true,
+          "ms": 940
+        },
+        {
+          "run": "118400115",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "rule",
+          "p": null,
+          "review": false,
+          "ms": 66
+        },
+        {
+          "run": "118400115",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "rule",
+          "p": null,
+          "review": false,
+          "ms": 69
+        },
+        {
+          "run": "118400121",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.78,
+          "review": true,
+          "ms": 857
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.65,
+          "review": true,
+          "ms": 883
+        },
+        {
+          "run": "118400121",
+          "step": "TC02-S2",
+          "truth": "pass",
+          "status": "fail",
+          "by": "jev",
+          "p": 0.93,
+          "review": false,
+          "ms": 867
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.97,
+          "review": false,
+          "ms": 850
+        },
+        {
+          "run": "193580023",
+          "step": "TC01-S2",
+          "truth": "blocked",
+          "status": "review",
+          "by": "model",
+          "p": 0.49,
+          "review": true,
+          "ms": 917
+        },
+        {
+          "run": "193580023",
+          "step": "TC02-S1",
+          "truth": "blocked",
+          "status": "fail",
+          "by": "jev",
+          "p": 1,
+          "review": false,
+          "ms": 932
+        },
+        {
+          "run": "193580027",
+          "step": "TC01-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.96,
+          "review": false,
+          "ms": 889
+        },
+        {
+          "run": "193580027",
+          "step": "TC02-S1",
+          "truth": "pass",
+          "status": "pass",
+          "by": "jev",
+          "p": 0.99,
+          "review": false,
+          "ms": 861
+        },
+        {
+          "run": "193580027",
+          "step": "TC03-S1",
+          "truth": "pass",
+          "status": "review",
+          "by": "model",
+          "p": 0.61,
+          "review": true,
+          "ms": 986
+        }
+      ]
+    }
+  }
+}

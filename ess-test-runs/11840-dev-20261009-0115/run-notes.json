@@ -1,0 +1,35 @@
+{
+ "objective": "Verify bug 11840: Month View stats on Attendance must be stable for June 2026 (reported 0 vs 55).",
+ "steps": [
+  {
+   "title": "Fetch ticket",
+   "result": "Bug, ReproSteps + dev comment: stats now aggregate whole month",
+   "status": "ok"
+  },
+  {
+   "title": "Browser + sign-in",
+   "result": "Edge role xiontechs attached on 9222, already signed in",
+   "status": "ok"
+  },
+  {
+   "title": "Screenshots",
+   "assumption": "MCP could write to the run folder",
+   "result": "Refused outside workspace roots; wrote to scratchpad and copied",
+   "status": "warn"
+  },
+  {
+   "title": "Run TC01/TC02",
+   "result": "Month stats whole-month and stable across week anchors; oracle rule pass",
+   "status": "pass"
+  },
+  {
+   "title": "TC03 non-zero total",
+   "result": "Account has no attendance data on dev; blocked",
+   "status": "blocked"
+  }
+ ],
+ "insights": [
+  "Screenshots should go to scratchpad directly.",
+  "Need an account with attendance data to reproduce the 55 case."
+ ]
+}

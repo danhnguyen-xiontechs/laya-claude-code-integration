@@ -1,0 +1,80 @@
+{
+ "ticket": {
+  "id": 11840,
+  "type": "Bug",
+  "title": "Total Hours is displayed inconsistently in Month View",
+  "state": "Resolved",
+  "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+ },
+ "environment": {
+  "key": "dev",
+  "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+ },
+ "browser": "chrome-devtools",
+ "tester": "danhnpc",
+ "startedAt": "2026-10-09T01:21:12+07:00",
+ "scope": "Fix: in Month View the Scheduled/Total/Absence hours toolbar stats aggregate over the whole displayed month, not the active ISO week. Read-only run on My attendance as the default account; June 2026 from the repro plus current month.",
+ "cases": [
+  {
+   "id": "TC01",
+   "title": "Month view June 2026 stats are month-wide and not the week-view values",
+   "ac": [
+    "Bug"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "happy",
+   "preconditions": "Account has attendance data in June 2026",
+   "status": "pass",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open Attendance > My attendance, switch View to Month view, navigate to June 2026",
+     "expected": "Toolbar shows month-wide Scheduled/Total/Absence hours for June 2026",
+     "status": "pass",
+     "actual": "June 2026 Month view toolbar: 'Scheduled hours: 160 / Total hours: 0 / Absence hours: 160' (month-wide; Oct 2026 month showed 176/0/48, week 5-11 Oct showed 40/0/32, so not the week value). Account has no actual hours in June so the 0-vs-55 value cannot be reproduced.",
+     "screenshot": "shots/TC01-S01.png",
+     "at": "2026-10-08T18:23:12.306Z"
+    }
+   ]
+  },
+  {
+   "id": "TC02",
+   "title": "Month stats stay stable after switching Week/Month and navigating away and back",
+   "ac": [
+    "Bug"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "regression",
+   "preconditions": "",
+   "status": "pass",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Switch to Week view and back to Month view (June 2026)",
+     "expected": "Total hours equal the TC01 value",
+     "status": "pass",
+     "actual": "After Month->Week->Month on June 2026: Scheduled 160, Total 0, Absence 160, identical.",
+     "screenshot": "shots/TC02-S01.png",
+     "at": "2026-10-08T18:23:12.368Z"
+    },
+    {
+     "n": 2,
+     "action": "Go to Next month then Previous month",
+     "expected": "June 2026 Total hours equal the TC01 value",
+     "status": "pass",
+     "actual": "After Next month then Previous month: June 2026 still Scheduled 160, Total 0, Absence 160.",
+     "screenshot": "shots/TC02-S02.png",
+     "at": "2026-10-08T18:23:12.427Z"
+    }
+   ]
+  }
+ ],
+ "observations": [
+  "The default account has no actual hours in June 2026 (Total 0), so the ticket 55-vs-0 data cannot be reproduced; stability and month-wide aggregation were checked but a non-zero total was not."
+ ],
+ "finishedAt": "2026-10-08T18:23:12.480Z"
+}

@@ -1,0 +1,137 @@
+{
+ "ticket": {
+  "id": 11840,
+  "type": "Bug",
+  "title": "Total Hours is displayed inconsistently in Month View",
+  "state": "Resolved",
+  "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/11840"
+ },
+ "environment": {
+  "key": "dev",
+  "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+ },
+ "browser": "chrome-devtools",
+ "tester": "danhnpc",
+ "startedAt": "2026-10-09T01:15:34+07:00",
+ "scope": "Bug: in Attendance > My attendance > Month view the toolbar stats (Scheduled/Total/Absence hours) must aggregate the whole displayed month, not the active ISO week, so June 2026 shows one stable value. Read-only run with the xiontechs account (no attendance records on dev, so a non-zero Total hours such as 55 cannot be reproduced).",
+ "cases": [
+  {
+   "id": "TC01",
+   "title": "Month view stats cover the whole displayed month (Oct 2026)",
+   "ac": [
+    "FIX"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "happy",
+   "preconditions": "Signed in, Attendance page open",
+   "status": "pass",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open Attendance, switch View to Month view (Oct 2026); compare with week view where Scheduled hours was 40",
+     "expected": "Month view shows 'October 2026' and 'Scheduled hours: 176' (whole month, not the week's 40)",
+     "status": "pass",
+     "screenshot": "shots/TC01-S01.png",
+     "at": "2026-10-08T18:18:38.916Z",
+     "actual": "October 2026 | Scheduled hours: 176",
+     "verdict": {
+      "by": "rule",
+      "laya": null,
+      "review": false,
+      "rule": {
+       "quoted": [
+        "October 2026",
+        "Scheduled hours: 176"
+       ],
+       "found": {
+        "October 2026": true,
+        "Scheduled hours: 176": true
+       },
+       "loading": 0,
+       "errorSeen": false
+      },
+      "observed": [
+       "October 2026",
+       "Scheduled hours: 176"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "TC02",
+   "title": "June 2026 month stats are stable regardless of week anchor",
+   "ac": [
+    "FIX"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "regression",
+   "preconditions": "Month view navigated to June 2026",
+   "status": "pass",
+   "notes": "Month view read three times: direct (160/0/160), after Week view 1-7 Jun (160/0/160), after Week view 15-21 Jun (160/0/160)",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Month view June 2026; switch to Week view, move to 15-21 Jun, switch back to Month view",
+     "expected": "Header 'June 2026' with 'Scheduled hours: 160' and 'Total hours: 0', identical every time",
+     "status": "pass",
+     "screenshot": "shots/TC02-S01.png",
+     "at": "2026-10-08T18:18:38.981Z",
+     "actual": "June 2026 | Scheduled hours: 160 | Total hours: 0",
+     "verdict": {
+      "by": "rule",
+      "laya": null,
+      "review": false,
+      "rule": {
+       "quoted": [
+        "June 2026",
+        "Scheduled hours: 160",
+        "Total hours: 0"
+       ],
+       "found": {
+        "June 2026": true,
+        "Scheduled hours: 160": true,
+        "Total hours: 0": true
+       },
+       "loading": 0,
+       "errorSeen": false
+      },
+      "observed": [
+       "June 2026",
+       "Scheduled hours: 160",
+       "Total hours: 0"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "TC03",
+   "title": "Non-zero Total hours (the reported 55) matches across views",
+   "ac": [
+    "FIX"
+   ],
+   "role": "employee with June 2026 attendance",
+   "priority": "High",
+   "type": "regression",
+   "preconditions": "Employee with attendance records in June 2026",
+   "status": "blocked",
+   "notes": "The xiontechs account has no attendance records on dev (Total hours 0 in every week and month), so the original 0 vs 55 symptom cannot be reproduced or disproved. Needs an account with June 2026 attendance data.",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Month view June 2026 vs week views",
+     "expected": "Total hours equals sum of the weeks",
+     "status": "blocked"
+    }
+   ]
+  }
+ ],
+ "observations": [
+  "Header shows employee 'Amol R Bhangale' (Staff ID 20065716) while the signed-in account is danh.nguyen@xiontechs.com; presumably dev admin context, not verified."
+ ],
+ "finishedAt": "2026-10-08T18:18:44.781Z"
+}

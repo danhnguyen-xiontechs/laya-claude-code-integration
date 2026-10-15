@@ -1,0 +1,35 @@
+{
+ "objective": "Verify bug 19358 on dev: a cancelled leave (latest transaction Amount=0) must no longer show as Approved Leave in Time and Attendance.",
+ "steps": [
+  {
+   "title": "Fetch ticket",
+   "result": "Bug has no AC; expected logic in ReproSteps, fix confirmed in FAT by comments.",
+   "status": "ok"
+  },
+  {
+   "title": "Laya pre-check",
+   "result": "Started laya-serve (pid 18144), stopped at end.",
+   "status": "ok"
+  },
+  {
+   "title": "Launch browser",
+   "assumption": "Port 9222 browser had pages",
+   "result": "First attach had zero pages; stop + relaunch fixed it.",
+   "status": "warn"
+  },
+  {
+   "title": "Open Attendance, go to 28 Sep-4 Oct",
+   "result": "Page loads; profile Amol R Bhangale has No records all week.",
+   "status": "ok"
+  },
+  {
+   "title": "Verdict",
+   "result": "Cancelled-leave scenario needs the account with that data; cases blocked.",
+   "status": "blocked"
+  }
+ ],
+ "insights": [
+  "Ask for / pre-identify the test account with the cancelled leave before planning; the ticket data belongs to another employee.",
+  "launch-role.ps1 reported ALREADY UP with no pages; run stop then relaunch."
+ ]
+}

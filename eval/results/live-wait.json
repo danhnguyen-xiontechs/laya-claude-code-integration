@@ -1,0 +1,325 @@
+{
+  "at": "2026-10-14T10:25:43.099Z",
+  "timeoutS": 12,
+  "browser": "msedge.exe",
+  "results": [
+    {
+      "id": "slow-with-expect",
+      "path": "/slow",
+      "expect": "Leave request submitted",
+      "ideal": "ready after ~3 s (rules only)",
+      "runs": {
+        "laya": {
+          "status": "ready",
+          "screen": "time-off",
+          "login": false,
+          "expect": "found",
+          "waitedS": 4.3,
+          "engine": "on",
+          "p": {
+            "screen": 0.9965
+          },
+          "polls": 6,
+          "costUsd": 0,
+          "wallMs": 4532
+        },
+        "jev": {
+          "status": "ready",
+          "screen": "time-off",
+          "login": false,
+          "expect": "found",
+          "waitedS": 4.9,
+          "engine": "on",
+          "p": {
+            "screen": 1
+          },
+          "polls": 7,
+          "modelCalls": 1,
+          "costUsd": 0.000026,
+          "wallMs": 4985
+        }
+      }
+    },
+    {
+      "id": "wrong-page",
+      "path": "/wrongpage",
+      "expect": "Attendance shortage",
+      "ideal": "not ready: expected text never shows (timeout or early wrong-page)",
+      "runs": {
+        "laya": {
+          "status": "timeout",
+          "screen": "error",
+          "login": false,
+          "expect": "missing",
+          "waitedS": 13.1,
+          "engine": "on",
+          "p": {
+            "state": 0.5861,
+            "screen": 0.9345,
+            "login": 0.9433
+          },
+          "polls": 10,
+          "costUsd": 0,
+          "wallMs": 13202
+        },
+        "jev": {
+          "status": "timeout",
+          "screen": "unknown",
+          "login": false,
+          "expect": "missing",
+          "waitedS": 12.3,
+          "engine": "on",
+          "p": {
+            "state": 0.89,
+            "screen": 0.47,
+            "login": 1
+          },
+          "polls": 14,
+          "modelCalls": 8,
+          "costUsd": 0.000279,
+          "wallMs": 12441
+        }
+      }
+    },
+    {
+      "id": "login-code",
+      "path": "/login-code",
+      "expect": "Attendance",
+      "ideal": "status=login (unusual MFA wording the regex misses)",
+      "runs": {
+        "laya": {
+          "status": "login",
+          "screen": "login",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 5.6,
+          "engine": "on",
+          "p": {
+            "state": 0.5787,
+            "screen": 1,
+            "login": 0.9969
+          },
+          "polls": 7,
+          "costUsd": 0,
+          "wallMs": 5802
+        },
+        "jev": {
+          "status": "login",
+          "screen": "login",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 4.1,
+          "engine": "on",
+          "p": {
+            "state": 1,
+            "screen": 0.99,
+            "login": 0.66
+          },
+          "polls": 7,
+          "modelCalls": 1,
+          "costUsd": 0.000036,
+          "wallMs": 4304
+        }
+      }
+    },
+    {
+      "id": "login-authenticator",
+      "path": "/login-authenticator",
+      "expect": "Attendance",
+      "ideal": "status=login",
+      "runs": {
+        "laya": {
+          "status": "login",
+          "screen": "login",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 5.4,
+          "engine": "on",
+          "p": {
+            "state": 0.4998,
+            "screen": 1,
+            "login": 0.993
+          },
+          "polls": 7,
+          "costUsd": 0,
+          "wallMs": 5533
+        },
+        "jev": {
+          "status": "login",
+          "screen": "login",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 4.2,
+          "engine": "on",
+          "p": {
+            "state": 0.98,
+            "screen": 1,
+            "login": 0.96
+          },
+          "polls": 7,
+          "modelCalls": 1,
+          "costUsd": 0.000035,
+          "wallMs": 4366
+        }
+      }
+    },
+    {
+      "id": "error-load",
+      "path": "/error-load",
+      "expect": "Attendance",
+      "ideal": "status=error (unusual wording)",
+      "runs": {
+        "laya": {
+          "status": "login",
+          "screen": "error",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 5.8,
+          "engine": "on",
+          "p": {
+            "state": 0.9045,
+            "screen": 1,
+            "login": 0.8853
+          },
+          "polls": 7,
+          "costUsd": 0,
+          "wallMs": 5966
+        },
+        "jev": {
+          "status": "error",
+          "screen": "error",
+          "login": false,
+          "expect": "missing",
+          "waitedS": 4.1,
+          "engine": "on",
+          "p": {
+            "state": 1,
+            "screen": 1,
+            "login": 1
+          },
+          "polls": 7,
+          "modelCalls": 1,
+          "costUsd": 0.000035,
+          "wallMs": 4387
+        }
+      }
+    },
+    {
+      "id": "error-503",
+      "path": "/error-503",
+      "expect": "Attendance",
+      "ideal": "status=error",
+      "runs": {
+        "laya": {
+          "status": "login",
+          "screen": "error",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 5.4,
+          "engine": "on",
+          "p": {
+            "state": 0.7953,
+            "screen": 1,
+            "login": 0.9073
+          },
+          "polls": 7,
+          "costUsd": 0,
+          "wallMs": 5535
+        },
+        "jev": {
+          "status": "error",
+          "screen": "error",
+          "login": false,
+          "expect": "missing",
+          "waitedS": 4.3,
+          "engine": "on",
+          "p": {
+            "state": 0.99,
+            "screen": 1,
+            "login": 1
+          },
+          "polls": 7,
+          "modelCalls": 1,
+          "costUsd": 0.000035,
+          "wallMs": 4395
+        }
+      }
+    },
+    {
+      "id": "app-nav-wrong",
+      "path": "/app-nav",
+      "expect": "Payroll summary",
+      "ideal": "NOT login (a normal app page with nav text; expected text absent)",
+      "runs": {
+        "laya": {
+          "status": "login",
+          "screen": "home",
+          "login": true,
+          "expect": "missing",
+          "waitedS": 6.7,
+          "engine": "on",
+          "p": {
+            "state": 0.3691,
+            "screen": 0.7535,
+            "login": 0.8435
+          },
+          "polls": 7,
+          "costUsd": 0,
+          "wallMs": 6962
+        },
+        "jev": {
+          "status": "timeout",
+          "screen": "attendance",
+          "login": false,
+          "expect": "missing",
+          "waitedS": 12.3,
+          "engine": "on",
+          "p": {
+            "state": 0.95,
+            "screen": 0.93,
+            "login": 1
+          },
+          "polls": 14,
+          "modelCalls": 8,
+          "costUsd": 0.000289,
+          "wallMs": 12424
+        }
+      }
+    },
+    {
+      "id": "app-nav-found",
+      "path": "/app-nav-attendance",
+      "expect": "Total hours 16",
+      "ideal": "ready (rules)",
+      "runs": {
+        "laya": {
+          "status": "ready",
+          "screen": "unknown",
+          "login": false,
+          "expect": "found",
+          "waitedS": 1.7,
+          "engine": "idle",
+          "p": null,
+          "polls": 1,
+          "costUsd": 0,
+          "wallMs": 1875
+        },
+        "jev": {
+          "status": "ready",
+          "screen": "attendance",
+          "login": false,
+          "expect": "found",
+          "waitedS": 1.2,
+          "engine": "on",
+          "p": {
+            "screen": 1
+          },
+          "polls": 1,
+          "modelCalls": 1,
+          "costUsd": 0.000029,
+          "wallMs": 1333
+        }
+      }
+    }
+  ]
+}
