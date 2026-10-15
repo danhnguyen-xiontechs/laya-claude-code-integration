@@ -1,0 +1,5 @@
+{
+  "enabled": null,
+  "model": "typesafe/jev-1.13",
+  "notes": "Shared defaults. Per-machine consent goes to jev.local.json (gitignored): enabled null = never asked, true = use Jev, false = never use and never ask. Jev is a hosted API (OpenRouter -> TypeSafe) that receives compact step/page text; it needs OPENROUTER_API_KEY in the environment (never stored here). Record the answer with `jev-check.mjs --set true|false`; re-enable with `jev-check.mjs --jev`."
+}

@@ -1,0 +1,128 @@
+{
+  "commentVersionRef": {
+    "commentId": 16417271,
+    "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16417271/versions/1",
+    "version": 1
+  },
+  "fields": {
+    "Microsoft.VSTS.Common.ActivatedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "Microsoft.VSTS.Common.ActivatedDate": "2026-09-07T13:20:08.97Z",
+    "Microsoft.VSTS.Common.Priority": 1,
+    "Microsoft.VSTS.Common.ResolvedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "Microsoft.VSTS.Common.ResolvedDate": "2026-10-08T04:57:27.64Z",
+    "Microsoft.VSTS.Common.Severity": "3 - Medium",
+    "Microsoft.VSTS.Common.StateChangeDate": "2026-10-08T04:57:27.64Z",
+    "Microsoft.VSTS.Common.ValueArea": "Business",
+    "Microsoft.VSTS.Scheduling.DueDate": "2026-09-22T20:00:00Z",
+    "Microsoft.VSTS.TCM.ReproSteps": "An employee originally submitted a leave request for **03/09/2026** on **27/07/2026**. The leave was subsequently cancelled on **30/07/2026**.\n\nAfter the cancellation, there is no longer an effective approved leave for **03/09/2026** in F&amp;O. \n\n![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/09b1923f-69bd-4e88-a653-2357767a934c?fileName=image.png) \n\nHowever, when checking **WebESS &gt; Time and Attendance**, the date is still displayed as **Approved Leave**.\n\n![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/2fa3ef36-6bfa-4b70-be57-30968223deee?fileName=image.png) \n\nFurther investigation in the **Leave Request Detail** shows that there are multiple transactions for the same employee and leave date:\n*   The original leave transaction created on **27/07/2026** has **Amount = 1** and **Status = Completed**.\n*   A later transaction created on **30/07/2026** for the cancellation has **Amount = 0** and **Status = Completed**.\n\n![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/99e9ee10-5d26-4e0a-a3c0-9286354ca987?fileName=image.png) \n\nTherefore, checking only whether a Leave Request has **Status = Completed** can result in the original leave being displayed even though it was subsequently cancelled.\n\n### Actual Result\n\n**03/09/2026** is still displayed as **Approved Leave** in WebESS &gt; Time and Attendance after the leave has been cancelled.\n\n### Expected Logic\n\n*   Match the leave by **Employee + Leave Date**.\n*   Check the corresponding **Leave Request Detail**.\n*   Consider the **latest effective transaction** for the leave date.\n*   If the leave was subsequently cancelled (**Amount = 0**), the date should **no longer be considered as leave**, even if the original request remains **Completed**.\n*   Only display **Approved Leave** when the leave is still effective for that date.",
+    "System.AreaId": 166,
+    "System.AreaLevel1": "GEMS-HR-SCM",
+    "System.AreaLevel2": "ESS APP",
+    "System.AreaPath": "GEMS-HR-SCM\\ESS APP",
+    "System.AssignedTo": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.AuthorizedAs": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.AuthorizedDate": "2026-10-08T04:57:47.963Z",
+    "System.ChangedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.ChangedDate": "2026-10-08T04:57:47.963Z",
+    "System.CommentCount": 5,
+    "System.CreatedBy": {
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+        }
+      },
+      "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "displayName": "Anna Tran",
+      "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+      "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+      "uniqueName": "anna.tran@varkey.education",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+    },
+    "System.CreatedDate": "2026-09-07T13:20:05.717Z",
+    "System.History": "<div><a href=\"#\" data-vss-mention=\"version:2.0,ac0e3b74-ab66-4ec3-bacc-7e99ce316165\">@Danh Nguyen Thanh</a>&nbsp;Thank you for your effort, this function works well. </div>",
+    "System.Id": 19358,
+    "System.IterationId": 91,
+    "System.IterationLevel1": "GEMS-HR-SCM",
+    "System.IterationLevel2": "ESS - R2",
+    "System.IterationPath": "GEMS-HR-SCM\\ESS - R2",
+    "System.NodeName": "ESS APP",
+    "System.PersonId": 103525723,
+    "System.Reason": "Moved out of state Testing in SIT",
+    "System.Rev": 13,
+    "System.RevisedDate": "9999-01-01T00:00:00Z",
+    "System.State": "Resolved",
+    "System.Tags": "Time Attendance; xt-team",
+    "System.TeamProject": "GEMS-HR-SCM",
+    "System.Title": "WebESS - Time and Attendance – Cancelled Leave Is Still Displayed as Approved Leave",
+    "System.Watermark": 78220,
+    "System.WorkItemType": "Bug"
+  },
+  "id": 19358,
+  "multilineFieldsFormat": {
+    "Microsoft.VSTS.TCM.ReproSteps": "markdown",
+    "System.History": "html"
+  },
+  "relations": null,
+  "rev": 13,
+  "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358"
+}

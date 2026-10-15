@@ -1,0 +1,1088 @@
+{
+  "generatedAt": "2026-10-14T10:18:09.703Z",
+  "jevModel": "typesafe/jev-1.13-20260917",
+  "gate": {
+    "perf": {
+      "laya": {
+        "calls": 54,
+        "ok": 54,
+        "p50ms": 579,
+        "p95ms": 695,
+        "costUsd": 0,
+        "costPerCallUsd": 0
+      },
+      "jev": {
+        "calls": 162,
+        "ok": 162,
+        "p50ms": 538,
+        "p95ms": 692,
+        "costUsd": 0.003,
+        "costPerCallUsd": 0.0000166
+      }
+    },
+    "heldout": {
+      "n": 24,
+      "rule": {
+        "missedWrites": "8/12",
+        "falseFlagsOnReads": "5/12",
+        "recall": 0.333,
+        "fpr": 0.417,
+        "accuracy": 0.458
+      },
+      "laya": {
+        "missedWrites": "1/12",
+        "falseFlagsOnReads": "9/12",
+        "recall": 0.917,
+        "fpr": 0.75,
+        "accuracy": 0.583
+      },
+      "jev": {
+        "missedWrites": "0/12",
+        "falseFlagsOnReads": "1/12",
+        "recall": 1,
+        "fpr": 0.083,
+        "accuracy": 0.958
+      },
+      "ruleOrLaya": {
+        "missedWrites": "1/12",
+        "falseFlagsOnReads": "10/12",
+        "recall": 0.917,
+        "fpr": 0.833,
+        "accuracy": 0.542
+      },
+      "ruleOrJev": {
+        "missedWrites": "0/12",
+        "falseFlagsOnReads": "6/12",
+        "recall": 1,
+        "fpr": 0.5,
+        "accuracy": 0.75
+      }
+    },
+    "dev": {
+      "n": 30,
+      "rule": {
+        "missedWrites": "0/15",
+        "falseFlagsOnReads": "2/15",
+        "recall": 1,
+        "fpr": 0.133,
+        "accuracy": 0.933
+      },
+      "laya": {
+        "missedWrites": "0/15",
+        "falseFlagsOnReads": "6/15",
+        "recall": 1,
+        "fpr": 0.4,
+        "accuracy": 0.8
+      },
+      "jev": {
+        "missedWrites": "0/15",
+        "falseFlagsOnReads": "0/15",
+        "recall": 1,
+        "fpr": 0,
+        "accuracy": 1
+      },
+      "ruleOrLaya": {
+        "missedWrites": "0/15",
+        "falseFlagsOnReads": "6/15",
+        "recall": 1,
+        "fpr": 0.4,
+        "accuracy": 0.8
+      },
+      "ruleOrJev": {
+        "missedWrites": "0/15",
+        "falseFlagsOnReads": "2/15",
+        "recall": 1,
+        "fpr": 0.133,
+        "accuracy": 0.933
+      }
+    },
+    "all": {
+      "n": 54,
+      "rule": {
+        "missedWrites": "8/27",
+        "falseFlagsOnReads": "7/27",
+        "recall": 0.704,
+        "fpr": 0.259,
+        "accuracy": 0.722
+      },
+      "laya": {
+        "missedWrites": "1/27",
+        "falseFlagsOnReads": "15/27",
+        "recall": 0.963,
+        "fpr": 0.556,
+        "accuracy": 0.704
+      },
+      "jev": {
+        "missedWrites": "0/27",
+        "falseFlagsOnReads": "1/27",
+        "recall": 1,
+        "fpr": 0.037,
+        "accuracy": 0.981
+      },
+      "ruleOrLaya": {
+        "missedWrites": "1/27",
+        "falseFlagsOnReads": "16/27",
+        "recall": 0.963,
+        "fpr": 0.593,
+        "accuracy": 0.685
+      },
+      "ruleOrJev": {
+        "missedWrites": "0/27",
+        "falseFlagsOnReads": "8/27",
+        "recall": 1,
+        "fpr": 0.296,
+        "accuracy": 0.852
+      }
+    },
+    "jevUnstableItems": [],
+    "layaMisses": [
+      "Turn off email notifications in settings"
+    ],
+    "jevMisses": [],
+    "layaFalseFlags": [
+      {
+        "text": "Inspect GET /api/attendance/team response",
+        "p": 0.536
+      },
+      {
+        "text": "Verify the Submit button is greyed out when the end date is before the start date",
+        "p": 0.707
+      },
+      {
+        "text": "Switch to month view and check holiday chips",
+        "p": 0.517
+      },
+      {
+        "text": "Open the delegation page as an employee and confirm access is denied",
+        "p": 0.501
+      },
+      {
+        "text": "Download the payslip PDF",
+        "p": 0.547
+      },
+      {
+        "text": "Filter the HR request list by status Approved",
+        "p": 0.583
+      },
+      {
+        "text": "Go to Payslips and expand October",
+        "p": 0.608
+      },
+      {
+        "text": "Make sure the Approve button is not shown to an employee",
+        "p": 0.73
+      },
+      {
+        "text": "Scroll to the bottom of the team list and press Next page",
+        "p": 0.506
+      },
+      {
+        "text": "Sort the leave history by start date",
+        "p": 0.651
+      },
+      {
+        "text": "Print preview of the payslip",
+        "p": 0.594
+      },
+      {
+        "text": "Log out and log back in as the manager",
+        "p": 0.557
+      },
+      {
+        "text": "Expand the Submitted requests section",
+        "p": 0.636
+      },
+      {
+        "text": "Open the Cancelled tab of leave requests",
+        "p": 0.558
+      },
+      {
+        "text": "Compare the approved days with the balance shown",
+        "p": 0.684
+      }
+    ],
+    "jevFalseFlags": [
+      {
+        "text": "Log out and log back in as the manager",
+        "p": [
+          0.89,
+          0.91,
+          0.87
+        ]
+      }
+    ],
+    "probRange": {
+      "layaWrite": [
+        0.437,
+        0.853
+      ],
+      "layaRead": [
+        0.3,
+        0.73
+      ],
+      "jevWrite": [
+        0.99,
+        1
+      ],
+      "jevRead": [
+        0,
+        0.91
+      ]
+    }
+  },
+  "verdict": {
+    "perf": {
+      "laya": {
+        "calls": 73,
+        "ok": 73,
+        "p50ms": 648,
+        "p95ms": 764,
+        "costUsd": 0,
+        "costPerCallUsd": 0
+      },
+      "jev": {
+        "calls": 219,
+        "ok": 219,
+        "p50ms": 537,
+        "p95ms": 676,
+        "costUsd": 0.004,
+        "costPerCallUsd": 0.0000184
+      }
+    },
+    "all": {
+      "laya": {
+        "n": 73,
+        "accuracyTopLabel": 0.644,
+        "decidedByEngine": 0.37,
+        "decidedPrecision": 0.815,
+        "confidentNoReview": 0.055,
+        "confidentPrecision": 0.75,
+        "sentToAgent": 0.63,
+        "falsePass": "2/43",
+        "falsePassPerRun": 2,
+        "wrongDecidedPerRun": 5,
+        "itemsPerRun": 73,
+        "falseFailOnPass": "2/30",
+        "medianP": 0.559,
+        "confusion": {
+          "pass→pass": 21,
+          "pass→fail": 7,
+          "blocked→fail": 7,
+          "blocked→blocked": 12,
+          "pass→blocked": 2,
+          "fail→pass": 8,
+          "fail→fail": 14,
+          "fail→blocked": 1,
+          "blocked→pass": 1
+        }
+      },
+      "jev": {
+        "n": 219,
+        "accuracyTopLabel": 0.858,
+        "decidedByEngine": 0.963,
+        "decidedPrecision": 0.882,
+        "confidentNoReview": 0.854,
+        "confidentPrecision": 0.898,
+        "sentToAgent": 0.037,
+        "falsePass": "0/129",
+        "falsePassPerRun": 0,
+        "wrongDecidedPerRun": 8.333,
+        "itemsPerRun": 73,
+        "falseFailOnPass": "7.333/30",
+        "medianP": 0.99,
+        "confusion": {
+          "pass→pass": 63,
+          "pass→fail": 27,
+          "blocked→blocked": 56,
+          "blocked→fail": 4,
+          "fail→fail": 69
+        }
+      }
+    },
+    "bySet": {
+      "real": {
+        "n": 20,
+        "laya": {
+          "n": 20,
+          "accuracyTopLabel": 0.55,
+          "decidedByEngine": 0.3,
+          "decidedPrecision": 0.667,
+          "confidentNoReview": 0.1,
+          "confidentPrecision": 1,
+          "sentToAgent": 0.7,
+          "falsePass": "0/4",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 2,
+          "itemsPerRun": 20,
+          "falseFailOnPass": "2/16",
+          "medianP": 0.535,
+          "confusion": {
+            "pass→pass": 10,
+            "pass→fail": 5,
+            "blocked→fail": 3,
+            "blocked→blocked": 1,
+            "pass→blocked": 1
+          }
+        },
+        "jev": {
+          "n": 60,
+          "accuracyTopLabel": 0.483,
+          "decidedByEngine": 0.867,
+          "decidedPrecision": 0.519,
+          "confidentNoReview": 0.617,
+          "confidentPrecision": 0.486,
+          "sentToAgent": 0.133,
+          "falsePass": "0/12",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 8.333,
+          "itemsPerRun": 20,
+          "falseFailOnPass": "7.333/16",
+          "medianP": 0.91,
+          "confusion": {
+            "pass→pass": 21,
+            "pass→fail": 27,
+            "blocked→blocked": 8,
+            "blocked→fail": 4
+          }
+        }
+      },
+      "mut-fail": {
+        "n": 8,
+        "laya": {
+          "n": 8,
+          "accuracyTopLabel": 0.5,
+          "decidedByEngine": 0.25,
+          "decidedPrecision": 0,
+          "confidentNoReview": 0.125,
+          "confidentPrecision": 0,
+          "sentToAgent": 0.75,
+          "falsePass": "2/8",
+          "falsePassPerRun": 2,
+          "wrongDecidedPerRun": 2,
+          "itemsPerRun": 8,
+          "falseFailOnPass": "0/0",
+          "medianP": 0.552,
+          "confusion": {
+            "fail→pass": 4,
+            "fail→fail": 4
+          }
+        },
+        "jev": {
+          "n": 24,
+          "accuracyTopLabel": 1,
+          "decidedByEngine": 1,
+          "decidedPrecision": 1,
+          "confidentNoReview": 0.792,
+          "confidentPrecision": 1,
+          "sentToAgent": 0,
+          "falsePass": "0/24",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 0,
+          "itemsPerRun": 8,
+          "falseFailOnPass": "0/0",
+          "medianP": 0.97,
+          "confusion": {
+            "fail→fail": 24
+          }
+        }
+      },
+      "mut-blocked": {
+        "n": 8,
+        "laya": {
+          "n": 8,
+          "accuracyTopLabel": 1,
+          "decidedByEngine": 0.75,
+          "decidedPrecision": 1,
+          "confidentNoReview": 0,
+          "confidentPrecision": null,
+          "sentToAgent": 0.25,
+          "falsePass": "0/8",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 0,
+          "itemsPerRun": 8,
+          "falseFailOnPass": "0/0",
+          "medianP": 0.725,
+          "confusion": {
+            "blocked→blocked": 8
+          }
+        },
+        "jev": {
+          "n": 24,
+          "accuracyTopLabel": 1,
+          "decidedByEngine": 1,
+          "decidedPrecision": 1,
+          "confidentNoReview": 1,
+          "confidentPrecision": 1,
+          "sentToAgent": 0,
+          "falsePass": "0/24",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 0,
+          "itemsPerRun": 8,
+          "falseFailOnPass": "0/0",
+          "medianP": 1,
+          "confusion": {
+            "blocked→blocked": 24
+          }
+        }
+      },
+      "hw": {
+        "n": 37,
+        "laya": {
+          "n": 37,
+          "accuracyTopLabel": 0.649,
+          "decidedByEngine": 0.351,
+          "decidedPrecision": 0.923,
+          "confidentNoReview": 0.027,
+          "confidentPrecision": 1,
+          "sentToAgent": 0.649,
+          "falsePass": "0/23",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 1,
+          "itemsPerRun": 37,
+          "falseFailOnPass": "0/14",
+          "medianP": 0.567,
+          "confusion": {
+            "pass→pass": 11,
+            "pass→blocked": 1,
+            "pass→fail": 2,
+            "fail→fail": 10,
+            "fail→pass": 4,
+            "fail→blocked": 1,
+            "blocked→blocked": 3,
+            "blocked→pass": 1,
+            "blocked→fail": 4
+          }
+        },
+        "jev": {
+          "n": 111,
+          "accuracyTopLabel": 1,
+          "decidedByEngine": 1,
+          "decidedPrecision": 1,
+          "confidentNoReview": 0.964,
+          "confidentPrecision": 1,
+          "sentToAgent": 0,
+          "falsePass": "0/69",
+          "falsePassPerRun": 0,
+          "wrongDecidedPerRun": 0,
+          "itemsPerRun": 37,
+          "falseFailOnPass": "0/14",
+          "medianP": 1,
+          "confusion": {
+            "pass→pass": 42,
+            "fail→fail": 45,
+            "blocked→blocked": 24
+          }
+        }
+      }
+    },
+    "sweep": {
+      "laya": [
+        {
+          "t": 0.5,
+          "decided": 0.685,
+          "precision": 0.72
+        },
+        {
+          "t": 0.6,
+          "decided": 0.37,
+          "precision": 0.815
+        },
+        {
+          "t": 0.7,
+          "decided": 0.233,
+          "precision": 0.824
+        },
+        {
+          "t": 0.85,
+          "decided": 0.055,
+          "precision": 0.75
+        },
+        {
+          "t": 0.95,
+          "decided": 0.027,
+          "precision": 1
+        },
+        {
+          "t": 0.99,
+          "decided": 0,
+          "precision": null
+        }
+      ],
+      "jev": [
+        {
+          "t": 0.5,
+          "decided": 1,
+          "precision": 0.858
+        },
+        {
+          "t": 0.6,
+          "decided": 0.963,
+          "precision": 0.882
+        },
+        {
+          "t": 0.7,
+          "decided": 0.941,
+          "precision": 0.883
+        },
+        {
+          "t": 0.85,
+          "decided": 0.854,
+          "precision": 0.898
+        },
+        {
+          "t": 0.95,
+          "decided": 0.731,
+          "precision": 0.925
+        },
+        {
+          "t": 0.99,
+          "decided": 0.621,
+          "precision": 0.926
+        }
+      ]
+    },
+    "jevUnstable": [
+      {
+        "id": "real-19358-202610090023-TC02-S1",
+        "labels": [
+          "blocked",
+          "blocked",
+          "fail"
+        ]
+      }
+    ],
+    "pRange": {
+      "laya": {
+        "min": 0.342,
+        "median": 0.559,
+        "max": 0.976,
+        "below60": 0.63,
+        "atLeast85": 0.055
+      },
+      "jev": {
+        "min": 0.51,
+        "median": 0.99,
+        "max": 1,
+        "below60": 0.037,
+        "atLeast85": 0.854
+      }
+    },
+    "errors": {
+      "laya": [
+        {
+          "id": "real-11840-202610090100-TC01-S2",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.68,
+          "expected": "Same Total Hours value as step 1",
+          "actual": "Round trip Jun->Jul->Aug->Jul->Jun: June 2026 stayed Scheduled 160 / Total 0 / Absence 160; July 184 both visits"
+        },
+        {
+          "id": "real-11840-202610090121-TC02-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.727,
+          "expected": "Total hours equal the TC01 value",
+          "actual": "After Month->Week->Month on June 2026: Scheduled 160, Total 0, Absence 160, identical."
+        },
+        {
+          "id": "mut-fail-4",
+          "truth": "fail",
+          "said": "pass",
+          "p": 0.864,
+          "expected": "Month view shows 'October 2026' and 'Scheduled hours: 176' (whole month, not the week's 40",
+          "actual": "October 2026 | Scheduled hours: 40"
+        },
+        {
+          "id": "mut-fail-5",
+          "truth": "fail",
+          "said": "pass",
+          "p": 0.738,
+          "expected": "Header 'June 2026' with 'Scheduled hours: 160' and 'Total hours: 0', identical every time",
+          "actual": "June 2026 | Scheduled hours: 160 | Total hours: 55"
+        },
+        {
+          "id": "hw-34",
+          "truth": "blocked",
+          "said": "fail",
+          "p": 0.609,
+          "expected": "Course calendar shows the next enrolled course",
+          "actual": "Courses menu entry is not present for this role; the feature flag is off on dev."
+        }
+      ],
+      "jev": [
+        {
+          "id": "real-11840-202610090042-TC02-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.99,
+          "expected": "Total hours equals the TC01 value (no 0 vs 55 flip)",
+          "actual": "Next month: July 2026 Scheduled hours: 184, Total hours: 0. Back to June 2026: Scheduled hours: 160, Total hours: 0, Abs"
+        },
+        {
+          "id": "real-11840-202610090042-TC02-S2",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.99,
+          "expected": "Total hours equals the TC01 value",
+          "actual": "Week view (1 - 7 Jun): Scheduled hours: 40, Total hours: 0. Back to Month view June 2026: Scheduled hours: 160, Total ho"
+        },
+        {
+          "id": "real-11840-202610090042-TC03-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.93,
+          "expected": "Month view shows the same June 2026 Total hours as TC01",
+          "actual": "Week view anchored 1 - 7 Jun showed Scheduled hours: 40; Month view June 2026 then showed Scheduled hours: 160, Total ho"
+        },
+        {
+          "id": "real-11840-202610090100-TC01-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.85,
+          "expected": "Total Hours shown for the month",
+          "actual": "Month view October 2026: Scheduled hours 176, Total hours 0, Absence hours 48"
+        },
+        {
+          "id": "real-11840-202610090100-TC01-S2",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.98,
+          "expected": "Same Total Hours value as step 1",
+          "actual": "Round trip Jun->Jul->Aug->Jul->Jun: June 2026 stayed Scheduled 160 / Total 0 / Absence 160; July 184 both visits"
+        },
+        {
+          "id": "real-11840-202610090115-TC03-S1",
+          "truth": "blocked",
+          "said": "fail",
+          "p": 0.86,
+          "expected": "Total hours equals sum of the weeks",
+          "actual": ""
+        },
+        {
+          "id": "real-11840-202610090121-TC02-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.73,
+          "expected": "Total hours equal the TC01 value",
+          "actual": "After Month->Week->Month on June 2026: Scheduled 160, Total 0, Absence 160, identical."
+        },
+        {
+          "id": "real-11840-202610090121-TC02-S2",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.99,
+          "expected": "June 2026 Total hours equal the TC01 value",
+          "actual": "After Next month then Previous month: June 2026 still Scheduled 160, Total 0, Absence 160."
+        },
+        {
+          "id": "real-19358-202610090027-TC03-S1",
+          "truth": "pass",
+          "said": "fail",
+          "p": 0.6,
+          "expected": "Date still labelled Approved Leave",
+          "actual": "Same week: 'Mon 23/03 · Casual leave · Approved', 'Wed 25/03', 'Thu 26/03', 'Fri 27/03' all 'Casual leave · Approved'."
+        }
+      ]
+    },
+    "historicRealRuns": {
+      "n": 4,
+      "sameAsFinal": 2,
+      "decidedAt60": 0
+    }
+  },
+  "oracle": {
+    "perf": {
+      "laya": {
+        "calls": 81,
+        "ok": 81,
+        "p50ms": 863,
+        "p95ms": 1026,
+        "costUsd": 0,
+        "costPerCallUsd": 0
+      },
+      "jev": {
+        "calls": 243,
+        "ok": 243,
+        "p50ms": 568,
+        "p95ms": 705,
+        "costUsd": 0.005,
+        "costPerCallUsd": 0.0000201
+      }
+    },
+    "ruleDecided": 10,
+    "ruleFalsePass": 0,
+    "laya": {
+      "n": 81,
+      "passRecall": 0.067,
+      "failCatch": 0.043,
+      "falsePassPerRun": 0,
+      "nonPassItems": 51,
+      "falseFailPerRun": 0,
+      "passItems": 30,
+      "notPassHandled": 1,
+      "notReadyNotPassed": 1,
+      "engineDecidedShare": 0.025,
+      "sentToAgent": 0.852,
+      "labelDist": {
+        "pass": 30,
+        "not_ready": 25,
+        "fail": 26
+      },
+      "topLabelAccuracy": 0.617,
+      "falsePassItems": [],
+      "falseFailItems": []
+    },
+    "bySet": {
+      "real": {
+        "laya": {
+          "n": 20,
+          "passRecall": 0.125,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 4,
+          "falseFailPerRun": 0,
+          "passItems": 16,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0,
+          "sentToAgent": 0.9,
+          "labelDist": {
+            "pass": 10,
+            "not_ready": 4,
+            "fail": 6
+          },
+          "topLabelAccuracy": 0.6,
+          "falsePassItems": [],
+          "falseFailItems": []
+        },
+        "jev": {
+          "n": 20,
+          "passRecall": 0.292,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 4,
+          "falseFailPerRun": 3,
+          "passItems": 16,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0.433,
+          "sentToAgent": 0.467,
+          "labelDist": {
+            "pass": 9.667,
+            "fail": 10.333
+          },
+          "topLabelAccuracy": 0.583,
+          "falsePassItems": [],
+          "falseFailItems": [
+            "real-11840-202610090042-TC02-S1",
+            "real-11840-202610090042-TC02-S2",
+            "real-11840-202610090121-TC02-S2"
+          ]
+        }
+      },
+      "mut-fail": {
+        "laya": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": 0,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": null,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0,
+          "sentToAgent": 1,
+          "labelDist": {
+            "pass": 4,
+            "not_ready": 1,
+            "fail": 3
+          },
+          "topLabelAccuracy": 0.375,
+          "falsePassItems": [],
+          "falseFailItems": []
+        },
+        "jev": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": 0.667,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": null,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0.667,
+          "sentToAgent": 0.333,
+          "labelDist": {
+            "fail": 7.667,
+            "pass": 0.333
+          },
+          "topLabelAccuracy": 0.958,
+          "falsePassItems": [],
+          "falseFailItems": []
+        }
+      },
+      "mut-blocked": {
+        "laya": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0,
+          "sentToAgent": 1,
+          "labelDist": {
+            "fail": 7,
+            "not_ready": 1
+          },
+          "topLabelAccuracy": 1,
+          "falsePassItems": [],
+          "falseFailItems": []
+        },
+        "jev": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 1,
+          "sentToAgent": 0,
+          "labelDist": {
+            "fail": 8
+          },
+          "topLabelAccuracy": 1,
+          "falsePassItems": [],
+          "falseFailItems": []
+        }
+      },
+      "hw": {
+        "laya": {
+          "n": 37,
+          "passRecall": 0,
+          "failCatch": 0.067,
+          "falsePassPerRun": 0,
+          "nonPassItems": 23,
+          "falseFailPerRun": 0,
+          "passItems": 14,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0.054,
+          "sentToAgent": 0.946,
+          "labelDist": {
+            "pass": 12,
+            "not_ready": 15,
+            "fail": 10
+          },
+          "topLabelAccuracy": 0.622,
+          "falsePassItems": [],
+          "falseFailItems": []
+        },
+        "jev": {
+          "n": 37,
+          "passRecall": 0.786,
+          "failCatch": 1,
+          "falsePassPerRun": 0,
+          "nonPassItems": 23,
+          "falseFailPerRun": 0,
+          "passItems": 14,
+          "notPassHandled": 1,
+          "notReadyNotPassed": null,
+          "engineDecidedShare": 0.91,
+          "sentToAgent": 0.09,
+          "labelDist": {
+            "pass": 14,
+            "fail": 23
+          },
+          "topLabelAccuracy": 1,
+          "falsePassItems": [],
+          "falseFailItems": []
+        }
+      },
+      "not-ready": {
+        "laya": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": null,
+          "notReadyNotPassed": 1,
+          "engineDecidedShare": 0,
+          "sentToAgent": 0,
+          "labelDist": {
+            "not_ready": 4,
+            "pass": 4
+          },
+          "topLabelAccuracy": 0.5,
+          "falsePassItems": [],
+          "falseFailItems": []
+        },
+        "jev": {
+          "n": 8,
+          "passRecall": null,
+          "failCatch": null,
+          "falsePassPerRun": 0,
+          "nonPassItems": 8,
+          "falseFailPerRun": 0,
+          "passItems": 0,
+          "notPassHandled": null,
+          "notReadyNotPassed": 1,
+          "engineDecidedShare": 0,
+          "sentToAgent": 0,
+          "labelDist": {
+            "not_ready": 8
+          },
+          "topLabelAccuracy": 1,
+          "falsePassItems": [],
+          "falseFailItems": []
+        }
+      }
+    },
+    "jev": {
+      "n": 81,
+      "passRecall": 0.522,
+      "failCatch": 0.884,
+      "falsePassPerRun": 0,
+      "nonPassItems": 51,
+      "falseFailPerRun": 3,
+      "passItems": 30,
+      "notPassHandled": 1,
+      "notReadyNotPassed": 1,
+      "engineDecidedShare": 0.687,
+      "sentToAgent": 0.189,
+      "labelDist": {
+        "pass": 24,
+        "fail": 49,
+        "not_ready": 8
+      },
+      "topLabelAccuracy": 0.893,
+      "falsePassItems": [],
+      "falseFailItems": [
+        "real-11840-202610090042-TC02-S1",
+        "real-11840-202610090042-TC02-S2",
+        "real-11840-202610090121-TC02-S2"
+      ]
+    }
+  },
+  "wait": {
+    "perf": {
+      "laya": {
+        "calls": 51,
+        "ok": 51,
+        "p50ms": 2820,
+        "p95ms": 3850,
+        "costUsd": 0,
+        "costPerCallUsd": 0
+      },
+      "jev": {
+        "calls": 153,
+        "ok": 153,
+        "p50ms": 586,
+        "p95ms": 919,
+        "costUsd": 0.005,
+        "costPerCallUsd": 0.0000355
+      }
+    },
+    "regexLoginCatches": 2,
+    "loginItems": 7,
+    "regexErrorCatches": 2,
+    "errorItems": 8,
+    "laya": {
+      "n": 51,
+      "readyCalledLoading": "0/24",
+      "readyCalledLoadingAny": "2/24",
+      "readyCalledReady": "0/24",
+      "loadingCalledLoading": "0/12",
+      "loadingCalledReady": "0/12",
+      "stateAccuracyAll": 0.706,
+      "loginDetected": "7/7",
+      "loginDetectedWhereRegexMisses": "5/5",
+      "loginDetectedWhereRegexMissesNoDebatable": "3/3",
+      "loginFalsePositives": "14/44",
+      "loginFalsePositivesCleanPages": "1/26",
+      "loginFalsePositivesNavPages": "13/18",
+      "readyWrongOnNav": "12/12",
+      "errorDetected": "6/8",
+      "errorDetectedWhereRegexMisses": "4/6",
+      "errorFalsePositives": "0/43",
+      "screenCorrectSure": "29/34",
+      "screenWrongSure": "2/34",
+      "screenSureShare": 0.912,
+      "medianP": {
+        "state": 0.48,
+        "screen": 0.998,
+        "login": 0.919
+      },
+      "readyCalledLoadingItems": [],
+      "loginMissedItems": [],
+      "loginFalsePositiveItems": [
+        "home+nav",
+        "profile+nav",
+        "attendance+nav",
+        "payslips+nav",
+        "employment+nav",
+        "manager-view-empty+nav",
+        "attendance-month+nav",
+        "time-off-form+nav",
+        "shell-attendance+nav",
+        "shell-time-off+nav",
+        "shell-payslips+nav",
+        "shell-home+nav",
+        "shell-profile+nav",
+        "error-503"
+      ],
+      "errorMissedItems": [
+        "error-503",
+        "error-404"
+      ]
+    },
+    "jev": {
+      "n": 153,
+      "readyCalledLoading": "0/72",
+      "readyCalledLoadingAny": "0/72",
+      "readyCalledReady": "72/72",
+      "loadingCalledLoading": "30/36",
+      "loadingCalledReady": "6/36",
+      "stateAccuracyAll": 0.961,
+      "loginDetected": "11/21",
+      "loginDetectedWhereRegexMisses": "6/15",
+      "loginDetectedWhereRegexMissesNoDebatable": "6/9",
+      "loginFalsePositives": "0/132",
+      "loginFalsePositivesCleanPages": "0/78",
+      "loginFalsePositivesNavPages": "0/54",
+      "readyWrongOnNav": "0/36",
+      "errorDetected": "24/24",
+      "errorDetectedWhereRegexMisses": "18/18",
+      "errorFalsePositives": "0/129",
+      "screenCorrectSure": "102/102",
+      "screenWrongSure": "0/102",
+      "screenSureShare": 1,
+      "medianP": {
+        "state": 0.99,
+        "screen": 1,
+        "login": 1
+      },
+      "readyCalledLoadingItems": [],
+      "loginMissedItems": [
+        "login-stay",
+        "login-code",
+        "login-session",
+        "login-password"
+      ],
+      "loginFalsePositiveItems": [],
+      "errorMissedItems": []
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "url": "http://localhost:8000",
+  "enabled": null,
+  "model": "english",
+  "notes": "Shared defaults. Per-machine state goes to laya.local.json (gitignored): enabled null = never asked, true = use when reachable, false = never use and never ask. Re-enable with `laya-check.mjs --laya`."
+}

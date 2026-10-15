@@ -1,0 +1,8 @@
+{"objective":"Verify bug 11840 on dev: Month View Total hours must be stable (no 0 vs 55 flip) and month-wide.",
+"steps":[
+{"title":"Fetch ticket","result":"Repro-only bug; fix comment says toolbar now aggregates the whole month. No ACs, no repo checkout available.","status":"ok"},
+{"title":"Laya pre-check","result":"Started laya-serve (pid 24800), stopped at end.","status":"ok"},
+{"title":"Find page","assumption":"Month View lives under Attendance > My attendance","result":"Confirmed; View combobox options are not clickable by uid, used in-page click on the li.","status":"warn"},
+{"title":"Execute TC01-TC03","result":"June 2026 month view: Scheduled 160 / Total 0 / Absence 160, stable across navigation and view switches; week view shows 40.","status":"pass"},
+{"title":"Verdicts","result":"Laya returned p 0.41-0.55 on all 4 steps, so every verdict was judged by the model.","status":"warn"}],
+"insights":["Screenshot filePath outside workspace is refused; save to scratchpad then copy (cost one wasted call).","Account has Total hours 0 in June, so the original 55 value is not directly verified.","Laya was never confident enough to decide a step in this run."]}

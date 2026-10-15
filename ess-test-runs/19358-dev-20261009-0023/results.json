@@ -1,0 +1,79 @@
+{
+ "ticket": {
+  "id": 19358,
+  "type": "Bug",
+  "title": "WebESS - Time and Attendance - Cancelled Leave Is Still Displayed as Approved Leave",
+  "state": "Resolved",
+  "url": "https://dev.azure.com/gemseducation/GEMS-HR-SCM/_workitems/edit/19358"
+ },
+ "environment": {
+  "key": "dev",
+  "url": "https://wonderful-tree-03dc07f0f.3.azurestaticapps.net/"
+ },
+ "browser": "chrome-devtools",
+ "tester": "danhnpc",
+ "startedAt": "2026-10-09T00:23:20+07:00",
+ "scope": "Bug fix: a leave date whose latest Leave Request Detail transaction has Amount=0 (cancelled) must not show as Approved Leave in Time and Attendance. Run is read-only; it can only verify with an account/date that actually has a cancelled leave.",
+ "cases": [
+  {
+   "id": "TC01",
+   "title": "Cancelled leave date (latest transaction Amount=0) is not shown as Approved Leave",
+   "ac": [
+    "Bug repro"
+   ],
+   "role": "xiontechs",
+   "priority": "High",
+   "type": "happy",
+   "preconditions": "Employee with an original leave (Amount=1, Completed) and a later cancellation (Amount=0, Completed) on the same date",
+   "status": "blocked",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open Attendance (My attendance)",
+     "expected": "Attendance page loads for the signed-in employee",
+     "status": "pass",
+     "actual": "Attendance page loaded: 'Attendance > My attendance', week view, hours summary shown",
+     "screenshot": "shots/TC01-S01.png",
+     "at": "2026-10-08T17:25:47.513Z"
+    },
+    {
+     "n": 2,
+     "action": "Go to week 28 Sep - 4 Oct and inspect the date with cancelled leave",
+     "expected": "Date is not shown as Approved Leave",
+     "status": "blocked",
+     "actual": "Week '28 Sept - 4 Oct' shows 'Mon 28/09 · No records' … 'Sun 04/10 · No records'. This profile has no leave data for the date, so the cancelled-leave scenario cannot be exercised; needs the account with the cancelled leave (Long Do, 28/09/2026) or a seeded cancel.",
+     "screenshot": "shots/TC01-S02.png",
+     "at": "2026-10-08T17:25:47.575Z"
+    }
+   ]
+  },
+  {
+   "id": "TC02",
+   "title": "Date with still-effective approved leave shows as Approved Leave (regression)",
+   "ac": [
+    "Bug repro"
+   ],
+   "role": "xiontechs",
+   "priority": "Medium",
+   "type": "regression",
+   "preconditions": "Employee with an effective approved leave",
+   "status": "blocked",
+   "notes": "",
+   "steps": [
+    {
+     "n": 1,
+     "action": "Open Attendance on a week containing effective approved leave",
+     "expected": "Date shows Approved Leave",
+     "status": "blocked",
+     "actual": "No effective approved leave exists for this profile in the weeks viewed (all 'No records'); needs an account with an approved leave.",
+     "at": "2026-10-08T17:25:47.638Z"
+    }
+   ]
+  }
+ ],
+ "observations": [
+  "Signed-in ESS profile is Amol R Bhangale (staff 20065716), not the account of the tester named in the ticket comments (Long Do, week 28/09-04/10)."
+ ],
+ "finishedAt": "2026-10-08T17:25:53.643Z"
+}

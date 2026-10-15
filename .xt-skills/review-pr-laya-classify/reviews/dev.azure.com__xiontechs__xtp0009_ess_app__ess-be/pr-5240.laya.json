@@ -1,0 +1,469 @@
+{
+  "schema": "review-pr-laya/laya@1",
+  "pr": {
+    "repoId": "dev.azure.com__xiontechs__xtp0009_ess_app__ess-be",
+    "id": 5240
+  },
+  "mode": "shadow",
+  "threshold": null,
+  "url": "http://localhost:8000",
+  "model": "english",
+  "createdAt": "2026-10-12T17:38:50.078Z",
+  "warning": null,
+  "summary": {
+    "findings": 15,
+    "agree": 10,
+    "differs": 5,
+    "lowConfidence": 5,
+    "wouldFlag": 0,
+    "rechecks": 0,
+    "capped": 0,
+    "unavailable": 0,
+    "server": "up",
+    "ms": 15865
+  },
+  "merge": {
+    "laya": {
+      "label": "Blocked",
+      "confidence": 0.5493,
+      "pBlock": 0.5493,
+      "threshold": 0.29,
+      "topLabel": "Blocked",
+      "probabilities": {
+        "Blocked": 0.5493,
+        "Eligible with suggestions": 0.1912,
+        "Eligible": 0.2594
+      }
+    },
+    "implied": "Blocked",
+    "rule": "Blocked",
+    "fromLayaSeverities": "Blocked",
+    "ms": 3694,
+    "status": "agree",
+    "final": "Blocked",
+    "finalStatus": "agree"
+  },
+  "results": [
+    {
+      "id": "F1",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 50,
+      "claude": "Critical",
+      "laya": {
+        "label": "Minor",
+        "confidence": 0.317,
+        "probabilities": {
+          "Critical": 0.2009,
+          "Major": 0.3169,
+          "Minor": 0.317,
+          "Suggestion": 0.1653
+        }
+      },
+      "ms": 4524,
+      "rules": "Suggestion",
+      "status": "differs",
+      "wouldFlag": false,
+      "input": {
+        "rule": "AUTHZ",
+        "issue": "Manager scope comes from client query ManagerPersonnelNumber, never checked against the caller's IUserContext identity.",
+        "evidence": "DTO TeamLeaveCalendarDto.cs:6 bound [FromQuery]; service :50 escapes and uses query.ManagerPersonnelNumber; no IUserContext injected; controller only [Authorize].",
+        "impact": "Any signed-in user reads approved leave of any manager's team."
+      },
+      "recheck": null,
+      "final": "Critical"
+    },
+    {
+      "id": "F2",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 51,
+      "claude": "Critical",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4516,
+        "probabilities": {
+          "Critical": 0.2761,
+          "Major": 0.4516,
+          "Minor": 0.1624,
+          "Suggestion": 0.1099
+        }
+      },
+      "ms": 5393,
+      "rules": "Suggestion",
+      "status": "differs",
+      "wouldFlag": false,
+      "input": {
+        "rule": "D-07, D-08",
+        "issue": "Business service queries D365EntityNames.Workers directly and filters it by ManagerPersonnelNumber, not PersonnelNumber.",
+        "evidence": ":51-53 QueryRecordsAsync(D365EntityNames.Workers, filter: ManagerPersonnelNumber eq ...). Service is not WorkerService nor a documented CLAUDE.md exception; mandatory scan hit.",
+        "impact": "Breaks identity-entity ownership; non-PersonnelNumber Workers filter adds D365 load and bypasses the owner's cache."
+      },
+      "recheck": null,
+      "final": "Critical"
+    },
+    {
+      "id": "F3",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 77,
+      "claude": "Critical",
+      "laya": {
+        "label": "Critical",
+        "confidence": 0.3096,
+        "probabilities": {
+          "Critical": 0.3096,
+          "Major": 0.2796,
+          "Minor": 0.2451,
+          "Suggestion": 0.1657
+        }
+      },
+      "ms": 1660,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "TH-04",
+        "issue": "One EssLeaveApprovedRequests query per direct report inside foreach loop.",
+        "evidence": ":63 foreach (var report in reports) { ... :77 await _d365Service.QueryRecordsAsync(D365EntityNames.LeaveApprovedRequests, ...) }",
+        "impact": "N+1 D365 calls per request; large teams trigger D365 429 throttling."
+      },
+      "recheck": null,
+      "final": "Critical"
+    },
+    {
+      "id": "F4",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 92,
+      "claude": "Critical",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.3381,
+        "probabilities": {
+          "Critical": 0.2328,
+          "Major": 0.3381,
+          "Minor": 0.3026,
+          "Suggestion": 0.1266
+        }
+      },
+      "ms": 1694,
+      "rules": "Suggestion",
+      "status": "differs",
+      "wouldFlag": false,
+      "input": {
+        "rule": "D365-CLAIMS",
+        "issue": "catch (Exception) swallows every error including D365ClaimsChallengeException; partial result returned as success and cached.",
+        "evidence": ":75-96 try { QueryRecordsAsync...; DateTime.Parse... } catch (Exception ex) { LogWarning; } then response Success=true cached 60s at :119.",
+        "impact": "Claims challenge never reaches client (no 401 re-auth); silently incomplete calendar cached for 60 s."
+      },
+      "recheck": null,
+      "final": "Critical"
+    },
+    {
+      "id": "F5",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 69,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4318,
+        "probabilities": {
+          "Critical": 0.1931,
+          "Major": 0.4318,
+          "Minor": 0.2472,
+          "Suggestion": 0.1279
+        }
+      },
+      "ms": 1743,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "RANGE",
+        "issue": "Inclusive To date filtered with StartDate lt {to}T00:00:00Z, excluding the last day.",
+        "evidence": "DTO :8 documents To as Inclusive last day of the range; service :69 uses lt {to}T00:00:00Z.",
+        "impact": "Leave on the last requested day is never shown."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F6",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 98,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4769,
+        "probabilities": {
+          "Critical": 0.1785,
+          "Major": 0.4769,
+          "Minor": 0.2425,
+          "Suggestion": 0.1022
+        }
+      },
+      "ms": 1655,
+      "rules": "Major",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "Bug",
+        "issue": "Skip/Take applied before OrderBy, so only the page's slice is sorted, not the whole result.",
+        "evidence": ":98-103 entries.Skip(...).Take(...).OrderBy(e => e.LeaveDate).ThenBy(...); entries are in per-report D365 order.",
+        "impact": "Pages are not chronological; earliest leave can land on a later page."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F7",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 98,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.2768,
+        "probabilities": {
+          "Critical": 0.2683,
+          "Major": 0.2768,
+          "Minor": 0.2354,
+          "Suggestion": 0.2195
+        }
+      },
+      "ms": 1641,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "PAGING",
+        "issue": "Fetches all leave rows of all reports then slices in memory; no $top/$skip, no perPage+1 over-fetch.",
+        "evidence": ":77 QueryRecordsAsync without top/skip; :98-99 Skip/Take in memory; :114 HasNextPage = entries.Count > Page*PerPage.",
+        "impact": "Every page re-reads the full range from D365; cost grows with team size."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F8",
+      "file": "src/Ess-App.Application/Constants/CacheKeys.cs",
+      "line": 247,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4607,
+        "probabilities": {
+          "Critical": 0.2875,
+          "Major": 0.4607,
+          "Minor": 0.174,
+          "Suggestion": 0.0778
+        }
+      },
+      "ms": 1631,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "CACHE-KEY",
+        "issue": "Cache key omits LeaveTypeCode, which changes the D365 filter and result.",
+        "evidence": "CacheKeys.cs:247-248 key = manager:from:to:page:perPage; service :72 adds Type eq filter when LeaveTypeCode set; key built at :43 without it.",
+        "impact": "Filtered and unfiltered requests share an entry for 60 s; wrong leave types returned."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F9",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 51,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4963,
+        "probabilities": {
+          "Critical": 0.17,
+          "Major": 0.4963,
+          "Minor": 0.2268,
+          "Suggestion": 0.1069
+        }
+      },
+      "ms": 1555,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "TH-03",
+        "issue": "Workers query has no $select.",
+        "evidence": ":51-53 QueryRecordsAsync(D365EntityNames.Workers, filter: ...) has no select argument; only the LeaveApprovedRequests call passes LeaveSelect.",
+        "impact": "Full Workers rows fetched from D365; heavier payload and throttling risk."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F10",
+      "file": "src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs",
+      "line": 32,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.4132,
+        "probabilities": {
+          "Critical": 0.1472,
+          "Major": 0.4132,
+          "Minor": 0.2605,
+          "Suggestion": 0.1791
+        }
+      },
+      "ms": 1544,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "CA-02",
+        "issue": "Controller wraps the call in try/catch and returns BadRequest(ex.Message) itself.",
+        "evidence": "Controller :32-41 try { ... } catch (ValidationException ex) { return BadRequest(ex.Message); }; GlobalExceptionHandlerMiddleware.cs:121 already maps ValidationException.",
+        "impact": "Bypasses standard 400 error shape and details; inconsistent client contract."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F11",
+      "file": "src/Ess-App.Application/Services/LeaveRequests/TeamLeaveCalendarService.cs",
+      "line": 51,
+      "claude": "Major",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.5627,
+        "probabilities": {
+          "Critical": 0.2271,
+          "Major": 0.5627,
+          "Minor": 0.1424,
+          "Suggestion": 0.0678
+        }
+      },
+      "ms": 1603,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "DOC-01",
+        "issue": "New D365 calls (Workers, EssLeaveApprovedRequests) added without updating docs/d365-calls/LEAVE.md.",
+        "evidence": "PR files[] contain no docs/d365-calls/*.md; service adds calls at :51 and :77.",
+        "impact": "D365 call inventory out of date; throttling audits miss this endpoint."
+      },
+      "recheck": null,
+      "final": "Major"
+    },
+    {
+      "id": "F12",
+      "file": "src/Ess-App.Tests/Services/LeaveRequests/TeamLeaveCalendarServiceTests.cs",
+      "line": 30,
+      "claude": "Minor",
+      "laya": {
+        "label": "Minor",
+        "confidence": 0.4114,
+        "probabilities": {
+          "Critical": 0.1749,
+          "Major": 0.2633,
+          "Minor": 0.4114,
+          "Suggestion": 0.1503
+        }
+      },
+      "ms": 1653,
+      "rules": "Minor",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "TEST-02",
+        "issue": "Only a happy-path test; no cache-hit, empty-team, D365 error, last-day or page-order cases.",
+        "evidence": "Single [Fact] at :30; mocks use Arg.Any for the filter, so range and type filters are untested.",
+        "impact": "F4-F8 defects pass the suite undetected."
+      },
+      "recheck": null,
+      "final": "Minor"
+    },
+    {
+      "id": "F13",
+      "file": "src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs",
+      "line": 25,
+      "claude": "Minor",
+      "laya": {
+        "label": "Minor",
+        "confidence": 0.4106,
+        "probabilities": {
+          "Critical": 0.196,
+          "Major": 0.2886,
+          "Minor": 0.4106,
+          "Suggestion": 0.1048
+        }
+      },
+      "ms": 1680,
+      "rules": "Suggestion",
+      "status": "agree",
+      "wouldFlag": false,
+      "input": {
+        "rule": "RATE",
+        "issue": "New endpoint declares no rate-limit policy intent.",
+        "evidence": "Controller :25 [HttpGet] with no [EnableRateLimiting]; endpoint does N D365 calls (D365Heavy candidate).",
+        "impact": "Heavy D365 endpoint limited only by the global 120/min policy."
+      },
+      "recheck": null,
+      "final": "Minor"
+    },
+    {
+      "id": "F14",
+      "file": "src/Ess-App.API/Controllers/LeaveRequests/TeamLeaveCalendarController.cs",
+      "line": 16,
+      "claude": "Minor",
+      "laya": {
+        "label": "Major",
+        "confidence": 0.5189,
+        "probabilities": {
+          "Critical": 0.2124,
+          "Major": 0.5189,
+          "Minor": 0.1638,
+          "Suggestion": 0.1049
+        }
+      },
+      "ms": 1582,
+      "rules": "Suggestion",
+      "status": "differs",
+      "wouldFlag": false,
+      "input": {
+        "rule": "DOC-API",
+        "issue": "New GET api/leave/team-calendar endpoint not added to docs/API_CONTRACTS.md.",
+        "evidence": "PR files[] contain no docs/API_CONTRACTS.md.",
+        "impact": "FE has no documented contract for the new endpoint."
+      },
+      "recheck": null,
+      "final": "Minor"
+    },
+    {
+      "id": "F15",
+      "file": "src/Ess-App.Application/DTOs/LeaveRequests/TeamLeaveCalendarDto.cs",
+      "line": 25,
+      "claude": "Suggestion",
+      "laya": {
+        "label": "Minor",
+        "confidence": 0.4156,
+        "probabilities": {
+          "Critical": 0.1987,
+          "Major": 0.3003,
+          "Minor": 0.4156,
+          "Suggestion": 0.0855
+        }
+      },
+      "ms": 1457,
+      "rules": "Minor",
+      "status": "differs",
+      "wouldFlag": false,
+      "input": {
+        "rule": "Maintainability",
+        "issue": "Leftover e2e stale C3..C6 comments at end of DTO file.",
+        "evidence": "TeamLeaveCalendarDto.cs:25-28 four stray comment lines.",
+        "impact": "Noise in production source."
+      },
+      "recheck": null,
+      "final": "Suggestion"
+    }
+  ],
+  "finalizedAt": "2026-10-12T17:39:09.783Z"
+}

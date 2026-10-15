@@ -1,0 +1,18 @@
+{
+  "objective": "Review Azure DevOps PR 5240 (seeded-defect E2E test, team leave calendar) as a merge gate against the saved ess-be project rules, with Laya's independent severity check in shadow mode.",
+  "steps": [
+    { "title": "Fetch PR", "assumption": "Current folder is a checkout of ess-be", "result": "8 files, 360-line patch, 7 existing threads (6 earlier AI review summaries), no work items, no secrets", "status": "ok" },
+    { "title": "Project rules", "result": "Saved user-level rules found and used; no custom instructions file", "status": "ok" },
+    { "title": "Review (inline)", "assumption": "8 files / ~300 lines is small enough for one inline pass instead of fan-out", "result": "Whole patch read; 15 candidate findings across all axes", "status": "ok" },
+    { "title": "Verification", "result": "Confirmed entity names, ID365Service signature (no CancellationToken, so AS-02 dropped), middleware ValidationException mapping; dropped a multi-day-leave finding because EssLeaveApprovedRequests rows are per booked day; mandatory scans hit only D-07", "status": "ok" },
+    { "title": "Findings file", "assumption": "Bash heredoc would write JSON", "result": "Heredoc failed on quote parsing; rewrote with the Write tool (one wasted turn plus a read-before-write turn)", "status": "warn" },
+    { "title": "Laya severity check", "result": "shadow: 10 agree, 5 differ (all low confidence), 0 flagged; merge question agrees Blocked (log only)", "status": "ok" },
+    { "title": "Assess", "result": "Request Changes, Blocked, score 0, 4 Critical / 7 Major / 3 Minor / 1 Suggestion, coverage 8/8", "status": "ok" },
+    { "title": "Report", "result": "Report written; nothing posted (no --post)", "status": "ok" }
+  ],
+  "insights": [
+    "Write JSON files with the Write tool, not a Bash heredoc, to avoid quote-parsing failures.",
+    "Files from earlier runs of the same PR need a Read before Write; read one line first to save a turn.",
+    "Earlier AI review threads on the same commit already covered the Critical points; reading the latest one early helps cross-check coverage."
+  ]
+}

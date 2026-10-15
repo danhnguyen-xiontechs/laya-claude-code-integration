@@ -1,0 +1,1103 @@
+{
+ "n": 45,
+ "summary": {
+  "A-tail30": {
+   "accuracy": 0.467,
+   "p50_ms": 1878
+  },
+  "A-kwchunk": {
+   "accuracy": 0.444,
+   "p50_ms": 717
+  },
+  "B-tail30": {
+   "accuracy": 0.622,
+   "p50_ms": 1842
+  },
+  "B-kwchunk": {
+   "accuracy": 0.733,
+   "p50_ms": 662
+  }
+ },
+ "rows": [
+  {
+   "id": "d01",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.374
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.702
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "missing_cli",
+    0.477
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    1.0
+   ]
+  },
+  {
+   "id": "d02",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.947
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.523
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.784
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.922
+   ]
+  },
+  {
+   "id": "d03",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.225
+   ],
+   "A-kwchunk": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.454
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    0.594
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "expected_exception",
+    0.749
+   ]
+  },
+  {
+   "id": "d04",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.75
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.877
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "dotnet_missing_package",
+    0.866
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.971
+   ]
+  },
+  {
+   "id": "d05",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.518
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.507
+   ],
+   "B-tail30": [
+    "import_or_path",
+    "py_bad_import",
+    0.432
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.52
+   ]
+  },
+  {
+   "id": "d06",
+   "gold": "dependency_missing",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.768
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.712
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "py_missing_package",
+    0.983
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.999
+   ]
+  },
+  {
+   "id": "i01",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.683
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.657
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.75
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    1.0
+   ]
+  },
+  {
+   "id": "i02",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.949
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.404
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.817
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.791
+   ]
+  },
+  {
+   "id": "i03",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.374
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.384
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "dotnet_missing_package",
+    0.263
+   ],
+   "B-kwchunk": [
+    "import_or_path",
+    "file_not_found",
+    0.998
+   ]
+  },
+  {
+   "id": "i04",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.341
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.332
+   ],
+   "B-tail30": [
+    "import_or_path",
+    "py_bad_import",
+    0.875
+   ],
+   "B-kwchunk": [
+    "import_or_path",
+    "py_bad_import",
+    0.999
+   ]
+  },
+  {
+   "id": "i05",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.987
+   ],
+   "A-kwchunk": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.964
+   ],
+   "B-tail30": [
+    "syntax_or_type",
+    "syntax_error",
+    1.0
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "syntax_error",
+    1.0
+   ]
+  },
+  {
+   "id": "i06",
+   "gold": "import_or_path",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.339
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.339
+   ],
+   "B-tail30": [
+    "import_or_path",
+    "file_not_found",
+    0.943
+   ],
+   "B-kwchunk": [
+    "import_or_path",
+    "file_not_found",
+    0.943
+   ]
+  },
+  {
+   "id": "s01",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.999
+   ],
+   "A-kwchunk": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.99
+   ],
+   "B-tail30": [
+    "syntax_or_type",
+    "syntax_error",
+    1.0
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "syntax_error",
+    1.0
+   ]
+  },
+  {
+   "id": "s02",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.323
+   ],
+   "A-kwchunk": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.811
+   ],
+   "B-tail30": [
+    "syntax_or_type",
+    "type_error",
+    0.955
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "type_error",
+    1.0
+   ]
+  },
+  {
+   "id": "s03",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.654
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.474
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "node_missing_package",
+    0.315
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "type_error",
+    0.301
+   ]
+  },
+  {
+   "id": "s04",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.391
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.348
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    0.766
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "dotnet_missing_package",
+    0.803
+   ]
+  },
+  {
+   "id": "s05",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.553
+   ],
+   "A-kwchunk": [
+    "syntax_or_type",
+    "syntax_or_type",
+    0.782
+   ],
+   "B-tail30": [
+    "syntax_or_type",
+    "type_error",
+    0.999
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "type_error",
+    1.0
+   ]
+  },
+  {
+   "id": "s06",
+   "gold": "syntax_or_type",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.34
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.454
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "missing_cli",
+    0.587
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "type_error",
+    0.992
+   ]
+  },
+  {
+   "id": "t01",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    0.902
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    0.426
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ]
+  },
+  {
+   "id": "t02",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    1.0
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    0.998
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ]
+  },
+  {
+   "id": "t03",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    0.544
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    0.295
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ]
+  },
+  {
+   "id": "t04",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    0.793
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    0.663
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ]
+  },
+  {
+   "id": "t05",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    0.999
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    1.0
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ]
+  },
+  {
+   "id": "t06",
+   "gold": "test_assertion",
+   "A-tail30": [
+    "test_assertion",
+    "test_assertion",
+    0.31
+   ],
+   "A-kwchunk": [
+    "test_assertion",
+    "test_assertion",
+    0.27
+   ],
+   "B-tail30": [
+    "test_assertion",
+    "assert_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "test_assertion",
+    "assert_failed",
+    0.999
+   ]
+  },
+  {
+   "id": "e01",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "env_or_config",
+    "env_or_config",
+    0.653
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.393
+   ],
+   "B-tail30": [
+    "env_or_config",
+    "missing_env_var",
+    0.85
+   ],
+   "B-kwchunk": [
+    "env_or_config",
+    "missing_env_var",
+    0.812
+   ]
+  },
+  {
+   "id": "e02",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.402
+   ],
+   "A-kwchunk": [
+    "env_or_config",
+    "env_or_config",
+    0.928
+   ],
+   "B-tail30": [
+    "env_or_config",
+    "missing_env_var",
+    0.563
+   ],
+   "B-kwchunk": [
+    "env_or_config",
+    "missing_env_var",
+    1.0
+   ]
+  },
+  {
+   "id": "e03",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "env_or_config",
+    "env_or_config",
+    0.347
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.314
+   ],
+   "B-tail30": [
+    "env_or_config",
+    "bad_config_file",
+    0.292
+   ],
+   "B-kwchunk": [
+    "syntax_or_type",
+    "syntax_error",
+    0.843
+   ]
+  },
+  {
+   "id": "e04",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.806
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.944
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "py_missing_package",
+    0.54
+   ],
+   "B-kwchunk": [
+    "dependency_missing",
+    "py_missing_package",
+    0.539
+   ]
+  },
+  {
+   "id": "e05",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.899
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.899
+   ],
+   "B-tail30": [
+    "env_or_config",
+    "missing_project_or_script",
+    1.0
+   ],
+   "B-kwchunk": [
+    "env_or_config",
+    "missing_project_or_script",
+    1.0
+   ]
+  },
+  {
+   "id": "e06",
+   "gold": "env_or_config",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.374
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.559
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "missing_cli",
+    0.644
+   ],
+   "B-kwchunk": [
+    "env_or_config",
+    "wrong_runtime_version",
+    0.995
+   ]
+  },
+  {
+   "id": "n01",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.431
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.398
+   ],
+   "B-tail30": [
+    "permission_or_network",
+    "connection_failed",
+    1.0
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "stack_overflow",
+    0.499
+   ]
+  },
+  {
+   "id": "n02",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.819
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.717
+   ],
+   "B-tail30": [
+    "permission_or_network",
+    "dns_failure",
+    0.926
+   ],
+   "B-kwchunk": [
+    "permission_or_network",
+    "dns_failure",
+    1.0
+   ]
+  },
+  {
+   "id": "n03",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "permission_or_network",
+    "permission_or_network",
+    0.358
+   ],
+   "A-kwchunk": [
+    "permission_or_network",
+    "permission_or_network",
+    0.993
+   ],
+   "B-tail30": [
+    "permission_or_network",
+    "permission_denied",
+    0.911
+   ],
+   "B-kwchunk": [
+    "permission_or_network",
+    "permission_denied",
+    1.0
+   ]
+  },
+  {
+   "id": "n04",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.507
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.583
+   ],
+   "B-tail30": [
+    "other",
+    "git_state",
+    0.987
+   ],
+   "B-kwchunk": [
+    "other",
+    "git_state",
+    0.987
+   ]
+  },
+  {
+   "id": "n05",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.356
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.319
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.59
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.65
+   ]
+  },
+  {
+   "id": "n06",
+   "gold": "permission_or_network",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.48
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.29
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.999
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.903
+   ]
+  },
+  {
+   "id": "r01",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.372
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.3
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "stack_overflow",
+    0.987
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "stack_overflow",
+    1.0
+   ]
+  },
+  {
+   "id": "r02",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.341
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.264
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    1.0
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "out_of_memory",
+    1.0
+   ]
+  },
+  {
+   "id": "r03",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.696
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.373
+   ],
+   "B-tail30": [
+    "import_or_path",
+    "node_bad_import",
+    0.691
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "stack_overflow",
+    0.927
+   ]
+  },
+  {
+   "id": "r04",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.547
+   ],
+   "A-kwchunk": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.979
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "timeout",
+    0.733
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "timeout",
+    0.999
+   ]
+  },
+  {
+   "id": "r05",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.339
+   ],
+   "A-kwchunk": [
+    "dependency_missing",
+    "dependency_missing",
+    0.446
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "out_of_memory",
+    0.803
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "out_of_memory",
+    1.0
+   ]
+  },
+  {
+   "id": "r06",
+   "gold": "timeout_or_resource",
+   "A-tail30": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.96
+   ],
+   "A-kwchunk": [
+    "timeout_or_resource",
+    "timeout_or_resource",
+    0.985
+   ],
+   "B-tail30": [
+    "timeout_or_resource",
+    "timeout",
+    0.994
+   ],
+   "B-kwchunk": [
+    "timeout_or_resource",
+    "timeout",
+    1.0
+   ]
+  },
+  {
+   "id": "o01",
+   "gold": "other",
+   "A-tail30": [
+    "other",
+    "other",
+    0.43
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.47
+   ],
+   "B-tail30": [
+    "other",
+    "git_state",
+    0.999
+   ],
+   "B-kwchunk": [
+    "other",
+    "git_state",
+    0.998
+   ]
+  },
+  {
+   "id": "o02",
+   "gold": "other",
+   "A-tail30": [
+    "other",
+    "other",
+    0.694
+   ],
+   "A-kwchunk": [
+    "other",
+    "other",
+    0.694
+   ],
+   "B-tail30": [
+    "other",
+    "git_state",
+    0.989
+   ],
+   "B-kwchunk": [
+    "other",
+    "git_state",
+    0.989
+   ]
+  },
+  {
+   "id": "o03",
+   "gold": "other",
+   "A-tail30": [
+    "dependency_missing",
+    "dependency_missing",
+    0.39
+   ],
+   "A-kwchunk": [
+    "env_or_config",
+    "env_or_config",
+    0.406
+   ],
+   "B-tail30": [
+    "dependency_missing",
+    "dotnet_missing_package",
+    0.238
+   ],
+   "B-kwchunk": [
+    "env_or_config",
+    "bad_config_file",
+    0.962
+   ]
+  }
+ ]
+}

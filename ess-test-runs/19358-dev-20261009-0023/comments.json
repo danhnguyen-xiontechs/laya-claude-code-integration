@@ -1,0 +1,255 @@
+{
+  "comments": [
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "createdDate": "2026-10-08T04:57:47.963Z",
+      "format": "html",
+      "id": 16417271,
+      "mentions": [
+        {
+          "artifactId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+          "artifactType": "Person",
+          "commentId": 16417271,
+          "targetId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "modifiedDate": "2026-10-08T04:57:47.963Z",
+      "renderedText": "",
+      "text": "<div><a href=\"#\" data-vss-mention=\"version:2.0,ac0e3b74-ab66-4ec3-bacc-7e99ce316165\">@Danh Nguyen Thanh</a>&nbsp;Thank you for your effort, this function works well. </div>",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16417271",
+      "version": 1,
+      "workItemId": 19358
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "createdDate": "2026-09-30T03:13:21.647Z",
+      "format": "markdown",
+      "id": 16371283,
+      "mentions": [
+        {
+          "artifactId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B",
+          "artifactType": "Person",
+          "commentId": 16371283,
+          "targetId": "00D0FA42-4646-6DC6-A7A1-57F2CB433B8B"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5"
+          }
+        },
+        "descriptor": "aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "displayName": "Danh Nguyen Thanh",
+        "id": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MTg4ZGVkOWUtNjJlYy03M2I1LThmYzUtNDE5MjJkZmY0NmU5",
+        "uniqueName": "danh.nt@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+      },
+      "modifiedDate": "2026-09-30T03:13:21.647Z",
+      "renderedText": "",
+      "text": "Hi @<00D0FA42-4646-6DC6-A7A1-57F2CB433B8B> , could you please verify in SIT?",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16371283",
+      "version": 1,
+      "workItemId": 19358
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "createdDate": "2026-09-27T15:59:48.91Z",
+      "format": "html",
+      "id": 16355199,
+      "mentions": [
+        {
+          "artifactId": "cea380a4-33cd-6e9c-af59-3313569b1a05",
+          "artifactType": "Person",
+          "commentId": 16355199,
+          "targetId": "cea380a4-33cd-6e9c-af59-3313569b1a05"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "modifiedDate": "2026-09-27T15:59:48.91Z",
+      "renderedText": "",
+      "text": "<div>Hi <a href=\"#\" data-vss-mention=\"version:2.0,cea380a4-33cd-6e9c-af59-3313569b1a05\">@Long Do</a>, this issue is fixed. Please kindly deploy to higher environment. Thank you! </div>",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16355199",
+      "version": 1,
+      "workItemId": 19358
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1"
+          }
+        },
+        "descriptor": "aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1",
+        "displayName": "Long Do",
+        "id": "cea380a4-33cd-6e9c-af59-3313569b1a05",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1",
+        "uniqueName": "long.do@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/cea380a4-33cd-6e9c-af59-3313569b1a05"
+      },
+      "createdDate": "2026-09-24T05:45:55.443Z",
+      "format": "html",
+      "id": 16343060,
+      "mentions": [
+        {
+          "artifactId": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+          "artifactType": "Person",
+          "commentId": 16343060,
+          "targetId": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+        },
+        {
+          "artifactId": "2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad",
+          "artifactType": "Person",
+          "commentId": 16343060,
+          "targetId": "2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad"
+        },
+        {
+          "artifactId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165",
+          "artifactType": "Person",
+          "commentId": 16343060,
+          "targetId": "ac0e3b74-ab66-4ec3-bacc-7e99ce316165"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1"
+          }
+        },
+        "descriptor": "aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1",
+        "displayName": "Long Do",
+        "id": "cea380a4-33cd-6e9c-af59-3313569b1a05",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.Y2VhMzgwYTQtMzNjZC03ZTljLWFmNTktMzMxMzU2OWIxYTA1",
+        "uniqueName": "long.do@xiontechs.com",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/cea380a4-33cd-6e9c-af59-3313569b1a05"
+      },
+      "modifiedDate": "2026-09-24T05:45:55.443Z",
+      "renderedText": "",
+      "text": "<div>Hello&nbsp;<a href=\"#\" data-vss-mention=\"version:2.0,00d0fa42-4646-6dc6-a7a1-57f2cb433b8b\">@Anna Tran</a></div><div><br></div><div>cc:&nbsp;<a href=\"#\" data-vss-mention=\"version:2.0,2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad\">@Hammad Rauf</a>&nbsp;<a href=\"#\" data-vss-mention=\"version:2.0,ac0e3b74-ab66-4ec3-bacc-7e99ce316165\">@Danh Nguyen Thanh</a> </div><div><br></div><div>Fix related to this work item has been deployed to FAT environment, please verify:</div><div><br></div><div>This is my attendance from 28/09 to 04/10. As you can see, I have an approved leave on 28th September.&nbsp;</div><div><br></div><div><img src=\"https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/42f8803f-05d4-4fa0-a5a1-fe234c35a24c?fileName=image.png\" alt=Image><br></div><div><br></div><div>Then I wanted to cancel my leave on Sep 28, so I did</div><div><br></div><div><img src=\"https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/00c45b42-ea7a-4591-a8b6-f156e4149c17?fileName=image.png\" alt=Image><br></div><div><br></div><div>Then I went to F&amp;O to approve this request</div><div><br></div><div><img src=\"https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/a5670949-7da5-48b9-b2b9-c90012b832d1?fileName=image.png\" alt=Image><br></div><div><br></div><div>As a result, cancelled leave does not appear on WebESS as approved leave anymore</div><div><br></div><div><img src=\"https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/b04ac575-f2be-4458-9ddd-3a0047e7c76e?fileName=image.png\" alt=Image><br></div><div><br></div><div><img src=\"https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/8c7917dd-2b32-4385-a2f0-a0dcf980151e?fileName=image.png\" alt=Image><br></div><div><br></div><div><br></div>",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16343060",
+      "version": 1,
+      "workItemId": 19358
+    },
+    {
+      "createdBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "createdDate": "2026-09-07T13:20:05.717Z",
+      "format": "html",
+      "id": 16253989,
+      "mentions": [
+        {
+          "artifactId": "2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad",
+          "artifactType": "Person",
+          "commentId": 16253989,
+          "targetId": "2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad"
+        },
+        {
+          "artifactId": "a72d135e-342d-426d-9417-d75ee8f7eeff",
+          "artifactType": "Person",
+          "commentId": 16253989,
+          "targetId": "a72d135e-342d-426d-9417-d75ee8f7eeff"
+        },
+        {
+          "artifactId": "cea380a4-33cd-6e9c-af59-3313569b1a05",
+          "artifactType": "Person",
+          "commentId": 16253989,
+          "targetId": "cea380a4-33cd-6e9c-af59-3313569b1a05"
+        }
+      ],
+      "modifiedBy": {
+        "_links": {
+          "avatar": {
+            "href": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi"
+          }
+        },
+        "descriptor": "aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "displayName": "Anna Tran",
+        "id": "00d0fa42-4646-6dc6-a7a1-57f2cb433b8b",
+        "imageUrl": "https://dev.azure.com/gemseducation/_apis/GraphProfile/MemberAvatars/aad.MDBkMGZhNDItNDY0Ni03ZGM2LWE3YTEtNTdmMmNiNDMzYjhi",
+        "uniqueName": "anna.tran@varkey.education",
+        "url": "https://spsprodweu1.vssps.visualstudio.com/A0d178534-0c96-4493-90c4-2c8eba871b42/_apis/Identities/00d0fa42-4646-6dc6-a7a1-57f2cb433b8b"
+      },
+      "modifiedDate": "2026-09-07T13:20:05.717Z",
+      "renderedText": "",
+      "text": "<div><a href=\"#\" data-vss-mention=\"version:2.0,2fb9d723-ee0c-6a12-a65a-3f9b4ab804ad\">@Hammad Rauf</a>&nbsp;<a href=\"#\" data-vss-mention=\"version:2.0,a72d135e-342d-426d-9417-d75ee8f7eeff\">@Nagendra Chitturi</a>&nbsp;<a href=\"#\" data-vss-mention=\"version:2.0,cea380a4-33cd-6e9c-af59-3313569b1a05\">@Long Do</a> </div>",
+      "url": "https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/workItems/19358/comments/16253989",
+      "version": 1,
+      "workItemId": 19358
+    }
+  ],
+  "count": 5,
+  "totalCount": 5
+}

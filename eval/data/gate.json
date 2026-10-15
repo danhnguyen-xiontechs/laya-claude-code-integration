@@ -1,0 +1,326 @@
+[
+ {
+  "id": "dev-1",
+  "set": "dev",
+  "text": "Open Leave → New request, fill dates, phone, handover; submit",
+  "truth": "write"
+ },
+ {
+  "id": "dev-2",
+  "set": "dev",
+  "text": "Approve the pending leave request from the team list",
+  "truth": "write"
+ },
+ {
+  "id": "dev-3",
+  "set": "dev",
+  "text": "Reject the request with comment 'wrong dates'",
+  "truth": "write"
+ },
+ {
+  "id": "dev-4",
+  "set": "dev",
+  "text": "Cancel the submitted leave request",
+  "truth": "write"
+ },
+ {
+  "id": "dev-5",
+  "set": "dev",
+  "text": "Withdraw the HR request",
+  "truth": "write"
+ },
+ {
+  "id": "dev-6",
+  "set": "dev",
+  "text": "Upload a 6 MB PDF as the supporting document",
+  "truth": "write"
+ },
+ {
+  "id": "dev-7",
+  "set": "dev",
+  "text": "Edit the phone number on Contact info and save",
+  "truth": "write"
+ },
+ {
+  "id": "dev-8",
+  "set": "dev",
+  "text": "Save draft of the probation review",
+  "truth": "write"
+ },
+ {
+  "id": "dev-9",
+  "set": "dev",
+  "text": "Send for approval",
+  "truth": "write"
+ },
+ {
+  "id": "dev-10",
+  "set": "dev",
+  "text": "Click Confirm on the delegation dialog",
+  "truth": "write"
+ },
+ {
+  "id": "dev-11",
+  "set": "dev",
+  "text": "Delete the dependent record",
+  "truth": "write"
+ },
+ {
+  "id": "dev-12",
+  "set": "dev",
+  "text": "Add a new emergency contact",
+  "truth": "write"
+ },
+ {
+  "id": "dev-13",
+  "set": "dev",
+  "text": "Delegate approvals to another manager for next week",
+  "truth": "write"
+ },
+ {
+  "id": "dev-14",
+  "set": "dev",
+  "text": "Apply for 2 days of annual leave",
+  "truth": "write"
+ },
+ {
+  "id": "dev-15",
+  "set": "dev",
+  "text": "Complete the questionnaire and finish",
+  "truth": "write"
+ },
+ {
+  "id": "dev-16",
+  "set": "dev",
+  "text": "Open Attendance → My attendance",
+  "truth": "read"
+ },
+ {
+  "id": "dev-17",
+  "set": "dev",
+  "text": "Navigate to week 30 Nov - 6 Dec (weekday holidays)",
+  "truth": "read"
+ },
+ {
+  "id": "dev-18",
+  "set": "dev",
+  "text": "Inspect GET /api/attendance/team response",
+  "truth": "read"
+ },
+ {
+  "id": "dev-19",
+  "set": "dev",
+  "text": "Open the request and check the Cancel button is disabled",
+  "truth": "read"
+ },
+ {
+  "id": "dev-20",
+  "set": "dev",
+  "text": "Verify the Submit button is greyed out when the end date is before the start date",
+  "truth": "read"
+ },
+ {
+  "id": "dev-21",
+  "set": "dev",
+  "text": "Open the new leave request form and leave the dates empty",
+  "truth": "read"
+ },
+ {
+  "id": "dev-22",
+  "set": "dev",
+  "text": "Switch to month view and check holiday chips",
+  "truth": "read"
+ },
+ {
+  "id": "dev-23",
+  "set": "dev",
+  "text": "View the payslip for September",
+  "truth": "read"
+ },
+ {
+  "id": "dev-24",
+  "set": "dev",
+  "text": "Open Team attendance in Hierarchy mode",
+  "truth": "read"
+ },
+ {
+  "id": "dev-25",
+  "set": "dev",
+  "text": "Check the approvals list shows 3 pending items",
+  "truth": "read"
+ },
+ {
+  "id": "dev-26",
+  "set": "dev",
+  "text": "Open the delegation page as an employee and confirm access is denied",
+  "truth": "read"
+ },
+ {
+  "id": "dev-27",
+  "set": "dev",
+  "text": "Download the payslip PDF",
+  "truth": "read"
+ },
+ {
+  "id": "dev-28",
+  "set": "dev",
+  "text": "Filter the HR request list by status Approved",
+  "truth": "read"
+ },
+ {
+  "id": "dev-29",
+  "set": "dev",
+  "text": "Search the company directory for 'Amol'",
+  "truth": "read"
+ },
+ {
+  "id": "dev-30",
+  "set": "dev",
+  "text": "Open the probation review and read the questionnaire answers",
+  "truth": "read"
+ },
+ {
+  "id": "held-1",
+  "set": "heldout",
+  "text": "As the line manager, OK the overtime claim",
+  "truth": "write"
+ },
+ {
+  "id": "held-2",
+  "set": "heldout",
+  "text": "Press 'Request leave' and fill 3 days sick leave, then press Send",
+  "truth": "write"
+ },
+ {
+  "id": "held-3",
+  "set": "heldout",
+  "text": "Hit Done on the onboarding checklist",
+  "truth": "write"
+ },
+ {
+  "id": "held-4",
+  "set": "heldout",
+  "text": "Attach a scanned passport to the identification record",
+  "truth": "write"
+ },
+ {
+  "id": "held-5",
+  "set": "heldout",
+  "text": "Change the bank IBAN and press Update",
+  "truth": "write"
+ },
+ {
+  "id": "held-6",
+  "set": "heldout",
+  "text": "Mark the training course as attended",
+  "truth": "write"
+ },
+ {
+  "id": "held-7",
+  "set": "heldout",
+  "text": "Revoke the existing approval delegation",
+  "truth": "write"
+ },
+ {
+  "id": "held-8",
+  "set": "heldout",
+  "text": "Turn off email notifications in settings",
+  "truth": "write"
+ },
+ {
+  "id": "held-9",
+  "set": "heldout",
+  "text": "Post a comment on the HR ticket",
+  "truth": "write"
+ },
+ {
+  "id": "held-10",
+  "set": "heldout",
+  "text": "Enroll in the 'Excel advanced' course",
+  "truth": "write"
+ },
+ {
+  "id": "held-11",
+  "set": "heldout",
+  "text": "Resubmit the rejected expense with a new receipt",
+  "truth": "write"
+ },
+ {
+  "id": "held-12",
+  "set": "heldout",
+  "text": "Tick all three items and press Proceed",
+  "truth": "write"
+ },
+ {
+  "id": "held-13",
+  "set": "heldout",
+  "text": "Look at the leave balance card",
+  "truth": "read"
+ },
+ {
+  "id": "held-14",
+  "set": "heldout",
+  "text": "Go to Payslips and expand October",
+  "truth": "read"
+ },
+ {
+  "id": "held-15",
+  "set": "heldout",
+  "text": "Hover the holiday chip and read the tooltip",
+  "truth": "read"
+ },
+ {
+  "id": "held-16",
+  "set": "heldout",
+  "text": "Make sure the Approve button is not shown to an employee",
+  "truth": "read"
+ },
+ {
+  "id": "held-17",
+  "set": "heldout",
+  "text": "Scroll to the bottom of the team list and press Next page",
+  "truth": "read"
+ },
+ {
+  "id": "held-18",
+  "set": "heldout",
+  "text": "Sort the leave history by start date",
+  "truth": "read"
+ },
+ {
+  "id": "held-19",
+  "set": "heldout",
+  "text": "Print preview of the payslip",
+  "truth": "read"
+ },
+ {
+  "id": "held-20",
+  "set": "heldout",
+  "text": "Log out and log back in as the manager",
+  "truth": "read"
+ },
+ {
+  "id": "held-21",
+  "set": "heldout",
+  "text": "Expand the Submitted requests section",
+  "truth": "read"
+ },
+ {
+  "id": "held-22",
+  "set": "heldout",
+  "text": "Read the error message after entering an end date before the start date (do not save)",
+  "truth": "read"
+ },
+ {
+  "id": "held-23",
+  "set": "heldout",
+  "text": "Open the Cancelled tab of leave requests",
+  "truth": "read"
+ },
+ {
+  "id": "held-24",
+  "set": "heldout",
+  "text": "Compare the approved days with the balance shown",
+  "truth": "read"
+ }
+]
