@@ -716,6 +716,45 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Verdict: SHADOW.** The rule baseline is usable now with Jev off (0 false-parallel on the fixtures). Jev adds the direction of hidden dependencies, but it is overconfident on vague stories and unstable at low probability, so keep it as a logged suggestion only. **Limits:** hand-written synthetic fixtures labelled by the same author (Claude), 27 stories, no real ADO batch; regex extraction, no repository index. **Next:** run it on one real sprint batch from ADO, have a human label it, and compare manual / rules / rules + Jev (plan phase 2).
 <!-- END story-batch-planner -->
+<!-- BEGIN retry-loop-breaker -->
+## Retry Loop Breaker: Claude Code mod (plan 02, Jev optional)
+
+**Why:** Claude sometimes reruns the same failing test or build with nothing changed, wasting turns. Not every retry is waste (after an edit, after a network error, on a flaky test), so the mod must detect *no progress*, not just "this failed before".
+
+**How it works:**
+- **A Claude Code mod** (`retry-loop-breaker/`, function hooks, `tool.call` on Bash). Only plain validation commands are eligible (`npm test`, `dotnet test/build`, `pytest`, `go test`, `cargo test`, `tsc`, … plus a configurable list). Pipes, `&&`, redirects, env prefixes, deploy/git/data commands are never touched.
+- **After a failed run:** stores a small record per session (`$.state`): normalized command, error fingerprint (FNV hash of the error lines with times, durations, temp paths, hex and UUIDs masked), short summary, mutation epoch; TTL 30 min, at most 50 records. Raw logs are never kept.
+- **Before the next run:** same command + same fingerprint + same epoch, seen `maxIdenticalFailuresBeforeBlock` times (default 2) → in `enforce` mode returns `{ deny }` with a short reason and next step; in `observe` mode (the default) only logs `would_block`.
+- **What counts as a change:** a successful Edit/Write/NotebookEdit (from any agent), a Bash command that is not read-only by the engine's own check, or the user typing "rerun / try again / chạy lại". Transient errors (ECONNRESET, 429, 503, NuGet feed…) and flaky tests (seen both pass and fail) are never blocked. Permission denials, interrupts and background runs are not counted as failures.
+- **Jev only on ambiguity:** when the command is *similar* (token Jaccard ≥ 0.6, same runner) to one that already reached the threshold. Fixed enum `allow_retry | block_redundant_retry | uncertain_allow`, strict validation, 4 s timeout; blocks only on `block_redundant_retry` with p ≥ 0.8. Timeout, error or invalid output → allow.
+- **Main agent only** by default; `/retry-guard status` and `/retry-guard reset` (the installed API supports slash commands).
+- **Phase 0 checked on the installed build** (Claude Code 2.1.300, generated types 2.1.295): `tool.call` input is the tool's arguments plus `agentId` (absent on the main loop); a non-zero exit comes back as `isError: true` with `text` "Exit code N…"; returning `{ deny }` without calling `next` refuses the call and the tool never runs; `$.state` is session-scoped and survives hot reloads. `claude plugin validate` passes; `tsc` clean.
+
+**Quick test (small fixtures, not a pilot):**
+
+| Case (§12) | Result |
+|---|---|
+| Exact same failing test, no change | blocked on the 3rd run (threshold 2), on the 2nd with threshold 1 |
+| Same build, same compiler errors (elapsed time differs) | blocked |
+| Rerun after a successful edit | allowed |
+| Same command, different failure | allowed (count restarts) |
+| Transient network error | allowed |
+| Flaky test (fail → pass → fail) | allowed |
+| Near-duplicate, other test/project | Jev `allow_retry` 1.00, or not similar enough → allowed |
+| Near-duplicate, same test with an extra flag | Jev `block_redundant_retry` 0.95–0.99 |
+| Permission denial | not recorded, allowed |
+| Side-effect / compound command | ineligible, untouched |
+| Jev timeout / invalid JSON / out-of-enum / low confidence | allowed |
+| User asks for a retry | new epoch, allowed |
+| New session / other workspace / TTL expired | no leak |
+
+- 8 engine tests (`claude plugin test`, real engine) + 14 unit tests: all pass. **0 false blocks.** 4 real Jev calls, about 0.5–0.65 s each.
+- Not measured yet: precision/recall on real sessions, tokens or turns saved. The mod is **not installed** anywhere; default is `observe`.
+
+**Verdict: PILOT** (observe mode on real work first; enforce only after the would-block log shows ≥ 80% precision).
+
+**Limits:** the epoch is a proxy (an edit outside Claude's tools, e.g. in the IDE, is not seen; any unrelated edit unblocks); a command run through a script alias is not eligible; Jev sees only the two commands and a one-line error summary.
+<!-- END retry-loop-breaker -->
 
 ## 12. Overall conclusions
 
