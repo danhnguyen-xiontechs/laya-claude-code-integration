@@ -30,3 +30,19 @@ triage/v2/data/
 
 # web-test-jev-*: per-machine consent to send compact text to Jev
 .claude/skills/web-test-jev-*/jev.local.json
+
+laya-router-skill/
+laya-router/
+pip-cache/
+pxp/
+# du lieu noi bo pxp-ai / ADO: chi giu local (repo public)
+research/ado_wi_prs.json
+research/ab-1697/task.txt
+research/ab-1697/pr.diff
+research/ab-1697/review/
+research/ab-1697/runs/*/events.jsonl
+research/ab-1697/runs/*/agent.diff
+research/ab-1697/runs/*/*.xml
+research/ab-1697/runs/*/stderr.txt
+research/ab-1697/laya-serve*.log
+research/ab-1697/__pycache__/

@@ -1,0 +1,18 @@
+{
+ "config": "plain",
+ "run": 2,
+ "base": "6252ba6d2115881600ebbf8c441a8acbe483c8d6",
+ "extra_args": [],
+ "wall_s": 121,
+ "changed_files": [
+  "ai_agents/flows/assignment_results.py",
+  "ai_agents/flows/assignment_rubric.py",
+  "tests/unit/flows/test_assignment_results_routing.py",
+  "tests/unit/flows/test_assignment_rubric_routing.py"
+ ],
+ "semantic": {
+  "C1_results_excludes_rubric": true,
+  "C2_rubric_not_self_excluded": true,
+  "pass": true
+ }
+}

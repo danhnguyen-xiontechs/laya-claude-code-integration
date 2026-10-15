@@ -1,0 +1,22 @@
+{
+  "question": "What kind of software engineering request is this?",
+  "criteria": {
+    "bugfix": "Fix a defect: existing behaviour is wrong and must be corrected in code, usually with a regression test.",
+    "feature": "Add new functionality: a new endpoint, screen, flow or capability.",
+    "refactor": "Restructure existing code without changing its behaviour.",
+    "docs": "Write or update documentation, comments or prose only.",
+    "question": "Answer a question or explain code; no code changes.",
+    "infra": "Build, CI/CD, deployment, dependency or configuration change."
+  },
+  "min_prob": 0.5,
+  "profiles": {
+    "default":  {"tools": ["Read", "Edit", "Write", "Grep", "Glob", "Bash"], "mcp": {}, "no_skills": true},
+    "bugfix":   {"tools": ["Read", "Edit", "Write", "Grep", "Glob", "Bash"], "mcp": {}, "no_skills": true},
+    "feature":  {"tools": ["Read", "Edit", "Write", "Grep", "Glob", "Bash"], "mcp": {}, "no_skills": true},
+    "refactor": {"tools": ["Read", "Edit", "Write", "Grep", "Glob", "Bash"], "mcp": {}, "no_skills": true},
+    "infra":    {"tools": ["Read", "Edit", "Write", "Grep", "Glob", "Bash"], "mcp": {}, "no_skills": true},
+    "docs":     {"tools": ["Read", "Edit", "Write", "Grep", "Glob"], "mcp": {}, "no_skills": true},
+    "question": {"tools": ["Read", "Grep", "Glob"], "mcp": {}, "no_skills": true},
+    "full":     {}
+  }
+}

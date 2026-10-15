@@ -1,0 +1,1206 @@
+{
+ "request_only": [
+  {
+   "id": "1",
+   "expected": "haiku",
+   "ms": 1787,
+   "baseline": "haiku",
+   "complexity": 1.3443,
+   "reasoning": 0.065,
+   "security": 0.1867,
+   "risk": "medium"
+  },
+  {
+   "id": "2",
+   "expected": "haiku",
+   "ms": 1743,
+   "baseline": "haiku",
+   "complexity": 1.1195,
+   "reasoning": 0.08,
+   "security": 0.0902,
+   "risk": "medium"
+  },
+  {
+   "id": "3",
+   "expected": "haiku",
+   "ms": 1705,
+   "baseline": "sonnet",
+   "complexity": 1.1526,
+   "reasoning": 0.1048,
+   "security": 0.0892,
+   "risk": "medium"
+  },
+  {
+   "id": "4",
+   "expected": "haiku",
+   "ms": 1618,
+   "baseline": "haiku",
+   "complexity": 1.7542,
+   "reasoning": 0.0832,
+   "security": 0.162,
+   "risk": "low"
+  },
+  {
+   "id": "5",
+   "expected": "haiku",
+   "ms": 1704,
+   "baseline": "haiku",
+   "complexity": 1.6079,
+   "reasoning": 0.1014,
+   "security": 0.3812,
+   "risk": "medium"
+  },
+  {
+   "id": "6",
+   "expected": "haiku",
+   "ms": 1721,
+   "baseline": "haiku",
+   "complexity": 0.953,
+   "reasoning": 0.0697,
+   "security": 0.0915,
+   "risk": "low"
+  },
+  {
+   "id": "7",
+   "expected": "haiku",
+   "ms": 1646,
+   "baseline": "sonnet",
+   "complexity": 1.7907,
+   "reasoning": 0.2644,
+   "security": 0.3318,
+   "risk": "low"
+  },
+  {
+   "id": "8",
+   "expected": "haiku",
+   "ms": 1718,
+   "baseline": "haiku",
+   "complexity": 0.7086,
+   "reasoning": 0.0754,
+   "security": 0.1366,
+   "risk": "medium"
+  },
+  {
+   "id": "9",
+   "expected": "haiku",
+   "ms": 1805,
+   "baseline": "haiku",
+   "complexity": 1.0122,
+   "reasoning": 0.0762,
+   "security": 0.072,
+   "risk": "low"
+  },
+  {
+   "id": "10",
+   "expected": "haiku",
+   "ms": 1863,
+   "baseline": "haiku",
+   "complexity": 1.358,
+   "reasoning": 0.2148,
+   "security": 0.0771,
+   "risk": "medium"
+  },
+  {
+   "id": "11",
+   "expected": "haiku",
+   "ms": 1705,
+   "baseline": "haiku",
+   "complexity": 0.561,
+   "reasoning": 0.0724,
+   "security": 0.0891,
+   "risk": "low"
+  },
+  {
+   "id": "12",
+   "expected": "haiku",
+   "ms": 1722,
+   "baseline": "haiku",
+   "complexity": 0.7908,
+   "reasoning": 0.0876,
+   "security": 0.2848,
+   "risk": "low"
+  },
+  {
+   "id": "13",
+   "expected": "haiku",
+   "ms": 1666,
+   "baseline": "haiku",
+   "complexity": 1.5057,
+   "reasoning": 0.3373,
+   "security": 0.1121,
+   "risk": "medium"
+  },
+  {
+   "id": "14",
+   "expected": "haiku",
+   "ms": 1659,
+   "baseline": "haiku",
+   "complexity": 0.6485,
+   "reasoning": 0.1022,
+   "security": 0.0766,
+   "risk": "low"
+  },
+  {
+   "id": "15",
+   "expected": "haiku",
+   "ms": 1653,
+   "baseline": "opus",
+   "complexity": 1.7652,
+   "reasoning": 0.1556,
+   "security": 0.0893,
+   "risk": "low"
+  },
+  {
+   "id": "16",
+   "expected": "haiku",
+   "ms": 1648,
+   "baseline": "haiku",
+   "complexity": 0.7597,
+   "reasoning": 0.0864,
+   "security": 0.1429,
+   "risk": "low"
+  },
+  {
+   "id": "17",
+   "expected": "haiku",
+   "ms": 1742,
+   "baseline": "haiku",
+   "complexity": 0.3851,
+   "reasoning": 0.06,
+   "security": 0.0889,
+   "risk": "low"
+  },
+  {
+   "id": "18",
+   "expected": "haiku",
+   "ms": 1701,
+   "baseline": "sonnet",
+   "complexity": 1.4422,
+   "reasoning": 0.0788,
+   "security": 0.2594,
+   "risk": "medium"
+  },
+  {
+   "id": "19",
+   "expected": "haiku",
+   "ms": 1710,
+   "baseline": "sonnet",
+   "complexity": 1.4766,
+   "reasoning": 0.2051,
+   "security": 0.1109,
+   "risk": "medium"
+  },
+  {
+   "id": "20",
+   "expected": "haiku",
+   "ms": 1709,
+   "baseline": "opus",
+   "complexity": 1.4333,
+   "reasoning": 0.1563,
+   "security": 0.3611,
+   "risk": "medium"
+  },
+  {
+   "id": "21",
+   "expected": "sonnet",
+   "ms": 1841,
+   "baseline": "sonnet",
+   "complexity": 1.7383,
+   "reasoning": 0.7904,
+   "security": 0.3358,
+   "risk": "medium"
+  },
+  {
+   "id": "22",
+   "expected": "sonnet",
+   "ms": 1744,
+   "baseline": "sonnet",
+   "complexity": 1.2687,
+   "reasoning": 0.2423,
+   "security": 0.1017,
+   "risk": "medium"
+  },
+  {
+   "id": "23",
+   "expected": "sonnet",
+   "ms": 1884,
+   "baseline": "haiku",
+   "complexity": 1.7215,
+   "reasoning": 0.047,
+   "security": 0.0583,
+   "risk": "medium"
+  },
+  {
+   "id": "24",
+   "expected": "sonnet",
+   "ms": 1686,
+   "baseline": "sonnet",
+   "complexity": 1.9627,
+   "reasoning": 0.7055,
+   "security": 0.2029,
+   "risk": "medium"
+  },
+  {
+   "id": "25",
+   "expected": "sonnet",
+   "ms": 1745,
+   "baseline": "sonnet",
+   "complexity": 1.66,
+   "reasoning": 0.4784,
+   "security": 0.3656,
+   "risk": "medium"
+  },
+  {
+   "id": "26",
+   "expected": "sonnet",
+   "ms": 1708,
+   "baseline": "sonnet",
+   "complexity": 1.0894,
+   "reasoning": 0.0311,
+   "security": 0.7395,
+   "risk": "low"
+  },
+  {
+   "id": "27",
+   "expected": "sonnet",
+   "ms": 1909,
+   "baseline": "haiku",
+   "complexity": 1.5757,
+   "reasoning": 0.0276,
+   "security": 0.0788,
+   "risk": "low"
+  },
+  {
+   "id": "28",
+   "expected": "sonnet",
+   "ms": 1736,
+   "baseline": "sonnet",
+   "complexity": 1.4837,
+   "reasoning": 0.6679,
+   "security": 0.1652,
+   "risk": "medium"
+  },
+  {
+   "id": "29",
+   "expected": "sonnet",
+   "ms": 1787,
+   "baseline": "sonnet",
+   "complexity": 1.7693,
+   "reasoning": 0.1587,
+   "security": 0.5736,
+   "risk": "medium"
+  },
+  {
+   "id": "30",
+   "expected": "sonnet",
+   "ms": 1734,
+   "baseline": "opus",
+   "complexity": 1.7603,
+   "reasoning": 0.2978,
+   "security": 0.3214,
+   "risk": "medium"
+  },
+  {
+   "id": "31",
+   "expected": "sonnet",
+   "ms": 1780,
+   "baseline": "opus",
+   "complexity": 1.8654,
+   "reasoning": 0.089,
+   "security": 0.2426,
+   "risk": "medium"
+  },
+  {
+   "id": "32",
+   "expected": "sonnet",
+   "ms": 1820,
+   "baseline": "sonnet",
+   "complexity": 1.4379,
+   "reasoning": 0.0829,
+   "security": 0.0721,
+   "risk": "low"
+  },
+  {
+   "id": "33",
+   "expected": "sonnet",
+   "ms": 1732,
+   "baseline": "opus",
+   "complexity": 1.8213,
+   "reasoning": 0.1472,
+   "security": 0.7176,
+   "risk": "medium"
+  },
+  {
+   "id": "34",
+   "expected": "sonnet",
+   "ms": 1750,
+   "baseline": "opus",
+   "complexity": 1.6511,
+   "reasoning": 0.7069,
+   "security": 0.4818,
+   "risk": "medium"
+  },
+  {
+   "id": "35",
+   "expected": "sonnet",
+   "ms": 1722,
+   "baseline": "sonnet",
+   "complexity": 1.6186,
+   "reasoning": 0.3911,
+   "security": 0.203,
+   "risk": "medium"
+  },
+  {
+   "id": "36",
+   "expected": "sonnet",
+   "ms": 1771,
+   "baseline": "sonnet",
+   "complexity": 1.7892,
+   "reasoning": 0.3718,
+   "security": 0.2172,
+   "risk": "medium"
+  },
+  {
+   "id": "37",
+   "expected": "sonnet",
+   "ms": 1834,
+   "baseline": "sonnet",
+   "complexity": 1.353,
+   "reasoning": 0.0346,
+   "security": 0.1348,
+   "risk": "low"
+  },
+  {
+   "id": "38",
+   "expected": "sonnet",
+   "ms": 1707,
+   "baseline": "sonnet",
+   "complexity": 1.7909,
+   "reasoning": 0.5457,
+   "security": 0.2601,
+   "risk": "medium"
+  },
+  {
+   "id": "39",
+   "expected": "sonnet",
+   "ms": 1674,
+   "baseline": "sonnet",
+   "complexity": 1.5274,
+   "reasoning": 0.0809,
+   "security": 0.2741,
+   "risk": "medium"
+  },
+  {
+   "id": "40",
+   "expected": "sonnet",
+   "ms": 1713,
+   "baseline": "sonnet",
+   "complexity": 1.6515,
+   "reasoning": 0.7312,
+   "security": 0.3449,
+   "risk": "medium"
+  },
+  {
+   "id": "41",
+   "expected": "opus",
+   "ms": 1901,
+   "baseline": "opus",
+   "complexity": 2.1382,
+   "reasoning": 0.6719,
+   "security": 0.2461,
+   "risk": "medium"
+  },
+  {
+   "id": "42",
+   "expected": "opus",
+   "ms": 1992,
+   "baseline": "opus",
+   "complexity": 1.8737,
+   "reasoning": 0.1151,
+   "security": 0.2855,
+   "risk": "high"
+  },
+  {
+   "id": "43",
+   "expected": "opus",
+   "ms": 1897,
+   "baseline": "opus",
+   "complexity": 1.7941,
+   "reasoning": 0.9185,
+   "security": 0.3338,
+   "risk": "medium"
+  },
+  {
+   "id": "44",
+   "expected": "opus",
+   "ms": 1809,
+   "baseline": "opus",
+   "complexity": 1.9824,
+   "reasoning": 0.8106,
+   "security": 0.8409,
+   "risk": "medium"
+  },
+  {
+   "id": "45",
+   "expected": "opus",
+   "ms": 2035,
+   "baseline": "opus",
+   "complexity": 2.0023,
+   "reasoning": 0.1593,
+   "security": 0.2475,
+   "risk": "medium"
+  },
+  {
+   "id": "46",
+   "expected": "opus",
+   "ms": 1913,
+   "baseline": "opus",
+   "complexity": 2.098,
+   "reasoning": 0.755,
+   "security": 0.316,
+   "risk": "medium"
+  },
+  {
+   "id": "47",
+   "expected": "opus",
+   "ms": 1930,
+   "baseline": "opus",
+   "complexity": 1.9353,
+   "reasoning": 0.7847,
+   "security": 0.1134,
+   "risk": "medium"
+  },
+  {
+   "id": "48",
+   "expected": "opus",
+   "ms": 1818,
+   "baseline": "opus",
+   "complexity": 2.115,
+   "reasoning": 0.9152,
+   "security": 0.1779,
+   "risk": "medium"
+  },
+  {
+   "id": "49",
+   "expected": "opus",
+   "ms": 1828,
+   "baseline": "sonnet",
+   "complexity": 2.0996,
+   "reasoning": 0.7183,
+   "security": 0.2403,
+   "risk": "medium"
+  },
+  {
+   "id": "50",
+   "expected": "opus",
+   "ms": 1894,
+   "baseline": "opus",
+   "complexity": 2.1113,
+   "reasoning": 0.7571,
+   "security": 0.102,
+   "risk": "medium"
+  },
+  {
+   "id": "51",
+   "expected": "opus",
+   "ms": 1924,
+   "baseline": "opus",
+   "complexity": 1.8692,
+   "reasoning": 0.4506,
+   "security": 0.1865,
+   "risk": "medium"
+  },
+  {
+   "id": "52",
+   "expected": "opus",
+   "ms": 1870,
+   "baseline": "opus",
+   "complexity": 2.1291,
+   "reasoning": 0.7858,
+   "security": 0.6884,
+   "risk": "medium"
+  },
+  {
+   "id": "53",
+   "expected": "opus",
+   "ms": 1821,
+   "baseline": "opus",
+   "complexity": 2.1916,
+   "reasoning": 0.5292,
+   "security": 0.628,
+   "risk": "medium"
+  },
+  {
+   "id": "54",
+   "expected": "opus",
+   "ms": 1945,
+   "baseline": "opus",
+   "complexity": 1.9775,
+   "reasoning": 0.5549,
+   "security": 0.1151,
+   "risk": "medium"
+  },
+  {
+   "id": "55",
+   "expected": "opus",
+   "ms": 1791,
+   "baseline": "opus",
+   "complexity": 2.0123,
+   "reasoning": 0.8184,
+   "security": 0.6735,
+   "risk": "medium"
+  },
+  {
+   "id": "56",
+   "expected": "opus",
+   "ms": 1786,
+   "baseline": "opus",
+   "complexity": 2.1777,
+   "reasoning": 0.6603,
+   "security": 0.2357,
+   "risk": "medium"
+  },
+  {
+   "id": "57",
+   "expected": "opus",
+   "ms": 1852,
+   "baseline": "opus",
+   "complexity": 2.156,
+   "reasoning": 0.9025,
+   "security": 0.388,
+   "risk": "medium"
+  },
+  {
+   "id": "58",
+   "expected": "opus",
+   "ms": 1918,
+   "baseline": "opus",
+   "complexity": 2.055,
+   "reasoning": 0.4323,
+   "security": 0.1815,
+   "risk": "medium"
+  },
+  {
+   "id": "59",
+   "expected": "opus",
+   "ms": 1895,
+   "baseline": "opus",
+   "complexity": 2.2569,
+   "reasoning": 0.9056,
+   "security": 0.3165,
+   "risk": "medium"
+  },
+  {
+   "id": "60",
+   "expected": "opus",
+   "ms": 1802,
+   "baseline": "opus",
+   "complexity": 1.8623,
+   "reasoning": 0.719,
+   "security": 0.2927,
+   "risk": "medium"
+  }
+ ],
+ "request_plus_signals": [
+  {
+   "id": "1",
+   "expected": "haiku",
+   "ms": 2053,
+   "baseline": "haiku",
+   "complexity": 1.0951,
+   "reasoning": 0.4076,
+   "security": 0.1785,
+   "risk": "medium"
+  },
+  {
+   "id": "2",
+   "expected": "haiku",
+   "ms": 2061,
+   "baseline": "haiku",
+   "complexity": 1.0569,
+   "reasoning": 0.2165,
+   "security": 0.1168,
+   "risk": "medium"
+  },
+  {
+   "id": "3",
+   "expected": "haiku",
+   "ms": 2005,
+   "baseline": "haiku",
+   "complexity": 0.9751,
+   "reasoning": 0.6538,
+   "security": 0.1019,
+   "risk": "medium"
+  },
+  {
+   "id": "4",
+   "expected": "haiku",
+   "ms": 1967,
+   "baseline": "haiku",
+   "complexity": 1.3949,
+   "reasoning": 0.1503,
+   "security": 0.1204,
+   "risk": "low"
+  },
+  {
+   "id": "5",
+   "expected": "haiku",
+   "ms": 1978,
+   "baseline": "haiku",
+   "complexity": 1.3446,
+   "reasoning": 0.2633,
+   "security": 0.2856,
+   "risk": "low"
+  },
+  {
+   "id": "6",
+   "expected": "haiku",
+   "ms": 2002,
+   "baseline": "haiku",
+   "complexity": 0.8968,
+   "reasoning": 0.2379,
+   "security": 0.1045,
+   "risk": "low"
+  },
+  {
+   "id": "7",
+   "expected": "haiku",
+   "ms": 2026,
+   "baseline": "sonnet",
+   "complexity": 1.153,
+   "reasoning": 0.314,
+   "security": 0.1877,
+   "risk": "low"
+  },
+  {
+   "id": "8",
+   "expected": "haiku",
+   "ms": 1988,
+   "baseline": "haiku",
+   "complexity": 0.8594,
+   "reasoning": 0.2388,
+   "security": 0.1034,
+   "risk": "medium"
+  },
+  {
+   "id": "9",
+   "expected": "haiku",
+   "ms": 2018,
+   "baseline": "haiku",
+   "complexity": 0.7237,
+   "reasoning": 0.1887,
+   "security": 0.061,
+   "risk": "low"
+  },
+  {
+   "id": "10",
+   "expected": "haiku",
+   "ms": 2098,
+   "baseline": "haiku",
+   "complexity": 1.0735,
+   "reasoning": 0.6618,
+   "security": 0.0702,
+   "risk": "medium"
+  },
+  {
+   "id": "11",
+   "expected": "haiku",
+   "ms": 2022,
+   "baseline": "haiku",
+   "complexity": 0.5324,
+   "reasoning": 0.0768,
+   "security": 0.0845,
+   "risk": "low"
+  },
+  {
+   "id": "12",
+   "expected": "haiku",
+   "ms": 1985,
+   "baseline": "haiku",
+   "complexity": 0.8031,
+   "reasoning": 0.2111,
+   "security": 0.2036,
+   "risk": "low"
+  },
+  {
+   "id": "13",
+   "expected": "haiku",
+   "ms": 2019,
+   "baseline": "haiku",
+   "complexity": 1.3399,
+   "reasoning": 0.3447,
+   "security": 0.1002,
+   "risk": "low"
+  },
+  {
+   "id": "14",
+   "expected": "haiku",
+   "ms": 2089,
+   "baseline": "haiku",
+   "complexity": 0.7153,
+   "reasoning": 0.5826,
+   "security": 0.0827,
+   "risk": "low"
+  },
+  {
+   "id": "15",
+   "expected": "haiku",
+   "ms": 2031,
+   "baseline": "haiku",
+   "complexity": 1.5074,
+   "reasoning": 0.2381,
+   "security": 0.0955,
+   "risk": "low"
+  },
+  {
+   "id": "16",
+   "expected": "haiku",
+   "ms": 2025,
+   "baseline": "haiku",
+   "complexity": 0.8048,
+   "reasoning": 0.1886,
+   "security": 0.1293,
+   "risk": "medium"
+  },
+  {
+   "id": "17",
+   "expected": "haiku",
+   "ms": 2039,
+   "baseline": "haiku",
+   "complexity": 0.8307,
+   "reasoning": 0.3162,
+   "security": 0.0941,
+   "risk": "low"
+  },
+  {
+   "id": "18",
+   "expected": "haiku",
+   "ms": 1988,
+   "baseline": "sonnet",
+   "complexity": 1.3623,
+   "reasoning": 0.8824,
+   "security": 0.2571,
+   "risk": "medium"
+  },
+  {
+   "id": "19",
+   "expected": "haiku",
+   "ms": 2026,
+   "baseline": "sonnet",
+   "complexity": 1.2494,
+   "reasoning": 0.3635,
+   "security": 0.0894,
+   "risk": "low"
+  },
+  {
+   "id": "20",
+   "expected": "haiku",
+   "ms": 2012,
+   "baseline": "haiku",
+   "complexity": 1.2975,
+   "reasoning": 0.5328,
+   "security": 0.2729,
+   "risk": "medium"
+  },
+  {
+   "id": "21",
+   "expected": "sonnet",
+   "ms": 2090,
+   "baseline": "sonnet",
+   "complexity": 1.6858,
+   "reasoning": 0.602,
+   "security": 0.2972,
+   "risk": "medium"
+  },
+  {
+   "id": "22",
+   "expected": "sonnet",
+   "ms": 2028,
+   "baseline": "sonnet",
+   "complexity": 1.1629,
+   "reasoning": 0.4936,
+   "security": 0.1028,
+   "risk": "low"
+  },
+  {
+   "id": "23",
+   "expected": "sonnet",
+   "ms": 2121,
+   "baseline": "haiku",
+   "complexity": 1.6451,
+   "reasoning": 0.2859,
+   "security": 0.0419,
+   "risk": "low"
+  },
+  {
+   "id": "24",
+   "expected": "sonnet",
+   "ms": 1995,
+   "baseline": "sonnet",
+   "complexity": 1.7693,
+   "reasoning": 0.7733,
+   "security": 0.1193,
+   "risk": "medium"
+  },
+  {
+   "id": "25",
+   "expected": "sonnet",
+   "ms": 2032,
+   "baseline": "sonnet",
+   "complexity": 1.4922,
+   "reasoning": 0.3168,
+   "security": 0.173,
+   "risk": "medium"
+  },
+  {
+   "id": "26",
+   "expected": "sonnet",
+   "ms": 1990,
+   "baseline": "sonnet",
+   "complexity": 1.38,
+   "reasoning": 0.1759,
+   "security": 0.8229,
+   "risk": "low"
+  },
+  {
+   "id": "27",
+   "expected": "sonnet",
+   "ms": 2163,
+   "baseline": "haiku",
+   "complexity": 1.6143,
+   "reasoning": 0.0746,
+   "security": 0.0679,
+   "risk": "low"
+  },
+  {
+   "id": "28",
+   "expected": "sonnet",
+   "ms": 2008,
+   "baseline": "sonnet",
+   "complexity": 1.5139,
+   "reasoning": 0.8337,
+   "security": 0.1114,
+   "risk": "medium"
+  },
+  {
+   "id": "29",
+   "expected": "sonnet",
+   "ms": 2061,
+   "baseline": "sonnet",
+   "complexity": 1.5008,
+   "reasoning": 0.7059,
+   "security": 0.3313,
+   "risk": "medium"
+  },
+  {
+   "id": "30",
+   "expected": "sonnet",
+   "ms": 2029,
+   "baseline": "opus",
+   "complexity": 1.5429,
+   "reasoning": 0.8025,
+   "security": 0.2549,
+   "risk": "medium"
+  },
+  {
+   "id": "31",
+   "expected": "sonnet",
+   "ms": 2033,
+   "baseline": "sonnet",
+   "complexity": 1.8679,
+   "reasoning": 0.2184,
+   "security": 0.1628,
+   "risk": "medium"
+  },
+  {
+   "id": "32",
+   "expected": "sonnet",
+   "ms": 2084,
+   "baseline": "sonnet",
+   "complexity": 1.2035,
+   "reasoning": 0.2617,
+   "security": 0.0709,
+   "risk": "low"
+  },
+  {
+   "id": "33",
+   "expected": "sonnet",
+   "ms": 2032,
+   "baseline": "opus",
+   "complexity": 1.7988,
+   "reasoning": 0.2093,
+   "security": 0.6493,
+   "risk": "medium"
+  },
+  {
+   "id": "34",
+   "expected": "sonnet",
+   "ms": 2048,
+   "baseline": "opus",
+   "complexity": 1.5023,
+   "reasoning": 0.8771,
+   "security": 0.3972,
+   "risk": "medium"
+  },
+  {
+   "id": "35",
+   "expected": "sonnet",
+   "ms": 2021,
+   "baseline": "opus",
+   "complexity": 1.6189,
+   "reasoning": 0.4077,
+   "security": 0.1853,
+   "risk": "medium"
+  },
+  {
+   "id": "36",
+   "expected": "sonnet",
+   "ms": 2027,
+   "baseline": "sonnet",
+   "complexity": 1.6112,
+   "reasoning": 0.628,
+   "security": 0.1675,
+   "risk": "medium"
+  },
+  {
+   "id": "37",
+   "expected": "sonnet",
+   "ms": 2081,
+   "baseline": "sonnet",
+   "complexity": 1.6623,
+   "reasoning": 0.1712,
+   "security": 0.1302,
+   "risk": "medium"
+  },
+  {
+   "id": "38",
+   "expected": "sonnet",
+   "ms": 2018,
+   "baseline": "sonnet",
+   "complexity": 1.6788,
+   "reasoning": 0.5996,
+   "security": 0.1767,
+   "risk": "medium"
+  },
+  {
+   "id": "39",
+   "expected": "sonnet",
+   "ms": 2001,
+   "baseline": "sonnet",
+   "complexity": 1.3563,
+   "reasoning": 0.8329,
+   "security": 0.2213,
+   "risk": "medium"
+  },
+  {
+   "id": "40",
+   "expected": "sonnet",
+   "ms": 2005,
+   "baseline": "sonnet",
+   "complexity": 1.5533,
+   "reasoning": 0.633,
+   "security": 0.2683,
+   "risk": "medium"
+  },
+  {
+   "id": "41",
+   "expected": "opus",
+   "ms": 2185,
+   "baseline": "opus",
+   "complexity": 2.1108,
+   "reasoning": 0.5828,
+   "security": 0.1721,
+   "risk": "medium"
+  },
+  {
+   "id": "42",
+   "expected": "opus",
+   "ms": 2241,
+   "baseline": "opus",
+   "complexity": 1.7432,
+   "reasoning": 0.1964,
+   "security": 0.1916,
+   "risk": "high"
+  },
+  {
+   "id": "43",
+   "expected": "opus",
+   "ms": 2146,
+   "baseline": "opus",
+   "complexity": 1.87,
+   "reasoning": 0.9715,
+   "security": 0.1946,
+   "risk": "medium"
+  },
+  {
+   "id": "44",
+   "expected": "opus",
+   "ms": 2054,
+   "baseline": "opus",
+   "complexity": 2.0289,
+   "reasoning": 0.8217,
+   "security": 0.8007,
+   "risk": "medium"
+  },
+  {
+   "id": "45",
+   "expected": "opus",
+   "ms": 2254,
+   "baseline": "opus",
+   "complexity": 2.0795,
+   "reasoning": 0.2646,
+   "security": 0.1715,
+   "risk": "high"
+  },
+  {
+   "id": "46",
+   "expected": "opus",
+   "ms": 2139,
+   "baseline": "opus",
+   "complexity": 2.0989,
+   "reasoning": 0.8106,
+   "security": 0.2132,
+   "risk": "medium"
+  },
+  {
+   "id": "47",
+   "expected": "opus",
+   "ms": 2151,
+   "baseline": "opus",
+   "complexity": 1.9764,
+   "reasoning": 0.6694,
+   "security": 0.0857,
+   "risk": "medium"
+  },
+  {
+   "id": "48",
+   "expected": "opus",
+   "ms": 2078,
+   "baseline": "opus",
+   "complexity": 2.1138,
+   "reasoning": 0.9504,
+   "security": 0.1591,
+   "risk": "medium"
+  },
+  {
+   "id": "49",
+   "expected": "opus",
+   "ms": 2067,
+   "baseline": "sonnet",
+   "complexity": 2.1275,
+   "reasoning": 0.7963,
+   "security": 0.2484,
+   "risk": "medium"
+  },
+  {
+   "id": "50",
+   "expected": "opus",
+   "ms": 2139,
+   "baseline": "opus",
+   "complexity": 2.0854,
+   "reasoning": 0.8248,
+   "security": 0.0955,
+   "risk": "medium"
+  },
+  {
+   "id": "51",
+   "expected": "opus",
+   "ms": 2195,
+   "baseline": "opus",
+   "complexity": 1.8355,
+   "reasoning": 0.1698,
+   "security": 0.1506,
+   "risk": "medium"
+  },
+  {
+   "id": "52",
+   "expected": "opus",
+   "ms": 2115,
+   "baseline": "opus",
+   "complexity": 1.9637,
+   "reasoning": 0.8442,
+   "security": 0.6648,
+   "risk": "medium"
+  },
+  {
+   "id": "53",
+   "expected": "opus",
+   "ms": 2041,
+   "baseline": "opus",
+   "complexity": 2.2881,
+   "reasoning": 0.6414,
+   "security": 0.5878,
+   "risk": "medium"
+  },
+  {
+   "id": "54",
+   "expected": "opus",
+   "ms": 2199,
+   "baseline": "opus",
+   "complexity": 1.8814,
+   "reasoning": 0.8087,
+   "security": 0.0877,
+   "risk": "medium"
+  },
+  {
+   "id": "55",
+   "expected": "opus",
+   "ms": 2040,
+   "baseline": "opus",
+   "complexity": 1.98,
+   "reasoning": 0.8613,
+   "security": 0.2814,
+   "risk": "medium"
+  },
+  {
+   "id": "56",
+   "expected": "opus",
+   "ms": 2046,
+   "baseline": "opus",
+   "complexity": 2.0628,
+   "reasoning": 0.7754,
+   "security": 0.1442,
+   "risk": "medium"
+  },
+  {
+   "id": "57",
+   "expected": "opus",
+   "ms": 2139,
+   "baseline": "opus",
+   "complexity": 1.9877,
+   "reasoning": 0.9383,
+   "security": 0.3541,
+   "risk": "medium"
+  },
+  {
+   "id": "58",
+   "expected": "opus",
+   "ms": 2237,
+   "baseline": "opus",
+   "complexity": 2.0469,
+   "reasoning": 0.4859,
+   "security": 0.1343,
+   "risk": "medium"
+  },
+  {
+   "id": "59",
+   "expected": "opus",
+   "ms": 2179,
+   "baseline": "opus",
+   "complexity": 2.1587,
+   "reasoning": 1.0,
+   "security": 0.1845,
+   "risk": "medium"
+  },
+  {
+   "id": "60",
+   "expected": "opus",
+   "ms": 2128,
+   "baseline": "opus",
+   "complexity": 1.8407,
+   "reasoning": 0.6798,
+   "security": 0.1513,
+   "risk": "medium"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{"t": 1791223793.105424, "file": "ai_agents\\flows\\assignment_rubric.py", "p": 0.2122, "ms": 1012, "decision": "allow"}
+{"t": 1791223793.7040036, "file": "ai_agents\\flows\\assignment_results.py", "p": 0.2607, "ms": 1393, "decision": "allow"}
+{"t": 1791223794.419157, "file": "tests\\unit\\flows\\test_assignment_rubric_routing.py", "p": 0.7968, "ms": 1668, "decision": "allow"}
+{"t": 1791223795.0923033, "file": "tests\\unit\\flows\\test_assignment_results_routing.py", "p": 0.539, "ms": 1969, "decision": "allow"}
+{"t": 1791223795.656721, "file": "prompts\\intent_classifier.system.v1.md", "p": 0.1054, "ms": 2363, "decision": "deny"}
+{"t": 1791223807.6188946, "file": "ai_agents\\core\\master_agent.py", "p": 0.1356, "ms": 1048, "decision": "deny"}
+{"t": 1791223808.3923054, "file": "tests\\unit\\flows\\test_assignment_sibling_tables.py", "p": 0.0971, "ms": 1270, "decision": "deny"}

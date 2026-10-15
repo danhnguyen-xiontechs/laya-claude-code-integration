@@ -1,0 +1,1031 @@
+[
+ {
+  "name": "launcher-1",
+  "config": "launcher",
+  "wall_s": 183,
+  "cost": 0.7013854000000002,
+  "turns": 26,
+  "error": false,
+  "in": 32,
+  "cache_r": 583727,
+  "cache_w": 44194,
+  "out": 11548,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 4,
+   "Glob": 2,
+   "Read": 6,
+   "Edit": 7,
+   "Bash": 6
+  },
+  "reads": 6,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 7,
+   "total": 7
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "launcher-2",
+  "config": "launcher",
+  "wall_s": 192,
+  "cost": 0.8446140000000001,
+  "turns": 28,
+  "error": false,
+  "in": 40,
+  "cache_r": 784490,
+  "cache_w": 49642,
+  "out": 14521,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 8,
+   "Read": 8,
+   "Grep": 5,
+   "Edit": 6
+  },
+  "reads": 8,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "launcher-3",
+  "config": "launcher",
+  "wall_s": 208,
+  "cost": 0.7621593999999999,
+  "turns": 27,
+  "error": false,
+  "in": 38,
+  "cache_r": 698597,
+  "cache_w": 45026,
+  "out": 13104,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 15,
+   "Grep": 2,
+   "Edit": 9
+  },
+  "reads": 0,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "launcher-4",
+  "config": "launcher",
+  "wall_s": 201,
+  "cost": 0.7278533999999999,
+  "turns": 26,
+  "error": false,
+  "in": 42,
+  "cache_r": 756487,
+  "cache_w": 43086,
+  "out": 11585,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 16,
+   "Grep": 1,
+   "Edit": 8
+  },
+  "reads": 0,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 8,
+   "total": 8
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "launcher-5",
+  "config": "launcher",
+  "wall_s": 261,
+  "cost": 0.8942125999999999,
+  "turns": 27,
+  "error": false,
+  "in": 36,
+  "cache_r": 762923,
+  "cache_w": 53593,
+  "out": 15637,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 13,
+   "Read": 6,
+   "Edit": 7
+  },
+  "reads": 6,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 7,
+   "total": 7
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "launcher-gate-1",
+  "config": "launcher-gate",
+  "wall_s": 115,
+  "cost": 0.596247,
+  "turns": 22,
+  "error": false,
+  "in": 26,
+  "cache_r": 454215,
+  "cache_w": 42440,
+  "out": 8289,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 4,
+   "Glob": 1,
+   "Read": 6,
+   "Edit": 5,
+   "Bash": 5
+  },
+  "reads": 6,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 2,
+  "gate_deny_pr": 0,
+  "gate_ms": 1390
+ },
+ {
+  "name": "launcher-gate-2",
+  "config": "launcher-gate",
+  "wall_s": 220,
+  "cost": 0.7702081999999999,
+  "turns": 30,
+  "error": false,
+  "in": 42,
+  "cache_r": 800161,
+  "cache_w": 45146,
+  "out": 12442,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 11,
+   "Read": 7,
+   "Grep": 6,
+   "Edit": 5
+  },
+  "reads": 7,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 3,
+  "gate_deny_pr": 0,
+  "gate_ms": 1393
+ },
+ {
+  "name": "launcher-gate-3",
+  "config": "launcher-gate",
+  "wall_s": 291,
+  "cost": 0.8222346,
+  "turns": 35,
+  "error": false,
+  "in": 52,
+  "cache_r": 906933,
+  "cache_w": 42955,
+  "out": 14850,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Bash": 13,
+   "Read": 8,
+   "Grep": 4,
+   "Edit": 9
+  },
+  "reads": 8,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 7,
+   "total": 7
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 4,
+  "gate_deny_pr": 0,
+  "gate_ms": 1124
+ },
+ {
+  "name": "launcher-gate-4",
+  "config": "launcher-gate",
+  "wall_s": 139,
+  "cost": 0.6066191999999999,
+  "turns": 27,
+  "error": false,
+  "in": 32,
+  "cache_r": 532276,
+  "cache_w": 38377,
+  "out": 9651,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 6,
+   "Glob": 2,
+   "Read": 6,
+   "Edit": 6,
+   "Bash": 6
+  },
+  "reads": 6,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 2,
+  "gate_deny_pr": 0,
+  "gate_ms": 1158
+ },
+ {
+  "name": "launcher-gate-5",
+  "config": "launcher-gate",
+  "wall_s": 164,
+  "cost": 0.7105111999999999,
+  "turns": 27,
+  "error": false,
+  "in": 38,
+  "cache_r": 726736,
+  "cache_w": 43964,
+  "out": 10665,
+  "n_tools_schema": 6,
+  "n_mcp": 0,
+  "n_slash": 0,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 6,
+   "Read": 7,
+   "Edit": 6,
+   "Bash": 7
+  },
+  "reads": 7,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": "bugfix",
+  "intent_p": 0.6013,
+  "gate_deny": 3,
+  "gate_deny_pr": 0,
+  "gate_ms": 1292
+ },
+ {
+  "name": "mcp-1",
+  "config": "mcp",
+  "wall_s": 86,
+  "cost": 0.4802156000000001,
+  "turns": 23,
+  "error": false,
+  "in": 28,
+  "cache_r": 744338,
+  "cache_w": 24277,
+  "out": 6851,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__laya-router__laya_decide": 1,
+   "Grep": 3,
+   "Glob": 2,
+   "Read": 5,
+   "Edit": 5,
+   "PowerShell": 2,
+   "Bash": 3
+  },
+  "reads": 5,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "mcp-2",
+  "config": "mcp",
+  "wall_s": 135,
+  "cost": 0.7301514000000001,
+  "turns": 24,
+  "error": false,
+  "in": 34,
+  "cache_r": 910337,
+  "cache_w": 48961,
+  "out": 7813,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__laya-router__laya_decide": 1,
+   "Grep": 3,
+   "Glob": 1,
+   "Read": 5,
+   "Edit": 5,
+   "PowerShell": 2,
+   "Bash": 5
+  },
+  "reads": 5,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "mcp-3",
+  "config": "mcp",
+  "wall_s": 186,
+  "cost": 0.7102502,
+  "turns": 23,
+  "error": false,
+  "in": 30,
+  "cache_r": 784951,
+  "cache_w": 48945,
+  "out": 8079,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__laya-router__laya_decide": 1,
+   "Grep": 3,
+   "Glob": 1,
+   "Read": 4,
+   "Edit": 6,
+   "PowerShell": 1,
+   "Bash": 5
+  },
+  "reads": 4,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "mcp-4",
+  "config": "mcp",
+  "wall_s": 107,
+  "cost": 0.819552,
+  "turns": 23,
+  "error": false,
+  "in": 32,
+  "cache_r": 913860,
+  "cache_w": 57259,
+  "out": 8929,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__laya-router__laya_decide": 1,
+   "Grep": 4,
+   "Read": 5,
+   "Edit": 5,
+   "PowerShell": 1,
+   "Bash": 5
+  },
+  "reads": 5,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "mcp-5",
+  "config": "mcp",
+  "wall_s": 145,
+  "cost": 0.829934,
+  "turns": 25,
+  "error": false,
+  "in": 40,
+  "cache_r": 1106830,
+  "cache_w": 52946,
+  "out": 9242,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "ToolSearch": 1,
+   "mcp__laya-router__laya_decide": 1,
+   "Grep": 4,
+   "Read": 6,
+   "Edit": 6,
+   "PowerShell": 1,
+   "Bash": 5
+  },
+  "reads": 6,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "plain-1",
+  "config": "plain",
+  "wall_s": 103,
+  "cost": 0.5572878,
+  "turns": 22,
+  "error": false,
+  "in": 28,
+  "cache_r": 829539,
+  "cache_w": 29666,
+  "out": 7697,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 4,
+   "Glob": 1,
+   "Read": 5,
+   "Edit": 5,
+   "PowerShell": 1,
+   "Bash": 5
+  },
+  "reads": 5,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "plain-2",
+  "config": "plain",
+  "wall_s": 121,
+  "cost": 0.8291450000000001,
+  "turns": 28,
+  "error": false,
+  "in": 36,
+  "cache_r": 1054545,
+  "cache_w": 53939,
+  "out": 9329,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 7,
+   "Glob": 2,
+   "Read": 7,
+   "Edit": 5,
+   "PowerShell": 1,
+   "Bash": 5
+  },
+  "reads": 7,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "plain-3",
+  "config": "plain",
+  "wall_s": 195,
+  "cost": 1.1062070000000002,
+  "turns": 32,
+  "error": false,
+  "in": 44,
+  "cache_r": 1404315,
+  "cache_w": 70341,
+  "out": 13122,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 4,
+   "Glob": 1,
+   "Read": 10,
+   "Edit": 5,
+   "PowerShell": 1,
+   "Bash": 8,
+   "Skill": 1
+  },
+  "reads": 10,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": true,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "plain-4",
+  "config": "plain",
+  "wall_s": 273,
+  "cost": 0.8551058,
+  "turns": 30,
+  "error": false,
+  "in": 42,
+  "cache_r": 1237509,
+  "cache_w": 52207,
+  "out": 9489,
+  "n_tools_schema": 34,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 4,
+   "Glob": 2,
+   "Read": 4,
+   "Edit": 5,
+   "PowerShell": 1,
+   "Bash": 13
+  },
+  "reads": 4,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 7,
+   "total": 7
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ },
+ {
+  "name": "plain-5",
+  "config": "plain",
+  "wall_s": 127,
+  "cost": 0.7018856000000001,
+  "turns": 22,
+  "error": false,
+  "in": 26,
+  "cache_r": 705228,
+  "cache_w": 49727,
+  "out": 8146,
+  "n_tools_schema": 42,
+  "n_mcp": 5,
+  "n_slash": 179,
+  "models": [
+   "claude-opus-5-5"
+  ],
+  "tool_calls": {
+   "Grep": 3,
+   "Glob": 2,
+   "Read": 5,
+   "Edit": 6,
+   "PowerShell": 1,
+   "Bash": 4
+  },
+  "reads": 5,
+  "hidden": {
+   "passed": 0,
+   "total": 14
+  },
+  "own": {
+   "passed": 6,
+   "total": 6
+  },
+  "base_tests": {
+   "passed": 4,
+   "total": 4
+  },
+  "semantic": false,
+  "jaccard": 1.0,
+  "changed": [
+   "ai_agents/flows/assignment_results.py",
+   "ai_agents/flows/assignment_rubric.py",
+   "tests/unit/flows/test_assignment_results_routing.py",
+   "tests/unit/flows/test_assignment_rubric_routing.py"
+  ],
+  "intent": null,
+  "intent_p": null,
+  "gate_deny": 0,
+  "gate_deny_pr": 0,
+  "gate_ms": null
+ }
+]
