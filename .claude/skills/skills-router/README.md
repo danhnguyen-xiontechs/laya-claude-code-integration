@@ -16,6 +16,7 @@ Node 18+ with the standard library only. No dependencies.
 | `scripts/decision-provider.mjs` | Shared with `bmad-help-jev`: one call to `jev`, `laya` or `kev` |
 | `scripts/mine-history.mjs` | Builds labelled cases from `~/.claude/projects/**/*.jsonl` |
 | `scripts/eval.mjs` | Scores BM25-only and each provider, picks thresholds on a dev split |
+| `scripts/shadow-hook.mjs`, `scripts/shadow-report.mjs` | Opt-in shadow-mode hook and the join with transcripts (see "Shadow mode") |
 | `builtin.json` | Claude Code's bundled skills (`code-review`, `loop`, …), which have no file on disk |
 | `jev.json` | Provider and thresholds. Per-machine overrides go in `jev.local.json` (gitignored) |
 
@@ -171,7 +172,7 @@ Reading:
 - **The defaults stay as they are**: `provider: none`, cookbook gate/fit 0.3, `bm25Min` 3. They
   suit the intended use, an explicit "which skill should I use for …" question, where suggesting
   something is expected. The dev-picked values fit passive routing of every prompt; use them if
-  the shadow-mode hook below is built.
+  the shadow-mode hook (see "Shadow mode") is enabled.
 
 ## Data leaving the machine
 
@@ -185,7 +186,7 @@ Reading:
 ## Tests
 
 ```
-node --test .claude/skills/skills-router/tests/catalog.test.mjs .claude/skills/skills-router/tests/route.test.mjs .claude/skills/skills-router/tests/history-eval.test.mjs
+node --test .claude/skills/skills-router/tests/catalog.test.mjs .claude/skills/skills-router/tests/route.test.mjs .claude/skills/skills-router/tests/history-eval.test.mjs .claude/skills/skills-router/tests/shadow.test.mjs
 ```
 
 Pass the files explicitly: Node 24 fails on a directory argument. The tests cover:
@@ -196,12 +197,72 @@ Pass the files explicitly: Node 24 fails on a directory argument. The tests cove
 
 A fake provider stands in for the decision servers, so the tests need none.
 
-## Next steps (deliberately deferred)
+## Shadow mode
 
-- **(a) Shadow-mode hook.** A `UserPromptSubmit` hook runs `route.mjs --provider none` on every
-  prompt and logs what the router would suggest. A later `PostToolUse` on `Skill`, or the transcript,
-  supplies what Claude actually invoked. The result is a live, labelled dataset with no effect on
-  the session.
+A `UserPromptSubmit` hook that routes every prompt locally and logs what the router *would* suggest.
+It changes nothing: it prints no output (nothing is added to the prompt), never blocks, and always
+exits 0, even on bad input, a dead server or an unwritable log. It is **not registered anywhere**;
+you decide when to enable it.
+
+- **Provider:** `none` (BM25, a few tens of ms). With `SKILLS_ROUTER_SHADOW_PROVIDER=laya` it uses
+  laya-serve when `/health` answers within 300 ms, else falls back to `none`. `jev` is never used.
+- **Log:** `~/.skills-router/shadow.jsonl` (outside the repo; override with
+  `SKILLS_ROUTER_SHADOW_LOG`). One line per prompt: `t`, `session`, `transcript`, `cwd`, `hash` (SHA-1
+  of the whitespace-normalized prompt, 12 chars), `prompt` (first 300 characters), `suggestion`,
+  `confidence`, `abstain`, `reasons`, `alternatives`, `provider`, `latencyMs`, `error`.
+  The prompt text is private: do not commit or share this file.
+
+**Enable.** Paste into `.claude/settings.local.json` (this project only), or `~/.claude/settings.json`
+(every project; then use the absolute path of this folder instead of `$CLAUDE_PROJECT_DIR`):
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/skills-router/scripts/shadow-hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+If the file already has a `hooks` block, add the inner `{ "hooks": [...] }` object to its existing
+`UserPromptSubmit` array instead of replacing it.
+
+**Report.** After some days of use:
+
+```
+node scripts/shadow-report.mjs [--log ~/.skills-router/shadow.jsonl] [--json]
+```
+
+It joins each log line with its transcript by session id and prompt hash. The transcript gives what
+Claude invoked in that turn: the `Skill` tool, or a typed `/command`, else "none". It reports the
+number of labelled cases (`labelled`, `unmatched` for lines it could not find), `agreement`,
+`wrongRate`, `missRate`, `needlessRate` and `abstainPrecision`, with the same definitions as the
+eval above. `--json` adds one row per prompt.
+
+**Read it carefully.** The "invoked" label is what Claude chose, not necessarily the correct skill.
+Claude may skip a skill that would have helped, or use one it should not. Agreement measures how
+often the router and Claude's own judgment coincide, and a mismatch is a case to look at, not
+proof the router was wrong. Prompts that come from a skill's own expansion are not separated from
+real user prompts.
+
+**Uninstall.** Remove the `UserPromptSubmit` entry from the settings file you edited (the hook
+runs on the next prompt after the file is saved). Optionally delete `~/.skills-router/shadow.jsonl`.
+Nothing else was installed.
+
+## Next steps
+
+- **(a) Shadow-mode hook. Done**: see "Shadow mode" above. The next step is to enable it, collect a
+  few hundred prompts, then pick thresholds from `shadow-report.mjs` rather than from the 16 labelled
+  cases of the mined history.
 - **(b) Description-quality lint.** Build a confusion matrix from the eval (expected vs suggested)
   and flag skill pairs that are often confused or whose descriptions overlap strongly (the
   `sameJob` test). Then suggest sharper descriptions, or an explicit "plain X goes to Y" sentence,
