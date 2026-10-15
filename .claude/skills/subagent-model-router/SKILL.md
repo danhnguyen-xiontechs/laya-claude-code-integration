@@ -22,6 +22,9 @@ It prints `haiku`, `sonnet` or `opus` → pass it as the Agent tool's `model`. I
 when the router cannot decide (provider down) → omit `model`. Add `--json` to see why.
 Spawn all subagents in one message as usual; routing takes about 0.6–1.3 s per subagent with
 Jev k=3 (the k calls run in parallel), so route them all in one Bash call first.
+Mind the orchestrator's own cost: in the pilot, 18 background hand-backs each re-woke the parent
+($2.72 of parent spend vs $3.03 for all 18 subagents). Keep the parent's context small and collect
+results in as few turns as possible.
 
 **Cascade (required when you route below opus).** When a subagent's result fails its check
 (tests, acceptance criteria, an exact expected output), retry it ONCE at the next tier:

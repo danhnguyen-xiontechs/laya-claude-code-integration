@@ -147,16 +147,65 @@ Jev is stable (unanimous on 16/18; split on f1-paginate and d3-maplimit) and con
 Jev says Sonnet. Wall time per decision, k=3 in parallel: p50 ≈ 0.55 s, max 1.3 s; cost ≈ $0.00005
 per Jev call.
 
-**Pending: running the tasks.** Labels (cheapest passing tier) need each task run as a subagent on
-all three tiers. This spends quota and waits for the user's go-ahead. Estimate at list price:
+**Pilot (run 2026-10-15, approved by the user): 6 tasks × 3 tiers.** e2-count (explore),
+f1-paginate and f3-days (fix), r3-promisify (refactor), t2-csv-tests (test writing, 6 mutants),
+d3-maplimit (debug: 4 bugs). All subagents were general-purpose, so only the model differed; one run
+per cell. Records: `bench/results/runs-pilot.jsonl`.
 
-| run | subagent runs | estimate |
-|---|---:|---:|
-| pilot: 6 tasks × 3 tiers (e2-count, f1-paginate, f3-days, r3-promisify, t2-csv-tests, d3-maplimit) | 18 | ≈ $4 (≈ $0.3 Haiku, $1.5 Sonnet, $2.4 Opus) |
-| full: 18 tasks × 3 tiers | 54 | ≈ $12 (≈ $0.4 / $4.5 / $7) |
+**Every tier passed every task: 18/18. All six labels = haiku.**
 
-(Per run, for small tasks: Haiku ≈ $0.02, Sonnet ≈ $0.25, Opus ≈ $0.40, plus about $1 of
-orchestration in the parent session. For scale: the history above is $479 in total.)
+| task | haiku | sonnet | opus |
+|---|---|---|---|
+| e2-count | pass $0.009 | pass $0.178 | pass $0.308 |
+| f1-paginate | pass $0.010 | pass $0.180 | pass $0.337 |
+| f3-days | pass $0.010 | pass $0.180 | pass $0.341 |
+| r3-promisify | pass $0.011 | pass $0.195 | pass $0.144 |
+| t2-csv-tests | pass $0.010 | pass $0.198 | pass $0.357 |
+| d3-maplimit | pass $0.013 (9 turns) | pass $0.193 | pass $0.355 |
+| **total** | **$0.06** | **$1.12** | **$1.84** |
+
+Scored (`node bench/bench.mjs score --run pilot`; cost relative to always-opus on the same tasks):
+
+| router | pass | cost vs opus | exact tier | under-routed | cascade pass | cascade cost | escalations | decision latency p50 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| always-opus | 6/6 | 100% | 0 | 0 | 100% | 100% | 0% | 0 |
+| always-sonnet | 6/6 | 61% | 0 | 0 | 100% | 61% | 0% | 0 |
+| rules-only | 6/6 | **13%** | 5 | 0 | 100% | 13% | 0% | <1 ms |
+| Jev single | 6/6 | 52% | 1 | 0 | 100% | 52% | 0% | 549 ms |
+| Jev + gate | 6/6 | 52% | 1 | 0 | 100% | 52% | 0% | 549 ms |
+| Jev + sc (k=3) | 6/6 | 61% | 1 | 0 | 100% | 61% | 0% | 549 ms |
+| Jev + gate + sc | 6/6 | 61% | 1 | 0 | 100% | 61% | 0% | 549 ms |
+
+What the pilot shows:
+- **Ceiling effect.** These tasks are too easy to separate the tiers: Haiku 5.5 solved even the
+  4-bug concurrency debug and the mutant-killing test suite. The pilot therefore measures
+  over-routing only. No router under-routed, and the cascade never fired.
+- **Jev is safe but expensive here.** It said Sonnet for 5/6 tasks (Haiku only for the explore task),
+  so its policies cost 52–61% of always-opus against 13% for rules. Gating and self-consistency only
+  ever raise the tier, so they cannot fix over-routing. They protect against under-routing, which
+  never happened here.
+- **A subagent's cost is mostly fixed overhead.** Every run wrote ~55k tokens of system prompt and
+  tools to cache before doing any work, so per-run cost tracks the price per token: Haiku ≈ $0.01,
+  Sonnet ≈ $0.18, Opus ≈ $0.34 (1 : 18 : 34) whatever the task. A cheaper tier saves money even on
+  tiny tasks; the turn counts were similar (Haiku 4–9, others 3–6).
+- **The orchestrator pays too.** This parent session (Opus, large context) spent **$2.72** during the
+  pilot, mostly re-reading its context each time a subagent handed back (18 wake-ups). The 18
+  subagents together cost $3.03. **Actual pilot total ≈ $5.75** against the ≈ $4 estimate, which had
+  budgeted ~$1 for orchestration. For a 20-story fan-out, keep the orchestrator's context small.
+  Collect results in one step (e.g. foreground batches, or a script) instead of one wake-up per
+  subagent: this matters as much as the subagents' model.
+- Task prompts said `node --test test/`, which fails on Node 24 (a directory argument is not
+  accepted). Every subagent noticed and ran the file instead; the prompts now say `node --test`.
+
+**Is the full 18 × 3 run worth it?** Not as designed: the 12 remaining tasks are of the same
+difficulty, so all-Haiku labels and the same ceiling are the likely outcome, for about $9 more.
+Better uses of quota, in order:
+1. **Haiku-first labelling** of the other 12 tasks: run Haiku only, and escalate a task to Sonnet
+   (then Opus) only when it fails. About $0.15 when Haiku passes, plus about $0.2–0.5 per failure.
+   This is the cascade itself, measured.
+2. **Harder tasks** that are not solved at every tier: multi-file changes in a real repo, or real
+   stories from the parallel-stories flow with their acceptance checks, run Haiku-first the same way.
+3. Repeats (2–3 runs per cell) only on tasks where tiers disagree, to measure variance.
 
 How to run (from a Claude Code session, one tier per batch):
 ```bash
