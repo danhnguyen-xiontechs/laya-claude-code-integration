@@ -642,6 +642,32 @@ All 199 scenarios, thresholds chosen on dev:
 
 ---
 
+<!-- BEGIN integration-verifier -->
+## `integration-verifier`: checking a batch of parallel stories together (new build, Jev optional)
+
+- **What:** after parallel story agents finish, check **evidence** (exit code + log), not claims, and check the **combined** change: merge every story branch into an isolated integration worktree and run the required build/test there. Statuses: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, per story and for the batch. Never merges.
+- **Built (plan phases 1, 2, 3, 5):** per-story result manifest `.integration/<story>.json`; per-story check (required check without a log → BLOCKED, AC without evidence → REVIEW_REQUIRED); cross-story rules (same fixture / migration / contract / config file, duplicate migration version, declared contract mismatch, config key conflict); combined run; environment signatures (ECONNREFUSED, exit 127…) → BLOCKED instead of FAIL. Consumes `acceptance-criteria-coverage` and `review-pr-jev-classify` artifacts, does not re-call them. Code: `.claude/skills/integration-verifier/`.
+- **Jev (shadow only):** one `choice` call per failure cluster the rules cannot classify, over a fixed set (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). The suggestion is shown as a label; **no status is computed from it**, so Jev cannot turn FAIL / BLOCKED / missing evidence into PASS.
+- **Quick test (2026-10-16):** 10 small, hand-labelled fixture batches (throwaway git repos), plus unit rules.
+
+| Case | Expected | Result | Caught by |
+|---|---|---|---|
+| all green | PASS | PASS ✅ | — |
+| contract mismatch (declared) | FAIL | FAIL ✅ | `contract_mismatch` + combined test |
+| contract mismatch (undeclared) | FAIL | FAIL ✅ | combined test only |
+| duplicate migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (tests were green) |
+| fixture changed by one story breaks another's test | FAIL | FAIL ✅ | combined test |
+| config key set differently | FAIL | FAIL ✅ | `config_conflict` |
+| missing log / no manifest / check not run | BLOCKED | BLOCKED ✅ | evidence rules |
+| AC claim only + story's own test failed | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | evidence rules |
+| environment-only failure (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | environment signature |
+| all green + High review finding | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | consumed findings |
+
+- **Result:** 10/10 correct, **0 false PASS** (the key metric). Jev: **3 calls** (the 3 unclassified clusters), ~0.5–1.2 s each, ~$0.00002 per call; statuses identical with and without Jev (asserted). Category: 2/3 match the hand labels; the fixture case (label `test_data`) came back `code_regression` p=0.90.
+- **Limits:** synthetic fixtures only; failure-to-story attribution is by file names in the output, so it often names both stories (a story that is not named still drops to REVIEW_REQUIRED, never PASS); a fixture changed by only one story is caught only by the combined test, not by a cross-story rule; plan phases 4 (labelled evaluation harness on real batches) and 6 (guarded pilot) not done.
+- **Verdict:** `PILOT` for the deterministic verifier; Jev stays `SHADOW`: on this small set it adds nothing the rules decide on, and missed the one `test_data` case.
+<!-- END integration-verifier -->
+
 ## 12. Overall conclusions
 
 | Question | Answer |
