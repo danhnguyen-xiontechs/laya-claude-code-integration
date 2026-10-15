@@ -16,7 +16,7 @@
 
 **Mục tiêu:** đánh giá hai "decision engine" (model nhỏ, chọn 1 đáp án trong danh sách cố định, trả kèm xác suất) để thay các lần gọi LLM lặp lại kiểu phân loại / routing / xác nhận. Kết quả cuối cần: adopt / pilot / drop, có số liệu.
 
-**Đã làm:** 14 skill biến thể (2 cho `review-pr`, 10 cho `web-test`, 2 cho BMad), 5 skill mới build từ đầu với Jev (repo `JEV`), 8 công cụ mới (proxy chọn model, workflow theo bước, ado-classify, error-triage hook, cache-expiry hook, laya-launcher, fast-compact, gói cài Laya) và khoảng 10 thí nghiệm đánh giá.
+**Đã làm:** 14 skill biến thể (2 cho `review-pr`, 10 cho `web-test`, 2 cho BMad), 5 skill mới build từ đầu với Jev (repo `JEV`), 8 công cụ mới (proxy chọn model, workflow theo bước, ado-classify, error-triage hook, cache-expiry hook, laya-launcher, fast-compact, gói cài Laya) và khoảng 10 thí nghiệm đánh giá. Ngày 2026-10-16 làm thêm 4 skill điều phối nhiều story song song (nhóm G) và 2 Claude Code Mod (nhóm H).
 
 **Kết luận chính:**
 
@@ -40,6 +40,8 @@
 6. **2 skill BMad + Jev** (`bmad-help-jev`, `bmad-code-review-jev`) đã build xong, thiết kế tốt (không sửa BMad core), nhưng **mới có unit test** (17/17), chưa chạy với Jev thật → cần pilot rồi mới kết luận.
 7. **`skills-router`** (skill gợi ý skill diện rộng, build mới): trên 199 scenario tự soạn, sau vòng 2 Jev đúng 91% so với BM25 75% và Laya 54–62%; nhưng trên 368 prompt thật Jev chỉ hòa BM25 (50%) và nhãn quá ít. → `PILOT`: mặc định BM25, Jev là bước thứ hai tùy chọn.
 8. **`subagent-model-router`** (chọn model cho từng subagent, build mới): trên 18 task có kiểm tra tự động, rule + leo model khi trượt pass 18/18 với **14% chi phí** so với luôn dùng Opus (luôn Sonnet 61%, Jev 48%). **Pilot trên 6 story ess-be thật:** pass 6/6 như bản Sonnet với **36% quota subagent**. → `PILOT` có bằng chứng thật tốt nhất, tiềm năng tiết kiệm quota lớn nhất cho kịch bản chạy song song nhiều story.
+9. **Nhóm G: 4 skill điều phối lô story song song** (2026-10-16, mới test nhanh trên fixture tự viết): `story-batch-planner` 0/13 cặp song song sai, tìm được 7/8 phụ thuộc chỉ bằng rule; `agent-budget-governor` 29/29 test, chặn đúng 2/5 lần Jev đề xuất tier thấp cho story rủi ro cao; `integration-verifier` 10/10 ca, **0 PASS sai**; `codebase-task-explorer` Recall@5 0.27 (chỉ codemap) → 0.47 (rule) → **0.93 (rule + Jev)** trên 5 task. Phần rule đều `PILOT`; Jev `SHADOW`, trừ explorer (Jev là `PILOT`, là chỗ Jev thắng rõ nhất của đợt này).
+10. **Nhóm H: 2 Claude Code Mod** (mặc định observe, chưa cài): `smart-context-trimming` giảm output test/build trung vị **89%** chỉ bằng rule (Jev thêm ~2 điểm), 0 chẩn đoán quan trọng bị mất; `retry-loop-breaker` 22/22 test, **0 lần chặn sai**. Cả hai `PILOT` phần rule, Jev chỉ cho ca mơ hồ.
 
 **Khuyến nghị:**
 - Không đưa Laya vào làm router hoặc bộ phân loại tự động.
@@ -47,6 +49,7 @@
 - Jev chỉ `PILOT` cho severity check của review-pr (vai trò lưới an toàn, Claude vẫn quyết định cuối) và cho write-gate / page-wait / oracle (oracle không tự ghi FAIL), **sau khi Security cho phép gửi dữ liệu ra ngoài**.
 - `PILOT` 5 skill Jev mới trên repo thật của team, kèm bản để Claude tự làm (không dùng skill) để so sánh.
 - `ADOPT` ngay các phần rule-based, gồm skill `web-test-laya-ground` (biến thể tốt nhất khi chạy thật nhờ rule `find.mjs`) và plugin `fast-compact` (rút gọn context 77% trong 57 ms, không gọi model).
+- `PILOT` nhóm G và H ở dạng rule (Jev shadow), chạy trên một sprint ADO thật và vài session thật trước khi bật enforce cho 2 mod.
 
 ---
 
@@ -98,6 +101,12 @@
 | D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `PILOT` |
 | E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `PILOT` (mặc định BM25, Jev tùy chọn) |
 | F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `PILOT` (bằng chứng thật tốt nhất) |
+| G1 | `story-batch-planner` (chia wave cho lô story) | Skill mới | Rule + Jev (shadow) | 🧪 14 test · 📊 8 batch fixture | `PILOT` rule, Jev `SHADOW` |
+| G2 | `agent-budget-governor` (con của F1) | Module mới | Rule + Jev (shadow) | 🧪 29/29 · 5 lần gọi Jev thật | `SHADOW` |
+| G3 | `integration-verifier` (kiểm tra thay đổi gộp) | Skill mới | Rule + Jev (shadow) | 🧪 · 📊 10 lô fixture, 0 PASS sai | `PILOT` rule, Jev `SHADOW` |
+| G4 | `codebase-task-explorer` (codemap + Jev) | Skill mới | codemap + rule + Jev | 🧪 5 test · 📊 5 task, Recall@5 0.93 | `PILOT` |
+| H1 | `smart-context-trimming` | Claude Code Mod | Rule + Jev (tùy chọn) | ✅ e2e `claude -p` · 🧪 21 + 7 test | `PILOT` rule, Jev `SHADOW` |
+| H2 | `retry-loop-breaker` | Claude Code Mod | Rule + Jev (ca mơ hồ) | 🧪 14 + 8 test, 0 chặn sai | `PILOT` (observe) |
 | C1–C9 | Các thí nghiệm đánh giá (mục 8) | Nghiên cứu | Laya / Jev | 📊 / ✅ | Xem mục 8 |
 
 \* Với điều kiện Security cho phép gửi dữ liệu ra ngoài. Riêng các skill `web-test`: bug "đọc nhầm tab" đã sửa trên nhánh `claude/web-test-fixes-4fdcd7`, cần chạy lại trên ESS.
@@ -627,54 +636,14 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
   - Story không có kiểm tra: không bao giờ bắt đầu bằng Haiku.
   - Bước tiếp theo: chạy lại trên 15–20 story ADO thật sau khi sửa bug, để thấy các lần trượt và leo model thật.
 
-<!-- BEGIN agent-budget-governor -->
-### 11.2 `agent-budget-governor`: chính sách ngân sách và song song dưới router (2026-10-16)
-
-- **Là gì:** module con của `subagent-model-router` (`scripts/governor.mjs`, chính sách trong `governor.json`, CLI cho cả batch `scripts/govern.mjs`). Router đề xuất tier; governor trả `execution_profile` (model, số lượt tối đa, timeout, số lần retry, trần mỗi story, `review_required`, `reason_codes`, `fallback_mode`, chạy/xếp hàng/dừng). Ngân sách là đơn vị trừu tượng, không có giá trong code; usage gắn nhãn `actual` hoặc `estimated`, chi phí JEV/routing tính riêng, giữ 20% batch cho kiểm thử. JEV chỉ chạy shadow (ghi lại, không thực thi); ở chế độ `guarded` chỉ được nâng tier. `route.mjs` giữ nguyên hành vi; nhánh có governor là tùy chọn.
-- **Unit test (không mạng, 9 test mới, 29/29 pass cùng test cũ):** luật bảo mật thắng JEV "fast" độ tin 0.99; JEV đề xuất thấp hơn bị bỏ qua ở story rủi ro cao; thiếu input → mặc định an toàn + review; JEV lỗi → chỉ dùng luật; hết ngân sách → dừng `needs_approval`, không đụng phần dự trữ; hàng đợi theo ưu tiên, nhả slot thì lấy story kế; retry có giới hạn, leo 1 tier; phát hiện treo; ước tính không bao giờ báo là đo thật.
-- **Jev thật (5 lời gọi, k=1, ~1,2 s mỗi lời), 5 story mẫu:**
-
-| Story | Tier JEV | Tier governor | Slot | Lý do |
-|---|---|---|---|---|
-| tra cứu | fast | fast | run | JEV đồng ý |
-| sửa auth (bảo mật) | balanced | strong + review | run | bỏ qua JEV thấp hơn (rủi ro cao) |
-| đổi tên | balanced | balanced | run | JEV đồng ý |
-| migration DB | balanced | strong + review | queued | bỏ qua JEV thấp hơn; song song 3 |
-| thiết kế, AC mơ hồ | strong | strong + review | queued | mơ hồ → review |
-
-- Cùng batch khi bỏ key: mọi story nhận `fallback_mode: rules_only`, tier không đổi. Không chặn spawn nào.
-- **Kết luận:** `SHADOW`. JEV chọn tier thấp hơn luật rủi ro ở 2/5 story (đều rủi ro cao), đúng thứ governor phải chặn; chưa có bằng chứng JEV hơn tier tĩnh. Tiếp: Phase 3 baseline tier tĩnh trên batch thật với usage thật, rồi quyết có giữ lời gọi JEV không.
-<!-- END agent-budget-governor -->
-
 ---
 
-<!-- BEGIN integration-verifier -->
-## `integration-verifier`: kiểm tra chung một lô story chạy song song (build mới, Jev tuỳ chọn)
+## 12. Nhóm G: điều phối nhiều story chạy song song (build mới, 2026-10-16)
 
-- **Làm gì:** sau khi các agent làm story song song xong, kiểm tra **bằng chứng** (exit code + log) chứ không tin lời báo cáo, và kiểm tra **thay đổi gộp**: merge mọi nhánh story vào một integration worktree riêng rồi chạy build/test bắt buộc ở đó. Trạng thái: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, cho từng story và cả lô. Không bao giờ tự merge.
-- **Đã làm (pha 1, 2, 3, 5 của plan):** manifest kết quả cho từng story `.integration/<story>.json`; kiểm tra từng story (check bắt buộc không có log → BLOCKED, AC không có bằng chứng → REVIEW_REQUIRED); luật chéo giữa các story (cùng sửa một file fixture / migration / contract / config, trùng số phiên bản migration, contract khai báo không khớp, key config khác giá trị); chạy gộp; nhận diện lỗi môi trường (ECONNREFUSED, exit 127…) → BLOCKED thay vì FAIL. Dùng lại kết quả của `acceptance-criteria-coverage` và `review-pr-jev-classify`, không gọi lại. Code: `.claude/skills/integration-verifier/`.
-- **Jev (chỉ shadow):** một lệnh `choice` cho mỗi cụm lỗi mà luật không phân loại được, trong tập cố định (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). Gợi ý chỉ hiện như nhãn; **không trạng thái nào được tính từ nó**, nên Jev không thể biến FAIL / BLOCKED / thiếu bằng chứng thành PASS.
-- **Test nhanh (2026-10-16):** 10 lô fixture nhỏ gán nhãn bằng tay (repo git dùng một lần), cộng unit test cho các luật.
+Bốn skill đi cùng nhau trong một lô story: `story-batch-planner` chia wave → `subagent-model-router` + `agent-budget-governor` chọn model và ngân sách cho từng agent → `codebase-task-explorer` giúp mỗi agent tìm chỗ bắt đầu → `integration-verifier` kiểm tra thay đổi gộp. Mỗi skill có test nhanh trên fixture nhỏ; Jev chỉ chạy shadow hoặc tùy chọn.
 
-| Ca | Kỳ vọng | Kết quả | Bắt bởi |
-|---|---|---|---|
-| tất cả xanh | PASS | PASS ✅ | — |
-| lệch contract (có khai báo) | FAIL | FAIL ✅ | `contract_mismatch` + test gộp |
-| lệch contract (không khai báo) | FAIL | FAIL ✅ | chỉ test gộp |
-| trùng migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (test vẫn xanh) |
-| fixture do một story sửa làm hỏng test của story khác | FAIL | FAIL ✅ | test gộp |
-| key config bị đặt khác nhau | FAIL | FAIL ✅ | `config_conflict` |
-| thiếu log / không có manifest / không chạy check | BLOCKED | BLOCKED ✅ | luật bằng chứng |
-| AC chỉ có lời báo + test riêng của story fail | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | luật bằng chứng |
-| lỗi chỉ do môi trường (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | dấu hiệu môi trường |
-| tất cả xanh + finding review mức High | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | finding dùng lại |
-
-- **Kết quả:** đúng 10/10, **0 PASS sai** (chỉ số chính). Jev: **3 lệnh gọi** (3 cụm lỗi chưa phân loại), mỗi lệnh ~0,5–1,2 s, ~$0.00002; trạng thái giống hệt khi bật và tắt Jev (có assert). Phân loại: 2/3 khớp nhãn tay; ca fixture (nhãn `test_data`) Jev trả `code_regression` p=0,90.
-- **Giới hạn:** chỉ fixture tổng hợp; gán lỗi cho story dựa trên tên file trong output nên hay nêu cả hai story (story không bị nêu vẫn xuống REVIEW_REQUIRED, không bao giờ PASS); fixture chỉ một story sửa thì chỉ test gộp bắt được, luật chéo không bắt; chưa làm pha 4 (bộ đánh giá gán nhãn trên lô thật) và pha 6 (pilot có kiểm soát).
-- **Kết luận:** `PILOT` cho phần verifier tất định; Jev giữ ở `SHADOW`: trên tập nhỏ này nó không thêm gì cho quyết định, và trượt ca `test_data` duy nhất.
-<!-- END integration-verifier -->
 <!-- BEGIN story-batch-planner -->
-## `story-batch-planner`: story nào chạy song song được (build mới, Jev chế độ shadow)
+### 12.1 `story-batch-planner`: story nào chạy song song được (build mới, Jev chế độ shadow)
 
 **Vì sao:** trước khi bật mỗi story một agent (ví dụ 20 story), cần biết story nào đụng chung module, API/DTO, schema hay test fixture, để các agent chạy song song không rơi vào cảnh mỗi cái pass riêng rồi ghép lại thì vỡ.
 
@@ -703,8 +672,124 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 **Kết luận: SHADOW.** Bản luật dùng được ngay khi tắt Jev (0 false-parallel trên fixture). Jev giúp biết chiều của phụ thuộc ẩn, nhưng quá tự tin với story mơ hồ và không ổn định ở xác suất thấp, nên chỉ giữ làm gợi ý có log. **Giới hạn:** fixture tổng hợp viết tay, do chính Claude gán nhãn, 27 story, chưa có batch ADO thật; trích xuất bằng regex, chưa có index repo. **Tiếp theo:** chạy trên một sprint thật từ ADO, nhờ người gán nhãn, rồi so sánh thủ công / luật / luật + Jev (phase 2 của plan).
 <!-- END story-batch-planner -->
+
+<!-- BEGIN agent-budget-governor -->
+### 12.2 `agent-budget-governor`: chính sách ngân sách và song song dưới router (2026-10-16)
+
+- **Là gì:** module con của `subagent-model-router` (`scripts/governor.mjs`, chính sách trong `governor.json`, CLI cho cả batch `scripts/govern.mjs`). Router đề xuất tier; governor trả `execution_profile` (model, số lượt tối đa, timeout, số lần retry, trần mỗi story, `review_required`, `reason_codes`, `fallback_mode`, chạy/xếp hàng/dừng). Ngân sách là đơn vị trừu tượng, không có giá trong code; usage gắn nhãn `actual` hoặc `estimated`, chi phí JEV/routing tính riêng, giữ 20% batch cho kiểm thử. JEV chỉ chạy shadow (ghi lại, không thực thi); ở chế độ `guarded` chỉ được nâng tier. `route.mjs` giữ nguyên hành vi; nhánh có governor là tùy chọn.
+- **Unit test (không mạng, 9 test mới, 29/29 pass cùng test cũ):** luật bảo mật thắng JEV "fast" độ tin 0.99; JEV đề xuất thấp hơn bị bỏ qua ở story rủi ro cao; thiếu input → mặc định an toàn + review; JEV lỗi → chỉ dùng luật; hết ngân sách → dừng `needs_approval`, không đụng phần dự trữ; hàng đợi theo ưu tiên, nhả slot thì lấy story kế; retry có giới hạn, leo 1 tier; phát hiện treo; ước tính không bao giờ báo là đo thật.
+- **Jev thật (5 lời gọi, k=1, ~1,2 s mỗi lời), 5 story mẫu:**
+
+| Story | Tier JEV | Tier governor | Slot | Lý do |
+|---|---|---|---|---|
+| tra cứu | fast | fast | run | JEV đồng ý |
+| sửa auth (bảo mật) | balanced | strong + review | run | bỏ qua JEV thấp hơn (rủi ro cao) |
+| đổi tên | balanced | balanced | run | JEV đồng ý |
+| migration DB | balanced | strong + review | queued | bỏ qua JEV thấp hơn; song song 3 |
+| thiết kế, AC mơ hồ | strong | strong + review | queued | mơ hồ → review |
+
+- Cùng batch khi bỏ key: mọi story nhận `fallback_mode: rules_only`, tier không đổi. Không chặn spawn nào.
+- **Kết luận:** `SHADOW`. JEV chọn tier thấp hơn luật rủi ro ở 2/5 story (đều rủi ro cao), đúng thứ governor phải chặn; chưa có bằng chứng JEV hơn tier tĩnh. Tiếp: Phase 3 baseline tier tĩnh trên batch thật với usage thật, rồi quyết có giữ lời gọi JEV không.
+<!-- END agent-budget-governor -->
+
+<!-- BEGIN integration-verifier -->
+### 12.3 `integration-verifier`: kiểm tra chung một lô story chạy song song (build mới, Jev tuỳ chọn)
+
+- **Làm gì:** sau khi các agent làm story song song xong, kiểm tra **bằng chứng** (exit code + log) chứ không tin lời báo cáo, và kiểm tra **thay đổi gộp**: merge mọi nhánh story vào một integration worktree riêng rồi chạy build/test bắt buộc ở đó. Trạng thái: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, cho từng story và cả lô. Không bao giờ tự merge.
+- **Đã làm (pha 1, 2, 3, 5 của plan):** manifest kết quả cho từng story `.integration/<story>.json`; kiểm tra từng story (check bắt buộc không có log → BLOCKED, AC không có bằng chứng → REVIEW_REQUIRED); luật chéo giữa các story (cùng sửa một file fixture / migration / contract / config, trùng số phiên bản migration, contract khai báo không khớp, key config khác giá trị); chạy gộp; nhận diện lỗi môi trường (ECONNREFUSED, exit 127…) → BLOCKED thay vì FAIL. Dùng lại kết quả của `acceptance-criteria-coverage` và `review-pr-jev-classify`, không gọi lại. Code: `.claude/skills/integration-verifier/`.
+- **Jev (chỉ shadow):** một lệnh `choice` cho mỗi cụm lỗi mà luật không phân loại được, trong tập cố định (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). Gợi ý chỉ hiện như nhãn; **không trạng thái nào được tính từ nó**, nên Jev không thể biến FAIL / BLOCKED / thiếu bằng chứng thành PASS.
+- **Test nhanh (2026-10-16):** 10 lô fixture nhỏ gán nhãn bằng tay (repo git dùng một lần), cộng unit test cho các luật.
+
+| Ca | Kỳ vọng | Kết quả | Bắt bởi |
+|---|---|---|---|
+| tất cả xanh | PASS | PASS ✅ | — |
+| lệch contract (có khai báo) | FAIL | FAIL ✅ | `contract_mismatch` + test gộp |
+| lệch contract (không khai báo) | FAIL | FAIL ✅ | chỉ test gộp |
+| trùng migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (test vẫn xanh) |
+| fixture do một story sửa làm hỏng test của story khác | FAIL | FAIL ✅ | test gộp |
+| key config bị đặt khác nhau | FAIL | FAIL ✅ | `config_conflict` |
+| thiếu log / không có manifest / không chạy check | BLOCKED | BLOCKED ✅ | luật bằng chứng |
+| AC chỉ có lời báo + test riêng của story fail | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | luật bằng chứng |
+| lỗi chỉ do môi trường (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | dấu hiệu môi trường |
+| tất cả xanh + finding review mức High | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | finding dùng lại |
+
+- **Kết quả:** đúng 10/10, **0 PASS sai** (chỉ số chính). Jev: **3 lệnh gọi** (3 cụm lỗi chưa phân loại), mỗi lệnh ~0,5–1,2 s, ~$0.00002; trạng thái giống hệt khi bật và tắt Jev (có assert). Phân loại: 2/3 khớp nhãn tay; ca fixture (nhãn `test_data`) Jev trả `code_regression` p=0,90.
+- **Giới hạn:** chỉ fixture tổng hợp; gán lỗi cho story dựa trên tên file trong output nên hay nêu cả hai story (story không bị nêu vẫn xuống REVIEW_REQUIRED, không bao giờ PASS); fixture chỉ một story sửa thì chỉ test gộp bắt được, luật chéo không bắt; chưa làm pha 4 (bộ đánh giá gán nhãn trên lô thật) và pha 6 (pilot có kiểm soát).
+- **Kết luận:** `PILOT` cho phần verifier tất định; Jev giữ ở `SHADOW`: trên tập nhỏ này nó không thêm gì cho quyết định, và trượt ca `test_data` duy nhất.
+<!-- END integration-verifier -->
+
+<!-- BEGIN codebase-task-explorer -->
+### 12.4 `codebase-task-explorer`: tìm chỗ bắt đầu trong codebase (build mới, Jev tùy chọn)
+
+**Mục tiêu:** trước khi điều tra bug, lần theo một tính năng, refactor hay thêm tính năng, đưa cho Claude một danh sách ngắn các file nên đọc trước, có bằng chứng, thay vì duyệt mò. Chỉ khám phá, không sửa.
+
+**Phase 0 — codemap (JordanCoin/codemap):** trước đó chưa cài. Đã cài bản phát hành **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, đã đối chiếu SHA-256 với `checksums.txt`, kèm `ast-grep`) vào `~/tools/codemap` (máy không có Go/brew/scoop). `codemap doctor`: binary OK; project config, Claude hooks và `.mcp.json` là MISS (chưa setup — cố ý, chỉ gọi CLI). Khả năng thấy được: `find -json -limit` (khớp từ vựng trên path + symbol, số importer, cờ hub), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` có **19 tool** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Mọi kết quả có trạng thái coverage: trên repo này là **partial** (2/238 import JS và 14/17 import Python không resolve được). Chưa thử trên repo C#.
+
+**Cách hoạt động** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
+- **Chế độ:** `bug`, `feature`, `refactor`, `new-feature`; đầu ra là bản bàn giao (điểm bắt đầu, bằng chứng, hướng điều tra, giả thuyết, điểm chưa rõ, đóng góp của Jev).
+- **Pool rộng:** mỗi query một lần `codemap find` (Claude đưa 3–6 bộ từ vựng khác nhau); gộp lại, giữ lý do mỗi file khớp. Không có codemap: **fallback có gắn nhãn** (git ls-files + rg, không có dữ liệu importer).
+- **Chỉ dọn cơ học:** bỏ trùng, bỏ vendor/build/generated/binary. **Rule (C):** điểm theo từng query + thưởng khớp nhiều query + ưu tiên theo chế độ.
+- **Jev (D):** các batch choice 24 lựa chọn + `none_of_these`, giữ top-4 mỗi batch theo thứ hạng *trong batch*, rồi xếp hạng lại toàn cục một lần; không bao giờ so xác suất giữa các batch. Giới hạn: ≤6 lần gọi, ≤24k ký tự mỗi request; lỗi bất kỳ → dùng thứ tự rule. Tắt: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; bỏ qua khi người dùng nêu đúng file/symbol. Jev chỉ thấy path, symbol khớp, số importer và **dòng comment đầu file** — không gửi thân mã nguồn.
+- 5 unit test (Jev giả lập: chia batch, giữ survivor, vòng toàn cục, giới hạn, fallback, none_of_these, dọn dẹp) đều pass.
+
+**Pilot nhanh** (5 task trên repo này, đủ 4 chế độ, nhãn = file đã biết; Recall@5; `eval/results-2026-10-16.json`):
+
+| Task | B: chỉ codemap | C: rule | D: rule + Jev |
+|---|---|---|---|
+| bug: verdict merge sai | 0.50 | 0.50 | 1.00 |
+| feature: chọn model cho subagent | 0.50 | 1.00 | 1.00 |
+| refactor: chữ ký `decide()` | 0.33 | 0.33 | 0.67 |
+| new-feature: thêm một write-gate | 0.00 | 0.50 | 1.00 |
+| bug: grounding bấm nhầm nút | 0.00 | 0.00 | 1.00 |
+| **Trung bình** | **0.27** | **0.47** | **0.93** |
+
+- Jev: **15 lần gọi** (3 mỗi task: 2 batch + toàn cục), ~0.6 s mỗi lần, tổng **$0.0011**. `none_of_these` chưa lần nào thắng. Chỉ dùng fallback (không codemap): B 0.17, C 0.27.
+
+**Lưu ý:** chỉ 5 task; task và nhãn do Claude tự viết trên chính repo này; D còn thấy dòng comment đầu file, C thì không (một phần mức tăng có thể đến từ dòng đó chứ không phải từ Jev); repo có các bản sao laya/jev nên nhãn "bản nào cũng được" dễ trúng hơn; chưa đo baseline A (Claude thường) và bước Claude kiểm chứng; chưa thử repo C#.
+
+**Kết luận: `PILOT`** — xếp hạng theo batch của Jev tốt hơn rõ so với rule trên bộ nhỏ này, chi phí rất thấp. Trước khi áp dụng: 30–50 task thật trên repo C#/.NET (thêm nhánh C + dòng header để tách hiệu ứng header), và đo A.
+<!-- END codebase-task-explorer -->
+
+---
+
+## 13. Nhóm H: Claude Code Mods (build mới, 2026-10-16)
+
+Hai mod móc vào `tool.call` của Bash, mặc định chế độ `observe`, chưa cài vào môi trường nào.
+
+<!-- BEGIN smart-context-trimming -->
+### 13.1 Smart Context Trimming (Claude Code Mod + Jev, plan 01)
+
+**Là gì:** một Claude Code Mod (`smart-context-trimming/`) móc vào `tool.call` của Bash cho lệnh test/build (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). Khi output dài (≥250 dòng hoặc ≥20 KB), Claude chỉ nhận **các dòng gốc quan trọng**: lỗi, test fail kèm chi tiết assert, đầu exception + 6 frame đầu, dòng fatal, dòng tổng kết, exit status, cộng 5 dòng đầu và 15 dòng cuối. Toàn bộ output gốc được lưu ở `~/.claude/smart-context-trimming/raw/` và kết quả rút gọn có đường dẫn tới đó. Mặc định **observe** (chỉ đo, không đổi gì); `enforce` mới cắt; `/smart-trim off|observe|enforce|status` theo session, hoặc biến môi trường `SMART_TRIM_MODE`.
+
+**Vai trò của Jev (tuỳ chọn, chỉ ở enforce):** một quyết định cho mỗi output bị cắt: chọn chiến lược (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) và một câu có/không cho mỗi ứng viên *tuỳ chọn* (warning lặp, frame stack sâu), tối đa 12. Jev không bao giờ viết text. Bằng chứng bắt buộc luôn được giữ dù Jev nói gì, nên Jev trả lời sai chỉ làm output dài hơn. Text gửi Jev được che (key, Bearer token, password, connection string, JWT, chuỗi hex dài) và giới hạn 12 KB. Timeout 8 s; confidence < 0.6, JSON hỏng, chiến lược lạ, câu trả lời thừa hoặc ngoài phạm vi → dùng kết quả rule.
+
+**Phase 0 (CLI đã cài 2.1.300, types engine 2.1.295), chứng minh thật bằng `claude -p --plugin-dir`:**
+- Lệnh thành công: `{ result: { ...result, stdout } }` thay được nội dung Claude đọc ✔.
+- Exit khác 0: core trả `{ isError, result: string }`. Hook tự trả `{ isError, result }` bị **từ chối (lỗi schema)**; spread kết quả của core với `text` mới bị **bỏ qua**; `{ result: { stdout } }` **mất cờ lỗi** (không được phép). Chỉ `{ deny: text }` giữ cờ lỗi, nên mod dùng cách này cho lệnh fail.
+- Từ chối quyền, kết quả bị ngắt / chạy nền / ảnh / core đã lưu file, và lệnh không khớp đều đi qua nguyên vẹn.
+- **Phát hiện:** với lệnh fail, chính Claude Code đã cắt text còn khoảng 5 000 ký tự đầu + 5 000 ký tự cuối (`... [N characters truncated] ...`) **trước khi** hook nào thấy. Trong lần chạy thật, chỗ core cắt đã che mất 1 trong 3 test fail. Mod không khôi phục được nếu không sửa lệnh (ngoài phạm vi MVP), nên hiện phần lớn output fail nằm dưới ngưỡng.
+
+**Test nhanh (bộ 10 fixture + các nhánh Jev giả lỗi):**
+
+| fixture | gốc | rule | rule + Jev (thật) | mất chẩn đoán quan trọng |
+|---|---:|---:|---:|---:|
+| dotnet test pass dài | 27.4 KB | 1.6 KB (−94%) | — (không có ứng viên tuỳ chọn) | 0 |
+| 3 test fail | 22.9 KB | 3.4 KB (−85%) | — | 0 |
+| lỗi biên dịch dotnet | 19.7 KB | 1.5 KB (−93%) | — | 0 |
+| exception + stack 25 frame | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
+| 300 warning + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
+| chuỗi giống secret | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
+| log hỏng, output ngắn, lệnh không khớp, pipe qua `tail` | — | giữ nguyên từng byte | giữ nguyên | 0 |
+
+- Trung vị mức giảm trên output đủ điều kiện: **89% (rule) / 91% (rule + Jev)**. **0 chẩn đoán quan trọng bị mất** ở mọi nhánh, và mọi dòng giữ lại đều được kiểm là dòng gốc nguyên văn.
+- Các nhánh Jev lỗi (timeout, JSON hỏng, HTTP 500, lỗi mạng, chiến lược lạ, confidence thấp, "bỏ hết", `keep_full_output`) đều fallback đúng, không nhánh nào treo quá 2 s, và vẫn giữ đủ chẩn đoán. Secret không bao giờ xuất hiện trong request gửi Jev.
+- Tổng cộng **3 lần gọi Jev thật** (đều hợp lệ). 21 unit test Node và 7 engine test (`claude plugin test`) đều pass. Chạy e2e thật ở enforce: 27.4 KB → 1.7 KB kèm đường dẫn log gốc, và Claude đọc đúng dòng tổng kết.
+
+**Kết luận: PILOT (rule), Jev SHADOW.** Riêng rule đã tiết kiệm gần hết; Jev chỉ thêm khoảng 2 điểm, và chỉ với output có ứng viên tuỳ chọn. Chưa đo: token request thật, tỉ lệ hoàn thành task và tỉ lệ đọc lại log (Phase 4). Bước tiếp: wrapper exit-code (opt-in) để lệnh fail tránh bị core cắt 10 KB, rồi hiệu chỉnh ngưỡng trên session thật.
+<!-- END smart-context-trimming -->
+
 <!-- BEGIN retry-loop-breaker -->
-## Retry Loop Breaker: mod Claude Code (plan 02, Jev tùy chọn)
+### 13.2 Retry Loop Breaker: mod Claude Code (plan 02, Jev tùy chọn)
 
 **Vì sao:** Claude đôi khi chạy lại đúng lệnh test/build vừa lỗi mà không sửa gì, tốn lượt. Không phải lần chạy lại nào cũng thừa (sau khi sửa code, sau lỗi mạng, test chập chờn), nên mod phải phát hiện *không có tiến triển*, không chỉ "lệnh này từng lỗi".
 
@@ -742,70 +827,10 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 
 **Giới hạn:** epoch chỉ là xấp xỉ (sửa file ngoài tool của Claude, ví dụ trong IDE, không thấy; sửa file không liên quan cũng mở chặn); lệnh chạy qua script alias không thuộc diện; Jev chỉ thấy hai lệnh và một dòng tóm tắt lỗi.
 <!-- END retry-loop-breaker -->
-<!-- BEGIN codebase-task-explorer -->
-## Nhóm G: `codebase-task-explorer`: tìm chỗ bắt đầu trong codebase (build mới, Jev tùy chọn)
 
-**Mục tiêu:** trước khi điều tra bug, lần theo một tính năng, refactor hay thêm tính năng, đưa cho Claude một danh sách ngắn các file nên đọc trước, có bằng chứng, thay vì duyệt mò. Chỉ khám phá, không sửa.
+---
 
-**Phase 0 — codemap (JordanCoin/codemap):** trước đó chưa cài. Đã cài bản phát hành **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, đã đối chiếu SHA-256 với `checksums.txt`, kèm `ast-grep`) vào `~/tools/codemap` (máy không có Go/brew/scoop). `codemap doctor`: binary OK; project config, Claude hooks và `.mcp.json` là MISS (chưa setup — cố ý, chỉ gọi CLI). Khả năng thấy được: `find -json -limit` (khớp từ vựng trên path + symbol, số importer, cờ hub), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` có **19 tool** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Mọi kết quả có trạng thái coverage: trên repo này là **partial** (2/238 import JS và 14/17 import Python không resolve được). Chưa thử trên repo C#.
-
-**Cách hoạt động** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
-- **Chế độ:** `bug`, `feature`, `refactor`, `new-feature`; đầu ra là bản bàn giao (điểm bắt đầu, bằng chứng, hướng điều tra, giả thuyết, điểm chưa rõ, đóng góp của Jev).
-- **Pool rộng:** mỗi query một lần `codemap find` (Claude đưa 3–6 bộ từ vựng khác nhau); gộp lại, giữ lý do mỗi file khớp. Không có codemap: **fallback có gắn nhãn** (git ls-files + rg, không có dữ liệu importer).
-- **Chỉ dọn cơ học:** bỏ trùng, bỏ vendor/build/generated/binary. **Rule (C):** điểm theo từng query + thưởng khớp nhiều query + ưu tiên theo chế độ.
-- **Jev (D):** các batch choice 24 lựa chọn + `none_of_these`, giữ top-4 mỗi batch theo thứ hạng *trong batch*, rồi xếp hạng lại toàn cục một lần; không bao giờ so xác suất giữa các batch. Giới hạn: ≤6 lần gọi, ≤24k ký tự mỗi request; lỗi bất kỳ → dùng thứ tự rule. Tắt: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; bỏ qua khi người dùng nêu đúng file/symbol. Jev chỉ thấy path, symbol khớp, số importer và **dòng comment đầu file** — không gửi thân mã nguồn.
-- 5 unit test (Jev giả lập: chia batch, giữ survivor, vòng toàn cục, giới hạn, fallback, none_of_these, dọn dẹp) đều pass.
-
-**Pilot nhanh** (5 task trên repo này, đủ 4 chế độ, nhãn = file đã biết; Recall@5; `eval/results-2026-10-16.json`):
-
-| Task | B: chỉ codemap | C: rule | D: rule + Jev |
-|---|---|---|---|
-| bug: verdict merge sai | 0.50 | 0.50 | 1.00 |
-| feature: chọn model cho subagent | 0.50 | 1.00 | 1.00 |
-| refactor: chữ ký `decide()` | 0.33 | 0.33 | 0.67 |
-| new-feature: thêm một write-gate | 0.00 | 0.50 | 1.00 |
-| bug: grounding bấm nhầm nút | 0.00 | 0.00 | 1.00 |
-| **Trung bình** | **0.27** | **0.47** | **0.93** |
-
-- Jev: **15 lần gọi** (3 mỗi task: 2 batch + toàn cục), ~0.6 s mỗi lần, tổng **$0.0011**. `none_of_these` chưa lần nào thắng. Chỉ dùng fallback (không codemap): B 0.17, C 0.27.
-
-**Lưu ý:** chỉ 5 task; task và nhãn do Claude tự viết trên chính repo này; D còn thấy dòng comment đầu file, C thì không (một phần mức tăng có thể đến từ dòng đó chứ không phải từ Jev); repo có các bản sao laya/jev nên nhãn "bản nào cũng được" dễ trúng hơn; chưa đo baseline A (Claude thường) và bước Claude kiểm chứng; chưa thử repo C#.
-
-**Kết luận: `PILOT`** — xếp hạng theo batch của Jev tốt hơn rõ so với rule trên bộ nhỏ này, chi phí rất thấp. Trước khi áp dụng: 30–50 task thật trên repo C#/.NET (thêm nhánh C + dòng header để tách hiệu ứng header), và đo A.
-<!-- END codebase-task-explorer -->
-<!-- BEGIN smart-context-trimming -->
-## Smart Context Trimming (Claude Code Mod + Jev, plan 01)
-
-**Là gì:** một Claude Code Mod (`smart-context-trimming/`) móc vào `tool.call` của Bash cho lệnh test/build (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). Khi output dài (≥250 dòng hoặc ≥20 KB), Claude chỉ nhận **các dòng gốc quan trọng**: lỗi, test fail kèm chi tiết assert, đầu exception + 6 frame đầu, dòng fatal, dòng tổng kết, exit status, cộng 5 dòng đầu và 15 dòng cuối. Toàn bộ output gốc được lưu ở `~/.claude/smart-context-trimming/raw/` và kết quả rút gọn có đường dẫn tới đó. Mặc định **observe** (chỉ đo, không đổi gì); `enforce` mới cắt; `/smart-trim off|observe|enforce|status` theo session, hoặc biến môi trường `SMART_TRIM_MODE`.
-
-**Vai trò của Jev (tuỳ chọn, chỉ ở enforce):** một quyết định cho mỗi output bị cắt: chọn chiến lược (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) và một câu có/không cho mỗi ứng viên *tuỳ chọn* (warning lặp, frame stack sâu), tối đa 12. Jev không bao giờ viết text. Bằng chứng bắt buộc luôn được giữ dù Jev nói gì, nên Jev trả lời sai chỉ làm output dài hơn. Text gửi Jev được che (key, Bearer token, password, connection string, JWT, chuỗi hex dài) và giới hạn 12 KB. Timeout 8 s; confidence < 0.6, JSON hỏng, chiến lược lạ, câu trả lời thừa hoặc ngoài phạm vi → dùng kết quả rule.
-
-**Phase 0 (CLI đã cài 2.1.300, types engine 2.1.295), chứng minh thật bằng `claude -p --plugin-dir`:**
-- Lệnh thành công: `{ result: { ...result, stdout } }` thay được nội dung Claude đọc ✔.
-- Exit khác 0: core trả `{ isError, result: string }`. Hook tự trả `{ isError, result }` bị **từ chối (lỗi schema)**; spread kết quả của core với `text` mới bị **bỏ qua**; `{ result: { stdout } }` **mất cờ lỗi** (không được phép). Chỉ `{ deny: text }` giữ cờ lỗi, nên mod dùng cách này cho lệnh fail.
-- Từ chối quyền, kết quả bị ngắt / chạy nền / ảnh / core đã lưu file, và lệnh không khớp đều đi qua nguyên vẹn.
-- **Phát hiện:** với lệnh fail, chính Claude Code đã cắt text còn khoảng 5 000 ký tự đầu + 5 000 ký tự cuối (`... [N characters truncated] ...`) **trước khi** hook nào thấy. Trong lần chạy thật, chỗ core cắt đã che mất 1 trong 3 test fail. Mod không khôi phục được nếu không sửa lệnh (ngoài phạm vi MVP), nên hiện phần lớn output fail nằm dưới ngưỡng.
-
-**Test nhanh (bộ 10 fixture + các nhánh Jev giả lỗi):**
-
-| fixture | gốc | rule | rule + Jev (thật) | mất chẩn đoán quan trọng |
-|---|---:|---:|---:|---:|
-| dotnet test pass dài | 27.4 KB | 1.6 KB (−94%) | — (không có ứng viên tuỳ chọn) | 0 |
-| 3 test fail | 22.9 KB | 3.4 KB (−85%) | — | 0 |
-| lỗi biên dịch dotnet | 19.7 KB | 1.5 KB (−93%) | — | 0 |
-| exception + stack 25 frame | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
-| 300 warning + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
-| chuỗi giống secret | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
-| log hỏng, output ngắn, lệnh không khớp, pipe qua `tail` | — | giữ nguyên từng byte | giữ nguyên | 0 |
-
-- Trung vị mức giảm trên output đủ điều kiện: **89% (rule) / 91% (rule + Jev)**. **0 chẩn đoán quan trọng bị mất** ở mọi nhánh, và mọi dòng giữ lại đều được kiểm là dòng gốc nguyên văn.
-- Các nhánh Jev lỗi (timeout, JSON hỏng, HTTP 500, lỗi mạng, chiến lược lạ, confidence thấp, "bỏ hết", `keep_full_output`) đều fallback đúng, không nhánh nào treo quá 2 s, và vẫn giữ đủ chẩn đoán. Secret không bao giờ xuất hiện trong request gửi Jev.
-- Tổng cộng **3 lần gọi Jev thật** (đều hợp lệ). 21 unit test Node và 7 engine test (`claude plugin test`) đều pass. Chạy e2e thật ở enforce: 27.4 KB → 1.7 KB kèm đường dẫn log gốc, và Claude đọc đúng dòng tổng kết.
-
-**Kết luận: PILOT (rule), Jev SHADOW.** Riêng rule đã tiết kiệm gần hết; Jev chỉ thêm khoảng 2 điểm, và chỉ với output có ứng viên tuỳ chọn. Chưa đo: token request thật, tỉ lệ hoàn thành task và tỉ lệ đọc lại log (Phase 4). Bước tiếp: wrapper exit-code (opt-in) để lệnh fail tránh bị core cắt 10 KB, rồi hiệu chỉnh ngưỡng trên session thật.
-<!-- END smart-context-trimming -->
-
-## 12. Kết luận chung
+## 14. Kết luận chung
 
 | Câu hỏi | Trả lời |
 |---|---|
@@ -815,11 +840,12 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | Đồng thuận và self-consistency có thay được ngưỡng không? | **Đồng thuận: có ích trên dữ liệu thật nhiều nhiễu** (skills-router: gợi ý sai 13% → 6%), nhưng có hại trên dữ liệu sạch. **Self-consistency: không**, vì Jev gần như luôn trả cùng một đáp án khi đảo thứ tự (skills-router: chỉ 4/169 prompt đổi; review-pr: 17/18 ổn định). |
 | Router skill diện rộng có đáng làm không? | **Có, ở dạng tùy chọn.** `skills-router`: Jev tốt nhất trên scenario tự soạn (91% sau vòng 2), nhưng trên prompt thật chỉ hòa BM25. Laya không có chỗ đứng. Cần thêm nhãn thật qua hook shadow. |
 | Skill mới build quanh Jev thì sao? | **Chạy được, không tệ, nhưng Jev đóng góp không đều.** Jev là phần chính ở acceptance-criteria-coverage và dead-code-finder; khoảng 50/50 ở subagent-validator; ít ở git-risk-scanner và context-curator. Tất cả mới đo trên demo tổng hợp. |
+| Điều phối nhiều story song song và mod có đáng làm không? | **Có, phần rule.** Planner, governor, verifier và 2 mod đều đạt tiêu chí an toàn trên fixture (0 song song sai, 0 PASS sai, 0 chặn sai, 0 chẩn đoán bị mất). Jev chỉ thắng rõ ở `codebase-task-explorer` (xếp hạng file); ở các chỗ còn lại Jev hoặc không đổi quyết định, hoặc quá tự tin, nên giữ shadow. |
 | Cái gì mang lại giá trị thật? | Các phần **rule/script cố định**: `find.mjs`, rule của `wait.mjs`, network audit, cache-expiry gate, fast-compact, giới hạn tool bằng flag tĩnh. |
 
 ---
 
-## 13. Rủi ro và lưu ý
+## 15. Rủi ro và lưu ý
 
 - **Repo đang public** nhưng có dữ liệu thật:
   - `ado/items*.json`: 190 work item PXP / XT-Smart-Platform.
@@ -842,10 +868,11 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 - **`skills-router`:** nhãn của 199 scenario do Claude tự đặt; trên prompt thật chỉ có 16 nhãn skill; mô tả skill của project cũng được gửi cho Jev khi dùng Jev; hook shadow chưa bật, độ trễ thật của hook chưa đo.
 - **2 skill BMad + Jev:** chưa chạy với Jev thật lần nào; ngưỡng 0.3 lấy từ cookbook, chưa đo trên dữ liệu của mình.
 - **5 skill Jev mới (repo `JEV`):** code chưa commit; số liệu đo trên demo tổng hợp do Claude dựng; chưa có bản để Claude tự làm để so sánh; mỗi kịch bản thật mới chạy 1 lần.
+- **Nhóm G và H (2026-10-16):** toàn bộ là test nhanh trên fixture do Claude tự viết và tự gán nhãn; chưa chạy trên batch ADO thật hay session thật. `codebase-task-explorer` chỉ có 5 task trên chính repo này, chưa thử C#; codemap báo coverage `partial`. `smart-context-trimming`: Claude Code tự cắt output lệnh fail còn ~10 KB trước khi hook thấy. `retry-loop-breaker`: mutation epoch không thấy sửa file ngoài tool của Claude. Hai mod chưa cài ở đâu.
 
 ---
 
-## 14. Việc còn mở / bước tiếp theo đề xuất
+## 16. Việc còn mở / bước tiếp theo đề xuất
 
 1. Xin ý kiến Security về việc gửi dữ liệu ra Jev / OpenRouter (hoặc đo **Kev**, bản Jev chạy local, chưa đo).
 2. Bug đọc nhầm tab đã sửa (nhánh `claude/web-test-fixes-4fdcd7`); còn lại là chạy lại agent run 2–3 lần mỗi biến thể (ước tính ~40M token).
@@ -858,6 +885,8 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 9. `skills-router`: (lỗi nhóm skill trùng việc đã sửa ở vòng 2) bật hook shadow để gom nhãn thật, chọn ngưỡng BM25 theo từng catalog; chỉ sau đó mới chốt Jev có nên là bước thứ hai mặc định hay không.
 10. `subagent-model-router`: merge bản sửa bug (`claude/router-readonly-fix`), rồi chạy lại trên 15–20 story ADO thật để thấy các lần trượt và leo model; bật hook ở chế độ shadow.
 11. Review và merge các nhánh mới: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
+12. Nhóm G: chạy cả chuỗi planner → router + governor → explorer → verifier trên một sprint ADO thật, nhờ người gán nhãn; đo baseline tier tĩnh cho governor; chạy explorer trên 30–50 task thật ở repo C#/.NET.
+13. Nhóm H: cài 2 mod ở chế độ observe trên vài session thật; chỉ bật enforce khi log đạt tiêu chí (retry-loop-breaker: precision ≥ 80%); làm wrapper exit-code cho smart-context-trimming.
 
 ---
 
@@ -881,6 +910,12 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | `subagent-model-router` | 19 | 19 pass, dùng provider giả |
 | `review-pr-jev-classify` (bản nâng cấp) | 87 | 87 pass |
 | 11 bản `web-test` (bản sửa bug) | 206 | 206 pass |
+| `story-batch-planner` | 14 | 14 pass, provider giả (2026-10-16) |
+| `subagent-model-router` + `agent-budget-governor` | 29 | 29 pass (2026-10-16) |
+| `integration-verifier` | 10 lô fixture + unit test | Tất cả pass, 0 PASS sai (2026-10-16) |
+| `codebase-task-explorer` | 5 | 5 pass, Jev giả lập (2026-10-16) |
+| `smart-context-trimming` | 21 + 7 engine test | Tất cả pass (2026-10-16) |
+| `retry-loop-breaker` | 14 + 8 engine test | Tất cả pass (2026-10-16) |
 
 ### B. Dòng thời gian
 
@@ -897,6 +932,7 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | 10-13 | Chạy thật PR 5240; `review-pr-jev-classify`, `web-test-jev-ground`; plan áp Jev vào BMad |
 | 10-14 | 4 skill `web-test-jev-*`, đánh giá offline Laya và Jev; repo `JEV`: smoke test, `jev_advisor`, A/B/C 30 run |
 | 10-15 | Agent run trên ticket 11840 (dev + staging), `fast-compact`, chạy lại A/B có kiểm soát trên PR 5240; 5 skill Jev mới + test thực tế 7 session; 2 skill BMad + Jev; `skills-router` (đánh giá trên 199 scenario và 368 prompt thật, rồi vòng 2); `subagent-model-router` (benchmark 18 task); nâng cấp `review-pr-jev-classify`; sửa bug `web-test` |
+| 10-16 | Nhóm G (`story-batch-planner`, `agent-budget-governor`, `integration-verifier`, `codebase-task-explorer`) và nhóm H (mod `smart-context-trimming`, `retry-loop-breaker`), mỗi hạng mục một session riêng, test nhanh, merge vào `main` |
 
 ### C. Code nằm ở đâu
 
@@ -914,6 +950,7 @@ Số liệu trên toàn bộ 199 scenario, ngưỡng chọn trên tập dev:
 | Nhánh của session test review-pr thật (chưa push) | `research/review-pr-jev-real-eval.md` |
 | `claude/review-pr-jev-upgrade-2bbb34` (chưa push) | Nâng cấp `review-pr-jev-classify` |
 | `claude/web-test-fixes-4fdcd7` (chưa push) | Sửa bug 11 bản `web-test`, gate theo từng cú click |
+| `main` (2026-10-16) | Nhóm G: `.claude/skills/story-batch-planner`, `integration-verifier`, `codebase-task-explorer`, governor trong `subagent-model-router`; nhóm H: `smart-context-trimming/`, `retry-loop-breaker/` |
 | Repo `xt-skills` | Bản gốc `review-pr` |
 | Repo `danhnguyen-xiontechs/JEV`, nhánh `jev` | Smoke test Jev, `jev_advisor`, A/B/C |
 | Repo `JEV`, worktree `claude/review-5-plans-idea-folder-ce4d36` (**chưa commit**) | 5 skill Jev mới, demo/eval, `docs/runs/realtest/` |

@@ -16,7 +16,7 @@
 
 **Goal:** evaluate two "decision engines" (small models that pick one answer from a fixed list and return probabilities) as replacements for repeated LLM calls that classify, route or verify. The expected outcome is adopt / pilot / drop, backed by numbers.
 
-**Built:** 14 skill variants (2 of `review-pr`, 10 of `web-test`, 2 of BMad), 5 new skills built from scratch with Jev (`JEV` repo), 8 new tools (model-routing proxy, per-step workflow, ado-classify, error-triage hook, cache-expiry hook, laya-launcher, fast-compact, Laya install package) and about 10 evaluation experiments.
+**Built:** 14 skill variants (2 of `review-pr`, 10 of `web-test`, 2 of BMad), 5 new skills built from scratch with Jev (`JEV` repo), 8 new tools (model-routing proxy, per-step workflow, ado-classify, error-triage hook, cache-expiry hook, laya-launcher, fast-compact, Laya install package) and about 10 evaluation experiments. On 2026-10-16 we added 4 skills for orchestrating parallel story batches (group G) and 2 Claude Code Mods (group H).
 
 **Key findings:**
 
@@ -47,6 +47,8 @@
 6. **2 BMad + Jev skills** (`bmad-help-jev`, `bmad-code-review-jev`) are built and well designed (BMad core untouched), but have **unit tests only** (17/17) and have never run against live Jev → they need a pilot before any verdict.
 7. **`skills-router`** (a broad skill-suggestion skill, new build): on 199 synthetic scenarios, after round 2, Jev is 91% accurate against BM25 75% and Laya 54–62%; but on 368 real prompts Jev only ties BM25 (50%) and labels are scarce. → `PILOT`: BM25 by default, Jev as an optional second stage.
 8. **`subagent-model-router`** (per-subagent model choice, new build): on 18 tasks with an automatic check, rules + escalate on failure pass 18/18 at **14% of the cost** of always using Opus (always-Sonnet 61%, Jev 48%). **Pilot on 6 real ess-be stories:** 6/6 passed, as with Sonnet, at **36% of subagent quota**. → `PILOT` with the best real evidence, the largest quota-saving potential for running many stories in parallel.
+9. **Group G: 4 skills for orchestrating parallel story batches** (2026-10-16, quick tests on hand-written fixtures only): `story-batch-planner` 0/13 false-parallel pairs and 7/8 dependencies found with rules alone; `agent-budget-governor` 29/29 tests, correctly overrode Jev on 2/5 stories where it proposed a lower tier for high-risk work; `integration-verifier` 10/10 cases, **0 false PASS**; `codebase-task-explorer` Recall@5 0.27 (codemap only) → 0.47 (rules) → **0.93 (rules + Jev)** on 5 tasks. Rule parts are `PILOT`; Jev stays `SHADOW` except in the explorer (Jev `PILOT`, its clearest win in this round).
+10. **Group H: 2 Claude Code Mods** (observe by default, not installed): `smart-context-trimming` cuts test/build output by a median **89%** with rules alone (Jev adds ~2 points) and loses 0 critical diagnostics; `retry-loop-breaker` 22/22 tests, **0 false blocks**. Both are `PILOT` for the rules, Jev only for ambiguous cases.
 
 **Recommendation:**
 - Do not use Laya as an automatic router or classifier.
@@ -54,6 +56,7 @@
 - `PILOT` Jev only for the review-pr severity check (as a safety net; Claude still decides) and for write-gate, page-wait and oracle (oracle must never auto-record FAIL), and **only after Security approves sending data off the network**.
 - `PILOT` the 5 new Jev skills on a real team repo, alongside a run where Claude does the same work without the skill, for comparison.
 - `ADOPT` the rule-based parts now, including the `web-test-laya-ground` skill (the best variant in real runs, thanks to its `find.mjs` rules) and the `fast-compact` plugin (77% context reduction in 57 ms, with no model call).
+- `PILOT` groups G and H in rule form (Jev in shadow); run them on one real ADO sprint and a few real sessions before turning on enforce for the 2 mods.
 
 ---
 
@@ -105,6 +108,12 @@
 | D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `PILOT` |
 | E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `PILOT` (BM25 default, Jev optional) |
 | F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `PILOT` (best real evidence) |
+| G1 | `story-batch-planner` (waves for a story batch) | New skill | Rules + Jev (shadow) | 🧪 14 tests · 📊 8 fixture batches | `PILOT` rules, Jev `SHADOW` |
+| G2 | `agent-budget-governor` (child of F1) | New module | Rules + Jev (shadow) | 🧪 29/29 · 5 live Jev calls | `SHADOW` |
+| G3 | `integration-verifier` (checks the combined change) | New skill | Rules + Jev (shadow) | 🧪 · 📊 10 fixture batches, 0 false PASS | `PILOT` rules, Jev `SHADOW` |
+| G4 | `codebase-task-explorer` (codemap + Jev) | New skill | codemap + rules + Jev | 🧪 5 tests · 📊 5 tasks, Recall@5 0.93 | `PILOT` |
+| H1 | `smart-context-trimming` | Claude Code Mod | Rules + Jev (optional) | ✅ e2e `claude -p` · 🧪 21 + 7 tests | `PILOT` rules, Jev `SHADOW` |
+| H2 | `retry-loop-breaker` | Claude Code Mod | Rules + Jev (ambiguous cases) | 🧪 14 + 8 tests, 0 false blocks | `PILOT` (observe) |
 | C1–C9 | Evaluation experiments (section 8) | Research | Laya / Jev | 📊 / ✅ | See section 8 |
 
 \* Provided Security approves sending data off the network. For the `web-test` skills, the "wrong tab" bug is fixed on branch `claude/web-test-fixes-4fdcd7` and needs a re-run on ESS.
@@ -640,54 +649,14 @@ All 199 scenarios, thresholds chosen on dev:
   - Stories without a check: never start on Haiku.
   - Next: re-run on 15–20 real ADO stories after the bug fix, to see real misses and escalations.
 
-<!-- BEGIN agent-budget-governor -->
-### 11.2 `agent-budget-governor`: budget and concurrency policy under the router (2026-10-16)
-
-- **What:** a child module of `subagent-model-router` (`scripts/governor.mjs`, policy in `governor.json`, batch CLI `scripts/govern.mjs`). The router proposes a tier; the governor returns an `execution_profile` (model, max turns, timeout, retry limit, per-story cap, `review_required`, `reason_codes`, `fallback_mode`, run/queue/stop). Budgets are abstract units, no prices in code; usage is labelled `actual` or `estimated`, JEV/routing overhead counted separately, and a share of the batch (20%) is reserved for verification. JEV is shadow-only (recorded, not executed); in `guarded` mode it may only raise a tier. `route.mjs` behaviour is unchanged; the governed path is opt-in.
-- **Unit tests (no network, 9 new, 29/29 pass with the old ones):** security override beats a 0.99-confidence JEV "fast"; JEV lower answer ignored on high-risk; incomplete input → safe default + review; JEV failure → rules only; budget exhaustion → `needs_approval` stop with the reserve untouched; concurrency queue by priority, dequeued on release; retry bounded with one escalation; stall detection; estimated never reported as measured.
-- **Real JEV (5 calls, k=1, ~1.2 s each), 5 sample stories:**
-
-| Story | JEV tier | Governor tier | Slot | Reason |
-|---|---|---|---|---|
-| lookup | fast | fast | run | JEV agrees |
-| auth fix (security) | balanced | strong + review | run | JEV lower ignored (high risk) |
-| rename | balanced | balanced | run | JEV agrees |
-| DB migration | balanced | strong + review | queued | JEV lower ignored; concurrency 3 |
-| design, ambiguous ACs | strong | strong + review | queued | ambiguous → review |
-
-- Same batch with the key removed: every story got `fallback_mode: rules_only`, same tiers. No spawn blocked.
-- **Verdict:** `SHADOW`. JEV picked a lower tier than the risk rules on 2 of 5 stories (both high-risk), which is exactly what the governor must block; no evidence yet that JEV adds value over static tiers. Next: Phase 3 static-tier baseline on real batches with actual usage, then decide whether to keep the JEV call.
-<!-- END agent-budget-governor -->
-
 ---
 
-<!-- BEGIN integration-verifier -->
-## `integration-verifier`: checking a batch of parallel stories together (new build, Jev optional)
+## 12. Group G: orchestrating parallel story batches (new build, 2026-10-16)
 
-- **What:** after parallel story agents finish, check **evidence** (exit code + log), not claims, and check the **combined** change: merge every story branch into an isolated integration worktree and run the required build/test there. Statuses: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, per story and for the batch. Never merges.
-- **Built (plan phases 1, 2, 3, 5):** per-story result manifest `.integration/<story>.json`; per-story check (required check without a log → BLOCKED, AC without evidence → REVIEW_REQUIRED); cross-story rules (same fixture / migration / contract / config file, duplicate migration version, declared contract mismatch, config key conflict); combined run; environment signatures (ECONNREFUSED, exit 127…) → BLOCKED instead of FAIL. Consumes `acceptance-criteria-coverage` and `review-pr-jev-classify` artifacts, does not re-call them. Code: `.claude/skills/integration-verifier/`.
-- **Jev (shadow only):** one `choice` call per failure cluster the rules cannot classify, over a fixed set (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). The suggestion is shown as a label; **no status is computed from it**, so Jev cannot turn FAIL / BLOCKED / missing evidence into PASS.
-- **Quick test (2026-10-16):** 10 small, hand-labelled fixture batches (throwaway git repos), plus unit rules.
+Four skills that work together on a story batch: `story-batch-planner` splits waves → `subagent-model-router` + `agent-budget-governor` pick model and budget per agent → `codebase-task-explorer` helps each agent find where to start → `integration-verifier` checks the combined change. Each has a quick fixture test; Jev runs only in shadow or as an option.
 
-| Case | Expected | Result | Caught by |
-|---|---|---|---|
-| all green | PASS | PASS ✅ | — |
-| contract mismatch (declared) | FAIL | FAIL ✅ | `contract_mismatch` + combined test |
-| contract mismatch (undeclared) | FAIL | FAIL ✅ | combined test only |
-| duplicate migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (tests were green) |
-| fixture changed by one story breaks another's test | FAIL | FAIL ✅ | combined test |
-| config key set differently | FAIL | FAIL ✅ | `config_conflict` |
-| missing log / no manifest / check not run | BLOCKED | BLOCKED ✅ | evidence rules |
-| AC claim only + story's own test failed | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | evidence rules |
-| environment-only failure (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | environment signature |
-| all green + High review finding | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | consumed findings |
-
-- **Result:** 10/10 correct, **0 false PASS** (the key metric). Jev: **3 calls** (the 3 unclassified clusters), ~0.5–1.2 s each, ~$0.00002 per call; statuses identical with and without Jev (asserted). Category: 2/3 match the hand labels; the fixture case (label `test_data`) came back `code_regression` p=0.90.
-- **Limits:** synthetic fixtures only; failure-to-story attribution is by file names in the output, so it often names both stories (a story that is not named still drops to REVIEW_REQUIRED, never PASS); a fixture changed by only one story is caught only by the combined test, not by a cross-story rule; plan phases 4 (labelled evaluation harness on real batches) and 6 (guarded pilot) not done.
-- **Verdict:** `PILOT` for the deterministic verifier; Jev stays `SHADOW`: on this small set it adds nothing the rules decide on, and missed the one `test_data` case.
-<!-- END integration-verifier -->
 <!-- BEGIN story-batch-planner -->
-## `story-batch-planner`: which stories can run in parallel (new build, Jev shadow)
+### 12.1 `story-batch-planner`: which stories can run in parallel (new build, Jev shadow)
 
 **Why:** before spawning one agent per story (for example 20 stories), find which stories touch the same module, API/DTO, schema or test fixture, so parallel agents do not each pass alone and then fail to integrate.
 
@@ -716,8 +685,124 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Verdict: SHADOW.** The rule baseline is usable now with Jev off (0 false-parallel on the fixtures). Jev adds the direction of hidden dependencies, but it is overconfident on vague stories and unstable at low probability, so keep it as a logged suggestion only. **Limits:** hand-written synthetic fixtures labelled by the same author (Claude), 27 stories, no real ADO batch; regex extraction, no repository index. **Next:** run it on one real sprint batch from ADO, have a human label it, and compare manual / rules / rules + Jev (plan phase 2).
 <!-- END story-batch-planner -->
+
+<!-- BEGIN agent-budget-governor -->
+### 12.2 `agent-budget-governor`: budget and concurrency policy under the router (2026-10-16)
+
+- **What:** a child module of `subagent-model-router` (`scripts/governor.mjs`, policy in `governor.json`, batch CLI `scripts/govern.mjs`). The router proposes a tier; the governor returns an `execution_profile` (model, max turns, timeout, retry limit, per-story cap, `review_required`, `reason_codes`, `fallback_mode`, run/queue/stop). Budgets are abstract units, no prices in code; usage is labelled `actual` or `estimated`, JEV/routing overhead counted separately, and a share of the batch (20%) is reserved for verification. JEV is shadow-only (recorded, not executed); in `guarded` mode it may only raise a tier. `route.mjs` behaviour is unchanged; the governed path is opt-in.
+- **Unit tests (no network, 9 new, 29/29 pass with the old ones):** security override beats a 0.99-confidence JEV "fast"; JEV lower answer ignored on high-risk; incomplete input → safe default + review; JEV failure → rules only; budget exhaustion → `needs_approval` stop with the reserve untouched; concurrency queue by priority, dequeued on release; retry bounded with one escalation; stall detection; estimated never reported as measured.
+- **Real JEV (5 calls, k=1, ~1.2 s each), 5 sample stories:**
+
+| Story | JEV tier | Governor tier | Slot | Reason |
+|---|---|---|---|---|
+| lookup | fast | fast | run | JEV agrees |
+| auth fix (security) | balanced | strong + review | run | JEV lower ignored (high risk) |
+| rename | balanced | balanced | run | JEV agrees |
+| DB migration | balanced | strong + review | queued | JEV lower ignored; concurrency 3 |
+| design, ambiguous ACs | strong | strong + review | queued | ambiguous → review |
+
+- Same batch with the key removed: every story got `fallback_mode: rules_only`, same tiers. No spawn blocked.
+- **Verdict:** `SHADOW`. JEV picked a lower tier than the risk rules on 2 of 5 stories (both high-risk), which is exactly what the governor must block; no evidence yet that JEV adds value over static tiers. Next: Phase 3 static-tier baseline on real batches with actual usage, then decide whether to keep the JEV call.
+<!-- END agent-budget-governor -->
+
+<!-- BEGIN integration-verifier -->
+### 12.3 `integration-verifier`: checking a batch of parallel stories together (new build, Jev optional)
+
+- **What:** after parallel story agents finish, check **evidence** (exit code + log), not claims, and check the **combined** change: merge every story branch into an isolated integration worktree and run the required build/test there. Statuses: `PASS` / `FAIL` / `BLOCKED` / `REVIEW_REQUIRED`, per story and for the batch. Never merges.
+- **Built (plan phases 1, 2, 3, 5):** per-story result manifest `.integration/<story>.json`; per-story check (required check without a log → BLOCKED, AC without evidence → REVIEW_REQUIRED); cross-story rules (same fixture / migration / contract / config file, duplicate migration version, declared contract mismatch, config key conflict); combined run; environment signatures (ECONNREFUSED, exit 127…) → BLOCKED instead of FAIL. Consumes `acceptance-criteria-coverage` and `review-pr-jev-classify` artifacts, does not re-call them. Code: `.claude/skills/integration-verifier/`.
+- **Jev (shadow only):** one `choice` call per failure cluster the rules cannot classify, over a fixed set (`code_regression`, `test_data`, `environment`, `dependency`, `flaky_test`, `unknown`). The suggestion is shown as a label; **no status is computed from it**, so Jev cannot turn FAIL / BLOCKED / missing evidence into PASS.
+- **Quick test (2026-10-16):** 10 small, hand-labelled fixture batches (throwaway git repos), plus unit rules.
+
+| Case | Expected | Result | Caught by |
+|---|---|---|---|
+| all green | PASS | PASS ✅ | — |
+| contract mismatch (declared) | FAIL | FAIL ✅ | `contract_mismatch` + combined test |
+| contract mismatch (undeclared) | FAIL | FAIL ✅ | combined test only |
+| duplicate migration `0002_*` | FAIL | FAIL ✅ | `duplicate_migration` (tests were green) |
+| fixture changed by one story breaks another's test | FAIL | FAIL ✅ | combined test |
+| config key set differently | FAIL | FAIL ✅ | `config_conflict` |
+| missing log / no manifest / check not run | BLOCKED | BLOCKED ✅ | evidence rules |
+| AC claim only + story's own test failed | FAIL | FAIL ✅ (S1 REVIEW_REQUIRED) | evidence rules |
+| environment-only failure (ECONNREFUSED) | BLOCKED | BLOCKED ✅ | environment signature |
+| all green + High review finding | REVIEW_REQUIRED | REVIEW_REQUIRED ✅ | consumed findings |
+
+- **Result:** 10/10 correct, **0 false PASS** (the key metric). Jev: **3 calls** (the 3 unclassified clusters), ~0.5–1.2 s each, ~$0.00002 per call; statuses identical with and without Jev (asserted). Category: 2/3 match the hand labels; the fixture case (label `test_data`) came back `code_regression` p=0.90.
+- **Limits:** synthetic fixtures only; failure-to-story attribution is by file names in the output, so it often names both stories (a story that is not named still drops to REVIEW_REQUIRED, never PASS); a fixture changed by only one story is caught only by the combined test, not by a cross-story rule; plan phases 4 (labelled evaluation harness on real batches) and 6 (guarded pilot) not done.
+- **Verdict:** `PILOT` for the deterministic verifier; Jev stays `SHADOW`: on this small set it adds nothing the rules decide on, and missed the one `test_data` case.
+<!-- END integration-verifier -->
+
+<!-- BEGIN codebase-task-explorer -->
+### 12.4 `codebase-task-explorer`: where to start in a codebase (new build, Jev optional)
+
+**Goal:** before a bug investigation, feature tracing, refactor or new feature, give Claude a short ranked list of files to read first, with evidence, instead of browsing blindly. Discovery only: no fixing.
+
+**Phase 0 — codemap (JordanCoin/codemap):** not installed before. Installed release **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, SHA-256 checked against `checksums.txt`, bundles `ast-grep`) into `~/tools/codemap` (no Go/brew/scoop on this machine). `codemap doctor`: binary OK; project config, Claude hooks and `.mcp.json` are MISS (not set up — on purpose, we only call the CLI). Capabilities seen: `find -json -limit` (lexical over paths + symbols, importer counts, hub flag), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` exposes **19 tools** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Every answer has a coverage status: on this repo **partial** (2/238 JS and 14/17 Python imports unresolved). Not tested on a C# repo.
+
+**How it works** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
+- **Modes:** `bug`, `feature`, `refactor`, `new-feature`; output is a handoff (starting points, evidence, path, hypotheses, unknowns, Jev contribution).
+- **Broad pool:** one `codemap find` per query (Claude gives 3–6 different vocabularies); merge, keep why each file matched. If codemap is missing: a **labelled fallback** (git ls-files + rg, no importer data).
+- **Mechanical cleanup only:** dedupe, drop vendor/build/generated/binary. **Rules (C):** per-query score + multi-query bonus + mode priors.
+- **Jev (D):** choice batches of 24 options + `none_of_these`, keep top-4 per batch by *local* rank, one global rerank of survivors; probabilities never compared across batches. Guards: ≤6 calls, ≤24k chars per request; any failure → rules order. Opt-out: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; skipped for exact file/symbol. Jev sees paths, matched symbols, importer counts and each file's **first header comment line** — no source bodies.
+- 5 unit tests (mocked Jev: batching, survivors, global pass, guards, fallback, none_of_these, cleanup) pass.
+
+**Quick pilot** (5 tasks on this repo covering all 4 modes, labels = known files; Recall@5; `eval/results-2026-10-16.json`):
+
+| Task | B: codemap-only | C: rules | D: rules + Jev |
+|---|---|---|---|
+| bug: merge verdict wrong | 0.50 | 0.50 | 1.00 |
+| feature: subagent model choice | 0.50 | 1.00 | 1.00 |
+| refactor: `decide()` signature | 0.33 | 0.33 | 0.67 |
+| new-feature: another write-gate | 0.00 | 0.50 | 1.00 |
+| bug: grounding clicks wrong button | 0.00 | 0.00 | 1.00 |
+| **Mean** | **0.27** | **0.47** | **0.93** |
+
+- Jev: **15 calls** (3 per task: 2 batches + global), ~0.6 s per call, **$0.0011** total. `none_of_these` never won. Fallback engine alone (no codemap): B 0.17, C 0.27.
+
+**Caveats:** only 5 tasks; tasks and labels were written by Claude on its own repo; D also sees the header comment line, C does not (part of the gain may come from that text, not Jev's judgment); the repo's laya/jev twin copies make "any copy" labels easier; baseline A (plain Claude) and the Claude verification step were not measured; no C# repo.
+
+**Verdict: `PILOT`** — Jev's batch ranking looks clearly better than rules on this small set, cheaply. Before adopting: 30–50 real tasks on a C#/.NET repo (with a C+header arm to separate the header effect), and measure A.
+<!-- END codebase-task-explorer -->
+
+---
+
+## 13. Group H: Claude Code Mods (new build, 2026-10-16)
+
+Two mods hooking Bash `tool.call`, default `observe` mode, not installed anywhere yet.
+
+<!-- BEGIN smart-context-trimming -->
+### 13.1 Smart Context Trimming (Claude Code Mod + Jev, plan 01)
+
+**What:** a Claude Code Mod (`smart-context-trimming/`) that hooks Bash `tool.call` for test/build commands (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). When the output is long (≥250 lines or ≥20 KB), Claude gets only the **original lines that matter**: errors, failed tests with their assertion details, exception heads with the first 6 frames, fatal lines, summaries and exit status, plus the first 5 and last 15 lines. The full raw output is saved under `~/.claude/smart-context-trimming/raw/` and the compact result points to it. Default **observe** (measures, changes nothing); `enforce` trims; `/smart-trim off|observe|enforce|status` per session, or the `SMART_TRIM_MODE` env variable.
+
+**Jev's role (optional, enforce only):** one decision per trimmed output: a strategy choice (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) and one yes/no per *optional* candidate (repeated warnings, deeper stack frames), at most 12. Jev never writes text. Mandatory evidence is kept whatever Jev says, so a wrong answer can only make the output longer. Candidate text is redacted (keys, Bearer tokens, passwords, connection strings, JWTs, long hex) and capped at 12 KB. Timeout 8 s; confidence < 0.6, invalid JSON, unknown strategy, extra or out-of-range answers → the rules result.
+
+**Phase 0 (installed CLI 2.1.300, engine types 2.1.295), proven live with `claude -p --plugin-dir`:**
+- Success: `{ result: { ...result, stdout } }` replaces what Claude reads ✔.
+- Non-zero exit: core answers `{ isError, result: string }`. A hook's own `{ isError, result }` is **refused (schema error)**; a spread of core's answer with a new `text` is **ignored**; `{ result: { stdout } }` **drops the error flag** (not allowed). Only `{ deny: text }` keeps the error flag, so that is what the mod returns for failed runs.
+- Permission denials, interrupted / background / image / core-persisted results and unmatched commands pass through untouched.
+- **Finding:** for a failed command, Claude Code itself has already cut the text to about 5 000 head + 5 000 tail characters (`... [N characters truncated] ...`) **before** any hook sees it. In a live run that core cut hid one of three failing tests. The mod cannot recover it without rewriting the command (outside the MVP), so most failed outputs are under the threshold today.
+
+**Quick test (10-fixture corpus + fake-Jev failure arms):**
+
+| fixture | baseline | rules | rules + Jev (real) | lost critical |
+|---|---:|---:|---:|---:|
+| long passing dotnet test | 27.4 KB | 1.6 KB (−94%) | — (no optional candidates) | 0 |
+| 3 failing tests | 22.9 KB | 3.4 KB (−85%) | — | 0 |
+| dotnet compiler errors | 19.7 KB | 1.5 KB (−93%) | — | 0 |
+| exception + 25-frame stack | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
+| 300 warnings + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
+| secret-like strings | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
+| malformed log, short, unmatched, piped to `tail` | — | unchanged byte-for-byte | unchanged | 0 |
+
+- Median reduction on eligible outputs: **89% (rules) / 91% (rules + Jev)**. **0 lost critical diagnostics** in every arm, and every kept line is checked to be an original line, verbatim.
+- Jev failure arms (timeout, invalid JSON, HTTP 500, transport error, unknown strategy, low confidence, "drop everything", `keep_full_output`) all fall back correctly, none stalls past 2 s, and the criticals stay. Secrets never appear in the Jev request.
+- **3 real Jev calls** in total (all valid). 21 Node unit tests and 7 engine tests (`claude plugin test`) pass. Live end-to-end in enforce: 27.4 KB → 1.7 KB with the raw-log pointer, and Claude read the summary correctly.
+
+**Verdict: PILOT (rules), Jev SHADOW.** The rules alone do almost all the saving; Jev adds about 2 points, and only on outputs that have optional candidates. Not measured yet: real request tokens, task success and re-read rate (Phase 4). Next: an opt-in exit-code wrapper so failed runs avoid core's 10 KB cut, then threshold calibration on real sessions.
+<!-- END smart-context-trimming -->
+
 <!-- BEGIN retry-loop-breaker -->
-## Retry Loop Breaker: Claude Code mod (plan 02, Jev optional)
+### 13.2 Retry Loop Breaker: Claude Code mod (plan 02, Jev optional)
 
 **Why:** Claude sometimes reruns the same failing test or build with nothing changed, wasting turns. Not every retry is waste (after an edit, after a network error, on a flaky test), so the mod must detect *no progress*, not just "this failed before".
 
@@ -755,70 +840,10 @@ All 199 scenarios, thresholds chosen on dev:
 
 **Limits:** the epoch is a proxy (an edit outside Claude's tools, e.g. in the IDE, is not seen; any unrelated edit unblocks); a command run through a script alias is not eligible; Jev sees only the two commands and a one-line error summary.
 <!-- END retry-loop-breaker -->
-<!-- BEGIN codebase-task-explorer -->
-## Group G: `codebase-task-explorer`: where to start in a codebase (new build, Jev optional)
 
-**Goal:** before a bug investigation, feature tracing, refactor or new feature, give Claude a short ranked list of files to read first, with evidence, instead of browsing blindly. Discovery only: no fixing.
+---
 
-**Phase 0 — codemap (JordanCoin/codemap):** not installed before. Installed release **v4.6.0** (`codemap-full_4.6.0_windows_amd64.zip`, SHA-256 checked against `checksums.txt`, bundles `ast-grep`) into `~/tools/codemap` (no Go/brew/scoop on this machine). `codemap doctor`: binary OK; project config, Claude hooks and `.mcp.json` are MISS (not set up — on purpose, we only call the CLI). Capabilities seen: `find -json -limit` (lexical over paths + symbols, importer counts, hub flag), `--importers <file> --json`, `--deps`, `--diff`, `--topology`; `codemap mcp` exposes **19 tools** (find, find_file, get_structure, get_file_context, get_dependencies, get_importers, get_hubs, get_diff, …). Every answer has a coverage status: on this repo **partial** (2/238 JS and 14/17 Python imports unresolved). Not tested on a C# repo.
-
-**How it works** (`.claude/skills/codebase-task-explorer/`, script `scripts/explore.mjs`):
-- **Modes:** `bug`, `feature`, `refactor`, `new-feature`; output is a handoff (starting points, evidence, path, hypotheses, unknowns, Jev contribution).
-- **Broad pool:** one `codemap find` per query (Claude gives 3–6 different vocabularies); merge, keep why each file matched. If codemap is missing: a **labelled fallback** (git ls-files + rg, no importer data).
-- **Mechanical cleanup only:** dedupe, drop vendor/build/generated/binary. **Rules (C):** per-query score + multi-query bonus + mode priors.
-- **Jev (D):** choice batches of 24 options + `none_of_these`, keep top-4 per batch by *local* rank, one global rerank of survivors; probabilities never compared across batches. Guards: ≤6 calls, ≤24k chars per request; any failure → rules order. Opt-out: `--provider none` / `CODEBASE_EXPLORER_JEV=off`; skipped for exact file/symbol. Jev sees paths, matched symbols, importer counts and each file's **first header comment line** — no source bodies.
-- 5 unit tests (mocked Jev: batching, survivors, global pass, guards, fallback, none_of_these, cleanup) pass.
-
-**Quick pilot** (5 tasks on this repo covering all 4 modes, labels = known files; Recall@5; `eval/results-2026-10-16.json`):
-
-| Task | B: codemap-only | C: rules | D: rules + Jev |
-|---|---|---|---|
-| bug: merge verdict wrong | 0.50 | 0.50 | 1.00 |
-| feature: subagent model choice | 0.50 | 1.00 | 1.00 |
-| refactor: `decide()` signature | 0.33 | 0.33 | 0.67 |
-| new-feature: another write-gate | 0.00 | 0.50 | 1.00 |
-| bug: grounding clicks wrong button | 0.00 | 0.00 | 1.00 |
-| **Mean** | **0.27** | **0.47** | **0.93** |
-
-- Jev: **15 calls** (3 per task: 2 batches + global), ~0.6 s per call, **$0.0011** total. `none_of_these` never won. Fallback engine alone (no codemap): B 0.17, C 0.27.
-
-**Caveats:** only 5 tasks; tasks and labels were written by Claude on its own repo; D also sees the header comment line, C does not (part of the gain may come from that text, not Jev's judgment); the repo's laya/jev twin copies make "any copy" labels easier; baseline A (plain Claude) and the Claude verification step were not measured; no C# repo.
-
-**Verdict: `PILOT`** — Jev's batch ranking looks clearly better than rules on this small set, cheaply. Before adopting: 30–50 real tasks on a C#/.NET repo (with a C+header arm to separate the header effect), and measure A.
-<!-- END codebase-task-explorer -->
-<!-- BEGIN smart-context-trimming -->
-## Smart Context Trimming (Claude Code Mod + Jev, plan 01)
-
-**What:** a Claude Code Mod (`smart-context-trimming/`) that hooks Bash `tool.call` for test/build commands (`dotnet test/build`, `npm test`, `jest`, `pytest`, `tsc`, `cargo`, `go test`…). When the output is long (≥250 lines or ≥20 KB), Claude gets only the **original lines that matter**: errors, failed tests with their assertion details, exception heads with the first 6 frames, fatal lines, summaries and exit status, plus the first 5 and last 15 lines. The full raw output is saved under `~/.claude/smart-context-trimming/raw/` and the compact result points to it. Default **observe** (measures, changes nothing); `enforce` trims; `/smart-trim off|observe|enforce|status` per session, or the `SMART_TRIM_MODE` env variable.
-
-**Jev's role (optional, enforce only):** one decision per trimmed output: a strategy choice (`errors_only / errors_and_stack / errors_and_warnings / keep_full_output`) and one yes/no per *optional* candidate (repeated warnings, deeper stack frames), at most 12. Jev never writes text. Mandatory evidence is kept whatever Jev says, so a wrong answer can only make the output longer. Candidate text is redacted (keys, Bearer tokens, passwords, connection strings, JWTs, long hex) and capped at 12 KB. Timeout 8 s; confidence < 0.6, invalid JSON, unknown strategy, extra or out-of-range answers → the rules result.
-
-**Phase 0 (installed CLI 2.1.300, engine types 2.1.295), proven live with `claude -p --plugin-dir`:**
-- Success: `{ result: { ...result, stdout } }` replaces what Claude reads ✔.
-- Non-zero exit: core answers `{ isError, result: string }`. A hook's own `{ isError, result }` is **refused (schema error)**; a spread of core's answer with a new `text` is **ignored**; `{ result: { stdout } }` **drops the error flag** (not allowed). Only `{ deny: text }` keeps the error flag, so that is what the mod returns for failed runs.
-- Permission denials, interrupted / background / image / core-persisted results and unmatched commands pass through untouched.
-- **Finding:** for a failed command, Claude Code itself has already cut the text to about 5 000 head + 5 000 tail characters (`... [N characters truncated] ...`) **before** any hook sees it. In a live run that core cut hid one of three failing tests. The mod cannot recover it without rewriting the command (outside the MVP), so most failed outputs are under the threshold today.
-
-**Quick test (10-fixture corpus + fake-Jev failure arms):**
-
-| fixture | baseline | rules | rules + Jev (real) | lost critical |
-|---|---:|---:|---:|---:|
-| long passing dotnet test | 27.4 KB | 1.6 KB (−94%) | — (no optional candidates) | 0 |
-| 3 failing tests | 22.9 KB | 3.4 KB (−85%) | — | 0 |
-| dotnet compiler errors | 19.7 KB | 1.5 KB (−93%) | — | 0 |
-| exception + 25-frame stack | 10.7 KB | 1.7 KB (−84%) | 1.7 KB (−84%), `errors_only` p=0.83, 1.2 s | 0 |
-| 300 warnings + FATAL | 35.1 KB | 2.4 KB (−93%) | 2.4 KB (−93%), p=0.97, 0.5 s | 0 |
-| secret-like strings | 18.6 KB | 2.0 KB (−89%) | 1.7 KB (−91%), p=0.94, 0.5 s | 0 |
-| malformed log, short, unmatched, piped to `tail` | — | unchanged byte-for-byte | unchanged | 0 |
-
-- Median reduction on eligible outputs: **89% (rules) / 91% (rules + Jev)**. **0 lost critical diagnostics** in every arm, and every kept line is checked to be an original line, verbatim.
-- Jev failure arms (timeout, invalid JSON, HTTP 500, transport error, unknown strategy, low confidence, "drop everything", `keep_full_output`) all fall back correctly, none stalls past 2 s, and the criticals stay. Secrets never appear in the Jev request.
-- **3 real Jev calls** in total (all valid). 21 Node unit tests and 7 engine tests (`claude plugin test`) pass. Live end-to-end in enforce: 27.4 KB → 1.7 KB with the raw-log pointer, and Claude read the summary correctly.
-
-**Verdict: PILOT (rules), Jev SHADOW.** The rules alone do almost all the saving; Jev adds about 2 points, and only on outputs that have optional candidates. Not measured yet: real request tokens, task success and re-read rate (Phase 4). Next: an opt-in exit-code wrapper so failed runs avoid core's 10 KB cut, then threshold calibration on real sessions.
-<!-- END smart-context-trimming -->
-
-## 12. Overall conclusions
+## 14. Overall conclusions
 
 | Question | Answer |
 |---|---|
@@ -828,11 +853,12 @@ All 199 scenarios, thresholds chosen on dev:
 | Can agreement gating and self-consistency replace thresholds? | **Agreement gating: useful on noisy real data** (skills-router: wrong suggestions 13% → 6%), but harmful on clean data. **Self-consistency: no**, because Jev almost always gives the same answer when the order is shuffled (skills-router: only 4/169 prompts changed; review-pr: 17/18 stable). |
 | Is a broad skill router worth building? | **Yes, as an option.** `skills-router`: Jev is best on synthetic scenarios (91% after round 2) but only ties BM25 on real prompts. Laya has no place here. It needs more real labels via the shadow hook. |
 | What about the new skills built around Jev? | **They work and are decent, but Jev's contribution is uneven.** Jev does the main work in acceptance-criteria-coverage and dead-code-finder; about 50/50 in subagent-validator; little in git-risk-scanner and context-curator. All measured on synthetic demos so far. |
+| Are batch orchestration and the mods worth it? | **Yes, the rule parts.** Planner, governor, verifier and both mods met their safety bar on fixtures (0 false parallel, 0 false PASS, 0 false blocks, 0 lost diagnostics). Jev only clearly won in `codebase-task-explorer` (file ranking); elsewhere it either changed no decision or was overconfident, so it stays in shadow. |
 | What delivered real value? | The **fixed rules and scripts**: `find.mjs`, the `wait.mjs` rules, the network audit, the cache-expiry gate, fast-compact, and limiting tools with static flags. |
 
 ---
 
-## 13. Risks and notes
+## 15. Risks and notes
 
 - **The repo is public** but contains real data:
   - `ado/items*.json`: 190 PXP / XT-Smart-Platform work items.
@@ -855,10 +881,11 @@ All 199 scenarios, thresholds chosen on dev:
 - **`skills-router`:** the labels of the 199 scenarios were set by Claude; real prompts carry only 16 skill labels; the descriptions of the project's skills are also sent to Jev when it is used; the shadow hook is not switched on, and its real latency has not been measured.
 - **The 2 BMad + Jev skills:** never run against live Jev; the 0.3 thresholds come from the cookbook and have not been measured on our data.
 - **The 5 new Jev skills (`JEV` repo):** the code is uncommitted; numbers come from synthetic demos built by Claude; there is no comparison with Claude doing the work alone; each real scenario ran once.
+- **Groups G and H (2026-10-16):** all quick tests on fixtures written and labelled by Claude; nothing run on a real ADO batch or real sessions yet. `codebase-task-explorer` has only 5 tasks on this repo, no C# yet; codemap reports `partial` coverage. `smart-context-trimming`: Claude Code itself trims failing-command output to ~10 KB before any hook sees it. `retry-loop-breaker`: the mutation epoch misses edits made outside Claude's tools. Neither mod is installed anywhere.
 
 ---
 
-## 14. Open items and suggested next steps
+## 16. Open items and suggested next steps
 
 1. Ask Security whether data may be sent to Jev / OpenRouter, or measure **Kev** (a local Jev, not yet measured).
 2. The wrong-tab bug is fixed (branch `claude/web-test-fixes-4fdcd7`); what remains is repeating the agent runs 2–3 times per variant (estimated ~40M tokens).
@@ -871,6 +898,8 @@ All 199 scenarios, thresholds chosen on dev:
 9. `skills-router`: (the look-alike skills problem was fixed in round 2) switch on the shadow hook to collect real labels, pick the BM25 threshold per catalog; only then decide whether Jev should be the default second stage.
 10. `subagent-model-router`: merge the bug fix (`claude/router-readonly-fix`), then re-run on 15–20 real ADO stories to see real misses and escalations; switch the hook on in shadow mode.
 11. Review and merge the new branches: `claude/skills-router-62fc74`, `claude/subagent-model-router-f7f0e3`, `claude/review-pr-jev-upgrade-2bbb34`, `claude/web-test-fixes-4fdcd7`.
+12. Group G: run the whole chain planner → router + governor → explorer → verifier on one real ADO sprint with human labels; measure the static-tier baseline for the governor; run the explorer on 30–50 real tasks in a C#/.NET repo.
+13. Group H: install both mods in observe mode on a few real sessions; enable enforce only when the logs meet the bar (retry-loop-breaker: precision ≥ 80%); add the exit-code wrapper to smart-context-trimming.
 
 ---
 
@@ -894,6 +923,12 @@ All 199 scenarios, thresholds chosen on dev:
 | `subagent-model-router` | 19 | 19 pass, with a fake provider |
 | `review-pr-jev-classify` (upgrade) | 87 | 87 pass |
 | 11 `web-test` copies (bug fixes) | 206 | 206 pass |
+| `story-batch-planner` | 14 | 14 pass, fake provider (2026-10-16) |
+| `subagent-model-router` + `agent-budget-governor` | 29 | 29 pass (2026-10-16) |
+| `integration-verifier` | 10 fixture batches + unit tests | All pass, 0 false PASS (2026-10-16) |
+| `codebase-task-explorer` | 5 | 5 pass, mocked Jev (2026-10-16) |
+| `smart-context-trimming` | 21 + 7 engine tests | All pass (2026-10-16) |
+| `retry-loop-breaker` | 14 + 8 engine tests | All pass (2026-10-16) |
 
 ### B. Timeline
 
@@ -910,6 +945,7 @@ All 199 scenarios, thresholds chosen on dev:
 | 10-13 | Real run on PR 5240; `review-pr-jev-classify`, `web-test-jev-ground`; plan for Jev on BMad |
 | 10-14 | 4 `web-test-jev-*` skills; offline Laya vs Jev evaluation; `JEV` repo: smoke test, `jev_advisor`, A/B/C 30 runs |
 | 10-15 | Agent runs on ticket 11840 (dev + staging); `fast-compact`; controlled A/B re-run on PR 5240; 5 new Jev skills + 7-session real test; 2 BMad + Jev skills; `skills-router` (evaluated on 199 scenarios and 368 real prompts, then round 2); `subagent-model-router` (18-task benchmark); `review-pr-jev-classify` upgrade; `web-test` bug fixes |
+| 10-16 | Group G (`story-batch-planner`, `agent-budget-governor`, `integration-verifier`, `codebase-task-explorer`) and group H (mods `smart-context-trimming`, `retry-loop-breaker`), one session each, quick tests, merged into `main` |
 
 ### C. Where the code lives
 
@@ -927,6 +963,7 @@ All 199 scenarios, thresholds chosen on dev:
 | The real review-pr test session's branch (not pushed) | `research/review-pr-jev-real-eval.md` |
 | `claude/review-pr-jev-upgrade-2bbb34` (not pushed) | `review-pr-jev-classify` upgrade |
 | `claude/web-test-fixes-4fdcd7` (not pushed) | Bug fixes for the 11 `web-test` copies, per-click gate check |
+| `main` (2026-10-16) | Group G: `.claude/skills/story-batch-planner`, `integration-verifier`, `codebase-task-explorer`, governor inside `subagent-model-router`; group H: `smart-context-trimming/`, `retry-loop-breaker/` |
 | `xt-skills` repo | The original `review-pr` |
 | Repo `danhnguyen-xiontechs/JEV`, branch `jev` | Jev smoke test, `jev_advisor`, A/B/C |
 | `JEV` repo, worktree `claude/review-5-plans-idea-folder-ce4d36` (**uncommitted**) | 5 new Jev skills, demos/evals, `docs/runs/realtest/` |

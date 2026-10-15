@@ -12,8 +12,8 @@ const LANGS = {
   vi: {
     other: 'en', otherLabel: 'English', toc: 'Mục lục', print: 'In / PDF',
     kpis: [
-      ['21', 'skill đã làm', '14 biến thể · 7 skill mới'],
-      ['8', 'công cụ mới', 'proxy, workflow, hook…'],
+      ['25', 'skill đã làm', '14 biến thể · 11 skill mới'],
+      ['10', 'công cụ mới', 'proxy, hook, 2 mod…'],
       ['14%', 'chi phí subagent', 'rule + leo model, so với luôn Opus'],
       ['18/20', 'ado-classify', 'kết quả tốt nhất của Laya'],
       ['96%', 'Jev write-gate', 'offline, so với Laya 58%'],
@@ -23,8 +23,8 @@ const LANGS = {
   en: {
     other: 'vi', otherLabel: 'Tiếng Việt', toc: 'Contents', print: 'Print / PDF',
     kpis: [
-      ['21', 'skills built', '14 variants · 7 new'],
-      ['8', 'new tools', 'proxy, workflow, hooks…'],
+      ['25', 'skills built', '14 variants · 11 new'],
+      ['10', 'new tools', 'proxy, hooks, 2 mods…'],
       ['14%', 'subagent cost', 'rules + escalation vs always-Opus'],
       ['18/20', 'ado-classify', "Laya's best result"],
       ['96%', 'Jev write-gate', 'offline, vs Laya 58%'],
