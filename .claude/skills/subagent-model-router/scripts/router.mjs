@@ -88,7 +88,13 @@ const FILE_RE = /(?:[\w.-]+[\\/])*[\w.-]+\.(?:m?[jt]sx?|py|cs|java|go|rs|rb|php|
 // Explicit acceptance criteria only (AC1…, Given/Scenario); plain bullets are context, not ACs.
 const AC_RE = /^\s*(?:[-*]\s*)?(?:AC\s*-?\d+\b|Given\b|Scenario\b)/gim;
 const CHECK_RE = /\b(run (the )?tests?|pytest|npm (run )?test|node --test|go test|cargo test|dotnet test|jest|vitest|acceptance (criteria|check|test)s?|must pass|expected output|exit code 0)\b/i;
-const READ_ONLY_RE = /\b(do not (edit|modify|change|write)|read[- ]only|don'?t (edit|modify|change)|no (edits|changes))\b/i;
+const READ_ONLY_RE = /\b(do not (edit|modify|change|write)|read[- ]only|don'?t (edit|modify|change)|no (edits|changes))\b/gi;
+// A "do not change …" clause makes a task read-only only when nothing else asks for an edit:
+// "Ignore those 17 tests and do not change them" in a coding brief guards other files.
+function isReadOnly(text) {
+  if (!text.match(READ_ONLY_RE)) return false;
+  return !MEDIUM[0].test(text.replace(READ_ONLY_RE, ' '));
+}
 
 export function ruleFeatures(task = '', type = '') {
   const text = String(task);
@@ -104,7 +110,7 @@ export function ruleFeatures(task = '', type = '') {
     files: files.size,
     acs,
     hasCheck: CHECK_RE.test(text),
-    readOnly: READ_ONLY_RE.test(text),
+    readOnly: isReadOnly(text),
     chars: text.length,
   };
 }
