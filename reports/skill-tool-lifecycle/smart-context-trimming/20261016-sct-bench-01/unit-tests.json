@@ -1,0 +1,4 @@
+{"ranAt":"2026-10-16","suites":[
+{"level":"unit","command":"node --test \"tests/*.spec.ts\"","passed":21,"failed":0,"skipped":0,"notRun":0},
+{"level":"integration","command":"claude plugin test .","passed":7,"failed":0,"skipped":0,"notRun":0}
+]}

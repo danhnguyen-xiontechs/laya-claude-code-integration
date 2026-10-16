@@ -1,0 +1,29 @@
+{
+  "experimentId": "<experiment-id>",
+  "runId": "<arm>-<run-id>",
+  "arm": "A-claude | B-claude-jev",
+  "objective": "What this run set out to prove (1-3 sentences).",
+  "startedAt": "<ISO-8601 timestamp with timezone>",
+  "finishedAt": "<ISO-8601 timestamp with timezone>",
+  "steps": [
+    {
+      "title": "Meaningful milestone, not every tool call",
+      "assumption": "What was assumed, or empty string",
+      "result": "What happened, supported by visible evidence",
+      "status": "ok | warn | error | blocked | pass | fail"
+    }
+  ],
+  "insights": [
+    "What worked, wasted turns, caused a retry, altered cost/latency, or should change in the next run."
+  ],
+  "usageSource": "Claude Code transcript/API usage metadata path or unavailable",
+  "artifactLinks": {
+    "caseResults": "./results.json",
+    "executionLog": "./execution-log.html",
+    "legacyExecutionLog": "./log-execute.html"
+  },
+  "redaction": {
+    "checked": false,
+    "notes": "Confirm tokens, credentials, secrets, and sensitive data are redacted before sharing."
+  }
+}

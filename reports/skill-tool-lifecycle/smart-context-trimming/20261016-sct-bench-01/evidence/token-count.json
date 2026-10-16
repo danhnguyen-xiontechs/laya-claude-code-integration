@@ -1,0 +1,26 @@
+{
+  "model": "haiku",
+  "baseline": 37337,
+  "files": {
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\long_passing_dotnet_test.A.txt": 12052,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\long_passing_dotnet_test.B.txt": 655,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\multiple_failing_tests.A.txt": 10035,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\multiple_failing_tests.B.txt": 1332,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\dotnet_compiler_errors.A.txt": 10810,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\dotnet_compiler_errors.B.txt": 640,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\exception_stack_trace.A.txt": 4272,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\exception_stack_trace.B.txt": 731,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\warnings_then_fatal.A.txt": 10705,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\warnings_then_fatal.B.txt": 745,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\secret_like_strings.A.txt": 8041,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\secret_like_strings.B.txt": 635,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\malformed_log.A.txt": 4434,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\malformed_log.B.txt": 4429,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\short_output.A.txt": 130,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\short_output.B.txt": 128,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\unmatched_command.A.txt": 27504,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\unmatched_command.B.txt": 27504,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\piped_to_head_excluded.A.txt": 10417,
+    "D:\\Laya\\.claude\\worktrees\\skill-tool-workflow-definition-a31b84\\reports\\skill-tool-lifecycle\\smart-context-trimming\\20261016-sct-bench-01\\evidence\\texts\\piped_to_head_excluded.B.txt": 10419
+  }
+}

@@ -1,0 +1,26 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 463 → 20 original lines kept verbatim (rule).
+[smart-trim] Command succeeded (exit code 0).
+[smart-trim] Full raw output: ~/.claude/smart-context-trimming/raw/x.log (Read it if you need an omitted section).
+Determining projects to restore...
+  Restored C:\src\Proj0\Proj0.csproj (in 100 ms).
+  Restored C:\src\Proj1\Proj1.csproj (in 101 ms).
+  Restored C:\src\Proj2\Proj2.csproj (in 102 ms).
+  Restored C:\src\Proj3\Proj3.csproj (in 103 ms).
+[smart-trim] … 443 line(s) omitted (6-448) …
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_406 [2 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_407 [3 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_408 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_409 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_410 [6 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_411 [7 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_412 [8 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_413 [9 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_414 [1 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_415 [2 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_416 [3 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_417 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_418 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_419 [6 ms]
+[smart-trim] --- line 463: summary ---
+Passed!  - Failed:     0, Passed:   420, Skipped:     0, Total:   420, Duration: 4 s
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

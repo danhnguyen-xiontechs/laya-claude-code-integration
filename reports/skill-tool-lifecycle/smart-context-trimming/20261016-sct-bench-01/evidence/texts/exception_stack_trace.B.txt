@@ -1,0 +1,36 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 310 → 27 original lines kept verbatim (jev:errors_only).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: ~/.claude/smart-context-trimming/raw/x.log (Read it if you need an omitted section).
+[smart-trim] --- line 1: exit_status ---
+Exit code 1
+> hr-web@1.0.0 test
+> jest
+PASS src/components/c0.test.tsx
+PASS src/components/c1.test.tsx
+[smart-trim] … 278 line(s) omitted (6-283) …
+[smart-trim] --- line 284: exception ---
+TypeError: Cannot read properties of undefined (reading 'employeeId')
+    at fn0 (/app/src/services/leave0.ts:10:5)
+    at fn1 (/app/src/services/leave1.ts:11:5)
+    at fn2 (/app/src/services/leave2.ts:12:5)
+    at fn3 (/app/src/services/leave3.ts:13:5)
+    at fn4 (/app/src/services/leave4.ts:14:5)
+    at fn5 (/app/src/services/leave5.ts:15:5)
+[smart-trim] … 5 line(s) omitted (291-295) …
+    at fn11 (/app/src/services/leave11.ts:21:5)
+    at fn12 (/app/src/services/leave12.ts:22:5)
+    at fn13 (/app/src/services/leave13.ts:23:5)
+    at fn14 (/app/src/services/leave14.ts:24:5)
+    at fn15 (/app/src/services/leave15.ts:25:5)
+    at fn16 (/app/src/services/leave16.ts:26:5)
+    at fn17 (/app/src/services/leave17.ts:27:5)
+    at fn18 (/app/src/services/leave18.ts:28:5)
+    at fn19 (/app/src/services/leave19.ts:29:5)
+    at fn20 (/app/src/services/leave20.ts:30:5)
+    at fn21 (/app/src/services/leave21.ts:31:5)
+    at fn22 (/app/src/services/leave22.ts:32:5)
+    at fn23 (/app/src/services/leave23.ts:33:5)
+[smart-trim] --- line 309: summary ---
+Test Suites: 1 failed, 280 passed, 281 total
+Tests:       1 failed, 1904 passed, 1905 total
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

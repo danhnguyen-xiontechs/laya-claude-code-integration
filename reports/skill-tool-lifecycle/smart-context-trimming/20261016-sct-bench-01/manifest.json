@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261016-sct-bench-01",
+  "tool": {
+    "name": "smart-context-trimming",
+    "kind": "hook",
+    "provider": "JEV",
+    "commit": "6ca86e0",
+    "branch": "claude/skill-tool-workflow-definition-a31b84"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "On 10 fixtures Claude reads 52% fewer tokens (98,400 → 47,223; −92% on the 6 long outputs the mod trims) and no critical line is lost. Jev was asked on 3 cases only. Fix the 3 Major review findings and measure on real logs before using it.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (reads raw output)",
+      "candidateEnabled": false,
+      "engineEnabled": false
+    },
+    {
+      "id": "B",
+      "name": "Claude + mod (Jev live, rules fallback)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "engineVersion": "OpenRouter decisions API, minJevConfidence 0.6"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "retro-v1",
+    "datasetVersion": "tests/fixtures.ts @ 6ca86e0",
+    "caseCount": 10,
+    "repetitions": 1,
+    "deviations": [
+      "Same fixtures were used to write the rules and to measure them (in-sample): real logs may do worse.",
+      "Tokens = what Claude would read for the command output, counted for real via claude -p (haiku); not a full agent session, so no execution log.",
+      "4 of 10 cases are pass-through by design (short, unmatched, piped, malformed) and show no change.",
+      "1 repetition; Jev called on 3 cases."
+    ],
+    "tokenScope": "only the command output Claude reads (one Bash result), not the whole session"
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/bench",
+      "runs/B-claude-jev/bench"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/token-count.json"
+    ],
+    "executionLogs": []
+  }
+}

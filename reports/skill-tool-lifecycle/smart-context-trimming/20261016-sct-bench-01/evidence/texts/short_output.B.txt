@@ -1,0 +1,8 @@
+Exit code 1
+  Failed Contoso.Hr.Tests.X.Y [17 ms]
+  Error Message:
+   Assert.Equal() Failure: Expected: 1 Actual: 2
+  Stack Trace:
+     at Contoso.Hr.Tests.X.Y() in C:\src\X.cs:line 3
+     at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+Failed!  - Failed:     1, Passed:   0

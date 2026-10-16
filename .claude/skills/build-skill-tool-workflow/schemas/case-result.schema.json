@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/case-result.schema.json",
+  "title": "Skill Tool Evaluation Case Result",
+  "type": "object",
+  "required": ["experimentId", "caseId", "arm", "status", "startedAt", "finishedAt"],
+  "properties": {
+    "experimentId": { "type": "string" },
+    "caseId": { "type": "string" },
+    "arm": { "enum": ["A", "B"] },
+    "runId": { "type": "string" },
+    "status": { "enum": ["pass", "fail", "blocked", "skipped", "not-run", "error"] },
+    "goldOutcome": {},
+    "observedOutcome": {},
+    "correct": { "type": ["boolean", "null"] },
+    "criteriaResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterionId", "status"],
+        "properties": {
+          "criterionId": { "type": "string" },
+          "status": { "enum": ["pass", "fail", "blocked", "not-applicable"] },
+          "evidenceRef": { "type": ["string", "null"] },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "inputTokens": { "type": ["integer", "null"], "minimum": 0 },
+        "outputTokens": { "type": ["integer", "null"], "minimum": 0 },
+        "cacheReadTokens": { "type": ["integer", "null"], "minimum": 0 },
+        "cacheWriteTokens": { "type": ["integer", "null"], "minimum": 0 },
+        "modelTurns": { "type": ["integer", "null"], "minimum": 0 },
+        "toolCalls": { "type": ["integer", "null"], "minimum": 0 },
+        "providerCalls": { "type": ["integer", "null"], "minimum": 0 },
+        "fallbackCount": { "type": ["integer", "null"], "minimum": 0 },
+        "elapsedMs": { "type": ["number", "null"], "minimum": 0 },
+        "providerLatencyMs": { "type": ["number", "null"], "minimum": 0 },
+        "cost": { "type": ["number", "null"], "minimum": 0 },
+        "costKind": { "enum": ["actual", "estimated", "unavailable", null] },
+        "source": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "deviations": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,27 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 305 → 20 original lines kept verbatim (jev:errors_only).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: ~/.claude/smart-context-trimming/raw/x.log (Read it if you need an omitted section).
+[smart-trim] --- line 1: exit_status ---
+Exit code 134
+> hr-web@1.0.0 build
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p1.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+[smart-trim] … 285 line(s) omitted (6-290) …
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p289.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p291.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p293.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p295.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p297.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+warning: browserslist: caniuse-lite is outdated. Please run next command `npx update-browserslist-db@latest`
+WARNING in ./src/pages/p299.tsx: Module Warning (from ./node_modules/eslint-loader): 'x' is assigned a value but never used
+<--- Last few GCs --->
+[smart-trim] --- line 304: fatal ---
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+npm ERR! code 134
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

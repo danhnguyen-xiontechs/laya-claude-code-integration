@@ -1,0 +1,219 @@
+{
+  "experimentId": "20261016-sct-bench-01",
+  "arm": "B",
+  "runId": "bench",
+  "startedAt": "2026-10-16T08:17:08.887Z",
+  "finishedAt": "2026-10-16T08:17:08.887Z",
+  "cases": [
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "long_passing_dotnet_test",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "1 critical lines kept",
+      "observedOutcome": "rule",
+      "usage": {
+        "inputTokens": 655,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/long_passing_dotnet_test.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "multiple_failing_tests",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "10 critical lines kept",
+      "observedOutcome": "rule",
+      "usage": {
+        "inputTokens": 1332,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/multiple_failing_tests.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "dotnet_compiler_errors",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "5 critical lines kept",
+      "observedOutcome": "rule",
+      "usage": {
+        "inputTokens": 640,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dotnet_compiler_errors.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "exception_stack_trace",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "6 critical lines kept",
+      "observedOutcome": "jev:errors_only",
+      "usage": {
+        "inputTokens": 731,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1545,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/exception_stack_trace.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "warnings_then_fatal",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "3 critical lines kept",
+      "observedOutcome": "jev:errors_only",
+      "usage": {
+        "inputTokens": 745,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 646,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/warnings_then_fatal.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "secret_like_strings",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "4 critical lines kept",
+      "observedOutcome": "jev:errors_only",
+      "usage": {
+        "inputTokens": 635,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 559,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/secret_like_strings.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "malformed_log",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "1 critical lines kept",
+      "observedOutcome": "no_recognized_diagnostics",
+      "usage": {
+        "inputTokens": 4434,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/malformed_log.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "short_output",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "2 critical lines kept",
+      "observedOutcome": "below_threshold",
+      "usage": {
+        "inputTokens": 130,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/short_output.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "unmatched_command",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "0 critical lines kept",
+      "observedOutcome": "unmatched_command",
+      "usage": {
+        "inputTokens": 27504,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/unmatched_command.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    },
+    {
+      "experimentId": "20261016-sct-bench-01",
+      "caseId": "piped_to_head_excluded",
+      "arm": "B",
+      "status": "pass",
+      "correct": true,
+      "goldOutcome": "0 critical lines kept",
+      "observedOutcome": "unmatched_command",
+      "usage": {
+        "inputTokens": 10417,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "real input tokens via claude -p (haiku), evidence/token-count.json"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/piped_to_head_excluded.B.txt"
+      ],
+      "startedAt": "2026-10-16T08:17:08.887Z",
+      "finishedAt": "2026-10-16T08:17:08.887Z"
+    }
+  ]
+}

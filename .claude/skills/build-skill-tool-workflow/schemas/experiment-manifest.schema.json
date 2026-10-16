@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/experiment-manifest.schema.json",
+  "title": "Skill Tool Experiment Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "experimentId", "tool", "status", "arms", "artifacts"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "experimentId": { "type": "string", "minLength": 1 },
+    "tool": {
+      "type": "object",
+      "required": ["name", "kind"],
+      "properties": {
+        "name": { "type": "string" },
+        "kind": { "enum": ["skill", "hook", "plugin", "mcp", "helper", "provider", "combination", "evaluation"] },
+        "provider": { "enum": ["none", "JEV", "Laya", "other", "mixed"] },
+        "commit": { "type": ["string", "null"] },
+        "branch": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "status": {
+      "enum": ["IDEA_DRAFT", "WAITING_FOR_IDEA_APPROVAL", "APPROVED_FOR_IMPLEMENTATION", "DESIGN_READY", "IMPLEMENTED", "TESTS_PASS", "TESTS_BLOCKED", "TESTS_FAIL", "AGENT_REVIEW_PASS", "AGENT_REVIEW_BLOCKED", "EVALUATION_COMPLETE", "EVALUATION_BLOCKED", "REPORT_VALIDATED", "WAITING_FOR_USER_FINAL_REVIEW", "ADOPTED", "PILOT", "REWORK", "DROPPED", "INSUFFICIENT_EVIDENCE"]
+    },
+    "approvals": {
+      "type": "object",
+      "properties": {
+        "ideaApprovedAt": { "type": ["string", "null"], "format": "date-time" },
+        "finalDecision": { "enum": ["ADOPTED", "PILOT", "REWORK", "DROPPED", "INSUFFICIENT_EVIDENCE", null] },
+        "finalDecisionAt": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "arms": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "candidateEnabled", "engineEnabled"],
+        "properties": {
+          "id": { "enum": ["A", "B"] },
+          "name": { "type": "string" },
+          "candidateEnabled": { "type": "boolean" },
+          "engineEnabled": { "type": "boolean" },
+          "model": { "type": ["string", "null"] },
+          "modelVersion": { "type": ["string", "null"] },
+          "effort": { "type": ["string", "null"] },
+          "engineVersion": { "type": ["string", "null"] },
+          "configRef": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "properties": {
+        "planVersion": { "type": ["string", "null"] },
+        "datasetVersion": { "type": ["string", "null"] },
+        "caseCount": { "type": ["integer", "null"], "minimum": 0 },
+        "repetitions": { "type": ["integer", "null"], "minimum": 1 },
+        "criteriaFrozenAt": { "type": ["string", "null"], "format": "date-time" },
+        "deviations": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "artifacts": {
+      "type": "object",
+      "required": ["ideaBrief", "perToolReport", "mainReport"],
+      "properties": {
+        "ideaBrief": { "type": ["string", "null"] },
+        "design": { "type": ["string", "null"] },
+        "experimentPlan": { "type": ["string", "null"] },
+        "unitTestReport": { "type": ["string", "null"] },
+        "agentReview": { "type": ["string", "null"] },
+        "perToolReport": { "type": ["string", "null"] },
+        "perToolHtmlReport": { "type": ["string", "null"] },
+        "mainReport": { "type": ["string", "null"] },
+        "runDirectories": { "type": "array", "items": { "type": "string" } },
+        "rawResults": { "type": "array", "items": { "type": "string" } },
+        "executionLogs": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,30 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 311 → 20 original lines kept verbatim (rule).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: ~/.claude/smart-context-trimming/raw/x.log (Read it if you need an omitted section).
+[smart-trim] --- line 1: exit_status ---
+Exit code 1
+MSBuild version 17.9.8+b34f75857 for .NET
+  Restored C:\src\Proj0\Proj0.csproj (in 100 ms).
+  Restored C:\src\Proj1\Proj1.csproj (in 101 ms).
+  Restored C:\src\Proj2\Proj2.csproj (in 102 ms).
+[smart-trim] … 291 line(s) omitted (6-296) …
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+[smart-trim] --- line 303: compiler_error ---
+C:\src\Hr\LeaveService.cs(57,31): error CS1002: ; expected [C:\src\Hr\Hr.csproj]
+C:\src\Hr\PayrollCalc.cs(12,9): error CS0246: The type or namespace name 'Money' could not be found [C:\src\Hr\Hr.csproj]
+
+[smart-trim] --- line 306: fatal ---
+Build FAILED.
+
+[smart-trim] --- line 308: summary ---
+    0 Warning(s)
+    2 Error(s)
+
+[smart-trim] --- line 311: summary ---
+Time Elapsed 00:00:21.47
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.
