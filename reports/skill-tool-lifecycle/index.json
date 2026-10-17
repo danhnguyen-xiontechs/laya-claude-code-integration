@@ -9,9 +9,9 @@
       "branch": "main"
     },
     "engine": "JEV",
-    "status": "WAITING_FOR_USER_FINAL_REVIEW",
+    "status": "REWORK",
     "recommendation": "REWORK",
-    "finalDecision": null,
+    "finalDecision": "REWORK",
     "confidence": "LOW",
     "headline": "On 4 small fixtures plain Haiku 5.5 already gets every case right (4/4), and so does Haiku with the planner, but the planner arm spends 2.5 times the tokens (429k -> 1,093k) on extra turns for reading and acting on the planner output. The fixtures are too easy to show any planner value, and one Critical bug is still open (layer() inverts the order when a prerequisite is incomplete). Fix it, then measure on larger, harder batches.",
     "arms": {
@@ -67,7 +67,7 @@
     },
     "openBlockingFindings": 0,
     "lastRun": "2026-10-17T08:56:54.658Z",
-    "generatedAt": "2026-10-17T08:59:53.199Z",
+    "generatedAt": "2026-10-17T09:34:59.907Z",
     "report": "report.html",
     "href": "story-batch-planner/20261017-sbp-agent-01/report.html",
     "stale": false,
@@ -83,9 +83,9 @@
       "branch": "main"
     },
     "engine": "JEV",
-    "status": "WAITING_FOR_USER_FINAL_REVIEW",
+    "status": "REWORK",
     "recommendation": "REWORK",
-    "finalDecision": null,
+    "finalDecision": "REWORK",
     "confidence": "LOW",
     "headline": "On 4 find-where-to-start tasks with Haiku 5.5, the same codemap pool in raw order (A) got all 4 right, and the pool ranked by the tool's rules plus Jev (B) got 3 of 4 (t3-refactor-decide missed the eval/shadow-hook group), using 11% more tokens (2.89M -> 3.22M). B is not better here and one case is worse, which is within agent noise at 4 cases; 8 Major review findings are open. Fix the failure paths, then measure on harder tasks.",
     "arms": {
@@ -143,7 +143,7 @@
     },
     "openBlockingFindings": 0,
     "lastRun": "2026-10-17T08:54:22.724Z",
-    "generatedAt": "2026-10-17T08:59:53.126Z",
+    "generatedAt": "2026-10-17T09:34:59.825Z",
     "report": "report.html",
     "href": "codebase-task-explorer/20261017-cte-agent-01/report.html",
     "stale": false,

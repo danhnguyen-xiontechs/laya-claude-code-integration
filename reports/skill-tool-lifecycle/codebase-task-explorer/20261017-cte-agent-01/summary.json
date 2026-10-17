@@ -8,9 +8,9 @@
     "branch": "main"
   },
   "engine": "JEV",
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
-  "finalDecision": null,
+  "finalDecision": "REWORK",
   "confidence": "LOW",
   "headline": "On 4 find-where-to-start tasks with Haiku 5.5, the same codemap pool in raw order (A) got all 4 right, and the pool ranked by the tool's rules plus Jev (B) got 3 of 4 (t3-refactor-decide missed the eval/shadow-hook group), using 11% more tokens (2.89M -> 3.22M). B is not better here and one case is worse, which is within agent noise at 4 cases; 8 Major review findings are open. Fix the failure paths, then measure on harder tasks.",
   "arms": {
@@ -68,6 +68,6 @@
   },
   "openBlockingFindings": 0,
   "lastRun": "2026-10-17T08:54:22.724Z",
-  "generatedAt": "2026-10-17T09:00:05.669Z",
+  "generatedAt": "2026-10-17T09:34:59.825Z",
   "report": "report.html"
 }
