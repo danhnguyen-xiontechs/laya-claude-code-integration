@@ -1,0 +1,12 @@
+CAUSE: The test fixture records migration 0042_orders_region as already applied with a stale checksum (9f3a77c1, planted in tests/conftest.py:17), while the current SQL checksum is 3f5429e3. svc/migrate.py treats any checksum mismatch as "applied" and skips the migration, so the ALTER TABLE that adds the `region` column never runs. The orders table has no `region` column, and the INSERT in create_order fails. The runner should either re-apply the migration or fail loudly on a mismatch, not silently skip it.
+
+LOCATION: svc/migrate.py:25-29 (the checksum-mismatch branch: line 26 logs "assuming applied", and line 29 `continue` skips the SQL run at line 31). Triggering stale record: tests/conftest.py:17.
+
+EVIDENCE:
+- "E       sqlite3.OperationalError: table orders has no column named region"
+- "WARNING  svc.migrate:migrate.py:26 migration 0042_orders_region checksum differs (stored=9f3a77c1 file=3f5429e3), assuming applied"
+- "INFO     svc.migrate:migrate.py:30 applying migration 0043_customers_email" (0043 runs after 0042 was skipped, so 0042 never executed)
+- "FAILED tests/test_orders.py::test_order_records_region - sqlite3.OperationalE..."
+- The many ERROR/Traceback lines from svc.cache, svc.metrics and svc.storage (noise_hard.py chatter) are unrelated noise that the code catches; they are not the failure. The suite has one test, and it is the one that fails.
+
+RUNS: 1

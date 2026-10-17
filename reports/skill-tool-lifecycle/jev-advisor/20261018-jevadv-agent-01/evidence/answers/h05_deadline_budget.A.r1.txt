@@ -1,0 +1,11 @@
+CAUSE: The test asserts that the cache-miss configuration (fixture `settings` = `{'geo_cache': False}`) finishes within the 5000 ms budget, but `cost()` charges 4800 ms for `geo_lookup` on a miss. The 270 ms of earlier stages plus that charge leave -70 ms in round 0, so `run()` raises DeadlineExceeded deterministically (a full cache-miss round costs 6516 ms, a production round 1791 ms). The warm-up line `run({"geo_cache": True})` has no effect because `run()` keeps no cache state, and the ERROR tracebacks from `noise_hard` chatter (TimeoutError, ValueError, OSError, etc.) are caught inside `chatter` and are not the cause.
+LOCATION: tests/test_pipeline.py:6 (asserts on the geo_cache=False path, with the warm-up at line 5 doing nothing); the cost that makes that path infeasible is svc/pipeline.py:17 (`return 4800`).
+EVIDENCE:
+```
+settings = {'geo_cache': False}, budget_ms = 5000, rounds = 3
+DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=4800 budget_left_ms=-70 round=0
+E                   svc.pipeline.DeadlineExceeded: deadline exceeded in stage geo_lookup
+FAILED tests/test_pipeline.py::test_request_finishes_within_budget - svc.pipe...
+============================== 1 failed in 0.30s ==============================
+```
+RUNS: 2

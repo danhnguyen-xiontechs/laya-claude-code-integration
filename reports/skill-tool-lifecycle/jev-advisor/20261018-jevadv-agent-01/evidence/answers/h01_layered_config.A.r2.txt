@@ -1,0 +1,12 @@
+CAUSE: The test expects the default 30-second timeout (deadline 100.0 + 30 = 130.0), but the highest-precedence config layer, 99-ci.json, sets http.timeout to 0. config.load() merges layers last-writer-wins with no validation, so the 0 replaces the default 30, and deadline_for() returns now + 0 = 100.0.
+
+LOCATION: svc/config.py:25 (the merge `merged[k], source[k] = v, name` lets the 99-ci.json entry override DEFAULTS' `"http.timeout": 30` at svc/config.py:8). The 99-ci.json file itself is in a CONF_DIRS directory outside the work folder; I did not open it, and only the log shows its value.
+
+EVIDENCE:
+E       assert 100.0 == 130.0
+E        +  where 100.0 = deadline_for(now=100.0)
+DEBUG    svc.config:config.py:27 resolved http.timeout=0 layer=99-ci.json
+FAILED tests/test_client.py::test_request_deadline_uses_configured_timeout - ...
+============================== 1 failed in 0.16s ==============================
+
+RUNS: 2

@@ -1,0 +1,10 @@
+CAUSE: The `fresh_clock` fixture does not give a fresh clock. `session_clock` is session-scoped and returns the process-wide `svc.clock` module, whose `_offset` only grows through `advance()`, so `test_expired_token_is_rejected` (which runs first) advances it by 7200s and nothing resets it. `test_recent_session_token_is_valid` assumes an unadvanced base time, so it sees now = base + 7200, token age = 9000s, and the 30-minute-old token is rejected as expired (it would be valid at age 1800s < TTL 3600s).
+LOCATION: tests/conftest.py:10-18 (session-scoped `session_clock` at lines 10-12 returns the shared module; `fresh_clock` at lines 15-18 does not reset the offset). The leaking mutation is tests/test_auth.py:6 (`fresh_clock.advance(7200, ...)`, never restored) acting on svc/clock.py:13 (`_offset += seconds`, global state).
+EVIDENCE: 
+  tests\test_auth.py .F
+  INFO     tests:conftest.py:17 fixture fresh_clock ready, clock offset=7200s
+  E       AssertionError: assert False
+  DEBUG    svc.auth:tokens.py:19 token age=9000s ttl=3600s
+  FAILED tests/test_auth.py::test_recent_session_token_is_valid - AssertionErro...
+  ========================= 1 failed, 1 passed in 0.47s =========================
+RUNS: 2

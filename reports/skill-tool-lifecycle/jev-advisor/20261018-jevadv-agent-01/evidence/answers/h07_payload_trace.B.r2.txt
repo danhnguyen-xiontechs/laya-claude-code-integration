@@ -1,0 +1,12 @@
+CAUSE: The `sanitize` filter in `svc/chain.py` drops every string value that is all-lowercase and exactly 3 characters long, which also matches the valid lowercase currency code "usd". The currency key is removed, and `enrich` then fills in its default `"eur"`, so `test_usd_request_keeps_currency` gets 'eur' instead of 'usd'. The other test passes because "EUR" is uppercase and is not dropped. The noise_hard logging is not the cause: `chatter()` only emits log records, uses its own seeded RNG, and never touches the payload.
+
+LOCATION: <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85/c4cf5e0b-3d40-4d6a-8707-bea182c14834/scratchpad/adv/work/h07_payload_trace.B.r2/svc/chain.py:26 (faulty predicate in `sanitize`); the default that masks the loss is at svc/chain.py:32 in `enrich`.
+
+EVIDENCE:
+- `DEBUG    svc.chain:chain.py:10 stage=parse payload={"currency": "usd", "customer": "Initech", "qty": 2}` (log line 23)
+- `DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}` (log line 851; "currency" is gone)
+- `DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}` (log line 1265)
+- `E       AssertionError: assert 'eur' == 'usd'`
+- `FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...` with `1 failed, 1 passed in 0.53s`
+
+RUNS: 1 (the test command `runtest.py` was run once. A separate `python -c` check of the sanitize predicate on sample values was not a test run. No code was edited. The full log is at `.tool-output/20261018-004811_37cb.log` in the work folder.)

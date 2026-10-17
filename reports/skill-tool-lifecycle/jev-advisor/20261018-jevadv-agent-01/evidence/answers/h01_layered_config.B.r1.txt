@@ -1,0 +1,6 @@
+CAUSE: The autouse fixture `conf_dirs` in tests/conftest.py writes a highest-precedence layer `99-ci.json` containing `"http.timeout": 0`. svc/config.py merges layers in filename order, so that 0 overrides the default of 30, and `Client.deadline_for(now=100.0)` returns 100.0 instead of the test's expected 130.0. The config code and its default are correct (with no CONF_DIRS, load() gives http.timeout=30; with only the fixture's layer it gives 0), so the fault is the autouse fixture injecting a zero timeout into every test, which the test does not account for.
+LOCATION: tests/conftest.py:12
+EVIDENCE:
+DEBUG    svc.config:config.py:27 resolved http.timeout=0 layer=99-ci.json
+E       assert 100.0 == 130.0
+RUNS: 2

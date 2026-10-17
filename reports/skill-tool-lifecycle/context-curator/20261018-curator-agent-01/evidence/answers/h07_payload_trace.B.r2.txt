@@ -1,0 +1,9 @@
+CAUSE: sanitize() in svc/chain.py drops every string value that is all-lowercase and exactly 3 characters, judging by value rather than by field, so the lowercase ISO currency code "usd" is stripped from the payload before enrich() runs. enrich() then fills in its default currency "eur", so test_usd_request_keeps_currency fails. test_euro_requests_are_priced passes only because "EUR" is uppercase and survives the filter.
+LOCATION: <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85/c4cf5e0b-3d40-4d6a-8707-bea182c14834/scratchpad/cur/work/h07_payload_trace.B.r2/svc/chain.py:26 (the `allowed = {k: v ... if not (isinstance(v, str) and v.islower() and len(v) == 3)}` filter in sanitize)
+EVIDENCE:
+DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}
+E       AssertionError: assert 'eur' == 'usd'
+FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...
+RUNS: 1

@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-jevadv-agent-01",
+  "tool": {
+    "name": "jev_advisor",
+    "kind": "helper",
+    "provider": "JEV",
+    "commit": "e551872 + uncommitted curator.py",
+    "branch": "claude/review-5-plans-idea-folder-ce4d36"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "Directional only (4 cases x 2 repetitions, Haiku 5.5): plain Claude and Claude + jev_advisor both get 8/8 right, but the advisor arm spends about 7% more tokens (3.38M -> 3.63M, higher in 6 of 8 pairs, within the 2x spread between repetitions); no case got worse. Jev answered every call (about 1.1 s) but 4 of the 8 B agents wrote that a hint pointed at noise or only the symptom; the cases are too easy (1-2 KB sources name the cause) to show any value. Top fix: re-measure on a harder set where the cause is not visible in the source, with the hints reduced to the one anchor line.",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3375169,
+      "inputTokens": 108,
+      "outputTokens": 304,
+      "toolCalls": 69,
+      "modelTurns": 54,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 50741,
+      "pairedTokens": 1687584.5
+    },
+    "B": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3625824,
+      "inputTokens": 116,
+      "outputTokens": 380,
+      "toolCalls": 72,
+      "modelTurns": 58,
+      "providerCalls": 10,
+      "fallbacks": 0,
+      "providerLatencyMs": 1065,
+      "elapsedMs": 53691,
+      "pairedTokens": 1812912
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 108,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T17:49:14.071Z",
+  "generatedAt": "2026-10-17T18:24:19.345Z",
+  "report": "report.html"
+}

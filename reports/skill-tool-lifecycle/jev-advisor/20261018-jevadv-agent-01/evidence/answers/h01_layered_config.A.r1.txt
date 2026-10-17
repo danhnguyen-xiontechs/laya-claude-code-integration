@@ -1,0 +1,10 @@
+CAUSE: The autouse fixture `conf_dirs` in tests/conftest.py writes a `99-ci.json` layer containing `"http.timeout": 0` into every test's CONF_DIRS. svc/config.py merges layers in sorted order with later files overriding earlier ones, so that CI layer correctly overrides the default timeout of 30, and deadline_for returns 100 + 0 = 100 instead of the hard-coded 130. The loader behaves as designed; the test environment injects a timeout override that the test does not account for.
+
+LOCATION: tests/conftest.py:12
+
+EVIDENCE:
+- `DEBUG    svc.config:config.py:27 resolved http.timeout=0 layer=99-ci.json` (.tool-output/last.log line 65, and again at line 1708 for the refresh() load)
+- `E       assert 100.0 == 130.0`
+- `E        +  where 100.0 = deadline_for(now=100.0)`
+
+RUNS: 2 (both failed identically). Two extra one-off loader probes were also run, outside the test command: with no CONF_DIRS, svc.config.load()['http.timeout'] gives 30; with a 99-ci.json containing http.timeout 0 it gives 0. The "ERROR"/"WARNING" tracebacks in the log (BrokenPipeError, KeyError 'locale', "deprecated config key 'timeout_ms'") come from the noise_hard chatter calls and are not related to the failure.

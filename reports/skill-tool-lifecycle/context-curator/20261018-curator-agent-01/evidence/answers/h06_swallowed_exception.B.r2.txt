@@ -1,0 +1,11 @@
+CAUSE: Ledger.flush() wraps the whole batch loop in one try/except Exception that only logs. The entry {"amount": 7} has no "rate" key, so the loop raises KeyError on the third entry, the handler swallows it, and the fourth entry (3 * 1 = 3) is never applied, giving 20 instead of 23 (23 = 10 + 10 + 3 implies the bad entry should be skipped alone, not abort the batch). Because self.pending is cleared before the loop runs, the unapplied entry is silently dropped.
+
+LOCATION: svc/ledger.py:18-22 (the try/except around the loop in Ledger.flush; the swallow is at lines 21-22)
+
+EVIDENCE:
+ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries
+  self.balance += e["amount"] * e["rate"]
+KeyError: 'rate'
+E       AssertionError: assert 20 == 23
+
+RUNS: 2

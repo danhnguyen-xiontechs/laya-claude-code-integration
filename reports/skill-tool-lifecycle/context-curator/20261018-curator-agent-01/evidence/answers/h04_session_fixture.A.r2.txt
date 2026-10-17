@@ -1,0 +1,15 @@
+CAUSE: The session-scoped `item` fixture in tests/conftest.py loads fixture set "v1" (sku/name/price only), but svc/shipping.py and the tests expect the v2 schema (SCHEMA = "v2" in svc/catalog.py) with `weight_g`, `hazmat` and `currency`. catalog.load() only logs a warning about the mismatch and returns the v1 dict anyway, so every test that reads weight_g or currency raises KeyError.
+
+LOCATION: tests/conftest.py:9 (`return catalog.load("v1")`). The mismatch is only warned about at svc/catalog.py:14.
+
+EVIDENCE:
+- `item = {'sku': 'A-1', 'name': 'Widget', 'price': 9.5}`
+- `E       KeyError: 'weight_g'` followed by `svc\shipping.py:10: KeyError`
+- `E       KeyError: 'currency'` followed by `svc\shipping.py:15: KeyError`
+- `WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway`
+- `FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g'`
+- `FAILED tests/test_shipping.py::test_label_has_currency - KeyError: 'currency'`
+- `============================== 6 failed in 0.28s ==============================`
+The `KeyError: 'locale'`, `TimeoutError` and `ValueError: unbalanced quote` lines in the log are synthetic exceptions inside "Captured log" DEBUG/ERROR records from the noise helper. They are not test failures.
+
+RUNS: 2 (the test command was run twice; both runs gave 6 failed with the same KeyError set, exit code 1)

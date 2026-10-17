@@ -1,0 +1,13 @@
+CAUSE: The sanitize step in svc/chain.py deletes every string value that is all-lowercase and exactly 3 characters, which matches the valid currency code "usd". The key is gone before enrich runs, so enrich's default `"currency": "eur"` fills in and overwrites the caller's "usd". The euro test passes only because its "EUR" is uppercase and survives the filter. The ERROR lines from svc.metrics, svc.cache and svc.http are handled exceptions from the noise module and are not the cause.
+
+LOCATION: svc/chain.py:26 (sanitize predicate `not (isinstance(v, str) and v.islower() and len(v) == 3)`), with the default overwrite happening at svc/chain.py:32 (enrich).
+
+EVIDENCE:
+(.tool-output/last.log:437) DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}
+(.tool-output/last.log:851) DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}
+(.tool-output/last.log:1265) DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}
+E       AssertionError: assert 'eur' == 'usd'
+FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...
+=========================== 1 failed, 1 passed in 0.44s =========================
+
+RUNS: 2
