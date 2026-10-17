@@ -8,14 +8,14 @@
     "commit": "d5f1113",
     "branch": "claude/skill-tool-workflow-definition-a31b84"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "PILOT",
   "recommendation": "PILOT",
   "confidence": "LOW",
   "headline": "After the fix (node --test ✖ recognised, repeated failures folded) trimming fires on all 5 tasks. Haiku 5.5 subagents still pass 20/20 in both arms, and total session tokens drop 18% (4.96M → 4.04M): js-one-bug −49%, dotnet-build −35%, js-three-bugs −25%, while js-root-exception (+8%) and js-feature (+24%) went up by about the run-to-run noise. Try it on real work before adopting.",
   "approvals": {
     "ideaApprovedAt": null,
-    "finalDecision": null,
-    "finalDecisionAt": null
+    "finalDecision": "PILOT",
+    "finalDecisionAt": "2026-10-17T07:33:31Z"
   },
   "arms": [
     {
