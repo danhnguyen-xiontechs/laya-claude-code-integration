@@ -1,0 +1,3 @@
+BATCH: PASS
+S1: PASS - test exit 0 with a non-empty log, AC1 backed by that check, declared files match the diff, and no file overlap with S2; the combined run passes.
+S2: PASS - test exit 0 with a non-empty log, AC1 backed by that check, declared files match the diff, and no file overlap with S1; the combined run passes.

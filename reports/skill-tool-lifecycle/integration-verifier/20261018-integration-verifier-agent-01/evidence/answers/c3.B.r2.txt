@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - required check "test" exited 0 with a non-empty log, AC1 is backed by it, declared files match the diff, no overlap with S2, and the combined merge passes run-tests.js.
+S2: FAIL - required check "test" exited 1 in its own run (logs/S2-test.log: "FAIL tests/count.test.js: 3 == 2"), so AC1 has no passing evidence despite the "tests pass" claim.

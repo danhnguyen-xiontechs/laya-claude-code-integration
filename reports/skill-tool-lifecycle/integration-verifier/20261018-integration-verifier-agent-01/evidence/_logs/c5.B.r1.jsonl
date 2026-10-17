@@ -1,0 +1,1 @@
+{"t":"2026-10-17T17:30:55.128Z","case":"c5","arm":"B","rep":1,"ms":1303,"batch":"FAIL","stories":{"S1":"FAIL","S2":"FAIL"},"jev_calls":1,"jev_mode":"shadow","jev":[{"signature":"FAIL tests/profile.test.js: Cannot read properties of undefined (reading 'name')","suggestion":"code_regression","p":0.92,"margin":0.87,"latencyMs":763,"cost":0.000022512}]}

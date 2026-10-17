@@ -1,0 +1,50 @@
+{
+  "c1.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c1.A.r1"
+  },
+  "c1.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c1.A.r2"
+  },
+  "c2.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c2.A.r1"
+  },
+  "c2.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c2.A.r2"
+  },
+  "c3.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c3.A.r1"
+  },
+  "c3.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c3.A.r2"
+  },
+  "c4.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c4.A.r1"
+  },
+  "c4.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c4.A.r2"
+  },
+  "c5.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c5.A.r1"
+  },
+  "c5.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c5.A.r2"
+  },
+  "c6.A.r1": {
+    "forbiddenCalls": 0,
+    "workFolder": "c6.A.r1"
+  },
+  "c6.A.r2": {
+    "forbiddenCalls": 0,
+    "workFolder": "c6.A.r2"
+  }
+}

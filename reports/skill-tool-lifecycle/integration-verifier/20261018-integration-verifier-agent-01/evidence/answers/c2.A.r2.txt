@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - manifest records test exit_code 0 but its log logs/S1-test.log is missing from the logs folder (the check passes when I rerun it in a temp copy, but the recorded evidence is absent)
+S2: PASS - manifest test exit_code 0 with non-empty logs/S2-test.log matching a fresh run, AC1 backed by the passing test check, declared files match the diff, no file overlap with S1, and the combined S1+S2 merge is clean and passes node run-tests.js

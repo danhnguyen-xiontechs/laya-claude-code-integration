@@ -13,7 +13,7 @@ unit rules: ok
 │ 8       │ 'environment-only'             │ 'BLOCKED'         │ 'BLOCKED'         │ '{"S1":"BLOCKED","S2":"BLOCKED"}'                │ true │ '-'                   │ 'environment/rule→[-]'          │ ''  │
 │ 9       │ 'green-but-review-finding'     │ 'REVIEW_REQUIRED' │ 'REVIEW_REQUIRED' │ '{"S1":"REVIEW_REQUIRED","S2":"PASS"}'           │ true │ '-'                   │ '-'                             │ ''  │
 └─────────┴────────────────────────────────┴───────────────────┴───────────────────┴──────────────────────────────────────────────────┴──────┴───────────────────────┴─────────────────────────────────┴─────┘
-cases 10 · mismatches 0 · FALSE PASS 0 · jev calls 0 · fixtures in C:\Users\ADMIN\AppData\Local\Temp\iv-fix-1ekl4H
+cases 10 · mismatches 0 · FALSE PASS 0 · jev calls 0 · fixtures in C:\Users\<user>\AppData\Local\Temp\iv-fix-1ekl4H
 ✔ .claude\skills\integration-verifier\tests\fixtures.test.mjs (11794.8403ms)
 ℹ tests 1
 ℹ suites 0

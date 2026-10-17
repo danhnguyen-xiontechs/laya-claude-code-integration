@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - changes getUser from (id) to ({ id }) in src/api.js, which breaks S2's getUser(id) caller, so the merged run-tests.js exits 1 (tests/profile.test.js: TypeError).
+S2: FAIL - its own check passes, but src/profile.js calls getUser(id) with a number and fails against S1's new signature in the combined run (incompatible contract).

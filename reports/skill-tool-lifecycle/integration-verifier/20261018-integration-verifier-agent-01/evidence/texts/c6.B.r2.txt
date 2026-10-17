@@ -1,0 +1,44 @@
+# Integration verification — batch-c6
+
+**Batch status: REVIEW_REQUIRED** · base `main` · 2 stories · 2026-10-17T17:35:55.291Z
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **REVIEW_REQUIRED** | REVIEW_REQUIRED: review finding [High] SQL built by string concat |
+| S2 | `story/S2` | **PASS** | — |
+
+## AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | check:test | PASS |
+| S2 | AC1 | met | ac-coverage:tests/count.test.js | PASS |
+
+## Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | PASS |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 0 | logs/combined-test.log | PASS |
+
+Merged into integration worktree: S1, S2
+
+## Cross-story conflicts
+
+None found.
+
+## Failure clusters
+
+None.
+
+## Missing evidence and next actions
+
+- None.
+
+- Resolve the FAIL / BLOCKED items above, re-run the stories' checks with logs, then re-run this verifier.
+EXIT=3

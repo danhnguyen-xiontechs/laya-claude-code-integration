@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - open High review finding "SQL built by string concat" needs human triage (no SQL exists in the branch); required check passes (exit 0, log present) and no conflict with S2
+S2: REVIEW_REQUIRED - AC1 has no evidence (empty evidence list, and the coverage row cites tests/count.test.js, which is absent on story/S2); the required check passes but only runs tests/api.test.js

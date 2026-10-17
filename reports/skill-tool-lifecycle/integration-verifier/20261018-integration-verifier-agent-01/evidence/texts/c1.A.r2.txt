@@ -1,0 +1,21 @@
+1	{
+2	  "batch_id": "batch-c1",
+3	  "repo": "repo",
+4	  "base": "main",
+5	  "required_checks": [
+6	    {
+7	      "name": "test",
+8	      "cmd": "node run-tests.js"
+9	    }
+10	  ],
+11	  "stories": [
+12	    {
+13	      "id": "S1",
+14	      "branch": "story/S1"
+15	    },
+16	    {
+17	      "id": "S2",
+18	      "branch": "story/S2"
+19	    }
+20	  ]
+21	}

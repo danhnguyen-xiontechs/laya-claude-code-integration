@@ -1,0 +1,45 @@
+# Integration verification — batch-c2
+
+**Batch status: BLOCKED** · base `main` · 2 stories · 2026-10-17T17:33:24.601Z
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **BLOCKED** | BLOCKED: required check "test" has no log artifact — a claim without a log is not evidence<br>REVIEW_REQUIRED: AC AC1 has no evidence (claim only) |
+| S2 | `story/S2` | **PASS** | — |
+
+## AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | **none** | REVIEW_REQUIRED |
+| S2 | AC1 | met | check:test | PASS |
+
+## Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | BLOCKED |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 0 | logs/combined-test.log | PASS |
+
+Merged into integration worktree: S1, S2
+
+## Cross-story conflicts
+
+None found.
+
+## Failure clusters
+
+None.
+
+## Missing evidence and next actions
+
+- S1: BLOCKED: required check "test" has no log artifact — a claim without a log is not evidence
+- S1: REVIEW_REQUIRED: AC AC1 has no evidence (claim only)
+
+- Resolve the FAIL / BLOCKED items above, re-run the stories' checks with logs, then re-run this verifier.
+EXIT=3
