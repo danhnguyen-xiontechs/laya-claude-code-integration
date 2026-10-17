@@ -1,0 +1,13 @@
+file             risk  formula  jev p  commits  authors  age   last  top reason
+shop/billing.py  6.8*  5.5      0.95   26       4        376d  4d    22 of 26 commits are fixes
+(* = risk >= threshold 4.5; rev HEAD 9b0bbfb96c)
+JEV: 1 request(s), 1147 ms, 777 input tokens, $0.000033
+
+Defensive mode for shop/billing.py (risk 6.8/10, formula 5.5).
+Evidence: 22 of 26 commits are fixes; 4 authors; churn 90 lines on a 26-line file; last revert 2024-05-26; JEV: fragile history p=0.95 (bugfix_churn, +1.4).
+Before and while editing this file:
+1. Read the recent fixes first: `git log -n 5 -p -- shop/billing.py`; do not reintroduce a bug they fixed.
+2. Find callers and side effects: `git grep -n "billing"`; note I/O, globals, caches, DB writes you might change.
+3. Run the tests that cover this file before the change; if none exist, add a small characterization test of current behaviour.
+4. Keep the diff small: one concern per change, no drive-by refactors, renames or reformatting.
+5. Re-run those tests after each edit and mention the risk in your summary.

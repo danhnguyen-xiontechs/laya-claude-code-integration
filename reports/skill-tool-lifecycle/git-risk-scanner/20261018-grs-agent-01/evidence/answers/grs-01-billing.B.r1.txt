@@ -1,0 +1,9 @@
+Simplified shop/billing.py in place (26 to 20 lines) with no behaviour change: pct is clamped with min(pct, 100), invoice_total drops the continue branch and temp variables, and int() moves into the return.
+
+Verification: the 3 existing tests pass (also 3/3 before the edit). A randomized comparison against the original (git HEAD) over 40,277 cases, covering float pct, None lines, missing keys, negative and >100 pct, and large ints, found 0 mismatches. The comparison script is in the scratchpad; no test file was added to the repo.
+
+Kept on purpose: the `pct <= 0` early return (without it, negative pct would mark the total up), the `line is not None` guard, and the `or 0` defaults. I kept the loop instead of sum() because Python 3.12+ sum() on floats uses compensated summation, which can change int() truncation for float qty.
+
+Not removed: `REV = 26`. Nothing in the repo reads it, but every "fix" commit only bumps it, so something outside the repo may depend on it. Deleting it is your call.
+
+Risk scanner: flagged the file at 6.8/10 (22 of 26 commits are fixes, mostly REV bumps). I followed defensive mode: read the fix history, confirmed the only importer is tests/test_billing.py, and ran tests before and after the edit.

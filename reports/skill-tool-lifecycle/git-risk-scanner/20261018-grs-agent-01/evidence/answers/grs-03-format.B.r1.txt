@@ -1,0 +1,7 @@
+Simplified shop/format_utils.py in place from 23 to 15 lines: removed the unused REV constant, replaced the slugify character loop with one regex, and used divmod in format_money.
+
+- Kept the `currency is None` branch in format_money: removing it would change output for an explicit None (it would print "None" instead of "USD").
+- Git-risk scanner: risk 0.7, not flagged (threshold 4.5), so no defensive mode.
+- Tests: `<python> -m pytest -q` gives 2 passed (tests/ untouched).
+- Equivalence: a differential check against the original HEAD version (script in the scratchpad, not the repo) matched on 300k slugify inputs (including non-ASCII, combining marks, and non-str values) and 240k format_money calls (including floats, None, and empty currency). Exception types matched too.
+- Only shop/format_utils.py is modified (LF line endings, same as HEAD). Nothing committed.

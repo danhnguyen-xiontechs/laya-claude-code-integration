@@ -1,0 +1,8 @@
+Simplified <home>\AppData\Local\Temp\rw\grs\grs-04-legacy.A.r1\shop\legacy_parser.py in place: the empty-input guard is now `(text or "")` in the loop, and the `continue` became a positive `if line and not line.startswith("#")`.
+
+Key points:
+- The `text.strip()` half of the old guard was redundant: whitespace-only input already yields []. The `not text` half is not redundant, because the guard was added in commit 5f6f9b0 to fix a crash on None, so `(text or "")` keeps that case working.
+- `REV = 2` is kept. Nothing in the repo uses it, but it is a format revision marker that was deliberately bumped (1 to 2) in 5f6f9b0, and external code may import it. Removing it would break `from shop.legacy_parser import REV`. Say if you want it removed.
+- Tests: `tests/` passed before (1 passed) and after (1 passed). No existing test was edited and no new files were added to the repo.
+- Equivalence: I compared the new function with the HEAD version on 20,015 inputs (None, "", whitespace, comments, "=" edge cases, unicode whitespace, random strings). There were 0 mismatches. The comparison script and the copy of the original live in the scratchpad, outside the repo.
+- Only shop/legacy_parser.py is modified (`git status`). Nothing is committed.

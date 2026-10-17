@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-dcf-agent-01",
+  "tool": {
+    "name": "dead-code-finder",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "e551872+working-tree",
+    "branch": "claude/review-5-plans-idea-folder-ce4d36"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "Plain Haiku 5.5 passes 7 of 8 runs and Haiku with the scanner 8 of 8 (the one A failure listed a \"disabled with reason\" decoy in the in-sample demo), but B costs 61% more tokens (2.01M -> 3.23M, higher in 8 of 8 pairs) for 1-5 extra turns reading a long report, and in dcf-04 both B runs missed 2 dead items that A found (6/8 vs 8/8). Jev's Tier A was precise (0 live items in Tier A of 25 unused-code candidates) but covers only 24 of 41 dead items. Top suggestion: make the report short (Tier A and B only, Tier C as a count).",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 7,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.875,
+      "tokens": 2006517,
+      "inputTokens": 66,
+      "outputTokens": 189,
+      "toolCalls": 147,
+      "modelTurns": 33,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 63313,
+      "pairedTokens": 1003258.5
+    },
+    "B": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3227243,
+      "inputTokens": 100,
+      "outputTokens": 345,
+      "toolCalls": 111,
+      "modelTurns": 50,
+      "providerCalls": 10,
+      "fallbacks": 0,
+      "providerLatencyMs": 1210,
+      "elapsedMs": 69290,
+      "pairedTokens": 1613621.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T18:04:57.834Z",
+  "generatedAt": "2026-10-17T18:11:09.957Z",
+  "report": "report.html"
+}

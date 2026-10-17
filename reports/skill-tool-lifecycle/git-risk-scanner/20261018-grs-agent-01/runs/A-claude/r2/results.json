@@ -1,0 +1,221 @@
+{
+  "experimentId": "20261018-grs-agent-01",
+  "arm": "A",
+  "runId": "r2",
+  "startedAt": "2026-10-17T17:57:00.773Z",
+  "finishedAt": "2026-10-17T17:59:58.136Z",
+  "cases": [
+    {
+      "experimentId": "20261018-grs-agent-01",
+      "caseId": "grs-01-billing",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-17T17:57:00.773Z",
+      "finishedAt": "2026-10-17T17:58:51.936Z",
+      "status": "pass",
+      "goldOutcome": {
+        "rule": "visible tests green, hidden edge-case tests green, original test file untouched, target file has fewer code lines than before",
+        "file": "shop/billing.py"
+      },
+      "observedOutcome": "visible ok, hidden ok, lines 20->14",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "visible-tests",
+          "status": "pass",
+          "notes": "...                                                                      [100%]\r | 3 passed in 0.02s"
+        },
+        {
+          "criterionId": "hidden-edge-cases",
+          "status": "pass",
+          "notes": ".....                                                                    [100%]\r | 5 passed in 0.01s"
+        },
+        {
+          "criterionId": "simplified",
+          "status": "pass",
+          "notes": "20 -> 14 code lines"
+        }
+      ],
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 52,
+        "cacheReadTokens": 580827,
+        "cacheWriteTokens": 40400,
+        "modelTurns": 9,
+        "toolCalls": 15,
+        "elapsedMs": 102840,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/grs-01-billing.A.r2.txt",
+        "../../../evidence/answers/grs-01-billing.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-grs-agent-01",
+      "caseId": "grs-02-sync",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-17T17:57:00.795Z",
+      "finishedAt": "2026-10-17T17:58:27.259Z",
+      "status": "pass",
+      "goldOutcome": {
+        "rule": "visible tests green, hidden edge-case tests green, original test file untouched, target file has fewer code lines than before",
+        "file": "shop/sync.py"
+      },
+      "observedOutcome": "visible ok, hidden ok, lines 25->16",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "visible-tests",
+          "status": "pass",
+          "notes": ".                                                                        [100%]\r | 1 passed in 0.21s"
+        },
+        {
+          "criterionId": "hidden-edge-cases",
+          "status": "pass",
+          "notes": "...                                                                      [100%]\r | 3 passed in 1.12s"
+        },
+        {
+          "criterionId": "simplified",
+          "status": "pass",
+          "notes": "25 -> 16 code lines"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 73,
+        "cacheReadTokens": 686106,
+        "cacheWriteTokens": 47222,
+        "modelTurns": 10,
+        "toolCalls": 14,
+        "elapsedMs": 78890,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/grs-02-sync.A.r2.txt",
+        "../../../evidence/answers/grs-02-sync.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-grs-agent-01",
+      "caseId": "grs-03-format",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-17T17:57:00.819Z",
+      "finishedAt": "2026-10-17T17:58:36.151Z",
+      "status": "pass",
+      "goldOutcome": {
+        "rule": "visible tests green, hidden edge-case tests green, original test file untouched, target file has fewer code lines than before",
+        "file": "shop/format_utils.py"
+      },
+      "observedOutcome": "visible ok, hidden ok, lines 17->9",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "visible-tests",
+          "status": "pass",
+          "notes": "..                                                                       [100%]\r | 2 passed in 0.01s"
+        },
+        {
+          "criterionId": "hidden-edge-cases",
+          "status": "pass",
+          "notes": "..                                                                       [100%]\r | 2 passed in 0.01s"
+        },
+        {
+          "criterionId": "simplified",
+          "status": "pass",
+          "notes": "17 -> 9 code lines"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 60,
+        "cacheReadTokens": 609851,
+        "cacheWriteTokens": 32804,
+        "modelTurns": 10,
+        "toolCalls": 11,
+        "elapsedMs": 88326,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/grs-03-format.A.r2.txt",
+        "../../../evidence/answers/grs-03-format.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-grs-agent-01",
+      "caseId": "grs-04-legacy",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-17T17:59:19.269Z",
+      "finishedAt": "2026-10-17T17:59:58.136Z",
+      "status": "pass",
+      "goldOutcome": {
+        "rule": "visible tests green, hidden edge-case tests green, original test file untouched, target file has fewer code lines than before",
+        "file": "shop/legacy_parser.py"
+      },
+      "observedOutcome": "visible ok, hidden ok, lines 12->8",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "visible-tests",
+          "status": "pass",
+          "notes": ".                                                                        [100%]\r | 1 passed in 0.02s"
+        },
+        {
+          "criterionId": "hidden-edge-cases",
+          "status": "pass",
+          "notes": "...                                                                      [100%]\r | 3 passed in 0.01s"
+        },
+        {
+          "criterionId": "simplified",
+          "status": "pass",
+          "notes": "12 -> 8 code lines"
+        }
+      ],
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 16,
+        "cacheReadTokens": 205236,
+        "cacheWriteTokens": 23859,
+        "modelTurns": 4,
+        "toolCalls": 9,
+        "elapsedMs": 32351,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/grs-04-legacy.A.r2.txt",
+        "../../../evidence/answers/grs-04-legacy.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

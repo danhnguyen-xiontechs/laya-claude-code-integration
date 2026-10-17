@@ -1,0 +1,13 @@
+1	{
+2	  "source": "Story DEMO-42 'User self-registration' (examples/ac_coverage_demo)",
+3	  "criteria": [
+4	    {"id": "AC-01", "text": "Registering with a valid email and password returns HTTP 201 and stores the new user."},
+5	    {"id": "AC-02", "text": "Registering with an email that already exists returns HTTP 409 and does not create another user."},
+6	    {"id": "AC-03a", "parent": "AC-03", "text": "A password shorter than 8 characters is rejected with HTTP 400 and an error message naming the length rule."},
+7	    {"id": "AC-03b", "parent": "AC-03", "text": "A password without any digit is rejected with HTTP 400 and an error message naming the digit rule."},
+8	    {"id": "AC-04", "text": "Email addresses are normalized to lowercase, so an address differing only in letter case counts as a duplicate."},
+9	    {"id": "AC-05", "text": "More than 5 sign-up attempts from the same IP within 60 seconds are throttled with HTTP 429."},
+10	    {"id": "AC-06", "text": "After a successful registration exactly one welcome email is sent to the new user's address."}
+11	  ]
+12	}
+13	

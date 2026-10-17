@@ -1,0 +1,38 @@
+```json
+{"delete": [
+{"file": "demo_pkg/core.py", "what": "csv"},
+{"file": "demo_pkg/core.py", "what": "json"},
+{"file": "demo_pkg/core.py", "what": "LEGACY_TAX_RATE"},
+{"file": "demo_pkg/core.py", "what": "legacy_total"},
+{"file": "demo_pkg/core.py", "what": "_round_cents"},
+{"file": "demo_pkg/core.py", "what": "OldOrderAdapter"},
+{"file": "demo_pkg/core.py", "what": "# subtotal = 0"},
+{"file": "demo_pkg/core.py", "what": "# for name, price in order.items:"},
+{"file": "demo_pkg/core.py", "what": "# subtotal += price"},
+{"file": "demo_pkg/cli.py", "what": "print(\"DEBUG args:\", args)"},
+{"file": "demo_pkg/cli.py", "what": "print(\"got here\", order.items)"},
+{"file": "demo_pkg/handlers.py", "what": "replay_events"},
+{"file": "demo_pkg/handlers.py", "what": "print(\"DEBUG cancel\", order)"},
+{"file": "demo_pkg/jobs.py", "what": "logger.debug(\"here 2\")"},
+{"file": "demo_pkg/jobs.py", "what": "rebuild_search_index"},
+{"file": "demo_pkg/legacy_report.py", "what": "monthly_report"},
+{"file": "demo_pkg/legacy_report.py", "what": "_format_row"},
+{"file": "demo_pkg/legacy_report.py", "what": "from .core import compute_total"},
+{"file": "demo_pkg/web.py", "what": "os"},
+{"file": "demo_pkg/web.py", "what": "# print(_ROUTES)"},
+{"file": "demo_pkg/web.py", "what": "# _ROUTES.clear()"},
+{"file": "demo_pkg/formatting.py", "what": "breakpoint()"},
+{"file": "tests/test_core.py", "what": "_make_legacy_order"}
+]}
+```
+
+Notes for the caller (not part of the list):
+- Removing `breakpoint()` in formatting.py also needs its `if amount < 0:` guard removed, since the guard has no other body.
+- After the deletions, demo_pkg/legacy_report.py is empty and the file itself can go. The list is symbol-level, so I did not add the file.
+- `json` and the `compute_total` import are listed because they become unused once OldOrderAdapter and monthly_report are removed.
+- Kept on purpose, despite looking unused:
+  - `public_discount` (in `__all__`) and `Order.to_legacy_xml` (method of exported class `Order`; treated as public surface).
+  - Reached by string or registry: `handle_refund`, `handle_cancel`, `restore_order` (dispatch/ACTIONS), `render_pdf` (@register), `list_orders` (@app.route), `OrderEncoder` (cls=), `notify_warehouse` (ORDER_HOOKS), `purge_expired_carts` and `export_nightly` (jobs.yaml), `format_money_us` and `format_money_eu` (pick_formatter / settings.json), `CsvExporter` and `BaseExporter` (entry point and base class), `dump_order` (used by tests), `_RENDERERS` (filled by decorator), `Order.__repr__` (dunder).
+  - Judgment calls left in place: the `# Disabled until ... (ticket PAY-212)` / `# notify_payments(...)` lines in handlers.py (deliberate parked code tied to a ticket); the "rounding below is the same as" comment block and the describe() usage example in core.py (documentation); `logger.debug("Purged %d expired carts", ...)` in jobs.py (meaningful log); deliberate output prints in cli.py, jobs.py `export_nightly`.
+  - Not in the requested categories, so not listed: the `if False:` branch in formatting.py `format_amount`. `DEBUG_OLD_FLOW` is referenced by that function, so it is not an unused constant.
+- tool.mjs is a neutral harness stub outside the Python project; its console.log is not a debug leftover. No project file was modified and nothing was executed.

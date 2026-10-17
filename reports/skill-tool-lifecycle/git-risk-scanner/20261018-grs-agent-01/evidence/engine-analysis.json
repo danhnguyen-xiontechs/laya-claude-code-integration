@@ -1,0 +1,98 @@
+{
+  "grs-01-billing.r1": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 5.5,
+        "jevP": 0.95,
+        "jevAdjust": 1.35,
+        "risk": 6.85,
+        "flagged": true
+      }
+    ]
+  },
+  "grs-01-billing.r2": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 5.5,
+        "jevP": 0.95,
+        "jevAdjust": 1.35,
+        "risk": 6.85,
+        "flagged": true
+      }
+    ]
+  },
+  "grs-02-sync.r1": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 3.21,
+        "jevP": 0.97,
+        "jevAdjust": 1.41,
+        "risk": 4.62,
+        "flagged": true
+      }
+    ]
+  },
+  "grs-02-sync.r2": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 3.21,
+        "jevP": 0.97,
+        "jevAdjust": 1.41,
+        "risk": 4.62,
+        "flagged": true
+      }
+    ]
+  },
+  "grs-03-format.r1": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 1.98,
+        "jevP": 0.06,
+        "jevAdjust": -1.32,
+        "risk": 0.66,
+        "flagged": false
+      }
+    ]
+  },
+  "grs-03-format.r2": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 1.98,
+        "jevP": 0.06,
+        "jevAdjust": -1.32,
+        "risk": 0.66,
+        "flagged": false
+      }
+    ]
+  },
+  "grs-04-legacy.r1": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 1.62,
+        "jevP": 0.27,
+        "jevAdjust": -0.28,
+        "risk": 1.34,
+        "flagged": false
+      }
+    ]
+  },
+  "grs-04-legacy.r2": {
+    "wrapperRuns": 1,
+    "rows": [
+      {
+        "formula": 1.62,
+        "jevP": 0.24,
+        "jevAdjust": -0.31,
+        "risk": 1.31,
+        "flagged": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+Simplified shop/legacy_parser.py (<home>\AppData\Local\Temp\rw\grs\grs-04-legacy.A.r2\shop\legacy_parser.py) to a single loop with a `text or ""` guard and removed the unused `REV` constant; the existing test passes and the output matches the old version on 3,019 generated inputs.

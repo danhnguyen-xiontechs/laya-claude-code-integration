@@ -1,0 +1,1 @@
+{"t":"2026-10-17T17:57:06.935Z","case":"grs-03-format","arm":"B","rep":2,"args":["shop/format_utils.py"],"status":"ok","requests":1,"latencyMs":637,"cost":0.000031248,"inputTokens":744,"threshold":4.5,"rows":[{"file":"shop/format_utils.py","formula":1.98,"risk":0.66,"flagged":false,"jev":{"status":"ok","p":0.06,"kind":"routine","adjust":-1.32,"error":null,"reason":null}}]}

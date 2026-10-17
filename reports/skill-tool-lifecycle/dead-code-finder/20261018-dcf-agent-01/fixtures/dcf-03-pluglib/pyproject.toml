@@ -1,0 +1,6 @@
+[project]
+name = "pluglib"
+version = "1.2.0"
+
+[project.entry-points."pytest11"]
+pluglib = "pluglib.pytest_plugin"

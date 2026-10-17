@@ -1,0 +1,1 @@
+{"delete": [{"file": "pluglib/compat.py", "what": "PY2"}, {"file": "pluglib/compat.py", "what": "text_type"}, {"file": "pluglib/compat.py", "what": "sys"}, {"file": "pluglib/text.py", "what": "MAX_LEN"}, {"file": "pluglib/text.py", "what": "strip_accents"}, {"file": "pluglib/text.py", "what": "unicodedata"}, {"file": "pluglib/builtin.py", "what": "Experimental"}]}

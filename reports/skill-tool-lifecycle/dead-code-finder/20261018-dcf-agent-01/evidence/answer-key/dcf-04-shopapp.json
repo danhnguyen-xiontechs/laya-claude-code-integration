@@ -1,0 +1,128 @@
+[
+ {
+  "id": "D1",
+  "class": "dead",
+  "file": "shopapp/views.py",
+  "match": "order_export"
+ },
+ {
+  "id": "D2",
+  "class": "dead",
+  "file": "shopapp/models.py",
+  "match": "recalculate_legacy"
+ },
+ {
+  "id": "D3",
+  "class": "dead",
+  "file": "shopapp/middleware.py",
+  "match": "DebugToolbarMiddleware"
+ },
+ {
+  "id": "D4",
+  "class": "dead",
+  "file": "shopapp/payments.py",
+  "match": "PaypalBackend"
+ },
+ {
+  "id": "D5",
+  "class": "dead",
+  "file": "shopapp/signals.py",
+  "match": "_unused_signal_helper"
+ },
+ {
+  "id": "D6",
+  "class": "dead",
+  "file": "shopapp/utils.py",
+  "match": "OLD_DATE_FMT"
+ },
+ {
+  "id": "D7",
+  "class": "dead",
+  "file": "shopapp/utils.py",
+  "match": "def slug"
+ },
+ {
+  "id": "D8",
+  "class": "dead",
+  "file": "shopapp/management/commands/purge.py",
+  "match": "old_orders|o.delete"
+ },
+ {
+  "id": "K1",
+  "class": "decoy",
+  "file": "shopapp/views.py",
+  "match": "order_detail"
+ },
+ {
+  "id": "K2",
+  "class": "decoy",
+  "file": "shopapp/views.py",
+  "match": "order_list"
+ },
+ {
+  "id": "K3",
+  "class": "decoy",
+  "file": "shopapp/middleware.py",
+  "match": "TimingMiddleware"
+ },
+ {
+  "id": "K4",
+  "class": "decoy",
+  "file": "shopapp/payments.py",
+  "match": "StripeBackend"
+ },
+ {
+  "id": "K5",
+  "class": "decoy",
+  "file": "shopapp/signals.py",
+  "match": "send_confirmation"
+ },
+ {
+  "id": "K6",
+  "class": "decoy",
+  "file": "shopapp/admin.py",
+  "match": "OrderAdmin"
+ },
+ {
+  "id": "N1",
+  "class": "neutral",
+  "file": "shopapp/admin.py",
+  "match": "get_queryset"
+ },
+ {
+  "id": "K8",
+  "class": "decoy",
+  "file": "shopapp/management/commands/purge.py",
+  "match": "handle"
+ },
+ {
+  "id": "K9",
+  "class": "decoy",
+  "file": "shopapp/models.py",
+  "match": "__str__"
+ },
+ {
+  "id": "K10",
+  "class": "decoy",
+  "file": "shopapp/utils.py",
+  "match": "DATE_FMT = "
+ },
+ {
+  "id": "N3",
+  "class": "neutral",
+  "file": "shopapp/settings.py",
+  "match": "URLCONF"
+ },
+ {
+  "id": "K11",
+  "class": "decoy",
+  "file": "shopapp/management/commands/purge.py",
+  "match": "purging"
+ },
+ {
+  "id": "N2",
+  "class": "neutral",
+  "file": "shopapp/middleware.py",
+  "match": "took"
+ }
+]

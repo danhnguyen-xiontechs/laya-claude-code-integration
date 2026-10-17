@@ -1,0 +1,13 @@
+file          risk  formula  jev p  commits  authors  age   last  top reason
+shop/sync.py  4.6*  3.2      0.97   20       3        373d  4d    churn 299 lines on a 31-line file
+(* = risk >= threshold 4.5; rev HEAD 670167441a)
+JEV: 1 request(s), 617 ms, 850 input tokens, $0.000036
+
+Defensive mode for shop/sync.py (risk 4.6/10, formula 3.2).
+Evidence: churn 299 lines on a 31-line file; 3 authors; 20 commits; JEV: fragile history p=0.97 (workaround_or_hack, +1.4).
+Before and while editing this file:
+1. Read the recent fixes first: `git log -n 5 -p -- shop/sync.py`; do not reintroduce a bug they fixed.
+2. Find callers and side effects: `git grep -n "sync"`; note I/O, globals, caches, DB writes you might change.
+3. Run the tests that cover this file before the change; if none exist, add a small characterization test of current behaviour.
+4. Keep the diff small: one concern per change, no drive-by refactors, renames or reformatting.
+5. Re-run those tests after each edit and mention the risk in your summary.

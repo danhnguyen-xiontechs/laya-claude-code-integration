@@ -1,0 +1,162 @@
+{
+  "dcf-01-demo.r1": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 15,
+      "B": 10,
+      "C": 31
+    },
+    "changedByJev": 18,
+    "sent": 30,
+    "answered": 30,
+    "latencyMs": 1788,
+    "cost": 0.00043,
+    "unusedTierA": 10,
+    "tierA_dead": 10,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 11
+  },
+  "dcf-01-demo.r2": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 15,
+      "B": 9,
+      "C": 32
+    },
+    "changedByJev": 19,
+    "sent": 30,
+    "answered": 30,
+    "latencyMs": 1918,
+    "cost": 0.00043,
+    "unusedTierA": 10,
+    "tierA_dead": 10,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 11
+  },
+  "dcf-02-ordersapi.r1": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 7,
+      "B": 2,
+      "C": 20
+    },
+    "changedByJev": 8,
+    "sent": 13,
+    "answered": 13,
+    "latencyMs": 1218,
+    "cost": 0.000182,
+    "unusedTierA": 6,
+    "tierA_dead": 6,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 2
+  },
+  "dcf-02-ordersapi.r2": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 7,
+      "B": 2,
+      "C": 20
+    },
+    "changedByJev": 8,
+    "sent": 13,
+    "answered": 13,
+    "latencyMs": 701,
+    "cost": 0.000182,
+    "unusedTierA": 6,
+    "tierA_dead": 6,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 2
+  },
+  "dcf-03-pluglib.r1": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 4,
+      "B": 4,
+      "C": 14
+    },
+    "changedByJev": 4,
+    "sent": 8,
+    "answered": 8,
+    "latencyMs": 695,
+    "cost": 0.000126,
+    "unusedTierA": 4,
+    "tierA_dead": 3,
+    "tierA_decoy": 0,
+    "tierA_neutral": 1,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 1
+  },
+  "dcf-03-pluglib.r2": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 4,
+      "B": 4,
+      "C": 14
+    },
+    "changedByJev": 4,
+    "sent": 8,
+    "answered": 8,
+    "latencyMs": 698,
+    "cost": 0.000126,
+    "unusedTierA": 4,
+    "tierA_dead": 3,
+    "tierA_decoy": 0,
+    "tierA_neutral": 1,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 1
+  },
+  "dcf-04-shopapp.r1": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 7,
+      "B": 7,
+      "C": 20
+    },
+    "changedByJev": 8,
+    "sent": 15,
+    "answered": 15,
+    "latencyMs": 1216,
+    "cost": 0.000224,
+    "unusedTierA": 5,
+    "tierA_dead": 5,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 3
+  },
+  "dcf-04-shopapp.r2": {
+    "wrapperRuns": 1,
+    "tiers": {
+      "A": 7,
+      "B": 7,
+      "C": 20
+    },
+    "changedByJev": 8,
+    "sent": 15,
+    "answered": 15,
+    "latencyMs": 1210,
+    "cost": 0.000224,
+    "unusedTierA": 5,
+    "tierA_dead": 5,
+    "tierA_decoy": 0,
+    "tierA_neutral": 0,
+    "tierA_unlisted": [],
+    "tierA_decoys": [],
+    "deadInTierBorC": 3
+  }
+}

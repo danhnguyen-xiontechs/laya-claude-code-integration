@@ -1,0 +1,8 @@
+Simplified shop/billing.py: merged the discount clamp into `min(pct, 100)`, dropped the temporary variables in `apply_discount` and `invoice_total`, and removed the separate `total = int(total)` line, with no behaviour change.
+
+Key findings:
+- Git-risk scanner flagged the file (risk 6.8, 22 of 26 commits are fixes), so I followed its defensive steps. Every recent "fix" commit changed only the `REV` constant, which nothing in the repo reads. I kept `REV` because it looks like a deliberate revision marker that something outside the repo may read. Removing it is a decision for you.
+- I kept the `pct <= 0` early return, the `None`-line skip and the `or 0` defaults. Each changes results if removed (negative discounts, `None` lines, missing qty). The Decimal half-up rounding is untouched.
+- A differential fuzz (200k random cases, original from HEAD vs edited) first caught a regression: dropping `Decimal(...)` around `100 - pct` broke fractional discounts with a TypeError. I restored it. The final run shows 0 mismatches.
+- Added tests/test_billing_edges.py (5 characterization tests for the edge branches). All 8 tests pass before and after the edit. Existing tests are unchanged.
+- Nothing committed. Changed files: `<home>\AppData\Local\Temp\rw\grs\grs-01-billing.B.r2\shop\billing.py` and the new `...\tests\test_billing_edges.py`.

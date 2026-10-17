@@ -1,0 +1,73 @@
+1	"""Orders and totals."""
+2	
+3	import csv
+4	import json
+5	import math
+6	
+7	from .formatting import format_amount
+8	
+9	__all__ = ["Order", "compute_total", "public_discount"]
+10	
+11	TAX_RATE = 0.08
+12	LEGACY_TAX_RATE = 0.07
+13	
+14	
+15	class Order:
+16	    def __init__(self, items, coupon=None):
+17	        self.items = items
+18	        self.coupon = coupon
+19	
+20	    def __repr__(self):
+21	        return f"Order({len(self.items)} items)"
+22	
+23	    def subtotal(self):
+24	        return sum(price for _, price in self.items)
+25	
+26	    def to_legacy_xml(self):
+27	        return "<order>" + "".join(f"<item>{n}</item>" for n, _ in self.items) + "</order>"
+28	
+29	
+30	def compute_total(order):
+31	    subtotal = order.subtotal()
+32	    # old implementation, replaced by Order.subtotal()
+33	    # subtotal = 0
+34	    # for name, price in order.items:
+35	    #     subtotal += price
+36	    if order.coupon:
+37	        subtotal -= order.coupon
+38	    # The rounding below is the same as:
+39	    #     cents = math.floor(subtotal * 108)
+40	    #     total = cents / 100
+41	    # Note: we floor to whole cents so totals never round up past the quoted price.
+42	    return math.floor(subtotal * (1 + TAX_RATE) * 100) / 100
+43	
+44	
+45	def public_discount(order, pct):
+46	    return compute_total(order) * (1 - pct)
+47	
+48	
+49	def legacy_total(order):
+50	    total = 0
+51	    for _, price in order.items:
+52	        total += price * 1.07
+53	    return round(total, 2)
+54	
+55	
+56	def _round_cents(x):
+57	    return round(x, 2)
+58	
+59	
+60	def describe(order):
+61	    # Example:
+62	    #     order = Order([("pen", 2.5)])
+63	    #     describe(order)  # -> "1 items, total $2.70"
+64	    return f"{len(order.items)} items, total {format_amount(compute_total(order))}"
+65	
+66	
+67	class OldOrderAdapter:
+68	    def __init__(self, raw):
+69	        self.raw = raw
+70	
+71	    def adapt(self):
+72	        return Order(json.loads(self.raw))
+73	

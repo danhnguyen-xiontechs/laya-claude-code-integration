@@ -1,0 +1,14 @@
+1	from .models import Order
+2	
+3	
+4	def order_list(request):
+5	    return [o.name for o in Order.objects]
+6	
+7	
+8	def order_detail(request, id):
+9	    return Order.get(id)
+10	
+11	
+12	def order_export(request):
+13	    return "csv"
+14	

@@ -1,0 +1,93 @@
+  46 cart/service.py
+   0 cart/__init__.py
+  34 tests/test_coupons.py
+  24 tests/test_items.py
+  25 tests/test_removal.py
+  16 tests/test_stock.py
+  18 tests/test_totals.py
+   0 tests/__init__.py
+ 163 total
+----
+class OutOfStock(Exception):
+    pass
+
+
+class CouponError(Exception):
+    pass
+
+
+STOCK = {"A1": 5, "B2": 0, "C3": 10}
+PRICES = {"A1": 1000, "B2": 500, "C3": 250}
+SHIPPING = 700
+COUPONS = {"SAVE10": 10, "HALF": 50, "BIG": 150}
+
+
+class Cart:
+    def __init__(self):
+        self.lines = {}
+        self.coupon = None
+
+    def add(self, sku, qty=1):
+        if STOCK.get(sku, 0) < self.lines.get(sku, 0) + qty:
+            raise OutOfStock(sku)
+        self.lines[sku] = self.lines.get(sku, 0) + qty
+
+    def remove(self, sku):
+        self.lines.pop(sku, None)
+        if not self.lines:
+            self.coupon = None
+
+    def apply_coupon(self, code):
+        if self.coupon is not None:
+            raise CouponError("already applied")
+        if code not in COUPONS:
+            raise CouponError("unknown coupon")
+        self.coupon = code
+
+    def subtotal(self):
+        return sum(PRICES[s] * q for s, q in self.lines.items())
+
+    def discount(self):
+        return self.subtotal() * COUPONS.get(self.coupon, 0) // 100
+
+    def total(self):
+        if not self.lines:
+            return 0
+        return max(0, self.subtotal() - self.discount()) + SHIPPING
+----
+----
+#!/usr/bin/env node
+// Neutral wrapper, arm B: runs the real acceptance-criteria-coverage steps 4 and 5 (candidates, then classify with Jev
+// live) on this folder and prints a digest of pack.json + results.json; appends one decision line to the run log.
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+const CASE = "acc-02-cart", REP = 2;
+const here = import.meta.dirname;
+const env = { ...process.env, PYTHONPATH: "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\jev-run", PYTHONIOENCODING: 'utf-8' };
+const run = (a) => spawnSync("D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe", ['-m', 'jev_skills.ac_coverage', ...a], { cwd: here, encoding: 'utf8', env });
+const dir = path.join(here, '.tool-output', 'ac');
+fs.mkdirSync(dir, { recursive: true });
+const pack = path.join(dir, 'pack.json'), res = path.join(dir, 'results.json');
+const log = (o) => { fs.mkdirSync("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\logs\\acc", { recursive: true }); fs.appendFileSync(path.join("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\logs\\acc", CASE + '.B.r' + REP + '.jsonl'), JSON.stringify({ t: new Date().toISOString(), case: CASE, arm: 'B', rep: REP, ...o }) + '\n'); };
+const r1 = run(['candidates', '--criteria', 'criteria.json', '--tests', 'tests', '-o', pack]);
+if (r1.status !== 0) { log({ status: 'error', error: 'candidates failed' }); console.log('tool failed (candidates): ' + (r1.stderr || '').split('\n').slice(-3).join(' ')); process.exit(0); }
+const r2 = run(['classify', '--pack', pack, '-o', res]);
+if (r2.status !== 0) { log({ status: 'error', error: 'classify failed' }); console.log('tool failed (classify): ' + (r2.stderr || '').split('\n').slice(-3).join(' ')); process.exit(0); }
+const P = JSON.parse(fs.readFileSync(pack, 'utf8')), R = JSON.parse(fs.readFileSync(res, 'utf8'));
+const byKey = Object.fromEntries(R.pairs.map((p) => [p.criterion + '|' + p.tid, p]));
+const out = ['Acceptance-criteria coverage: candidate tests per criterion with Jev labels (suggestions only, read the tests yourself).', r1.stdout.trim(), r2.stdout.trim(), 'Files: .tool-output/ac/pack.json (test code), .tool-output/ac/results.json', ''];
+for (const c of P.criteria) {
+  out.push(c.id + ': ' + c.text);
+  if (c.no_candidates) out.push('  no test shares a meaningful word with this criterion (grep for other names before calling it Missing)');
+  for (const cand of c.candidates) {
+    const t = P.tests[cand.tid], p = byKey[c.id + '|' + cand.tid] ?? {};
+    out.push('  ' + cand.nodeid + '  (' + t.file + ':' + t.line + ')  jev=' + (p.label ?? 'none') + (p.p != null ? ' p=' + p.p.toFixed(2) : '') + (p.skippable ? '  skippable' : ''));
+  }
+}
+console.log(out.join('\n'));
+log({
+  status: R.status, error: R.error, requests: R.usage.requests, latencyMs: R.usage.latencyMs, cost: R.usage.cost, inputTokens: R.usage.input_tokens,
+  pairs: R.pairs.length, labelled: R.pairs.filter((p) => p.label).length, skippable: R.skippableCount,
+  labels: R.pairs.map((p) => ({ criterion: p.criterion, test: p.nodeid, label: p.label, p: p.p == null ? null : +p.p.toFixed(3), skippable: p.skippable })),
+});

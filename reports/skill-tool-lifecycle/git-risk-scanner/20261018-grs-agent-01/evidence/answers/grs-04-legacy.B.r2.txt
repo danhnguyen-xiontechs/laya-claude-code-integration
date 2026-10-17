@@ -1,0 +1,9 @@
+Collapsed the empty-input guard in shop/legacy_parser.py into `(text or "")` and merged the blank/comment skip into one `if line and not line.startswith("#")`, keeping None handling and the REV constant; all tests pass (the existing test plus a new tests/test_legacy_empty.py that locks in None/empty input).
+
+Notes:
+- The git-risk scanner scored the file 1.3, below the 4.5 threshold, so there was no defensive-mode block to follow.
+- The removed `not text.strip()` check was redundant. The `None` half of the original guard is not: the "fix parser crash on empty input" commit guarded against `None.splitlines()`, so I kept it via `(text or "")`.
+- `REV` is unused in the repo, but it is a format-revision marker bumped 1 to 2 in history. I kept it because removing it is a contract change; drop it if nothing outside the repo reads it.
+- A randomized comparison of 20,013 inputs against the HEAD version showed no behaviour differences. Nothing is committed.
+
+Files changed: <home>\AppData\Local\Temp\rw\grs\grs-04-legacy.B.r2\shop\legacy_parser.py (modified) and <home>\AppData\Local\Temp\rw\grs\grs-04-legacy.B.r2\tests\test_legacy_empty.py (new). The existing test file is untouched.

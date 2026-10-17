@@ -1,0 +1,3 @@
+plugin: reverse
+formatter: pluglib.text.truncate
+loader: pluglib.config.load

@@ -1,0 +1,205 @@
+{
+  "experimentId": "20261018-dcf-agent-01",
+  "arm": "B",
+  "runId": "r1",
+  "startedAt": "2026-10-17T17:52:41.306Z",
+  "finishedAt": "2026-10-17T17:57:04.149Z",
+  "cases": [
+    {
+      "experimentId": "20261018-dcf-agent-01",
+      "caseId": "dcf-01-demo",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:52:41.306Z",
+      "finishedAt": "2026-10-17T17:54:56.866Z",
+      "status": "pass",
+      "goldOutcome": {
+        "dead": 21,
+        "decoys": 28,
+        "rule": "no wrong item (decoy or unlisted) and at least 75% of the dead items"
+      },
+      "observedOutcome": "20/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D06",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "no-wrong-deletion",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "recall-75",
+          "status": "pass",
+          "notes": "20/21 dead items found (need 16); missed D06"
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 31,
+        "cacheReadTokens": 275927,
+        "cacheWriteTokens": 59591,
+        "modelTurns": 5,
+        "toolCalls": 24,
+        "elapsedMs": 129131,
+        "providerCalls": 2,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1788,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dcf-01-demo.B.r1.txt",
+        "../../../evidence/answers/dcf-01-demo.B.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-dcf-agent-01",
+      "caseId": "dcf-02-ordersapi",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:55:16.987Z",
+      "finishedAt": "2026-10-17T17:56:22.541Z",
+      "status": "pass",
+      "goldOutcome": {
+        "dead": 8,
+        "decoys": 13,
+        "rule": "no wrong item (decoy or unlisted) and at least 75% of the dead items"
+      },
+      "observedOutcome": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "no-wrong-deletion",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "recall-75",
+          "status": "pass",
+          "notes": "8/8 dead items found (need 6); missed -"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 30,
+        "cacheReadTokens": 343780,
+        "cacheWriteTokens": 39466,
+        "modelTurns": 6,
+        "toolCalls": 19,
+        "elapsedMs": 59880,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1218,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dcf-02-ordersapi.B.r1.txt",
+        "../../../evidence/answers/dcf-02-ordersapi.B.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-dcf-agent-01",
+      "caseId": "dcf-03-pluglib",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:55:17.011Z",
+      "finishedAt": "2026-10-17T17:57:04.149Z",
+      "status": "pass",
+      "goldOutcome": {
+        "dead": 4,
+        "decoys": 11,
+        "rule": "no wrong item (decoy or unlisted) and at least 75% of the dead items"
+      },
+      "observedOutcome": "4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "no-wrong-deletion",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "recall-75",
+          "status": "pass",
+          "notes": "4/4 dead items found (need 3); missed -"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 68,
+        "cacheReadTokens": 622679,
+        "cacheWriteTokens": 40113,
+        "modelTurns": 10,
+        "toolCalls": 12,
+        "elapsedMs": 98934,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 695,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dcf-03-pluglib.B.r1.txt",
+        "../../../evidence/answers/dcf-03-pluglib.B.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-dcf-agent-01",
+      "caseId": "dcf-04-shopapp",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:55:17.034Z",
+      "finishedAt": "2026-10-17T17:56:42.731Z",
+      "status": "pass",
+      "goldOutcome": {
+        "dead": 8,
+        "decoys": 10,
+        "rule": "no wrong item (decoy or unlisted) and at least 75% of the dead items"
+      },
+      "observedOutcome": "6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D3,D4",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "no-wrong-deletion",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "recall-75",
+          "status": "pass",
+          "notes": "6/8 dead items found (need 6); missed D3,D4"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 37,
+        "cacheReadTokens": 351276,
+        "cacheWriteTokens": 47081,
+        "modelTurns": 6,
+        "toolCalls": 22,
+        "elapsedMs": 80451,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1216,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dcf-04-shopapp.B.r1.txt",
+        "../../../evidence/answers/dcf-04-shopapp.B.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

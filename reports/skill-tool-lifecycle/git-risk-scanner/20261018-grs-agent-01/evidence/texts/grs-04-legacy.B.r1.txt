@@ -1,0 +1,12 @@
+total 17
+drwxr-xr-x 1 <user> 197121    0 Oct 18 00:46 .
+drwxr-xr-x 1 <user> 197121    0 Oct 18 00:46 ..
+drwxr-xr-x 1 <user> 197121    0 Oct 18 00:46 .git
+-rw-r--r-- 1 <user> 197121   32 Oct 18 00:41 README.md
+drwxr-xr-x 1 <user> 197121    0 Oct 18 00:46 shop
+drwxr-xr-x 1 <user> 197121    0 Oct 18 00:46 tests
+-rwxr-xr-x 1 <user> 197121 2402 Oct 18 00:46 tool.mjs
+file                   risk  formula  jev p  commits  authors  age  last  top reason
+shop/legacy_parser.py  1.3   1.6      0.27   2        1        34d  4d    1 of 2 commits are fixes
+(* = risk >= threshold 4.5; rev HEAD c85c1f7b42)
+JEV: 1 request(s), 1104 ms, 657 input tokens, $0.000028

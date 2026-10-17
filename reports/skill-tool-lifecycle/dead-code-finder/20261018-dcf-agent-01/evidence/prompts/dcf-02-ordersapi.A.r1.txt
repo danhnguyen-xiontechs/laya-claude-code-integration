@@ -1,0 +1,5 @@
+Work folder: <home>\AppData\Local\Temp\rw\dcf\dcf-02-ordersapi.A.r1
+This is a small Python project (tests in tests/). Python for running anything: D:\XionTechs\JEV\.venv\Scripts\python.exe (plain `python` is not installed).
+Your task: find the code that can safely be deleted: unused functions, classes, methods, constants, imports, commented-out code and leftover debug prints. Be careful: code that looks unused but is reached indirectly (registered by a decorator or a base class, found by name or string, referenced from config or an entry point, an override, public API, used by tests) must NOT be deleted, and deliberate program output is not a debug leftover.
+Public API means names exported in __all__ or declared as entry points. Do not change any project file. Hand back one JSON object {"delete": [{"file": "relative/path.py", "what": "symbol name (Class.method for methods), or the exact commented-out / debug line"}]} listing only items you are confident can go, and nothing else.
+No dead-code tool is available in this task: decide yourself from the code. Do not look for or use any skill, script or helper from the repository or the machine.

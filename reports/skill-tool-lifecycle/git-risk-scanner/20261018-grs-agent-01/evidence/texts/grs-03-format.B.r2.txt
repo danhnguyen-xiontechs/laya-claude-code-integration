@@ -1,0 +1,6 @@
+file                  risk  formula  jev p  commits  authors  age   last  top reason
+shop/format_utils.py  0.7   2.0      0.06   15       2        266d  4d    churn 51 lines on a 23-line file
+(* = risk >= threshold 4.5; rev HEAD 2274913e71)
+JEV: 1 request(s), 637 ms, 744 input tokens, $0.000031
+
+EXIT=0

@@ -1,0 +1,7 @@
+Simplified shop/legacy_parser.py in place: the empty-input early return is replaced by iterating over `(text or "").splitlines()`, which drops the redundant `.strip()` check and keeps None handling.
+
+Notes:
+- Git-risk scanner: risk 1.3 (threshold 4.5), not flagged, so no defensive mode.
+- Kept `None` handling on purpose. The "fix parser crash on empty input" commit (5f6f9b0) was about None, which crashed the original code. The `.strip()` check was the redundant part.
+- Kept `REV = 2`. Nothing in the repo uses it, but it is a deliberately bumped version marker in history, so drop it only if no external code reads it.
+- Verification: `pytest -q` passes (1 passed, tests unedited). A differential check against HEAD matched on 18 edge cases (None, "", whitespace and Unicode line breaks, comments, `=` variants) and 20,000 random inputs. No new files were added.

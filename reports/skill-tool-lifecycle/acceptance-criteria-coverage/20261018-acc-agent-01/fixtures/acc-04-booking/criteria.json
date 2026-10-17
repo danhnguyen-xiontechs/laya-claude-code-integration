@@ -1,0 +1,29 @@
+{
+  "source": "Story ROOMS-3 'Meeting room booking'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Two bookings of the same room that overlap are rejected with Conflict and the first booking is kept."
+    },
+    {
+      "id": "AC-02",
+      "text": "Back-to-back bookings (one ends exactly when the next starts) are allowed."
+    },
+    {
+      "id": "AC-03",
+      "text": "A booking that starts in the past is rejected."
+    },
+    {
+      "id": "AC-04",
+      "text": "A booking longer than 4 hours is rejected; exactly 4 hours is allowed."
+    },
+    {
+      "id": "AC-05",
+      "text": "Cancelling a booking frees the slot so the same slot can be booked again."
+    },
+    {
+      "id": "AC-06",
+      "text": "A booking cannot be cancelled less than 1 hour before it starts; it stays booked."
+    }
+  ]
+}
