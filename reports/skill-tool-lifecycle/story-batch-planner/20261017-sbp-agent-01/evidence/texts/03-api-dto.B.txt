@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+// Neutral wrapper, arm B: runs the real story-batch-planner plan.mjs on this folder's batch (Jev shadow on),
+// prints its summary to stdout, and appends one decision line to the run log.
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+const CASE = "03-api-dto";
+const PLANNER = "D:\\XionTechs\\Laya\\.claude\\skills\\story-batch-planner\\scripts\\plan.mjs";
+const LOGS = "C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\scratchpad\\sbp\\_logs";
+const HOME = "C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\scratchpad\\sbp\\_home\\03-api-dto";   // keeps the planner's default Jev log out of the user's home
+const here = import.meta.dirname;
+fs.mkdirSync(LOGS, { recursive: true });
+fs.mkdirSync(HOME, { recursive: true });
+const planJson = path.join(LOGS, CASE + '.B.plan.json');
+const r = spawnSync(process.execPath, [PLANNER, '--in', path.join(here, 'batch.json'), '--out', planJson, '--jev', '--summary'], {
+  encoding: 'utf8',
+  env: { ...process.env, HOME, USERPROFILE: HOME },
+});
+if (r.status !== 0) { process.stderr.write(r.stderr || 'planner failed\n'); process.exit(r.status ?? 1); }
+process.stdout.write(r.stdout);
+const plan = JSON.parse(fs.readFileSync(planJson, 'utf8'));
+const jev = plan.edges.filter((e) => e.jev_suggestion).map((e) => ({
+  pair: e.pair, deterministic: e.relation, jev: e.jev_suggestion.label, p: e.jev_suggestion.p ?? null,
+  valid: e.jev_suggestion.valid, error: e.jev_suggestion.error ?? null, latencyMs: e.jev_suggestion.provenance?.latencyMs ?? null,
+}));
+fs.appendFileSync(path.join(LOGS, CASE + '.B.jsonl'), JSON.stringify({
+  t: new Date().toISOString(), case: CASE, arm: 'B', waves: plan.waves.map((w) => w.stories), jev_shadow: plan.jev_shadow ?? null, jev,
+}) + '\n');
+--- SUMMARY ---
+# Story batch plan (3 stories, 3 waves, Jev shadow)
+
+- Wave 1: S-1
+- Wave 2: S-3
+- Wave 3: S-2
+
+## Dependencies and conflicts
+- S-2 depends on S-1 [contract_role, medium]: S-1 produces /api/leave/balance, S-2 consumes it
+- S-1 ↔ S-3 shared_resource → S-1 then S-3 [deterministic, high]: contract: LeaveBalanceDto (both change it)
+- S-2 ↔ S-3 unknown → S-3 then S-2 [prefilter, low]: shared terms: leav, balanc, day · Jev(shadow): shared_module_or_contract 0.8
+
+## Needs a decision
+- [pair] S-2, S-3: topical overlap without resource evidence
+
+## Assumptions
+- S-1: no repository metadata; modules/files inferred from text only
+- S-2: no repository metadata; modules/files inferred from text only
+- S-3: no repository metadata; modules/files inferred from text only

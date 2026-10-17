@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \".claude/skills/story-batch-planner/test/*.test.mjs\" (story-batch-planner @ 73c4bda, run on Node v24.11.1)",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/planner-test-output.txt"
+    }
+  ]
+}

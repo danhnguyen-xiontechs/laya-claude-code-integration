@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-17T08:51:50.411Z",
+  "policy": {
+    "maxConcurrency": 4,
+    "protectedKinds": [
+      "schema",
+      "migration"
+    ],
+    "jev": "shadow"
+  },
+  "stories": [
+    {
+      "id": "S-1",
+      "title": "Leave balance API",
+      "wave": 1,
+      "prerequisites": [],
+      "after": [],
+      "modules": [],
+      "risk_notes": []
+    },
+    {
+      "id": "S-2",
+      "title": "Show leave balance on dashboard",
+      "wave": 3,
+      "prerequisites": [
+        "S-1"
+      ],
+      "after": [
+        "S-3"
+      ],
+      "modules": [],
+      "risk_notes": []
+    },
+    {
+      "id": "S-3",
+      "title": "Add carry-over days to leave balance",
+      "wave": 2,
+      "prerequisites": [],
+      "after": [
+        "S-1"
+      ],
+      "modules": [],
+      "risk_notes": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "S-2",
+      "to": "S-1",
+      "relation": "depends_on",
+      "source": "contract_role",
+      "confidence": "medium",
+      "evidence": [
+        "S-1 produces /api/leave/balance, S-2 consumes it"
+      ],
+      "needs_review": false
+    },
+    {
+      "relation": "shared_resource",
+      "source": "deterministic",
+      "confidence": "high",
+      "evidence": [
+        "contract: LeaveBalanceDto (both change it)"
+      ],
+      "needs_review": false,
+      "pair": [
+        "S-1",
+        "S-3"
+      ],
+      "order": [
+        "S-1",
+        "S-3"
+      ],
+      "handling": "serialize"
+    },
+    {
+      "relation": "unknown",
+      "source": "prefilter",
+      "confidence": "low",
+      "evidence": [
+        "shared terms: leav, balanc, day"
+      ],
+      "needs_review": true,
+      "pair": [
+        "S-2",
+        "S-3"
+      ],
+      "order": [
+        "S-3",
+        "S-2"
+      ],
+      "handling": "serialize_and_review",
+      "ambiguous": true,
+      "jev_suggestion": {
+        "label": "shared_module_or_contract",
+        "p": 0.8,
+        "margin": 0.62,
+        "valid": true,
+        "handling": "serialize",
+        "provenance": {
+          "provider": "jev",
+          "model": "typesafe/jev-1.13-20260917",
+          "latencyMs": 752
+        },
+        "applied": false
+      }
+    }
+  ],
+  "independent_pairs": 0,
+  "waves": [
+    {
+      "wave": 1,
+      "stories": [
+        "S-1"
+      ]
+    },
+    {
+      "wave": 2,
+      "stories": [
+        "S-3"
+      ]
+    },
+    {
+      "wave": 3,
+      "stories": [
+        "S-2"
+      ]
+    }
+  ],
+  "blocked_or_review_required": [
+    {
+      "kind": "pair",
+      "stories": [
+        "S-2",
+        "S-3"
+      ],
+      "reason": "topical overlap without resource evidence",
+      "handling": "serialize_and_review"
+    }
+  ],
+  "assumptions": [
+    "S-1: no repository metadata; modules/files inferred from text only",
+    "S-2: no repository metadata; modules/files inferred from text only",
+    "S-3: no repository metadata; modules/files inferred from text only"
+  ],
+  "dispatch": [
+    {
+      "story": "S-1",
+      "wave": 1,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-1: Leave balance API\n\nAdd endpoint GET /api/leave/balance returning LeaveBalanceDto with annual and sick days.\n\nAcceptance criteria:\n- Returns 200 with LeaveBalanceDto"
+    },
+    {
+      "story": "S-3",
+      "wave": 2,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-3: Add carry-over days to leave balance\n\nExtend LeaveBalanceDto with carryOverDays.\n\nAcceptance criteria:\n- carryOverDays present in response"
+    },
+    {
+      "story": "S-2",
+      "wave": 3,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-2: Show leave balance on dashboard\n\nThe dashboard widget calls GET /api/leave/balance and displays the remaining days.\n\nAcceptance criteria:\n- Widget shows annual and sick days"
+    }
+  ],
+  "jev_shadow": {
+    "calls": 1,
+    "skipped": 0,
+    "errors": 0,
+    "cost": 0.000024,
+    "latencyMs": [
+      752
+    ],
+    "candidates": 1
+  }
+}

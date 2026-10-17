@@ -1,0 +1,22 @@
+## Candidate starting points — new-feature
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 95 → considered 95
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/web-test-jev-gate/scripts/gate.mjs` | 3 queries: check, checkAction, gate.mjs | 0 |
+| 2 | `.claude/skills/web-test-laya-gate/scripts/gate.mjs` | 3 queries: check, checkAction, gate.mjs | 0 |
+| 3 | `.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs` | 1 query: jev-lib.mjs, ask | 2 |
+| 4 | `hooks/cache_expiry_gate.py` | 1 query: cache_expiry_gate.py | 0 |
+| 5 | `.claude/skills/web-test-laya-gate/scripts/laya-lib.mjs` | 1 query: ask | 2 |
+| 6 | `.claude/skills/web-test-laya-gate/tests/gate-action.test.mjs` | 1 query: gate-action.test.mjs | 0 |
+| 7 | `idea/web-test/gate/probe3.mjs` | 1 query:  | 0 |
+| 8 | `.claude/skills/subagent-model-router/bench/lib/check-util.mjs` | 1 query: check-util.mjs, nodeTest | 29 hub |
+| 9 | `workflow/hooks/laya_step_router.py` | 3 queries: laya_step_router.py, step_of, ask_laya | 0 |
+| 10 | `.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs` | 1 query: askChoice, askSeverity, askMerge, askWithRetry | 9 hub |
+
+Jev: 5 call(s), 4 batch(es), survivors 16. Advisory ranking only — verify by reading source.

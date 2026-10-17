@@ -1,0 +1,1 @@
+{"t":"2026-10-17T08:51:51.248Z","case":"03-api-dto","arm":"B","waves":[["S-1"],["S-3"],["S-2"]],"jev_shadow":{"calls":1,"skipped":0,"errors":0,"cost":0.000024,"latencyMs":[752],"candidates":1},"jev":[{"pair":["S-2","S-3"],"deterministic":"unknown","jev":"shared_module_or_contract","p":0.8,"valid":true,"error":null,"latencyMs":752}]}

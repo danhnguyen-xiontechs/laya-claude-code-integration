@@ -1,0 +1,154 @@
+{
+  "03-api-dto.A": {
+    "transcript": "agent-ae8d6a49d6d5af7e3.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:56:21.475Z",
+    "finishedAt": "2026-10-17T08:56:54.658Z",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 5,
+      "cacheReadTokens": 90168,
+      "cacheWriteTokens": 17138,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ae8d6a49d6d5af7e3.jsonl",
+      "elapsedMs": 28175
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "03-api-dto.B": {
+    "transcript": "agent-adaaca7c87736931d.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:51:37.557Z",
+    "finishedAt": "2026-10-17T08:52:20.541Z",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 238,
+      "cacheReadTokens": 203559,
+      "cacheWriteTokens": 24998,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-adaaca7c87736931d.jsonl",
+      "elapsedMs": 37516
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "04-migration.A": {
+    "transcript": "agent-a0642d7d6fb9334f3.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:56:21.487Z",
+    "finishedAt": "2026-10-17T08:56:37.899Z",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 90164,
+      "cacheWriteTokens": 16859,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a0642d7d6fb9334f3.jsonl",
+      "elapsedMs": 12650
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "04-migration.B": {
+    "transcript": "agent-adbacecae46997ed7.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:51:37.574Z",
+    "finishedAt": "2026-10-17T08:52:26.916Z",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 28,
+      "cacheReadTokens": 328613,
+      "cacheWriteTokens": 27702,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-adbacecae46997ed7.jsonl",
+      "elapsedMs": 44218
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "06-explicit.A": {
+    "transcript": "agent-a824e135fce7b071c.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:56:21.497Z",
+    "finishedAt": "2026-10-17T08:56:41.116Z",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 10,
+      "cacheReadTokens": 90166,
+      "cacheWriteTokens": 17364,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a824e135fce7b071c.jsonl",
+      "elapsedMs": 14924
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "06-explicit.B": {
+    "transcript": "agent-a3246c84800aae1cb.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:51:37.632Z",
+    "finishedAt": "2026-10-17T08:52:26.715Z",
+    "usage": {
+      "inputTokens": 6,
+      "outputTokens": 17,
+      "cacheReadTokens": 145687,
+      "cacheWriteTokens": 19181,
+      "modelTurns": 3,
+      "toolCalls": 3,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a3246c84800aae1cb.jsonl",
+      "elapsedMs": 44254
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "07-cycle.A": {
+    "transcript": "agent-a64b3523f66d655a0.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:56:21.509Z",
+    "finishedAt": "2026-10-17T08:56:30.846Z",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 90166,
+      "cacheWriteTokens": 17072,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a64b3523f66d655a0.jsonl",
+      "elapsedMs": 5898
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  },
+  "07-cycle.B": {
+    "transcript": "agent-ab4a81088f26c310e.jsonl",
+    "model": "claude-haiku-5-5",
+    "startedAt": "2026-10-17T08:51:37.653Z",
+    "finishedAt": "2026-10-17T08:52:07.703Z",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 354,
+      "cacheReadTokens": 321114,
+      "cacheWriteTokens": 21891,
+      "modelTurns": 6,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ab4a81088f26c310e.jsonl",
+      "elapsedMs": 25002
+    },
+    "firstOutputFound": true,
+    "finalAnswerFound": false
+  }
+}

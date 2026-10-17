@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261017-sbp-agent-01",
+  "tool": {
+    "name": "story-batch-planner",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "73c4bda",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 4 small fixtures plain Haiku 5.5 already gets every case right (4/4), and so does Haiku with the planner, but the planner arm spends 2.5 times the tokens (429k -> 1,093k) on extra turns for reading and acting on the planner output. The fixtures are too easy to show any planner value, and one Critical bug is still open (layer() inverts the order when a prerequisite is incomplete). Fix it, then measure on larger, harder batches.",
+  "arms": {
+    "A": {
+      "cases": 4,
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 429144,
+      "inputTokens": 16,
+      "outputTokens": 31,
+      "toolCalls": 8,
+      "modelTurns": 8,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 12650,
+      "pairedTokens": 429144
+    },
+    "B": {
+      "cases": 4,
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1093420,
+      "inputTokens": 38,
+      "outputTokens": 637,
+      "toolCalls": 23,
+      "modelTurns": 19,
+      "providerCalls": 2,
+      "fallbacks": null,
+      "providerLatencyMs": 752,
+      "elapsedMs": 37516,
+      "pairedTokens": 1093420
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T08:56:54.658Z",
+  "generatedAt": "2026-10-17T08:59:53.199Z",
+  "report": "report.html"
+}

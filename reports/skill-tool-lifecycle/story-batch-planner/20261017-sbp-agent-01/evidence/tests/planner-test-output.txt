@@ -1,0 +1,22 @@
+✔ extract: files, modules, endpoints/DTO roles, tables, fixtures, refs (2.8343ms)
+✔ independent stories share one wave (3.3982ms)
+✔ shared file → serialized; same module only → unknown + review (1.4678ms)
+✔ API producer before consumer; two producers of a DTO conflict (1.4133ms)
+✔ migrations are protected and serialized; schema reader waits for the migration (0.6441ms)
+✔ shared test fixture → serialized (1.2644ms)
+✔ explicit ADO link and text reference are kept; out-of-batch link becomes an assumption (0.6525ms)
+✔ cycle is reported, its members and dependents are not scheduled (0.5325ms)
+✔ incomplete story goes to review and runs alone at the end (1.041ms)
+✔ maxConcurrency splits a wide wave (1.0927ms)
+✔ output contract: every story has a wave or a review entry; dispatch matches waves (4.4872ms)
+✔ Jev request uses the closed label set (0.5969ms)
+✔ Jev shadow annotates only ambiguous edges and never changes waves (1.2099ms)
+✔ Jev failure / invalid label / timeout / budget → unknown, serialize_and_review (1.3894ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.8024

@@ -1,0 +1,1 @@
+{"t":"2026-10-17T08:51:43.905Z","case":"06-explicit","arm":"B","waves":[["S-1","S-4"],["S-2"],["S-3"]],"jev_shadow":{"calls":1,"skipped":0,"errors":0,"cost":0.000025,"latencyMs":[1192],"candidates":1},"jev":[{"pair":["S-2","S-3"],"deterministic":"unknown","jev":"independent","p":0.47,"valid":true,"error":null,"latencyMs":1192}]}

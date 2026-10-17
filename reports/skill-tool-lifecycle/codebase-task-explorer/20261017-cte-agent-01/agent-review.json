@@ -1,0 +1,130 @@
+{
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "Malformed Jev answers are accepted as success. decide() swallows a JSON parse error (also a body-read timeout) and returns ok:true with empty answers on any HTTP 200. jevRank then reads r.answers.best with no check: with one batch the result is rules order while fallback stays false (the output reads '1 call(s), 1 batch(es)'); with several batches survivors=[] and a paid global call goes out with only none_of_these, which can print 'none_of_these won the final pass → expand the search'.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:222",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "Root cause of the item above, in the shared provider that 13 skills copy: on an HTTP 200 the failed `r.json()` is ignored, so a non-JSON body, an HTML proxy page or a truncated or timed-out body gives { ok: true, answers: {} } and not an error.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs:64",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The fallback is not flagged in the markdown when a guard trips on the first call. call() returns before setting jev.called, and jevRank's jev object has no `skipped` field, so toMarkdown prints 'Jev: not called (undefined)' and hides the 'payload N > max' or 'budget' reason (a long pasted task triggers this). Unit test 3 (r2) hits exactly this path but only asserts jev.fallback.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:287",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "SKILL.md says 'any failure/guard → rules order', but a failed global rerank returns the per-batch Jev survivors in batch order, and the output still says 'FELL BACK to rules'.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:241",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The fallback's rg call ignores spawn errors. A missing rg (ENOENT) silently drops all content matches, while the coverage note still claims 'path/content fallback'. Arm A's helper checks rg.error and the tool does not. The same applies to a root that is not a git repository: git ls-files fails silently and all path matches are lost (line 70). Neither case is reported.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:81",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The fallback's rg runs without --hidden, so dot-directories never get content matches. In this repo 467 of 975 tracked files, every skill and every gold file, live under .claude/. Verified in the dry run: assess.mjs contains 'merge' 11 times, yet the 'merge assessment' query shows 0 .claude content hits. The fallback output does not say this.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:81",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The 'deterministic fallback' promised in SKILL.md is not deterministic. rg is multithreaded and prints files in arbitrary order, content scores cap at 3 (so ties are common), Map insertion order breaks the ties, and slice(0, perQuery) then cuts. Which files make the pool can change from run to run.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:89",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The JUNK filter drops every path under packages/, bin/ and out/. SKILL.md says only vendor, generated, build and binary files are dropped, but these are normal source roots: a JS monorepo's packages/* or Express's bin/www. On such repos the pool loses its real source.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:99",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "Design premise is false (confirmed by the orchestrator): codemap 4.6.0 is at ~/tools/codemap/codemap.exe, findCodemap's default path, and the dry run shows arm B on 'Engine: codemap codemap 4.6.0' with symbols, importers and hubs, while A uses git ls-files plus rg. design.md:25 says 'both arms get the same pool', but retrieval engine, truncation and output size all differ, so a B>A result cannot be credited to the ranking. I rated this Major, which stretches the rubric, so that the design's stop condition fires.",
+      "ref": "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/design.md:18",
+      "resolution": "fixed: arm A now uses the tool's own codemap pool in codemap order (helpers/f1.mjs v2), design.md v1.2"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The unverified claim that fallbackFind gets 0 content matches because rg runs with no path and an empty stdin conflicts with the evidence: f1.mjs calls rg the same way (spawnSync, no path argument) and the dry run got 51 content hits (rgMissing=false). Whatever the cause, passing an explicit '.' path or stdio:['ignore'] would rule out rg's stdin heuristic.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:81",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "If codemap is present but `find -json` fails or prints non-JSON (for example a version below 4.6, which is never checked), that query is skipped silently and stderr is thrown away. There is no switch to the fallback, and the result is 'pool 0, coverage unknown' with no reason given.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:56",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Numeric CLI options are not validated. --batch 0 makes chunk() loop forever. A non-numeric --max-calls or --max-payload becomes NaN, and the `>=` and `>` guard checks then never trip, which silently turns the guards off.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:197",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The missing-key case is counted as a Jev call: called=true and calls=1 although no request was sent, which inflates the providerCalls the design reads from the logs.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:209",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The data sent to Jev is wider than the SKILL.md security gate lists. The full task text goes in state.task. headLine takes any line starting with //, #, *, -- or \"\"\" from the first 800 bytes, not only header comments; a committed .npmrc line such as '//registry.npmjs.org/:_authToken=…' would be sent as its 'header'. Nothing is redacted.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:156",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Writes that SKILL.md does not mention ('Discovery only'): the codemap run leaves an untracked .codemap/ folder in the target repo (seen only in arm B's copy, `?? .codemap/`), and every run appends the task text to ~/.claude/codebase-task-explorer/runs.jsonl with no opt-out. The API key never reaches the log or an error string (verified).",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:54",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "SKILL.md says Jev is 'on by default when configured' and that OPENROUTER_API_KEY is the requirement, but the CLI enables Jev only with --provider or DECISION_PROVIDER. loadConfig is never called (cfg={}), so jev.json, the Jev model and the laya/kev URLs cannot be configured.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:298",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Drift risk: 13 copies of decision-provider.mjs exist under .claude/skills, but its header names 4. There is no shared module and no checksum test, so the ok:true-on-bad-body fix has to be made 13 times.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs:2",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The 5 tests cover only jevRank batching, budget/payload/HTTP-500 fallback, none_of_these and cleanup, all with a mock. Untested: malformed answers, global-pass failure order, toMarkdown fallback labels, explore() skip paths (exact, empty pool, provider none), fallbackFind (rg or git missing, hidden dirs, determinism), codemapFind parse failure, decide() timeout and non-JSON body, key redaction, CLI provider resolution and CODEBASE_EXPLORER_JEV=off, and numeric option validation.",
+      "ref": ".claude/skills/codebase-task-explorer/tests/explore.test.mjs:35",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The arms see different amounts of text. B prints only the top 10 rows (toMarkdown with default top 10; f2 passes no --top). A prints up to 30 rows per query, 131 lines in the t1 dry run, and its cut is alphabetical by git order. Whether a gold file is visible in A therefore depends on its skill's name (t1's gold files fall inside the first 30 by luck), and A's longer output biases the token comparison toward B for reasons unrelated to ranking.",
+      "ref": "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/helpers/f1.mjs:27",
+      "resolution": "fixed: arm A shows the same top 10 rows as arm B (helpers/f1.mjs v2)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The two documents set different success thresholds: idea-brief says 'B > A', design.md says 'B passes at least as many cases as A'. Under the design's rule a ceiling tie (4/4 vs 4/4) counts as success. The token criterion adds cache-read tokens to the same total as output tokens and leaves out Jev's dollar cost and latency.",
+      "ref": "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/design.md:67",
+      "resolution": "fixed: one threshold in design.md v1.2 (strictly more passes, or equal with higher mean recall, and no case worse)"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Limits of the experiment: 4 cases and 1 repetition cannot separate an effect from agent, Jev or rg noise, and one stochastic flip trips the guardrail. There is no rules-only arm, although rulesTop from B's JSON could be scored offline. The queries are gold-aware and taken from the tool's own pilot set, so Stage 0 is not tested. B never sees SKILL.md, so the run measures the script, not the skill. The <5-path retry escalates the model for one arm only.",
+      "ref": "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/design.md:65",
+      "resolution": "open"
+    }
+  ]
+}

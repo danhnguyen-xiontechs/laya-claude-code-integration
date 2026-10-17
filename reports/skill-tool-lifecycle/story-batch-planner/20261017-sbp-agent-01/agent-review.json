@@ -1,0 +1,78 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context), model opus as routed by route.mjs; reviewed the tool scripts, tests, fixtures and design.md; ran node --test",
+  "reviewedAt": "2026-10-17",
+  "findings": [
+    {
+      "severity": "Critical",
+      "finding": "Both arms get batch.json as a copy of the fixture, and every fixture has an `expected` block holding the answer key (order, conflict, cycle, independent pairs), so the arm-A baseline and the arm-B agent could both read the graded answer and the comparison would be invalid.",
+      "ref": "design.md Arms; fixtures/03-api-dto.json, fixtures/07-cycle.json (expected block)",
+      "resolution": "fixed: make_tasks.mjs removes the expected block from every batch.json copy (grep count 0 in all 8 work folders); design.md Arms updated"
+    },
+    {
+      "severity": "Critical",
+      "finding": "A hard depends_on edge whose prerequisite is an incomplete story gets inverted: layer() drops prerequisites that are not in `runnable`, so the dependent goes in wave 1 and the prerequisite in the final wave (probe: S-2 'Depends on S-1', S-1 'Misc.' gives waves [[S-2],[S-1]]); in 08-incomplete the plan also contradicts itself.",
+      "ref": "planner.mjs:150, planner.mjs:201-203",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed. tool bug, not fixed (the tool is not edited in this run). Probe re-run by the orchestrator agent confirmed waves [[S-2],[S-1]]. It does not change the four measured fixtures (their plans show no incomplete story), but the review rule blocks step 6 until the user accepts this finding."
+    },
+    {
+      "severity": "Major",
+      "finding": "classifyPair returns on the first piece of evidence, so a mutual dependency is not reported as a cycle when one direction is an explicit link and the other a text reference, or when two contracts point in opposite directions; it picks one order instead, which breaks SKILL.md's 'do not invent an order for a cycle'.",
+      "ref": "planner.mjs:89-104 (also_reverse only checks refs of the same kind)",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed. tool behaviour, not fixed. Not exercised by the four measured fixtures."
+    },
+    {
+      "severity": "Major",
+      "finding": "The batch's `policy` is merged straight into the config, so a batch file alone can turn on Jev without --jev (story text sent to OpenRouter without the Security step in SKILL.md), switch the provider to laya with any laya.url, and point jev.log at any path.",
+      "ref": "plan.mjs:13-17; planner.mjs:28; planner.mjs:282,289",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed. tool behaviour, not fixed. The measured batch copies have no policy key (checked), so this run is not affected."
+    },
+    {
+      "severity": "Major",
+      "finding": "The pass rules for 03, 04 and 06 match the fixtures and the unit tests, but nothing penalises over-serialisation: one story per wave in input order passes 03, 04 and 06, so the design cannot tell a planner that keeps parallelism from one that serialises everything.",
+      "ref": "design.md Cases and what pass means",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed. design.md now says pass is correctness only and records the wave count per arm as a directional note. A gated parallelism check was not added, because the fixtures define no required parallel pair for these four cases; a user decision is needed if one is wanted."
+    },
+    {
+      "severity": "Major",
+      "finding": "The prompt never says what needs_decision means, and the design did not say how 'S-1 in an earlier wave than S-2' is graded when S-2 is only in needs_decision, or whether an id may be in both waves and needs_decision.",
+      "ref": "design.md Arms (prompt P) and Cases (common rules)",
+      "resolution": "fixed: design.md now defines the ordering rule (a deferred later story passes, a deferred earlier story with a scheduled later story fails) and allows an id in both lists; the prompt text itself is unchanged, as the brief requires"
+    },
+    {
+      "severity": "Major",
+      "finding": "The comparison is in-sample: the unit tests assert the outcomes of the same four fixtures (03, 04, 06, 07) that the rules were written for, while small rewordings break them (a consumer sentence containing 'new' becomes a second producer; a schema reader listed before the migration is scheduled first, although the test is named 'schema reader waits for the migration').",
+      "ref": "test/planner.test.mjs:40-77; planner.mjs:39 (producer regex), planner.mjs:195; design.md Cases",
+      "resolution": "accepted by the user for this run (2026-10-17), not fixed. limitation of the measurement set and of the tool's tests. Recorded as a deviation; the four cases are the tool's own fixtures, so this run measures fit to those fixtures, not generalisation."
+    },
+    {
+      "severity": "Minor",
+      "finding": "jevShadow counts a short-circuited call (no OPENROUTER_API_KEY) as a provider call with latency 0, so providerCalls and median latency would count Jev as live when it never answered; the design did not check Jev validity.",
+      "ref": "planner.mjs:283,287; decision-provider.mjs:42,45; design.md Tokens",
+      "resolution": "fixed in the measurement: grade.mjs reports invalid or failed Jev answers per case as a deviation, and design.md Tokens says so. The tool still counts a no-key call (open for the tool). The key is set in this session, so no call here was short-circuited."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The retry rule reruns a failed case, but if the retry shares the work folder, two transcripts make the token count null and the first attempt's tokens are lost.",
+      "ref": "design.md Retry rule and Tokens",
+      "resolution": "fixed: design.md now puts a retry in its own folder work/<case>.<arm>.retry/ and reports both attempts' tokens separately"
+    },
+    {
+      "severity": "Minor",
+      "finding": "No test covers decide() (real AbortSignal timeout, HTTP error, provider down, key never leaking into an error, log or output), the plan.mjs CLI, the jev-shadow log write, or the depends_on_A/B labels.",
+      "ref": "test/planner.test.mjs:103-133; decision-provider.mjs:40-99",
+      "resolution": "open: test gap in the tool. The reviewer read the code and found no key leak."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Duplicate story ids are not checked and crash plan() with a stack overflow, because a pair creates a self-edge in `order` and layer()'s lv() takes a `seen` set but never reads it.",
+      "ref": "planner.mjs:147-151, planner.mjs:163",
+      "resolution": "open: tool bug, not fixed. The measured fixtures have unique ids."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The test command in SKILL.md (`node --test <skill-dir>/test/`) fails on the installed Node v24.11.1; only the glob form runs the 14 tests (all pass).",
+      "ref": "story-batch-planner/SKILL.md (tests section)",
+      "resolution": "open: documentation issue in the tool. This run uses the glob form, as the brief says."
+    }
+  ]
+}

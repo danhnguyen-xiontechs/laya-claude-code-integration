@@ -1,0 +1,17 @@
+Starting points for "PR review says Eligible for merge even though a blocking severity finding exists". Read-only; nothing modified. Paths are under <scratch>/t1-bug-merge-verdict-15019b/repo/.claude/skills/
+
+1. review-pr-laya-classify/scripts/assess.mjs: the only producer of the report's "Merge:" header (SKILL step 4c says to copy it as-is). It reads findings through readFindings and computes counts, verdict and merge from them. If a report says Eligible while its findings file has a Critical or Major, first check whether the header was copied from this script or written by hand.
+
+2. review-pr-laya-classify/scripts/laya-severity.mjs: counts(), verdict() and merge() (about lines 187-209) hold the Blocked rule. The logic is correct for normalized input: any Critical or Major gives Blocked, and tests/laya.test.mjs covers it. counts() indexes c[f.severity] without validating, so it depends on readFindings' normLabel. A wrong Eligible here would mean the findings reached it with the wrong severities.
+
+3. review-pr-laya-classify/references/review-method.md: the "Verify every finding", "Findings file", "Re-check after a Laya flag" and "Score, verdict and merge assessment" sections (about lines 150-255). This is where the input is produced. A blocking finding can vanish before assess.mjs runs only if Claude drops it during synthesis or lowers it on re-check.
+
+4. review-pr-laya-classify/SKILL.md: steps 4b and 4c (about lines 130-190). They state that the report's merge comes only from assess.mjs and that Laya's merge_gate answer is log only. A report that shows Eligible taken from Laya's merge label, or computed by hand, deviates here.
+
+5. review-pr-laya-classify/scripts/build_execution_log.mjs: renders a second verdict and merge (PASS/WARN/FAIL, about lines 236-243 and 429) by recomputing from findings with .filter((f) => f.severity), which silently drops unknown severities where assess.mjs throws. A mismatch between this HTML and the .md report would point here.
+
+Notes:
+- review-pr-jev-classify/scripts/ has the same files. assess.mjs is byte-identical, and the verdict and merge functions in laya-severity.mjs are identical.
+- The helper output was unranked name matches. pr-fetch.mjs, finding-questions.mjs, outcome-labels.mjs, laya-eval.mjs and providers.mjs are not on the verdict path.
+- Not verified: I did not run the tests or reproduce the bug. The repo has no review-run artifacts (no pr-<id>.findings.json). Per SKILL step 5 they live outside the repo under ~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/.
+- Next step: compare that run's pr-<id>.findings.json with the header in its pr-<id>.md. If the file has a Critical or Major and the header says Eligible, the header was not copied from assess.mjs. If the file lacks the finding, the drop happened in synthesis or re-check.

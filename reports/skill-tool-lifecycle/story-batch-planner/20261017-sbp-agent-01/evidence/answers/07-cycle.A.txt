@@ -1,0 +1,3 @@
+{"waves": [["S-5"]], "needs_decision": ["S-1", "S-2", "S-3", "S-4"]}
+
+Reasoning: S-1, S-2 and S-3 form a depends_on cycle (S-1 to S-2 to S-3 to S-1) so no safe order exists, and S-4 depends on the cyclic S-3, so it is blocked until the cycle is resolved; S-5 has no links and touches calendar/HolidayImport.cs, which no other story touches, so it can run alone in wave 1.

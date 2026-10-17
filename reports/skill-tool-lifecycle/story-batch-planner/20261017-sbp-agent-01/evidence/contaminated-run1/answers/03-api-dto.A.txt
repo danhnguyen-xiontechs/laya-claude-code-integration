@@ -1,0 +1,7 @@
+{"waves": [["S-1"], ["S-3"], ["S-2"]], "needs_decision": ["S-2", "S-3"]}
+
+Reasoning: S-1 creates GET /api/leave/balance and LeaveBalanceDto, which S-2 consumes and S-3 extends, so S-1 runs first; S-3 and S-2 are serialized only because of an unresolved low-confidence text overlap (shared terms leav/balanc/day, no file or contract evidence), so whether they can run in parallel is a human call.
+
+Caveats:
+- The stories carry no repository metadata (no files, modules, contracts, or tables), so every edge is inferred from title, description, and AC text only.
+- Jev was not run (disabled by default).

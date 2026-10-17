@@ -1,0 +1,73 @@
+{
+  "experimentId": "20261017-cte-agent-01",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "7849acd",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 4 find-where-to-start tasks with Haiku 5.5, the same codemap pool in raw order (A) got all 4 right, and the pool ranked by the tool's rules plus Jev (B) got 3 of 4 (t3-refactor-decide missed the eval/shadow-hook group), using 11% more tokens (2.89M -> 3.22M). B is not better here and one case is worse, which is within agent noise at 4 cases; 8 Major review findings are open. Fix the failure paths, then measure on harder tasks.",
+  "arms": {
+    "A": {
+      "cases": 4,
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 2888003,
+      "inputTokens": 72,
+      "outputTokens": 254,
+      "toolCalls": 48,
+      "modelTurns": 36,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 101227,
+      "pairedTokens": 2888003
+    },
+    "B": {
+      "cases": 4,
+      "pass": 3,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.75,
+      "tokens": 3218032,
+      "inputTokens": 82,
+      "outputTokens": 288,
+      "toolCalls": 55,
+      "modelTurns": 41,
+      "providerCalls": 17,
+      "fallbacks": 0,
+      "providerLatencyMs": 2453,
+      "elapsedMs": 113728,
+      "pairedTokens": 3218032
+    }
+  },
+  "regressions": [
+    "t3-refactor-decide"
+  ],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T08:54:22.724Z",
+  "generatedAt": "2026-10-17T09:00:05.669Z",
+  "report": "report.html"
+}

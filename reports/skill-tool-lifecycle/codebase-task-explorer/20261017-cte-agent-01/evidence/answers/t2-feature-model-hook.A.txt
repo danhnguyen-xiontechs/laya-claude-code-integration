@@ -1,0 +1,14 @@
+The subagent router is `subagent-model-router`. It picks haiku, sonnet or opus from rule features of the subagent prompt and type, optionally combined with a Jev or Laya tier vote. Out of the box it only logs: `config.json` sets mode `shadow` and provider `none`, and the PreToolUse hook is not registered in `.claude/settings.json` (that file is fully commented out).
+
+The 5 starting files, most relevant first, with absolute paths (repo root: <scratch>/t2-feature-model-hook-e1da54/repo):
+
+1. `<scratch>/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/router.mjs`: the decision core. `ruleTier` scores from sonnet (1) and clamps to haiku..opus; hard verbs add, lookup, cheap types (explore/search) and checked small tasks subtract, design types add, big briefs add +1. `combine` applies the policy (rules, jev, gate, sc, gate+sc), and `route()` returns the record.
+2. `<scratch>/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs`: the actual pre-spawn hook (matcher `Agent`). It leaves alone any call that sets `model` or whose agent definition sets a non-inherit `model`, and emits `updatedInput.model` only in `apply` mode.
+3. `<scratch>/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/config.json`: the defaults that decide whether anything is applied (`mode: shadow`, `provider: none`, so policy is forced to `rules`). Env vars and CLI flags override these.
+4. `<scratch>/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/decision-provider.mjs`: the Jev (OpenRouter) and Laya calls that return the tier probabilities. Any failure returns no tier, so the caller keeps its default model.
+5. `<scratch>/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/route.mjs`: the CLI an orchestrator calls before a spawn (`--mode apply --task-file ... --type ...`). It prints the tier, or nothing when the default should stand, and handles `--escalate-from` for the one-retry cascade.
+
+Notes:
+- The helper's top hit, `.claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js`, is a separate PreToolUse hook (`Agent|Task`) that shrinks prompts. It does not choose a model.
+- The `Agent` hook's apply-mode output is covered by `test/router.test.mjs` (around line 122), and the settings snippet is in `README.md` lines 68-85.
+- Nothing was modified.

@@ -1,0 +1,29 @@
+1	#!/usr/bin/env node
+2	// Neutral wrapper, arm B: runs the real story-batch-planner plan.mjs on this folder's batch (Jev shadow on),
+3	// prints its summary to stdout, and appends one decision line to the run log.
+4	import { spawnSync } from 'node:child_process';
+5	import fs from 'node:fs';
+6	import path from 'node:path';
+7	const CASE = "07-cycle";
+8	const PLANNER = "D:\\XionTechs\\Laya\\.claude\\skills\\story-batch-planner\\scripts\\plan.mjs";
+9	const LOGS = "C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\scratchpad\\sbp\\_logs";
+10	const HOME = "C:\\Users\\ADMIN\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\scratchpad\\sbp\\_home\\07-cycle";   // keeps the planner's default Jev log out of the user's home
+11	const here = import.meta.dirname;
+12	fs.mkdirSync(LOGS, { recursive: true });
+13	fs.mkdirSync(HOME, { recursive: true });
+14	const planJson = path.join(LOGS, CASE + '.B.plan.json');
+15	const r = spawnSync(process.execPath, [PLANNER, '--in', path.join(here, 'batch.json'), '--out', planJson, '--jev', '--summary'], {
+16	  encoding: 'utf8',
+17	  env: { ...process.env, HOME, USERPROFILE: HOME },
+18	});
+19	if (r.status !== 0) { process.stderr.write(r.stderr || 'planner failed\n'); process.exit(r.status ?? 1); }
+20	process.stdout.write(r.stdout);
+21	const plan = JSON.parse(fs.readFileSync(planJson, 'utf8'));
+22	const jev = plan.edges.filter((e) => e.jev_suggestion).map((e) => ({
+23	  pair: e.pair, deterministic: e.relation, jev: e.jev_suggestion.label, p: e.jev_suggestion.p ?? null,
+24	  valid: e.jev_suggestion.valid, error: e.jev_suggestion.error ?? null, latencyMs: e.jev_suggestion.provenance?.latencyMs ?? null,
+25	}));
+26	fs.appendFileSync(path.join(LOGS, CASE + '.B.jsonl'), JSON.stringify({
+27	  t: new Date().toISOString(), case: CASE, arm: 'B', waves: plan.waves.map((w) => w.stories), jev_shadow: plan.jev_shadow ?? null, jev,
+28	}) + '\n');
+29	

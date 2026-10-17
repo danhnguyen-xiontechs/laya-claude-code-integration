@@ -1,0 +1,121 @@
+diff --git a/.claude/skills/build-skill-tool-workflow/SKILL.md b/.claude/skills/build-skill-tool-workflow/SKILL.md
+index afaeb54..ac55e22 100644
+--- a/.claude/skills/build-skill-tool-workflow/SKILL.md
++++ b/.claude/skills/build-skill-tool-workflow/SKILL.md
+@@ -62,11 +62,11 @@ Dedicated branch/worktree, repo conventions, provider behind a narrow adapter so
+ 
+ ## 4. Tests
+ 
+-Run the whole relevant suite (unit, contract, integration such as `claude plugin test`). Minimum for a Jev/Laya integration: valid answer, borderline threshold, malformed answer, timeout / provider down, each mode, fallback, no unintended writes, redaction. Write `unit-tests.json` from the real output: skipped ≠ pass, not run = `notRun`. No measurement with failing tests.
++Run the whole relevant suite (unit, contract, integration such as `claude plugin test`). Minimum for a Jev/Laya integration: valid answer, borderline threshold, malformed answer, timeout / provider down, each mode, fallback, no unintended writes, redaction. Write `unit-tests.json` from the real output: skipped ≠ pass, not run = `notRun`. No measurement with failing tests. On Node 24 `node --test <dir>` fails ("Cannot find module"): pass files or a quoted glob, `node --test "<dir>/*.test.mjs"`, and use the same command in `unit-tests.json`.
+ 
+ ## 5. Independent agent review
+ 
+-Spawn a separate reviewer (Agent tool, fresh context, read-only) with the brief, design, diff and test output. Checklist: matches the approved scope; edge cases, timeouts, fallback; hidden coupling to Jev/Laya; secrets, unsafe writes; weak or in-sample tests; whether the measurement is really sourced. Save `agent-review.json` (`Critical | Major | Minor | Suggestion`). Open Critical/Major block step 6 unless the user accepts them; a resolution starting with `fixed` or `accepted` closes a finding.
++Spawn a separate reviewer (Agent tool, fresh context, read-only) with the brief, design, diff and test output. Checklist: matches the approved scope; edge cases, timeouts, fallback; hidden coupling to Jev/Laya; secrets, unsafe writes; weak or in-sample tests; whether the measurement is really sourced. Save `agent-review.json` (`Critical | Major | Minor | Suggestion`). Open Critical/Major block step 6 unless the user accepts them; a resolution starting with `fixed` or `accepted` closes a finding. Only the user can accept: the session that talks to the user asks (AskUserQuestion: accept and measure / fix first) and writes `accepted by the user for this run (<date>), not fixed` into each `resolution`, keeping the finding text. A delegated (sub)agent that reaches this point stops, writes what is ready and reports; it never accepts for the user. Findings about the measurement design (not the tool) are fixed in `design.md` and the helpers before step 6, whatever the user decides about the tool's findings.
+ 
+ ## 6. Measure A vs B — real tokens per case
+ 
+@@ -75,11 +75,14 @@ Write one `results.json` per arm and run: `{ experimentId, arm, runId, startedAt
+ Where the tokens come from — pick the one that matches the tool:
+ 
+ - **Agent run** (the tool changes how Claude works through a task: skills, routers, gates, or what it reads across a whole task): real prompts, one fresh session per case, arm and repetition. Two ways to run it:
+-  - **Subagents (cheapest, default)**: spawn the cases with the Agent tool using the haiku-subagent settings (`model: "haiku"`, `effort: "xhigh"`, at most 10 per message, A and B in the same message, rep 2 launched B first). Subagents share this session's hooks and plugins, so a hook cannot be on for B only: give both arms the **same command** through a neutral wrapper (e.g. `node run.mjs test`) that returns raw output in A and runs the tool's own core function in B, logging each engine decision to `_logs/<case>.<arm>.r<n>.jsonl`. Same prompt text in both arms except the folder; one fresh folder per case (`make_tasks.mjs`). Grade afterwards yourself: re-run the raw command (not the wrapper) and check protected files (tests) by hash; the subagent's own "it passes" is not evidence. Tokens per case:
++  - **Subagents (cheapest, default)**: spawn the cases with the Agent tool using the haiku-subagent settings (`model: "haiku"`, `effort: "xhigh"`, at most 10 per message, A and B in the same message, rep 2 launched B first). Subagents share this session's hooks and plugins, so a hook cannot be on for B only: give both arms the **same command** through a neutral wrapper (e.g. `node run.mjs test`) that returns raw output in A and runs the tool's own core function in B, logging each engine decision to `_logs/<case>.<arm>.r<n>.jsonl`. Same prompt text in both arms except the folder (and one sentence about the tool, below); one fresh folder per case (`make_tasks.mjs`). Grade afterwards yourself: re-run the raw command (not the wrapper) and check protected files (tests) by hash; the subagent's own "it passes" is not evidence.
++    **Keep the answer key away from both arms.** A case fixture handed to the agents has no `expected`/gold block (strip it from the copy). Gold lists that live in the repo (eval `tasks.json`, old results, reports, saved reviews) are removed from the repo copy the agents work on (`git archive HEAD`, then delete them); gold names that remain in ordinary code are fine, say so in `deviations`.
++    **Arm A cannot hide the tool.** Subagents see this session's skill list and the repo, so a tool that is a skill or sits in the repo is reachable from A (seen: 3 of 4 arm-A agents called the planner skill on their own). A's prompt says "No <tool> is available in this task: decide yourself; do not look for or use any skill or script", B's prompt says it is available. Then check mechanically that A did not use it, and discard and re-run (in a new work folder name, e.g. `<case>.A2`, so transcripts cannot be mixed up) any A case that did; keep the discarded run in `evidence/contaminated-run<n>/`, outside `runs/`, and say so in `deviations`:
+     ```bash
+-    node .claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs ~/.claude/projects/<project>/<session>/subagents <workDir...>
++    node .claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs <subagentsDir> --forbid "<tool-slug>|<tool-script>" <workDir...>
+     ```
+-    It finds each case's transcript by the work dir in its prompt; no match or two matches = `null`.
++    `<subagentsDir>` is `~/.claude/projects/<project>/<session>/subagents`: one flat folder of `agent-<id>.jsonl` files (no sub-folders per run; agents spawned by a subagent are in the same folder), where `<project>` is the session's starting working directory with `:` `\` `/` replaced by `-`. The script finds each case's transcript by the work dir in its prompt (no match or two matches = `null`) and, with `--forbid`, counts the agent's tool calls (Skill calls included) that mention the pattern as `forbiddenCalls`; the report builder does not read it, so look at it before grading.
++    The agent's answer comes back through its hand-back message, not a final assistant text: read it from the transcript's `SubagentHandback` tool call, save it verbatim to `evidence/answers/<case>.<A|B>.txt` and score it with a script (see `collect.mjs` in `reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/`).
+   - **Separate sessions** (`claude -p --plugin-dir …`) when the real hook must run: run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage` (subagent transcripts under `<session>/subagents/` are included; `--no-subagents` to skip):
+   ```bash
+   node .claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs "<session.jsonl>" --from <ISO> --to <ISO>
+diff --git a/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs b/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs
+index 2d8408c..1b7f36a 100644
+--- a/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs
++++ b/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs
+@@ -3,18 +3,38 @@
+ // transcript by the work dir named in its prompt, and sums that transcript's API usage (transcript_usage.mjs).
+ // A work dir that matches no transcript, or more than one, gives null: never a guess.
+ //
+-// Usage: node subagent_usage.mjs <subagentsDir> <workDir...>
+-//   subagentsDir = ~/.claude/projects/<project>/<sessionId>/subagents
+-// Prints JSON { "<workDir>": { transcript, usage } | { transcript: null, error } }.
++// Usage: node subagent_usage.mjs <subagentsDir> [--forbid <regex>] <workDir...>
++//   subagentsDir = ~/.claude/projects/<project>/<sessionId>/subagents (one flat folder of agent-<id>.jsonl files)
++//   --forbid     counts the agent's own tool calls (the Skill tool included, by skill name) whose input matches the
++//                regex, case-insensitive: use it on arm A with the tool's slug and script name, to see whether the
++//                plain arm used the tool. The prompt is not scanned, only what the agent did.
++// Prints JSON { "<workDir>": { transcript, usage, forbiddenCalls? } | { transcript: null, error } }.
+ import fs from 'node:fs';
+ import path from 'node:path';
+ import { spawnSync } from 'node:child_process';
+ 
+-const [subDir, ...dirs] = process.argv.slice(2);
+-if (!subDir || !dirs.length) {
+-  console.error('Usage: node subagent_usage.mjs <subagentsDir> <workDir...>');
++const argv = process.argv.slice(2);
++const fi = argv.indexOf('--forbid');
++const forbid = fi >= 0 ? new RegExp(argv[fi + 1], 'i') : null;
++if (fi >= 0) argv.splice(fi, 2);
++const [subDir, ...dirs] = argv;
++if (!subDir || !dirs.length || (fi >= 0 && !forbid)) {
++  console.error('Usage: node subagent_usage.mjs <subagentsDir> [--forbid <regex>] <workDir...>');
+   process.exit(2);
+ }
++function forbiddenCalls(file) {
++  let n = 0;
++  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
++    let e;
++    try { e = JSON.parse(line); } catch { continue; }
++    if (e.type !== 'assistant') continue;
++    for (const c of e.message?.content ?? []) {
++      if (c.type !== 'tool_use' || c.name === 'SubagentHandback') continue;
++      if (forbid.test(`${c.name === 'Skill' ? c.input?.skill ?? '' : ''} ${JSON.stringify(c.input ?? {})}`)) n++;
++    }
++  }
++  return n;
++}
+ const usageScript = path.join(import.meta.dirname, 'transcript_usage.mjs');
+ // the first user message of a subagent transcript is the prompt it was given
+ const transcripts = fs.readdirSync(subDir).filter((f) => f.endsWith('.jsonl')).map((f) => {
+@@ -33,6 +53,6 @@ for (const d of dirs) {
+     continue;
+   }
+   const u = JSON.parse(spawnSync(process.execPath, [usageScript, hits[0].p, '--no-subagents'], { encoding: 'utf8' }).stdout);
+-  out[d] = { transcript: hits[0].p, usage: u };
++  out[d] = { transcript: hits[0].p, usage: u, ...(forbid ? { forbiddenCalls: forbiddenCalls(hits[0].p) } : {}) };
+ }
+ console.log(JSON.stringify(out, null, 2));
+diff --git a/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs b/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs
+index c59eab6..0059912 100644
+--- a/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs
++++ b/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs
+@@ -194,3 +194,23 @@ describe('subagent_usage', () => {
+     assert.equal(o[path.join(d, 'missing')].transcript, null);
+   });
+ });
++
++describe('subagent_usage --forbid', () => {
++  it('counts the agent\'s own calls to the tool (Skill calls too), not the prompt, and not the hand-back', () => {
++    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bstw-fb-'));
++    const work = path.join(d, 'case.A');
++    const user = (dir) => JSON.stringify({ type: 'user', message: { content: `Work folder: ${dir}\nUse the planner if you like, it is called story-batch-planner.` } });
++    const call = (id, name, input) => JSON.stringify({ type: 'assistant', timestamp: '2026-10-17T01:00:00Z', message: { id, usage: { input_tokens: 1, output_tokens: 1 }, content: [{ type: 'tool_use', name, input }] } });
++    // agent 1 reads the batch only; agent 2 calls the skill and runs the script; both then hand back an answer that names the tool
++    fs.writeFileSync(path.join(d, 'agent-1.jsonl'), [user(work), call('m1', 'Read', { file_path: 'batch.json' }), call('m2', 'SubagentHandback', { message: 'story-batch-planner was not used' })].join('\n'));
++    const work2 = path.join(d, 'case.A2');
++    fs.writeFileSync(path.join(d, 'agent-2.jsonl'), [user(work2), call('n1', 'Skill', { skill: 'story-batch-planner', args: 'x' }), call('n2', 'Bash', { command: 'node scripts/plan.mjs --in batch.json' })].join('\n'));
++    const run = (...dirs) => JSON.parse(spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, '--forbid', 'story-batch-planner|plan\.mjs', ...dirs], { encoding: 'utf8' }).stdout);
++    const o = run(work, work2);
++    assert.equal(o[work].forbiddenCalls, 0);
++    assert.equal(o[work2].forbiddenCalls, 2);
++    // without --forbid the field is absent
++    const plain = JSON.parse(spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, work], { encoding: 'utf8' }).stdout);
++    assert.equal('forbiddenCalls' in plain[work], false);
++  });
++});

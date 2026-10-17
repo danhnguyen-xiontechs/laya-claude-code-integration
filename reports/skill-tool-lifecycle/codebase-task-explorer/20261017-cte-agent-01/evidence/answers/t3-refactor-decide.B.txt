@@ -1,0 +1,15 @@
+Starting points for changing decide() in the skills-router decision provider. Read-only; nothing modified.
+
+Top 5, most relevant first (all under <scratch>/t3-refactor-decide-dc2c0e/repo/.claude/skills/):
+
+1. skills-router/scripts/decision-provider.mjs: defines decide() at line 37 with a destructured-object signature ({ provider, state, questions, cfg, env, fetchImpl, timeoutMs }); this is the change site.
+2. skills-router/scripts/route.mjs: the only caller of decide() in skills-router (line 460, inside route(), spreads decisionRequest() into the object); the import is at line 18. route() is called by eval.mjs, shadow-hook.mjs and the tests.
+3. skills-router/tests/variants.test.mjs: exercises the decide path end to end through route() with provider 'laya' and consistency rounds (around lines 129, 168, 182); the best regression net for a call-site change.
+4. skills-router/tests/helpers.mjs: fakeProvider() stubs fetchImpl and parses the request body; route.test.mjs, shadow.test.mjs and variants.test.mjs all depend on it, so the request shape must stay stable or the fake must be updated.
+5. bmad-help-jev/scripts/decision-provider.mjs: its code is identical to the skills-router copy (only the header comment differs), and bmad-code-review-jev has the same decide() signature. Changing skills-router alone forks these copies.
+
+Notes:
+- The helper's #3 (review-pr-jev-classify/scripts/decision-provider.mjs) is a false positive: it takes { laya, jev } objects, not cfg. Its #6 (subagent-model-router router.mjs), #7 (laya-severity.mjs, matched on decideMerge) and #9 (research/ab-1697 laya_launcher.py, a Python decide()) matched on names only.
+- Signatures have already diverged across the 13 copies: 4 use the cfg form (skills-router, bmad-help-jev, bmad-code-review-jev, codebase-task-explorer) and 9 use laya/jev. The header comment claiming a shared copy is therefore not accurate for all of them.
+- No skills-router test calls decide() directly; coverage is only through route() plus fakeProvider.
+- Grep-based verification: the codemap run reported partial coverage (unresolved Python and JS imports), so the caller list above came from a repo-wide grep for decide( and imports of decision-provider.mjs, not from the graph alone.

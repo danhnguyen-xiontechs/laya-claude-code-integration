@@ -1,0 +1,13 @@
+Read-only. Nothing was modified. The skills-router decide() is at repo/.claude/skills/skills-router/scripts/decision-provider.mjs line 37, with signature `decide({ provider, state, questions, cfg = {}, env, fetchImpl, timeoutMs })`.
+
+The find.mjs helper output was unranked, and 9 of its 10 hits were decision-provider.mjs copies from other skills. The skills-router file was #6 in its list.
+
+The 5 most relevant files, most relevant first (all under <scratch>/t3-refactor-decide-70bedc/repo/.claude/skills/):
+
+1. skills-router/scripts/decision-provider.mjs: defines decide() (line 37); the signature change starts here.
+2. skills-router/scripts/route.mjs: the only decide() caller inside the skill; imports it at line 18 and calls it at line 460 as `decide({ provider, cfg, fetchImpl, env, ...decisionRequest(...) })`, so it must match the new signature.
+3. skills-router/scripts/shadow-hook.mjs: the production hook path; runHook calls route() at line 63 with provider, cfg and fetchImpl, so it reaches decide() indirectly and should be checked after the change.
+4. skills-router/tests/route.test.mjs: the only tests on the provider path (lines 132-166: laya/jev, HTTP 500, thrown error, missing key), driven through route() with a fake fetch. No test calls decide() directly, so this is the regression check.
+5. bmad-help-jev/scripts/decision-provider.mjs: sibling copy with the same decide() signature at line 37. Its header calls it a shared copy, but it differs from the skills-router file (diff reports them as different), so changing one without the other will fork them.
+
+Indirect callers not in the top 5: skills-router/scripts/eval.mjs (line 242, route() with cfg and consistency).

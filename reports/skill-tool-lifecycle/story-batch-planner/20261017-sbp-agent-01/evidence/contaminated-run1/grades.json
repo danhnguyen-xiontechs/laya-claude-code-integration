@@ -1,0 +1,368 @@
+{
+  "03-api-dto.A": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-2"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 and S-3 are not in the same wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-3"
+      ],
+      [
+        "S-2"
+      ]
+    ],
+    "needs_decision": [
+      "S-2",
+      "S-3"
+    ]
+  },
+  "03-api-dto.B": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-2"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 and S-3 are not in the same wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-3"
+      ],
+      [
+        "S-2"
+      ]
+    ],
+    "needs_decision": [
+      "S-2",
+      "S-3"
+    ]
+  },
+  "04-migration.A": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 and S-2 are not in the same wave"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 and S-3 are not in the same wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-2",
+        "S-3"
+      ]
+    ],
+    "needs_decision": []
+  },
+  "04-migration.B": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 and S-2 are not in the same wave"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 and S-3 are not in the same wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-2",
+        "S-3"
+      ]
+    ],
+    "needs_decision": []
+  },
+  "06-explicit.A": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-2 (explicit link)"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-3 (text reference)"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-2"
+      ],
+      [
+        "S-3"
+      ]
+    ],
+    "needs_decision": [
+      "S-4"
+    ]
+  },
+  "06-explicit.B": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-2 (explicit link)"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "S-1 is in an earlier wave than S-3 (text reference)"
+      }
+    ],
+    "waves": [
+      [
+        "S-1"
+      ],
+      [
+        "S-2",
+        "S-3"
+      ]
+    ],
+    "needs_decision": [
+      "S-4"
+    ]
+  },
+  "07-cycle.A": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "cycle members S-1, S-2, S-3 are in no wave"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "cycle members S-1, S-2, S-3 are listed in needs_decision"
+      },
+      {
+        "criterionId": "inv-3",
+        "status": "pass",
+        "notes": "S-4 (depends on the cycle) is in no wave"
+      },
+      {
+        "criterionId": "inv-4",
+        "status": "pass",
+        "notes": "S-5 (independent) is in a wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-5"
+      ]
+    ],
+    "needs_decision": [
+      "S-1",
+      "S-2",
+      "S-3",
+      "S-4"
+    ]
+  },
+  "07-cycle.B": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "criteria": [
+      {
+        "criterionId": "answer-shape",
+        "status": "pass",
+        "notes": "waves and needs_decision are arrays of batch ids"
+      },
+      {
+        "criterionId": "each-id-once-in-waves",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "every-story-placed",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "inv-1",
+        "status": "pass",
+        "notes": "cycle members S-1, S-2, S-3 are in no wave"
+      },
+      {
+        "criterionId": "inv-2",
+        "status": "pass",
+        "notes": "cycle members S-1, S-2, S-3 are listed in needs_decision"
+      },
+      {
+        "criterionId": "inv-3",
+        "status": "pass",
+        "notes": "S-4 (depends on the cycle) is in no wave"
+      },
+      {
+        "criterionId": "inv-4",
+        "status": "pass",
+        "notes": "S-5 (independent) is in a wave"
+      }
+    ],
+    "waves": [
+      [
+        "S-5"
+      ]
+    ],
+    "needs_decision": [
+      "S-1",
+      "S-2",
+      "S-3",
+      "S-4"
+    ]
+  }
+}

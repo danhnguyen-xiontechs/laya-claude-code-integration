@@ -1,0 +1,54 @@
+1	{
+2	  "name": "cycle",
+3	  "stories": [
+4	    {
+5	      "id": "S-1",
+6	      "title": "Org chart service",
+7	      "description": "Service for org chart in org/OrgChart.cs.",
+8	      "links": [
+9	        {
+10	          "type": "depends_on",
+11	          "id": "S-2"
+12	        }
+13	      ]
+14	    },
+15	    {
+16	      "id": "S-2",
+17	      "title": "Manager lookup",
+18	      "description": "Manager lookup in org/ManagerLookup.cs.",
+19	      "links": [
+20	        {
+21	          "type": "depends_on",
+22	          "id": "S-3"
+23	        }
+24	      ]
+25	    },
+26	    {
+27	      "id": "S-3",
+28	      "title": "Team roster",
+29	      "description": "Team roster in org/Roster.cs.",
+30	      "links": [
+31	        {
+32	          "type": "depends_on",
+33	          "id": "S-1"
+34	        }
+35	      ]
+36	    },
+37	    {
+38	      "id": "S-4",
+39	      "title": "Roster export",
+40	      "description": "Export roster to Excel in reports/RosterExport.cs.",
+41	      "links": [
+42	        {
+43	          "type": "depends_on",
+44	          "id": "S-3"
+45	        }
+46	      ]
+47	    },
+48	    {
+49	      "id": "S-5",
+50	      "title": "Holiday calendar import",
+51	      "description": "Import public holidays from an ICS file into calendar/HolidayImport.cs."
+52	    }
+53	  ]
+54	}

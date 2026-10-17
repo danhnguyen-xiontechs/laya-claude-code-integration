@@ -1,0 +1,5 @@
+{"waves": [["S-5"]], "needs_decision": ["S-1", "S-2", "S-3", "S-4"]}
+
+Reasoning: S-1, S-2 and S-3 form a depends_on cycle (S-1 to S-2 to S-3 to S-1), so no order is invented and S-4, which depends on S-3, is blocked; S-5 has no links or shared files and runs alone in wave 1.
+
+Planner output (story-batch-planner, Jev disabled): .../work/07-cycle.A/plan.json

@@ -1,0 +1,380 @@
+{
+  "scores": [
+    {
+      "caseId": "t1-bug-merge-verdict",
+      "arm": "A",
+      "top5": [
+        "review-pr-laya-classify/scripts/assess.mjs",
+        "review-pr-laya-classify/scripts/laya-severity.mjs",
+        "review-pr-laya-classify/references/review-method.md",
+        "review-pr-laya-classify/skill.md",
+        "review-pr-laya-classify/scripts/build_execution_log.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "review-pr-jev-classify/scripts/assess.mjs",
+            "review-pr-laya-classify/scripts/assess.mjs"
+          ],
+          "hitBy": "review-pr-laya-classify/scripts/assess.mjs"
+        },
+        {
+          "group": [
+            "review-pr-jev-classify/scripts/laya-severity.mjs",
+            "review-pr-laya-classify/scripts/laya-severity.mjs"
+          ],
+          "hitBy": "review-pr-laya-classify/scripts/laya-severity.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 32,
+        "outputTokens": 114,
+        "cacheReadTokens": 1371363,
+        "cacheWriteTokens": 127200,
+        "modelTurns": 16,
+        "toolCalls": 19,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 166231,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "t1-bug-merge-verdict",
+      "arm": "B",
+      "top5": [
+        "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/assess.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/build_execution_log.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "review-pr-jev-classify/scripts/assess.mjs",
+            "review-pr-laya-classify/scripts/assess.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/assess.mjs"
+        },
+        {
+          "group": [
+            "review-pr-jev-classify/scripts/laya-severity.mjs",
+            "review-pr-laya-classify/scripts/laya-severity.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 42,
+        "outputTokens": 168,
+        "cacheReadTokens": 1640013,
+        "cacheWriteTokens": 117525,
+        "modelTurns": 21,
+        "toolCalls": 23,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 190282,
+        "providerLatencyMs": 2453,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "t2-feature-model-hook",
+      "arm": "A",
+      "top5": [
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/router.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/config.json",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/route.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "subagent-model-router/scripts/hook-pretooluse.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs"
+        },
+        {
+          "group": [
+            "subagent-model-router/scripts/router.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-e1da54/repo/.claude/skills/subagent-model-router/scripts/router.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 46,
+        "cacheReadTokens": 362123,
+        "cacheWriteTokens": 90816,
+        "modelTurns": 6,
+        "toolCalls": 12,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 94166,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "t2-feature-model-hook",
+      "arm": "B",
+      "top5": [
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/router.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/route.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/config.json",
+        "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "subagent-model-router/scripts/hook-pretooluse.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs"
+        },
+        {
+          "group": [
+            "subagent-model-router/scripts/router.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/router.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 55,
+        "cacheReadTokens": 400950,
+        "cacheWriteTokens": 85498,
+        "modelTurns": 7,
+        "toolCalls": 10,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 116190,
+        "providerLatencyMs": 2578,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "t3-refactor-decide",
+      "arm": "A",
+      "top5": [
+        "skills-router/scripts/decision-provider.mjs",
+        "skills-router/scripts/route.mjs",
+        "skills-router/scripts/shadow-hook.mjs",
+        "skills-router/tests/route.test.mjs",
+        "bmad-help-jev/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "3/3",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/decision-provider.mjs"
+          ],
+          "hitBy": "skills-router/scripts/decision-provider.mjs"
+        },
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "skills-router/scripts/route.mjs"
+        },
+        {
+          "group": [
+            "skills-router/scripts/eval.mjs",
+            "skills-router/scripts/shadow-hook.mjs",
+            "skills-router/scripts/shadow-replay.mjs"
+          ],
+          "hitBy": "skills-router/scripts/shadow-hook.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 43,
+        "cacheReadTokens": 371603,
+        "cacheWriteTokens": 71661,
+        "modelTurns": 7,
+        "toolCalls": 7,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 104528,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "t3-refactor-decide",
+      "arm": "B",
+      "top5": [
+        "skills-router/scripts/decision-provider.mjs",
+        "skills-router/scripts/route.mjs",
+        "skills-router/tests/variants.test.mjs",
+        "skills-router/tests/helpers.mjs",
+        "bmad-help-jev/scripts/decision-provider.mjs"
+      ],
+      "recall": 0.6666666666666666,
+      "fractionalGroups": "2/3",
+      "pass": false,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/decision-provider.mjs"
+          ],
+          "hitBy": "skills-router/scripts/decision-provider.mjs"
+        },
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "skills-router/scripts/route.mjs"
+        },
+        {
+          "group": [
+            "skills-router/scripts/eval.mjs",
+            "skills-router/scripts/shadow-hook.mjs",
+            "skills-router/scripts/shadow-replay.mjs"
+          ],
+          "hitBy": null
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 43,
+        "cacheReadTokens": 498602,
+        "cacheWriteTokens": 93025,
+        "modelTurns": 8,
+        "toolCalls": 12,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 107784,
+        "providerLatencyMs": 2244,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "t4-newfeature-gate",
+      "arm": "A",
+      "top5": [
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/skill.md",
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-laya-gate/scripts/gate.mjs",
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/tests/gate.test.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "web-test-jev-gate/scripts/gate.mjs",
+            "web-test-laya-gate/scripts/gate.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs"
+        },
+        {
+          "group": [
+            "web-test-jev-gate/scripts/jev-lib.mjs",
+            "web-test-laya-gate/scripts/laya-lib.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 51,
+        "cacheReadTokens": 403826,
+        "cacheWriteTokens": 89085,
+        "modelTurns": 7,
+        "toolCalls": 10,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 101227,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "t4-newfeature-gate",
+      "arm": "B",
+      "top5": [
+        "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-eab4a9/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs",
+        ".../repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+        ".../repo/.claude/skills/web-test-jev-gate/skill.md",
+        ".../repo/.claude/skills/web-test-jev-gate/tests/gate.test.mjs",
+        ".../repo/.claude/skills/web-test-laya-gate/scripts/gate.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "2/2",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "web-test-jev-gate/scripts/gate.mjs",
+            "web-test-laya-gate/scripts/gate.mjs"
+          ],
+          "hitBy": "users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-eab4a9/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs"
+        },
+        {
+          "group": [
+            "web-test-jev-gate/scripts/jev-lib.mjs",
+            "web-test-laya-gate/scripts/laya-lib.mjs"
+          ],
+          "hitBy": ".../repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 22,
+        "cacheReadTokens": 282856,
+        "cacheWriteTokens": 99193,
+        "modelTurns": 5,
+        "toolCalls": 10,
+        "providerCalls": 5,
+        "fallbackCount": 0,
+        "elapsedMs": 113728,
+        "providerLatencyMs": 3178,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    }
+  ]
+}

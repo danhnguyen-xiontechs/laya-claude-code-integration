@@ -1,0 +1,15 @@
+Starting points for "a new web-test check that asks for a second opinion before a step that changes data". Read-only, nothing modified. Repo: <scratch>/t4-newfeature-gate-38512f/repo
+
+Top 5, most relevant first:
+
+1. <scratch>/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs - This already is a second-opinion write gate. classify() (line 62) combines a keyword rule with a Jev question, check() (line 74) gates the plan, and checkAction() (line 109) gates each click via --check-action. A new check should extend or mirror these verdict rules: the agent's writes flag is never lowered, disputes exit 3.
+2. <scratch>/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/SKILL.md - Step 2 "Write-action gate" (lines ~85-91) and the Step 4 per-click gate (line ~150) say when the agent runs the gate and how to act on exit 3. Any new check has to be wired in here, or the agent will never run it.
+3. <scratch>/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs - ask() is the second-opinion call (the "jev ask helper"). It returns null on any error so callers fall back to rules, and a new check must keep that contract.
+4. <scratch>/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-laya-gate/scripts/gate.mjs - The Laya twin of the same gate, with the same questions, thresholds and verdicts, using laya-lib.mjs. Keep it in step if the Jev/Laya A/B pairing is maintained.
+5. <scratch>/t4-newfeature-gate-38512f/repo/.claude/skills/web-test-jev-gate/tests/gate.test.mjs - Existing tests for the gate verdicts (disputed, overruled, stop). Together with tests/fake-jev.mjs (a loopback fake endpoint) it is the template for testing a new check offline.
+
+Key findings:
+- Most of the feature already exists. The write-action gate in web-test-jev-gate and web-test-laya-gate is already a second opinion before data-changing steps. Confirm with the requester whether they want a separate check or changes to these gates, so they don't get a duplicate.
+- The base skill, .claude/skills/web-test/SKILL.md (line 96), has only a plain-text write-action rule with no script and no second opinion. If the request means the base skill, that is where the check would be added.
+- The find.mjs output was unranked and mostly noise (benchmark/run_live.py, skills-router route.mjs, workflow/hooks/laya_step_router.py, the review-pr providers.mjs files, eval/data). I would not start there.
+- Design rationale is in repo/idea/web-test/plan-3-write-gate.md. gate.mjs lines 45-46 freeze the keyword regex and the 0.5 Jev threshold ("don't tune on new data without re-checking"), so changing them needs re-measurement on held-out data.

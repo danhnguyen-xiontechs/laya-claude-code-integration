@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — refactor
+
+Engine: codemap codemap 4.6.0 · pool 71. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/subagent-model-router/scripts/decision-provider.mjs` |
+| 2 | `.claude/skills/integration-verifier/scripts/decision-provider.mjs` |
+| 3 | `.claude/skills/story-batch-planner/scripts/decision-provider.mjs` |
+| 4 | `.claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs` |
+| 5 | `.claude/skills/web-test-jev-ground/scripts/decision-provider.mjs` |
+| 6 | `.claude/skills/skills-router/scripts/decision-provider.mjs` |
+| 7 | `.claude/skills/web-test-jev-gate/scripts/decision-provider.mjs` |
+| 8 | `.claude/skills/web-test-jev-oracle/scripts/decision-provider.mjs` |
+| 9 | `.claude/skills/web-test-jev-verdict/scripts/decision-provider.mjs` |
+| 10 | `.claude/skills/web-test-jev-wait/scripts/decision-provider.mjs` |

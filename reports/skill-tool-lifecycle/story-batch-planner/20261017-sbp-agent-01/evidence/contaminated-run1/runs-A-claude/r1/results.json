@@ -1,0 +1,276 @@
+{
+  "experimentId": "20261017-sbp-agent-01",
+  "arm": "A",
+  "runId": "r1",
+  "startedAt": "2026-10-17T08:51:37.541Z",
+  "finishedAt": "2026-10-17T08:52:25.617Z",
+  "cases": [
+    {
+      "experimentId": "20261017-sbp-agent-01",
+      "caseId": "03-api-dto",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T08:51:37.541Z",
+      "finishedAt": "2026-10-17T08:52:08.466Z",
+      "status": "pass",
+      "goldOutcome": {
+        "order": [
+          "S-1 before S-2"
+        ],
+        "notSameWave": [
+          "S-1/S-3"
+        ]
+      },
+      "observedOutcome": "waves 1: S-1 | 2: S-3 | 3: S-2; needs_decision S-2, S-3",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "answer-shape",
+          "status": "pass",
+          "notes": "waves and needs_decision are arrays of batch ids"
+        },
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "S-1 is in an earlier wave than S-2"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "S-1 and S-3 are not in the same wave"
+        }
+      ],
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 14,
+        "cacheReadTokens": 206571,
+        "cacheWriteTokens": 23490,
+        "modelTurns": 4,
+        "toolCalls": 6,
+        "elapsedMs": 23863,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/03-api-dto.A.txt",
+        "../../../evidence/answers/03-api-dto.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261017-sbp-agent-01",
+      "caseId": "04-migration",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T08:51:37.595Z",
+      "finishedAt": "2026-10-17T08:52:13.581Z",
+      "status": "pass",
+      "goldOutcome": {
+        "notSameWave": [
+          "S-1/S-2",
+          "S-1/S-3"
+        ]
+      },
+      "observedOutcome": "waves 1: S-1 | 2: S-2, S-3",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "answer-shape",
+          "status": "pass",
+          "notes": "waves and needs_decision are arrays of batch ids"
+        },
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "S-1 and S-2 are not in the same wave"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "S-1 and S-3 are not in the same wave"
+        }
+      ],
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 22,
+        "cacheReadTokens": 203100,
+        "cacheWriteTokens": 20194,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "elapsedMs": 31793,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/04-migration.A.txt",
+        "../../../evidence/answers/04-migration.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261017-sbp-agent-01",
+      "caseId": "06-explicit",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T08:51:37.614Z",
+      "finishedAt": "2026-10-17T08:52:25.617Z",
+      "status": "pass",
+      "goldOutcome": {
+        "order": [
+          "S-1 before S-2",
+          "S-1 before S-3"
+        ]
+      },
+      "observedOutcome": "waves 1: S-1 | 2: S-2 | 3: S-3; needs_decision S-4",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "answer-shape",
+          "status": "pass",
+          "notes": "waves and needs_decision are arrays of batch ids"
+        },
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "S-1 is in an earlier wave than S-2 (explicit link)"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "S-1 is in an earlier wave than S-3 (text reference)"
+        }
+      ],
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 17,
+        "cacheReadTokens": 204849,
+        "cacheWriteTokens": 21925,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "elapsedMs": 42500,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/06-explicit.A.txt",
+        "../../../evidence/answers/06-explicit.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261017-sbp-agent-01",
+      "caseId": "07-cycle",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T08:51:37.672Z",
+      "finishedAt": "2026-10-17T08:52:07.586Z",
+      "status": "pass",
+      "goldOutcome": {
+        "cycle": [
+          "S-1",
+          "S-2",
+          "S-3"
+        ],
+        "blocked": [
+          "S-4"
+        ],
+        "independent": [
+          "S-5"
+        ]
+      },
+      "observedOutcome": "waves 1: S-5; needs_decision S-1, S-2, S-3, S-4",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "answer-shape",
+          "status": "pass",
+          "notes": "waves and needs_decision are arrays of batch ids"
+        },
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "cycle members S-1, S-2, S-3 are in no wave"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "cycle members S-1, S-2, S-3 are listed in needs_decision"
+        },
+        {
+          "criterionId": "inv-3",
+          "status": "pass",
+          "notes": "S-4 (depends on the cycle) is in no wave"
+        },
+        {
+          "criterionId": "inv-4",
+          "status": "pass",
+          "notes": "S-5 (independent) is in a wave"
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 28,
+        "cacheReadTokens": 265329,
+        "cacheWriteTokens": 23561,
+        "modelTurns": 5,
+        "toolCalls": 6,
+        "elapsedMs": 23571,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/07-cycle.A.txt",
+        "../../../evidence/answers/07-cycle.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

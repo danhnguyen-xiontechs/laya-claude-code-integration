@@ -1,0 +1,49 @@
+1	{
+2	  "name": "explicit-dependency",
+3	  "stories": [
+4	    {
+5	      "id": "S-1",
+6	      "title": "Payslip PDF generator",
+7	      "description": "Generate a payslip PDF from payroll/pdf/PayslipRenderer.cs.",
+8	      "ac": [
+9	        "PDF matches template"
+10	      ]
+11	    },
+12	    {
+13	      "id": "S-2",
+14	      "title": "Email payslips monthly",
+15	      "description": "Scheduler sends each employee their payslip on the 25th via notify/PayslipMailer.cs.",
+16	      "links": [
+17	        {
+18	          "type": "depends_on",
+19	          "id": "S-1"
+20	        }
+21	      ],
+22	      "ac": [
+23	        "Email has PDF attached"
+24	      ]
+25	    },
+26	    {
+27	      "id": "S-3",
+28	      "title": "Payslip download history",
+29	      "description": "Builds on S-1: employees see a list of past payslips in portal/payslips/History.tsx.",
+30	      "ac": [
+31	        "Last 12 months listed"
+32	      ]
+33	    },
+34	    {
+35	      "id": "S-4",
+36	      "title": "Audit log retention",
+37	      "description": "Purge audit entries older than 7 years in ops/jobs/AuditPurge.cs.",
+38	      "links": [
+39	        {
+40	          "type": "depends_on",
+41	          "id": "OPS-99"
+42	        }
+43	      ],
+44	      "ac": [
+45	        "Old entries removed"
+46	      ]
+47	    }
+48	  ]
+49	}

@@ -1,0 +1,14 @@
+Five starting points for a web-test check that asks for a second opinion before a step that changes data. Repo: <scratch>/t4-newfeature-gate-eab4a9/repo. Nothing was modified.
+
+Key finding: the repo already has this behaviour in the -gate variants. A write-action gate runs a keyword rule plus a Jev or Laya "is this a write?" question, both as a plan-time cross-check and as a per-click check. A new check is most likely an extension of that gate, not a new feature. Confirm scope before choosing between extending the gate and making a new variant.
+
+1. <scratch>/t4-newfeature-gate-eab4a9/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs: holds the second-opinion decision. It covers the plan cross-check (keyword rule OR Jev, never lowers the agent's writes flag, exit 3 on disputes) and the per-click --check-action (exit 3 means stop). A new check's logic and exit codes go here. The comments mark WRITE_RE, LOOK_RE and JEV_P as frozen, so re-measure before retuning them.
+2. .../repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs: ask() is the single hosted Jev call (returns null on error so callers fall back to rules), and ready() enforces the user's consent. A new check should go through these so consent and usage logging apply.
+3. .../repo/.claude/skills/web-test-jev-gate/SKILL.md: defines when the second opinion is asked (Step 2 plan cross-check, Step 4 per-click gate, Step 5 audit) and what the agent must do on exit 3. A new check needs its procedure wired in here.
+4. .../repo/.claude/skills/web-test-jev-gate/tests/gate.test.mjs: existing tests for disputed, overruled and stop outcomes, using the fake Jev server in tests/fake-jev.mjs. Tests for a new check belong here.
+5. .../repo/.claude/skills/web-test-laya-gate/scripts/gate.mjs: the Laya twin of the same gate, with the same contract but different provider wiring, names and log file. The repo keeps Jev and Laya variants in parallel, so the change may need mirroring here.
+
+Notes:
+- Worth a look outside the top 5: .../repo/.claude/skills/web-test-laya-gate/tests/gate-action.test.mjs (Laya counterpart tests); .../repo/.claude/skills/web-test-jev-gate/scripts/jev-check.mjs (consent flow, relevant if the check calls Jev); .../repo/.claude/skills/skills-router/tests/variants.test.mjs (only if the check ships as a new skill, since it lists variants); .../repo/.claude/skills/web-test/SKILL.md (base skill, only a one-line write-gate rule and no script).
+- The helper's codemap run was partial: some imports did not resolve. gate.mjs showing zero importers is expected for a CLI entry point and is not proof of no dependency. The helper's Jev ranking was advisory; the picks above come from reading the source.
+- If this becomes a new variant, the user's naming memory applies: name it after the provider (...-jev-...), and leave the original skills untouched unless asked.

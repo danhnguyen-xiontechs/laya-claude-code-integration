@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — feature
+
+Engine: codemap codemap 4.6.0 · pool 57. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js` |
+| 2 | `.claude/skills/subagent-model-router/scripts/router.mjs` |
+| 3 | `.claude/skills/subagent-model-router/bench/tasks/f2-email/files/src/email.js` |
+| 4 | `.claude/skills/subagent-model-router/bench/tasks/f2-email/solution/src/email.js` |
+| 5 | `triage/holdout_eval.py` |
+| 6 | `.claude/skills/haiku-subagent/tools/prompt-budget/log.js` |
+| 7 | `.claude/skills/haiku-subagent/tools/prompt-budget/optimize.nodetest.js` |
+| 8 | `.claude/skills/haiku-subagent/tools/prompt-budget/log-hook.js` |
+| 9 | `.claude/skills/haiku-subagent/tools/prompt-budget/report.js` |
+| 10 | `ado-classify/common.py` |

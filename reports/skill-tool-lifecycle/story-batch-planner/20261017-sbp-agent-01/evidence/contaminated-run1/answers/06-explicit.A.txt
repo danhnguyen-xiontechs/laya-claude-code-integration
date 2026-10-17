@@ -1,0 +1,5 @@
+{"waves": [["S-1"], ["S-2"], ["S-3"]], "needs_decision": ["S-4"]}
+
+Reasoning: S-1 goes first because S-2 has an explicit depends_on link and S-3's text says it builds on S-1; S-2 and S-3 are serialized as an unknown pair (shared payslip/employee wording, disjoint files, so they could share wave 2 if confirmed independent), and S-4 is held out because its depends_on OPS-99 is not in the batch, so the planner's assumption that it is already done is unverified.
+
+The planner output is at .../work/06-explicit.A/plan.json. It put S-4 in wave 1, which I overrode.

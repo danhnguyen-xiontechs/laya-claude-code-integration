@@ -1,0 +1,3 @@
+{"waves": [["S-1"], ["S-2", "S-3"]], "needs_decision": ["S-4"]}
+
+S-1 is the root that S-2 (explicit depends_on) and S-3 ("Builds on S-1") both need, and S-2 and S-3 touch disjoint files (notify/PayslipMailer.cs vs portal/payslips/History.tsx) so they run together in wave 2; this departs from the planner, which serialized S-2 then S-3 on topical term overlap alone, and it holds S-4 out of wave 1 because its explicit depends_on OPS-99 is not in the batch and its status is unknown, where the planner assumed it done.

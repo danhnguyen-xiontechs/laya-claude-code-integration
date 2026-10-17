@@ -1,0 +1,3 @@
+{"waves": [["S-5"]], "needs_decision": ["S-1", "S-2", "S-3", "S-4"]}
+
+S-1, S-2 and S-3 form a dependency cycle (S-1 -> S-2 -> S-3 -> S-1), so no order exists for them, and S-4 is blocked behind S-3; only S-5 (ICS holiday import, no links, separate file) is independent and runs in wave 1. The planner (node plan.mjs --summary, Jev shadow on) gave the same result.

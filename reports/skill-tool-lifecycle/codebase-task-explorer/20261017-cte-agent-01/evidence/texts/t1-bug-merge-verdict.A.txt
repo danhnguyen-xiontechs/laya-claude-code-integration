@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — bug
+
+Engine: codemap codemap 4.6.0 · pool 63. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs` |
+| 2 | `.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs` |
+| 3 | `.claude/skills/review-pr-jev-classify/scripts/pr-fetch.mjs` |
+| 4 | `.claude/skills/review-pr-laya-classify/scripts/pr-fetch.mjs` |
+| 5 | `.claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs` |
+| 6 | `.claude/skills/review-pr-jev-classify/scripts/outcome-labels.mjs` |
+| 7 | `.claude/skills/review-pr-laya-classify/scripts/laya-eval.mjs` |
+| 8 | `.claude/skills/review-pr-jev-classify/scripts/laya-eval.mjs` |
+| 9 | `.claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs` |
+| 10 | `.claude/skills/review-pr-jev-classify/scripts/providers.mjs` |

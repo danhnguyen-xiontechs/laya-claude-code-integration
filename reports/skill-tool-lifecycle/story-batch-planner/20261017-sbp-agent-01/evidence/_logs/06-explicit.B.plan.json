@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-17T08:51:42.622Z",
+  "policy": {
+    "maxConcurrency": 4,
+    "protectedKinds": [
+      "schema",
+      "migration"
+    ],
+    "jev": "shadow"
+  },
+  "stories": [
+    {
+      "id": "S-1",
+      "title": "Payslip PDF generator",
+      "wave": 1,
+      "prerequisites": [],
+      "after": [],
+      "modules": [
+        "payroll/pdf"
+      ],
+      "risk_notes": []
+    },
+    {
+      "id": "S-2",
+      "title": "Email payslips monthly",
+      "wave": 2,
+      "prerequisites": [
+        "S-1"
+      ],
+      "after": [],
+      "modules": [],
+      "risk_notes": []
+    },
+    {
+      "id": "S-3",
+      "title": "Payslip download history",
+      "wave": 3,
+      "prerequisites": [
+        "S-1"
+      ],
+      "after": [
+        "S-2"
+      ],
+      "modules": [
+        "portal/payslips"
+      ],
+      "risk_notes": []
+    },
+    {
+      "id": "S-4",
+      "title": "Audit log retention",
+      "wave": 1,
+      "prerequisites": [],
+      "after": [],
+      "modules": [
+        "ops/jobs"
+      ],
+      "risk_notes": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "S-2",
+      "to": "S-1",
+      "relation": "depends_on",
+      "source": "explicit_link",
+      "confidence": "high",
+      "evidence": [
+        "link S-2 → S-1"
+      ],
+      "needs_review": false
+    },
+    {
+      "from": "S-3",
+      "to": "S-1",
+      "relation": "depends_on",
+      "source": "text_reference",
+      "confidence": "high",
+      "evidence": [
+        "S-3 text references S-1"
+      ],
+      "needs_review": false
+    },
+    {
+      "relation": "unknown",
+      "source": "prefilter",
+      "confidence": "low",
+      "evidence": [
+        "shared terms: payslip, employe"
+      ],
+      "needs_review": true,
+      "pair": [
+        "S-2",
+        "S-3"
+      ],
+      "order": [
+        "S-2",
+        "S-3"
+      ],
+      "handling": "serialize_and_review",
+      "ambiguous": true,
+      "jev_suggestion": {
+        "label": "independent",
+        "p": 0.47,
+        "margin": 0.11,
+        "valid": true,
+        "handling": "would_parallelize_if_promoted",
+        "provenance": {
+          "provider": "jev",
+          "model": "typesafe/jev-1.13-20260917",
+          "latencyMs": 1192
+        },
+        "applied": false
+      }
+    }
+  ],
+  "independent_pairs": 3,
+  "waves": [
+    {
+      "wave": 1,
+      "stories": [
+        "S-1",
+        "S-4"
+      ]
+    },
+    {
+      "wave": 2,
+      "stories": [
+        "S-2"
+      ]
+    },
+    {
+      "wave": 3,
+      "stories": [
+        "S-3"
+      ]
+    }
+  ],
+  "blocked_or_review_required": [
+    {
+      "kind": "pair",
+      "stories": [
+        "S-2",
+        "S-3"
+      ],
+      "reason": "topical overlap without resource evidence",
+      "handling": "serialize_and_review"
+    }
+  ],
+  "assumptions": [
+    "S-1: no repository metadata; modules/files inferred from text only",
+    "S-2: no repository metadata; modules/files inferred from text only",
+    "S-3: no repository metadata; modules/files inferred from text only",
+    "S-4 links to OPS-99, which is not in this batch (assumed done or out of scope)",
+    "S-4: no repository metadata; modules/files inferred from text only"
+  ],
+  "dispatch": [
+    {
+      "story": "S-1",
+      "wave": 1,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-1: Payslip PDF generator\n\nGenerate a payslip PDF from payroll/pdf/PayslipRenderer.cs.\n\nAcceptance criteria:\n- PDF matches template"
+    },
+    {
+      "story": "S-4",
+      "wave": 1,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-4: Audit log retention\n\nPurge audit entries older than 7 years in ops/jobs/AuditPurge.cs.\n\nAcceptance criteria:\n- Old entries removed"
+    },
+    {
+      "story": "S-2",
+      "wave": 2,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-2: Email payslips monthly\n\nScheduler sends each employee their payslip on the 25th via notify/PayslipMailer.cs.\n\nAcceptance criteria:\n- Email has PDF attached"
+    },
+    {
+      "story": "S-3",
+      "wave": 3,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-3: Payslip download history\n\nBuilds on S-1: employees see a list of past payslips in portal/payslips/History.tsx.\n\nAcceptance criteria:\n- Last 12 months listed"
+    }
+  ],
+  "jev_shadow": {
+    "calls": 1,
+    "skipped": 0,
+    "errors": 0,
+    "cost": 0.000025,
+    "latencyMs": [
+      1192
+    ],
+    "candidates": 1
+  }
+}

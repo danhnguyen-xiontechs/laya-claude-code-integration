@@ -1,0 +1,114 @@
+{
+  "<home>/AppData/Local/Temp/cte20261017/w/t1-bug-merge-verdict-15019b": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a8985d9466688c8b9.jsonl",
+    "usage": {
+      "inputTokens": 32,
+      "outputTokens": 114,
+      "cacheReadTokens": 1371363,
+      "cacheWriteTokens": 127200,
+      "modelTurns": 16,
+      "toolCalls": 19,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a8985d9466688c8b9.jsonl",
+      "elapsedMs": 166231
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t1-bug-merge-verdict-b36eee": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a1fb45813ac0f8a5d.jsonl",
+    "usage": {
+      "inputTokens": 42,
+      "outputTokens": 168,
+      "cacheReadTokens": 1640013,
+      "cacheWriteTokens": 117525,
+      "modelTurns": 21,
+      "toolCalls": 23,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a1fb45813ac0f8a5d.jsonl",
+      "elapsedMs": 190282
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t2-feature-model-hook-e1da54": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a4ec25bde9983f872.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 46,
+      "cacheReadTokens": 362123,
+      "cacheWriteTokens": 90816,
+      "modelTurns": 6,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a4ec25bde9983f872.jsonl",
+      "elapsedMs": 94166
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t2-feature-model-hook-8a4b66": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-aa5aa30531e30bfae.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 55,
+      "cacheReadTokens": 400950,
+      "cacheWriteTokens": 85498,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-aa5aa30531e30bfae.jsonl",
+      "elapsedMs": 116190
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t3-refactor-decide-70bedc": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a75951ab036638832.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 43,
+      "cacheReadTokens": 371603,
+      "cacheWriteTokens": 71661,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-a75951ab036638832.jsonl",
+      "elapsedMs": 104528
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t3-refactor-decide-dc2c0e": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ab1f9a5d5eef413dc.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 43,
+      "cacheReadTokens": 498602,
+      "cacheWriteTokens": 93025,
+      "modelTurns": 8,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ab1f9a5d5eef413dc.jsonl",
+      "elapsedMs": 107784
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t4-newfeature-gate-38512f": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-acc61ff3f072a93ab.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 51,
+      "cacheReadTokens": 403826,
+      "cacheWriteTokens": 89085,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-acc61ff3f072a93ab.jsonl",
+      "elapsedMs": 101227
+    }
+  },
+  "<home>/AppData/Local/Temp/cte20261017/w/t4-newfeature-gate-eab4a9": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ac4c2135879d5ef15.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 22,
+      "cacheReadTokens": 282856,
+      "cacheWriteTokens": 99193,
+      "modelTurns": 5,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-skill-build-workflow-review-af9324\\82e30143-e152-4ee9-b306-ffbd1654c94d\\subagents\\agent-ac4c2135879d5ef15.jsonl",
+      "elapsedMs": 113728
+    }
+  }
+}

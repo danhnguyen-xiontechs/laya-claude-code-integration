@@ -1,0 +1,25 @@
+The subagent router picks the tier with local rules by default. A provider vote (Jev or Laya) is added only when it is configured. Nothing changes the spawned model unless mode is "apply". Default config is mode "shadow", provider "none", so by default it only logs.
+
+How the tier is chosen (router.mjs, ruleFeatures/ruleTier):
+- Starts at sonnet.
+- Any "hard" pattern (design/architect, refactor across modules, migrate, debug an intermittent failure, race/deadlock, trade-offs) gives opus.
+- Lookup verbs (find, list, read, summarise, show) with no medium verbs, or a read-only prompt, give haiku. Cheap subagent types (Explore, claude-code-guide, statusline-setup, search-like) step down one tier. Plan/architect types never go below sonnet.
+- Size (6+ files, 4+ ACs, over 4000 chars) adds one tier, at most +1.
+- A check (tests, pytest, npm test) with 2 or fewer files steps down one tier.
+- I spot-checked ruleTier on sample prompts (pure function, no log written): "List the files... Do not edit anything." gives haiku; "Run the tests in test/foo.test.mjs..." gives haiku; "Implement the parser... add unit tests" gives sonnet; "Design a caching layer across all services..." gives opus; "Refactor the auth module..." gives opus.
+- With provider jev or laya, the default policy is gate+sc: k=3 provider calls with rotated tier order, final = max(rule tier, self-consistency tier). Provider failure gives no tier, so the caller's default stands.
+
+Two spawn paths:
+- Orchestrator: route.mjs --mode apply prints the tier to pass as the Agent call's model. --escalate-from gives the one-retry cascade.
+- Automatic: hook-pretooluse.mjs on matcher Agent returns permissionDecision allow with updatedInput.model, in apply mode only. It skips calls that already set model and types whose .claude/agents/<type>.md sets a model. The hook is not registered in the repo's .claude/settings.json (all commented out), and the README says it is not registered anywhere by default.
+
+5 most relevant files, most relevant first:
+1. <scratch>/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/router.mjs: the decision itself. ruleTier maps features to haiku/sonnet/opus, combine() applies the policies, route() returns the tier.
+2. <scratch>/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs: the automatic spawn-time path. Skips explicit and definition models, and emits updatedInput.model only in apply mode.
+3. <scratch>/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/route.mjs: the orchestrator CLI that prints the tier for the Agent call, plus the escalate-once cascade.
+4. <scratch>/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/config.json: the defaults (shadow, provider none) that decide whether anything changes; loadConfig in router.mjs layers env and CLI on top.
+5. <scratch>/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/decision-provider.mjs: the Jev/Laya call that supplies tier votes when a provider is enabled. Only the gate and sc policies need it.
+
+Distractors from the helper output: .claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js is also a PreToolUse hook on Agent, but it only shrinks prompts over about 90k tokens and never sets model. scripts/governor.mjs turns a tier into an execution profile after routing and is not on the hook path.
+
+Nothing was modified. I did not run the route.mjs CLI because it appends to ~/.subagent-model-router/log.jsonl.

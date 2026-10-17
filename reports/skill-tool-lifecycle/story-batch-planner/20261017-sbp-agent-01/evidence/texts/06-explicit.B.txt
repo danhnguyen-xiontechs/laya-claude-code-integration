@@ -1,0 +1,25 @@
+total 12
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 15:10 .
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 15:10 ..
+-rw-r--r-- 1 ADMIN 197121 1153 Oct 17 15:10 batch.json
+-rwxr-xr-x 1 ADMIN 197121 2014 Oct 17 15:10 plan.mjs
+# Story batch plan (4 stories, 3 waves, Jev shadow)
+
+- Wave 1: S-1, S-4
+- Wave 2: S-2
+- Wave 3: S-3
+
+## Dependencies and conflicts
+- S-2 depends on S-1 [explicit_link, high]: link S-2 → S-1
+- S-3 depends on S-1 [text_reference, high]: S-3 text references S-1
+- S-2 ↔ S-3 unknown → S-2 then S-3 [prefilter, low]: shared terms: payslip, employe · Jev(shadow): independent 0.47
+
+## Needs a decision
+- [pair] S-2, S-3: topical overlap without resource evidence
+
+## Assumptions
+- S-1: no repository metadata; modules/files inferred from text only
+- S-2: no repository metadata; modules/files inferred from text only
+- S-3: no repository metadata; modules/files inferred from text only
+- S-4 links to OPS-99, which is not in this batch (assumed done or out of scope)
+- S-4: no repository metadata; modules/files inferred from text only

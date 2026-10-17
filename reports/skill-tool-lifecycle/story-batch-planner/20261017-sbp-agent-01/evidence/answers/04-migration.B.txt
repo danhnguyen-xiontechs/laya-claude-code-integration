@@ -1,0 +1,5 @@
+{"waves": [["S-1"], ["S-2", "S-3"]], "needs_decision": []}
+
+Reasoning: S-3 must follow S-1 because its search matches the nickname column that S-1 adds, and S-1 and S-2 both add migrations to the same chain, so they serialize; S-2 and S-3 touch different tables and can share wave 2.
+
+Checks: node plan.mjs --summary gives the same waves and reports no cycles, no incomplete stories, no unknown pairs and no blocked or review-required entries. Jev shadow made 0 calls because there were no ambiguous pairs.

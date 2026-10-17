@@ -1,0 +1,25 @@
+Where to start for "PR review says Eligible for merge even though a blocking finding exists". Read-only; nothing modified.
+
+The 5 most relevant files, most relevant first (repo root is <scratch>/t1-bug-merge-verdict-b36eee/repo):
+
+1. <scratch>/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/assess.mjs
+   Only code that prints the "## PR Review — verdict" and "**Merge:**" header the report copies (lines 18-31, 65-91); it reads the findings file via readFindings and takes merge from counts().
+
+2. <scratch>/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs
+   Defines counts() (line 187, does c[f.severity]++ with no normalization), merge() (206), verdict() (199), readFindings() (216, normalizes and throws on bad severity), and decideMerge() (131, the only path that can return Eligible for a Major PR, but it feeds log-only output).
+
+3. <scratch>/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/build_execution_log.mjs
+   Re-derives the verdict and merge badge from the findings file (lines 39-42, 236-237) with a silent .filter((f) => f.severity), whereas assess.mjs throws on an invalid severity, so this HTML badge can disagree with the report.
+
+4. <scratch>/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs
+   Same merge/counts/verdict code as copy 2 (diff shows only provider wiring), plus decideMerge (141) and its use in askMerge (352); this is the copy to check if the run used --provider jev.
+
+5. <scratch>/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/SKILL.md
+   Step 4b (lines 145-175) lets Claude change severities after a re-check, and step 4c (177-186) says to copy assess's header verbatim; a downgraded finding or a hand-written merge line would both produce the symptom.
+
+Key findings:
+- I found no code path that yields Eligible when the findings file contains a Critical or Major. merge(), counts() and readFindings() are correct and covered by tests (review-pr-laya-classify/tests/laya.test.mjs lines 46-51). No script writes severities back into the findings file.
+- So the likely cause is upstream of the code: the pr-<id>.findings.json the run used (a stale run folder, a re-check that changed a Major to Minor, or a dropped finding), a report merge line written by hand, or a Laya-derived label copied into the report.
+- Fastest real repro: open the run folder under ~/.xt-skills/review-pr-laya-classify/reviews/<repo-id>/pr-<id>/<run>/ (not in the repo) and compare its findings.json severities with the printed assess header.
+- The helper's ranking put laya-severity.mjs first; I put assess.mjs first because it is the sole emitter of the verdict line. The jev assess.mjs is identical to the laya one.
+- Helper coverage was partial (14 of 17 Python imports unresolved), which does not affect these .mjs files.

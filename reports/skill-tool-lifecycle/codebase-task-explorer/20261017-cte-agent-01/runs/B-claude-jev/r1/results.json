@@ -1,0 +1,188 @@
+{
+  "experimentId": "20261017-cte-agent-01",
+  "arm": "B",
+  "runId": "r1",
+  "startedAt": "2026-10-17T08:51:04.042Z",
+  "finishedAt": "2026-10-17T08:54:22.724Z",
+  "note": "Subagent (Agent tool) runs, one per case, 1 repetition. Recall@5 scored by score.mjs.",
+  "cases": [
+    {
+      "experimentId": "20261017-cte-agent-01",
+      "caseId": "t1-bug-merge-verdict",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "all 2 gold groups hit in top 5",
+      "observedOutcome": "recall 2/2 groups in top 5: users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/assess.mjs, users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs, users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/build_execution_log.mjs, users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs, users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/skill.md",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/t1-bug-merge-verdict.B.txt",
+          "notes": "hit by users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-laya-classify/scripts/assess.mjs"
+        },
+        {
+          "criterionId": "group-2",
+          "status": "pass",
+          "evidenceRef": "answers/t1-bug-merge-verdict.B.txt",
+          "notes": "hit by users/admin/appdata/local/temp/cte20261017/w/t1-bug-merge-verdict-b36eee/repo/.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 42,
+        "outputTokens": 168,
+        "cacheReadTokens": 1640013,
+        "cacheWriteTokens": 117525,
+        "modelTurns": 21,
+        "toolCalls": 23,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 190282,
+        "providerLatencyMs": 2453,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/t1-bug-merge-verdict.B.txt"
+      ],
+      "startedAt": "2026-10-17T08:51:04.042Z",
+      "finishedAt": "2026-10-17T08:54:22.724Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-01",
+      "caseId": "t2-feature-model-hook",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "all 2 gold groups hit in top 5",
+      "observedOutcome": "recall 2/2 groups in top 5: users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/router.mjs, users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs, users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/route.mjs, users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/config.json, users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/t2-feature-model-hook.B.txt",
+          "notes": "hit by users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs"
+        },
+        {
+          "criterionId": "group-2",
+          "status": "pass",
+          "evidenceRef": "answers/t2-feature-model-hook.B.txt",
+          "notes": "hit by users/admin/appdata/local/temp/cte20261017/w/t2-feature-model-hook-8a4b66/repo/.claude/skills/subagent-model-router/scripts/router.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 55,
+        "cacheReadTokens": 400950,
+        "cacheWriteTokens": 85498,
+        "modelTurns": 7,
+        "toolCalls": 10,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 116190,
+        "providerLatencyMs": 2578,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/t2-feature-model-hook.B.txt"
+      ],
+      "startedAt": "2026-10-17T08:51:04.072Z",
+      "finishedAt": "2026-10-17T08:53:10.887Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-01",
+      "caseId": "t3-refactor-decide",
+      "arm": "B",
+      "runId": "r1",
+      "status": "fail",
+      "goldOutcome": "all 3 gold groups hit in top 5",
+      "observedOutcome": "recall 2/3 groups in top 5: skills-router/scripts/decision-provider.mjs, skills-router/scripts/route.mjs, skills-router/tests/variants.test.mjs, skills-router/tests/helpers.mjs, bmad-help-jev/scripts/decision-provider.mjs",
+      "correct": false,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/t3-refactor-decide.B.txt",
+          "notes": "hit by skills-router/scripts/decision-provider.mjs"
+        },
+        {
+          "criterionId": "group-2",
+          "status": "pass",
+          "evidenceRef": "answers/t3-refactor-decide.B.txt",
+          "notes": "hit by skills-router/scripts/route.mjs"
+        },
+        {
+          "criterionId": "group-3",
+          "status": "fail",
+          "evidenceRef": null,
+          "notes": "no path of this group in the top 5"
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 43,
+        "cacheReadTokens": 498602,
+        "cacheWriteTokens": 93025,
+        "modelTurns": 8,
+        "toolCalls": 12,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 107784,
+        "providerLatencyMs": 2244,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/t3-refactor-decide.B.txt"
+      ],
+      "startedAt": "2026-10-17T08:51:04.102Z",
+      "finishedAt": "2026-10-17T08:52:59.617Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-01",
+      "caseId": "t4-newfeature-gate",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "all 2 gold groups hit in top 5",
+      "observedOutcome": "recall 2/2 groups in top 5: users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-eab4a9/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs, .../repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs, .../repo/.claude/skills/web-test-jev-gate/skill.md, .../repo/.claude/skills/web-test-jev-gate/tests/gate.test.mjs, .../repo/.claude/skills/web-test-laya-gate/scripts/gate.mjs",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/t4-newfeature-gate.B.txt",
+          "notes": "hit by users/admin/appdata/local/temp/cte20261017/w/t4-newfeature-gate-eab4a9/repo/.claude/skills/web-test-jev-gate/scripts/gate.mjs"
+        },
+        {
+          "criterionId": "group-2",
+          "status": "pass",
+          "evidenceRef": "answers/t4-newfeature-gate.B.txt",
+          "notes": "hit by .../repo/.claude/skills/web-test-jev-gate/scripts/jev-lib.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 22,
+        "cacheReadTokens": 282856,
+        "cacheWriteTokens": 99193,
+        "modelTurns": 5,
+        "toolCalls": 10,
+        "providerCalls": 5,
+        "fallbackCount": 0,
+        "elapsedMs": 113728,
+        "providerLatencyMs": 3178,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/t4-newfeature-gate.B.txt"
+      ],
+      "startedAt": "2026-10-17T08:51:04.130Z",
+      "finishedAt": "2026-10-17T08:53:06.354Z"
+    }
+  ]
+}

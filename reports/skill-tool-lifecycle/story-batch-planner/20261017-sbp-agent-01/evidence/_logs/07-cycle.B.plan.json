@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "generated_at": "2026-10-17T08:51:56.228Z",
+  "policy": {
+    "maxConcurrency": 4,
+    "protectedKinds": [
+      "schema",
+      "migration"
+    ],
+    "jev": "shadow"
+  },
+  "stories": [
+    {
+      "id": "S-1",
+      "title": "Org chart service",
+      "wave": null,
+      "prerequisites": [
+        "S-2"
+      ],
+      "after": [],
+      "modules": [],
+      "risk_notes": [
+        "in dependency cycle"
+      ]
+    },
+    {
+      "id": "S-2",
+      "title": "Manager lookup",
+      "wave": null,
+      "prerequisites": [
+        "S-3"
+      ],
+      "after": [],
+      "modules": [],
+      "risk_notes": [
+        "in dependency cycle"
+      ]
+    },
+    {
+      "id": "S-3",
+      "title": "Team roster",
+      "wave": null,
+      "prerequisites": [
+        "S-1"
+      ],
+      "after": [],
+      "modules": [],
+      "risk_notes": [
+        "in dependency cycle"
+      ]
+    },
+    {
+      "id": "S-4",
+      "title": "Roster export",
+      "wave": null,
+      "prerequisites": [
+        "S-3"
+      ],
+      "after": [],
+      "modules": [],
+      "risk_notes": [
+        "blocked by cycle"
+      ]
+    },
+    {
+      "id": "S-5",
+      "title": "Holiday calendar import",
+      "wave": 1,
+      "prerequisites": [],
+      "after": [],
+      "modules": [],
+      "risk_notes": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "S-1",
+      "to": "S-2",
+      "relation": "depends_on",
+      "source": "explicit_link",
+      "confidence": "high",
+      "evidence": [
+        "link S-1 → S-2"
+      ],
+      "needs_review": false
+    },
+    {
+      "from": "S-3",
+      "to": "S-1",
+      "relation": "depends_on",
+      "source": "explicit_link",
+      "confidence": "high",
+      "evidence": [
+        "link S-3 → S-1"
+      ],
+      "needs_review": false
+    },
+    {
+      "from": "S-2",
+      "to": "S-3",
+      "relation": "depends_on",
+      "source": "explicit_link",
+      "confidence": "high",
+      "evidence": [
+        "link S-2 → S-3"
+      ],
+      "needs_review": false
+    },
+    {
+      "from": "S-4",
+      "to": "S-3",
+      "relation": "depends_on",
+      "source": "explicit_link",
+      "confidence": "high",
+      "evidence": [
+        "link S-4 → S-3"
+      ],
+      "needs_review": false
+    }
+  ],
+  "independent_pairs": 6,
+  "waves": [
+    {
+      "wave": 1,
+      "stories": [
+        "S-5"
+      ]
+    }
+  ],
+  "blocked_or_review_required": [
+    {
+      "kind": "cycle",
+      "stories": [
+        "S-1",
+        "S-2",
+        "S-3"
+      ],
+      "reason": "dependency cycle S-1 → S-2 → S-3 → S-1; planning decision needed, no order invented"
+    },
+    {
+      "kind": "blocked",
+      "stories": [
+        "S-4"
+      ],
+      "reason": "depends on a story in a cycle"
+    }
+  ],
+  "assumptions": [
+    "S-1: no repository metadata; modules/files inferred from text only",
+    "S-2: no repository metadata; modules/files inferred from text only",
+    "S-3: no repository metadata; modules/files inferred from text only",
+    "S-4: no repository metadata; modules/files inferred from text only",
+    "S-5: no repository metadata; modules/files inferred from text only"
+  ],
+  "dispatch": [
+    {
+      "story": "S-5",
+      "wave": 1,
+      "subagent_type": "general-purpose",
+      "worktree": true,
+      "task": "Implement story S-5: Holiday calendar import\n\nImport public holidays from an ICS file into calendar/HolidayImport.cs."
+    }
+  ],
+  "jev_shadow": {
+    "calls": 0,
+    "skipped": 0,
+    "errors": 0,
+    "cost": 0,
+    "latencyMs": [],
+    "candidates": 0
+  }
+}

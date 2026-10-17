@@ -1,0 +1,27 @@
+# Story batch plan (3 stories, 2 waves, Jev shadow)
+
+- Wave 1: S-1
+- Wave 2: S-2, S-3
+
+## Dependencies and conflicts
+- S-1 ↔ S-2 shared_resource → S-1 then S-2 [deterministic, high]: migration: migration chain (both add migrations)
+- S-1 ↔ S-3 shared_resource → S-1 then S-3 [deterministic, high]: schema: employees (one changes a table the other uses)
+
+## Assumptions
+- S-1: no repository metadata; modules/files inferred from text only
+- S-2: no repository metadata; modules/files inferred from text only
+- S-3: no repository metadata; modules/files inferred from text only
+---SUMMARY---
+# Story batch plan (3 stories, 2 waves, Jev shadow)
+
+- Wave 1: S-1
+- Wave 2: S-2, S-3
+
+## Dependencies and conflicts
+- S-1 ↔ S-2 shared_resource → S-1 then S-2 [deterministic, high]: migration: migration chain (both add migrations)
+- S-1 ↔ S-3 shared_resource → S-1 then S-3 [deterministic, high]: schema: employees (one changes a table the other uses)
+
+## Assumptions
+- S-1: no repository metadata; modules/files inferred from text only
+- S-2: no repository metadata; modules/files inferred from text only
+- S-3: no repository metadata; modules/files inferred from text only

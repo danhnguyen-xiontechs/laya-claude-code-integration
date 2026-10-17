@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — new-feature
+
+Engine: codemap codemap 4.6.0 · pool 95. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `benchmark/run_live.py` |
+| 2 | `.claude/skills/skills-router/scripts/route.mjs` |
+| 3 | `workflow/hooks/laya_step_router.py` |
+| 4 | `.claude/skills/review-pr-jev-classify/scripts/providers.mjs` |
+| 5 | `.claude/skills/review-pr-laya-classify/scripts/providers.mjs` |
+| 6 | `eval/data/handwritten.mjs` |
+| 7 | `eval/data/build-datasets.mjs` |
+| 8 | `.claude/skills/web-test-jev-gate/scripts/gate.mjs` |
+| 9 | `.claude/skills/web-test-laya-gate/scripts/gate.mjs` |
+| 10 | `.claude/skills/web-test-jev-gate/scripts/jev-check.mjs` |

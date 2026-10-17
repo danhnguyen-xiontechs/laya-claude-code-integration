@@ -1,0 +1,3 @@
+{"waves": [["S-1"], ["S-2", "S-3"]], "needs_decision": []}
+
+Reasoning: S-1 creates the GET /api/leave/balance endpoint and LeaveBalanceDto that S-2 consumes and S-3 extends, so it runs first; S-2 (widget, reads annual and sick days) and S-3 (additive carryOverDays field) depend only on S-1 and not on each other, so they share wave 2, though S-3 should land before S-2 if the widget keeps its own copy of the DTO type. The carry-over source is unspecified, but S-3's AC only checks that the field is present, so no story is blocked.
