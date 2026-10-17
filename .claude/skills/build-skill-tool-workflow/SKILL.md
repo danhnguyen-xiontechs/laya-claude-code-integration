@@ -74,11 +74,17 @@ Write one `results.json` per arm and run: `{ experimentId, arm, runId, startedAt
 
 Where the tokens come from — pick the one that matches the tool:
 
-- **Agent run** (the tool changes how Claude works through a task: skills, routers, gates): run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage` (subagent transcripts under `<session>/subagents/` are included; `--no-subagents` to skip):
+- **Agent run** (the tool changes how Claude works through a task: skills, routers, gates, or what it reads across a whole task): real prompts, one fresh session per case, arm and repetition. Two ways to run it:
+  - **Subagents (cheapest, default)**: spawn the cases with the Agent tool using the haiku-subagent settings (`model: "haiku"`, `effort: "xhigh"`, at most 10 per message, A and B in the same message, rep 2 launched B first). Subagents share this session's hooks and plugins, so a hook cannot be on for B only: give both arms the **same command** through a neutral wrapper (e.g. `node run.mjs test`) that returns raw output in A and runs the tool's own core function in B, logging each engine decision to `_logs/<case>.<arm>.r<n>.jsonl`. Same prompt text in both arms except the folder; one fresh folder per case (`make_tasks.mjs`). Grade afterwards yourself: re-run the raw command (not the wrapper) and check protected files (tests) by hash; the subagent's own "it passes" is not evidence. Tokens per case:
+    ```bash
+    node .claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs ~/.claude/projects/<project>/<session>/subagents <workDir...>
+    ```
+    It finds each case's transcript by the work dir in its prompt; no match or two matches = `null`.
+  - **Separate sessions** (`claude -p --plugin-dir …`) when the real hook must run: run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage` (subagent transcripts under `<session>/subagents/` are included; `--no-subagents` to skip):
   ```bash
   node .claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs "<session.jsonl>" --from <ISO> --to <ISO>
   ```
-  Also write `run-notes.json` and build the execution log for the run:
+  For separate sessions also write `run-notes.json` and build the execution log for the run:
   ```bash
   node .claude/skills/web-test/scripts/build_execution_log.mjs "<runDir>" --transcript "<session.jsonl>"
   ```
@@ -89,6 +95,10 @@ Where the tokens come from — pick the one that matches the tool:
   A failed call gives `null` and exit 1, never a guess. Put the count in `usage.inputTokens`; identical text reuses A's count (the count varies by ±5 between calls). Keep the import script (`import_*.ts|mjs`) in the experiment folder so the numbers can be rebuilt.
 
 Record Jev/Laya calls per case in `usage.providerCalls`, `fallbackCount` and `providerLatencyMs`.
+
+**Save what Claude read, for both arms, every time** (content and agent runs alike): `evidence/texts/<case>.A.txt` and `<case>.B.txt`. For an agent run that is the output of the case's first test/build run in each arm, with machine-specific paths shortened (rebuild the task fresh and run the wrapper once per arm, see `make_evidence.mjs` in `smart-context-trimming/20261017-sct-agent-02`). Engine logs (`evidence/filter-logs/…jsonl`) are extra, never a substitute for A's text. The report links `evidence/texts/<case>.<A|B>.txt` on its own and lists any case with one arm missing as a caveat. Keep `make_tasks`, the import and the evidence scripts in the experiment folder so everything can be rebuilt.
+
+Before the report: `unit-tests.json` from the real test output of the commit that was measured, and `agent-review.json` (step 5); without them the cards say "not run" / "no agent review".
 
 ## 7. Per-tool report
 
@@ -110,7 +120,7 @@ One row per experiment from its `summary.json`: verdict, tokens A → B, cases p
 
 ## 9. Gate B — final user review
 
-Send `index.html` and the experiment's `report.html` (SendUserFile, `display: "render"`). In chat: what was built (branch/commit), tests and review, tokens A → B and any worse case, recommendation, and the one decision needed. Record it in `manifest.approvals.finalDecision` + `final-decision.md`, rebuild both reports. Until then the tool stays behind its flag.
+Send `index.html` and the experiment's `report.html` (SendUserFile, `display: "render"`). In chat: what was built (branch/commit), tests and review, tokens A → B and any worse case, recommendation, and the one decision needed. Record it in `manifest.approvals.finalDecision` (+ `finalDecisionAt`, and `status` = the decision) + `final-decision.md`, rebuild both reports; "Waiting on you" then drops the experiment. Until then the tool stays behind its flag.
 
 ## Self-test
 

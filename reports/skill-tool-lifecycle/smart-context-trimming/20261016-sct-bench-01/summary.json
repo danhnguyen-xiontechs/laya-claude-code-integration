@@ -10,6 +10,7 @@
   "engine": "JEV",
   "status": "WAITING_FOR_USER_FINAL_REVIEW",
   "recommendation": "REWORK",
+  "finalDecision": null,
   "confidence": "LOW",
   "headline": "On 10 fixtures Claude reads 52% fewer tokens (98,400 → 47,223; −92% on the 6 long outputs the mod trims) and no critical line is lost. Jev was asked on 3 cases only. Fix the 3 Major review findings and measure on real logs before using it.",
   "arms": {
@@ -55,6 +56,7 @@
   "regressions": [],
   "pairedCases": 10,
   "unpairedCases": [],
+  "evidenceGaps": [],
   "improvements": [],
   "unitTotals": {
     "passed": 28,
@@ -64,6 +66,6 @@
   },
   "openBlockingFindings": 3,
   "lastRun": "2026-10-16T08:17:08.887Z",
-  "generatedAt": "2026-10-17T07:36:27.927Z",
+  "generatedAt": "2026-10-17T07:39:04.368Z",
   "report": "report.html"
 }

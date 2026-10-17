@@ -144,3 +144,53 @@ describe('count_tokens', () => {
     assert.match(r.stderr, /baseline call failed.*not JSON/);
   });
 });
+
+describe('evidence and final decision', () => {
+  it('links evidence/texts/<case>.<arm>.txt by convention and flags a case with one arm missing', () => {
+    const { root, exp } = fixture();
+    fs.mkdirSync(path.join(exp, 'evidence', 'texts'), { recursive: true });
+    for (const f of ['T1.A.txt', 'T1.B.txt', 'T2.B.txt']) fs.writeFileSync(path.join(exp, 'evidence', 'texts', f), 'x');
+    assert.equal(node('build_tool_report.mjs', exp).status, 0);
+    const s = JSON.parse(fs.readFileSync(path.join(exp, 'summary.json'), 'utf8'));
+    assert.deepEqual(s.evidenceGaps, ['T2 (only B)']);
+    const html = fs.readFileSync(path.join(exp, 'report.html'), 'utf8');
+    assert.match(html, /href="evidence\/texts\/T1\.A\.txt">A text</);
+    assert.match(html, /href="evidence\/texts\/T1\.B\.txt">B text</);
+    assert.match(html, /saved for one arm only: T2 \(only B\)/);
+    node('build_main_report.mjs', root);
+    assert.match(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), /evidence for one arm only on 1 case/);
+  });
+
+  it('a recorded final decision is no longer waiting on the user', () => {
+    const { root, exp } = fixture();
+    const mf = path.join(exp, 'manifest.json');
+    const m = JSON.parse(fs.readFileSync(mf, 'utf8'));
+    node('build_tool_report.mjs', exp);
+    node('build_main_report.mjs', root);
+    assert.match(fs.readFileSync(path.join(root, 'index.html'), 'utf8'), /final decision not recorded/);
+    m.approvals = { finalDecision: 'PILOT', finalDecisionAt: '2026-10-17T00:00:00Z' };
+    fs.writeFileSync(mf, JSON.stringify(m));
+    node('build_tool_report.mjs', exp);
+    node('build_main_report.mjs', root);
+    const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+    assert.doesNotMatch(html, /final decision not recorded/);
+    assert.doesNotMatch(html, /demo-tool<\/a>: PILOT/);
+  });
+});
+
+describe('subagent_usage', () => {
+  it('finds a case transcript by its work dir; r1 never matches r10; no match is null', () => {
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bstw-su-'));
+    const work = path.join(d, 'case.A.r1');
+    const prompt = (dir) => JSON.stringify({ type: 'user', message: { content: `You are working in the project folder ${dir}\n\nTask: fix it` } });
+    const reply = (id, n) => JSON.stringify({ type: 'assistant', timestamp: '2026-10-17T01:00:00Z', message: { id, usage: { input_tokens: n, output_tokens: 1 }, content: [] } });
+    fs.writeFileSync(path.join(d, 'agent-1.jsonl'), [prompt(work), reply('m1', 100)].join('\n'));
+    fs.writeFileSync(path.join(d, 'agent-2.jsonl'), [prompt(work + '0'), reply('m2', 999)].join('\n'));
+    const r = spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, work, path.join(d, 'missing')], { encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    const o = JSON.parse(r.stdout);
+    assert.equal(o[work].usage.inputTokens, 100);
+    assert.match(o[work].transcript, /agent-1\.jsonl$/);
+    assert.equal(o[path.join(d, 'missing')].transcript, null);
+  });
+});

@@ -10,6 +10,7 @@
   "engine": "JEV",
   "status": "PILOT",
   "recommendation": "PILOT",
+  "finalDecision": "PILOT",
   "confidence": "LOW",
   "headline": "After the fix (node --test ✖ recognised, repeated failures folded) trimming fires on all 5 tasks. Haiku 5.5 subagents still pass 20/20 in both arms, and total session tokens drop 18% (4.96M → 4.04M): js-one-bug −49%, dotnet-build −35%, js-three-bugs −25%, while js-root-exception (+8%) and js-feature (+24%) went up by about the run-to-run noise. Try it on real work before adopting.",
   "arms": {
@@ -55,6 +56,7 @@
   "regressions": [],
   "pairedCases": 5,
   "unpairedCases": [],
+  "evidenceGaps": [],
   "improvements": [],
   "unitTotals": {
     "passed": 24,
@@ -64,6 +66,6 @@
   },
   "openBlockingFindings": null,
   "lastRun": "2026-10-17T07:32:15.417Z",
-  "generatedAt": "2026-10-17T07:36:47.462Z",
+  "generatedAt": "2026-10-17T07:39:04.535Z",
   "report": "report.html"
 }

@@ -46,10 +46,12 @@ const passed = (g) => (g ? `${g.pass}/${g.pass + g.fail}` : '—');
 const needsYou = (i) =>
   [
     !i.recommendation && 'no recommendation yet',
-    ['PILOT', 'INSUFFICIENT_EVIDENCE'].includes(i.recommendation) && i.recommendation,
+    !i.finalDecision && ['PILOT', 'INSUFFICIENT_EVIDENCE'].includes(i.recommendation) && i.recommendation,
+    !i.finalDecision && i.recommendation && 'final decision not recorded',
     i.openBlockingFindings && `${i.openBlockingFindings} open Critical/Major`,
     i.regressions?.length && `worse on ${i.regressions.join(', ')}`,
     i.unpairedCases?.length && `${i.unpairedCases.length} case(s) not compared`,
+    i.evidenceGaps?.length && `evidence for one arm only on ${i.evidenceGaps.length} case(s)`,
     i.unitTotals?.failed && `${i.unitTotals.failed} failing tests`,
     !i.unitTotals && 'tests not recorded',
   ].filter(Boolean);

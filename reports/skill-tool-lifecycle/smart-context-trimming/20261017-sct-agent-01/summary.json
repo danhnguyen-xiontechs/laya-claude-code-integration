@@ -10,6 +10,7 @@
   "engine": "JEV",
   "status": "WAITING_FOR_USER_FINAL_REVIEW",
   "recommendation": "REWORK",
+  "finalDecision": null,
   "confidence": "LOW",
   "headline": "On 5 real fix-the-build/test tasks × 2 runs with Haiku 5.5 subagents, all 20 sessions pass in both arms (no case worse). Total tokens −3% (5.10M → 4.97M), which is inside run-to-run noise; the real effect is only where trimming fired: dotnet-build −30% tokens and fewer turns (8 → 5–6). node --test failures (✖) are not recognised, so 3 of 5 tasks were never trimmed: fix that, then re-measure.",
   "arms": {
@@ -55,10 +56,11 @@
   "regressions": [],
   "pairedCases": 5,
   "unpairedCases": [],
+  "evidenceGaps": [],
   "improvements": [],
   "unitTotals": null,
   "openBlockingFindings": null,
   "lastRun": "2026-10-17T07:23:34.758Z",
-  "generatedAt": "2026-10-17T07:36:28.005Z",
+  "generatedAt": "2026-10-17T07:39:04.451Z",
   "report": "report.html"
 }

@@ -91,6 +91,17 @@ for (const r of runs)
     m[r.arm].push(c);
     for (const e of c.evidenceRefs ?? []) m.evidence[r.arm].push(rel(path.resolve(r.dir, e)));
   }
+// what Claude read is linked by convention even when a case forgot to list it: evidence/texts/<case>.<A|B>.txt
+for (const [id, m] of cases)
+  for (const arm of ['A', 'B']) {
+    const f = path.join(dir, 'evidence', 'texts', `${id}.${arm}.txt`);
+    if (fs.existsSync(f) && m[arm].length) m.evidence[arm].unshift(rel(f));
+  }
+// a case with what-Claude-read evidence for one arm only cannot be checked side by side
+const evidenceGaps = [...cases]
+  .filter(([, m]) => m.A.length && m.B.length)
+  .filter(([, m]) => m.evidence.A.some((e) => e.endsWith('.txt')) !== m.evidence.B.some((e) => e.endsWith('.txt')))
+  .map(([id, m]) => `${id} (only ${m.evidence.A.some((e) => e.endsWith('.txt')) ? 'A' : 'B'})`);
 const majority = (xs) => {
   const n = {};
   for (const x of xs) n[x.status] = (n[x.status] ?? 0) + 1;
@@ -135,12 +146,14 @@ const summary = {
   engine,
   status: manifest.status,
   recommendation: manifest.recommendation ?? null,
+  finalDecision: manifest.approvals?.finalDecision ?? null,
   confidence: manifest.confidence ?? null,
   headline: manifest.headline ?? null,
   arms: agg,
   regressions,
   pairedCases: pairedRows.length,
   unpairedCases: unpaired,
+  evidenceGaps,
   improvements,
   unitTotals,
   openBlockingFindings: openBlocking,
@@ -218,7 +231,10 @@ const runsBody = `<ul>${runs
   .map((r) => `<li>${r.arm} · ${esc(r.runId)} · ${esc(r.res.finishedAt ?? '')} · <a href="${esc(rel(path.join(r.dir, 'results.json')))}">results.json</a> ${
     r.logs.map((l) => `· <a href="${esc(l)}">${esc(path.basename(l))}</a>`).join(' ') || '· <span class="muted">no execution log</span>'}</li>`)
   .join('')}</ul>`;
-const devs = manifest.evaluation?.deviations ?? [];
+const devs = [
+  ...(evidenceGaps.length ? [`What Claude read is saved for one arm only: ${evidenceGaps.join(", ")}. Save evidence/texts/<case>.<A|B>.txt for both arms.`] : []),
+  ...(manifest.evaluation?.deviations ?? []),
+];
 const docs = ['idea-brief.md', 'design.md', 'experiment-plan.md', 'agent-review.md', 'final-decision.md', 'manifest.json', 'summary.json'].filter((f) => fs.existsSync(path.join(dir, f)));
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
