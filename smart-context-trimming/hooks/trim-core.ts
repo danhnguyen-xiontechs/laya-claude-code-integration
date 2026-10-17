@@ -82,12 +82,12 @@ export type Candidate = {
 
 const RE = {
   compilerError: /(\berror\s+[A-Z]{2,}\d{2,}\s*:|\berror\s+TS\d+:|:\s*error\s*:|^\s*error(\[E\d+\])?:|\bSyntaxError\b|\bCS\d{4}\b.*\berror\b)/i,
-  failedTest: /^\s*(Failed\s+\S|FAIL\b|✕|×|✗|not ok\b|--- FAIL:|\[FAIL\]|FAILED\s+\S|\d+\)\s.+:$)/,
+  failedTest: /^\s*(Failed\s+\S|FAIL\b|✕|✖|×|✗|not ok\b|--- FAIL:|\[FAIL\]|FAILED\s+\S|\d+\)\s.+:$)/,
   failedTestDetail: /^\s*(Error Message|Expected|Actual|Assert|AssertionError|Stack Trace|Received|at |\+|-|E\s{2,}|>\s)/,
   exceptionHead: /\b([A-Z]\w*\.)*[A-Z]\w*(Exception|Error)\b(:|$)|^Traceback \(most recent call last\)|^panic:|Unhandled exception/,
   frame: /^\s+(at\s|File\s"|--- End of|in\s.*:line\s\d+)|^\s{4,}\S.*\(.*:\d+(:\d+)?\)$/,
   fatal: /\b(fatal|FATAL|Build FAILED|BUILD FAILURE|npm ERR!|ERR_|Segmentation fault|OutOfMemory|killed)\b/,
-  summary: /(Total tests:|Passed!|Failed!|^\s*Tests?:\s+\d|Test Suites?:|\b\d+\s+(passing|failing|passed|failed|pending|skipped)\b|Build succeeded|\bWarning\(s\)|\bError\(s\)|Time Elapsed|^=+ .*(passed|failed|error).* =+$|^(ok|FAIL)\s+\S+\s+[\d.]+s$|^# (tests|pass|fail)\s+\d)/i,
+  summary: /(Total tests:|Passed!|Failed!|^\s*Tests?:\s+\d|Test Suites?:|\b\d+\s+(passing|failing|passed|failed|pending|skipped)\b|Build succeeded|\bWarning\(s\)|\bError\(s\)|Time Elapsed|^=+ .*(passed|failed|error).* =+$|^(ok|FAIL)\s+\S+\s+[\d.]+s$|^# (tests|pass|fail)\s+\d|^ℹ (tests|pass|fail)\s+\d)/i,
   exitStatus: /^(Error: )?Exit code \d+/,
   warning: /\bwarn(ing)?\b/i,
 };
@@ -139,7 +139,45 @@ export function extractCandidates(lines: readonly string[]): Candidate[] {
       else warnGroups.set(sig, Object.assign(add('warning', i, i, false), { repeats: 1 }));
     }
   }
-  return out;
+  return dedupeFailures(lines, out);
+}
+
+/** Test name of a failure head line, without marker and duration: "✖ get #3 (0.2ms)" → "get #3". */
+function failName(line: string): string {
+  return line.replace(/^\s*(✖|✕|×|✗|not ok\s+\d*|FAIL|Failed|FAILED|--- FAIL:|\[FAIL\])\s*/, '').replace(/\s*\([\d.]+\s*m?s\)\s*$/, '').trim();
+}
+/** What a failure block says (head line excluded), with only line:column positions and durations stripped: different values stay different. */
+function failSig(lines: readonly string[], c: Candidate): string {
+  return lines.slice(c.line_start, c.line_end).map((l) => l.replace(/:\d+(:\d+)?\b/g, '').replace(/\([\d.]+\s*m?s\)/g, '').trim()).join('\n');
+}
+const DUP_FULL = 2;
+
+/**
+ * Many tests failing for one reason (a shared exception, a broken helper) repeat the same detail block.
+ * The first DUP_FULL blocks with a given detail stay whole; later ones keep only their head line (the test
+ * name stays visible) and the first block counts them. A one-line failure whose test name reappears later
+ * as the head of a detailed block (node --test lists each failure twice) is dropped as a duplicate.
+ */
+function dedupeFailures(lines: readonly string[], cands: Candidate[]): Candidate[] {
+  const blocks = cands.filter((c) => c.kind === 'failed_test');
+  const detailed = new Set(blocks.filter((c) => c.line_end > c.line_start).map((c) => failName(lines[c.line_start - 1] ?? '')));
+  const seen = new Map<string, Candidate[]>();
+  const drop = new Set<Candidate>();
+  for (const c of blocks) {
+    if (c.line_end === c.line_start) {
+      if (detailed.has(failName(lines[c.line_start - 1] ?? ''))) drop.add(c);
+      continue;
+    }
+    const sig = failSig(lines, c);
+    if (!sig.trim()) continue;
+    const group = seen.get(sig) ?? [];
+    if (group.length >= DUP_FULL) {
+      c.line_end = c.line_start;
+      group[0]!.repeats = (group[0]!.repeats ?? 1) + 1;
+    } else group.push(c);
+    seen.set(sig, group);
+  }
+  return cands.filter((c) => !drop.has(c));
 }
 
 // ---------- the decision ----------
