@@ -20,7 +20,7 @@ const EXP = import.meta.dirname;
 const ID = '20261018-retry-loop-breaker-agent-01';
 const USAGE = path.resolve(EXP, '../../../../.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs');
 const tasks = JSON.parse(fs.readFileSync(path.join(ctl, 'tasks.json'), 'utf8'));
-const HOME = process.env.USERPROFILE ?? 'C:\\Users\\ADMIN';
+const HOME = process.env.USERPROFILE ?? 'C:\\Users\\user';
 const scrub = (s) => s.split(HOME).join('<home>').split(HOME.replace(/\\/g, '/')).join('<home>').split(HOME.replace(/\\/g, '\\\\')).join('<home>').replace(new RegExp(path.basename(HOME), 'g'), '<user>');
 const only = process.argv.includes('--rep') ? Number(process.argv[process.argv.indexOf('--rep') + 1]) : null;
 const sel = tasks.filter((t) => !only || t.rep === only);
