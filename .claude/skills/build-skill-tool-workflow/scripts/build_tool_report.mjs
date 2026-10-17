@@ -96,6 +96,7 @@ const majority = (xs) => {
   for (const x of xs) n[x.status] = (n[x.status] ?? 0) + 1;
   return Object.entries(n).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 };
+const decided = (s) => s === 'pass' || s === 'fail';
 const caseRows = [...cases].map(([id, m]) => {
   const a = majority(m.A), b = majority(m.B);
   const tok = (xs) => {
@@ -105,10 +106,17 @@ const caseRows = [...cases].map(([id, m]) => {
   return {
     id, gold: m.gold, a, b, aTok: tok(m.A), bTok: tok(m.B),
     engineUsed: m.B.some((c) => c.usage?.providerCalls), note: m.B.at(-1)?.observedOutcome ?? '',
-    change: a === 'pass' && b && b !== 'pass' ? 'worse' : a && a !== 'pass' && b === 'pass' ? 'better' : '',
+    // only pass/fail in both arms is compared: blocked/skipped/error on either side is neither better nor worse
+    change: a === 'pass' && b === 'fail' ? 'worse' : a === 'fail' && b === 'pass' ? 'better' : '',
+    paired: decided(a) && decided(b),
     evidence: m.evidence,
   };
 });
+// tokens are compared over paired cases only (pass/fail in both arms), so a case missing or blocked in one arm
+// cannot make that arm look cheaper
+const pairedRows = caseRows.filter((r) => r.paired);
+const unpaired = caseRows.filter((r) => !r.paired).map((r) => r.id);
+for (const [arm, k] of [['A', 'aTok'], ['B', 'bTok']]) if (agg[arm]) agg[arm].pairedTokens = sumOrNull(pairedRows.map((r) => r[k]));
 const regressions = caseRows.filter((r) => r.change === 'worse').map((r) => r.id);
 const improvements = caseRows.filter((r) => r.change === 'better').map((r) => r.id);
 
@@ -131,6 +139,8 @@ const summary = {
   headline: manifest.headline ?? null,
   arms: agg,
   regressions,
+  pairedCases: pairedRows.length,
+  unpairedCases: unpaired,
   improvements,
   unitTotals,
   openBlockingFindings: openBlocking,
@@ -150,13 +160,13 @@ const A = agg.A, B = agg.B;
 const verdict = { ADOPT: 'Use it', PILOT: 'Try it on a small scope', REWORK: 'Fix first, then re-measure', DROP: 'Drop it', INSUFFICIENT_EVIDENCE: 'Not enough evidence yet' };
 const okIcon = (s) => ({ pass: '<span class="good">✔ pass</span>', fail: '<span class="bad">✘ fail</span>', blocked: '<span class="warn">■ blocked</span>', error: '<span class="bad">error</span>' })[s] ?? esc(s ?? '—');
 
-const tokChange = pctChange(A?.tokens, B?.tokens);
+const tokChange = pctChange(A?.pairedTokens, B?.pairedTokens);
 const maxTok = Math.max(1, ...caseRows.flatMap((r) => [r.aTok ?? 0, r.bTok ?? 0]));
 const bar = (v, cls, max = maxTok) => `<span class="bar ${cls}" style="width:${v == null ? 0 : Math.max(1, (v / Math.max(1, max ?? 0)) * 100)}%"></span>`;
 const passedOf = (g) => (g ? `${g.pass}/${g.pass + g.fail} pass` : '—');
 
 const cards = [
-  ['Tokens Claude reads', signedPct(tokChange), `${num(A?.tokens)} → ${num(B?.tokens)}`, tokChange == null ? '' : tokChange < 0 ? 'good' : 'bad'],
+  ['Tokens Claude reads', signedPct(tokChange), `${num(A?.pairedTokens)} → ${num(B?.pairedTokens)}${unpaired.length ? ` · ${pairedRows.length} paired cases` : ''}`, tokChange == null ? '' : tokChange < 0 ? 'good' : 'bad'],
   ['Cases passed', `${B?.pass ?? '—'}/${B ? B.pass + B.fail : '—'}`, `plain Claude ${A?.pass ?? '—'}/${A ? A.pass + A.fail : '—'}${regressions.length ? ` · ${regressions.length} worse` : ''}`, regressions.length ? 'bad' : 'good'],
   [`${esc(engine)} calls`, num(B?.providerCalls), `median ${ms(B?.providerLatencyMs)} · ${num(B?.fallbacks)} fallbacks`, ''],
   ['Tests · review', unitTotals ? `${unitTotals.passed}/${unitTotals.passed + unitTotals.failed}` : 'not run', review ? `${openBlocking} open Critical/Major` : 'no agent review', unitTotals?.failed || openBlocking ? 'bad' : unitTotals ? 'good' : 'warn'],
@@ -166,13 +176,15 @@ const caseTable = `<table class="cases"><thead><tr><th>Case</th><th>Plain Claude
   .map((r) => {
     const d = pctChange(r.aTok, r.bTok);
     const same = d == null || Math.abs(d) < 0.01;
+    if (!r.paired) return `<tr><td><b>${esc(r.id)}</b><br><small>${esc(r.note)}</small></td><td>${okIcon(r.a)}</td><td>${okIcon(r.b)}</td><td class="r">${num(r.aTok)}</td><td class="r">${num(r.bTok)}</td><td class="r muted">not compared</td><td class="w"></td><td></td></tr>`;
     const ev = [...new Set(r.evidence.A)].map((e) => `<a href="${esc(e)}">A</a>`).concat([...new Set(r.evidence.B)].map((e) => `<a href="${esc(e)}">B</a>`)).join(' ');
     return `<tr class="${r.change}"><td><b>${esc(r.id)}</b>${r.engineUsed ? ` <span class="tag">${esc(engine)}</span>` : ''}<br><small>${esc(r.note)}</small></td><td>${okIcon(r.a)}</td><td>${okIcon(r.b)}${
       r.change ? ` <b class="${r.change === 'worse' ? 'bad' : 'good'}">${r.change}</b>` : ''}</td><td class="r">${num(r.aTok)}</td><td class="r">${num(r.bTok)}</td><td class="r ${
       same ? 'muted' : d < 0 ? 'good' : 'bad'}">${same ? 'same' : signedPct(d)}</td><td class="w">${bar(r.aTok, 'a')}${bar(r.bTok, 'b')}</td><td>${ev}</td></tr>`;
   })
-  .join('')}</tbody><tfoot><tr><th>Total (${caseRows.length} cases)</th><th>${passedOf(A)}</th><th>${passedOf(B)}</th><th class="r">${num(A?.tokens)}</th><th class="r">${num(B?.tokens)}</th><th class="r ${
-  tokChange == null ? '' : tokChange < 0 ? 'good' : 'bad'}">${signedPct(tokChange)}</th><th class="w">${bar(A?.tokens, 'a', A?.tokens)}${bar(B?.tokens, 'b', A?.tokens)}</th><th></th></tr></tfoot></table>
+  .join('')}</tbody><tfoot><tr><th>Total (${pairedRows.length}${unpaired.length ? ` of ${caseRows.length}` : ''} cases)</th><th>${passedOf(A)}</th><th>${passedOf(B)}</th><th class="r">${num(A?.pairedTokens)}</th><th class="r">${num(B?.pairedTokens)}</th><th class="r ${
+  tokChange == null ? '' : tokChange < 0 ? 'good' : 'bad'}">${signedPct(tokChange)}</th><th class="w">${bar(A?.pairedTokens, 'a', A?.pairedTokens)}${bar(B?.pairedTokens, 'b', A?.pairedTokens)}</th><th></th></tr></tfoot></table>
+${unpaired.length ? `<p class="legend warn">Token totals cover the ${pairedRows.length} paired cases only. Not compared (missing, blocked, skipped or error in one arm): ${esc(unpaired.join(', '))}.</p>` : ''}
 <p class="legend"><span class="bar a"></span> plain Claude <span class="bar b"></span> Claude + tool (${esc(engine)} or its rules; the small text under each case says which decided) · tokens are ${esc(manifest.evaluation?.tokenScope ?? 'all tokens of the case run')} · source: ${esc(
   [...new Set(runs.flatMap((r) => (r.res.cases ?? []).map((c) => c.usage?.source).filter(Boolean)))].join('; ') || 'not recorded')}</p>`;
 

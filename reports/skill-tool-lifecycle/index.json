@@ -30,7 +30,8 @@
         "providerCalls": 0,
         "fallbacks": 0,
         "providerLatencyMs": null,
-        "elapsedMs": null
+        "elapsedMs": null,
+        "pairedTokens": 98400
       },
       "B": {
         "cases": 10,
@@ -48,10 +49,13 @@
         "providerCalls": 3,
         "fallbacks": 0,
         "providerLatencyMs": 646,
-        "elapsedMs": null
+        "elapsedMs": null,
+        "pairedTokens": 47223
       }
     },
     "regressions": [],
+    "pairedCases": 10,
+    "unpairedCases": [],
     "improvements": [],
     "unitTotals": {
       "passed": 28,
@@ -61,7 +65,7 @@
     },
     "openBlockingFindings": 3,
     "lastRun": "2026-10-16T08:17:08.887Z",
-    "generatedAt": "2026-10-16T08:26:32.703Z",
+    "generatedAt": "2026-10-17T04:51:29.882Z",
     "report": "report.html",
     "href": "smart-context-trimming/20261016-sct-bench-01/report.html",
     "stale": false,

@@ -39,7 +39,7 @@ fs.writeFileSync(path.join(root, 'index.json'), JSON.stringify(items, null, 2));
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]);
 const num = (x) => (x == null ? '—' : Math.round(x).toLocaleString('en-US'));
 const tokChange = (i) => {
-  const a = i.arms?.A?.tokens, b = i.arms?.B?.tokens;
+  const a = i.arms?.A?.pairedTokens ?? i.arms?.A?.tokens, b = i.arms?.B?.pairedTokens ?? i.arms?.B?.tokens;
   return a == null || b == null || !a ? null : (b - a) / a;
 };
 const passed = (g) => (g ? `${g.pass}/${g.pass + g.fail}` : '—');
@@ -49,6 +49,7 @@ const needsYou = (i) =>
     ['PILOT', 'INSUFFICIENT_EVIDENCE'].includes(i.recommendation) && i.recommendation,
     i.openBlockingFindings && `${i.openBlockingFindings} open Critical/Major`,
     i.regressions?.length && `worse on ${i.regressions.join(', ')}`,
+    i.unpairedCases?.length && `${i.unpairedCases.length} case(s) not compared`,
     i.unitTotals?.failed && `${i.unitTotals.failed} failing tests`,
     !i.unitTotals && 'tests not recorded',
   ].filter(Boolean);
@@ -59,7 +60,7 @@ const rows = items
     return `<tr><td><a href="${esc(i.href)}"><b>${esc(i.tool?.name)}</b></a>${i.stale ? ' <small class="warn">stale</small>' : ''}${i.reportExists ? '' : ' <small class="bad">report missing</small>'}<br><small>${esc(
       i.tool?.kind)} · + ${esc(i.engine ?? i.tool?.provider)} · ${esc((i.lastRun ?? '').slice(0, 10))}</small></td><td><span class="b ${esc(i.recommendation)}">${esc(
       i.recommendation ?? 'PENDING')}</span></td><td class="r ${d == null ? '' : d < 0 ? 'good' : 'bad'}">${d == null ? '—' : `${d > 0 ? '+' : ''}${Math.round(d * 100)}%`}<br><small>${num(
-      i.arms?.A?.tokens)} → ${num(i.arms?.B?.tokens)}</small></td><td class="r">${passed(i.arms?.A)} → ${passed(i.arms?.B)}${
+      i.arms?.A?.pairedTokens ?? i.arms?.A?.tokens)} → ${num(i.arms?.B?.pairedTokens ?? i.arms?.B?.tokens)}</small></td><td class="r">${passed(i.arms?.A)} → ${passed(i.arms?.B)}${
       i.regressions?.length ? `<br><small class="bad">${i.regressions.length} worse</small>` : ''}</td><td class="r">${num(i.arms?.B?.providerCalls)}</td><td>${esc(i.headline ?? '')}</td></tr>`;
   })
   .join('');

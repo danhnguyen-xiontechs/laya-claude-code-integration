@@ -70,11 +70,11 @@ Spawn a separate reviewer (Agent tool, fresh context, read-only) with the brief,
 
 ## 6. Measure A vs B — real tokens per case
 
-Write one `results.json` per arm and run: `{ experimentId, arm, runId, startedAt, finishedAt, cases: [...] }`, one case per case id (`schemas/case-result.schema.json`): `status` pass/fail/blocked/skipped/error, `observedOutcome` (one line, shown under the case name), `usage`, `evidenceRefs`. Blocked never counts as pass or fail. Missing number = `null`, never an estimate shown as real.
+Write one `results.json` per arm and run: `{ experimentId, arm, runId, startedAt, finishedAt, cases: [...] }`, one case per case id (`schemas/case-result.schema.json`): `status` pass/fail/blocked/skipped/error, `observedOutcome` (one line, shown under the case name), `usage`, `evidenceRefs`. Blocked never counts as pass or fail, and only cases that are pass/fail in both arms are compared (better/worse and token totals); the rest are listed as "not compared". Missing number = `null`, never an estimate shown as real.
 
 Where the tokens come from — pick the one that matches the tool:
 
-- **Agent run** (the tool changes how Claude works through a task: skills, routers, gates): run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage`:
+- **Agent run** (the tool changes how Claude works through a task: skills, routers, gates): run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage` (subagent transcripts under `<session>/subagents/` are included; `--no-subagents` to skip):
   ```bash
   node .claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs "<session.jsonl>" --from <ISO> --to <ISO>
   ```
@@ -86,7 +86,7 @@ Where the tokens come from — pick the one that matches the tool:
   ```bash
   node .claude/skills/build-skill-tool-workflow/scripts/count_tokens.mjs evidence/texts/*.txt
   ```
-  Put the count in `usage.inputTokens`; identical text reuses A's count (the count varies by ±5 between calls). Keep the import script (`import_*.ts|mjs`) in the experiment folder so the numbers can be rebuilt.
+  A failed call gives `null` and exit 1, never a guess. Put the count in `usage.inputTokens`; identical text reuses A's count (the count varies by ±5 between calls). Keep the import script (`import_*.ts|mjs`) in the experiment folder so the numbers can be rebuilt.
 
 Record Jev/Laya calls per case in `usage.providerCalls`, `fallbackCount` and `providerLatencyMs`.
 
