@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261017-sct-agent-02",
+  "tool": {
+    "name": "smart-context-trimming v2 (agent run)",
+    "kind": "hook",
+    "provider": "JEV",
+    "commit": "d5f1113",
+    "branch": "claude/skill-tool-workflow-definition-a31b84"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "PILOT",
+  "confidence": "LOW",
+  "headline": "After the fix (node --test ✖ recognised, repeated failures folded) trimming fires on all 5 tasks. Haiku 5.5 subagents still pass 20/20 in both arms, and total session tokens drop 18% (4.96M → 4.04M): js-one-bug −49%, dotnet-build −35%, js-three-bugs −25%, while js-root-exception (+8%) and js-feature (+24%) went up by about the run-to-run noise. Try it on real work before adopting.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (raw test/build output)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + trim-core (Jev live, rules fallback)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, minJevConfidence 0.6"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "agent-v2",
+    "datasetVersion": "make_tasks.mjs (5 tasks)",
+    "caseCount": 5,
+    "repetitions": 2,
+    "tokenScope": "all tokens of the subagent's whole task session (input + output + cache read + cache write)",
+    "deviations": [
+      "Same harness as 20261017-sct-agent-01 (not the real hook: both arms run tests through run.mjs; A raw, B through trim-core.ts decideAndBuild with Jev live). The hook's deny-shape for failed commands is not reproduced.",
+      "Jev was asked only on dotnet-build (errors_only / errors_and_warnings); the node tasks are trimmed by rules alone, so the gain there is the rules, not Jev.",
+      "Noise: the previous run showed ±17% between arms on untrimmed tasks, so the +8% and +24% cases are not clear regressions; js-feature B took one or two more turns in both reps, worth watching.",
+      "Output Claude reads per test run: node tasks 11–74 KB → 1–12 KB, dotnet 238 KB → 7–9 KB.",
+      "Tokens include cache reads (~85% of all tokens, billed at ~10% of input).",
+      "Synthetic tasks with obvious bugs (make_tasks.mjs), 2 reps, one model (haiku, effort xhigh). Some agents briefly wrote scratch files outside their folder and deleted them; grading re-ran the raw command and checked protected files."
+    ],
+    "criteriaFrozenAt": null
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/filter-logs"
+    ],
+    "executionLogs": []
+  }
+}
