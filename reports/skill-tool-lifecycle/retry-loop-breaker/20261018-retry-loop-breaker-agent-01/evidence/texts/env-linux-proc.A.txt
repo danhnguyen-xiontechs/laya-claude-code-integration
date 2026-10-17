@@ -1,0 +1,34 @@
+$ node run.mjs npm test
+
+> test
+> node --test
+
+✔ add (1.0453ms)
+✔ clamp (0.4672ms)
+✖ kernel exposes total memory (1.6373ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 136.9617
+
+✖ failing tests:
+
+test at test\memory.test.js:6:1
+✖ kernel exposes total memory (1.6373ms)
+  Error: ENOENT: no such file or directory, open 'C:\proc\meminfo'
+      at Object.readFileSync (node:fs:440:20)
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-dijkstra-a18bb4/1f6d4e61-c058-4127-b054-6daa89fe71c6/scratchpad/rlb/work/job-1405a2a2/test/memory.test.js:6:58)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: 'C:\\proc\\meminfo'
+  }
+Exit code 1

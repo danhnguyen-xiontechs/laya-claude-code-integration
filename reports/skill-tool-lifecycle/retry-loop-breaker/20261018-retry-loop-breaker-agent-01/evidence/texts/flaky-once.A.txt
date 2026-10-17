@@ -1,0 +1,38 @@
+$ node run.mjs npm test
+
+> test
+> node --test
+
+✖ cache is ready after cold start (2.0583ms)
+✔ add (1.2041ms)
+✔ clamp (0.2741ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 143.3584
+
+✖ failing tests:
+
+test at test\cache.test.js:10:1
+✖ cache is ready after cold start (2.0583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'warming' !== 'ready'
+  
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-dijkstra-a18bb4/1f6d4e61-c058-4127-b054-6daa89fe71c6/scratchpad/rlb/work/job-b66d3870/test/cache.test.js:11:10)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'warming',
+    expected: 'ready',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+Exit code 1

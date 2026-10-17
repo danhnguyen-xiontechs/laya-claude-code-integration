@@ -1,0 +1,30 @@
+$ node run.mjs npm test
+
+> test
+> node --test
+
+✖ charge goes through the gateway (1.2235ms)
+✔ add (1.1251ms)
+✔ clamp (0.3101ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.4312
+
+✖ failing tests:
+
+test at test\api.test.js:7:1
+✖ charge goes through the gateway (1.2235ms)
+  Error: 401 Unauthorized: PAYMENT_API_KEY is not set
+      at authorize (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-dijkstra-a18bb4/1f6d4e61-c058-4127-b054-6daa89fe71c6/scratchpad/rlb/work/job-2e55a695/vendor/gateway.js:5:19)
+      at charge (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-dijkstra-a18bb4/1f6d4e61-c058-4127-b054-6daa89fe71c6/scratchpad/rlb/work/job-2e55a695/src/api.js:3:3)
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-dijkstra-a18bb4/1f6d4e61-c058-4127-b054-6daa89fe71c6/scratchpad/rlb/work/job-2e55a695/test/api.test.js:7:59)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+Exit code 1

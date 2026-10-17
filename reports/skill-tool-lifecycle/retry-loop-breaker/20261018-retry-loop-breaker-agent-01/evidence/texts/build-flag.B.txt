@@ -1,0 +1,7 @@
+$ node run.mjs npm run build
+
+> build
+> node build.mjs
+
+build.mjs: error: missing required option --target (es2019|es2020)
+Exit code 1
