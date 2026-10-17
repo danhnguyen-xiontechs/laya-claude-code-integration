@@ -1,0 +1,2 @@
+PICK: code-review
+The request asks for a bug check on a branch before merge, which matches code-review's "review the current diff, a branch or a pull request for correctness bugs"; integration-verifier is for batches of parallel story branches and security-review covers only security, so neither fits.

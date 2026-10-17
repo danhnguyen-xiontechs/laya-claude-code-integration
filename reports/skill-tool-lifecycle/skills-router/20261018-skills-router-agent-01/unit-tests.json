@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test .claude/skills/skills-router/tests/catalog.test.mjs .claude/skills/skills-router/tests/route.test.mjs .claude/skills/skills-router/tests/history-eval.test.mjs .claude/skills/skills-router/tests/shadow.test.mjs .claude/skills/skills-router/tests/scenarios.test.mjs .claude/skills/skills-router/tests/variants.test.mjs",
+      "passed": 63,
+      "failed": 2,
+      "skipped": 0,
+      "notRun": 0,
+      "notes": "65 tests at commit 56bfcf2 on Node 24.11.1 / Windows. The 2 failures are in scenarios.test.mjs ('the shipped scenario file matches its manifest' and 'refuses a modified file unless told otherwise'): the Windows checkout (core.autocrlf=true) turns eval/scenarios.jsonl into CRLF, so its sha256 differs from the frozen manifest; `git show HEAD:...scenarios.jsonl | sha256sum` equals the manifest value, so the committed file is intact. Environment artifact, not a tool defect; not fixed in this run."
+    }
+  ]
+}

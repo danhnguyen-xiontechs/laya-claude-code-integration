@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request explicitly asks for Jev to wait for the page to finish loading and to classify the screen, which is the web-test-jev-wait variant's stated purpose, and the skills-router Jev decision also chose it; plain web-test would apply only if Jev were not requested.

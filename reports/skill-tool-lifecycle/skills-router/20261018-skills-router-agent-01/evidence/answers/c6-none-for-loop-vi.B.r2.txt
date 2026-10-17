@@ -1,0 +1,2 @@
+PICK: none
+Writing a for loop that prints even numbers is a plain coding task Claude can do directly, and no installed skill, command or subagent covers it (the router's BM25 shortlist was empty and it abstained).

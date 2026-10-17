@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-skills-router-agent-01",
+  "tool": {
+    "name": "skills-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "56bfcf2",
+    "branch": "main"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "On 6 pick-a-skill requests (4 with a skill as the answer, 2 needing none) with Haiku 5.5, plain Claude (A) with the full skill list picked right 12 of 12 times and Claude + the router hint (B, Jev live) also 12 of 12, so the hint changed no answer, while B used 72% more tokens (1.49M -> 2.56M) and about twice the turns (25 -> 44); no case got worse. The router itself was right on all 6 requests (0 Jev errors, ~0.8 s per call), but the cases were too easy to show value, and 3 Major tool findings stay open. Top fix: print the hint as one short line instead of a 2k-token JSON after a 30 KB list.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude + the plain skill listing (48 entries, full descriptions)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + the listing + skills-router route.mjs output (BM25 shortlist, then Jev, agreement low)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13-20260917 via OpenRouter decisions API, advisory hint"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "agent-retro-v1",
+    "datasetVersion": "6 requests copied from eval/scenarios.jsonl (S071, S077, S060, S044, S094, S172), all test split; catalog = repo copy at 56bfcf2 (48 entries)",
+    "caseCount": 6,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18T00:00:00.000Z",
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript; the router's own Jev call runs inside the helper and is outside these tokens",
+    "deviations": [
+      "Open Critical/Major review findings were pre-accepted by the user for this run (2026-10-18). Three Major tool findings are accepted and not fixed: a partial 200 body gives a high-confidence suggestion (route.mjs:350), SKILL.md puts the raw request into a shell string (SKILL.md:31), dedupe by bare name merges different commands (catalog.mjs:289). This run used the router on the happy path only (18 calls, 0 errors, 0 fallbacks), so it says nothing about them.",
+      "The independent review (opus) found measurement-design problems that were fixed before the run: the case id (the gold) was in every work-folder name and prompt (now neutral t-<hex> folders), the key and arm name sat in pick.mjs (now an opaque hex and a neutral _h.mjs; its content still differs by arm), arm A had an extra restriction that contradicted the shared line (now only \"do not use or run the skills-router skill or its scripts\"), and the listing cut descriptions at 220 characters, which hid the variants' \"trigger only on\" rule from A (now full descriptions).",
+      "The real tool folder path stays inside pick.mjs, so an agent could have reached the tool's eval data. Checked mechanically on all 24 agents: 0 tool calls mention scenarios / cases.json / skill-tool-lifecycle. Arm A: 0 calls mention skills-router / route.mjs / catalog.mjs (no contamination, no re-run). The forbid hits seen in B (3 calls in c1 r1, c2 r1, c4 r2) are B reading the router output it was given.",
+      "Two of the four skill cases (c2 = S077, c3 = S060) are in-sample for the tool: its variant rule was written to fix them and tests/variants.test.mjs quotes them. c3 is also not a real overlap case here, because this repo has no plain review-pr (the eval added a synthetic one).",
+      "B's extra tokens come mostly from the wrapper, not only from the tool: the helper prints the 30 KB listing first and the router JSON last, the Bash output is cut and saved to a file, and every B agent then made 3-5 tool calls (A: 2-3), grepping, reading or re-running the helper to find the hint (turns 25 -> 44). A's output is cut the same way but A needs no tail. A rerun with the hint printed first would show how much of the +72% is this layout; it was not done.",
+      "Case agents ran on Haiku 5.5 with effort xhigh by the user's decision (both arms, checked in the transcripts); the reviewer ran on opus.",
+      "One arm-A agent (c3 r1) called a session-management tool (hand_off_to_session) that is in this session's tool list; it was irrelevant to the answer and did not touch the skills-router.",
+      "Router vs gold: the router's suggestion equalled the gold on 4 of 4 skill requests and abstained on both none requests, in every B call. Agents in A reached the same answers without it, so the router changed no decision in this run.",
+      "Test run: 63 of 65 pass; the 2 failures are CRLF checkout artefacts of scenarios.jsonl (the LF blob matches the frozen sha256), not a tool defect.",
+      "Side effects of the tool: each route call wrote a line to ~/.skills-router/log.jsonl and the catalog cache under ~/.skills-router/cache (no opt-out); the smoke runs before the real run used the same machine.",
+      "Experiment files were written under the session worktree; the tool was run from this worktree and the agents worked on a scrubbed git archive of 56bfcf2 (reports/, skills-router eval/, tests/ and README removed). Gold skill names remain in ordinary descriptions of the copy, since they are the names the agents must read."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/answers",
+      "evidence/logs",
+      "evidence/usage.scrubbed.json",
+      "evidence/scores.json",
+      "improvements.md"
+    ],
+    "executionLogs": []
+  }
+}

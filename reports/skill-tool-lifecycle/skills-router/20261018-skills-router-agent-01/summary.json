@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-skills-router-agent-01",
+  "tool": {
+    "name": "skills-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "56bfcf2",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 6 pick-a-skill requests (4 with a skill as the answer, 2 needing none) with Haiku 5.5, plain Claude (A) with the full skill list picked right 12 of 12 times and Claude + the router hint (B, Jev live) also 12 of 12, so the hint changed no answer, while B used 72% more tokens (1.49M -> 2.56M) and about twice the turns (25 -> 44); no case got worse. The router itself was right on all 6 requests (0 Jev errors, ~0.8 s per call), but the cases were too easy to show value, and 3 Major tool findings stay open. Top fix: print the hint as one short line instead of a 2k-token JSON after a 30 KB list.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1491616,
+      "inputTokens": 50,
+      "outputTokens": 94,
+      "toolCalls": 25,
+      "modelTurns": 25,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 5011,
+      "pairedTokens": 745808
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 2558886,
+      "inputTokens": 88,
+      "outputTokens": 789,
+      "toolCalls": 45,
+      "modelTurns": 44,
+      "providerCalls": 18,
+      "fallbacks": 0,
+      "providerLatencyMs": 935,
+      "elapsedMs": 9863,
+      "pairedTokens": 1279443
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 63,
+    "failed": 2,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": null,
+  "generatedAt": "2026-10-17T17:32:24.559Z",
+  "report": "report.html"
+}

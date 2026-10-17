@@ -1,0 +1,2 @@
+PICK: review-pr-laya-classify
+The request asks for a PR review plus the Laya severity check on each finding, which is the skill's stated trigger (an explicit request to test the Laya severity check), and the skills-router BM25 shortlist and Jev decision both point to it at high confidence. (The laya-router MCP server failed to connect with CONNECTION_CLOSED; if the severity check depends on it rather than on local scripts, that needs a retry or fix.)

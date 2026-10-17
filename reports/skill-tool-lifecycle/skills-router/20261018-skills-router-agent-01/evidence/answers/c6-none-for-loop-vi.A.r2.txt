@@ -1,0 +1,2 @@
+PICK: none
+The request is a plain coding task (write a for loop that prints even numbers), which Claude can do directly, and no installed skill, command or subagent covers simple code writing.

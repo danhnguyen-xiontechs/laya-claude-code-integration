@@ -1,0 +1,2 @@
+PICK: web-test
+The request names a story number and a dev environment and asks for an HTML report with screenshots, which is exactly what the web-test skill's description covers (fetches the ADO work item, runs its ACs in a browser on the chosen env, saves screenshots, produces an HTML test report); the helper's BM25 top and Jev decision both agree on web-test.

@@ -1,0 +1,2 @@
+PICK: none
+No installed skill covers diagnosing an intermittent test, so Claude should answer directly by reading the test and the code it exercises, and codebase-task-explorer only locates where to start rather than explaining flaky results.

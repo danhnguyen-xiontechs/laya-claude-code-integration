@@ -1,0 +1,11 @@
+{
+  "note": "Requests and gold come from the tool's frozen eval set (.claude/skills/skills-router/eval/scenarios.jsonl), copied verbatim. This file is the answer key: it is never copied into the agents' work folders.",
+  "cases": [
+    { "id": "c1-webtest-plain-vi", "scenario": "S071", "category": "overlap", "lang": "vi", "split": "test", "request": "kiểm thử story 29461 trên môi trường dev, xuất báo cáo HTML có ảnh chụp", "gold": ["web-test"] },
+    { "id": "c2-webtest-jev-wait-vi", "scenario": "S077", "category": "overlap", "lang": "vi", "split": "test", "request": "test ticket 12983, dùng Jev để đợi trang tải xong và phân loại màn hình", "gold": ["web-test-jev-wait"] },
+    { "id": "c3-review-laya-severity-en", "scenario": "S060", "category": "overlap", "lang": "en", "split": "test", "request": "review this PR and also run the Laya severity check on each finding", "gold": ["review-pr-laya-classify"] },
+    { "id": "c4-code-review-vi", "scenario": "S044", "category": "implicit", "lang": "vi", "split": "test", "request": "xem giúp tôi nhánh này có bug không trước khi tôi merge", "gold": ["code-review"] },
+    { "id": "c5-none-flaky-test-vi", "scenario": "S094", "category": "none", "lang": "vi", "split": "test", "request": "tại sao test này lúc pass lúc fail nhỉ?", "gold": ["none"] },
+    { "id": "c6-none-for-loop-vi", "scenario": "S172", "category": "hard-negative", "lang": "vi", "split": "test", "request": "viết vòng lặp for in ra các số chẵn", "gold": ["none"] }
+  ]
+}

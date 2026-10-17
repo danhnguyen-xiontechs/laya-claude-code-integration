@@ -1,0 +1,2 @@
+PICK: web-test
+The request asks to test ESS story 29461 on dev and export an HTML report with screenshots, which is exactly what the web-test skill's description covers (fetch the ADO work item, run the ACs in a browser, save screenshot evidence, produce an HTML test report), and the helper's BM25 shortlist and Jev decision both rank it first.

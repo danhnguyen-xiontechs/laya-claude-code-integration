@@ -1,0 +1,96 @@
+{
+  "reviewer": "independent subagent (opus), read-only, 2026-10-18",
+  "findings": [
+    {
+      "severity": "Critical",
+      "finding": "Every case id names its gold answer (c2-webtest-jev-wait-vi, c4-code-review-vi, ...). The work folder was w/<caseId>-<hex> and the prompt's first line shows it to the agent in both arms, so the answer key leaks into every prompt.",
+      "ref": "reports/skill-tool-lifecycle/skills-router/20261018-skills-router-agent-01/make_tasks.mjs:36",
+      "area": "measurement-design",
+      "resolution": "fixed: work folders are now w/t-<hex>; the case id appears nowhere in a prompt or work folder (make_tasks.mjs)"
+    },
+    {
+      "severity": "Major",
+      "finding": "pick.mjs contained the key '<case>.<arm>.r<n>' and the path to lib/a.mjs or lib/b.mjs, so 'the hex id hides the arm' was false; it also holds the absolute path of the real skills-router folder from which README, eval/scenarios.jsonl, tests and cases.json can be reached; the --forbid check ran on arm A only.",
+      "ref": "make_tasks.mjs:43-48",
+      "area": "measurement-design",
+      "resolution": "fixed in part: key is now an opaque hex, the helper is copied to <work>/_h.mjs (its content still differs by arm, unavoidable). The real tool folder path stays in pick.mjs; instead the --forbid check (scenarios|cases.json|reports/skill-tool) now runs on BOTH arms and any hit is a contamination; see deviations."
+    },
+    {
+      "severity": "Major",
+      "finding": "Arm A's extra sentence said 'do not look for or use any skill, script or helper from the repo', contradicting the shared 'You may read files in the repo to check a skill' and discouraging A from opening variant SKILL.md files; B had no such restriction.",
+      "ref": "make_tasks.mjs:50",
+      "area": "measurement-design",
+      "resolution": "fixed: A now says 'decide yourself from the list; do not use or run the skills-router skill or its scripts'; reading other skills is allowed in both arms"
+    },
+    {
+      "severity": "Major",
+      "finding": "The shared listing cut every description at 220 chars, which removes the 'Trigger only on ... plain ticket-testing requests go to web-test' routing sentence of the variants. Arm B gets that through route.mjs, so A was weaker than plain Claude on c1, c2, c3.",
+      "ref": "helpers/common.mjs:12",
+      "area": "measurement-design",
+      "resolution": "fixed: the listing now prints the full description of every entry, as the skill list Claude sees does"
+    },
+    {
+      "severity": "Major",
+      "finding": "c3 (S060) and c2 (S077) are test-split scenarios listed in the README's round-1 confusion table; the round-2 variant rule was written to fix them and tests/variants.test.mjs asserts the S060 prompt word for word and the S077 prompt almost word for word, so B on these two cases is in-sample for the tool.",
+      "ref": "tests/variants.test.mjs:61",
+      "area": "measurement-design",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed (cases come from the tool's own eval by the user's instruction): the cases come from the tool's own eval by the user's instruction; B's result on c2/c3 is not held out (deviations)"
+    },
+    {
+      "severity": "Major",
+      "finding": "A malformed or partial 200 body such as {answers:{which:{probabilities:{'code-review':1}}}} (no gate, no fit_*) gives a suggestion with abstain false and confidenceLabel 'high': a missing gate/fit is treated as passing instead of abstaining or reporting an error (verified with a fake fetch).",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:350",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "SKILL.md step 2 puts the raw request into --query \"<request>\" in a shell command; a request containing $(...), backticks or a double quote is expanded or run by the shell or breaks the arguments. No stdin or file input exists.",
+      "ref": ".claude/skills/skills-router/SKILL.md:31",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "Dedupe uses the bare name (last ':' segment): /frontend:test and /backend:test commands become one entry, and two plugins with a 'review' skill keep only one; real invocable commands disappear from the catalog.",
+      "ref": ".claude/skills/skills-router/scripts/catalog.mjs:289",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "A mention clears every abstain reason: \"don't use /web-test, why is this test flaky?\" with the engine answering none 0.99 and gate 0.02 still returns suggestion web-test, abstain false.",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:369",
+      "area": "tool",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "isExplicitOnly matches 'Triggers only for TypeScript files; use for any TS lint request', so an ordinary skill is hidden from the shortlist unless named.",
+      "ref": ".claude/skills/skills-router/scripts/catalog.mjs:89",
+      "area": "tool",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The query is never capped: a 240 KB request goes whole to OpenRouter and in full into ~/.skills-router/log.jsonl, with no opt-out (the shadow log cuts at 300 chars).",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:522",
+      "area": "tool",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "No committed source backs the README's measurement tables: the report-*.json and run-*.jsonl live only in ~/.skills-router/eval on one machine.",
+      "ref": ".claude/skills/skills-router/README.md:346",
+      "area": "tool",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Not in the reviewer's array: the catalog of this repo has no plain review-pr (it was synthetic in the eval), so c3 is not a real overlap case here; and a query starting with '--' is parsed as a flag and the router returns 'empty query'.",
+      "ref": "SKILL.md / route.mjs arg parsing",
+      "area": "tool",
+      "resolution": "open"
+    }
+  ]
+}

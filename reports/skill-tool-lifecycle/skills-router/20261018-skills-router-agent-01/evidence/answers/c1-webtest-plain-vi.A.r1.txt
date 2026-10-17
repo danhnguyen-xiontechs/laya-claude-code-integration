@@ -1,0 +1,2 @@
+PICK: web-test
+The request is to test story 29461 on dev with an HTML report and screenshots, which matches web-test's listed trigger "test story 22070 on dev", while the web-test-jev-* and web-test-laya-* variants are A/B experiment copies that only trigger on explicit requests to use them.

@@ -1,0 +1,2 @@
+PICK: code-review
+The request asks for a bug check on the branch's changes before a merge, which matches the built-in code-review skill that reviews the diff or branch for correctness bugs.

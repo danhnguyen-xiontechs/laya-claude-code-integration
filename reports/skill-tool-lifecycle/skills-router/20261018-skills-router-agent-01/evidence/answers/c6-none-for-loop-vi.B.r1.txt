@@ -1,0 +1,2 @@
+PICK: none
+A one-line for-loop that prints even numbers is a simple coding answer Claude can give directly, and no installed skill, command or subagent covers it (the skills-router BM25 shortlist was empty and its Jev decision abstained).
