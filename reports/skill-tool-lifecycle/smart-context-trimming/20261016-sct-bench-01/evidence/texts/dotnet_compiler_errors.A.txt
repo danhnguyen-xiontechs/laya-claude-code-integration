@@ -1,0 +1,311 @@
+Exit code 1
+MSBuild version 17.9.8+b34f75857 for .NET
+  Restored C:\src\Proj0\Proj0.csproj (in 100 ms).
+  Restored C:\src\Proj1\Proj1.csproj (in 101 ms).
+  Restored C:\src\Proj2\Proj2.csproj (in 102 ms).
+  Restored C:\src\Proj3\Proj3.csproj (in 103 ms).
+  Restored C:\src\Proj4\Proj4.csproj (in 104 ms).
+  Restored C:\src\Proj5\Proj5.csproj (in 105 ms).
+  Restored C:\src\Proj6\Proj6.csproj (in 106 ms).
+  Restored C:\src\Proj7\Proj7.csproj (in 107 ms).
+  Restored C:\src\Proj8\Proj8.csproj (in 108 ms).
+  Restored C:\src\Proj9\Proj9.csproj (in 109 ms).
+  Restored C:\src\Proj10\Proj10.csproj (in 110 ms).
+  Restored C:\src\Proj11\Proj11.csproj (in 111 ms).
+  Restored C:\src\Proj12\Proj12.csproj (in 112 ms).
+  Restored C:\src\Proj13\Proj13.csproj (in 113 ms).
+  Restored C:\src\Proj14\Proj14.csproj (in 114 ms).
+  Restored C:\src\Proj15\Proj15.csproj (in 115 ms).
+  Restored C:\src\Proj16\Proj16.csproj (in 116 ms).
+  Restored C:\src\Proj17\Proj17.csproj (in 117 ms).
+  Restored C:\src\Proj18\Proj18.csproj (in 118 ms).
+  Restored C:\src\Proj19\Proj19.csproj (in 119 ms).
+  Restored C:\src\Proj20\Proj20.csproj (in 120 ms).
+  Restored C:\src\Proj21\Proj21.csproj (in 121 ms).
+  Restored C:\src\Proj22\Proj22.csproj (in 122 ms).
+  Restored C:\src\Proj23\Proj23.csproj (in 123 ms).
+  Restored C:\src\Proj24\Proj24.csproj (in 124 ms).
+  Restored C:\src\Proj25\Proj25.csproj (in 125 ms).
+  Restored C:\src\Proj26\Proj26.csproj (in 126 ms).
+  Restored C:\src\Proj27\Proj27.csproj (in 127 ms).
+  Restored C:\src\Proj28\Proj28.csproj (in 128 ms).
+  Restored C:\src\Proj29\Proj29.csproj (in 129 ms).
+  Restored C:\src\Proj30\Proj30.csproj (in 130 ms).
+  Restored C:\src\Proj31\Proj31.csproj (in 131 ms).
+  Restored C:\src\Proj32\Proj32.csproj (in 132 ms).
+  Restored C:\src\Proj33\Proj33.csproj (in 133 ms).
+  Restored C:\src\Proj34\Proj34.csproj (in 134 ms).
+  Restored C:\src\Proj35\Proj35.csproj (in 135 ms).
+  Restored C:\src\Proj36\Proj36.csproj (in 136 ms).
+  Restored C:\src\Proj37\Proj37.csproj (in 137 ms).
+  Restored C:\src\Proj38\Proj38.csproj (in 138 ms).
+  Restored C:\src\Proj39\Proj39.csproj (in 139 ms).
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+  Contoso.Lib0 -> C:\src\Lib0\bin\Release\net8.0\Contoso.Lib0.dll
+  Contoso.Lib1 -> C:\src\Lib1\bin\Release\net8.0\Contoso.Lib1.dll
+  Contoso.Lib2 -> C:\src\Lib2\bin\Release\net8.0\Contoso.Lib2.dll
+  Contoso.Lib3 -> C:\src\Lib3\bin\Release\net8.0\Contoso.Lib3.dll
+  Contoso.Lib4 -> C:\src\Lib4\bin\Release\net8.0\Contoso.Lib4.dll
+  Contoso.Lib5 -> C:\src\Lib5\bin\Release\net8.0\Contoso.Lib5.dll
+  Contoso.Lib6 -> C:\src\Lib6\bin\Release\net8.0\Contoso.Lib6.dll
+  Contoso.Lib7 -> C:\src\Lib7\bin\Release\net8.0\Contoso.Lib7.dll
+  Contoso.Lib8 -> C:\src\Lib8\bin\Release\net8.0\Contoso.Lib8.dll
+  Contoso.Lib9 -> C:\src\Lib9\bin\Release\net8.0\Contoso.Lib9.dll
+  Contoso.Lib10 -> C:\src\Lib10\bin\Release\net8.0\Contoso.Lib10.dll
+  Contoso.Lib11 -> C:\src\Lib11\bin\Release\net8.0\Contoso.Lib11.dll
+  Contoso.Lib12 -> C:\src\Lib12\bin\Release\net8.0\Contoso.Lib12.dll
+C:\src\Hr\LeaveService.cs(57,31): error CS1002: ; expected [C:\src\Hr\Hr.csproj]
+C:\src\Hr\PayrollCalc.cs(12,9): error CS0246: The type or namespace name 'Money' could not be found [C:\src\Hr\Hr.csproj]
+
+Build FAILED.
+
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:21.47

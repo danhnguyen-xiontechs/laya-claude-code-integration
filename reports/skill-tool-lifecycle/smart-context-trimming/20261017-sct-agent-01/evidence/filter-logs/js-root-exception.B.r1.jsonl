@@ -1,0 +1,2 @@
+{"ts":"2026-10-17T07:20:44.298Z","command":"node --test","action":"trim","reason":"jev:errors_only","bytesIn":74082,"bytesOut":50945,"jev":{"called":true,"latencyMs":735,"strategy":"errors_only","confidence":0.76},"ms":742}
+{"ts":"2026-10-17T07:21:22.702Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":13904,"bytesOut":13904,"jev":{"called":false},"ms":3}

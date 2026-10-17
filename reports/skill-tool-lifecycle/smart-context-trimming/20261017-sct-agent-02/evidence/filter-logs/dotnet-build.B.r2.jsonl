@@ -1,0 +1,2 @@
+{"ts":"2026-10-17T07:31:13.997Z","command":"dotnet build --nologo -clp:NoSummary;Summary","action":"trim","reason":"jev:errors_only","bytesIn":240481,"bytesOut":8762,"jev":{"called":true,"latencyMs":1176,"strategy":"errors_only","confidence":0.98},"ms":1188}
+{"ts":"2026-10-17T07:31:29.947Z","command":"dotnet build --nologo -clp:NoSummary;Summary","action":"trim","reason":"jev_low_confidence","bytesIn":237687,"bytesOut":7097,"jev":{"called":true,"latencyMs":693,"strategy":"errors_and_warnings","confidence":0.57},"ms":704}

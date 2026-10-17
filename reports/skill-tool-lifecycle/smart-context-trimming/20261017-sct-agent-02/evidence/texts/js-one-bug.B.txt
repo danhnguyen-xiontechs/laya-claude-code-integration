@@ -1,0 +1,43 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 315 → 28 original lines kept verbatim (rule).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: <js-one-bug>\.last-output.log (Read it if you need an omitted section).
+✔ sum #1 [[]] (2.2219ms)
+✔ sum #2 [[0]] (0.1451ms)
+✔ sum #3 [[0,1]] (0.1102ms)
+✔ sum #4 [[0,1,2]] (0.1084ms)
+✔ sum #5 [[0,1,2,3]] (0.1126ms)
+[smart-trim] … 259 line(s) omitted (6-264) …
+[smart-trim] --- line 265: summary ---
+ℹ tests 264
+[smart-trim] … 1 line(s) omitted (266-266) …
+[smart-trim] --- line 267: summary ---
+ℹ pass 262
+ℹ fail 2
+[smart-trim] … 5 line(s) omitted (269-273) …
+[smart-trim] --- line 274: failed_test ---
+✖ failing tests:
+[smart-trim] … 2 line(s) omitted (275-276) …
+[smart-trim] --- line 277: failed_test ---
+✖ clamp #1 [5,0,10] (2.482ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+[smart-trim] … 17 line(s) omitted (279-295) …
+[smart-trim] --- line 296: failed_test ---
+✖ clamp #3 [42,0,10] (0.3536ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+[smart-trim] … 3 line(s) omitted (298-300) …
+      at TestContext.<anonymous> (file:///<js-one-bug>/test/range.test.js:6:41)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 10,
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

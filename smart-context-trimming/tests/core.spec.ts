@@ -98,3 +98,42 @@ test('Jev request stays under maxJevInputBytes', () => {
     assert.ok(Buffer.byteLength(body) <= 4000 || plan.ask.length > 10, `${f.name}: ${Buffer.byteLength(body)}`);
   }
 });
+
+// node --test (spec reporter): each failure appears as "✖ name (ms)" while running and again, with details, under "✖ failing tests:".
+const nodeTestOutput = (failing: number, sameCause: boolean) => {
+  const run: string[] = [], tail: string[] = [];
+  for (let i = 0; i < 300; i++) run.push(`✔ passing test ${i} (0.1${i}ms)`);
+  for (let i = 0; i < failing; i++) {
+    run.push(`✖ broken ${i} (0.${i}ms)`);
+    tail.push('', `test at test\a.test.js:${i + 4}:1`, `✖ broken ${i} (0.${i}ms)`,
+      sameCause ? "  TypeError: Cannot read properties of undefined (reading 'toString')" : `  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: ${i} !== ${i + 100}`,
+      '      at normalize (file:///C:/p/src/config.js:3:39)', `      at TestContext.<anonymous> (file:///C:/p/test/a.test.js:${i + 4}:40)`, '      at Test.run (node:internal/test_runner/test:1106:25)');
+  }
+  return [...run, `ℹ tests ${300 + failing}`, 'ℹ suites 0', `ℹ pass 300`, `ℹ fail ${failing}`, 'ℹ duration_ms 145.6', '', '✖ failing tests:', ...tail].join('\n');
+};
+
+test('node --test: ✖ failures and ℹ summary are recognised and trimmed', async () => {
+  const text = nodeTestOutput(2, false);
+  const out = await decideAndBuild({ command: 'node --test', text, opt: { ...opt, useJev: false }, statusLine: status(true), rawPath: '/raw/x.log' });
+  assert.equal(out.plan.action, 'trim', out.plan.reason);
+  const seen = out.built!.text;
+  for (const c of ['✖ broken 0', '✖ broken 1', '0 !== 100', '1 !== 101', 'ℹ fail 2', 'ℹ tests 302']) assert.ok(seen.includes(c), `lost: ${c}`);
+  assert.ok(!seen.includes('✔ passing test 150'));
+});
+
+test('many failures with one cause: 2 detail blocks kept, the rest as names only, every test name kept', async () => {
+  const text = nodeTestOutput(40, true);
+  const out = await decideAndBuild({ command: 'node --test', text, opt: { ...opt, useJev: false }, statusLine: status(true), rawPath: '/raw/x.log' });
+  const seen = out.built!.text;
+  // 2 kept by the fold, up to 2 more inside the always-kept tail window
+  assert.ok(seen.split("TypeError: Cannot read properties of undefined").length - 1 <= 4);
+  for (let i = 0; i < 40; i++) assert.ok(seen.includes(`✖ broken ${i} `), `lost name ${i}`);
+  assert.match(seen, /failed_test ×39/);
+  assert.ok(out.built!.bytesOut < text.length / 3, `${out.built!.bytesOut} vs ${text.length}`);
+});
+
+test('different failure details are never folded together', () => {
+  const plan = planTrim('node --test', nodeTestOutput(5, false), { ...opt, useJev: false });
+  const detailed = plan.candidates.filter((c) => c.kind === 'failed_test' && c.line_end > c.line_start);
+  assert.equal(detailed.length, 5);
+});

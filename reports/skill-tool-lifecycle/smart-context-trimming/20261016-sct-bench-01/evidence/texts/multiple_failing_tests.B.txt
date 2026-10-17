@@ -1,0 +1,58 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 390 → 46 original lines kept verbatim (rule).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: ~/.claude/smart-context-trimming/raw/x.log (Read it if you need an omitted section).
+[smart-trim] --- line 1: exit_status ---
+Exit code 1
+  Restored C:\src\Proj0\Proj0.csproj (in 100 ms).
+  Restored C:\src\Proj1\Proj1.csproj (in 101 ms).
+  Restored C:\src\Proj2\Proj2.csproj (in 102 ms).
+  Restored C:\src\Proj3\Proj3.csproj (in 103 ms).
+[smart-trim] … 186 line(s) omitted (6-191) …
+[smart-trim] --- line 192: failed_test ---
+  Failed Contoso.Hr.Tests.LeaveServiceTests.Accrual_RoundsDown [17 ms]
+  Error Message:
+   Assert.Equal() Failure: Expected: 3 Actual: 4
+  Stack Trace:
+     at Contoso.Hr.Tests.LeaveServiceTests.Accrual_RoundsDown() in C:\src\Tests\LeaveServiceTests.cs:line 42
+     at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_150 [1 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_151 [2 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_152 [3 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_153 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_154 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_155 [6 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_156 [7 ms]
+[smart-trim] … 113 line(s) omitted (205-317) …
+[smart-trim] --- line 318: failed_test ---
+  Failed Contoso.Hr.Tests.PayrollTests.Overtime_Weekend [17 ms]
+  Error Message:
+   Assert.Equal() Failure: Expected: 1.5 Actual: 2.0
+  Stack Trace:
+     at Contoso.Hr.Tests.PayrollTests.Overtime_Weekend() in C:\src\Tests\PayrollTests.cs:line 88
+     at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_270 [1 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_271 [2 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_272 [3 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_273 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_274 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_275 [6 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_276 [7 ms]
+[smart-trim] … 45 line(s) omitted (331-375) …
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_322 [8 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_323 [9 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_324 [1 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_325 [2 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_326 [3 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_327 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_328 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_329 [6 ms]
+[smart-trim] --- line 384: failed_test ---
+  Failed Contoso.Hr.Tests.PayrollTests.Tax_Null [17 ms]
+  Error Message:
+   Assert.Equal() Failure: Expected: null Actual: 0
+  Stack Trace:
+     at Contoso.Hr.Tests.PayrollTests.Tax_Null() in C:\src\Tests\PayrollTests.cs:line 131
+     at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+[smart-trim] --- line 390: summary ---
+Failed!  - Failed:     3, Passed:   330, Skipped:     0, Total:   333
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

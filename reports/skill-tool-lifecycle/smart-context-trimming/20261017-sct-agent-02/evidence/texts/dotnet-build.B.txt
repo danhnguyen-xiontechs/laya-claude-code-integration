@@ -1,0 +1,36 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 516 → 24 original lines kept verbatim (jev:errors_only).
+[smart-trim] Command FAILED.
+[smart-trim] Full raw output: <dotnet-build>\.last-output.log (Read it if you need an omitted section).
+  Determining projects to restore...
+  Restored <dotnet-build>\App.csproj (in 69 ms).
+<dotnet-build>\Legacy.cs(4,31): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(5,31): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(6,31): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+[smart-trim] … 23 line(s) omitted (6-28) …
+[smart-trim] --- line 29: compiler_error ---
+<dotnet-build>\Order.cs(5,90): error CS0029: Cannot implicitly convert type 'int' to 'string' [<dotnet-build>\App.csproj]
+<dotnet-build>\Order.cs(5,115): error CS0023: Operator '++' cannot be applied to operand of type 'string' [<dotnet-build>\App.csproj]
+<dotnet-build>\Order.cs(5,127): error CS0029: Cannot implicitly convert type 'string' to 'int' [<dotnet-build>\App.csproj]
+[smart-trim] … 225 line(s) omitted (32-256) …
+[smart-trim] --- line 257: fatal ---
+Build FAILED.
+[smart-trim] … 244 line(s) omitted (258-501) …
+<dotnet-build>\Legacy.cs(247,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(248,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(249,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(250,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(251,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(252,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+<dotnet-build>\Legacy.cs(253,33): warning CS0618: 'Legacy.Old(int)' is obsolete: 'use Modern.Value' [<dotnet-build>\App.csproj]
+[smart-trim] --- line 509: compiler_error ---
+<dotnet-build>\Order.cs(5,90): error CS0029: Cannot implicitly convert type 'int' to 'string' [<dotnet-build>\App.csproj]
+<dotnet-build>\Order.cs(5,115): error CS0023: Operator '++' cannot be applied to operand of type 'string' [<dotnet-build>\App.csproj]
+<dotnet-build>\Order.cs(5,127): error CS0029: Cannot implicitly convert type 'string' to 'int' [<dotnet-build>\App.csproj]
+[smart-trim] --- line 512: summary ---
+    250 Warning(s)
+    3 Error(s)
+
+[smart-trim] --- line 515: summary ---
+Time Elapsed 00:00:01.09
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

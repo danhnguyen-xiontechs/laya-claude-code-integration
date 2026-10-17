@@ -1,0 +1,2 @@
+{"ts":"2026-10-17T07:20:43.444Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":13053,"bytesOut":13053,"jev":{"called":false},"ms":5}
+{"ts":"2026-10-17T07:20:54.654Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":11278,"bytesOut":11278,"jev":{"called":false},"ms":5}

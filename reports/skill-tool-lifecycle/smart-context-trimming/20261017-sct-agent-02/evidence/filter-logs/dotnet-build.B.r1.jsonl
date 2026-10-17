@@ -1,0 +1,1 @@
+{"ts":"2026-10-17T07:29:22.465Z","command":"dotnet build --nologo -clp:NoSummary;Summary","action":"trim","reason":"jev:errors_and_warnings","bytesIn":237866,"bytesOut":7281,"jev":{"called":true,"latencyMs":1220,"strategy":"errors_and_warnings","confidence":0.6},"ms":1231}
