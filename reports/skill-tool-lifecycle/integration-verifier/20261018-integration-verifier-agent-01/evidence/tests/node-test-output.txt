@@ -1,0 +1,25 @@
+unit rules: ok
+┌─────────┬────────────────────────────────┬───────────────────┬───────────────────┬──────────────────────────────────────────────────┬──────┬───────────────────────┬─────────────────────────────────┬─────┐
+│ (index) │ case                           │ expect            │ got               │ stories                                          │ ok   │ conflicts             │ clusters                        │ jev │
+├─────────┼────────────────────────────────┼───────────────────┼───────────────────┼──────────────────────────────────────────────────┼──────┼───────────────────────┼─────────────────────────────────┼─────┤
+│ 0       │ 'all-green'                    │ 'PASS'            │ 'PASS'            │ '{"S1":"PASS","S2":"PASS"}'                      │ true │ '-'                   │ '-'                             │ ''  │
+│ 1       │ 'contract-mismatch'            │ 'FAIL'            │ 'FAIL'            │ '{"S1":"FAIL","S2":"FAIL"}'                      │ true │ 'contract_mismatch'   │ 'unknown/rule-fallback→[S1,S2]' │ ''  │
+│ 2       │ 'contract-mismatch-undeclared' │ 'FAIL'            │ 'FAIL'            │ '{"S1":"FAIL","S2":"FAIL"}'                      │ true │ '-'                   │ 'unknown/rule-fallback→[S1,S2]' │ ''  │
+│ 3       │ 'duplicate-migration'          │ 'FAIL'            │ 'FAIL'            │ '{"S1":"FAIL","S2":"FAIL"}'                      │ true │ 'duplicate_migration' │ '-'                             │ ''  │
+│ 4       │ 'fixture-conflict'             │ 'FAIL'            │ 'FAIL'            │ '{"S1":"FAIL","S2":"FAIL"}'                      │ true │ '-'                   │ 'unknown/rule-fallback→[S2,S1]' │ ''  │
+│ 5       │ 'config-conflict'              │ 'FAIL'            │ 'FAIL'            │ '{"S1":"FAIL","S2":"FAIL"}'                      │ true │ 'config_conflict'     │ '-'                             │ ''  │
+│ 6       │ 'missing-logs'                 │ 'BLOCKED'         │ 'BLOCKED'         │ '{"S1":"BLOCKED","S2":"BLOCKED","S3":"BLOCKED"}' │ true │ '-'                   │ '-'                             │ ''  │
+│ 7       │ 'claim-only-and-story-fail'    │ 'FAIL'            │ 'FAIL'            │ '{"S1":"REVIEW_REQUIRED","S2":"FAIL"}'           │ true │ '-'                   │ '-'                             │ ''  │
+│ 8       │ 'environment-only'             │ 'BLOCKED'         │ 'BLOCKED'         │ '{"S1":"BLOCKED","S2":"BLOCKED"}'                │ true │ '-'                   │ 'environment/rule→[-]'          │ ''  │
+│ 9       │ 'green-but-review-finding'     │ 'REVIEW_REQUIRED' │ 'REVIEW_REQUIRED' │ '{"S1":"REVIEW_REQUIRED","S2":"PASS"}'           │ true │ '-'                   │ '-'                             │ ''  │
+└─────────┴────────────────────────────────┴───────────────────┴───────────────────┴──────────────────────────────────────────────────┴──────┴───────────────────────┴─────────────────────────────────┴─────┘
+cases 10 · mismatches 0 · FALSE PASS 0 · jev calls 0 · fixtures in C:\Users\ADMIN\AppData\Local\Temp\iv-fix-1ekl4H
+✔ .claude\skills\integration-verifier\tests\fixtures.test.mjs (11794.8403ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11804.4192
