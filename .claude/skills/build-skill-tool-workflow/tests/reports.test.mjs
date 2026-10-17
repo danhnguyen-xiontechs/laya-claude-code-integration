@@ -194,3 +194,23 @@ describe('subagent_usage', () => {
     assert.equal(o[path.join(d, 'missing')].transcript, null);
   });
 });
+
+describe('subagent_usage --forbid', () => {
+  it('counts the agent\'s own calls to the tool (Skill calls too), not the prompt, and not the hand-back', () => {
+    const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bstw-fb-'));
+    const work = path.join(d, 'case.A');
+    const user = (dir) => JSON.stringify({ type: 'user', message: { content: `Work folder: ${dir}\nUse the planner if you like, it is called story-batch-planner.` } });
+    const call = (id, name, input) => JSON.stringify({ type: 'assistant', timestamp: '2026-10-17T01:00:00Z', message: { id, usage: { input_tokens: 1, output_tokens: 1 }, content: [{ type: 'tool_use', name, input }] } });
+    // agent 1 reads the batch only; agent 2 calls the skill and runs the script; both then hand back an answer that names the tool
+    fs.writeFileSync(path.join(d, 'agent-1.jsonl'), [user(work), call('m1', 'Read', { file_path: 'batch.json' }), call('m2', 'SubagentHandback', { message: 'story-batch-planner was not used' })].join('\n'));
+    const work2 = path.join(d, 'case.A2');
+    fs.writeFileSync(path.join(d, 'agent-2.jsonl'), [user(work2), call('n1', 'Skill', { skill: 'story-batch-planner', args: 'x' }), call('n2', 'Bash', { command: 'node scripts/plan.mjs --in batch.json' })].join('\n'));
+    const run = (...dirs) => JSON.parse(spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, '--forbid', 'story-batch-planner|plan\.mjs', ...dirs], { encoding: 'utf8' }).stdout);
+    const o = run(work, work2);
+    assert.equal(o[work].forbiddenCalls, 0);
+    assert.equal(o[work2].forbiddenCalls, 2);
+    // without --forbid the field is absent
+    const plain = JSON.parse(spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, work], { encoding: 'utf8' }).stdout);
+    assert.equal('forbiddenCalls' in plain[work], false);
+  });
+});

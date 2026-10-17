@@ -3,17 +3,37 @@
 // transcript by the work dir named in its prompt, and sums that transcript's API usage (transcript_usage.mjs).
 // A work dir that matches no transcript, or more than one, gives null: never a guess.
 //
-// Usage: node subagent_usage.mjs <subagentsDir> <workDir...>
-//   subagentsDir = ~/.claude/projects/<project>/<sessionId>/subagents
-// Prints JSON { "<workDir>": { transcript, usage } | { transcript: null, error } }.
+// Usage: node subagent_usage.mjs <subagentsDir> [--forbid <regex>] <workDir...>
+//   subagentsDir = ~/.claude/projects/<project>/<sessionId>/subagents (one flat folder of agent-<id>.jsonl files)
+//   --forbid     counts the agent's own tool calls (the Skill tool included, by skill name) whose input matches the
+//                regex, case-insensitive: use it on arm A with the tool's slug and script name, to see whether the
+//                plain arm used the tool. The prompt is not scanned, only what the agent did.
+// Prints JSON { "<workDir>": { transcript, usage, forbiddenCalls? } | { transcript: null, error } }.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
-const [subDir, ...dirs] = process.argv.slice(2);
-if (!subDir || !dirs.length) {
-  console.error('Usage: node subagent_usage.mjs <subagentsDir> <workDir...>');
+const argv = process.argv.slice(2);
+const fi = argv.indexOf('--forbid');
+const forbid = fi >= 0 ? new RegExp(argv[fi + 1], 'i') : null;
+if (fi >= 0) argv.splice(fi, 2);
+const [subDir, ...dirs] = argv;
+if (!subDir || !dirs.length || (fi >= 0 && !forbid)) {
+  console.error('Usage: node subagent_usage.mjs <subagentsDir> [--forbid <regex>] <workDir...>');
   process.exit(2);
+}
+function forbiddenCalls(file) {
+  let n = 0;
+  for (const line of fs.readFileSync(file, 'utf8').split('\n')) {
+    let e;
+    try { e = JSON.parse(line); } catch { continue; }
+    if (e.type !== 'assistant') continue;
+    for (const c of e.message?.content ?? []) {
+      if (c.type !== 'tool_use' || c.name === 'SubagentHandback') continue;
+      if (forbid.test(`${c.name === 'Skill' ? c.input?.skill ?? '' : ''} ${JSON.stringify(c.input ?? {})}`)) n++;
+    }
+  }
+  return n;
 }
 const usageScript = path.join(import.meta.dirname, 'transcript_usage.mjs');
 // the first user message of a subagent transcript is the prompt it was given
@@ -33,6 +53,6 @@ for (const d of dirs) {
     continue;
   }
   const u = JSON.parse(spawnSync(process.execPath, [usageScript, hits[0].p, '--no-subagents'], { encoding: 'utf8' }).stdout);
-  out[d] = { transcript: hits[0].p, usage: u };
+  out[d] = { transcript: hits[0].p, usage: u, ...(forbid ? { forbiddenCalls: forbiddenCalls(hits[0].p) } : {}) };
 }
 console.log(JSON.stringify(out, null, 2));
