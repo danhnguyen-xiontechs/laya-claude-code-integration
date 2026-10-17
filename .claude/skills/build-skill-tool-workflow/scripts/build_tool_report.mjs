@@ -174,10 +174,17 @@ const cards = [
 
 const caseTable = `<table class="cases"><thead><tr><th>Case</th><th>Plain Claude</th><th>Claude + tool</th><th class="r">Tokens<br>plain Claude</th><th class="r">Tokens<br>Claude + tool</th><th class="r">Change</th><th class="w">Tokens</th><th>Evidence</th></tr></thead><tbody>${caseRows
   .map((r) => {
+    // "A text" = what Claude read; any other file is labelled by kind and run, e.g. "B log r2"
+    const evLabel = (arm, e) => {
+      const base = path.basename(e);
+      if (/\.txt$/i.test(base)) return `${arm} text`;
+      const rep = base.match(/\.(r\d+)\./)?.[1];
+      return `${arm} ${/\.jsonl?$/i.test(base) ? 'log' : base.split('.').pop()}${rep ? ` ${rep}` : ''}`;
+    };
     const d = pctChange(r.aTok, r.bTok);
     const same = d == null || Math.abs(d) < 0.01;
     if (!r.paired) return `<tr><td><b>${esc(r.id)}</b><br><small>${esc(r.note)}</small></td><td>${okIcon(r.a)}</td><td>${okIcon(r.b)}</td><td class="r">${num(r.aTok)}</td><td class="r">${num(r.bTok)}</td><td class="r muted">not compared</td><td class="w"></td><td></td></tr>`;
-    const ev = [...new Set(r.evidence.A)].map((e) => `<a href="${esc(e)}">A</a>`).concat([...new Set(r.evidence.B)].map((e) => `<a href="${esc(e)}">B</a>`)).join(' ');
+    const ev = ['A', 'B'].flatMap((arm) => [...new Set(r.evidence[arm])].map((e) => `<a href="${esc(e)}">${esc(evLabel(arm, e))}</a>`)).join(' · ');
     return `<tr class="${r.change}"><td><b>${esc(r.id)}</b>${r.engineUsed ? ` <span class="tag">${esc(engine)}</span>` : ''}<br><small>${esc(r.note)}</small></td><td>${okIcon(r.a)}</td><td>${okIcon(r.b)}${
       r.change ? ` <b class="${r.change === 'worse' ? 'bad' : 'good'}">${r.change}</b>` : ''}</td><td class="r">${num(r.aTok)}</td><td class="r">${num(r.bTok)}</td><td class="r ${
       same ? 'muted' : d < 0 ? 'good' : 'bad'}">${same ? 'same' : signedPct(d)}</td><td class="w">${bar(r.aTok, 'a')}${bar(r.bTok, 'b')}</td><td>${ev}</td></tr>`;

@@ -56,9 +56,14 @@
   "pairedCases": 5,
   "unpairedCases": [],
   "improvements": [],
-  "unitTotals": null,
+  "unitTotals": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
   "openBlockingFindings": null,
   "lastRun": "2026-10-17T07:32:15.417Z",
-  "generatedAt": "2026-10-17T07:33:31.574Z",
+  "generatedAt": "2026-10-17T07:36:47.462Z",
   "report": "report.html"
 }

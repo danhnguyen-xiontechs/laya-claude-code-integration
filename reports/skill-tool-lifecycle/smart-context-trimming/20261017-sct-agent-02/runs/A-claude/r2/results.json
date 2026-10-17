@@ -26,7 +26,9 @@
         "providerLatencyMs": null,
         "source": "subagent transcript (haiku, effort xhigh)"
       },
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/js-one-bug.A.txt"
+      ],
       "startedAt": "2026-10-17T07:32:11.188Z",
       "finishedAt": "2026-10-17T07:32:11.189Z"
     },
@@ -51,7 +53,9 @@
         "providerLatencyMs": null,
         "source": "subagent transcript (haiku, effort xhigh)"
       },
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/js-three-bugs.A.txt"
+      ],
       "startedAt": "2026-10-17T07:32:11.720Z",
       "finishedAt": "2026-10-17T07:32:11.720Z"
     },
@@ -76,7 +80,9 @@
         "providerLatencyMs": null,
         "source": "subagent transcript (haiku, effort xhigh)"
       },
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/js-root-exception.A.txt"
+      ],
       "startedAt": "2026-10-17T07:32:12.242Z",
       "finishedAt": "2026-10-17T07:32:12.242Z"
     },
@@ -101,7 +107,9 @@
         "providerLatencyMs": null,
         "source": "subagent transcript (haiku, effort xhigh)"
       },
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/js-feature.A.txt"
+      ],
       "startedAt": "2026-10-17T07:32:12.719Z",
       "finishedAt": "2026-10-17T07:32:12.719Z"
     },
@@ -126,7 +134,9 @@
         "providerLatencyMs": null,
         "source": "subagent transcript (haiku, effort xhigh)"
       },
-      "evidenceRefs": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/dotnet-build.A.txt"
+      ],
       "startedAt": "2026-10-17T07:32:14.190Z",
       "finishedAt": "2026-10-17T07:32:14.190Z"
     }
