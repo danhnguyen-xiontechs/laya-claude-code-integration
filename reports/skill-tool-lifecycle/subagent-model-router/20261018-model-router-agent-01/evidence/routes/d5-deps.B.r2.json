@@ -1,0 +1,70 @@
+{
+  "source": "cli",
+  "mode": "apply",
+  "provider": "jev",
+  "policy": "gate+sc",
+  "k": 3,
+  "type": "general-purpose",
+  "chars": 1506,
+  "taskHash": "31de933ea6a4",
+  "tier": "sonnet",
+  "rule": {
+    "tier": "sonnet",
+    "score": 1,
+    "why": []
+  },
+  "features": {
+    "type": "general-purpose",
+    "cheapType": false,
+    "designType": false,
+    "hard": 0,
+    "medium": 2,
+    "light": 1,
+    "files": 3,
+    "acs": 0,
+    "hasCheck": true,
+    "readOnly": false,
+    "chars": 1506
+  },
+  "answers": [
+    {
+      "tier": "sonnet",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.8,
+        "mechanical": 0.79,
+        "costly_failure": 0.65
+      },
+      "latencyMs": 743
+    },
+    {
+      "tier": "sonnet",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.83,
+        "mechanical": 0.8,
+        "costly_failure": 0.63
+      },
+      "latencyMs": 702
+    },
+    {
+      "tier": "sonnet",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.83,
+        "mechanical": 0.79,
+        "costly_failure": 0.65
+      },
+      "latencyMs": 711
+    }
+  ],
+  "consistency": {
+    "tier": "sonnet",
+    "stable": true,
+    "votes": {
+      "sonnet": 3
+    },
+    "n": 3
+  },
+  "latencyMs": 759
+}

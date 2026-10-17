@@ -1,0 +1,8 @@
+Fixed src/map-limit.js and added tests, and `node --test` passed 6/6 on 8 consecutive runs. The causes were:
+- Wrong order and the flaky test: results were pushed in completion order, so they are now stored by index.
+- Too many calls at once: the loop condition `running <= limit` allowed limit+1, so it is now `<`.
+- Empty input never settling: it now resolves to `[]` right away.
+- Calls continuing after a rejection: a `failed` flag stops launching new calls and ignores late results, so only the first error rejects.
+- Synchronous throws from `fn`: these now reject instead of being missed.
+
+New tests in test/map-limit.test.mjs cover ordering, the concurrency peak, empty input, first-error stop, and a synchronous throw.

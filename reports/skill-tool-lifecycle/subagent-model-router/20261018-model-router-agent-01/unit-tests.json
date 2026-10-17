@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \".claude/skills/subagent-model-router/test/*.test.mjs\" (subagent-model-router @ cf8b85f, Node v24.11.1)",
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/router-test-output.txt"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "experimentId": "20261018-model-router-agent-01",
+  "arm": "A",
+  "runId": "r1",
+  "startedAt": "2026-10-17T17:22:18.388Z",
+  "finishedAt": "2026-10-17T17:24:26.172Z",
+  "cases": [
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "e1-locate",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:22:18.388Z",
+      "finishedAt": "2026-10-17T17:22:30.481Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1785",
+      "correct": true,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 248,
+        "cacheReadTokens": 165464,
+        "cacheWriteTokens": 57166,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 12093,
+        "cost": 0.178504,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e1-locate.A.r1.txt",
+        "evidence/answers/e1-locate.A.r1.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "e2-count",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:22:18.439Z",
+      "finishedAt": "2026-10-17T17:22:39.739Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1882",
+      "correct": true,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 70,
+        "cacheReadTokens": 221210,
+        "cacheWriteTokens": 57296,
+        "modelTurns": 5,
+        "toolCalls": 6,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 21300,
+        "cost": 0.188202,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e2-count.A.r1.txt",
+        "evidence/answers/e2-count.A.r1.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "r1-rename",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:22:18.498Z",
+      "finishedAt": "2026-10-17T17:22:42.585Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1996",
+      "correct": true,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 80,
+        "cacheReadTokens": 228820,
+        "cacheWriteTokens": 61203,
+        "modelTurns": 5,
+        "toolCalls": 15,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 24087,
+        "cost": 0.199592,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/r1-rename.A.r1.txt",
+        "evidence/answers/r1-rename.A.r1.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "f1-paginate",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:23:08.428Z",
+      "finishedAt": "2026-10-17T17:23:19.384Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.0742",
+      "correct": true,
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 53,
+        "cacheReadTokens": 146539,
+        "cacheWriteTokens": 17725,
+        "modelTurns": 3,
+        "toolCalls": 4,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 10956,
+        "cost": 0.074162,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/f1-paginate.A.r1.txt",
+        "evidence/answers/f1-paginate.A.r1.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "d3-maplimit",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:23:08.457Z",
+      "finishedAt": "2026-10-17T17:23:36.470Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1134",
+      "correct": true,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 116,
+        "cacheReadTokens": 317339,
+        "cacheWriteTokens": 19506,
+        "modelTurns": 6,
+        "toolCalls": 6,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 28013,
+        "cost": 0.113417,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d3-maplimit.A.r1.txt",
+        "evidence/answers/d3-maplimit.A.r1.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-agent-01",
+      "caseId": "d5-deps",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:23:08.493Z",
+      "finishedAt": "2026-10-17T17:24:26.172Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1567",
+      "correct": true,
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 227,
+        "cacheReadTokens": 402151,
+        "cacheWriteTokens": 29598,
+        "modelTurns": 7,
+        "toolCalls": 9,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 77679,
+        "cost": 0.156723,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d5-deps.A.r1.txt",
+        "evidence/answers/d5-deps.A.r1.txt"
+      ]
+    }
+  ]
+}

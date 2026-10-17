@@ -1,0 +1,1 @@
+Fixed src/paginate.js to use a 1-based start index of (page-1)*size and slice the full size, returning [] for page < 1 or an out-of-range page. `node --test` passes (1/1), and paginate([1..10], 2, 3) returns [4, 5, 6].

@@ -1,0 +1,37 @@
+✔ score: labels, pass rate, cost vs opus, cascade (3.3357ms)
+✔ imputeAbove: fills only above a pass, at the mean measured cost (1.2928ms)
+✔ pricing: tiers and a known claude -p usage (1.0209ms)
+✔ history task kinds (1.0926ms)
+✔ security override beats JEV: JEV fast cannot lower a security story (1.6585ms)
+✔ JEV lower answer on high-risk is ignored even when proposed strong (0.3187ms)
+✔ shadow mode: higher JEV tier recorded, not executed; guarded mode raises (1.3833ms)
+✔ incomplete input → configured safe default + review (1.2878ms)
+✔ JEV failure → rules stand, fallback rules_only (0.46ms)
+✔ profile carries explicit limits, model, and reasons (0.2927ms)
+✔ budget exhaustion → controlled stop, verification reserve untouched (0.9263ms)
+✔ concurrency: excess stories queue by priority and dequeue on release (1.5695ms)
+✔ retry bounded and escalates at checkpoint; usage labelled (1.5126ms)
+✔ rule tiers: lookup → haiku, ordinary fix → sonnet, design/migration → opus (7.2156ms)
+✔ rule features: subagent type, files, ACs, checks (0.8029ms)
+✔ orderings rotate the tiers so each tier is first once in k=3 (1.6519ms)
+✔ consistency: stable → shared label, unstable → highest (2.8706ms)
+✔ combine: gating picks the cheaper tier only when rule and provider agree (0.4582ms)
+✔ maxTier / nextTier (cascade) (0.6637ms)
+✔ route: k calls, option order shuffled, position-biased provider → unstable → higher tier (3.2448ms)
+✔ route: stable cheap answer + cheap rule → haiku; k configurable (1.2978ms)
+✔ route: provider failure → null tier (keep default), mode off → no calls (1.5231ms)
+✔ route logs one line without the prompt text (5.0143ms)
+✔ loadConfig: env and overrides, provider none forces rules (1.0452ms)
+✔ hook apply: sets model and keeps every original field (1.7103ms)
+✔ hook never overrides an explicit model, and shadow mode never outputs (2.2482ms)
+✔ hook leaves a subagent whose definition sets a model alone (9.9107ms)
+✔ hook with a failing provider keeps the default model (1.3751ms)
+✔ read-only: a "do not change them" guard in a coding brief is not a lookup (0.4395ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 268.7259

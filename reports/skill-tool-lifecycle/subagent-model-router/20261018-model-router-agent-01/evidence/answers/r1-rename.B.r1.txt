@@ -1,0 +1,1 @@
+Renamed `getUserName` to `fetchUserName` in the definition, the re-export, both imports, all calls (src/users/names.js, src/users/index.js, src/orders/label.js, src/orders/greet.js) and the test (test/users.test.mjs). `getUserNameLength` keeps its name, and `node --test` passes (2 of 2).

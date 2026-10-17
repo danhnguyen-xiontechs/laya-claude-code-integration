@@ -1,0 +1,12 @@
+I fixed `mapLimit` in src/map-limit.js and expanded the tests in test/map-limit.test.mjs. The 5 tests passed on 9 consecutive `node --test` runs.
+
+The root causes were:
+- **Wrong order:** results were added with `results.push(v)` in completion order. They are now stored at `results[i]`.
+- **Too many calls at once:** the loop condition `running <= limit` allowed `limit + 1` calls. It is now `running < limit`.
+- **Empty input never settles:** nothing resolved when `items.length` was 0. It now resolves to `[]` straight away.
+- **Calls after a rejection:** there was no stop flag. A `failed` flag now blocks new calls and ignores later results.
+- **Synchronous throws:** a sync throw from `fn` now rejects the promise.
+
+The original test was flaky because the random delays exposed the push-order bug. I added tests for the limit, empty input, first-error rejection and sync throw.
+
+One thing I added beyond the brief: a `limit` below 1 is treated as 1.

@@ -1,0 +1,1 @@
+Fixed src/paginate.js (1-based start `(page-1)*size`, slice `size` items, `[]` for out-of-range or invalid pages); `node --test` passes (1/1) and paginate([1..10],2,3) gives [4,5,6].

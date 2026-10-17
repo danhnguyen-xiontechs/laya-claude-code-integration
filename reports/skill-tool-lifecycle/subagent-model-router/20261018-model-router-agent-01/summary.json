@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-model-router-agent-01",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "cf8b85f",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 6 small checked tasks x 2 repetitions both arms passed 12/12 on the first attempt (no escalation needed), and the router's tier choice cost $0.97 against $1.51 for all-Sonnet (-35%, price-weighted; raw tokens the same, 3.25M). The whole saving is the two lookup tasks sent to Haiku (-95%); in the other 8 pairs B ran on Sonnet like A, and Jev never lowered a tier. The README's \"14% of opus cost\" is stale (current rules route 11 of 18 bench prompts to Sonnet), so it is not reproduced. Top fix: re-run the routing benchmark on the current prompts and pin ruleTier to it with a test, then make the \"checked\" rule ignore test globs.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3255897,
+      "inputTokens": 114,
+      "outputTokens": 1816,
+      "toolCalls": 84,
+      "modelTurns": 57,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 21300,
+      "pairedTokens": 1627948.5
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3254509,
+      "inputTokens": 114,
+      "outputTokens": 1162,
+      "toolCalls": 79,
+      "modelTurns": 57,
+      "providerCalls": 36,
+      "fallbacks": 0,
+      "providerLatencyMs": 810,
+      "elapsedMs": 19912,
+      "pairedTokens": 1627254.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T17:26:39.464Z",
+  "generatedAt": "2026-10-17T17:29:58.768Z",
+  "report": "report.html"
+}

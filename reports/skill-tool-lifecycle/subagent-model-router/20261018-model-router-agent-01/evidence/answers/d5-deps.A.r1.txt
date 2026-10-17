@@ -1,0 +1,1 @@
+Implemented `resolveOrder` in src/resolve.js (CommonJS) and wrote 29 tests in test/resolve.test.mjs; `node --test` passes 29/29. Two readings of the spec: names compare by plain string order (so "B" sorts before "a"), and a missing target's error says `(required by <root>)` with `<root>` as literal text.

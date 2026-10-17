@@ -1,0 +1,1 @@
+Counted 5 `// TODO` comments across the three .js files (the trailing `// TODO later` counts; strings, lowercase `todo`, block comments and `// NOTE: TODO` don't) and wrote `5` to answer.txt in the project root; no other file was changed.
