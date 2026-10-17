@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261017-sct-agent-01",
+  "tool": {
+    "name": "smart-context-trimming (agent run)",
+    "kind": "hook",
+    "provider": "JEV",
+    "commit": "8ccf9cb",
+    "branch": "claude/skill-tool-workflow-definition-a31b84"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "On 5 real fix-the-build/test tasks × 2 runs with Haiku 5.5 subagents, all 20 sessions pass in both arms (no case worse). Total tokens −3% (5.10M → 4.97M), which is inside run-to-run noise; the real effect is only where trimming fired: dotnet-build −30% tokens and fewer turns (8 → 5–6). node --test failures (✖) are not recognised, so 3 of 5 tasks were never trimmed: fix that, then re-measure.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (raw test/build output)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + trim-core (Jev live, rules fallback)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, minJevConfidence 0.6"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "agent-v1",
+    "datasetVersion": "make_tasks.mjs (5 tasks)",
+    "caseCount": 5,
+    "repetitions": 2,
+    "tokenScope": "all tokens of the subagent's whole task session (input + output + cache read + cache write)",
+    "deviations": [
+      "Not the real hook: subagents share this session's hooks, so both arms run tests through the same run.mjs; A returns raw output, B runs it through smart-context-trimming/hooks/trim-core.ts decideAndBuild (same code the hook uses, Jev live). The hook's deny-shape for failed commands is not reproduced.",
+      "node --test failure lines start with ✖, which trim-core does not match (failedTest regex has ✕ × ✗ but not ✖): js-one-bug, js-three-bugs and js-feature passed through untrimmed, so their A/B token differences are pure noise (−1% … +17%).",
+      "Noise floor: on untrimmed tasks the same prompt varies up to ±17% between arms and up to ±50% between reps (js-root-exception A: 573k vs 873k), so only dotnet-build (−25% and −36%) is a clear effect.",
+      "Tokens include cache reads (~85% of all tokens, billed at ~10% of input); the first rep pays more cache writes (cold cache) in both arms.",
+      "js-root-exception: Jev chose errors_only, but the trimmed output was still 51 KB of 74 KB (40 near-identical stack traces kept), so little was saved.",
+      "B is slower in wall time (+5–8 s per trimmed run): the Jev call plus the Node fetch keep-alive before run.mjs exits.",
+      "Synthetic tasks with obvious bugs (made by make_tasks.mjs); 2 reps; one model (haiku, effort xhigh). Some agents briefly wrote scratch files outside their folder and deleted them; grading re-ran the raw command and checked protected files were unchanged."
+    ],
+    "criteriaFrozenAt": null
+  },
+  "artifacts": {
+    "ideaBrief": null,
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/filter-logs"
+    ],
+    "executionLogs": []
+  }
+}

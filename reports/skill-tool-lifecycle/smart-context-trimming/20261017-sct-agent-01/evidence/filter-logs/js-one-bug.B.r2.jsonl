@@ -1,0 +1,3 @@
+{"ts":"2026-10-17T07:22:32.819Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":13059,"bytesOut":13059,"jev":{"called":false},"ms":5}
+{"ts":"2026-10-17T07:22:40.403Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":11280,"bytesOut":11280,"jev":{"called":false},"ms":4}
+{"ts":"2026-10-17T07:22:41.064Z","command":"node --test","action":"pass","reason":"no_recognized_diagnostics","bytesIn":11275,"bytesOut":11275,"jev":{"called":false},"ms":4}

@@ -1,5 +1,72 @@
 [
   {
+    "experimentId": "20261017-sct-agent-01",
+    "tool": {
+      "name": "smart-context-trimming (agent run)",
+      "kind": "hook",
+      "provider": "JEV",
+      "commit": "8ccf9cb",
+      "branch": "claude/skill-tool-workflow-definition-a31b84"
+    },
+    "engine": "JEV",
+    "status": "WAITING_FOR_USER_FINAL_REVIEW",
+    "recommendation": "REWORK",
+    "confidence": "LOW",
+    "headline": "On 5 real fix-the-build/test tasks × 2 runs with Haiku 5.5 subagents, all 20 sessions pass in both arms (no case worse). Total tokens −3% (5.10M → 4.97M), which is inside run-to-run noise; the real effect is only where trimming fired: dotnet-build −30% tokens and fewer turns (8 → 5–6). node --test failures (✖) are not recognised, so 3 of 5 tasks were never trimmed: fix that, then re-measure.",
+    "arms": {
+      "A": {
+        "cases": 10,
+        "pass": 10,
+        "fail": 0,
+        "blocked": 0,
+        "error": 0,
+        "skipped": 0,
+        "passRate": 1,
+        "tokens": 5104129,
+        "inputTokens": 156,
+        "outputTokens": 793,
+        "toolCalls": 110,
+        "modelTurns": 78,
+        "providerCalls": 0,
+        "fallbacks": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 27257,
+        "pairedTokens": 2552064.5
+      },
+      "B": {
+        "cases": 10,
+        "pass": 10,
+        "fail": 0,
+        "blocked": 0,
+        "error": 0,
+        "skipped": 0,
+        "passRate": 1,
+        "tokens": 4968410,
+        "inputTokens": 148,
+        "outputTokens": 685,
+        "toolCalls": 97,
+        "modelTurns": 74,
+        "providerCalls": 6,
+        "fallbacks": 0,
+        "providerLatencyMs": 755,
+        "elapsedMs": 30076,
+        "pairedTokens": 2484205
+      }
+    },
+    "regressions": [],
+    "pairedCases": 5,
+    "unpairedCases": [],
+    "improvements": [],
+    "unitTotals": null,
+    "openBlockingFindings": null,
+    "lastRun": "2026-10-17T07:23:34.758Z",
+    "generatedAt": "2026-10-17T07:23:59.877Z",
+    "report": "report.html",
+    "href": "smart-context-trimming/20261017-sct-agent-01/report.html",
+    "stale": false,
+    "reportExists": true
+  },
+  {
     "experimentId": "20261016-sct-bench-01",
     "tool": {
       "name": "smart-context-trimming",
