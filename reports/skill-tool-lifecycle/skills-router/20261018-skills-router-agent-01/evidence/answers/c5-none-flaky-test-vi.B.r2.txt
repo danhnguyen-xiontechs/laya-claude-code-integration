@@ -1,0 +1,2 @@
+PICK: none
+Diagnosing why a test flips between pass and fail is a direct root-cause investigation (read the test, its fixtures, timing and shared state, then rerun it), no installed skill covers flaky-test debugging, and the helper's own Jev decision abstained while its BM25 top match (integration-verifier) only matched on the word "test".

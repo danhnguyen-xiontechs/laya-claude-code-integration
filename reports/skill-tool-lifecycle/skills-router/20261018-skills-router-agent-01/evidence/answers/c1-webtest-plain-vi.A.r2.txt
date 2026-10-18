@@ -1,0 +1,2 @@
+PICK: web-test
+The request asks to test story 29461 on dev and export an HTML report with screenshots, which is the ESS ticket-testing flow that the web-test skill describes (ADO work item, browser execution, screenshot evidence, self-contained HTML report); the web-test-laya-* and web-test-jev-* variants are A/B experiments that trigger only on explicit requests.

@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request explicitly asks for Jev to handle page-load waiting and screen classification, which is the stated purpose of web-test-jev-wait (its trigger is an explicit request for the Jev page wait), so it outweighs the router's low-confidence BM25 top hit (web-test-jev-verdict).

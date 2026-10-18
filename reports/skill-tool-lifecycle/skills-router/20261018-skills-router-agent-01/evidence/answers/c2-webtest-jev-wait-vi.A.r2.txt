@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request asks for ticket testing (12983) with Jev specifically used for page wait and screen classification, which is the explicit Jev plan 1 variant described as "page wait and screen classification", so it beats the plain web-test skill.

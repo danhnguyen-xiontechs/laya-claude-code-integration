@@ -1,0 +1,2 @@
+PICK: code-review
+The user wants the branch checked for bugs before merging, and code-review is the installed skill that reviews the current diff or a branch for correctness bugs (security-review covers only security, and simplify is quality-only with no bug hunt).

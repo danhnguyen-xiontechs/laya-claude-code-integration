@@ -1,0 +1,2 @@
+PICK: none
+Writing a simple for loop that prints even numbers is an ordinary coding task that Claude can do directly, and no installed skill, command or subagent covers it.

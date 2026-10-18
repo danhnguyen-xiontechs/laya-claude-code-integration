@@ -1,0 +1,188 @@
+{
+  "experimentId": "20261018-skills-router-agent-01",
+  "arm": "A",
+  "runId": "r2",
+  "note": "Subagent (Agent tool) runs, one per case. Pick scored by collect.mjs against cases.json.",
+  "cases": [
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c1-webtest-plain-vi",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "web-test",
+      "observedOutcome": "picked web-test",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 8,
+        "cacheReadTokens": 91350,
+        "cacheWriteTokens": 27359,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 3337,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c1-webtest-plain-vi.A.r2.txt",
+        "../../../evidence/texts/c1-webtest-plain-vi.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    },
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c2-webtest-jev-wait-vi",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "web-test-jev-wait",
+      "observedOutcome": "picked web-test-jev-wait",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 10,
+        "cacheReadTokens": 91335,
+        "cacheWriteTokens": 28063,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 5532,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c2-webtest-jev-wait-vi.A.r2.txt",
+        "../../../evidence/texts/c2-webtest-jev-wait-vi.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    },
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c3-review-laya-severity-en",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "review-pr-laya-classify",
+      "observedOutcome": "picked review-pr-laya-classify",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 4,
+        "cacheReadTokens": 91320,
+        "cacheWriteTokens": 27038,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 5011,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c3-review-laya-severity-en.A.r2.txt",
+        "../../../evidence/texts/c3-review-laya-severity-en.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    },
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c4-code-review-vi",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "code-review",
+      "observedOutcome": "picked code-review",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 6,
+        "cacheReadTokens": 91334,
+        "cacheWriteTokens": 27306,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 3988,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c4-code-review-vi.A.r2.txt",
+        "../../../evidence/texts/c4-code-review-vi.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    },
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c5-none-flaky-test-vi",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "none",
+      "observedOutcome": "picked none",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 5,
+        "cacheReadTokens": 91330,
+        "cacheWriteTokens": 27159,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 6375,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c5-none-flaky-test-vi.A.r2.txt",
+        "../../../evidence/texts/c5-none-flaky-test-vi.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    },
+    {
+      "experimentId": "20261018-skills-router-agent-01",
+      "caseId": "c6-none-for-loop-vi",
+      "arm": "A",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "none",
+      "observedOutcome": "picked none",
+      "correct": true,
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 4,
+        "cacheReadTokens": 91323,
+        "cacheWriteTokens": 27231,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 4225,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/answers/c6-none-for-loop-vi.A.r2.txt",
+        "../../../evidence/texts/c6-none-for-loop-vi.A.txt"
+      ],
+      "startedAt": null,
+      "finishedAt": null
+    }
+  ]
+}

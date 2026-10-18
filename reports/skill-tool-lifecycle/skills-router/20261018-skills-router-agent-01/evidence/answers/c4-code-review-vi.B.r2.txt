@@ -1,0 +1,2 @@
+PICK: code-review
+Its description covers reviewing a branch or diff for correctness bugs, which matches "check this branch for bugs before I merge", while integration-verifier is for batches of parallel story branches and security-review only covers security.
