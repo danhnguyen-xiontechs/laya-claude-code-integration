@@ -21,6 +21,8 @@ Follow `.claude/skills/build-skill-tool-workflow/phases/phase-4-review-fix-repor
 - `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/design.md`
 - `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/context-pack.md`
 - `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/unit-tests.json`
+- `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/agent-review.json`
+- `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/improvements.md`
 
 ## Goal (from idea-brief.md)
 # Idea Brief — context-governor
@@ -66,7 +68,19 @@ None in v1. Thresholds are rules. A model call would cost more than the warning 
 - `summary.json` missing: run P3 first.
 
 ## Review findings
-- none yet: run step 4a (Opus review).
+- 10 total, 10 accepted by the user to fix, 0 undecided.
+- FIX [Critical] The gate cannot see most of the control session's cost. The amended t* (first crossing from below) skips turns 1 to about 129, which ran at 657k to 953k and carried most of the 108M cacheRead, yet the denominator still counts all 220 turns. After t173 the avoided amount is capped at about (200k-47k)
+[… clipped, read the file for the rest] (context-governor/scripts/replay.mjs (tStar, ratio); design.md §5) → Give the stretch that is already above 200k at the window start its own row, or pull in the earlier turns of the conversation. Compute the numerator and the denominator over the same turns.
+- FIX [Major] The numerator and denominator use different units. Avoided is counted in context tokens (input + cache_read + cache_creation), but the denominator is cache_read only. That is why the literal formula could reach 121.4%. (context-governor/scripts/replay.mjs (avoided vs cacheRead)) → Count both in cache_read, or both in context tokens. Report the creation share separately.
+- FIX [Major] The gate formula was changed after its result was known. The literal version gave 121.4%, the amended one 6.7%. Either way the metric is not pre-registered. (design.md §5 amendment; capsule deviation (d)) → Freeze the formula, sessions and threshold in writing before the next replay run.
+- FIX [Major] The `timestamp starts with the date` filter cuts the control session at midnight. The control session continues an earlier conversation, so its real 200k crossing and most of its cost fall outside the window. Reviewer note: not verified in this session; the brief's >200M against 108M here is consist
+[… clipped, read the file for the rest] (context-governor/scripts/replay.mjs (turnsOf)) → Replay the session's whole history, ignoring date. Check whether the timestamps are UTC or local time.
+- FIX [Major] If the state write fails, a note is still shown (deviation a). The armed flags never persist, so the strong toast or text fires again on every turn above 200k. (context-governor/hooks/context-governor.ts (inner try); deviation (a)) → Keep an in-memory armed cache per session as a fallback, or suppress notes after the first failed write.
+- FIX [Major] When the session id cannot be read, it falls back to 'unknown'. All such sessions then share one state file and one metrics file, so the armed flags and counters leak between sessions. (context-governor/hooks/context-governor.ts (sessionId)) → When the id is unknown, skip writing state and metrics; or key the files by transcript path.
+- FIX [Minor] When usage is missing and the session-usage fallback fails, context is set to 0. Both thresholds re-arm on that, so the next real turn repeats the notes. Separately, slow > 200 ms suppresses the result text but the toast still shows, while design §3 says a slow hook takes no other action. (context-governor/hooks/context-governor.ts (context, slow)) → When context is unknown, skip decide. Make slow log-only.
+- FIX [Minor] The stale counter resets even when a soft or strong note in the same turn swallows the stale note, so that stale note is lost. The stale rule is also never exercised by the replay (artifact is always null). (context-governor/src/core.ts (stale branch); context-governor/scripts/replay.mjs) → Reset the counter only when the stale note is actually shown. Add replay runs with an artifactDir set.
+- FIX [Minor] The tests are weak or synthetic. The toast and the jsonl context sum are not asserted in engine.test (deviation b), tsc was never run against the 21.5k-line generated .d.ts, and the latency test runs in a harness without fs. The only real-data check is the same-day replay. (context-governor/tests/engine.test.ts; unit-tests.json) → Run tsc via npx. Assert the toast. Add one replay fixture from a different day as a held-out check.
+- FIX [Suggestion] No coupling to Jev or Laya and no secrets are visible in the pack. The note text does depend on /fast-compact and make_capsule.mjs, and subagent cacheRead is left out of the cost (51 subagent turns, 14 flagged). Uncertain: io.ts was not shown to the reviewer. (context-governor/src/core.ts (noteText); context-governor/scripts/replay.mjs) → Make the note text configurable. Report subagent cacheRead on a separate line.
 
 ## Done when
 Without accepted findings: Opus review saved to `agent-review.json` (+ `improvements.md` if the result is bad), then stop and hand back the findings. With accepted findings: fixes committed, tests re-run, affected cases re-measured if behaviour changed, both reports rebuilt. Hand back in 5 lines or fewer.
