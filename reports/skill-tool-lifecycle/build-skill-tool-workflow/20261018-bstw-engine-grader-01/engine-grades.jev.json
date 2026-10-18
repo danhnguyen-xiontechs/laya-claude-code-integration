@@ -1,0 +1,2182 @@
+{
+ "provider": "jev",
+ "threshold": 0.5,
+ "generatedAt": "2026-10-18T15:47:28.805Z",
+ "summary": {
+  "rows": 240,
+  "graded": 240,
+  "nullGrades": 0,
+  "agreement": 0.975,
+  "falsePassReal": 0,
+  "realFails": 8,
+  "falsePassMismatch": 3,
+  "mismatchRows": 120,
+  "falsePassMismatchRate": 0.025,
+  "falseFail": 3,
+  "p50Ms": 539,
+  "p90Ms": 606,
+  "costUSD": 0.005357
+ },
+ "rows": [
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.61,
+   "latencyMs": 1237,
+   "cost": 0.000033348
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.A.r1.txt#vs:acc-02-cart",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 1110,
+   "cost": 0.000032802
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.91,
+   "latencyMs": 1145,
+   "cost": 0.00003318
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.A.r2.txt#vs:acc-02-cart",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 1155,
+   "cost": 0.000032634
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.64,
+   "latencyMs": 494,
+   "cost": 0.00003255
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.B.r1.txt#vs:acc-02-cart",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 494,
+   "cost": 0.000032004
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.78,
+   "latencyMs": 561,
+   "cost": 0.00003276
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-01-registration.B.r2.txt#vs:acc-02-cart",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 495,
+   "cost": 0.000032214
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 586,
+   "cost": 0.0000336
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.A.r1.txt#vs:acc-03-uploads",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 542,
+   "cost": 0.000033642
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.95,
+   "latencyMs": 590,
+   "cost": 0.000033138
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.A.r2.txt#vs:acc-03-uploads",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 586,
+   "cost": 0.00003318
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 567,
+   "cost": 0.000033558
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.B.r1.txt#vs:acc-03-uploads",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 525,
+   "cost": 0.0000336
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 554,
+   "cost": 0.000032382
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-02-cart.B.r2.txt#vs:acc-03-uploads",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 549,
+   "cost": 0.000032424
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 542,
+   "cost": 0.000033138
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.A.r1.txt#vs:acc-04-booking",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 535,
+   "cost": 0.000033348
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 532,
+   "cost": 0.000034692
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.A.r2.txt#vs:acc-04-booking",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 527,
+   "cost": 0.000034902
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 504,
+   "cost": 0.000033978
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.B.r1.txt#vs:acc-04-booking",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 491,
+   "cost": 0.000034188
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 547,
+   "cost": 0.000032172
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-03-uploads.B.r2.txt#vs:acc-04-booking",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 556,
+   "cost": 0.000032382
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 738,
+   "cost": 0.00003108
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.A.r1.txt#vs:acc-01-registration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 582,
+   "cost": 0.000031374
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 546,
+   "cost": 0.000030996
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.A.r2.txt#vs:acc-01-registration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 529,
+   "cost": 0.00003129
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 618,
+   "cost": 0.000031038
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.B.r1.txt#vs:acc-01-registration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 562,
+   "cost": 0.000031332
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 524,
+   "cost": 0.000031962
+  },
+  {
+   "id": "acceptance-criteria-coverage/20261018-acc-agent-01/acc-04-booking.B.r2.txt#vs:acc-01-registration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 495,
+   "cost": 0.000032256
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.89,
+   "latencyMs": 510,
+   "cost": 0.000021126
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.A.r1.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 482,
+   "cost": 0.000021294
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.87,
+   "latencyMs": 511,
+   "cost": 0.00002079
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.A.r2.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 496,
+   "cost": 0.000020958
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.74,
+   "latencyMs": 520,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.B.r1.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 568,
+   "cost": 0.000022218
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.88,
+   "latencyMs": 495,
+   "cost": 0.000020622
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c1.B.r2.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 511,
+   "cost": 0.00002079
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.83,
+   "latencyMs": 504,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.A.r1.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 529,
+   "cost": 0.000021882
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.89,
+   "latencyMs": 1270,
+   "cost": 0.000022134
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.A.r2.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 510,
+   "cost": 0.000021966
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.89,
+   "latencyMs": 547,
+   "cost": 0.000021588
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.B.r1.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 594,
+   "cost": 0.00002142
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.8,
+   "latencyMs": 550,
+   "cost": 0.000020958
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c2.B.r2.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 504,
+   "cost": 0.00002079
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.94,
+   "latencyMs": 509,
+   "cost": 0.00002352
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.A.r1.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 630,
+   "cost": 0.00002352
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 576,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.A.r2.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 593,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.95,
+   "latencyMs": 553,
+   "cost": 0.000022218
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.B.r1.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 590,
+   "cost": 0.000022218
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 622,
+   "cost": 0.000021336
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c3.B.r2.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 546,
+   "cost": 0.000021336
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.94,
+   "latencyMs": 568,
+   "cost": 0.000022302
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.A.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 1967,
+   "cost": 0.00002247
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.84,
+   "latencyMs": 530,
+   "cost": 0.000020874
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.A.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 498,
+   "cost": 0.000021042
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 521,
+   "cost": 0.000021546
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.B.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 643,
+   "cost": 0.000021714
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.84,
+   "latencyMs": 507,
+   "cost": 0.000020454
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c4.B.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 562,
+   "cost": 0.000020622
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 545,
+   "cost": 0.000021042
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.A.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 482,
+   "cost": 0.00002121
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.93,
+   "latencyMs": 505,
+   "cost": 0.00002058
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.A.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 587,
+   "cost": 0.000020748
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.93,
+   "latencyMs": 613,
+   "cost": 0.000022092
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.B.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 545,
+   "cost": 0.00002226
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.94,
+   "latencyMs": 556,
+   "cost": 0.000020622
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c5.B.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 589,
+   "cost": 0.00002079
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.A.r1.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 516,
+   "cost": 0.00002121
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.A.r1.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 522,
+   "cost": 0.000021042
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.A.r2.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 497,
+   "cost": 0.000022008
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.A.r2.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 551,
+   "cost": 0.00002184
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.B.r1.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 631,
+   "cost": 0.000020916
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.B.r1.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 539,
+   "cost": 0.000020748
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.B.r2.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 551,
+   "cost": 0.000021588
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-agent-01/c6.B.r2.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 560,
+   "cost": 0.00002142
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.85,
+   "latencyMs": 492,
+   "cost": 0.000021126
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.A.r1.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 603,
+   "cost": 0.000021294
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.83,
+   "latencyMs": 560,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.A.r2.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 534,
+   "cost": 0.000022218
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.82,
+   "latencyMs": 521,
+   "cost": 0.000020958
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.B.r1.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 507,
+   "cost": 0.000021126
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.82,
+   "latencyMs": 514,
+   "cost": 0.000020874
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c1.B.r2.txt#vs:c2",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 540,
+   "cost": 0.000021042
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.89,
+   "latencyMs": 602,
+   "cost": 0.000021
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.A.r1.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 644,
+   "cost": 0.000020832
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.85,
+   "latencyMs": 540,
+   "cost": 0.000021756
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.A.r2.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 512,
+   "cost": 0.000021588
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 495,
+   "cost": 0.000020916
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.B.r1.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 499,
+   "cost": 0.000020748
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 506,
+   "cost": 0.000021168
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c2.B.r2.txt#vs:c3",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 552,
+   "cost": 0.000021
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.91,
+   "latencyMs": 527,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.A.r1.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 549,
+   "cost": 0.00002205
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.95,
+   "latencyMs": 524,
+   "cost": 0.000022428
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.A.r2.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 528,
+   "cost": 0.000022428
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 566,
+   "cost": 0.000021462
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.B.r1.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 513,
+   "cost": 0.000021462
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.92,
+   "latencyMs": 515,
+   "cost": 0.000021378
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c3.B.r2.txt#vs:c4",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 544,
+   "cost": 0.000021378
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.82,
+   "latencyMs": 502,
+   "cost": 0.000021378
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.A.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 942,
+   "cost": 0.000021546
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.87,
+   "latencyMs": 500,
+   "cost": 0.00002121
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.A.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 546,
+   "cost": 0.000021378
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.9,
+   "latencyMs": 515,
+   "cost": 0.000020286
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.B.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 577,
+   "cost": 0.000020454
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.86,
+   "latencyMs": 549,
+   "cost": 0.000020958
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c4.B.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 510,
+   "cost": 0.000021126
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.93,
+   "latencyMs": 516,
+   "cost": 0.000021714
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.A.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 544,
+   "cost": 0.000021882
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.89,
+   "latencyMs": 603,
+   "cost": 0.000022008
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.A.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 504,
+   "cost": 0.000022176
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.91,
+   "latencyMs": 528,
+   "cost": 0.000020496
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.B.r1.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 517,
+   "cost": 0.000020664
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.95,
+   "latencyMs": 587,
+   "cost": 0.000021378
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c5.B.r2.txt#vs:c6",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 606,
+   "cost": 0.000021546
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.A.r1.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 557,
+   "cost": 0.000021336
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.A.r1.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 535,
+   "cost": 0.000021168
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.A.r2.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 608,
+   "cost": 0.000021294
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.A.r2.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 533,
+   "cost": 0.000021126
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.B.r1.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 556,
+   "cost": 0.000020748
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.B.r1.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 490,
+   "cost": 0.00002058
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.B.r2.txt",
+   "label": "fail",
+   "source": "real",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 572,
+   "cost": 0.000020748
+  },
+  {
+   "id": "integration-verifier/20261018-integration-verifier-r2-agent-01/c6.B.r2.txt#vs:c1",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 570,
+   "cost": 0.00002058
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 513,
+   "cost": 0.00001995
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.A.r1.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 487,
+   "cost": 0.000020118
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 602,
+   "cost": 0.000020202
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.A.r2.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 520,
+   "cost": 0.00002037
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 504,
+   "cost": 0.000020328
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.B.r1.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 529,
+   "cost": 0.000020496
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 517,
+   "cost": 0.00002037
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c1-webtest-plain-vi.B.r2.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 527,
+   "cost": 0.000020538
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 500,
+   "cost": 0.000019446
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.A.r1.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 567,
+   "cost": 0.000019488
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 516,
+   "cost": 0.000019614
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.A.r2.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 519,
+   "cost": 0.000019656
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 576,
+   "cost": 0.000019866
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.B.r1.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 549,
+   "cost": 0.000019908
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 598,
+   "cost": 0.000020202
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c2-webtest-jev-wait-vi.B.r2.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 499,
+   "cost": 0.000020244
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 491,
+   "cost": 0.00001911
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.A.r1.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 536,
+   "cost": 0.0000189
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 571,
+   "cost": 0.000019614
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.A.r2.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 1255,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 646,
+   "cost": 0.00002016
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.B.r1.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 600,
+   "cost": 0.00001995
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 640,
+   "cost": 0.000021378
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c3-review-laya-severity-en.B.r2.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 513,
+   "cost": 0.000021168
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 535,
+   "cost": 0.00001848
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.A.r1.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 569,
+   "cost": 0.000018438
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 543,
+   "cost": 0.000018984
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.A.r2.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 566,
+   "cost": 0.000018942
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 519,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.B.r1.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 479,
+   "cost": 0.000019362
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 573,
+   "cost": 0.000018858
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c4-code-review-vi.B.r2.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 589,
+   "cost": 0.000018816
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 511,
+   "cost": 0.000019152
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.A.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 544,
+   "cost": 0.000019194
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 544,
+   "cost": 0.000018942
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.A.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 607,
+   "cost": 0.000018984
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 503,
+   "cost": 0.00001911
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.B.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 554,
+   "cost": 0.000019152
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.98,
+   "latencyMs": 525,
+   "cost": 0.000020202
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c5-none-flaky-test-vi.B.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 581,
+   "cost": 0.000020244
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 555,
+   "cost": 0.000018312
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.A.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.04,
+   "latencyMs": 522,
+   "cost": 0.000018354
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 557,
+   "cost": 0.000018522
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.A.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.07,
+   "latencyMs": 511,
+   "cost": 0.000018564
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 518,
+   "cost": 0.000019068
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.B.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 508,
+   "cost": 0.00001911
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 513,
+   "cost": 0.0000189
+  },
+  {
+   "id": "skills-router/20261018-skills-router-agent-01/c6-none-for-loop-vi.B.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 576,
+   "cost": 0.000018942
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 518,
+   "cost": 0.000020034
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.A.r1.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 489,
+   "cost": 0.000020202
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 516,
+   "cost": 0.000019068
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.A.r2.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 539,
+   "cost": 0.000019236
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 527,
+   "cost": 0.000018984
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.B.r1.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 552,
+   "cost": 0.000019152
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 506,
+   "cost": 0.000019362
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c1-webtest-plain-vi.B.r2.txt#vs:c2-webtest-jev-wait-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 551,
+   "cost": 0.00001953
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.98,
+   "latencyMs": 498,
+   "cost": 0.000019278
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.A.r1.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 503,
+   "cost": 0.00001932
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 528,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.A.r2.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 522,
+   "cost": 0.000019446
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 515,
+   "cost": 0.000019866
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.B.r1.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 606,
+   "cost": 0.000019908
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 501,
+   "cost": 0.00001995
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c2-webtest-jev-wait-vi.B.r2.txt#vs:c3-review-laya-severity-en",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 529,
+   "cost": 0.000019992
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 538,
+   "cost": 0.000019194
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.A.r1.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 537,
+   "cost": 0.000018984
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 506,
+   "cost": 0.000019614
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.A.r2.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.03,
+   "latencyMs": 578,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 524,
+   "cost": 0.00001995
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.B.r1.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 491,
+   "cost": 0.00001974
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 609,
+   "cost": 0.000019278
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c3-review-laya-severity-en.B.r2.txt#vs:c4-code-review-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 496,
+   "cost": 0.000019068
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 581,
+   "cost": 0.000019236
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.A.r1.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 534,
+   "cost": 0.000019194
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 544,
+   "cost": 0.000018648
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.A.r2.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 571,
+   "cost": 0.000018606
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 548,
+   "cost": 0.0000189
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.B.r1.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 650,
+   "cost": 0.000018858
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 567,
+   "cost": 0.000019278
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c4-code-review-vi.B.r2.txt#vs:c5-none-flaky-test-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0,
+   "latencyMs": 568,
+   "cost": 0.000019236
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 507,
+   "cost": 0.000018816
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.A.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 513,
+   "cost": 0.000018858
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 532,
+   "cost": 0.000019362
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.A.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 511,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 532,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.B.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 579,
+   "cost": 0.000019446
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 506,
+   "cost": 0.000019656
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c5-none-flaky-test-vi.B.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.01,
+   "latencyMs": 498,
+   "cost": 0.000019698
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.A.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 538,
+   "cost": 0.000018396
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.A.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.02,
+   "latencyMs": 569,
+   "cost": 0.000018438
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.A.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 574,
+   "cost": 0.000018354
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.A.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.08,
+   "latencyMs": 537,
+   "cost": 0.000018396
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.B.r1.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 542,
+   "cost": 0.0000189
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.B.r1.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.05,
+   "latencyMs": 542,
+   "cost": 0.000018942
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.B.r2.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 572,
+   "cost": 0.000019404
+  },
+  {
+   "id": "skills-router/20261018-skills-router-r2-agent-01/c6-none-for-loop-vi.B.r2.txt#vs:c1-webtest-plain-vi",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.08,
+   "latencyMs": 509,
+   "cost": 0.000019446
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/03-api-dto.A.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "fail",
+   "p": 0.04,
+   "latencyMs": 535,
+   "cost": 0.000025746
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/03-api-dto.A.txt#vs:04-migration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.34,
+   "latencyMs": 530,
+   "cost": 0.000025578
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/03-api-dto.B.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.96,
+   "latencyMs": 516,
+   "cost": 0.000024486
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/03-api-dto.B.txt#vs:04-migration",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "pass",
+   "p": 0.98,
+   "latencyMs": 579,
+   "cost": 0.000024318
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/04-migration.A.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.88,
+   "latencyMs": 511,
+   "cost": 0.0000231
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/04-migration.A.txt#vs:06-explicit",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 513,
+   "cost": 0.000023058
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/04-migration.B.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.91,
+   "latencyMs": 549,
+   "cost": 0.000024528
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/04-migration.B.txt#vs:06-explicit",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 539,
+   "cost": 0.000024486
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/06-explicit.A.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 0.99,
+   "latencyMs": 556,
+   "cost": 0.00002415
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/06-explicit.A.txt#vs:07-cycle",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.05,
+   "latencyMs": 552,
+   "cost": 0.000024654
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/06-explicit.B.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "pass",
+   "p": 1,
+   "latencyMs": 524,
+   "cost": 0.00002562
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/06-explicit.B.txt#vs:07-cycle",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.04,
+   "latencyMs": 572,
+   "cost": 0.000026124
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/07-cycle.A.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "fail",
+   "p": 0.24,
+   "latencyMs": 638,
+   "cost": 0.000024864
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/07-cycle.A.txt#vs:03-api-dto",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.1,
+   "latencyMs": 497,
+   "cost": 0.00002457
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/07-cycle.B.txt",
+   "label": "pass",
+   "source": "real",
+   "grade": "fail",
+   "p": 0.4,
+   "latencyMs": 561,
+   "cost": 0.000024738
+  },
+  {
+   "id": "story-batch-planner/20261017-sbp-agent-01/07-cycle.B.txt#vs:03-api-dto",
+   "label": "fail",
+   "source": "mismatch",
+   "grade": "fail",
+   "p": 0.14,
+   "latencyMs": 521,
+   "cost": 0.000024444
+  }
+ ]
+}

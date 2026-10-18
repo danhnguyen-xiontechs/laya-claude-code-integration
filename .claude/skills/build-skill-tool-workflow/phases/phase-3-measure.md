@@ -26,6 +26,15 @@ Where the tokens come from — pick the one that matches the tool:
     ```
     `<subagentsDir>` is `~/.claude/projects/<project>/<session>/subagents`: one flat folder of `agent-<id>.jsonl` files (no sub-folders per run; agents spawned by a subagent are in the same folder), where `<project>` is the session's starting working directory with `:` `\` `/` replaced by `-`. The script finds each case's transcript by the work dir in its prompt (no match or two matches = `null`) and, with `--forbid`, counts the agent's tool calls (Skill calls included) that mention the pattern as `forbiddenCalls`; the report builder does not read it, so look at it before grading.
     The agent's answer comes back through its hand-back message, not a final assistant text: read it from the transcript's `SubagentHandback` tool call, save it verbatim to `evidence/answers/<case>.<A|B>.txt` and score it with a script (see `collect.mjs` in `reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/`).
+    **Jev shadow grader (PILOT, one round from 2026-10-18).** Use it when a case's answer is free text graded against a key (a verdict, a pick, a list of statuses) and no grading script exists. Write `evidence/grade-rows.json`: `{ rows: [{ id, rule, gold, answer, label? }] }` (rule = the frozen pass rule from `design.md`, label = the grade you or the script gave). Then run:
+    ```bash
+    node .claude/skills/build-skill-tool-workflow/scripts/grade_with_engine.mjs evidence/grade-rows.json --provider jev
+    ```
+    It writes `evidence/engine-grades.jev.json`.
+    - The case status always stays your own or the script's grade.
+    - Any row Jev grades `fail` while you graded `pass` gets a human look. List it in `deviations`.
+    - Never use it for order, constraint or numeric checks: write a script for those.
+    - Record agreement and disagreements in `summary.json` `notes`. Offline evidence: `reports/skill-tool-lifecycle/build-skill-tool-workflow/20261018-bstw-engine-grader-01/result.md`.
   - **Separate sessions** (`claude -p --plugin-dir …`) when the real hook must run: run each case as its own Claude Code session per arm, then sum the real API usage of that window into `case.usage` (subagent transcripts under `<session>/subagents/` are included; `--no-subagents` to skip):
   ```bash
   node .claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs "<session.jsonl>" --from <ISO> --to <ISO>

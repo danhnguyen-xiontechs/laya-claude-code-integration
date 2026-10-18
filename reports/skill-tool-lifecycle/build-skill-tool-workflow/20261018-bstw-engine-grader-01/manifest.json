@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-bstw-engine-grader-01",
+  "tool": { "name": "build-skill-tool-workflow", "kind": "skill", "provider": "JEV", "commit": null, "branch": "main" },
+  "status": "FINAL_DECISION_RECORDED",
+  "recommendation": "PILOT",
+  "confidence": "LOW",
+  "headline": "Offline, 240 rows: Jev graded saved case answers like the scripts 98.3% of the time (corrected labels; 97.5% frozen) with 0 false passes, p50 539 ms, $0.0054; its 4 errors are false fails on the one reasoning dataset. Laya 58.8% with 7/8 false passes: rejected. PILOT as the P3 shadow grader for free-text answers without a script.",
+  "approvals": { "ideaApprovedAt": "2026-10-18", "finalDecision": "PILOT", "finalDecisionAt": "2026-10-18" },
+  "arms": [
+    { "id": "A", "name": "Script grade (the experiment's own grader)", "candidateEnabled": false, "engineEnabled": false, "model": null, "effort": null },
+    { "id": "B", "name": "Engine grade: Jev (typesafe/jev-1.13) or Laya (local), one pass/fail choice call per row", "candidateEnabled": true, "engineEnabled": true, "model": null, "effort": null }
+  ],
+  "evaluation": {
+    "planVersion": "bstw-engine-grader-01",
+    "datasetVersion": "6 past rounds (acc, integration-verifier x2, skills-router x2, story-batch-planner 01): 120 real rows + 120 mismatched negatives",
+    "caseCount": 240,
+    "repetitions": 1,
+    "criteriaFrozenAt": "2026-10-18",
+    "deviations": [
+      "Offline only: no Claude agent run, no Claude tokens.",
+      "4 story-batch-planner mismatched rows were wrongly labelled fail (an invariant gold can be met by another case's answer); relabelled with the design's rule by scripts/relabel_sbp.mjs, saved grades re-scored without new engine calls. Frozen-label numbers kept in scores.json.",
+      "laya-serve started for the Laya arm and stopped right after (laya-check.mjs --stop)."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": null,
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": null,
+    "perToolReport": "result.md",
+    "perToolHtmlReport": null,
+    "mainReport": "../../index.html",
+    "runDirectories": [],
+    "rawResults": ["dataset.json", "dataset-corrected.json", "engine-grades.jev.json", "engine-grades.laya.json", "scores.json"],
+    "executionLogs": []
+  }
+}

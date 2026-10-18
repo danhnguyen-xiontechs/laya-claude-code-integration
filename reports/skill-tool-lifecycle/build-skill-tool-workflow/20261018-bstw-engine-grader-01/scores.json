@@ -1,0 +1,109 @@
+{
+ "relabelled": [
+  "story-batch-planner/20261017-sbp-agent-01/03-api-dto.A.txt#vs:04-migration",
+  "story-batch-planner/20261017-sbp-agent-01/03-api-dto.B.txt#vs:04-migration",
+  "story-batch-planner/20261017-sbp-agent-01/04-migration.A.txt#vs:06-explicit",
+  "story-batch-planner/20261017-sbp-agent-01/04-migration.B.txt#vs:06-explicit"
+ ],
+ "realRowsCheckerVsScript": "all agree",
+ "jev": {
+  "frozenLabels": {
+   "rows": 240,
+   "graded": 240,
+   "nullGrades": 0,
+   "agreement": 0.975,
+   "falsePassReal": 0,
+   "realFails": 8,
+   "falsePassMismatch": 3,
+   "mismatchRows": 120,
+   "falsePassMismatchRate": 0.025,
+   "falseFail": 3,
+   "p50Ms": 539,
+   "p90Ms": 606,
+   "costUSD": 0.005357
+  },
+  "correctedLabels": {
+   "rows": 240,
+   "graded": 240,
+   "nullGrades": 0,
+   "agreement": 0.9833333333333333,
+   "falsePassReal": 0,
+   "realFails": 8,
+   "falsePassMismatch": 0,
+   "mismatchRows": 116,
+   "falsePassMismatchRate": 0,
+   "falseFail": 4,
+   "p50Ms": 539,
+   "p90Ms": 606,
+   "costUSD": 0.005357
+  },
+  "byKind": {
+   "acc": {
+    "rows": 32,
+    "agree": 32
+   },
+   "iv": {
+    "rows": 96,
+    "agree": 96
+   },
+   "sr": {
+    "rows": 96,
+    "agree": 96
+   },
+   "sbp": {
+    "rows": 16,
+    "agree": 12
+   }
+  }
+ },
+ "laya": {
+  "frozenLabels": {
+   "rows": 240,
+   "graded": 240,
+   "nullGrades": 0,
+   "agreement": 0.5708333333333333,
+   "falsePassReal": 7,
+   "realFails": 8,
+   "falsePassMismatch": 62,
+   "mismatchRows": 120,
+   "falsePassMismatchRate": 0.5166666666666667,
+   "falseFail": 34,
+   "p50Ms": 1465,
+   "p90Ms": 2879,
+   "costUSD": null
+  },
+  "correctedLabels": {
+   "rows": 240,
+   "graded": 240,
+   "nullGrades": 0,
+   "agreement": 0.5875,
+   "falsePassReal": 7,
+   "realFails": 8,
+   "falsePassMismatch": 58,
+   "mismatchRows": 116,
+   "falsePassMismatchRate": 0.5,
+   "falseFail": 34,
+   "p50Ms": 1465,
+   "p90Ms": 2879,
+   "costUSD": null
+  },
+  "byKind": {
+   "acc": {
+    "rows": 32,
+    "agree": 18
+   },
+   "iv": {
+    "rows": 96,
+    "agree": 54
+   },
+   "sr": {
+    "rows": 96,
+    "agree": 57
+   },
+   "sbp": {
+    "rows": 16,
+    "agree": 12
+   }
+  }
+ }
+}

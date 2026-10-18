@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \".claude/skills/build-skill-tool-workflow/tests/*.test.mjs\" (Node v24.11.1)",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "note": "includes 4 new tests in grade_with_engine.test.mjs: request shape, 0.5 threshold, null on malformed/timeout/error, false-pass counts with a fake engine"
+    }
+  ]
+}
