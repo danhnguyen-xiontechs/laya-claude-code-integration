@@ -1,0 +1,218 @@
+{
+  "experimentId": "20261018-cte-r3-gate-01",
+  "check": "gold in codemap pool (per-query 30, max pool 96) vs printed top 8",
+  "generatedAt": "2026-10-18T11:28:16.652Z",
+  "filtered": {
+    "units": 8,
+    "goldFiles": 27,
+    "goldInTop8": 9,
+    "goldInPoolOutside8": 9,
+    "goldNotInPool": 9,
+    "unitsWithGoldInPoolOutside8": 3,
+    "unitsMissedTop8ButInPool": 0,
+    "meanRecall8": 0.4114583333333333,
+    "meanPoolRecall": 0.5958333333333333
+  },
+  "all": {
+    "units": 12,
+    "goldFiles": 33,
+    "goldInTop8": 13,
+    "goldInPoolOutside8": 9,
+    "goldNotInPool": 11,
+    "unitsWithGoldInPoolOutside8": 3,
+    "unitsMissedTop8ButInPool": 0,
+    "meanRecall8": 0.49652777777777773,
+    "meanPoolRecall": 0.6194444444444444
+  },
+  "rows": [
+    {
+      "id": "e01",
+      "filtered": true,
+      "gold": 1,
+      "poolSize": 101,
+      "inTop8": 1,
+      "inPoolOut8": 0,
+      "notInPool": 0,
+      "goldRanks": [
+        1
+      ],
+      "recall8": 1,
+      "poolRecall": 1
+    },
+    {
+      "id": "e02",
+      "filtered": true,
+      "gold": 3,
+      "poolSize": 72,
+      "inTop8": 2,
+      "inPoolOut8": 0,
+      "notInPool": 1,
+      "goldRanks": [
+        0,
+        1,
+        2
+      ],
+      "recall8": 0.6666666666666666,
+      "poolRecall": 0.6666666666666666
+    },
+    {
+      "id": "e03",
+      "filtered": true,
+      "gold": 4,
+      "poolSize": 53,
+      "inTop8": 1,
+      "inPoolOut8": 2,
+      "notInPool": 1,
+      "goldRanks": [
+        0,
+        1,
+        9,
+        16
+      ],
+      "recall8": 0.25,
+      "poolRecall": 0.75
+    },
+    {
+      "id": "e04",
+      "filtered": true,
+      "gold": 4,
+      "poolSize": 63,
+      "inTop8": 1,
+      "inPoolOut8": 2,
+      "notInPool": 1,
+      "goldRanks": [
+        0,
+        1,
+        14,
+        12
+      ],
+      "recall8": 0.25,
+      "poolRecall": 0.75
+    },
+    {
+      "id": "e05",
+      "filtered": false,
+      "gold": 1,
+      "poolSize": 62,
+      "inTop8": 1,
+      "inPoolOut8": 0,
+      "notInPool": 0,
+      "goldRanks": [
+        4
+      ],
+      "recall8": 1,
+      "poolRecall": 1
+    },
+    {
+      "id": "e06",
+      "filtered": true,
+      "gold": 10,
+      "poolSize": 57,
+      "inTop8": 1,
+      "inPoolOut8": 5,
+      "notInPool": 4,
+      "goldRanks": [
+        11,
+        0,
+        0,
+        9,
+        33,
+        18,
+        0,
+        12,
+        0,
+        2
+      ],
+      "recall8": 0.125,
+      "poolRecall": 0.6
+    },
+    {
+      "id": "e07",
+      "filtered": true,
+      "gold": 1,
+      "poolSize": 40,
+      "inTop8": 0,
+      "inPoolOut8": 0,
+      "notInPool": 1,
+      "goldRanks": [
+        0
+      ],
+      "recall8": 0,
+      "poolRecall": 0
+    },
+    {
+      "id": "e08",
+      "filtered": true,
+      "gold": 1,
+      "poolSize": 9,
+      "inTop8": 0,
+      "inPoolOut8": 0,
+      "notInPool": 1,
+      "goldRanks": [
+        0
+      ],
+      "recall8": 0,
+      "poolRecall": 0
+    },
+    {
+      "id": "e09",
+      "filtered": false,
+      "gold": 3,
+      "poolSize": 10,
+      "inTop8": 2,
+      "inPoolOut8": 0,
+      "notInPool": 1,
+      "goldRanks": [
+        0,
+        3,
+        4
+      ],
+      "recall8": 0.6666666666666666,
+      "poolRecall": 0.6666666666666666
+    },
+    {
+      "id": "e10",
+      "filtered": true,
+      "gold": 3,
+      "poolSize": 23,
+      "inTop8": 3,
+      "inPoolOut8": 0,
+      "notInPool": 0,
+      "goldRanks": [
+        2,
+        3,
+        4
+      ],
+      "recall8": 1,
+      "poolRecall": 1
+    },
+    {
+      "id": "e11",
+      "filtered": false,
+      "gold": 1,
+      "poolSize": 10,
+      "inTop8": 1,
+      "inPoolOut8": 0,
+      "notInPool": 0,
+      "goldRanks": [
+        1
+      ],
+      "recall8": 1,
+      "poolRecall": 1
+    },
+    {
+      "id": "e12",
+      "filtered": false,
+      "gold": 1,
+      "poolSize": 6,
+      "inTop8": 0,
+      "inPoolOut8": 0,
+      "notInPool": 1,
+      "goldRanks": [
+        0
+      ],
+      "recall8": 0,
+      "poolRecall": 0
+    }
+  ]
+}

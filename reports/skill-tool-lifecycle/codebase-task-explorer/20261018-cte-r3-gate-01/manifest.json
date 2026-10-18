@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-cte-r3-gate-01",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "none",
+    "commit": "a424c9c",
+    "branch": "claude/cte-r3"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "Offline gate on 12 ess-be tasks (8 hard for grep): codemap Recall@8 0.41 vs rg 0.12 (6/8 vs 4/8 tasks hit), but p50 15.8 s (each codemap find rescans the repo, 9.3 s per query), so the gate fails on latency; ck (0.00, returns docs) and aider repo-map (0.03) fail on recall. No agent run. Top suggestion: a prebuilt path+symbol index that answers in < 1 s, gated against codemap on the same units.",
+  "approvals": {
+    "ideaApprovedAt": "2026-10-18",
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (no helper)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + gate-winning engine (codemap, ck or aider-repomap), no Jev",
+      "candidateEnabled": true,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "cte-r3-gate",
+    "datasetVersion": "ess-be: 12 units from fix/feat changes, 8 after the rg filter; gold = modified non-test .cs at the parent (local only, D:/cte-r3)",
+    "caseCount": 8,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18",
+    "deviations": [
+      "Track E: steps 1-3 N/A (existing tool), except the two codemap fixes approved from 20261018-cte-r2-agent-01/improvements.md.",
+      "Test repo is ess-be (private) per the user at Gate A; task texts, gold and outputs are kept outside the public Laya repo (D:/cte-r3), only numbers are committed.",
+      "ck adapter fixed after the first run, before scoring: absolute \\? paths made repo-relative, --topk 50 -> 400 (chunks, not files). ck still 0.",
+      "ck index time for e01 not captured; rg latencies measured while one ck index was building (not used in the decision).",
+      "Gate failed on latency only for codemap; per design no agent run and no Opus call."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": null,
+    "perToolReport": null,
+    "perToolHtmlReport": null,
+    "mainReport": "../../index.html",
+    "runDirectories": [],
+    "rawResults": [
+      "gate-offline.json",
+      "gate-result.md",
+      "guardrail-laya.json"
+    ],
+    "executionLogs": []
+  }
+}

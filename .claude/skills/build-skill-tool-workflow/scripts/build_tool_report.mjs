@@ -10,6 +10,7 @@
 //   optional per run dir: execution-log.html (web-test builder) or log-execute.html
 //   optional unit-tests.json  { suites: [{ level, command, passed, failed, skipped, notRun, evidence }] }
 //   optional agent-review.json { findings: [{ severity, finding, ref, resolution }] }
+//   optional evidence/phase-usage.json (phase_usage.mjs): token use of the workflow's own phase sessions
 // Writes: summary.json (read by build_main_report.mjs) and report.html
 import fs from 'node:fs';
 import path from 'node:path';
@@ -138,6 +139,7 @@ const unitTotals = unit
   : null;
 const isOpen = (f) => !/^(fixed|accepted)/i.test(f.resolution ?? '');
 const openBlocking = review ? review.findings.filter((f) => ['Critical', 'Major'].includes(f.severity) && isOpen(f)).length : null;
+const phaseUsage = readJson(path.join(dir, 'evidence', 'phase-usage.json'));
 const engine = manifest.tool?.provider && manifest.tool.provider !== 'none' ? manifest.tool.provider : 'rules';
 
 const summary = {
@@ -157,6 +159,7 @@ const summary = {
   improvements,
   unitTotals,
   openBlockingFindings: openBlocking,
+  workflowCost: phaseUsage?.measuredPhases ? phaseUsage.totals : null,
   lastRun: runs.map((r) => r.res.finishedAt).filter(Boolean).sort().at(-1) ?? null,
   generatedAt: new Date().toISOString(),
   report: 'report.html',
@@ -178,11 +181,18 @@ const maxTok = Math.max(1, ...caseRows.flatMap((r) => [r.aTok ?? 0, r.bTok ?? 0]
 const bar = (v, cls, max = maxTok) => `<span class="bar ${cls}" style="width:${v == null ? 0 : Math.max(1, (v / Math.max(1, max ?? 0)) * 100)}%"></span>`;
 const passedOf = (g) => (g ? `${g.pass}/${g.pass + g.fail} pass` : '—');
 
+const short = (x) => (x == null ? '—' : x >= 1e6 ? `${(x / 1e6).toFixed(1)}M` : x >= 1e3 ? `${Math.round(x / 1e3)}k` : String(x));
+const phaseTotal = (p) => (p.measured ? p.input + p.output + p.cacheRead + p.cacheWrite : null);
+// the workflow's own sessions (plan, build, measure, review + fix), not the cases: what running this experiment cost
+const phaseCard = phaseUsage?.measuredPhases
+  ? ['Workflow cost per phase', short(phaseUsage.totals.allTokens), `${phaseUsage.phases.map((p) => `${esc(p.phase)} ${esc(p.model ?? '')} ${p.measured ? short(phaseTotal(p)) : 'not measured'}`).join(' · ')} · peak context ${short(phaseUsage.totals.peakContext)}`, phaseUsage.missingPhases.length ? 'warn' : '']
+  : ['Workflow cost per phase', 'not measured', phaseUsage ? 'no phase transcript found' : 'no evidence/phase-usage.json', 'warn'];
 const cards = [
   ['Tokens Claude reads', signedPct(tokChange), `${num(A?.pairedTokens)} → ${num(B?.pairedTokens)}${unpaired.length ? ` · ${pairedRows.length} paired cases` : ''}`, tokChange == null ? '' : tokChange < 0 ? 'good' : 'bad'],
   ['Cases passed', `${B?.pass ?? '—'}/${B ? B.pass + B.fail : '—'}`, `plain Claude ${A?.pass ?? '—'}/${A ? A.pass + A.fail : '—'}${regressions.length ? ` · ${regressions.length} worse` : ''}`, regressions.length ? 'bad' : 'good'],
   [`${esc(engine)} calls`, num(B?.providerCalls), `median ${ms(B?.providerLatencyMs)} · ${num(B?.fallbacks)} fallbacks`, ''],
   ['Tests · review', unitTotals ? `${unitTotals.passed}/${unitTotals.passed + unitTotals.failed}` : 'not run', review ? `${openBlocking} open Critical/Major` : 'no agent review', unitTotals?.failed || openBlocking ? 'bad' : unitTotals ? 'good' : 'warn'],
+  phaseCard,
 ];
 
 const caseTable = `<table class="cases"><thead><tr><th>Case</th><th>Plain Claude</th><th>Claude + tool</th><th class="r">Tokens<br>plain Claude</th><th class="r">Tokens<br>Claude + tool</th><th class="r">Change</th><th class="w">Tokens</th><th>Evidence</th></tr></thead><tbody>${caseRows

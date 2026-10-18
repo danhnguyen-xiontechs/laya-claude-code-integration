@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-cte-r4-symindex-01",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "none",
+    "commit": "5218b0f",
+    "branch": "claude/cte-r3"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "PILOT",
+  "confidence": "LOW",
+  "headline": "symindex (ast-grep path + symbol index) answers in ~90 ms instead of codemap 15-25 s, with Recall@8 >= codemap+rules on ess-be (0.583 vs 0.537 hard units, 0.377 vs 0.296 held-out) and within 0.05 on Laya after a hidden-dir fix; the frozen gate still fails because plain rg beats every engine on the easy held-out units (0.518). Next: agent A/B on hard ess-be tasks with symindex behind a flag.",
+  "approvals": {
+    "ideaApprovedAt": "2026-10-18",
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "codemap engine, rules order (C-rules); codemap order (C-cm) reported alongside",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": null,
+      "effort": null
+    },
+    {
+      "id": "B",
+      "name": "symindex engine (ast-grep path + symbol index), rules order (S-rules)",
+      "candidateEnabled": true,
+      "engineEnabled": false,
+      "model": null,
+      "effort": null
+    }
+  ],
+  "evaluation": {
+    "planVersion": "cte-r4-symindex",
+    "datasetVersion": "ess-be r3 (12 units) + ess-be held-out (8 units) + Laya (11 tasks); ess-be data local only",
+    "caseCount": 31,
+    "repetitions": 1,
+    "criteriaFrozenAt": "2026-10-18",
+    "deviations": [
+      "Offline comparison only (no agent run); arms are engine/order variants, not plain Claude vs tool.",
+      "Frozen run lost on Laya because ast-grep skipped dot-directories (.claude/); fixed in 5218b0f (--no-ignore hidden, versioned cache key) and re-run as a labelled second run (compare-fix.json).",
+      "Held-out units not hardness-filtered (design decision); rg beats all engines there.",
+      "Default-order rule picks codemap order from the pooled set, driven by Laya; on ess-be held-out rules order is better (0.377 vs 0.216)."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": null,
+    "perToolReport": null,
+    "perToolHtmlReport": null,
+    "mainReport": "../../index.html",
+    "runDirectories": [],
+    "rawResults": [
+      "compare-frozen.json",
+      "compare-fix.json",
+      "result.md"
+    ],
+    "executionLogs": []
+  }
+}

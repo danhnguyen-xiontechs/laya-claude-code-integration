@@ -442,8 +442,9 @@
       "notRun": 0
     },
     "openBlockingFindings": 0,
+    "workflowCost": null,
     "lastRun": "2026-10-18T03:37:02.595Z",
-    "generatedAt": "2026-10-18T08:18:31.822Z",
+    "generatedAt": "2026-10-18T13:00:35.137Z",
     "report": "report.html",
     "href": "subagent-model-router/20261018-model-router-r2-agent-01/report.html",
     "stale": false,
@@ -1768,8 +1769,9 @@
       "notRun": 0
     },
     "openBlockingFindings": 0,
+    "workflowCost": null,
     "lastRun": null,
-    "generatedAt": "2026-10-18T14:05:04.274Z",
+    "generatedAt": "2026-10-18T14:10:08.612Z",
     "report": "report.html",
     "href": "context-governor/20261018-context-governor-01/report.html",
     "stale": false,

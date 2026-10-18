@@ -1,0 +1,8 @@
+{
+  "commit": "5218b0f",
+  "branch": "claude/cte-r3",
+  "suites": [
+    { "level": "unit", "command": "node --test \"tests/*.test.mjs\" (in .claude/skills/codebase-task-explorer)", "passed": 38, "failed": 0, "skipped": 2, "notRun": 0, "notes": "2 skipped = live ast-grep tests, gated by SYMINDEX_LIVE; the fake hang/fail ast-grep assertions run on Linux/macOS only (Node cannot spawn a .cmd shim without a shell)" },
+    { "level": "integration", "command": "SYMINDEX_LIVE=1 node --test tests/symindex.test.mjs", "passed": 12, "failed": 0, "skipped": 0, "notRun": 0, "notes": "real ast-grep 0.42.1: confidence-gate lookup on the skill folder, .claude/ symbols indexed" }
+  ]
+}

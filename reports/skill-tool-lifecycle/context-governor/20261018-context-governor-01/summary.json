@@ -29,7 +29,8 @@
     "notRun": 0
   },
   "openBlockingFindings": 0,
+  "workflowCost": null,
   "lastRun": null,
-  "generatedAt": "2026-10-18T14:05:04.274Z",
+  "generatedAt": "2026-10-18T14:10:08.612Z",
   "report": "report.html"
 }

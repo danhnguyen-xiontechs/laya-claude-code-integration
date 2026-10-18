@@ -1,0 +1,8 @@
+{
+  "commit": "a424c9c",
+  "branch": "claude/cte-r3",
+  "suites": [
+    { "level": "unit", "command": "node --test \"tests/*.test.mjs\" (in .claude/skills/codebase-task-explorer)", "passed": 28, "failed": 0, "skipped": 0, "notRun": 0, "notes": "21 existing + 7 new in tests/round3.test.mjs (codemapOrder, parallel order, timeout, invalid JSON, concurrency cap, provider none in explore, CLI ignores DECISION_PROVIDER)" },
+    { "level": "guardrail", "command": "node scripts/guardrail_laya.mjs <skill dir>", "passed": 1, "failed": 0, "skipped": 0, "notRun": 0, "notes": "Laya eval/tasks.json Recall@5: codemap order 0.633 vs rules order 0.467 (no loss); see guardrail-laya.json" }
+  ]
+}
