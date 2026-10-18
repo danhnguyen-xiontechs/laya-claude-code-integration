@@ -1,7 +1,7 @@
 # Idea Brief — smart-context-trimming: collapse repeated output on re-runs
 
 - **Experiment ID:** `20261018-sct-rerun-01`
-- **Status:** `WAITING_FOR_IDEA_APPROVAL` (Gate A)
+- **Status:** `APPROVED_FOR_IMPLEMENTATION` (Gate A passed 2026-10-18)
 - **Owner:** user (XionTechs / Laya)
 - **Date:** 2026-10-18
 - **Related:** `smart-context-trimming/` (PILOT: 20/20 both arms, −18% then −24% session tokens), retry-loop-breaker (DROPPED 2026-10-18; replay `../retry-loop-breaker/20261018-retry-loop-breaker-replay-01/`)
@@ -57,7 +57,7 @@ If the trimmer keeps a per-session fingerprint of the last trimmed output of eac
 `PROCEED` with the rules-only collapse behind a flag. It reuses the PILOT Mod, never blocks anything, and costs little to measure.
 
 ## Human decision
-- **Decision:** `APPROVED | REVISE | HOLD | REJECTED`
-- **Approved scope / changes:**
-- **Decision date:**
-- **Notes:**
+- **Decision:** APPROVED
+- **Approved scope / changes:** collapse repeated output on re-runs, rules only, behind the `collapseReruns` flag, as written.
+- **Decision date:** 2026-10-18
+- **Notes:** quota-saving mode (content run first; agent run only if the content run meets its target; Haiku effort high; one Opus call with a closed input pack; at most 2 sessions at once).
