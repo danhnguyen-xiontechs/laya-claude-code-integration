@@ -1,0 +1,1 @@
+{ "name": "haiku-100k", "version": "0.1.0", "description": "Keeps every Haiku request under the 100k-token price step: cuts a tool result that would push the next request past it, and counts any request above 100k." }

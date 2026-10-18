@@ -1,8 +1,8 @@
 ---
 name: haiku-case
-description: General-purpose worker on Haiku 5.5 that auto-compacts its own context at 98k tokens (kept under 100k for cost), with a short tool list so its starting context stays small. Used by the haiku-subagent skill and for the case agents of build-skill-tool-workflow measurements. Not for planning or improvement reasoning (those run on Opus).
+description: General-purpose worker on Haiku 5.5 that auto-compacts its own context under the 100k-token window (the minimum Claude Code accepts; every Haiku request must stay under 100k for price), with a short tool list so its starting context stays small. Used by the haiku-subagent skill and for the case agents of build-skill-tool-workflow measurements. Not for planning or improvement reasoning (those run on Opus).
 model: haiku
-autoCompactWindow: 98000
+autoCompactWindow: 100000
 tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 ---
 

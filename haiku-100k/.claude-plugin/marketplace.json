@@ -1,0 +1,11 @@
+{
+  "name": "haiku-100k",
+  "owner": { "name": "Danh Nguyen" },
+  "plugins": [
+    {
+      "name": "haiku-100k",
+      "source": "./",
+      "description": "Keeps every Haiku request under the 100k-token price step: cuts a tool result that would push the next request past it, and counts any request above 100k."
+    }
+  ]
+}
