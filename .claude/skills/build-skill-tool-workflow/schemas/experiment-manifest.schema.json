@@ -63,6 +63,22 @@
       },
       "additionalProperties": true
     },
+    "phases": {
+      "description": "One Claude Code session per workflow phase; phase_usage.mjs sums each transcript into evidence/phase-usage.json.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase"],
+        "properties": {
+          "phase": { "enum": ["P1", "P2", "P3", "P4"] },
+          "sessionId": { "type": ["string", "null"] },
+          "transcript": { "type": ["string", "null"], "description": "Path to the session .jsonl (relative to the experiment dir, absolute, or ~/...)" },
+          "model": { "type": ["string", "null"] },
+          "smartTrimMode": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
     "artifacts": {
       "type": "object",
       "required": ["ideaBrief", "perToolReport", "mainReport"],
