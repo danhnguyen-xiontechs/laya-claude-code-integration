@@ -1,0 +1,13 @@
+CAUSE: `test_expired_token_is_rejected` advances the process-global clock by 7200s and nothing resets it. `session_clock` is session-scoped and returns the shared `svc.clock` module, and `fresh_clock` is not fresh: it only logs and returns that same module with its `_offset` still set. So `test_recent_session_token_is_valid` runs at base+7200 (test_auth.py runs in file order), its token (iat = base-1800) has age 9000s, which is over TTL 3600, and `is_valid` returns False. The test's own comment assumes an unadvanced clock, so the failure is an order-dependent state leak, not a bug in `tokens.is_valid`.
+
+LOCATION: tests/conftest.py:15-18 (`fresh_clock` hands out the shared clock with no reset; `session_clock` at lines 10-12 is the session-scoped source). Triggered by tests/test_auth.py:6 (`fresh_clock.advance(7200, ...)`) acting on the global `_offset` in svc/clock.py:4-13.
+
+EVIDENCE (from .tool-output/last.log):
+```
+INFO     tests:conftest.py:17 fixture fresh_clock ready, clock offset=7200s
+DEBUG    svc.auth:tokens.py:19 token age=9000s ttl=3600s
+FAILED tests/test_auth.py::test_recent_session_token_is_valid - AssertionErro...
+```
+Also `E       AssertionError: assert False` at tests\test_auth.py:13. The 7200s offset matches the only advance() call in the work folder (test_auth.py:6), and 9000s = 7200 + 1800. The many ERROR/traceback lines tagged noise_hard.py are unrelated background chatter; they do not affect the assertion. I did not open files outside the work folder.
+
+RUNS: 2

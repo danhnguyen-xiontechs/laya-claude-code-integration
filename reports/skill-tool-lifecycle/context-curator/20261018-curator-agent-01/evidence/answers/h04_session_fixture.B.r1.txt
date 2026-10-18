@@ -1,0 +1,10 @@
+CAUSE: The session fixture `item` in tests/conftest.py loads catalog fixture set "v1" (sku, name, price only), but svc/shipping.py and the test expectations (120 g at 0.01 = 1.2, "A-1 EUR ...120g") need schema v2 keys weight_g, hazmat and currency, so every test in tests/test_shipping.py raises KeyError on a missing key. svc/catalog.py:14 only logs a warning about the v1/v2 mismatch and returns v1 anyway, so the stale fixture pin is never reported as the failure.
+LOCATION: tests/conftest.py:9 (`return catalog.load("v1")`, the stale pin); contributing: svc/catalog.py:14 (warning-and-load-anyway)
+EVIDENCE:
+  WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway
+  E       KeyError: 'weight_g'
+  svc\shipping.py:10: KeyError
+  E       KeyError: 'currency'
+  svc\shipping.py:15: KeyError
+  short test summary: FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g' (and the other 5 tests fail the same way, 'weight_g' or 'currency'); "6 failed in 0.26s"
+RUNS: 1

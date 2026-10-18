@@ -1,0 +1,9 @@
+CAUSE: The test fixture seeds schema_migrations with a stale checksum (9f3a77c1) for 0042_orders_region, but the current SQL for that migration hashes to 3f5429e3. apply_all() treats any checksum mismatch as "already applied" and skips the migration, so ALTER TABLE orders ADD COLUMN region TEXT never runs. The orders table has no region column, and the INSERT in create_order fails.
+LOCATION: svc/migrate.py:25-29 (the checksum-mismatch branch that logs "assuming applied" and then continues, skipping 0042); the stale stored checksum is seeded at tests/conftest.py:17.
+EVIDENCE:
+"WARNING  svc.migrate:migrate.py:26 migration 0042_orders_region checksum differs (stored=9f3a77c1 file=3f5429e3), assuming applied"
+"INFO     svc.migrate:migrate.py:30 applying migration 0043_customers_email"
+"E       sqlite3.OperationalError: table orders has no column named region"
+"svc\orders.py:10: OperationalError"
+"FAILED tests/test_orders.py::test_order_records_region - sqlite3.OperationalE..."
+RUNS: 1

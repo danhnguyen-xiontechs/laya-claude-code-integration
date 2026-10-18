@@ -1,0 +1,6 @@
+CAUSE: The fixture seeds schema_migrations with a stale checksum for 0042_orders_region ('9f3a77c1', while the current SQL hashes to 3f5429e3). apply_all treats any checksum mismatch as "assume applied" and skips the SQL, so ALTER TABLE orders ADD COLUMN region never runs and create_order's INSERT fails. The fixture's orders table also lacks the region column, so the recorded "applied" state does not match the actual schema.
+LOCATION: svc/migrate.py:26 (checksum-mismatch branch, lines 25-29, which skips the migration instead of applying or failing); triggered by tests/conftest.py:17 (the stale '9f3a77c1' seed row).
+EVIDENCE:
+WARNING  svc.migrate:migrate.py:26 migration 0042_orders_region checksum differs (stored=9f3a77c1 file=3f5429e3), assuming applied
+E       sqlite3.OperationalError: table orders has no column named region
+RUNS: 1

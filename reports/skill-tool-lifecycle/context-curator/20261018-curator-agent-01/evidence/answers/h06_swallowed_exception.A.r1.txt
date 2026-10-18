@@ -1,0 +1,11 @@
+CAUSE: `Ledger.flush()` wraps its entire `for` loop in one `try` with a catch-all `except Exception`. The second entry without a "rate" key, `{"amount": 7}`, raises `KeyError`, which is logged and swallowed, so the loop stops and the last entry `{"amount": 3, "rate": 1}` is never added. `flush` returns normally with a partial balance of 20 instead of the expected 23 (10 + 10 + 3, so the rate-less entry is skipped and the batch continues).
+
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\c4cf5e0b-3d40-4d6a-8707-bea182c14834\scratchpad\cur\work\h06_swallowed_exception.A.r1\svc\ledger.py:21 (the `except Exception:` that swallows the error; the `try` opens at line 18 and the `KeyError` is raised at line 20)
+
+EVIDENCE:
+ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries
+    self.balance += e["amount"] * e["rate"]
+KeyError: 'rate'
+E       AssertionError: assert 20 == 23
+
+RUNS: 1

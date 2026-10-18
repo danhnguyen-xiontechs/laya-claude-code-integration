@@ -1,0 +1,178 @@
+{
+  "h01_layered_config.A.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h01_layered_config.B.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h01_layered_config.A.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h01_layered_config.B.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h03_clock_leak.A.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h03_clock_leak.B.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h03_clock_leak.A.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h03_clock_leak.B.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h05_deadline_budget.A.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h05_deadline_budget.B.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h05_deadline_budget.A.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 3,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h05_deadline_budget.B.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 2,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h07_payload_trace.A.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h07_payload_trace.B.r1": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 2,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h07_payload_trace.A.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 1,
+    "forbiddenCalls": 0,
+    "keyCalls": 0,
+    "siblingReads": 0
+  },
+  "h07_payload_trace.B.r2": {
+    "status": "pass",
+    "cause": true,
+    "ev": true,
+    "note": "cause terms ok; gold evidence line quoted",
+    "model": "claude-haiku-5-5",
+    "runs": 2,
+    "forbiddenCalls": 1,
+    "keyCalls": 0,
+    "siblingReads": 0
+  }
+}

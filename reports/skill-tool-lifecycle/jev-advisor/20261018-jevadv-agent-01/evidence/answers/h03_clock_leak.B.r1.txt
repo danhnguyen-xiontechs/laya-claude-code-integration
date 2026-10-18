@@ -1,0 +1,10 @@
+CAUSE: The `fresh_clock` fixture is not fresh. It returns the process-wide `svc.clock` module, whose `_offset` only grows through `advance()` and is never reset. `test_expired_token_is_rejected` advances it by 7200s and never restores it, so when `test_recent_session_token_is_valid` runs next in the same session, the clock is already 2 hours ahead. A token issued 30 minutes before the base time then reads as 9000s old, which is over the 3600s TTL, so `is_valid` returns False.
+
+LOCATION: tests/conftest.py:11-12 (session-scoped `session_clock` returns the shared `svc.clock` module), with `fresh_clock` at tests/conftest.py:16-18 inheriting it with no reset. Contributing: svc/clock.py:4 and :13 (module-global `_offset`, no reset API) and tests/test_auth.py:6 (advances the shared clock with no teardown).
+
+EVIDENCE:
+- `INFO     tests:conftest.py:17 fixture fresh_clock ready, clock offset=7200s` (log line 25, captured setup of the second test; the 7200s offset was left over from the first test)
+- `DEBUG    svc.auth:tokens.py:19 token age=9000s ttl=3600s` (log line 2897)
+- `FAILED tests/test_auth.py::test_recent_session_token_is_valid - AssertionErro...` (log line 2899)
+
+RUNS: 1 (the test command, runtest.py, once; advisor log at .tool-output/20261018-002947_d6ac.log). Separately, I ran pytest on only `tests/test_auth.py::test_recent_session_token_is_valid` with bytecode writing disabled, and it passed (1 passed). That confirms the failure depends on the leaked offset from the first test. The bulk of the log (noise_hard.py WARNING/ERROR lines and tracebacks, the "tz table" line) is unrelated noise from ../_shared, and the advisor hint at L2895-2897 points at the symptom, not the cause. No code was edited and no files were created outside .tool-output/.

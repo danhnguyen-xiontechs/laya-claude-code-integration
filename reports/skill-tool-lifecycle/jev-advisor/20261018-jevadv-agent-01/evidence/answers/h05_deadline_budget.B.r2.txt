@@ -1,0 +1,9 @@
+CAUSE: The cold-cache case (geo_cache False) charges 4800 ms for geo_lookup, so the cumulative cost through that stage (270 + 4800 = 5070 ms) exceeds the 5000 ms budget and run() raises DeadlineExceeded. The warm-up call cannot help because run() keeps no state between calls (left is a local, and cost() reads only the settings argument), so the test's premise that the warm-up primes the cold path is false and a cold round (6516 ms) can never fit the budget.
+
+LOCATION: tests/test_pipeline.py:5 (the warm-up call and its comment assume state carries over; the cold settings come from tests/conftest.py:6), and svc/pipeline.py:17 (the cold geo_lookup cost of 4800 ms that trips the check at svc/pipeline.py:30).
+
+EVIDENCE:
+E                   svc.pipeline.DeadlineExceeded: deadline exceeded in stage geo_lookup
+DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=4800 budget_left_ms=-70 round=0   (log line 2680 of .tool-output/20261018-004812_9905.log; the preceding stage=enrich line at 2636 shows budget_left_ms=4730)
+
+RUNS: 1

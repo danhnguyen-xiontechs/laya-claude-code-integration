@@ -1,0 +1,16 @@
+CAUSE: tests/conftest.py pins the session fixture to the stale "v1" fixture set (sku/name/price only), but svc/catalog.py sets SCHEMA = "v2" and svc/shipping.py reads weight_g, hazmat and currency, which only the v2 set has. catalog.load() merely logs a warning on the mismatch and returns the v1 dict anyway, so all six tests fail with KeyError on fields the fixture never had.
+
+LOCATION: tests/conftest.py:9 (`return catalog.load("v1")`); contributing: svc/catalog.py:13-15 (warns and loads anyway on schema mismatch), failing reads at svc/shipping.py:10 and :15.
+
+EVIDENCE:
+WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway
+item = {'sku': 'A-1', 'name': 'Widget', 'price': 9.5}
+E       KeyError: 'weight_g'
+svc\shipping.py:10: KeyError
+E       KeyError: 'currency'
+svc\shipping.py:15: KeyError
+FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g'
+FAILED tests/test_shipping.py::test_label_has_currency - KeyError: 'currency'
+(final line of the run: "6 failed in 0.20s", exit 1; the test expectations such as quote == 1.2 for a 120 g item and label endswith "120g" are written for the v2 data, so the v1 pin is the stale piece. The conftest comment says the pin comes from the nightly job, so whether to repin or update that job is the user's call. The noise_hard.py ERROR lines (cache, metrics, http, notify) are unrelated chatter.)
+
+RUNS: 2

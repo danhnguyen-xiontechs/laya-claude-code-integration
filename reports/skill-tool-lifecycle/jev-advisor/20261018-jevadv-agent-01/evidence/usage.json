@@ -1,0 +1,242 @@
+{
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h01_layered_config.A.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 30,
+      "cacheReadTokens": 421938,
+      "cacheWriteTokens": 38024,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a820e26106e83c590.jsonl",
+      "elapsedMs": 55579
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h01_layered_config.B.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 48,
+      "cacheReadTokens": 549013,
+      "cacheWriteTokens": 38674,
+      "modelTurns": 9,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-ab974bdc8c67b8a11.jsonl",
+      "elapsedMs": 75077
+    },
+    "forbiddenCalls": 1
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h01_layered_config.A.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 28,
+      "cacheReadTokens": 281656,
+      "cacheWriteTokens": 33758,
+      "modelTurns": 5,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-ad5929351238f0259.jsonl",
+      "elapsedMs": 50741
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h01_layered_config.B.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 31,
+      "cacheReadTokens": 281418,
+      "cacheWriteTokens": 36073,
+      "modelTurns": 5,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a40012a960c849269.jsonl",
+      "elapsedMs": 53691
+    },
+    "forbiddenCalls": 1
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h03_clock_leak.A.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 40,
+      "cacheReadTokens": 391785,
+      "cacheWriteTokens": 28125,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a0fb6e00f7855ece8.jsonl",
+      "elapsedMs": 43130
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h03_clock_leak.B.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 67,
+      "cacheReadTokens": 458316,
+      "cacheWriteTokens": 32803,
+      "modelTurns": 8,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a4a2874a2418e6ebb.jsonl",
+      "elapsedMs": 54275
+    },
+    "forbiddenCalls": 1
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h03_clock_leak.A.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 44,
+      "cacheReadTokens": 561915,
+      "cacheWriteTokens": 43898,
+      "modelTurns": 9,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-aed90b3e1715d8abb.jsonl",
+      "elapsedMs": 64839
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h03_clock_leak.B.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 44,
+      "cacheReadTokens": 327457,
+      "cacheWriteTokens": 27349,
+      "modelTurns": 6,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a8f3f679f3a151678.jsonl",
+      "elapsedMs": 39506
+    },
+    "forbiddenCalls": 1
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h05_deadline_budget.A.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 41,
+      "cacheReadTokens": 474059,
+      "cacheWriteTokens": 34006,
+      "modelTurns": 8,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-aa839096d73f3d69a.jsonl",
+      "elapsedMs": 66915
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h05_deadline_budget.B.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 52,
+      "cacheReadTokens": 468519,
+      "cacheWriteTokens": 38802,
+      "modelTurns": 8,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a25aaae97596e2f34.jsonl",
+      "elapsedMs": 72354
+    },
+    "forbiddenCalls": 1
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h05_deadline_budget.A.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 49,
+      "cacheReadTokens": 455808,
+      "cacheWriteTokens": 35639,
+      "modelTurns": 8,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a0cf35e430584abe2.jsonl",
+      "elapsedMs": 58316
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h05_deadline_budget.B.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 61,
+      "cacheReadTokens": 606408,
+      "cacheWriteTokens": 38662,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a478ea8ebb52f9f1e.jsonl",
+      "elapsedMs": 69553
+    },
+    "forbiddenCalls": 2
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h07_payload_trace.A.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 40,
+      "cacheReadTokens": 263300,
+      "cacheWriteTokens": 21589,
+      "modelTurns": 5,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a0df6324c18c9a17e.jsonl",
+      "elapsedMs": 28450
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h07_payload_trace.B.r1": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 26,
+      "cacheReadTokens": 268856,
+      "cacheWriteTokens": 27953,
+      "modelTurns": 5,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-aba0a6778cd0da290.jsonl",
+      "elapsedMs": 34146
+    },
+    "forbiddenCalls": 2
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h07_payload_trace.A.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 32,
+      "cacheReadTokens": 266103,
+      "cacheWriteTokens": 23154,
+      "modelTurns": 5,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a124f1e94d8f57715.jsonl",
+      "elapsedMs": 26469
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\scratchpad\\adv\\work\\h07_payload_trace.B.r2": {
+    "transcript": "<transcript>",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 51,
+      "cacheReadTokens": 393793,
+      "cacheWriteTokens": 31232,
+      "modelTurns": 7,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85\\c4cf5e0b-3d40-4d6a-8707-bea182c14834\\subagents\\agent-a77bbb407c6fd6a90.jsonl",
+      "elapsedMs": 39927
+    },
+    "forbiddenCalls": 1
+  }
+}

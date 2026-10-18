@@ -1,0 +1,8 @@
+CAUSE: The `sanitize` step in `svc/chain.py` drops every string value that is all-lowercase and exactly 3 characters long, which also removes the valid lowercase currency code "usd" from the request. The later `enrich` step then fills in its hardcoded default `"currency": "eur"`, so the caller's USD is silently replaced with EUR and `test_usd_request_keeps_currency` fails. The EUR test passes only because "EUR" is uppercase and survives the filter.
+LOCATION: <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-magical-shtern-feba85/c4cf5e0b-3d40-4d6a-8707-bea182c14834/scratchpad/adv/work/h07_payload_trace.B.r1/svc/chain.py:26 (faulty filter in `sanitize`; the masking default is at svc/chain.py:32 in `enrich`)
+EVIDENCE:
+- Test output: `E       AssertionError: assert 'eur' == 'usd'`
+- Log before sanitize (.tool-output/20261018-003858_73e3.log:23): `DEBUG    svc.chain:chain.py:10 stage=parse payload={"currency": "usd", "customer": "Initech", "qty": 2}`
+- Log after sanitize (.tool-output/20261018-003858_73e3.log:851): `DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}`
+- Log after enrich (.tool-output/20261018-003858_73e3.log:1265): `DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}`
+RUNS: 1

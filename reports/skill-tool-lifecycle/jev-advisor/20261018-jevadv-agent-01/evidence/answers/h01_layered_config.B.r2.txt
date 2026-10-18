@@ -1,0 +1,17 @@
+CAUSE: The autouse fixture in tests/conftest.py writes a higher-priority `99-ci.json` layer containing `"http.timeout": 0` for every test, and svc/config.py's load() lets later layers override the defaults (`http.timeout` = 30), so Client's deadline becomes now + 0 = 100.0 instead of the 130.0 the test expects. The layer merge works as designed; the always-on CI override injected by the fixture is what breaks the test's assumption that the default timeout applies.
+
+LOCATION: tests/conftest.py:12 (the `99-ci.json` write with `"http.timeout": 0`; mechanism in svc/config.py:24-25 with the default at svc/config.py:8)
+
+EVIDENCE:
+```
+>       assert c.deadline_for(now=100.0) == 130.0
+E       assert 100.0 == 130.0
+E        +  where 100.0 = deadline_for(now=100.0)
+DEBUG    svc.config:config.py:27 resolved http.timeout=0 layer=99-ci.json
+```
+(log file: .tool-output/20261018-003904_bb84.log, lines 17, 18, 65; the same `resolved http.timeout=0 layer=99-ci.json` line recurs at 1708 for the refresh() load.)
+Confirmation outside the test run: with no override layers, `config.load()['http.timeout']` returns 30 (deadline 130.0); with only a `{"http.timeout": 0}` layer named 99-ci.json, it returns 0 (deadline 100.0).
+
+Not the cause: the advisor's [jev] hint at L381 (`deprecated config key 'timeout_ms' is ignored`) comes from the chatter module _shared/noise_hard.py:74, which is pure logging noise and does not touch config.
+
+RUNS: 1

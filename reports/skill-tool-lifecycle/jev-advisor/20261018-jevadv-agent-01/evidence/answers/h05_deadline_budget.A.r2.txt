@@ -1,0 +1,9 @@
+CAUSE: The asserted run uses the `settings` fixture's geo_cache=False, so geo_lookup is charged an uncached 4800 ms; the 270 ms of earlier stages plus 4800 ms exceeds the 5000 ms budget, leaving -70 at geo_lookup in round 0 and raising DeadlineExceeded. The warm-up call with geo_cache=True is cheap (75 ms) but has no effect on the timed call, because run() keeps no state and costs depend only on its own settings argument, so the "warm-up with production settings" comment does not cover the configuration being asserted.
+LOCATION: tests/conftest.py:6 (fixture returns {"geo_cache": False}; the 4800 ms uncached charge is at svc/pipeline.py:17, and the raise at svc/pipeline.py:30)
+EVIDENCE:
+  settings = {'geo_cache': False}, budget_ms = 5000, rounds = 3
+  DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=4800 budget_left_ms=-70 round=0
+  E                   svc.pipeline.DeadlineExceeded: deadline exceeded in stage geo_lookup
+  FAILED tests/test_pipeline.py::test_request_finishes_within_budget - svc.pipe...
+  (contrast, the warm-up run with geo_cache=True passes: DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=75 budget_left_ms=4655 round=0)
+RUNS: 2 (both runs gave the same result: 1 failed, DeadlineExceeded in stage geo_lookup; no code or test files were edited, only .tool-output/ was written)

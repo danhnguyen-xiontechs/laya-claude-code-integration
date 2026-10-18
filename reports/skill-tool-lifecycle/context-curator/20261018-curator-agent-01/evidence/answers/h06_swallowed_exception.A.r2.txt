@@ -1,0 +1,4 @@
+CAUSE: Ledger.flush() in svc/ledger.py wraps the entire batch loop in a broad `except Exception:` that only logs, so the fixture entry {"amount": 7} with no "rate" key raises KeyError on the third entry, the loop stops, and the last entry {"amount": 3, "rate": 1} is never added. The result is 10 + 10 = 20 instead of 23 (the test's 23 assumes the rate-less entry is skipped and the remaining entries still count), and the failure surfaces only as a wrong total plus a logged ERROR.
+LOCATION: svc/ledger.py:21 (the `except Exception:` that swallows the error raised at svc/ledger.py:20, inside the try opened at line 18).
+EVIDENCE: `E       AssertionError: assert 20 == 23` / `ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries` / `    self.balance += e["amount"] * e["rate"]` / `KeyError: 'rate'`
+RUNS: 1

@@ -1,0 +1,10 @@
+CAUSE: The assertion checks the 5000 ms budget on the cold-cache settings from the shared `settings` fixture (`geo_cache: False`), which `pipeline.cost()` prices at a flat 4800 ms for `geo_lookup`. After 270 ms of earlier stages, that stage overshoots the budget to -70 and `run()` raises `DeadlineExceeded` in round 0 instead of returning. The warm-up call is a no-op because `run()` keeps no state between calls, so the comment's assumption that it primes anything is false.
+
+LOCATION: tests/conftest.py:6 (`return {"geo_cache": False}`). The failing assertion is tests/test_pipeline.py:6, and the 4800 ms cold-cost branch is svc/pipeline.py:17.
+
+EVIDENCE: From .tool-output/20261018-002951_e48b.log:
+- L2680: `DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=4800 budget_left_ms=-70 round=0`
+- L35: `E                   svc.pipeline.DeadlineExceeded: deadline exceeded in stage geo_lookup`
+- Contrast, the warm-up run with geo_cache True, L259: `DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=75 budget_left_ms=4655 round=0`
+
+RUNS: 2 (both via runtest.py, both fail identically with exit 1). The advisor's p=0.67 hint on L2609 (slow query 633ms) is filler from svc.db in _shared/noise_hard.py:74, not the cause. Side note: the second run's stdout was briefly redirected to the Temp folder outside the work folder; I deleted that file, and nothing else was written outside .tool-output/.

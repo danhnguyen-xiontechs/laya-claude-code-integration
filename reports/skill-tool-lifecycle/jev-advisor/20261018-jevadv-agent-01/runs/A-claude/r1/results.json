@@ -1,0 +1,177 @@
+{
+  "experimentId": "20261018-jevadv-agent-01",
+  "arm": "A",
+  "runId": "r1",
+  "startedAt": "2026-10-17T17:29:34.636Z",
+  "finishedAt": "2026-10-17T17:39:27.373Z",
+  "cases": [
+    {
+      "experimentId": "20261018-jevadv-agent-01",
+      "caseId": "h01_layered_config",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:29:34.636Z",
+      "finishedAt": "2026-10-17T17:30:36.028Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 3x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 30,
+        "cacheReadTokens": 421938,
+        "cacheWriteTokens": 38024,
+        "modelTurns": 7,
+        "toolCalls": 7,
+        "elapsedMs": 55579,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h01_layered_config.A.r1.txt",
+        "../../../evidence/texts/h01_layered_config.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-jevadv-agent-01",
+      "caseId": "h03_clock_leak",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:29:34.669Z",
+      "finishedAt": "2026-10-17T17:30:24.016Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 3x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 40,
+        "cacheReadTokens": 391785,
+        "cacheWriteTokens": 28125,
+        "modelTurns": 7,
+        "toolCalls": 7,
+        "elapsedMs": 43130,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h03_clock_leak.A.r1.txt",
+        "../../../evidence/texts/h03_clock_leak.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-jevadv-agent-01",
+      "caseId": "h05_deadline_budget",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:29:34.711Z",
+      "finishedAt": "2026-10-17T17:30:47.859Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 3x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 41,
+        "cacheReadTokens": 474059,
+        "cacheWriteTokens": 34006,
+        "modelTurns": 8,
+        "toolCalls": 12,
+        "elapsedMs": 66915,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h05_deadline_budget.A.r1.txt",
+        "../../../evidence/texts/h05_deadline_budget.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-jevadv-agent-01",
+      "caseId": "h07_payload_trace",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:38:53.282Z",
+      "finishedAt": "2026-10-17T17:39:27.373Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 2x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 40,
+        "cacheReadTokens": 263300,
+        "cacheWriteTokens": 21589,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "elapsedMs": 28450,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h07_payload_trace.A.r1.txt",
+        "../../../evidence/texts/h07_payload_trace.A.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}
