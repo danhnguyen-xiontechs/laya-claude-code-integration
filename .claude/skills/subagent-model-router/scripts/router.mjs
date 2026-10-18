@@ -87,7 +87,9 @@ const LIGHT = [
 const FILE_RE = /(?:[\w.-]+[\\/])*[\w.-]+\.(?:m?[jt]sx?|py|cs|java|go|rs|rb|php|kt|swift|c|cc|cpp|h|hpp|json|ya?ml|toml|md|sql|html|css|scss|sh|ps1)\b/gi;
 // Globs (`test/*.test.mjs`, `*.js`) say which files a test command picks up, not which files the
 // subagent must change, so they are removed before counting files ("a.js plus a test glob" = 1 file).
-const GLOB_RE = /(?:[\w.-]+[\\/])*[\w.-]*\*[\w.*-]*\.\w+/g;
+// A `*` run is a glob only after start, whitespace, punctuation or `/` and before `.` or `/`, so
+// markdown bold/italic on a file name (`**api.js**`, `*a.js*`) stays a file name.
+const GLOB_RE = /(?:[\w.-]+[\\/])*(?<![\w.*-])\*+(?=[.\\/])[\w.*\\/-]*\.\w+/g;
 // Explicit acceptance criteria only (AC1…, Given/Scenario); plain bullets are context, not ACs.
 const AC_RE = /^\s*(?:[-*]\s*)?(?:AC\s*-?\d+\b|Given\b|Scenario\b)/gim;
 const CHECK_RE = /\b(run (the )?tests?|pytest|npm (run )?test|node --test|go test|cargo test|dotnet test|jest|vitest|acceptance (criteria|check|test)s?|must pass|expected output|exit code 0)\b/i;

@@ -44,6 +44,17 @@ test('rule features: test globs are not files, so one file plus a test command i
   const p = 'Fix `paginate` in src/paginate.js. Run `node --test` (it finds test/*.test.mjs; also **/*.spec.js). Only change **src/paginate.js**.';
   assert.equal(ruleFeatures(p).files, 1);
   assert.deepEqual(ruleTier(ruleFeatures(p)), { tier: 'haiku', score: 0, why: ['checked'] });
+  assert.equal(ruleFeatures('Run node --test "test/*.test.mjs" and *.test.mjs and test/**/*.mjs').files, 0);
+});
+
+test('rule features: markdown bold/italic file names are files, not globs', () => {
+  assert.equal(ruleFeatures('Change **paginate.js**.').files, 1);
+  assert.equal(ruleFeatures('Change *cursor.js* only.').files, 1);
+  assert.equal(ruleFeatures('Edit *a.js*.').files, 1);
+  const p = 'Change **paginate.js**, **cursor.js** and **api.js**. Run node --test.';
+  assert.equal(ruleFeatures(p).files, 3);
+  assert.ok(!ruleTier(ruleFeatures(p)).why.includes('checked'));
+  assert.notEqual(ruleTier(ruleFeatures(p)).tier, 'haiku');
 });
 
 test('orderings rotate the tiers so each tier is first once in k=3', () => {

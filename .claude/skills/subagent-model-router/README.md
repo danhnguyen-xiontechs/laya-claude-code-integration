@@ -5,7 +5,7 @@ so that a fan-out of ~20 parallel subagents (one per story) runs each on the che
 model. Signals: local rules + TypeSafe Jev (or Laya). Combined by **agreement gating** and
 **self-consistency** rather than probability thresholds; backed by an **escalate-once cascade**.
 
-Node 18+ stdlib only. Tests: `node --test "test/*.test.mjs"` (31 tests, fake provider; quote the glob on Node 24).
+Node 18+ stdlib only. Tests: `node --test "test/*.test.mjs"` (32 tests, fake provider; quote the glob on Node 24).
 
 ## 1. Mechanism (verified 2026-10-15, Claude Code 2.1.300)
 
