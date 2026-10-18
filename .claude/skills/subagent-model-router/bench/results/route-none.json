@@ -141,15 +141,19 @@
   },
   "t1-slugify-tests": {
     "kind": "tests",
-    "rule": "sonnet",
-    "why": [],
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
     "answers": [],
     "wallMs": 0
   },
   "t2-csv-tests": {
     "kind": "tests",
-    "rule": "sonnet",
-    "why": [],
+    "rule": "haiku",
+    "why": [
+      "checked"
+    ],
     "answers": [],
     "wallMs": 0
   }

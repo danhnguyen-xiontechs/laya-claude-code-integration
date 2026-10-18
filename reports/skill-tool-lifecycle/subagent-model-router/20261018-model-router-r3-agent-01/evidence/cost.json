@@ -1,0 +1,743 @@
+{
+  "priceRatioHaikuToSonnet": {
+    "input": 0.05,
+    "output": 0.05
+  },
+  "A": {
+    "usd": 1.682,
+    "rawTokens": 3779146,
+    "runs": 16
+  },
+  "B": {
+    "usd": 0.2977,
+    "rawTokens": 6855559,
+    "runs": 18,
+    "firstAttemptUsd": 0.11066647999999998,
+    "escalationUsd": 0.1870686
+  },
+  "paired_pct_B_vs_A_usd": -82.3,
+  "perCase": {
+    "e1-locate": {
+      "A_usd": 0.242,
+      "B_usd": 0.0078,
+      "B_tier": "haiku"
+    },
+    "e2-count": {
+      "A_usd": 0.2462,
+      "B_usd": 0.0099,
+      "B_tier": "haiku"
+    },
+    "r1-rename": {
+      "A_usd": 0.161,
+      "B_usd": 0.0094,
+      "B_tier": "haiku"
+    },
+    "f1-paginate": {
+      "A_usd": 0.1506,
+      "B_usd": 0.0092,
+      "B_tier": "haiku"
+    },
+    "d3-maplimit": {
+      "A_usd": 0.1811,
+      "B_usd": 0.0159,
+      "B_tier": "haiku"
+    },
+    "d5-deps": {
+      "A_usd": 0.1881,
+      "B_usd": 0.2021,
+      "B_tier": "haiku"
+    },
+    "d1-lru": {
+      "A_usd": 0.2231,
+      "B_usd": 0.0244,
+      "B_tier": "haiku"
+    },
+    "d4-expr": {
+      "A_usd": 0.2899,
+      "B_usd": 0.019,
+      "B_tier": "haiku"
+    }
+  },
+  "rows": [
+    {
+      "name": "e1-locate.A.r1",
+      "case": "e1-locate",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 245,
+        "cacheReadTokens": 57015,
+        "cacheWriteTokens": 59818,
+        "modelTurns": 2,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-acfcfa65accb5dfdc.jsonl",
+        "elapsedMs": 1325
+      },
+      "usd": 0.163406
+    },
+    {
+      "name": "e1-locate.A.r2",
+      "case": "e1-locate",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 226,
+        "cacheReadTokens": 159208,
+        "cacheWriteTokens": 17800,
+        "modelTurns": 3,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ae56c447004ade6ce.jsonl",
+        "elapsedMs": 17444
+      },
+      "usd": 0.0786136
+    },
+    {
+      "name": "e1-locate.B.r1",
+      "case": "e1-locate",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 34,
+        "cacheReadTokens": 159415,
+        "cacheWriteTokens": 18238,
+        "modelTurns": 3,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a4c415a73e82af611.jsonl",
+        "elapsedMs": 6321
+      },
+      "usd": 0.0038915
+    },
+    {
+      "name": "e1-locate.B.r2",
+      "case": "e1-locate",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 34,
+        "cacheReadTokens": 159534,
+        "cacheWriteTokens": 18397,
+        "modelTurns": 3,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-afde1739f66c0e00d.jsonl",
+        "elapsedMs": 5476
+      },
+      "usd": 0.003912565
+    },
+    {
+      "name": "e2-count.A.r1",
+      "case": "e2-count",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 43,
+        "cacheReadTokens": 115961,
+        "cacheWriteTokens": 59280,
+        "modelTurns": 3,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aa53a86b95012c481.jsonl",
+        "elapsedMs": 6200
+      },
+      "usd": 0.17183420000000002
+    },
+    {
+      "name": "e2-count.A.r2",
+      "case": "e2-count",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 40,
+        "cacheReadTokens": 158336,
+        "cacheWriteTokens": 16905,
+        "modelTurns": 3,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aee3b469a34e2e8db.jsonl",
+        "elapsedMs": 67509
+      },
+      "usd": 0.0743417
+    },
+    {
+      "name": "e2-count.B.r1",
+      "case": "e2-count",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 58,
+        "cacheReadTokens": 219750,
+        "cacheWriteTokens": 19003,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a8e8c544fa23a247e.jsonl",
+        "elapsedMs": 10747
+      },
+      "usd": 0.0046026750000000005
+    },
+    {
+      "name": "e2-count.B.r2",
+      "case": "e2-count",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 62,
+        "cacheReadTokens": 281188,
+        "cacheWriteTokens": 19699,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-af5b1643a5e22a130.jsonl",
+        "elapsedMs": 15399
+      },
+      "usd": 0.005306255
+    },
+    {
+      "name": "r1-rename.A.r1",
+      "case": "r1-rename",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 233,
+        "cacheReadTokens": 159524,
+        "cacheWriteTokens": 18536,
+        "modelTurns": 3,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a56f8a42f057251bd.jsonl",
+        "elapsedMs": 5640
+      },
+      "usd": 0.0805868
+    },
+    {
+      "name": "r1-rename.A.r2",
+      "case": "r1-rename",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 233,
+        "cacheReadTokens": 159524,
+        "cacheWriteTokens": 18468,
+        "modelTurns": 3,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a36ca0e074f0609f0.jsonl",
+        "elapsedMs": 66361
+      },
+      "usd": 0.0804168
+    },
+    {
+      "name": "r1-rename.B.r1",
+      "case": "r1-rename",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 21,
+        "cacheReadTokens": 220691,
+        "cacheWriteTokens": 20152,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-af6b37242109d33a7.jsonl",
+        "elapsedMs": 12183
+      },
+      "usd": 0.00473721
+    },
+    {
+      "name": "r1-rename.B.r2",
+      "case": "r1-rename",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 15,
+        "cacheReadTokens": 220075,
+        "cacheWriteTokens": 19738,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a7fb7ee4d58b8ac66.jsonl",
+        "elapsedMs": 11282
+      },
+      "usd": 0.0046763
+    },
+    {
+      "name": "f1-paginate.A.r1",
+      "case": "f1-paginate",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 43,
+        "cacheReadTokens": 158467,
+        "cacheWriteTokens": 17152,
+        "modelTurns": 3,
+        "toolCalls": 3,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ad683777fbd30c717.jsonl",
+        "elapsedMs": 5647
+      },
+      "usd": 0.0750154
+    },
+    {
+      "name": "f1-paginate.A.r2",
+      "case": "f1-paginate",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 6,
+        "outputTokens": 43,
+        "cacheReadTokens": 158467,
+        "cacheWriteTokens": 17388,
+        "modelTurns": 3,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a335883d582faed50.jsonl",
+        "elapsedMs": 7610
+      },
+      "usd": 0.07560539999999999
+    },
+    {
+      "name": "f1-paginate.B.r1",
+      "case": "f1-paginate",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 183,
+        "cacheReadTokens": 219049,
+        "cacheWriteTokens": 18637,
+        "modelTurns": 4,
+        "toolCalls": 6,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a80dac3c42cd9a214.jsonl",
+        "elapsedMs": 8687
+      },
+      "usd": 0.004612415000000001
+    },
+    {
+      "name": "f1-paginate.B.r2",
+      "case": "f1-paginate",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 176,
+        "cacheReadTokens": 219105,
+        "cacheWriteTokens": 18717,
+        "modelTurns": 4,
+        "toolCalls": 6,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ad9e310d6175dc174.jsonl",
+        "elapsedMs": 8706
+      },
+      "usd": 0.0046194750000000005
+    },
+    {
+      "name": "d3-maplimit.A.r1",
+      "case": "d3-maplimit",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 41,
+        "cacheReadTokens": 219308,
+        "cacheWriteTokens": 18460,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a5542866b3c650fda.jsonl",
+        "elapsedMs": 12925
+      },
+      "usd": 0.0904376
+    },
+    {
+      "name": "d3-maplimit.A.r2",
+      "case": "d3-maplimit",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 83,
+        "cacheReadTokens": 219239,
+        "cacheWriteTokens": 18387,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a78c279fc38d07400.jsonl",
+        "elapsedMs": 58646
+      },
+      "usd": 0.0906613
+    },
+    {
+      "name": "d3-maplimit.B.r1",
+      "case": "d3-maplimit",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 64,
+        "cacheReadTokens": 419432,
+        "cacheWriteTokens": 24667,
+        "modelTurns": 7,
+        "toolCalls": 10,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a61049970dc6acfb4.jsonl",
+        "elapsedMs": 101178
+      },
+      "usd": 0.007311094999999999
+    },
+    {
+      "name": "d3-maplimit.B.r2",
+      "case": "d3-maplimit",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 67,
+        "cacheReadTokens": 545240,
+        "cacheWriteTokens": 24597,
+        "modelTurns": 9,
+        "toolCalls": 9,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ad2b453b68942150c.jsonl",
+        "elapsedMs": 43314
+      },
+      "usd": 0.008562325
+    },
+    {
+      "name": "d5-deps.A.r1",
+      "case": "d5-deps",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 71,
+        "cacheReadTokens": 218297,
+        "cacheWriteTokens": 19926,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ab4ac79d3306c59e3.jsonl",
+        "elapsedMs": 20505
+      },
+      "usd": 0.09420039999999999
+    },
+    {
+      "name": "d5-deps.A.r2",
+      "case": "d5-deps",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 65,
+        "cacheReadTokens": 218417,
+        "cacheWriteTokens": 19807,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-adf741a6ff82303c1.jsonl",
+        "elapsedMs": 20931
+      },
+      "usd": 0.09386689999999999
+    },
+    {
+      "name": "d5-deps.B.r1",
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 53,
+        "cacheReadTokens": 351563,
+        "cacheWriteTokens": 25254,
+        "modelTurns": 6,
+        "toolCalls": 7,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a37b0be3dc659d3c2.jsonl",
+        "elapsedMs": 34782
+      },
+      "usd": 0.00670008
+    },
+    {
+      "name": "d5-deps.B.r2",
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 78,
+        "cacheReadTokens": 490366,
+        "cacheWriteTokens": 27155,
+        "modelTurns": 8,
+        "toolCalls": 8,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ac4bd548790db7e0e.jsonl",
+        "elapsedMs": 47851
+      },
+      "usd": 0.008338635
+    },
+    {
+      "name": "d1-lru.A.r1",
+      "case": "d1-lru",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 242,
+        "cacheReadTokens": 281873,
+        "cacheWriteTokens": 21384,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a0ab4c42f87cbdb6e.jsonl",
+        "elapsedMs": 28579
+      },
+      "usd": 0.1122746
+    },
+    {
+      "name": "d1-lru.A.r2",
+      "case": "d1-lru",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 206,
+        "cacheReadTokens": 278369,
+        "cacheWriteTokens": 21247,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aeaef85609aee109a.jsonl",
+        "elapsedMs": 28068
+      },
+      "usd": 0.1108713
+    },
+    {
+      "name": "d1-lru.B.r1",
+      "case": "d1-lru",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 66,
+        "cacheReadTokens": 716775,
+        "cacheWriteTokens": 46308,
+        "modelTurns": 10,
+        "toolCalls": 11,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aefca9104a5138964.jsonl",
+        "elapsedMs": 117550
+      },
+      "usd": 0.01299125
+    },
+    {
+      "name": "d1-lru.B.r2",
+      "case": "d1-lru",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 207,
+        "cacheReadTokens": 616444,
+        "cacheWriteTokens": 41378,
+        "modelTurns": 9,
+        "toolCalls": 10,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-ac526bca2a5c03a8f.jsonl",
+        "elapsedMs": 102084
+      },
+      "usd": 0.01144199
+    },
+    {
+      "name": "d4-expr.A.r1",
+      "case": "d4-expr",
+      "arm": "A",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 81,
+        "cacheReadTokens": 278121,
+        "cacheWriteTokens": 20927,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a219c089824c10311.jsonl",
+        "elapsedMs": 27974
+      },
+      "usd": 0.10877170000000001
+    },
+    {
+      "name": "d4-expr.A.r2",
+      "case": "d4-expr",
+      "arm": "A",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 334,
+        "cacheReadTokens": 543582,
+        "cacheWriteTokens": 27598,
+        "modelTurns": 9,
+        "toolCalls": 10,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aae6b4a04ee80ce77.jsonl",
+        "elapsedMs": 56536
+      },
+      "usd": 0.1810874
+    },
+    {
+      "name": "d4-expr.B.r1",
+      "case": "d4-expr",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 115,
+        "cacheReadTokens": 641242,
+        "cacheWriteTokens": 31193,
+        "modelTurns": 10,
+        "toolCalls": 10,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a3fcded6cb7997ae1.jsonl",
+        "elapsedMs": 64606
+      },
+      "usd": 0.010371045
+    },
+    {
+      "name": "d4-expr.B.r2",
+      "case": "d4-expr",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "first",
+      "tier": "haiku",
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 97,
+        "cacheReadTokens": 497094,
+        "cacheWriteTokens": 28565,
+        "modelTurns": 8,
+        "toolCalls": 9,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a4908e2cade11857a.jsonl",
+        "elapsedMs": 49416
+      },
+      "usd": 0.008591665
+    },
+    {
+      "name": "d5-deps.B.r1.esc",
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": "r1",
+      "attempt": "escalation",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 66,
+        "cacheReadTokens": 218192,
+        "cacheWriteTokens": 19449,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-a43b760347a35763a.jsonl",
+        "elapsedMs": 21394
+      },
+      "usd": 0.09293689999999999
+    },
+    {
+      "name": "d5-deps.B.r2.esc",
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": "r2",
+      "attempt": "escalation",
+      "tier": "sonnet",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 206,
+        "cacheReadTokens": 218066,
+        "cacheWriteTokens": 19377,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "subagentTurns": 0,
+        "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-inspiring-knuth-d490f8\\811394dc-3f8a-472f-ae04-05d5697fc0ef\\subagents\\agent-aa88e55c890f98c99.jsonl",
+        "elapsedMs": 17666
+      },
+      "usd": 0.09413170000000001
+    }
+  ]
+}

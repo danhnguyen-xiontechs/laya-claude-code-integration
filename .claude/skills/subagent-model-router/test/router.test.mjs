@@ -134,6 +134,43 @@ test('loadConfig: env and overrides, provider none forces rules', () => {
   assert.throws(() => loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'bogus' }, file: 'x' }));
 });
 
+test('rule features: product names with a .js suffix are not files', () => {
+  assert.equal(ruleFeatures('Use Node.js (`node`). No file changes are needed.').files, 0);
+  assert.equal(ruleFeatures('Render with Next.js and Vue.js.').files, 0);
+  assert.equal(ruleFeatures('Fix App.js. Use Node.js (`node`) to run it.').files, 1);
+  assert.equal(ruleFeatures('Edit src/Node.js and Node.js.').files, 1);
+});
+
+test('checked policy: a checked task without a hard verb makes no provider call', async () => {
+  const p = 'Fix `paginate` in src/paginate.js. Run `node --test` (it finds test/*.test.mjs).';
+  const fake = fakeDecide(() => 'opus');
+  const r = await route({ task: p, cfg: cfgOf({ provider: 'jev', policy: 'checked' }), decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 0);
+  assert.equal(r.tier, ruleTier(ruleFeatures(p)).tier);
+  assert.equal(r.tier, 'haiku');
+  assert.equal(r.applied, 'rules');
+  assert.equal(r.providerCalls, 0);
+});
+
+test('checked policy: an unchecked task asks k times (gate+sc); a hard checked task too', async () => {
+  const fake = fakeDecide(() => 'sonnet');
+  const u = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', policy: 'checked', k: 3 }), decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 3);
+  assert.equal(u.applied, 'gate+sc');
+  assert.equal(u.tier, 'sonnet');
+  const fake2 = fakeDecide(() => 'opus');
+  const h = await route({ task: 'Migrate the billing module to the new bus. Run node --test.', cfg: cfgOf({ provider: 'jev', policy: 'checked' }), decideImpl: fake2, log: false });
+  assert.equal(fake2.calls(), 3);
+  assert.equal(h.tier, 'opus');
+});
+
+test('combine checked: rule tier when checked and not hard; gate+sc otherwise', () => {
+  assert.equal(combine('checked', 'haiku', [], ruleFeatures('Fix src/a.js. Run node --test.')), 'haiku');
+  assert.equal(combine('checked', 'haiku', [{ tier: 'sonnet' }], ruleFeatures('Find the config file.')), 'sonnet');
+  assert.equal(combine('checked', 'haiku', [{ tier: 'sonnet' }]), 'sonnet'); // no features: gate+sc
+  assert.equal(combine('checked', 'haiku', [{ error: 'x' }], ruleFeatures('Find the config file.')), null);
+});
+
 // ---- hook ----
 
 const hookInput = (tool_input, extra = {}) => ({ session_id: 's', tool_use_id: 'tu', cwd: tmp, hook_event_name: 'PreToolUse', tool_name: 'Agent', tool_input, ...extra });

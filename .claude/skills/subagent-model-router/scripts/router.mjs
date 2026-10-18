@@ -8,7 +8,10 @@
 //   agreement gating  — the final tier is max(rule, provider): a cheaper tier only when both agree;
 //   self-consistency  — ask k times with the option order rotated; if the k top labels are not all
 //                       the same, take the highest of them.
-// Policies (pick with `policy`): rules | jev | gate | sc | gate+sc (default when a provider is set).
+// Policies (pick with `policy`): rules | jev | gate | sc | gate+sc (default when a provider is set) | checked.
+// checked: a task with an automatic check (tests, acceptance) and no hard verb gets the rule tier with no
+// provider call; any other task gets gate+sc. The orchestrator must run the check and escalate once on
+// failure (route.mjs --cascade). The PreToolUse hook never uses it.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -19,7 +22,7 @@ import { decide, top, appendJsonl } from './decision-provider.mjs';
 export const TIERS = ['haiku', 'sonnet', 'opus'];
 export const MODES = ['off', 'shadow', 'apply'];
 export const ROUTER_PROVIDERS = ['none', 'jev', 'laya'];
-export const POLICIES = ['rules', 'jev', 'gate', 'sc', 'gate+sc'];
+export const POLICIES = ['rules', 'jev', 'gate', 'sc', 'gate+sc', 'checked'];
 export const DEFAULT_LOG = path.join(os.homedir(), '.subagent-model-router', 'log.jsonl');
 
 const rank = (t) => TIERS.indexOf(t);
@@ -90,6 +93,9 @@ const FILE_RE = /(?:[\w.-]+[\\/])*[\w.-]+\.(?:m?[jt]sx?|py|cs|java|go|rs|rb|php|
 // A `*` run is a glob only after start, whitespace, punctuation or `/` and before `.` or `/`, so
 // markdown bold/italic on a file name (`**api.js**`, `*a.js*`) stays a file name.
 const GLOB_RE = /(?:[\w.-]+[\\/])*(?<![\w.*-])\*+(?=[.\\/])[\w.*\\/-]*\.\w+/g;
+// Product names with a .js suffix ("Use Node.js") are not files. Only well-known names are listed, so a
+// real file such as App.js or Index.js still counts. Not after a path character (src/Node.js is a file).
+const PRODUCT_RE = /(?<![\w\\/.-])(?:Node|Next|Nuxt|Vue|React|Angular|Svelte|Ember|Express|Backbone|Alpine|Preact|Chart|Three|D3|Deno|Bun|Fastify|Koa|Socket|Meteor|Moment)\.js\b/g;
 // Explicit acceptance criteria only (AC1…, Given/Scenario); plain bullets are context, not ACs.
 const AC_RE = /^\s*(?:[-*]\s*)?(?:AC\s*-?\d+\b|Given\b|Scenario\b)/gim;
 const CHECK_RE = /\b(run (the )?tests?|pytest|npm (run )?test|node --test|go test|cargo test|dotnet test|jest|vitest|acceptance (criteria|check|test)s?|must pass|expected output|exit code 0)\b/i;
@@ -103,7 +109,7 @@ function isReadOnly(text) {
 
 export function ruleFeatures(task = '', type = '') {
   const text = String(task);
-  const files = new Set((text.replace(GLOB_RE, ' ').match(FILE_RE) || []).map((f) => f.toLowerCase()));
+  const files = new Set((text.replace(GLOB_RE, ' ').replace(PRODUCT_RE, ' ').match(FILE_RE) || []).map((f) => f.toLowerCase()));
   const acs = (text.match(AC_RE) || []).length;
   return {
     type: String(type || ''),
@@ -204,10 +210,16 @@ export function consistency(answers) {
  *   sc      → self-consistency tier
  *   gate    → max(rule, first provider answer)
  *   gate+sc → max(rule, self-consistency tier)
+ *   checked → rule tier when the task has a check and no hard verb (no provider call, see
+ *             checkedSkipsProvider); otherwise gate+sc
  * Provider unavailable → null (the caller keeps its default model).
  */
-export function combine(policy, ruleT, answers = []) {
+export function combine(policy, ruleT, answers = [], features = null) {
   if (policy === 'rules') return ruleT;
+  if (policy === 'checked') {
+    if (features && checkedSkipsProvider(features)) return ruleT;
+    policy = 'gate+sc';
+  }
   const first = answers.find((a) => a && !a.error);
   if (!first) return null;
   if (policy === 'jev') return first.tier;
@@ -215,6 +227,11 @@ export function combine(policy, ruleT, answers = []) {
   const sc = consistency(answers).tier;
   if (policy === 'sc') return sc;
   return maxTier(ruleT, sc);
+}
+
+/** The checked policy's no-provider case: an automatic check exists and no hard verb asks for a design. */
+export function checkedSkipsProvider(features) {
+  return Boolean(features.hasCheck && !features.hard);
 }
 
 /**
@@ -228,14 +245,19 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
   if (cfg.mode === 'off') return { ...rec, tier: null, reason: 'mode off' };
   const features = ruleFeatures(task, type);
   const rule = ruleTier(features);
+  // checked skips the provider for a task with a check; otherwise it is gate+sc
+  const skipProvider = cfg.policy === 'checked' && checkedSkipsProvider(features);
+  const policy = cfg.policy === 'checked' ? (skipProvider ? 'rules' : 'gate+sc') : cfg.policy;
   let answers = [];
-  if (cfg.provider !== 'none') {
-    const n = cfg.policy === 'jev' || cfg.policy === 'gate' ? 1 : cfg.k;
+  if (cfg.provider !== 'none' && !skipProvider) {
+    const n = policy === 'jev' || policy === 'gate' ? 1 : cfg.k;
     answers = await Promise.all(orderings(n).map((order) => askOnce({ task, type, order, cfg, decideImpl, env })));
   }
-  const tier = combine(cfg.policy, rule.tier, answers);
+  const tier = combine(policy, rule.tier, answers);
   const out = {
     ...rec,
+    applied: policy,
+    providerCalls: answers.length,
     tier,
     reason: tier ? undefined : 'provider unavailable: keep the default model',
     rule: { tier: rule.tier, score: rule.score, why: rule.why },

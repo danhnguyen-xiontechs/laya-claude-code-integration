@@ -1,0 +1,74 @@
+{
+  "source": "cli",
+  "mode": "apply",
+  "provider": "jev",
+  "policy": "checked",
+  "k": 3,
+  "type": "Explore",
+  "chars": 703,
+  "taskHash": "c4237b84fa18",
+  "applied": "gate+sc",
+  "providerCalls": 3,
+  "tier": "haiku",
+  "rule": {
+    "tier": "haiku",
+    "score": 0,
+    "why": [
+      "cheap-type"
+    ]
+  },
+  "features": {
+    "type": "Explore",
+    "cheapType": true,
+    "designType": false,
+    "hard": 0,
+    "medium": 1,
+    "light": 1,
+    "files": 0,
+    "acs": 0,
+    "hasCheck": false,
+    "readOnly": false,
+    "chars": 703
+  },
+  "answers": [
+    {
+      "tier": "haiku",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.37,
+        "mechanical": 0.85,
+        "costly_failure": 0.29
+      },
+      "latencyMs": 670
+    },
+    {
+      "tier": "haiku",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.36,
+        "mechanical": 0.84,
+        "costly_failure": 0.28
+      },
+      "latencyMs": 766
+    },
+    {
+      "tier": "haiku",
+      "p": 1,
+      "nouls": {
+        "multi_file_design": 0.32,
+        "mechanical": 0.84,
+        "costly_failure": 0.29
+      },
+      "latencyMs": 709
+    }
+  ],
+  "consistency": {
+    "tier": "haiku",
+    "stable": true,
+    "votes": {
+      "haiku": 3
+    },
+    "n": 3
+  },
+  "latencyMs": 794
+}

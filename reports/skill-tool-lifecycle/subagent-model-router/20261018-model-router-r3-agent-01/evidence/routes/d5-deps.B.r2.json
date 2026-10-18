@@ -1,0 +1,35 @@
+{
+  "source": "cli",
+  "mode": "apply",
+  "provider": "jev",
+  "policy": "checked",
+  "k": 3,
+  "type": "general-purpose",
+  "chars": 1507,
+  "taskHash": "a037df4e8519",
+  "applied": "rules",
+  "providerCalls": 0,
+  "tier": "haiku",
+  "rule": {
+    "tier": "haiku",
+    "score": 0,
+    "why": [
+      "checked"
+    ]
+  },
+  "features": {
+    "type": "general-purpose",
+    "cheapType": false,
+    "designType": false,
+    "hard": 0,
+    "medium": 2,
+    "light": 1,
+    "files": 1,
+    "acs": 0,
+    "hasCheck": true,
+    "readOnly": false,
+    "chars": 1507
+  },
+  "answers": [],
+  "latencyMs": 2
+}

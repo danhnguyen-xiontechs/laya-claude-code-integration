@@ -1,0 +1,93 @@
+{
+  "rule": "per case and repetition: the case check.mjs run in the work folder (exit 0 = pass); first-attempt grades listed, escalations noted",
+  "grades": {
+    "e1-locate": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "e2-count": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "r1-rename": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "f1-paginate": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "d3-maplimit": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "d5-deps": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "FAIL->escalated sonnet PASS",
+        "FAIL->escalated sonnet PASS"
+      ]
+    },
+    "d1-lru": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    },
+    "d4-expr": {
+      "A": [
+        "PASS",
+        "PASS"
+      ],
+      "B": [
+        "PASS",
+        "PASS"
+      ]
+    }
+  },
+  "firstAttemptPass": {
+    "A": "16/16",
+    "B": "14/16"
+  },
+  "cascadePass": {
+    "A": "16/16",
+    "B": "16/16"
+  }
+}
