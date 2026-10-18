@@ -1769,9 +1769,17 @@
       "notRun": 0
     },
     "openBlockingFindings": 0,
-    "workflowCost": null,
+    "workflowCost": {
+      "modelTurns": 196,
+      "peakContext": 213352,
+      "cacheRead": 21245661,
+      "cacheWrite": 660267,
+      "input": 396,
+      "output": 178980,
+      "allTokens": 22085304
+    },
     "lastRun": null,
-    "generatedAt": "2026-10-18T14:13:00.010Z",
+    "generatedAt": "2026-10-18T14:23:33.888Z",
     "report": "report.html",
     "href": "context-governor/20261018-context-governor-01/report.html",
     "stale": false,

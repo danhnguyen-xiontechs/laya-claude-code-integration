@@ -1,0 +1,227 @@
+{
+  "experimentId": "20261018-context-governor-01",
+  "phases": [
+    {
+      "phase": "P1",
+      "sessionId": "local_70e0c4f6-6dec-4717-9c34-5340077f06d1",
+      "model": "haiku (session) + haiku-case context pack",
+      "smartTrimMode": "n/a",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-happy-pike-4b527c/5e27fc9a-208c-4d1e-bd6b-09ac6e6cbab8.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 44,
+      "subagentTurns": 35,
+      "peakContext": 83549,
+      "cacheRead": 2353872,
+      "cacheWrite": 145779,
+      "input": 92,
+      "output": 4973,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-happy-pike-4b527c\\5e27fc9a-208c-4d1e-bd6b-09ac6e6cbab8.jsonl + 2 subagent transcript(s)"
+    },
+    {
+      "phase": "P2",
+      "sessionId": "local_bd90be3d-d602-4438-a8fd-5c356b0376a6",
+      "model": "haiku",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/3a982753-140e-4381-94b0-9d0b93b11b0e.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 52,
+      "subagentTurns": 0,
+      "peakContext": 167246,
+      "cacheRead": 6319713,
+      "cacheWrite": 110577,
+      "input": 104,
+      "output": 55433,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\3a982753-140e-4381-94b0-9d0b93b11b0e.jsonl"
+    },
+    {
+      "phase": "P2 (headless run 1)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/79c46196-f7a4-4b94-b6b1-864be627b5b1.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 45795,
+      "cacheRead": 32541,
+      "cacheWrite": 13252,
+      "input": 2,
+      "output": 30,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\79c46196-f7a4-4b94-b6b1-864be627b5b1.jsonl"
+    },
+    {
+      "phase": "P2 (headless run 2)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/bccdbaa7-35dc-4672-907f-626609a05766.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 45792,
+      "cacheRead": 32541,
+      "cacheWrite": 13249,
+      "input": 2,
+      "output": 4,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\bccdbaa7-35dc-4672-907f-626609a05766.jsonl"
+    },
+    {
+      "phase": "P2 (headless run 3)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/d859ee2e-17b9-4e6e-99a1-47e1cfd17884.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 45797,
+      "cacheRead": 28567,
+      "cacheWrite": 17228,
+      "input": 2,
+      "output": 4,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\d859ee2e-17b9-4e6e-99a1-47e1cfd17884.jsonl"
+    },
+    {
+      "phase": "P2 (headless run 4)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/728e0b98-63e4-4f5c-a736-9a209977a31a.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 45794,
+      "cacheRead": 32541,
+      "cacheWrite": 13251,
+      "input": 2,
+      "output": 4,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\728e0b98-63e4-4f5c-a736-9a209977a31a.jsonl"
+    },
+    {
+      "phase": "P2 (headless run 5)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off (not loadable in app session)",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb/e06b34c8-0a60-4b1d-b225-7d273cbaa7c2.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 45798,
+      "cacheRead": 32541,
+      "cacheWrite": 13255,
+      "input": 2,
+      "output": 4,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-confident-meninsky-1f66fb\\e06b34c8-0a60-4b1d-b225-7d273cbaa7c2.jsonl"
+    },
+    {
+      "phase": "P3",
+      "sessionId": "local_de9f6eb4-4287-4426-8fd8-185f1b57d226",
+      "model": "haiku",
+      "smartTrimMode": "off",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-vibrant-khayyam-a896c0/7579e462-0d45-4d89-9e73-c80cb9711670.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 18,
+      "subagentTurns": 0,
+      "peakContext": 107719,
+      "cacheRead": 1645383,
+      "cacheWrite": 51050,
+      "input": 36,
+      "output": 14724,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-vibrant-khayyam-a896c0\\7579e462-0d45-4d89-9e73-c80cb9711670.jsonl"
+    },
+    {
+      "phase": "P4",
+      "sessionId": "local_0d8bd5b6-1a68-487f-b5ca-69f6b9f02060",
+      "model": "haiku + opus review subagent",
+      "smartTrimMode": "off",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-focused-wescoff-6dc046/85be29fc-499d-40fd-9fc2-1aadc986c44e.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5",
+        "claude-opus-5-5"
+      ],
+      "modelTurns": 12,
+      "subagentTurns": 1,
+      "peakContext": 118804,
+      "cacheRead": 1004879,
+      "cacheWrite": 110971,
+      "input": 24,
+      "output": 18951,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-focused-wescoff-6dc046\\85be29fc-499d-40fd-9fc2-1aadc986c44e.jsonl + 1 subagent transcript(s)"
+    },
+    {
+      "phase": "P4b",
+      "sessionId": "local_eef207ee-b38c-4275-bd88-6c87cf2f7ceb",
+      "model": "haiku",
+      "smartTrimMode": "off",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-youthful-tereshkova-25b484/57bab57a-71f3-458f-b15f-6334a14e2ebd.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 64,
+      "subagentTurns": 0,
+      "peakContext": 213352,
+      "cacheRead": 9731657,
+      "cacheWrite": 156683,
+      "input": 128,
+      "output": 84828,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-tereshkova-25b484\\57bab57a-71f3-458f-b15f-6334a14e2ebd.jsonl"
+    },
+    {
+      "phase": "P4b (headless run 1)",
+      "sessionId": null,
+      "model": "headless claude -p started by the phase",
+      "smartTrimMode": "off",
+      "transcript": "~/.claude/projects/D--XionTechs-Laya--claude-worktrees-youthful-tereshkova-25b484/d74c5507-2673-4a5c-ae03-89790fc095c7.jsonl",
+      "measured": true,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 1,
+      "subagentTurns": 0,
+      "peakContext": 46400,
+      "cacheRead": 31426,
+      "cacheWrite": 14972,
+      "input": 2,
+      "output": 25,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-tereshkova-25b484\\d74c5507-2673-4a5c-ae03-89790fc095c7.jsonl"
+    }
+  ],
+  "measuredPhases": 11,
+  "missingPhases": [],
+  "totals": {
+    "modelTurns": 196,
+    "peakContext": 213352,
+    "cacheRead": 21245661,
+    "cacheWrite": 660267,
+    "input": 396,
+    "output": 178980,
+    "allTokens": 22085304
+  },
+  "generatedAt": "2026-10-18T14:22:35.704Z"
+}
