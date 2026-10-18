@@ -40,6 +40,23 @@ test('rule features: subagent type, files, ACs, checks', () => {
   assert.equal(f.hasCheck, true);
 });
 
+test('rule features: test globs are not files, so one file plus a test command is "checked"', () => {
+  const p = 'Fix `paginate` in src/paginate.js. Run `node --test` (it finds test/*.test.mjs; also **/*.spec.js). Only change **src/paginate.js**.';
+  assert.equal(ruleFeatures(p).files, 1);
+  assert.deepEqual(ruleTier(ruleFeatures(p)), { tier: 'haiku', score: 0, why: ['checked'] });
+  assert.equal(ruleFeatures('Run node --test "test/*.test.mjs" and *.test.mjs and test/**/*.mjs').files, 0);
+});
+
+test('rule features: markdown bold/italic file names are files, not globs', () => {
+  assert.equal(ruleFeatures('Change **paginate.js**.').files, 1);
+  assert.equal(ruleFeatures('Change *cursor.js* only.').files, 1);
+  assert.equal(ruleFeatures('Edit *a.js*.').files, 1);
+  const p = 'Change **paginate.js**, **cursor.js** and **api.js**. Run node --test.';
+  assert.equal(ruleFeatures(p).files, 3);
+  assert.ok(!ruleTier(ruleFeatures(p)).why.includes('checked'));
+  assert.notEqual(ruleTier(ruleFeatures(p)).tier, 'haiku');
+});
+
 test('orderings rotate the tiers so each tier is first once in k=3', () => {
   const o = orderings(3);
   assert.deepEqual(o.map((x) => x[0]).sort(), [...TIERS].sort());
@@ -115,6 +132,43 @@ test('loadConfig: env and overrides, provider none forces rules', () => {
   assert.equal(c.policy, 'gate+sc');
   assert.equal(loadConfig({ env: {}, file: 'x', overrides: { provider: 'none', policy: 'sc' } }).policy, 'rules');
   assert.throws(() => loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'bogus' }, file: 'x' }));
+});
+
+test('rule features: product names with a .js suffix are not files', () => {
+  assert.equal(ruleFeatures('Use Node.js (`node`). No file changes are needed.').files, 0);
+  assert.equal(ruleFeatures('Render with Next.js and Vue.js.').files, 0);
+  assert.equal(ruleFeatures('Fix App.js. Use Node.js (`node`) to run it.').files, 1);
+  assert.equal(ruleFeatures('Edit src/Node.js and Node.js.').files, 1);
+});
+
+test('checked policy: a checked task without a hard verb makes no provider call', async () => {
+  const p = 'Fix `paginate` in src/paginate.js. Run `node --test` (it finds test/*.test.mjs).';
+  const fake = fakeDecide(() => 'opus');
+  const r = await route({ task: p, cfg: cfgOf({ provider: 'jev', policy: 'checked' }), decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 0);
+  assert.equal(r.tier, ruleTier(ruleFeatures(p)).tier);
+  assert.equal(r.tier, 'haiku');
+  assert.equal(r.applied, 'rules');
+  assert.equal(r.providerCalls, 0);
+});
+
+test('checked policy: an unchecked task asks k times (gate+sc); a hard checked task too', async () => {
+  const fake = fakeDecide(() => 'sonnet');
+  const u = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', policy: 'checked', k: 3 }), decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 3);
+  assert.equal(u.applied, 'gate+sc');
+  assert.equal(u.tier, 'sonnet');
+  const fake2 = fakeDecide(() => 'opus');
+  const h = await route({ task: 'Migrate the billing module to the new bus. Run node --test.', cfg: cfgOf({ provider: 'jev', policy: 'checked' }), decideImpl: fake2, log: false });
+  assert.equal(fake2.calls(), 3);
+  assert.equal(h.tier, 'opus');
+});
+
+test('combine checked: rule tier when checked and not hard; gate+sc otherwise', () => {
+  assert.equal(combine('checked', 'haiku', [], ruleFeatures('Fix src/a.js. Run node --test.')), 'haiku');
+  assert.equal(combine('checked', 'haiku', [{ tier: 'sonnet' }], ruleFeatures('Find the config file.')), 'sonnet');
+  assert.equal(combine('checked', 'haiku', [{ tier: 'sonnet' }]), 'sonnet'); // no features: gate+sc
+  assert.equal(combine('checked', 'haiku', [{ error: 'x' }], ruleFeatures('Find the config file.')), null);
 });
 
 // ---- hook ----

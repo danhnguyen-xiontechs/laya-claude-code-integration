@@ -8,19 +8,19 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.99,
+        "p": 0.97,
         "probabilities": {
           "haiku": 0,
-          "sonnet": 0.99,
-          "opus": 0.01
+          "sonnet": 0.97,
+          "opus": 0.03
         },
         "nouls": {
           "multi_file_design": 0.88,
           "mechanical": 0.58,
           "costly_failure": 0.74
         },
-        "latencyMs": 1250,
-        "cost": 0.000035952
+        "latencyMs": 1240,
+        "cost": 0.000037128
       },
       {
         "tier": "sonnet",
@@ -31,31 +31,31 @@
           "haiku": 0
         },
         "nouls": {
-          "multi_file_design": 0.87,
-          "mechanical": 0.61,
+          "multi_file_design": 0.9,
+          "mechanical": 0.55,
           "costly_failure": 0.75
         },
-        "latencyMs": 1165,
-        "cost": 0.000035952
+        "latencyMs": 1146,
+        "cost": 0.000037128
       },
       {
         "tier": "sonnet",
-        "p": 0.97,
+        "p": 0.96,
         "probabilities": {
-          "opus": 0.03,
+          "opus": 0.04,
           "haiku": 0,
-          "sonnet": 0.97
+          "sonnet": 0.96
         },
         "nouls": {
-          "multi_file_design": 0.88,
-          "mechanical": 0.58,
-          "costly_failure": 0.74
+          "multi_file_design": 0.89,
+          "mechanical": 0.56,
+          "costly_failure": 0.72
         },
-        "latencyMs": 1163,
-        "cost": 0.000035952
+        "latencyMs": 1324,
+        "cost": 0.000037128
       }
     ],
-    "wallMs": 1250
+    "wallMs": 1351
   },
   "d2-ratelimit": {
     "kind": "design",
@@ -73,28 +73,28 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.73,
-          "mechanical": 0.73,
+          "multi_file_design": 0.82,
+          "mechanical": 0.71,
           "costly_failure": 0.76
         },
-        "latencyMs": 544,
-        "cost": 0.000034608
+        "latencyMs": 500,
+        "cost": 0.000035784
       },
       {
         "tier": "sonnet",
-        "p": 0.99,
+        "p": 1,
         "probabilities": {
-          "sonnet": 0.99,
+          "sonnet": 1,
           "opus": 0,
-          "haiku": 0.01
+          "haiku": 0
         },
         "nouls": {
-          "multi_file_design": 0.74,
-          "mechanical": 0.75,
-          "costly_failure": 0.77
+          "multi_file_design": 0.82,
+          "mechanical": 0.7,
+          "costly_failure": 0.78
         },
-        "latencyMs": 513,
-        "cost": 0.000034608
+        "latencyMs": 1068,
+        "cost": 0.000035784
       },
       {
         "tier": "sonnet",
@@ -105,15 +105,15 @@
           "sonnet": 1
         },
         "nouls": {
-          "multi_file_design": 0.75,
-          "mechanical": 0.75,
-          "costly_failure": 0.76
+          "multi_file_design": 0.82,
+          "mechanical": 0.73,
+          "costly_failure": 0.77
         },
-        "latencyMs": 521,
-        "cost": 0.000034608
+        "latencyMs": 519,
+        "cost": 0.000035784
       }
     ],
-    "wallMs": 544
+    "wallMs": 1069
   },
   "d3-maplimit": {
     "kind": "debug",
@@ -124,35 +124,35 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.64,
+        "p": 0.68,
         "probabilities": {
           "haiku": 0.01,
-          "sonnet": 0.64,
-          "opus": 0.35
+          "sonnet": 0.68,
+          "opus": 0.31
         },
         "nouls": {
-          "multi_file_design": 0.85,
+          "multi_file_design": 0.87,
           "mechanical": 0.12,
-          "costly_failure": 0.79
+          "costly_failure": 0.77
         },
-        "latencyMs": 547,
-        "cost": 0.000030156
+        "latencyMs": 505,
+        "cost": 0.000031332
       },
       {
         "tier": "opus",
-        "p": 0.54,
+        "p": 0.56,
         "probabilities": {
-          "sonnet": 0.45,
-          "opus": 0.54,
+          "sonnet": 0.43,
+          "opus": 0.56,
           "haiku": 0.01
         },
         "nouls": {
-          "multi_file_design": 0.85,
-          "mechanical": 0.11,
+          "multi_file_design": 0.87,
+          "mechanical": 0.12,
           "costly_failure": 0.77
         },
-        "latencyMs": 510,
-        "cost": 0.000030156
+        "latencyMs": 564,
+        "cost": 0.000031332
       },
       {
         "tier": "sonnet",
@@ -163,15 +163,15 @@
           "sonnet": 0.56
         },
         "nouls": {
-          "multi_file_design": 0.85,
-          "mechanical": 0.1,
-          "costly_failure": 0.78
+          "multi_file_design": 0.88,
+          "mechanical": 0.13,
+          "costly_failure": 0.77
         },
-        "latencyMs": 510,
-        "cost": 0.000030156
+        "latencyMs": 503,
+        "cost": 0.000031332
       }
     ],
-    "wallMs": 547
+    "wallMs": 565
   },
   "d4-expr": {
     "kind": "design",
@@ -189,12 +189,12 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.84,
-          "mechanical": 0.47,
-          "costly_failure": 0.69
+          "multi_file_design": 0.87,
+          "mechanical": 0.44,
+          "costly_failure": 0.7
         },
-        "latencyMs": 550,
-        "cost": 0.000032802
+        "latencyMs": 563,
+        "cost": 0.000033978
       },
       {
         "tier": "sonnet",
@@ -205,31 +205,31 @@
           "haiku": 0
         },
         "nouls": {
-          "multi_file_design": 0.85,
-          "mechanical": 0.5,
-          "costly_failure": 0.69
+          "multi_file_design": 0.87,
+          "mechanical": 0.43,
+          "costly_failure": 0.7
         },
-        "latencyMs": 1273,
-        "cost": 0.000032802
+        "latencyMs": 589,
+        "cost": 0.000033978
       },
       {
         "tier": "sonnet",
-        "p": 1,
+        "p": 0.99,
         "probabilities": {
-          "opus": 0,
+          "opus": 0.01,
           "haiku": 0,
-          "sonnet": 1
+          "sonnet": 0.99
         },
         "nouls": {
-          "multi_file_design": 0.85,
-          "mechanical": 0.46,
+          "multi_file_design": 0.88,
+          "mechanical": 0.49,
           "costly_failure": 0.71
         },
-        "latencyMs": 555,
-        "cost": 0.000032802
+        "latencyMs": 516,
+        "cost": 0.000033978
       }
     ],
-    "wallMs": 1273
+    "wallMs": 590
   },
   "d5-deps": {
     "kind": "design",
@@ -247,12 +247,12 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.71,
-          "mechanical": 0.84,
-          "costly_failure": 0.69
+          "multi_file_design": 0.78,
+          "mechanical": 0.81,
+          "costly_failure": 0.67
         },
-        "latencyMs": 521,
-        "cost": 0.000034104
+        "latencyMs": 566,
+        "cost": 0.00003528
       },
       {
         "tier": "sonnet",
@@ -263,12 +263,12 @@
           "haiku": 0
         },
         "nouls": {
-          "multi_file_design": 0.73,
-          "mechanical": 0.83,
-          "costly_failure": 0.7
+          "multi_file_design": 0.79,
+          "mechanical": 0.81,
+          "costly_failure": 0.69
         },
-        "latencyMs": 499,
-        "cost": 0.000034104
+        "latencyMs": 494,
+        "cost": 0.00003528
       },
       {
         "tier": "sonnet",
@@ -279,21 +279,20 @@
           "sonnet": 1
         },
         "nouls": {
-          "multi_file_design": 0.7,
+          "multi_file_design": 0.78,
           "mechanical": 0.84,
-          "costly_failure": 0.68
+          "costly_failure": 0.7
         },
-        "latencyMs": 566,
-        "cost": 0.000034104
+        "latencyMs": 544,
+        "cost": 0.00003528
       }
     ],
-    "wallMs": 568
+    "wallMs": 566
   },
   "e1-locate": {
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [
@@ -306,11 +305,11 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.3,
-          "mechanical": 0.87,
-          "costly_failure": 0.27
+          "multi_file_design": 0.31,
+          "mechanical": 0.86,
+          "costly_failure": 0.29
         },
-        "latencyMs": 505,
+        "latencyMs": 768,
         "cost": 0.000027216
       },
       {
@@ -323,10 +322,10 @@
         },
         "nouls": {
           "multi_file_design": 0.3,
-          "mechanical": 0.88,
+          "mechanical": 0.87,
           "costly_failure": 0.28
         },
-        "latencyMs": 537,
+        "latencyMs": 532,
         "cost": 0.000027216
       },
       {
@@ -338,21 +337,20 @@
           "sonnet": 0
         },
         "nouls": {
-          "multi_file_design": 0.31,
-          "mechanical": 0.87,
+          "multi_file_design": 0.27,
+          "mechanical": 0.88,
           "costly_failure": 0.27
         },
-        "latencyMs": 525,
+        "latencyMs": 560,
         "cost": 0.000027216
       }
     ],
-    "wallMs": 537
+    "wallMs": 768
   },
   "e2-count": {
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [
@@ -367,9 +365,9 @@
         "nouls": {
           "multi_file_design": 0.54,
           "mechanical": 0.96,
-          "costly_failure": 0.35
+          "costly_failure": 0.36
         },
-        "latencyMs": 518,
+        "latencyMs": 591,
         "cost": 0.000028434
       },
       {
@@ -381,11 +379,11 @@
           "haiku": 1
         },
         "nouls": {
-          "multi_file_design": 0.53,
-          "mechanical": 0.96,
-          "costly_failure": 0.36
+          "multi_file_design": 0.54,
+          "mechanical": 0.95,
+          "costly_failure": 0.35
         },
-        "latencyMs": 538,
+        "latencyMs": 491,
         "cost": 0.000028434
       },
       {
@@ -397,21 +395,20 @@
           "sonnet": 0.02
         },
         "nouls": {
-          "multi_file_design": 0.55,
-          "mechanical": 0.96,
-          "costly_failure": 0.34
+          "multi_file_design": 0.51,
+          "mechanical": 0.95,
+          "costly_failure": 0.36
         },
-        "latencyMs": 511,
+        "latencyMs": 545,
         "cost": 0.000028434
       }
     ],
-    "wallMs": 539
+    "wallMs": 592
   },
   "e3-importers": {
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [
@@ -424,11 +421,11 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.57,
-          "mechanical": 0.96,
-          "costly_failure": 0.48
+          "multi_file_design": 0.55,
+          "mechanical": 0.97,
+          "costly_failure": 0.5
         },
-        "latencyMs": 524,
+        "latencyMs": 555,
         "cost": 0.000028686
       },
       {
@@ -444,7 +441,7 @@
           "mechanical": 0.96,
           "costly_failure": 0.49
         },
-        "latencyMs": 500,
+        "latencyMs": 520,
         "cost": 0.000028686
       },
       {
@@ -456,21 +453,20 @@
           "sonnet": 0
         },
         "nouls": {
-          "multi_file_design": 0.57,
+          "multi_file_design": 0.56,
           "mechanical": 0.96,
-          "costly_failure": 0.5
+          "costly_failure": 0.49
         },
-        "latencyMs": 522,
+        "latencyMs": 508,
         "cost": 0.000028686
       }
     ],
-    "wallMs": 524
+    "wallMs": 555
   },
   "e4-config": {
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [
@@ -487,7 +483,7 @@
           "mechanical": 0.76,
           "costly_failure": 0.41
         },
-        "latencyMs": 509,
+        "latencyMs": 558,
         "cost": 0.000027342
       },
       {
@@ -500,10 +496,10 @@
         },
         "nouls": {
           "multi_file_design": 0.57,
-          "mechanical": 0.74,
+          "mechanical": 0.73,
           "costly_failure": 0.41
         },
-        "latencyMs": 494,
+        "latencyMs": 648,
         "cost": 0.000027342
       },
       {
@@ -515,15 +511,15 @@
           "sonnet": 0
         },
         "nouls": {
-          "multi_file_design": 0.58,
-          "mechanical": 0.76,
-          "costly_failure": 0.42
+          "multi_file_design": 0.57,
+          "mechanical": 0.73,
+          "costly_failure": 0.4
         },
-        "latencyMs": 1259,
+        "latencyMs": 527,
         "cost": 0.000027342
       }
     ],
-    "wallMs": 1259
+    "wallMs": 648
   },
   "f1-paginate": {
     "kind": "fix",
@@ -534,54 +530,54 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.53,
+        "p": 0.65,
         "probabilities": {
-          "haiku": 0.47,
-          "sonnet": 0.53,
+          "haiku": 0.35,
+          "sonnet": 0.65,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.18,
-          "mechanical": 0.7,
-          "costly_failure": 0.37
+          "multi_file_design": 0.28,
+          "mechanical": 0.69,
+          "costly_failure": 0.41
         },
-        "latencyMs": 534,
-        "cost": 0.000029148
+        "latencyMs": 549,
+        "cost": 0.000030324
       },
       {
         "tier": "haiku",
-        "p": 0.64,
+        "p": 0.57,
         "probabilities": {
-          "sonnet": 0.36,
+          "sonnet": 0.43,
           "opus": 0,
-          "haiku": 0.64
+          "haiku": 0.57
         },
         "nouls": {
-          "multi_file_design": 0.17,
-          "mechanical": 0.72,
-          "costly_failure": 0.37
-        },
-        "latencyMs": 495,
-        "cost": 0.000029148
-      },
-      {
-        "tier": "sonnet",
-        "p": 0.55,
-        "probabilities": {
-          "opus": 0,
-          "haiku": 0.45,
-          "sonnet": 0.55
-        },
-        "nouls": {
-          "multi_file_design": 0.18,
+          "multi_file_design": 0.28,
           "mechanical": 0.7,
           "costly_failure": 0.38
         },
-        "latencyMs": 517,
-        "cost": 0.000029148
+        "latencyMs": 496,
+        "cost": 0.000030324
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.69,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.31,
+          "sonnet": 0.69
+        },
+        "nouls": {
+          "multi_file_design": 0.3,
+          "mechanical": 0.7,
+          "costly_failure": 0.39
+        },
+        "latencyMs": 488,
+        "cost": 0.000030324
       }
     ],
-    "wallMs": 534
+    "wallMs": 549
   },
   "f2-email": {
     "kind": "fix",
@@ -592,54 +588,54 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.83,
+        "p": 0.79,
         "probabilities": {
-          "haiku": 0.17,
-          "sonnet": 0.83,
+          "haiku": 0.21,
+          "sonnet": 0.79,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.3,
-          "mechanical": 0.74,
-          "costly_failure": 0.63
-        },
-        "latencyMs": 771,
-        "cost": 0.000030702
-      },
-      {
-        "tier": "sonnet",
-        "p": 0.66,
-        "probabilities": {
-          "sonnet": 0.66,
-          "opus": 0,
-          "haiku": 0.34
-        },
-        "nouls": {
-          "multi_file_design": 0.3,
+          "multi_file_design": 0.37,
           "mechanical": 0.73,
-          "costly_failure": 0.67
+          "costly_failure": 0.61
         },
-        "latencyMs": 531,
-        "cost": 0.000030702
+        "latencyMs": 501,
+        "cost": 0.000031878
       },
       {
         "tier": "sonnet",
-        "p": 0.75,
+        "p": 0.6,
         "probabilities": {
+          "sonnet": 0.6,
           "opus": 0,
-          "haiku": 0.25,
-          "sonnet": 0.75
+          "haiku": 0.4
         },
         "nouls": {
-          "multi_file_design": 0.3,
-          "mechanical": 0.75,
-          "costly_failure": 0.66
+          "multi_file_design": 0.38,
+          "mechanical": 0.74,
+          "costly_failure": 0.65
         },
-        "latencyMs": 606,
-        "cost": 0.000030702
+        "latencyMs": 533,
+        "cost": 0.000031878
+      },
+      {
+        "tier": "sonnet",
+        "p": 0.8,
+        "probabilities": {
+          "opus": 0,
+          "haiku": 0.2,
+          "sonnet": 0.8
+        },
+        "nouls": {
+          "multi_file_design": 0.37,
+          "mechanical": 0.72,
+          "costly_failure": 0.61
+        },
+        "latencyMs": 1692,
+        "cost": 0.000031878
       }
     ],
-    "wallMs": 771
+    "wallMs": 1692
   },
   "f3-days": {
     "kind": "fix",
@@ -650,54 +646,54 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.9,
+        "p": 0.83,
         "probabilities": {
-          "haiku": 0.1,
-          "sonnet": 0.9,
+          "haiku": 0.17,
+          "sonnet": 0.83,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.38,
-          "mechanical": 0.17,
-          "costly_failure": 0.75
+          "multi_file_design": 0.47,
+          "mechanical": 0.2,
+          "costly_failure": 0.78
         },
-        "latencyMs": 545,
-        "cost": 0.000029022
+        "latencyMs": 522,
+        "cost": 0.000030198
       },
       {
         "tier": "sonnet",
-        "p": 0.87,
+        "p": 0.85,
         "probabilities": {
-          "sonnet": 0.87,
+          "sonnet": 0.85,
           "opus": 0,
-          "haiku": 0.13
+          "haiku": 0.15
         },
         "nouls": {
-          "multi_file_design": 0.37,
-          "mechanical": 0.18,
-          "costly_failure": 0.76
+          "multi_file_design": 0.47,
+          "mechanical": 0.19,
+          "costly_failure": 0.77
         },
-        "latencyMs": 498,
-        "cost": 0.000029022
+        "latencyMs": 555,
+        "cost": 0.000030198
       },
       {
         "tier": "sonnet",
-        "p": 0.93,
+        "p": 0.92,
         "probabilities": {
           "opus": 0,
-          "haiku": 0.07,
-          "sonnet": 0.93
+          "haiku": 0.08,
+          "sonnet": 0.92
         },
         "nouls": {
-          "multi_file_design": 0.4,
-          "mechanical": 0.17,
+          "multi_file_design": 0.45,
+          "mechanical": 0.2,
           "costly_failure": 0.76
         },
-        "latencyMs": 502,
-        "cost": 0.000029022
+        "latencyMs": 526,
+        "cost": 0.000030198
       }
     ],
-    "wallMs": 545
+    "wallMs": 555
   },
   "f4-await": {
     "kind": "fix",
@@ -708,35 +704,35 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.83,
+        "p": 0.8,
         "probabilities": {
-          "haiku": 0.17,
-          "sonnet": 0.83,
+          "haiku": 0.2,
+          "sonnet": 0.8,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.31,
-          "mechanical": 0.4,
-          "costly_failure": 0.53
+          "multi_file_design": 0.38,
+          "mechanical": 0.43,
+          "costly_failure": 0.54
         },
-        "latencyMs": 537,
-        "cost": 0.000028434
+        "latencyMs": 535,
+        "cost": 0.00002961
       },
       {
         "tier": "sonnet",
-        "p": 0.67,
+        "p": 0.65,
         "probabilities": {
-          "sonnet": 0.67,
-          "opus": 0.01,
-          "haiku": 0.32
+          "sonnet": 0.65,
+          "opus": 0,
+          "haiku": 0.35
         },
         "nouls": {
-          "multi_file_design": 0.33,
-          "mechanical": 0.43,
-          "costly_failure": 0.55
+          "multi_file_design": 0.36,
+          "mechanical": 0.4,
+          "costly_failure": 0.54
         },
-        "latencyMs": 560,
-        "cost": 0.000028434
+        "latencyMs": 532,
+        "cost": 0.00002961
       },
       {
         "tier": "sonnet",
@@ -747,15 +743,15 @@
           "sonnet": 0.84
         },
         "nouls": {
-          "multi_file_design": 0.31,
-          "mechanical": 0.41,
-          "costly_failure": 0.55
+          "multi_file_design": 0.38,
+          "mechanical": 0.38,
+          "costly_failure": 0.52
         },
-        "latencyMs": 512,
-        "cost": 0.000028434
+        "latencyMs": 501,
+        "cost": 0.00002961
       }
     ],
-    "wallMs": 560
+    "wallMs": 535
   },
   "r1-rename": {
     "kind": "refactor",
@@ -773,47 +769,47 @@
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.83,
-          "mechanical": 0.95,
+          "multi_file_design": 0.84,
+          "mechanical": 0.94,
           "costly_failure": 0.41
         },
-        "latencyMs": 487,
-        "cost": 0.000027594
+        "latencyMs": 506,
+        "cost": 0.00002877
       },
       {
         "tier": "sonnet",
         "p": 0.59,
         "probabilities": {
           "sonnet": 0.59,
-          "opus": 0,
-          "haiku": 0.41
+          "opus": 0.01,
+          "haiku": 0.4
         },
         "nouls": {
-          "multi_file_design": 0.82,
-          "mechanical": 0.95,
-          "costly_failure": 0.42
+          "multi_file_design": 0.85,
+          "mechanical": 0.94,
+          "costly_failure": 0.4
         },
-        "latencyMs": 561,
-        "cost": 0.000027594
+        "latencyMs": 529,
+        "cost": 0.00002877
       },
       {
         "tier": "sonnet",
-        "p": 0.72,
+        "p": 0.68,
         "probabilities": {
-          "opus": 0.01,
-          "haiku": 0.27,
-          "sonnet": 0.72
+          "opus": 0,
+          "haiku": 0.32,
+          "sonnet": 0.68
         },
         "nouls": {
-          "multi_file_design": 0.82,
+          "multi_file_design": 0.84,
           "mechanical": 0.95,
-          "costly_failure": 0.44
+          "costly_failure": 0.41
         },
-        "latencyMs": 526,
-        "cost": 0.000027594
+        "latencyMs": 510,
+        "cost": 0.00002877
       }
     ],
-    "wallMs": 561
+    "wallMs": 529
   },
   "r2-extract": {
     "kind": "refactor",
@@ -830,11 +826,11 @@
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.85,
-          "costly_failure": 0.65
+          "mechanical": 0.82,
+          "costly_failure": 0.66
         },
-        "latencyMs": 507,
-        "cost": 0.000029274
+        "latencyMs": 484,
+        "cost": 0.00003045
       },
       {
         "tier": "sonnet",
@@ -846,11 +842,11 @@
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.86,
+          "mechanical": 0.8,
           "costly_failure": 0.66
         },
-        "latencyMs": 532,
-        "cost": 0.000029274
+        "latencyMs": 517,
+        "cost": 0.00003045
       },
       {
         "tier": "sonnet",
@@ -862,14 +858,14 @@
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.84,
-          "costly_failure": 0.67
+          "mechanical": 0.78,
+          "costly_failure": 0.64
         },
-        "latencyMs": 520,
-        "cost": 0.000029274
+        "latencyMs": 533,
+        "cost": 0.00003045
       }
     ],
-    "wallMs": 532
+    "wallMs": 533
   },
   "r3-promisify": {
     "kind": "refactor",
@@ -878,19 +874,19 @@
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.99,
+        "p": 1,
         "probabilities": {
-          "haiku": 0.01,
-          "sonnet": 0.99,
+          "haiku": 0,
+          "sonnet": 1,
           "opus": 0
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.86,
-          "costly_failure": 0.65
+          "mechanical": 0.81,
+          "costly_failure": 0.66
         },
-        "latencyMs": 551,
-        "cost": 0.000030786
+        "latencyMs": 561,
+        "cost": 0.000031962
       },
       {
         "tier": "sonnet",
@@ -902,11 +898,11 @@
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.87,
-          "costly_failure": 0.65
+          "mechanical": 0.83,
+          "costly_failure": 0.68
         },
-        "latencyMs": 526,
-        "cost": 0.000030786
+        "latencyMs": 529,
+        "cost": 0.000031962
       },
       {
         "tier": "sonnet",
@@ -918,37 +914,35 @@
         },
         "nouls": {
           "multi_file_design": 0.93,
-          "mechanical": 0.86,
-          "costly_failure": 0.67
+          "mechanical": 0.81,
+          "costly_failure": 0.69
         },
         "latencyMs": 529,
-        "cost": 0.000030786
+        "cost": 0.000031962
       }
     ],
-    "wallMs": 551
+    "wallMs": 561
   },
   "t1-slugify-tests": {
     "kind": "tests",
-    "rule": "haiku",
-    "why": [
-      "lookup"
-    ],
+    "rule": "sonnet",
+    "why": [],
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.98,
+        "p": 0.97,
         "probabilities": {
-          "haiku": 0.02,
-          "sonnet": 0.98,
+          "haiku": 0.03,
+          "sonnet": 0.97,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.6,
+          "multi_file_design": 0.68,
           "mechanical": 0.76,
           "costly_failure": 0.51
         },
-        "latencyMs": 510,
-        "cost": 0.000029652
+        "latencyMs": 530,
+        "cost": 0.000030828
       },
       {
         "tier": "sonnet",
@@ -959,12 +953,12 @@
           "haiku": 0.03
         },
         "nouls": {
-          "multi_file_design": 0.63,
-          "mechanical": 0.74,
-          "costly_failure": 0.52
+          "multi_file_design": 0.67,
+          "mechanical": 0.76,
+          "costly_failure": 0.51
         },
-        "latencyMs": 548,
-        "cost": 0.000029652
+        "latencyMs": 1128,
+        "cost": 0.000030828
       },
       {
         "tier": "sonnet",
@@ -975,54 +969,52 @@
           "sonnet": 0.98
         },
         "nouls": {
-          "multi_file_design": 0.6,
-          "mechanical": 0.72,
-          "costly_failure": 0.52
+          "multi_file_design": 0.67,
+          "mechanical": 0.78,
+          "costly_failure": 0.5
         },
-        "latencyMs": 523,
-        "cost": 0.000029652
+        "latencyMs": 512,
+        "cost": 0.000030828
       }
     ],
-    "wallMs": 549
+    "wallMs": 1129
   },
   "t2-csv-tests": {
     "kind": "tests",
-    "rule": "haiku",
-    "why": [
-      "lookup"
-    ],
+    "rule": "sonnet",
+    "why": [],
     "answers": [
       {
         "tier": "sonnet",
-        "p": 0.98,
+        "p": 0.97,
         "probabilities": {
-          "haiku": 0.02,
-          "sonnet": 0.98,
+          "haiku": 0.03,
+          "sonnet": 0.97,
           "opus": 0
         },
         "nouls": {
-          "multi_file_design": 0.58,
-          "mechanical": 0.71,
-          "costly_failure": 0.63
+          "multi_file_design": 0.66,
+          "mechanical": 0.66,
+          "costly_failure": 0.62
         },
-        "latencyMs": 514,
-        "cost": 0.000029652
+        "latencyMs": 517,
+        "cost": 0.000030828
       },
       {
         "tier": "sonnet",
-        "p": 0.98,
+        "p": 0.99,
         "probabilities": {
-          "sonnet": 0.98,
+          "sonnet": 0.99,
           "opus": 0,
-          "haiku": 0.02
+          "haiku": 0.01
         },
         "nouls": {
-          "multi_file_design": 0.58,
+          "multi_file_design": 0.6,
           "mechanical": 0.68,
-          "costly_failure": 0.63
+          "costly_failure": 0.62
         },
-        "latencyMs": 515,
-        "cost": 0.000029652
+        "latencyMs": 555,
+        "cost": 0.000030828
       },
       {
         "tier": "sonnet",
@@ -1033,14 +1025,14 @@
           "sonnet": 0.99
         },
         "nouls": {
-          "multi_file_design": 0.58,
-          "mechanical": 0.75,
-          "costly_failure": 0.62
+          "multi_file_design": 0.6,
+          "mechanical": 0.71,
+          "costly_failure": 0.63
         },
-        "latencyMs": 530,
-        "cost": 0.000029652
+        "latencyMs": 490,
+        "cost": 0.000030828
       }
     ],
-    "wallMs": 531
+    "wallMs": 556
   }
 }

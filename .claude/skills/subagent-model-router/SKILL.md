@@ -37,7 +37,7 @@ At most one retry per subagent; `opus` has no next tier, so report the failure. 
 without an automatic check should not be routed below sonnet unless it is a read-only lookup.
 
 Which policy (benchmark, 18 small checked tasks, README §4b): for tasks WITH an automatic check,
-rules (`--provider none`) + the cascade matched always-opus's pass rate at ~14% of its cost. Jev
+rules (`--provider none`) + the cascade matched always-opus's pass rate at ~20% of its cost (re-scored 2026-10-18; the earlier ~14% came from stale cached routes). Jev
 gate+sc was also 100% but cost ~51%, because it sends most coding tasks to sonnet. Use Jev gate+sc for
 tasks WITHOUT an automatic check, where no cascade can catch a miss.
 

@@ -5,7 +5,7 @@ so that a fan-out of ~20 parallel subagents (one per story) runs each on the che
 model. Signals: local rules + TypeSafe Jev (or Laya). Combined by **agreement gating** and
 **self-consistency** rather than probability thresholds; backed by an **escalate-once cascade**.
 
-Node 18+ stdlib only. Tests: `node --test test/router.test.mjs test/bench.test.mjs` (18 tests, fake provider).
+Node 18+ stdlib only. Tests: `node --test "test/*.test.mjs"` (32 tests, fake provider; quote the glob on Node 24).
 
 ## 1. Mechanism (verified 2026-10-15, Claude Code 2.1.300)
 
@@ -134,16 +134,19 @@ fixture and passes with the reference solution: `node bench/bench.mjs validate`)
 | tests | t1-slugify-tests, t2-csv-tests | agent's tests pass and kill every mutant (5 / 6) |
 | design / debug | d1-lru, d2-ratelimit, d3-maplimit, d4-expr, d5-deps | hidden tests only |
 
-Routing of the 18 prompts (offline, already run; Jev k=3, `bench/results/route-jev.json`):
+Routing of the 18 prompts (offline; re-run 2026-10-18 after the glob fix in `ruleFeatures`, Jev k=3,
+`bench/results/route-none.json` and `route-jev.json`; `test/bench.test.mjs` fails when
+`route-none.json` no longer matches the rules):
 
 | | haiku | sonnet | opus |
 |---|---:|---:|---:|
-| rules-only | 16 | 2 | 0 |
+| rules-only | 14 | 4 | 0 |
 | Jev (first call) | 4 | 14 | 0 |
 | Jev + gate + sc | 4 | 13 | 1 |
 
+Rules send r2-extract, r3-promisify, t1-slugify-tests and t2-csv-tests to Sonnet: 3+ file names are counted (the bench wrapper's "Node.js" counts as one), so "checked" does not fire.
 Jev is stable (unanimous on 16/18; split on f1-paginate and d3-maplimit) and confident (top p
-0.97–1.0 on most). Rules and Jev disagree on 12/18: rules say Haiku because a test command is given;
+0.97–1.0 on most). Rules and Jev disagree on 10/18: rules say Haiku because a test command is given;
 Jev says Sonnet. Wall time per decision, k=3 in parallel: p50 ≈ 0.55 s, max 1.3 s; cost ≈ $0.00005
 per Jev call.
 
@@ -164,13 +167,14 @@ per cell. Records: `bench/results/runs-pilot.jsonl`.
 | d3-maplimit | pass $0.013 (9 turns) | pass $0.193 | pass $0.355 |
 | **total** | **$0.06** | **$1.12** | **$1.84** |
 
-Scored (`node bench/bench.mjs score --run pilot`; cost relative to always-opus on the same tasks):
+Scored (`node bench/bench.mjs score --run pilot`; cost relative to always-opus on the same tasks;
+rules-only re-scored 2026-10-18 with the current routes, it was 13% with the stale cache):
 
 | router | pass | cost vs opus | exact tier | under-routed | cascade pass | cascade cost | escalations | decision latency p50 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | always-opus | 6/6 | 100% | 0 | 0 | 100% | 100% | 0% | 0 |
 | always-sonnet | 6/6 | 61% | 0 | 0 | 100% | 61% | 0% | 0 |
-| rules-only | 6/6 | **13%** | 5 | 0 | 100% | 13% | 0% | <1 ms |
+| rules-only | 6/6 | **24%** | 4 | 0 | 100% | 24% | 0% | <1 ms |
 | Jev single | 6/6 | 52% | 1 | 0 | 100% | 52% | 0% | 549 ms |
 | Jev + gate | 6/6 | 52% | 1 | 0 | 100% | 52% | 0% | 549 ms |
 | Jev + sc (k=3) | 6/6 | 61% | 1 | 0 | 100% | 61% | 0% | 549 ms |
@@ -181,7 +185,7 @@ What the pilot shows:
   4-bug concurrency debug and the mutant-killing test suite. The pilot therefore measures
   over-routing only. No router under-routed, and the cascade never fired.
 - **Jev is safe but expensive here.** It said Sonnet for 5/6 tasks (Haiku only for the explore task),
-  so its policies cost 52–61% of always-opus against 13% for rules. Gating and self-consistency only
+  so its policies cost 52–61% of always-opus against 24% for rules. Gating and self-consistency only
   ever raise the tier, so they cannot fix over-routing. They protect against under-routing, which
   never happened here.
 - **A subagent's cost is mostly fixed overhead.** Every run wrote ~55k tokens of system prompt and
@@ -214,13 +218,14 @@ cascade itself). Records: `bench/results/runs-hf.jsonl`.
 **All 18 tasks: 17 haiku, 1 sonnet.** Scored with `node bench/bench.mjs score --run pilot,hf
 --impute`. Tiers that were not run are filled by monotonicity: a pass at a lower tier implies a
 pass above. Their cost is the measured mean per tier (Haiku $0.011, Sonnet $0.188, Opus $0.307).
-23 of the 54 cells are imputed.
+23 of the 54 cells are imputed. Re-scored 2026-10-18 with the current routes: the earlier rules-only
+figures (10% / 14% cascade, 15 exact) came from a stale `route-none.json` and are replaced below.
 
 | router | pass (no retry) | cost vs opus | exact tier | under-routed | cascade pass | cascade cost vs opus | escalations |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | always-opus | 18/18 | 100% | 0 | 0 | 100% | 100% | 0% |
 | always-sonnet | 18/18 | 61% | 1 | 0 | 100% | 61% | 0% |
-| rules-only | 17/18 | **10%** | 15 | 1 (d5) | **100%** | **14%** | 6% (1/18) |
+| rules-only | 17/18 | **17%** | 13 | 1 (d5) | **100%** | **20%** | 6% (1/18) |
 | Jev single | 18/18 | 48% | 5 | 0 | 100% | 48% | 0% |
 | Jev + gate | 18/18 | 48% | 5 | 0 | 100% | 48% | 0% |
 | Jev + sc (k=3) | 18/18 | 51% | 5 | 0 | 100% | 51% | 0% |
@@ -230,8 +235,8 @@ Jev answered Sonnet on d5-deps (all 3 calls), so Jev was right on the one task H
 also said Sonnet on 12 tasks Haiku solved, which is where its extra cost comes from.
 
 **Conclusion on this benchmark.** For tasks that carry an automatic check, **rules + the
-escalate-once cascade** gives the same pass rate as always-opus at about **1/7 of the cost**. The Jev
-policies are safe (never under-route) but cost about 3.5× the rules + cascade policy. On
+escalate-once cascade** gives the same pass rate as always-opus at about **1/5 of the cost** (20%). The Jev
+policies are safe (never under-route) but cost about 2.5× the rules + cascade policy (48–51% vs 20%). On
 small, checked tasks, a failed Haiku attempt costs about $0.01, so it is cheaper to let the cascade
 catch Haiku's misses than to predict them. Caveats: the tasks are small and synthetic, with one run
 per cell; the one Haiku failure was a spec-literalness slip, not a reasoning failure. The

@@ -48,7 +48,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -58,7 +57,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -68,7 +66,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -78,7 +75,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -147,7 +143,7 @@
     "kind": "tests",
     "rule": "haiku",
     "why": [
-      "lookup"
+      "checked"
     ],
     "answers": [],
     "wallMs": 0
@@ -156,7 +152,7 @@
     "kind": "tests",
     "rule": "haiku",
     "why": [
-      "lookup"
+      "checked"
     ],
     "answers": [],
     "wallMs": 0

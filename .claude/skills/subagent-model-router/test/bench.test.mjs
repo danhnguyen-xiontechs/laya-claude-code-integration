@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { score, imputeAbove } from '../bench/bench.mjs';
+import fs from 'node:fs';
+import { score, imputeAbove, listTasks, loadTask, subagentPrompt } from '../bench/bench.mjs';
+import { ruleFeatures, ruleTier } from '../scripts/router.mjs';
 import { usageCost, tierOf } from '../scripts/pricing.mjs';
 import { taskKind } from '../scripts/mine-history.mjs';
 
@@ -35,6 +37,17 @@ test('score: labels, pass rate, cost vs opus, cascade', () => {
   assert.equal(row('jev+gate').costVsOpus, 31 / 60);
   // jev-only under-routes c
   assert.equal(row('jev-only').under, 1);
+});
+
+test('cached route-none.json matches the current rules on all 18 bench prompts', () => {
+  // Re-run `node bench/bench.mjs route --provider none` whenever the rules change.
+  const cached = JSON.parse(fs.readFileSync(new URL('../bench/results/route-none.json', import.meta.url), 'utf8'));
+  const ids = listTasks();
+  assert.equal(ids.length, 18);
+  for (const id of ids) {
+    const task = loadTask(id);
+    assert.equal(ruleTier(ruleFeatures(subagentPrompt(task, '<workdir>'), task.type)).tier, cached[id]?.rule, id);
+  }
 });
 
 test('imputeAbove: fills only above a pass, at the mean measured cost', () => {
