@@ -1,0 +1,44 @@
+diff --git a/.claude/agents/haiku-case.md b/.claude/agents/haiku-case.md
+new file mode 100644
+index 0000000..d0a3e29
+--- /dev/null
++++ b/.claude/agents/haiku-case.md
+@@ -0,0 +1,13 @@
++---
++name: haiku-case
++description: General-purpose worker on Haiku 5.5 that auto-compacts its own context at 100k tokens. Used by the haiku-subagent skill and for the case agents of build-skill-tool-workflow measurements. Not for planning or improvement reasoning (those run on Opus).
++model: haiku
++autoCompactWindow: 100000
++---
++
++You are a focused worker agent. Do exactly the task in your prompt, inside the folder or files it names, and nothing else.
++
++- Read only what the task needs; prefer targeted searches over reading whole trees.
++- Do not open files outside the paths the task gives, unless the task says you may.
++- Keep your final answer short and in the format the task asks for. Put long output in a file and give its path.
++- If you cannot finish (missing access, a blocker outside your control), say what blocked you in one or two lines and stop.
+diff --git a/.claude/skills/build-skill-tool-workflow/SKILL.md b/.claude/skills/build-skill-tool-workflow/SKILL.md
+index 65de9ad..3833917 100644
+--- a/.claude/skills/build-skill-tool-workflow/SKILL.md
++++ b/.claude/skills/build-skill-tool-workflow/SKILL.md
+@@ -36,7 +36,7 @@ Track E never re-plans from scratch: it reads the last `improvements.md`, applie
+ Measured on the 2026-10-18 rounds: the orchestrating sessions and open-ended Opus agents cost about as much as all the Haiku case agents together. So:
+ - **Opus is called with a closed input pack**: paste the numbers of `summary.json`, the last `improvements.md`, the diff or design change and the new results table into its prompt; tell it not to open files or explore the repo, and to answer in under 600 words. One call for planning (Track N), one call per improvement round (7b). No other Opus calls.
+ - **Case agents**: Haiku 5.5, effort xhigh, at most 4 in flight per session, at most 2 measuring sessions on the machine at once (more made helpers time out and the numbers noisy). 4 cases × 2 repetitions unless the brief says otherwise.
+-- **Keep every subagent under ~100k tokens of context**: small self-contained briefs, one fresh work folder, answers handed back short. The haiku-subagent skill's PreToolUse hook (`.claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js`) trims a subagent's *starting prompt* to under 90k tokens; it does not compact a running subagent, and it only works when it is registered in `.claude/settings.json` (matcher `Agent|Task`). Check that before a run.
++- **Keep every subagent under ~100k tokens of context**: spawn case, implementation and test agents with `subagent_type: "haiku-case"` (`.claude/agents/haiku-case.md`: Haiku 5.5, `autoCompactWindow: 100000`), plus `model: "haiku"`, `effort: "xhigh"`. Haiku 5.5 has a 1M context and otherwise auto-compacts only near ~967k tokens, so without this agent type nothing compacts (0 compactions were seen in the 2026-10-18 rounds). Still give small self-contained briefs, one fresh work folder, and short hand-backs. Note: the haiku-subagent prompt-budget hook only trims a subagent's *starting* prompt (< 90k) and runs only if registered in `.claude/settings.json`; it is not the compaction.
+ - **Cheap checks before agent spend**: an offline gate (recall on gold tasks, a replay of recorded transcripts, a content run with `count_tokens.mjs`) runs first; the agent run starts only if the gate passes. Write the gate into `design.md` before running it.
+ - **Few wake-ups for the orchestrator**: launch a batch of case agents, then end the turn or do other work; never poll, sleep or check status in a loop; collect a whole batch in one turn. Write outputs to files, keep chat short, and let the user `/compact` between phases of a long session.
+ 
+diff --git a/.claude/skills/haiku-subagent/SKILL.md b/.claude/skills/haiku-subagent/SKILL.md
+index cc3e082..0f3312a 100644
+--- a/.claude/skills/haiku-subagent/SKILL.md
++++ b/.claude/skills/haiku-subagent/SKILL.md
+@@ -17,6 +17,7 @@ $ARGUMENTS
+ 
+ Every subagent you spawn for this task MUST be launched with the Agent tool using:
+ 
++- `subagent_type`: `"haiku-case"` (`.claude/agents/haiku-case.md`: Haiku 5.5 with `autoCompactWindow: 100000`, so the subagent compacts its own context at 100k tokens instead of the ~967k default of a 1M-context model). If that agent type is not available in this session, use `general-purpose` and say once that auto-compact at 100k is not active.
+ - `model`: `"haiku"` (resolves to the latest Haiku, 5.5)
+ - `effort`: `"xhigh"` — this is the "extra" effort level the user asked for by invoking this skill, which counts as their explicit request to set effort
+ - no other model or effort, even if you think a bigger one would be better
