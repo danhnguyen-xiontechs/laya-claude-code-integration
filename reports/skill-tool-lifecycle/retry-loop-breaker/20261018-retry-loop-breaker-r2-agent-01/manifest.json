@@ -8,14 +8,14 @@
     "commit": "18a6a6f",
     "branch": "claude/retry-loop-round2"
   },
-  "status": "INSUFFICIENT_EVIDENCE",
+  "status": "DROPPED",
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "LOW",
   "headline": "On 6 cases (3 built to loop, 3 legitimate retries) both arms passed 12/12, no case got worse and nothing was falsely blocked, but tokens went up from A 5.71M to B 5.87M (+2.8%, inside the run-to-run noise). The guard refused once in 12 B runs and Jev was never called. Where B agents stopped early on the looping cases, they stopped before the guard had shown anything; the transcripts point to the B prompt's sentence that a guard is attached, not to the refusals. What blocks adoption: no token saving can be credited to the guard's refusals, the prompt sentence confounds the arms, and classify() would not guard the wrapped commands agents actually type (54 of 55 here). Top fix: re-measure with the guard sentence in both arms (arm A behind a silent placebo wrapper), on cases where plain Claude loops over several separate turns.",
   "approvals": {
     "ideaApprovedAt": null,
-    "finalDecision": "INSUFFICIENT_EVIDENCE",
-    "finalDecisionAt": "2026-10-18T04:24:20Z"
+    "finalDecision": "DROPPED",
+    "finalDecisionAt": "2026-10-18T07:34:16Z"
   },
   "arms": [
     {

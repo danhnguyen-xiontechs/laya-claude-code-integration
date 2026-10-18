@@ -9,9 +9,9 @@
       "branch": "claude/retry-loop-round2"
     },
     "engine": "JEV",
-    "status": "INSUFFICIENT_EVIDENCE",
+    "status": "DROPPED",
     "recommendation": "INSUFFICIENT_EVIDENCE",
-    "finalDecision": "INSUFFICIENT_EVIDENCE",
+    "finalDecision": "DROPPED",
     "confidence": "LOW",
     "headline": "On 6 cases (3 built to loop, 3 legitimate retries) both arms passed 12/12, no case got worse and nothing was falsely blocked, but tokens went up from A 5.71M to B 5.87M (+2.8%, inside the run-to-run noise). The guard refused once in 12 B runs and Jev was never called. Where B agents stopped early on the looping cases, they stopped before the guard had shown anything; the transcripts point to the B prompt's sentence that a guard is attached, not to the refusals. What blocks adoption: no token saving can be credited to the guard's refusals, the prompt sentence confounds the arms, and classify() would not guard the wrapped commands agents actually type (54 of 55 here). Top fix: re-measure with the guard sentence in both arms (arm A behind a silent placebo wrapper), on cases where plain Claude loops over several separate turns.",
     "arms": {
@@ -67,7 +67,7 @@
     },
     "openBlockingFindings": 0,
     "lastRun": "2026-10-18T04:10:13.111Z",
-    "generatedAt": "2026-10-18T06:51:48.615Z",
+    "generatedAt": "2026-10-18T07:34:17.470Z",
     "report": "report.html",
     "href": "retry-loop-breaker/20261018-retry-loop-breaker-r2-agent-01/report.html",
     "stale": false,
