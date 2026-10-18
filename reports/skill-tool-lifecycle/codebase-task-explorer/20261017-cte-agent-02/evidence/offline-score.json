@@ -41,7 +41,7 @@
         ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
         ".claude/skills/review-pr-laya-classify/scripts/assess.mjs",
         ".claude/skills/review-pr-jev-classify/scripts/assess.mjs",
-        ".xt-skills/review-pr-laya-classify/reviews/dev.azure.com__xiontechs__xtp0009_ess_app__ess-be/pr-5240.execution-log.html"
+        ".xt-skills/review-pr-laya-classify/reviews/<private-repo>/pr-5240.execution-log.html"
       ],
       "codemapOnlyTop5": [
         ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",

@@ -1,0 +1,11 @@
+{
+  "name": "context-governor",
+  "owner": { "name": "Danh Nguyen" },
+  "plugins": [
+    {
+      "name": "context-governor",
+      "source": "./",
+      "description": "Warn-only context watch: checkpoint note at 120k, /fast-compact or handoff note at 200k, stale-artifact note. Never blocks."
+    }
+  ]
+}

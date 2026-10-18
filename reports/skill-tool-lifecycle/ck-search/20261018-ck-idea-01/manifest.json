@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-ck-idea-01",
+  "tool": {
+    "name": "ck-search",
+    "kind": "skill",
+    "provider": "none",
+    "commit": null,
+    "branch": "claude/ck-search-skill-319a3d",
+    "engine": "ck 0.8.1 (BeaconBay/ck), bge-small, local"
+  },
+  "status": "APPROVED_FOR_IMPLEMENTATION",
+  "recommendation": null,
+  "confidence": null,
+  "headline": "Idea approved at Gate A (2026-10-18): standalone /ck-search skill around ck (code-only filter, then doc -> identifiers -> code bridge), rules only; offline gate on a new held-out set first. ck scored Recall@8 0.00 on the r3 dev units because docs crowded out code.",
+  "approvals": {
+    "ideaApprovedAt": "2026-10-18",
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "ideaDecision": "APPROVED by the user at Gate A (2026-10-18): option 3, standalone /ck-search skill, instead of the recommended lane inside codebase-task-explorer.",
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (no ck-search)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + /ck-search (rules, no Jev)",
+      "candidateEnabled": true,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "idea-brief v1",
+    "datasetVersion": null,
+    "caseCount": null,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18",
+    "deviations": [
+      "Track N, steps 0-1 only in this session; no code written.",
+      "Baseline numbers come from 20261018-cte-r3-gate-01 (12 ess-be units); those units are dev data only, the decision needs a new held-out set (>= 15 units, >= 8 hard).",
+      "Private ess-be texts and paths stay outside the public repo; only ids and numbers are committed.",
+      "Gate A: the user chose the standalone skill (option 3) over the recommended explorer lane. The offline-gate criterion that applies is '/ck-search alone hard Recall@8 >= 0.41' on the held-out set, plus the latency and hygiene rows."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": null,
+    "experimentPlan": null,
+    "unitTestReport": null,
+    "agentReview": null,
+    "perToolReport": null,
+    "perToolHtmlReport": null,
+    "mainReport": "../../index.html",
+    "runDirectories": [],
+    "rawResults": [],
+    "executionLogs": []
+  }
+}
