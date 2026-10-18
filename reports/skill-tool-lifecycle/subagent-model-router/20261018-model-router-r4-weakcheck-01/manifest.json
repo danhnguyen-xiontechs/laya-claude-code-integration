@@ -43,7 +43,8 @@
       "cwd": "D:\\XionTechs\\Laya",
       "pick": "busiest",
       "from": "2026-10-18T14:42:35Z",
-      "model": "claude-opus-5-5"
+      "model": "claude-opus-5-5",
+      "to": "2026-10-18T15:07:38.449Z"
     },
     {
       "phase": "P2",
@@ -76,9 +77,16 @@
     "The work-dir scratchpad root replaced ~/.subagent-model-router to keep the prompt paths free of the tool name.",
     "Escalation path never fired (all 12 B first attempts passed the visible check), so the one scripted escalation is untested in P3; it was smoke-tested in P2.",
     "results.json startedAt/finishedAt are run-dir birth/modify times (approximate); usage is real transcript usage; cost is list-price estimated.",
-    "evidence/answers are the verbatim SubagentHandback messages; the evidence/texts per-arm files were not produced (the agent run has no separate what-Claude-read text)."
+    "evidence/answers are the verbatim SubagentHandback messages; the evidence/texts per-arm files were not produced (the agent run has no separate what-Claude-read text).",
+    "Review (P4, Opus, closed pack; agent-review.json): both triggers of the frozen INSUFFICIENT_EVIDENCE rule fired (Haiku passed strict first time on every case; B used +47% paired tokens with no extra passes). Verdict kept.",
+    "Price is an estimate: scripts/pricing.mjs prices Haiku at 1/20 of Sonnet, which is not verified against official prices. Sensitivity at a 1:3 ratio: B price 0.2448 USD vs A 0.6058 USD, -59.6% (still an estimate). pricing.mjs not changed.",
+    "Token arithmetic: summary tokens sum all 12 runs per arm; pairedTokens is the mean per case over the 2 repetitions, summed over the 6 paired cases, so raw = 2 x paired by construction (build_tool_report.mjs), not double counting.",
+    "Limits: 0 visible-check failures and 0 escalations in B, so the escalation path and its cost have no live evidence (a forced-fail control is needed in a later round).",
+    "Limits: the 6 wrong refs are authored, not real Haiku mistakes; the offline gate proves the checks catch planted bugs, not Haiku failure rates.",
+    "Limits: n=12 per arm; the 1/12 tolerance cannot be resolved statistically (rule-of-three upper bound on strict-fail is about 25% at 0/12).",
+    "Limits: B used 66 model turns vs 47 for A (69 vs 53 tool calls); the driver now logs route, check, escalate and grade steps per run (driver-steps.jsonl, suggestion 6), but turns still come from the transcripts, so the cause is not attributed in this round; no re-measure."
   ],
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "low",
-  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Price -93.9%. The weak-check hypothesis was not tested: the set is too easy for Haiku."
+  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Paired tokens 439,437 to 648,395 (+47%); price -93.9% is an estimate (-59.6% at a 1:3 Haiku:Sonnet ratio). The weak-check hypothesis was not tested: the case set is too easy for Haiku."
 }

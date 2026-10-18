@@ -24,6 +24,8 @@ const readState = (runDir) => JSON.parse(fs.readFileSync(path.join(runDir, 'stat
 const writeState = (runDir, s) => fs.writeFileSync(path.join(runDir, 'state.json'), JSON.stringify(s, null, 2) + '\n');
 const latest = (s) => s.attempts[s.attempts.length - 1];
 const logFile = (runDir) => path.join(runDir, '..', 'route-log.jsonl');
+// one line per driver step (route call, visible check, escalation, grade): counts per run, reviewed in round 4 (suggestion 6)
+const logStep = (runDir, step, extra = {}) => fs.appendFileSync(path.join(runDir, 'driver-steps.jsonl'), JSON.stringify({ at: new Date().toISOString(), step, ...extra }) + '\n');
 
 function newAttempt(s, runDir, tier) {
   const n = s.attempts.length + 1;
@@ -48,6 +50,7 @@ if (cmd === 'prepare') {
     const promptFile = path.join(runDir, 'route-prompt.txt');
     fs.writeFileSync(promptFile, subagentPrompt(c.task, path.join(runDir, 'a1')));
     const rec = routeCascade(promptFile, logFile(runDir));
+    logStep(runDir, 'route', { tier: rec.tier });
     fs.writeFileSync(path.join(runDir, 'route.json'), JSON.stringify(rec, null, 2) + '\n');
     tier = rec.tier;
     if (!tier) { console.error('route.mjs returned no tier'); process.exit(1); }
@@ -62,6 +65,7 @@ if (cmd === 'prepare') {
   const c = loadCase(s.case);
   fs.copyFileSync(path.join(c.dir, 'check.mjs'), path.join(a.dir, 'check.mjs')); // a fresh copy: agents cannot edit the check
   a.visible = runScript('check.mjs', a.dir);
+  logStep(runDir, 'check', { attempt: a.n, visible: a.visible });
   writeState(runDir, s);
   if (!a.visible && s.arm === 'B' && !s.escalated) {
     const next = escalateFrom(a.tier, logFile(runDir));
@@ -77,6 +81,7 @@ if (cmd === 'prepare') {
   if (!next) { console.error('no escalation tier above ' + latest(s).tier); process.exit(1); }
   const a = newAttempt(s, runDir, next);
   s.escalated = true;
+  logStep(runDir, 'escalate', { attempt: a.n, tier: a.tier });
   writeState(runDir, s);
   console.log(`escalated tier=${a.tier} prompt=${a.prompt}`);
 } else if (cmd === 'grade') {
@@ -87,6 +92,7 @@ if (cmd === 'prepare') {
   const c = loadCase(s.case);
   const strict = runScript(path.join(c.dir, 'hidden', 'strict.mjs'), c.dir, { WORK_DIR: a.dir });
   s.final = { attempt: a.n, tier: a.tier, visible: a.visible, strict, silentMiss: a.visible && !strict, attempts: s.attempts.length };
+  logStep(runDir, 'grade', { attempt: a.n, strict });
   writeState(runDir, s);
   console.log(`graded ${s.case}.${s.arm}.r${s.rep} strict=${strict ? 'pass' : 'fail'} visible=${a.visible ? 'pass' : 'fail'} silentMiss=${s.final.silentMiss} attempts=${s.attempts.length}`);
 } else {
