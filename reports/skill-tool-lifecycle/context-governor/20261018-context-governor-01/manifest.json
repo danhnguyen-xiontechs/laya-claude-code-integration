@@ -64,6 +64,13 @@
       "model": "haiku (Haiku 5.5)",
       "smartTrimMode": "off",
       "note": "offline replay gate only (design §5); A/B (§6) not run"
+    },
+    {
+      "phase": "P4",
+      "sessionId": "local_b2bf5971-54bd-421d-bfc4-c2ece997443b",
+      "model": "haiku (Haiku 5.5) + opus review subagent (Plan type, model opus, read-only)",
+      "smartTrimMode": "off",
+      "note": "review only: agent-review.json (10 findings: 1 Critical, 5 Major, 3 Minor, 1 Suggestion; resolutions empty, user decides); improvements.md written; no fixes"
     }
   ],
   "artifacts": {

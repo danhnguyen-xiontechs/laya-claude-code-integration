@@ -1,0 +1,77 @@
+{
+  "reviewer": "Opus 5.5 read-only subagent (Plan type, model opus), closed pack, no file access",
+  "phase": "P4",
+  "gateResult": "BLOCKED (condition 2: 6.7%)",
+  "findings": [
+    {
+      "severity": "Critical",
+      "finding": "The gate cannot see most of the control session's cost. The amended t* (first crossing from below) skips turns 1 to about 129, which ran at 657k to 953k and carried most of the 108M cacheRead, yet the denominator still counts all 220 turns. After t173 the avoided amount is capped at about (200k-47k) x 47 turns, roughly 7.2M, so 6.7% was the most the tool could ever score here.",
+      "ref": "context-governor/scripts/replay.mjs (tStar, ratio); design.md §5",
+      "proposedFix": "Give the stretch that is already above 200k at the window start its own row, or pull in the earlier turns of the conversation. Compute the numerator and the denominator over the same turns.",
+      "resolution": ""
+    },
+    {
+      "severity": "Major",
+      "finding": "The numerator and denominator use different units. Avoided is counted in context tokens (input + cache_read + cache_creation), but the denominator is cache_read only. That is why the literal formula could reach 121.4%.",
+      "ref": "context-governor/scripts/replay.mjs (avoided vs cacheRead)",
+      "proposedFix": "Count both in cache_read, or both in context tokens. Report the creation share separately.",
+      "resolution": ""
+    },
+    {
+      "severity": "Major",
+      "finding": "The gate formula was changed after its result was known. The literal version gave 121.4%, the amended one 6.7%. Either way the metric is not pre-registered.",
+      "ref": "design.md §5 amendment; capsule deviation (d)",
+      "proposedFix": "Freeze the formula, sessions and threshold in writing before the next replay run.",
+      "resolution": ""
+    },
+    {
+      "severity": "Major",
+      "finding": "The `timestamp starts with the date` filter cuts the control session at midnight. The control session continues an earlier conversation, so its real 200k crossing and most of its cost fall outside the window. Reviewer note: not verified in this session; the brief's >200M against 108M here is consistent with that.",
+      "ref": "context-governor/scripts/replay.mjs (turnsOf)",
+      "proposedFix": "Replay the session's whole history, ignoring date. Check whether the timestamps are UTC or local time.",
+      "resolution": ""
+    },
+    {
+      "severity": "Major",
+      "finding": "If the state write fails, a note is still shown (deviation a). The armed flags never persist, so the strong toast or text fires again on every turn above 200k.",
+      "ref": "context-governor/hooks/context-governor.ts (inner try); deviation (a)",
+      "proposedFix": "Keep an in-memory armed cache per session as a fallback, or suppress notes after the first failed write.",
+      "resolution": ""
+    },
+    {
+      "severity": "Major",
+      "finding": "When the session id cannot be read, it falls back to 'unknown'. All such sessions then share one state file and one metrics file, so the armed flags and counters leak between sessions.",
+      "ref": "context-governor/hooks/context-governor.ts (sessionId)",
+      "proposedFix": "When the id is unknown, skip writing state and metrics; or key the files by transcript path.",
+      "resolution": ""
+    },
+    {
+      "severity": "Minor",
+      "finding": "When usage is missing and the session-usage fallback fails, context is set to 0. Both thresholds re-arm on that, so the next real turn repeats the notes. Separately, slow > 200 ms suppresses the result text but the toast still shows, while design §3 says a slow hook takes no other action.",
+      "ref": "context-governor/hooks/context-governor.ts (context, slow)",
+      "proposedFix": "When context is unknown, skip decide. Make slow log-only.",
+      "resolution": ""
+    },
+    {
+      "severity": "Minor",
+      "finding": "The stale counter resets even when a soft or strong note in the same turn swallows the stale note, so that stale note is lost. The stale rule is also never exercised by the replay (artifact is always null).",
+      "ref": "context-governor/src/core.ts (stale branch); context-governor/scripts/replay.mjs",
+      "proposedFix": "Reset the counter only when the stale note is actually shown. Add replay runs with an artifactDir set.",
+      "resolution": ""
+    },
+    {
+      "severity": "Minor",
+      "finding": "The tests are weak or synthetic. The toast and the jsonl context sum are not asserted in engine.test (deviation b), tsc was never run against the 21.5k-line generated .d.ts, and the latency test runs in a harness without fs. The only real-data check is the same-day replay.",
+      "ref": "context-governor/tests/engine.test.ts; unit-tests.json",
+      "proposedFix": "Run tsc via npx. Assert the toast. Add one replay fixture from a different day as a held-out check.",
+      "resolution": ""
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "No coupling to Jev or Laya and no secrets are visible in the pack. The note text does depend on /fast-compact and make_capsule.mjs, and subagent cacheRead is left out of the cost (51 subagent turns, 14 flagged). Uncertain: io.ts was not shown to the reviewer.",
+      "ref": "context-governor/src/core.ts (noteText); context-governor/scripts/replay.mjs",
+      "proposedFix": "Make the note text configurable. Report subagent cacheRead on a separate line.",
+      "resolution": ""
+    }
+  ]
+}
