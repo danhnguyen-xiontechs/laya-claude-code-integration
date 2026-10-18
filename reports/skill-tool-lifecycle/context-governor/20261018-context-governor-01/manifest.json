@@ -8,7 +8,7 @@
     "commit": null,
     "branch": "claude/context-governor"
   },
-  "status": "APPROVED_FOR_IMPLEMENTATION",
+  "status": "DESIGN_READY",
   "recommendation": null,
   "confidence": null,
   "headline": null,
@@ -34,19 +34,22 @@
   "evaluation": {
     "caseCount": null,
     "repetitions": null,
-    "criteriaFrozenAt": null,
-    "deviations": []
+    "criteriaFrozenAt": "2026-10-18T13:20:10.817Z",
+    "deviations": [
+      "P1 context pack: two haiku-case attempts died from auto-compact thrashing (agent started at ~55k context with all tools, compaction triggers ~73k under a 100k window); a third general-purpose Haiku attempt was stopped at 143k context (over the user's 100k cap). Fixed by a tool whitelist on haiku-case (start context 17,288) and autoCompactWindow 98000; the fourth attempt finished at peak 97,436 with 0 compactions."
+    ]
   },
   "phases": [
     {
       "phase": "P1",
-      "sessionId": null,
-      "model": "haiku context pack + opus design (subagents of the control session)",
+      "sessionId": "local_70e0c4f6-6dec-4717-9c34-5340077f06d1 (context pack) + control-session Opus subagent (design)",
+      "model": "haiku-case (peak 97,436 ctx, 0 compactions) + opus",
       "smartTrimMode": "n/a"
     }
   ],
   "artifacts": {
     "ideaBrief": "idea-brief.md",
-    "design": "design.md"
+    "design": "design.md",
+    "contextPack": "context-pack.md"
   }
 }
