@@ -1,0 +1,1 @@
+Created C:/Users/ADMIN/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-model-router-round4-p3-a75eb5/16d2f748-348f-4ffa-a56b-4a5da20bc8b1/scratchpad/r4-bench/w2-limiter.B.r1/a1/src/limiter.js (CommonJS, exports createLimiter) with a FIFO queue, slot-counted concurrency, and microtask-deferred starts; `node check.mjs` prints PASS (exit 0).

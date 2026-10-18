@@ -1,0 +1,1 @@
+I created src/money.js with `parseAmount`, which uses a strict regex and integer arithmetic and throws `RangeError("bad amount: <input>")` on bad input. I also added a package.json with `{"type":"module"}` so the ESM import in check.mjs resolves. `node check.mjs` prints PASS, and my spot checks of the valid and invalid examples gave the expected results.

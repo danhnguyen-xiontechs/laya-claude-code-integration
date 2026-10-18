@@ -1,0 +1,43 @@
+{
+  "A": {
+    "usd": 0.60584,
+    "rawTokens": 878874,
+    "firstAttemptUsd": 0.60584,
+    "escalationUsd": 0,
+    "runs": 12
+  },
+  "B": {
+    "usd": 0.03672,
+    "rawTokens": 1296790,
+    "firstAttemptUsd": 0.03672,
+    "escalationUsd": 0,
+    "runs": 12
+  },
+  "priceChangePct": -93.9,
+  "perCase": {
+    "c1-money": {
+      "A_usd": 0.11143,
+      "B_usd": 0.006298
+    },
+    "w1-ranges": {
+      "A_usd": 0.104794,
+      "B_usd": 0.005772
+    },
+    "w2-limiter": {
+      "A_usd": 0.096482,
+      "B_usd": 0.00672
+    },
+    "w3-template": {
+      "A_usd": 0.091114,
+      "B_usd": 0.005209
+    },
+    "w4-csv": {
+      "A_usd": 0.11039,
+      "B_usd": 0.006661
+    },
+    "w5-pages": {
+      "A_usd": 0.091629,
+      "B_usd": 0.006059
+    }
+  }
+}

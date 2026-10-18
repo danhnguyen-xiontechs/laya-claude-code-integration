@@ -1,0 +1,72 @@
+{
+  "experimentId": "20261018-model-router-r4-weakcheck-01",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "none",
+    "commit": "52f6583",
+    "branch": "claude/model-router-round4"
+  },
+  "engine": "rules",
+  "status": "MEASURED",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "low",
+  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Price -93.9%. The weak-check hypothesis was not tested: the set is too easy for Haiku.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 878874,
+      "inputTokens": 94,
+      "outputTokens": 2504,
+      "toolCalls": 53,
+      "modelTurns": 47,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": null,
+      "pairedTokens": 439437
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1296790,
+      "inputTokens": 132,
+      "outputTokens": 1273,
+      "toolCalls": 69,
+      "modelTurns": 66,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": null,
+      "pairedTokens": 648395
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": null,
+  "workflowCost": null,
+  "lastRun": "2026-10-18T14:53:28.081Z",
+  "generatedAt": "2026-10-18T15:00:54.425Z",
+  "report": "report.html"
+}

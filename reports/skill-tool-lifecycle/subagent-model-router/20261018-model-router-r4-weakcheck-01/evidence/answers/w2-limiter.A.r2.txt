@@ -1,0 +1,1 @@
+I created src/limiter.js with `createLimiter(max)` as an ES module, and added package.json with `{"type":"module"}` so Node loads it as one. `node check.mjs` printed PASS.

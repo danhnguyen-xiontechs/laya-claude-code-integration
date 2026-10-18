@@ -1,0 +1,3 @@
+I created src/pages.js with `pageWindow` and added a package.json with `{"type":"module"}` so the ESM import resolves. `node check.mjs` prints PASS.
+
+I also ran a few edge cases by hand. Page 1 with span 4 gives [1,2,3,4]. Page 10 of 10 with span 4 gives [7,8,9,10]. Page 5 with span 4 gives [3,4,5,6]. Total 0 gives [1]. Page 11 of 10 throws `page out of range: 11`.

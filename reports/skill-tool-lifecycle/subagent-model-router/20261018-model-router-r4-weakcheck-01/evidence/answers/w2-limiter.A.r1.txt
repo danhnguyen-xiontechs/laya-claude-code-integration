@@ -1,0 +1,3 @@
+I created src/limiter.js (CommonJS) exporting createLimiter(max), and `node check.mjs` prints PASS. I only ran that provided check, not any extra tests of the other rules.
+
+It covers the max validation, FIFO queueing, a concurrency cap of max, and freeing the slot when fn throws or rejects. fn is called on a later microtask, never synchronously inside run().

@@ -1,0 +1,1 @@
+I created src/csv.js with `parseCsv`, plus a package.json containing `{"type":"module"}` so the ESM import works. `node check.mjs` prints PASS, and my own edge-case runs behaved as specified. Those covered empty input, `""`, an empty middle line, CRLF, a trailing newline, quoted commas/newlines/doubled quotes, literal quotes in unquoted fields, and the unterminated-quote error.

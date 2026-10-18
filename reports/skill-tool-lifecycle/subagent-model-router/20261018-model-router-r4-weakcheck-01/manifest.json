@@ -10,7 +10,7 @@
     "commit": "52f6583",
     "branch": "claude/model-router-round4"
   },
-  "status": "DESIGN_READY",
+  "status": "MEASURED",
   "arms": [
     {
       "id": "A-claude",
@@ -51,10 +51,27 @@
       "from": "2026-10-18T14:50:19Z",
       "model": "claude-haiku-5-5",
       "smartTrimMode": "enforce"
+    },
+    {
+      "phase": "P3",
+      "cwd": "D:\\XionTechs\\Laya\\.claude\\worktrees\\model-router-round4-p3-a75eb5\\reports\\skill-tool-lifecycle\\subagent-model-router\\20261018-model-router-r4-weakcheck-01",
+      "from": "2026-10-18T14:53:25.346Z",
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": "off (SMART_TRIM_MODE=observe)"
     }
   ],
   "deviations": [
     "smart-context-trimming cannot be loaded in a Claude Desktop app session: off in the control session.",
-    "Case agents at effort high (same as round 3, quota mode), not xhigh."
-  ]
+    "Case agents at effort high (same as round 3, quota mode), not xhigh.",
+    "P3 arm B folder is runs/B-claude-none (provider none = rules), not B-claude-jev as listed in arms above.",
+    "Case agents: Agent tool, subagent_type haiku-case, model sonnet (arm A and none) or haiku (arm B first attempt), effort high. Prompt is a pointer to the identical prompt.txt file from run_cascade.mjs prepare, plus the work dir.",
+    "One sentence about the tool differs between arms (A: no routing tool available; B: routing already done). Forbid check on A: 0 calls matching route.mjs|run_cascade|subagent-model-router.",
+    "The work-dir scratchpad root replaced ~/.subagent-model-router to keep the prompt paths free of the tool name.",
+    "Escalation path never fired (all 12 B first attempts passed the visible check), so the one scripted escalation is untested in P3; it was smoke-tested in P2.",
+    "results.json startedAt/finishedAt are run-dir birth/modify times (approximate); usage is real transcript usage; cost is list-price estimated.",
+    "evidence/answers are the verbatim SubagentHandback messages; the evidence/texts per-arm files were not produced (the agent run has no separate what-Claude-read text)."
+  ],
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "confidence": "low",
+  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Price -93.9%. The weak-check hypothesis was not tested: the set is too easy for Haiku."
 }

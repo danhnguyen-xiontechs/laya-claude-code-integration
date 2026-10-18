@@ -1,0 +1,1 @@
+Created src/ranges.js in the work folder with mergeRanges (validates start<=end and throws RangeError "bad range: [s,e]", copies pairs, sorts by start, merges overlapping or touching ranges). `node check.mjs` prints PASS; spot checks of the spec examples also pass.
