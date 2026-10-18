@@ -4,6 +4,8 @@
 - **Status:** `IDEA_DRAFT | WAITING_FOR_IDEA_APPROVAL | APPROVED | HOLD | REJECTED`
 - **Owner:** <owner>
 - **Date:** <date>
+- **Track:** `N (new idea) | E (existing tool)`
+- **Intake kind:** `skill | hook | plugin | mcp | helper | provider`
 - **Related code/report:** <links or paths>
 
 ## Problem

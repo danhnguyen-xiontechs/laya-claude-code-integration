@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Sets the auto-compact window of main Haiku sessions to 100000 tokens (the minimum Claude Code accepts), so
+// Sets the auto-compact window of main Haiku sessions to 125000 tokens (compaction then fires near 95k), so
 // every Haiku request stays under the 100k price step. Writes `modelSettings` in ~/.claude/settings.json,
 // only for Haiku model names; other models keep their window. A plugin cannot change settings by itself:
 // the /haiku-100k:setup command runs this after the user agrees.
@@ -12,7 +12,7 @@ const args = process.argv.slice(2);
 const i = args.indexOf('--settings');
 const file = i >= 0 ? args[i + 1] : path.join(os.homedir(), '.claude', 'settings.json');
 const KEYS = ['claude-haiku-5-5', 'haiku'];
-const WINDOW = 100000;
+const WINDOW = 125000; // main sessions: the app starts at ~73k and the engine compacts ~30k below the window, so 100000 would compact on every request; 125000 compacts near 95k and the hook keeps requests under 100k
 
 const json = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '')) : {};
 const before = JSON.stringify(json.modelSettings ?? {});

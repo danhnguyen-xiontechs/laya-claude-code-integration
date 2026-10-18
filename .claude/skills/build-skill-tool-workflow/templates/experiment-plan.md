@@ -26,8 +26,13 @@ Problem, intended behavior, inputs/outputs, architecture, and what this experime
 |---|---|---:|---:|
 | A — plain Claude | current workflow | No | No |
 | B — Claude + tool | tool with Jev/Laya live, rules as fallback (or rules only if the tool has no engine) | Yes | Yes |
+| C — single-session (optional, controlled) | same as B, but all phases in one Haiku session instead of fresh sessions + capsules | Yes | Yes |
+
+Arms must be fair: same cases, model, effort, repetitions and gold key (kept out of every agent prompt). Arm C is tested only to compare architecture; it is not the default unless its numbers beat B.
 
 How tokens are measured: agent run (transcript_usage.mjs) or content run (count_tokens.mjs):
+
+Auto-compact setting (haiku-100k `autoCompactWindow`) and smart-context-trimming mode, per phase (record separately):
 
 ## Fixed controls
 - Task set version and task IDs:

@@ -1,5 +1,5 @@
 import { test, expect } from 'claude-code/testing'
-import { keepChars, cut, isHaiku, contextOf, HEADROOM, CHARS_PER_TOKEN, MIN_KEEP_CHARS } from './register'
+import { keepChars, cut, isHaiku, contextOf, shouldDefer, HEADROOM, CHARS_PER_TOKEN, MIN_KEEP_CHARS } from './register'
 
 test('a result that fits under the headroom is kept whole', () => {
   expect(keepChars(50_000, 10_000)).toBe(null)
@@ -32,4 +32,10 @@ test('a tool call with no Haiku step seen passes through unchanged', async ($, o
   on('tool.call', () => ({ result: 'x'.repeat(500_000) } as never))
   const r = await $.tool.call({ tool: 'Bash', command: 'cat big.log' } as never)
   expect(r.deny).toBe(undefined)
+})
+
+test('slimming keeps core and app tools in front, defers the rest', () => {
+  for (const t of ['Bash', 'Read', 'Edit', 'Agent', 'ToolSearch', 'mcp__ccd_turn__update_plan', 'mcp__ccd_session__start_session']) expect(shouldDefer(t)).toBe(false)
+  for (const t of ['Artifact', 'Workflow', 'PowerShell', 'mcp__Claude_Browser__navigate', 'mcp__visualize__show_widget']) expect(shouldDefer(t)).toBe(true)
+  expect(shouldDefer('Artifact', true)).toBe(false)
 })

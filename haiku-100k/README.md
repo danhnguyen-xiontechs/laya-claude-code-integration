@@ -5,10 +5,20 @@ Haiku input above 100k tokens per request is billed at the higher rate ($0.50 vs
 | Part | What it does |
 |---|---|
 | `agents/haiku-case.md` → subagent type `haiku-100k:haiku-case` | Haiku 5.5, `autoCompactWindow: 100000` (the minimum Claude Code accepts; lower values are silently ignored), tools limited to Read, Grep, Glob, Bash, Write, Edit, Skill, so it starts at ~14-17k |
-| `/haiku-100k:setup` (`commands/setup.md`, `scripts/setup.mjs`) | Run once per machine. With your OK it writes `modelSettings` → `autoCompactWindow: 100000` for `claude-haiku-5-5` and `haiku` in `~/.claude/settings.json`, so **main** Haiku sessions compact at 100k too. A plugin cannot change settings by itself. `--remove` undoes it. |
-| `hooks/register.ts` | On a Haiku loop (main or subagent), cuts a tool result that would push the next request past 92k to head + tail, with a note on how to get the rest. Toasts every Haiku request over 100k, so a leak is visible. |
+| `/haiku-100k:setup` (`commands/setup.md`, `scripts/setup.mjs`) | Run once per machine. With your OK it writes `modelSettings` → `autoCompactWindow: 125000` for `claude-haiku-5-5` and `haiku` in `~/.claude/settings.json`, so **main** Haiku sessions compact near 92k (see "Window 100k vs 125k" below). A plugin cannot change settings by itself. `--remove` undoes it. |
+| `hooks/register.ts` (slim start) | In a Haiku session, tools a Haiku session rarely needs go behind ToolSearch once, at session start: every MCP tool except the app's `ccd_turn`/`ccd_session`, and every built-in except Agent, Bash, Edit, Glob, Grep, Read, Write, Skill, ToolSearch, AskUserQuestion. The model loads one by name when it needs it. Measured: the first request of a headless Haiku session went 42,499 -> 22,058 tokens. `HAIKU_100K_SLIM=0` turns it off. `/context` still counts the deferred built-ins at full size; the real request is smaller. |
+| `hooks/register.ts` (guard) | On a Haiku loop (main or subagent), cuts a tool result that would push the next request past 92k to head + tail, with a note on how to get the rest. Toasts every Haiku request over 100k, so a leak is visible. |
 
-The engine compacts before the window is reached (about 66-74k for a 100k window; the margin is not documented).
+## Window 100k vs 125k: what the number means
+
+The window is **not** the size of a request. It decides **when the engine compacts**. The engine keeps a fixed 33,000-token "autocompact buffer" below the window (`/context` shows it), so:
+
+| Window | Compacts at | Room for work after the fixed start | Used for |
+|---|---|---|---|
+| 100k | ~67k | subagent (starts ~14k): ~53k. App main session (starts ~73k): **none**. It is already past 67k, so it compacts on every request until the chat reports the context window full | subagents |
+| 125k | ~92k | app main session: ~19k (more with the slim start) | main sessions |
+
+Every request is the fixed start (system prompt, tools, skills) plus the conversation so far. It grows until it reaches the compaction point, then drops back. With either window it stays **under 100k**, the price step. At 125k the guard hook covers the last 8k: a tool result that would push past 92k is cut. 100k is the lowest window Claude Code accepts. `/haiku-100k:base` saves the full `/context` breakdown to `~/.claude/haiku-100k-base.json`.
 
 **Not covered:** a single prompt or subagent brief that is itself over 100k. Put long input in a file and read it in parts.
 

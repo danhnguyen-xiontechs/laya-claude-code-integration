@@ -29,6 +29,15 @@ export function cut(text: string, keep: number): string {
   return `${text.slice(0, head)}\n[haiku-100k: ${text.length - keep} chars cut so the next request stays under 100k tokens; re-run narrower (grep -n, head, a line range) for the part you need]\n${text.slice(-tail)}`
 }
 
+// Slimmer start for Haiku sessions: tools a Haiku session rarely needs go behind ToolSearch (deferred). Only the
+// name stays in the prompt; the model loads the schema by name when it needs one. Decided once per session (the
+// tool list is the cached prefix: changing it mid-session would rewrite the whole cache).
+// Measured in an app session (2026-10-19): system tools 24.8k, loaded MCP tools 17.7k (browser 7.8k) of a ~73k start.
+export const KEEP_TOOLS = new Set(['Agent', 'Bash', 'Edit', 'Glob', 'Grep', 'Read', 'Write', 'Skill', 'ToolSearch', 'AskUserQuestion'])
+export const KEEP_MCP = /^mcp__(ccd_turn|ccd_session)__/ // the app's task list / wrap-up and session tools stay in front
+export const shouldDefer = (tool: string, isDeferred?: boolean) =>
+  !isDeferred && (tool.startsWith('mcp__') ? !KEEP_MCP.test(tool) : !KEEP_TOOLS.has(tool))
+
 type Loop = { model?: string; context?: number }
 
 export const register: Register = on => {
@@ -39,6 +48,25 @@ export const register: Register = on => {
     if (!loops.has(k)) loops.set(k, {})
     return loops.get(k)!
   }
+
+  // /haiku-100k:base — what the fixed start of every request is made of (as /context counts it), saved as JSON.
+  on('session.start', async ($, e, next) => {
+    await $.command.register({ name: 'base', description: 'haiku-100k: save the context breakdown (what every request starts with) to ~/.claude/haiku-100k-base.json' })
+    return next(e)
+  })
+  on('command.run', { command: 'base' }, async $ => {
+    const file = `${(await $.env.get('USERPROFILE')) ?? (await $.env.get('HOME'))}/.claude/haiku-100k-base.json`
+    const u = await $.session.usage({ breakdown: 'full' })
+    await $.fs.write(file, JSON.stringify(u.context, null, 1))
+    return { text: `haiku-100k: context breakdown saved to ${file}` }
+  })
+
+  on('tool.describe', async ($, e, next) => {
+    const res = await next(e)
+    if ((await $.env.get('HAIKU_100K_SLIM')) === '0') return res
+    if (!isHaiku(await $.session.model()) || !shouldDefer(e.tool, e.isDeferred)) return res
+    return { ...res, isDeferred: true }
+  })
 
   on('turn.step', async function* ($, e, next) {
     const res = yield* next(e)
