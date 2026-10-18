@@ -1,12 +1,12 @@
 
 tests\engine.test.ts:
-(pass) turn.complete at 210k returns a text with 200k [70.41ms]
-(pass) below the soft threshold there is no text [32.55ms]
-(pass) a metrics write failure keeps the note and the turn completes [27.53ms]
-(pass) missing usage: no crash, no note at zero context [25.89ms]
-(pass) an event with agentId returns no text [26.40ms]
-(pass) latency: 100 synthetic turns each under 200 ms [167.84ms]
+(pass) turn.complete at 210k returns a text with 200k [74.62ms]
+(pass) below the soft threshold there is no text [35.46ms]
+(pass) a metrics write failure keeps the note and the turn completes [39.55ms]
+(pass) missing usage: no crash, no note at zero context [27.05ms]
+(pass) an event with agentId returns no text [27.92ms]
+(pass) latency: 100 synthetic turns each under 200 ms [149.91ms]
 
  6 pass
  0 fail
-Ran 6 tests across 1 file. [0.55s]
+Ran 6 tests across 1 file. [0.56s]

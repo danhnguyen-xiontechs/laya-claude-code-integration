@@ -1,0 +1,18 @@
+replay: 333 main sessions (whole history, UTC), 8755 subagent turns, B_cr 0.0M (median first-turn cache_read), artifact key reports/skill-tool-lifecycle
+session   first(UTC)       turns   peak  cacheRead      t*    avoided   ratio  realizedDelay  realizedCr  notes  subTurns  subCacheRead  subNotes
+b266357b  2026-10-18T08:23    137   328k      28.9M    57     13.1M   45.4%              -  -      5        13          0.5M  0 
+   notes: soft@t14(120k) strong@t57(201k) stale@t105(269k) stale@t121(306k) stale@t137(328k)
+3e716326  2026-10-18T07:34     62   249k      10.7M    36      4.3M   40.2%              -  -      2         0          0.0M  0 
+   notes: soft@t13(122k) strong@t36(201k)
+5b84aa0f  2026-10-18T03:17    107   311k      21.1M    52      9.0M   42.5%              -  -      2       168         11.7M  0 
+   notes: soft@t19(120k) strong@t52(200k)
+5094744c  2026-10-17T17:18    182   548k      63.1M    31     25.0M   39.7%              -  -      2       348         21.7M  0 <- held-out
+   notes: soft@t13(122k) strong@t31(204k)
+82e30143  2026-10-17T04:45    506   953k     205.8M    63     69.0M   33.5%            327  174.8M     32       609         49.1M  0 <- control
+   notes: soft@t18(121k) strong@t63(201k) stale@t65(210k) stale@t81(239k) stale@t97(266k) stale@t113(290k) stale@t129(315k) stale@t145(337k) stale@t161(367k) stale@t177(431k) stale@t193(464k) stale@t209(519k) stale@t225(567k) stale@t241(606k) stale@t257(625k) stale@t273(643k) stale@t289(636k) stale@t305(676k) stale@t321(785k) stale@t337(822k) stale@t353(866k) stale@t369(903k) stale@t385(932k) stale@t401(116k) soft@t406(120k) stale@t417(139k) stale@t433(177k) strong@t449(200k) stale@t450(201k) stale@t466(217k) stale@t482(250k) stale@t498(275k)
+held-out (rule: largest cacheRead among 2026-10-17 UTC sessions, not a named one): 5094744c
+all main sessions: 333, notes 178, max notes in one session 32, subagent notes 0
+PASS 1 control gets strong note
+PASS 2 control avoided/cacheRead >= 30% (33.5%; avoided 69.0M of 205.8M)
+FAIL 3 each main session <= 5 notes
+PASS 4 subagent turns get 0 notes

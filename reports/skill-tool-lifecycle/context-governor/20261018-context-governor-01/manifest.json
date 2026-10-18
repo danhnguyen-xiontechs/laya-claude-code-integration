@@ -8,10 +8,10 @@
     "commit": null,
     "branch": "claude/confident-meninsky-1f66fb"
   },
-  "status": "EVALUATION_BLOCKED",
-  "recommendation": null,
-  "confidence": null,
-  "headline": null,
+  "status": "GATE_PASSED_AB_PENDING",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "confidence": "LOW",
+  "headline": "The re-frozen replay gate passes (control 33.5% upper bound against 30%), but the bound assumes the user acts at the 200k crossing: in the one session with a recorded compaction the user compacted 327 turns later, so the realized saving is unmeasured and the A/B (P3) has not run. Top suggestion: scope artifactDir to the experiment folder and raise staleTurns before any A/B, because a broad artifact folder gives 32 stale notes in one session.",
   "approvals": {
     "ideaApprovedAt": "2026-10-18T12:57:54.651Z",
     "finalDecision": null,
@@ -42,8 +42,39 @@
       "P2 deviation from design §3: a failure to read or write the state or metrics files no longer hides a note (the test harness has no $.fs, and a metrics error should not hide a warning). Notes still never block a turn.",
       "P2 test gaps: the engine harness gives the test $ no fs or session.id, and node:fs is not importable from tests; the jsonl context sum is checked by the real headless turn and core.spec, not by engine.test. The toast call is not asserted. tsc is not on PATH, so typecheck was not run.",
       "P2 the worktree .claude/settings.json is malformed JSON and does not load; it was not touched.",
-      "§5 upper bound amended by the user on 2026-10-18 after P3: the literal formula gave 121.4% of the control session's cache read (t* = turn 1 at 657k, impossible as a saving). With the amended formula (t* = first crossing of 200k from below = turn 173; avoided(t) = max(0, min(ctx(t), ctx(t*)) - B)) the bound is 6.7%. Condition 2 fails, so the gate is blocked and the A/B was not run."
-    ]
+      "§5 upper bound amended by the user on 2026-10-18 after P3: the literal formula gave 121.4% of the control session's cache read (t* = turn 1 at 657k, impossible as a saving). With the amended formula (t* = first crossing of 200k from below = turn 173; avoided(t) = max(0, min(ctx(t), ctx(t*)) - B)) the bound is 6.7%. Condition 2 fails, so the gate is blocked and the A/B was not run.",
+      "P4 fixes (findings #5-#10) in commit afa38b2: in-process armed memo when the state file cannot be written; unknown session id writes no state or metrics and decides notes from a fresh state (notes can repeat each turn above a threshold only while the id is unreadable); unknown context decides nothing; a slow hook shows no toast or text; stale counter resets only when shown; note texts configurable (softText, strongText, staleText).",
+      "P4 test gap closed: hook.spec.ts asserts the toast text and the jsonl context sum against a fake $ (the engine harness has no spy). tsc needs --types node with @types/node installed (not saved to the repo); without it tsc reports 5 errors.",
+      "P4 replay (findings #1-#4): design §5 re-frozen 2026-10-18T14:01:32Z before the run. Whole history, UTC, cache_read units both sides, t* as the first crossing from below. B_cr = 33,701 tokens (median first-turn cache_read). The first two runs are kept as run1 and output-literal.",
+      "P4 replay caveat: the realized-delay metric (control 327 turns to its first recorded compaction) is far below the 33.5% upper bound. The gate is the upper bound only.",
+      "P4 stale-rule coverage: the control made no Write/Edit under this experiment folder, so the stale rule is not exercised in the gated run. A broader key (reports/skill-tool-lifecycle) fires it in 2 sessions and gives one session 32 notes (condition 3 fails in that coverage run only, not gating).",
+      "P4 held-out check: 5094744c (2026-10-17 UTC, largest cacheRead among the day, not a named session) passes the same shape: 39.7%, strong note at t31."
+    ],
+    "gateReFrozenAt": "2026-10-18T14:01:32Z",
+    "gate": {
+      "design": "design §5 re-frozen 2026-10-18T14:01:32Z (run2, whole history, UTC)",
+      "result": "PASS",
+      "conditions": [
+        "1 control strong note: PASS",
+        "2 control avoided/cacheRead 33.5% (>= 30%): PASS",
+        "3 main sessions <= 5 notes (max 4): PASS",
+        "4 subagent notes 0: PASS"
+      ],
+      "control": {
+        "id": "82e30143",
+        "t_star": 63,
+        "avoidedCacheRead": "69.0M",
+        "cacheRead": "205.8M",
+        "ratio": 0.335,
+        "realizedDelayTurns": 327
+      },
+      "sessions": [
+        "b266357b 45.4%",
+        "3e716326 40.2%",
+        "5b84aa0f 42.5%",
+        "held-out 5094744c 39.7% (2026-10-17 UTC)"
+      ]
+    }
   },
   "phases": [
     {
@@ -71,6 +102,13 @@
       "model": "haiku (Haiku 5.5) + opus review subagent (Plan type, model opus, read-only)",
       "smartTrimMode": "off",
       "note": "review only: agent-review.json (10 findings: 1 Critical, 5 Major, 3 Minor, 1 Suggestion; resolutions empty, user decides); improvements.md written; no fixes"
+    },
+    {
+      "phase": "P4b",
+      "sessionId": "local_b2bf5971-54bd-421d-bfc4-c2ece997443b",
+      "model": "haiku (Haiku 5.5)",
+      "smartTrimMode": "off",
+      "note": "P4 fixes, tests, §5 re-freeze, replay run2, reports; the A/B (P3) is not run."
     }
   ],
   "artifacts": {

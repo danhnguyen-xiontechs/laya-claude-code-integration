@@ -36,42 +36,42 @@
       "finding": "If the state write fails, a note is still shown (deviation a). The armed flags never persist, so the strong toast or text fires again on every turn above 200k.",
       "ref": "context-governor/hooks/context-governor.ts (inner try); deviation (a)",
       "proposedFix": "Keep an in-memory armed cache per session as a fallback, or suppress notes after the first failed write.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     },
     {
       "severity": "Major",
       "finding": "When the session id cannot be read, it falls back to 'unknown'. All such sessions then share one state file and one metrics file, so the armed flags and counters leak between sessions.",
       "ref": "context-governor/hooks/context-governor.ts (sessionId)",
       "proposedFix": "When the id is unknown, skip writing state and metrics; or key the files by transcript path.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     },
     {
       "severity": "Minor",
       "finding": "When usage is missing and the session-usage fallback fails, context is set to 0. Both thresholds re-arm on that, so the next real turn repeats the notes. Separately, slow > 200 ms suppresses the result text but the toast still shows, while design §3 says a slow hook takes no other action.",
       "ref": "context-governor/hooks/context-governor.ts (context, slow)",
       "proposedFix": "When context is unknown, skip decide. Make slow log-only.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     },
     {
       "severity": "Minor",
       "finding": "The stale counter resets even when a soft or strong note in the same turn swallows the stale note, so that stale note is lost. The stale rule is also never exercised by the replay (artifact is always null).",
       "ref": "context-governor/src/core.ts (stale branch); context-governor/scripts/replay.mjs",
       "proposedFix": "Reset the counter only when the stale note is actually shown. Add replay runs with an artifactDir set.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     },
     {
       "severity": "Minor",
       "finding": "The tests are weak or synthetic. The toast and the jsonl context sum are not asserted in engine.test (deviation b), tsc was never run against the 21.5k-line generated .d.ts, and the latency test runs in a harness without fs. The only real-data check is the same-day replay.",
       "ref": "context-governor/tests/engine.test.ts; unit-tests.json",
       "proposedFix": "Run tsc via npx. Assert the toast. Add one replay fixture from a different day as a held-out check.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     },
     {
       "severity": "Suggestion",
       "finding": "No coupling to Jev or Laya and no secrets are visible in the pack. The note text does depend on /fast-compact and make_capsule.mjs, and subagent cacheRead is left out of the cost (51 subagent turns, 14 flagged). Uncertain: io.ts was not shown to the reviewer.",
       "ref": "context-governor/src/core.ts (noteText); context-governor/scripts/replay.mjs",
       "proposedFix": "Make the note text configurable. Report subagent cacheRead on a separate line.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in afa38b2"
     }
   ]
 }

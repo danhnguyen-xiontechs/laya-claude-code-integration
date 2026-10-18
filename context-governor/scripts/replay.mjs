@@ -1,8 +1,8 @@
-// Offline replay gate (design §5). Reads the transcripts of one day, runs the same core.decide
-// over each main-loop turn, and prints notes, peak context and cache read per session.
-// Usage: node scripts/replay.mjs --date 2026-10-18 --control <sessionId-prefix> [--projects <dir>]
-// Avoided cache read is an upper bound (see design §5). Exit 0 only when all four pass conditions hold.
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+// Offline replay gate (design §5, re-frozen 2026-10-18T14:01:32Z). Replays every main session's
+// whole history (no date filter, UTC timestamps) through the same core.decide as the plugin.
+// Usage: node scripts/replay.mjs --control <sessionId-prefix> [--projects <dir>] [--artifact <substring>] [--summary <file.json>]
+// Exit 0 only when the four pass conditions hold; an invariant breach (avoided > cacheRead) throws and exits 1.
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { DEFAULTS, contextOf, decide, emptyState } from '../src/core.ts';
@@ -11,9 +11,48 @@ const arg = (name, dflt) => {
   const i = process.argv.indexOf(`--${name}`);
   return i >= 0 ? process.argv[i + 1] : dflt;
 };
-const date = arg('date', '2026-10-18');
 const control = arg('control', '');
 const projects = arg('projects', join(homedir(), '.claude', 'projects'));
+const artifactKey = arg('artifact', '20261018-context-governor-01');
+const summaryPath = arg('summary', '');
+const HELD_OUT_DAY = '2026-10-17';
+const NAMED = ['82e30143', 'b266357b', '5b84aa0f', '3e716326'];
+const cfg = DEFAULTS;
+const thr = cfg.strongTokens;
+
+const WRITE_TOOLS = new Set(['Write', 'Edit', 'MultiEdit']);
+
+/** Assistant turns of one file, deduplicated by message.id, in file order; plus compact_boundary times. */
+function parseFile(file, isSubagent) {
+  const seen = new Set();
+  const turns = [];
+  const compacts = [];
+  for (const line of readFileSync(file, 'utf8').split('\n')) {
+    if (!line.trim()) continue;
+    let rec;
+    try { rec = JSON.parse(line); } catch { continue; }
+    if (rec.type === 'system' && rec.subtype === 'compact_boundary' && rec.timestamp) {
+      compacts.push(Date.parse(rec.timestamp));
+      continue;
+    }
+    if (rec.type !== 'assistant' || !rec.message?.usage || !rec.timestamp) continue;
+    const id = rec.message.id ?? rec.uuid;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const writes = (rec.message.content ?? []).some((c) =>
+      c?.type === 'tool_use' && WRITE_TOOLS.has(c.name) &&
+      String(c.input?.file_path ?? '').replaceAll('\\', '/').includes(artifactKey));
+    turns.push({
+      ts: Date.parse(rec.timestamp),
+      usage: rec.message.usage,
+      ctx: contextOf(rec.message.usage) ?? 0,
+      cr: rec.message.usage.cache_read_input_tokens ?? 0,
+      writes,
+      agentId: isSubagent ? (rec.agentId ?? file) : undefined,
+    });
+  }
+  return { turns, compacts };
+}
 
 function jsonlFiles(dir) {
   const out = [];
@@ -25,25 +64,6 @@ function jsonlFiles(dir) {
   return out;
 }
 
-/** Assistant turns of one transcript file, deduplicated by message.id, in file order. */
-function turnsOf(file, isSubagent) {
-  const seen = new Set();
-  const turns = [];
-  for (const line of readFileSync(file, 'utf8').split('\n')) {
-    if (!line.trim()) continue;
-    let rec;
-    try { rec = JSON.parse(line); } catch { continue; }
-    if (rec.type !== 'assistant' || !rec.message?.usage) continue;
-    if (!String(rec.timestamp ?? '').startsWith(date)) continue;
-    const id = rec.message.id ?? rec.uuid;
-    if (seen.has(id)) continue;
-    seen.add(id);
-    const u = rec.message.usage;
-    turns.push({ usage: u, agentId: isSubagent ? (rec.agentId ?? file) : undefined, model: rec.message.model ?? null });
-  }
-  return turns;
-}
-
 const median = (xs) => {
   if (!xs.length) return 0;
   const s = [...xs].sort((a, b) => a - b);
@@ -52,78 +72,120 @@ const median = (xs) => {
 };
 
 // Main sessions are top-level *.jsonl; their subagent files live under <session>/subagents/.
-const mainSessions = [];
+const sessions = [];
 for (const dir of readdirSync(projects)) {
   const pdir = join(projects, dir);
   if (!statSync(pdir).isDirectory()) continue;
   for (const name of readdirSync(pdir)) {
     if (!name.endsWith('.jsonl')) continue;
     const id = name.replace(/\.jsonl$/, '');
-    const subs = join(pdir, id, 'subagents');
-    const subFiles = (() => { try { return jsonlFiles(subs); } catch { return []; } })();
-    const main = turnsOf(join(pdir, name), false);
-    if (!main.length && !subFiles.length) continue;
-    mainSessions.push({ id, main, subs: subFiles.flatMap((f) => turnsOf(f, true)) });
+    const main = parseFile(join(pdir, name), false);
+    const subFiles = (() => { try { return jsonlFiles(join(pdir, id, 'subagents')); } catch { return []; } })();
+    if (!main.turns.length && !subFiles.length) continue;
+    sessions.push({ id, main, subs: subFiles.flatMap((f) => parseFile(f, true).turns) });
   }
 }
+const withTurns = sessions.filter((s) => s.main.turns.length);
+const B = median(withTurns.map((s) => s.main.turns[0].cr)); // B_cr, design §5
 
-const cfg = DEFAULTS;
-const firstTurnCtx = mainSessions.filter((s) => s.main.length).map((s) => contextOf(s.main[0].usage) ?? 0);
-const base = median(firstTurnCtx);
+function analyse(s) {
+  const T = s.main.turns;
+  const ctx = T.map((t) => t.ctx);
+  const cr = T.map((t) => t.cr);
+  const cacheRead = cr.reduce((a, b) => a + b, 0);
+  let tStar = -1;
+  for (let i = 1; i < T.length; i++) if (ctx[i] >= thr && ctx[i - 1] < thr) { tStar = i; break; }
+  let avoided = 0;
+  if (tStar >= 0) for (let i = tStar + 1; i < T.length; i++) avoided += Math.max(0, Math.min(cr[i], cr[tStar]) - B);
+  if (avoided > cacheRead) throw Object.assign(new Error(`invariant: avoided ${avoided} > cacheRead ${cacheRead} in ${s.id}`), { code: 2 });
 
-const report = [];
-for (const s of mainSessions) {
+  // Realized delay: the first compact_boundary after t* (else a drop below 100k), in turns.
+  let c = -1;
+  if (tStar >= 0) {
+    const after = s.main.compacts.filter((ts) => ts > T[tStar].ts).sort((a, b) => a - b)[0];
+    if (after !== undefined) c = T.findIndex((t, i) => i > tStar && t.ts >= after);
+    else c = ctx.findIndex((x, i) => i > tStar && x < cfg.softTokens - cfg.rearmGapTokens);
+  }
+  const realizedDelay = tStar >= 0 && c >= 0 ? c - tStar : null;
+  const realizedCr = realizedDelay === null ? null : cr.slice(tStar + 1, c + 1).reduce((a, b) => a + b, 0);
+
+  // Notes: the same decide as the plugin, artifact = latest write so far (null before the first).
   let st = emptyState();
+  let lastWrite = null;
   const notes = [];
-  let peak = 0;
-  let cacheRead = 0;
-  const ctxs = [];
-  s.main.forEach((t, i) => {
-    const ctx = contextOf(t.usage) ?? 0;
-    ctxs.push(ctx);
-    peak = Math.max(peak, ctx);
-    cacheRead += t.usage.cache_read_input_tokens ?? 0;
-    const d = decide(st, { context: ctx, artifact: null }, cfg);
+  T.forEach((t, i) => {
+    if (t.writes) lastWrite = t.ts;
+    const d = decide(st, { context: t.ctx, artifact: lastWrite === null ? null : { mtimeMs: lastWrite } }, cfg);
     st = d.state;
-    for (const n of d.notes) notes.push({ turn: i + 1, context: ctx, kind: n });
+    for (const n of d.notes) notes.push({ turn: i + 1, context: t.ctx, kind: n });
   });
   let subNotes = 0;
   let subFlagged = 0;
+  let subCr = 0;
   for (const t of s.subs) {
-    const d = decide(emptyState(), { context: contextOf(t.usage) ?? 0, agentId: t.agentId, artifact: null }, cfg);
+    const d = decide(emptyState(), { context: t.ctx, agentId: t.agentId, artifact: null }, cfg);
     subNotes += d.notes.length;
     if (d.flagged) subFlagged += 1;
+    subCr += t.cr;
   }
-  const strong = notes.find((n) => n.kind === 'strong');
-  // Upper bound (design §5, amended 2026-10-18 by the user): t* is the first crossing of
-  // strongTokens from below (a stretch that starts at or above it has no t* until it drops
-  // below and crosses again); avoided(t) = max(0, min(ctx(t), ctx(t*)) - base) for t > t*.
-  const thr = cfg.strongTokens ?? 200000;
-  const tStar = ctxs.findIndex((c, i) => i > 0 && c >= thr && ctxs[i - 1] < thr);
-  let avoided = 0;
-  if (tStar >= 0) {
-    for (let i = tStar + 1; i < ctxs.length; i++) avoided += Math.max(0, Math.min(ctxs[i], ctxs[tStar]) - base);
-  }
-  report.push({ id: s.id, turns: s.main.length, peak, cacheRead, notes, subTurns: s.subs.length, subNotes, subFlagged, avoided, tStar: tStar >= 0 ? tStar + 1 : null, strongFired: !!strong });
+  return {
+    id: s.id,
+    first: new Date(Math.min(...T.map((t) => t.ts))).toISOString(),
+    last: new Date(Math.max(...T.map((t) => t.ts))).toISOString(),
+    turns: T.length,
+    peak: Math.max(...ctx),
+    cacheRead,
+    tStar: tStar >= 0 ? tStar + 1 : null,
+    avoided,
+    ratio: cacheRead ? avoided / cacheRead : 0,
+    realizedDelay,
+    realizedCr,
+    notes,
+    subTurns: s.subs.length,
+    subNotes,
+    subFlagged,
+    subCr,
+    strongFired: notes.some((n) => n.kind === 'strong'),
+  };
 }
 
-console.log(`date ${date}  sessions ${report.length}  base(median first-turn ctx) ${Math.round(base)}`);
-for (const r of report) {
-  const noteStr = r.notes.map((n) => `${n.kind}@t${n.turn}(${Math.round(n.context / 1000)}k)`).join(' ') || '-';
-  console.log(`${r.id.slice(0, 8)} turns ${r.turns} peak ${Math.round(r.peak / 1000)}k cacheRead ${Math.round(r.cacheRead / 1e6)}M notes ${r.notes.length} [${noteStr}] sub ${r.subTurns} subNotes ${r.subNotes} subFlagged ${r.subFlagged}`);
-}
-
+const report = sessions.filter((s) => s.main.turns.length).map(analyse);
 const ctl = report.find((r) => control && r.id.startsWith(control));
+const heldCandidates = report
+  .filter((r) => r.first.startsWith(HELD_OUT_DAY) && !NAMED.some((p) => r.id.startsWith(p)))
+  .sort((a, b) => b.cacheRead - a.cacheRead);
+const held = heldCandidates[0];
+const shown = new Set([ctl?.id, ...NAMED.map((p) => report.find((r) => r.id.startsWith(p))?.id), held?.id].filter(Boolean));
+
+const M = (x) => `${(x / 1e6).toFixed(1)}M`;
+const K = (x) => `${Math.round(x / 1000)}k`;
+console.log(`replay: ${report.length} main sessions (whole history, UTC), ${sessions.reduce((a, s) => a + s.subs.length, 0)} subagent turns, B_cr ${M(B)} (median first-turn cache_read), artifact key ${artifactKey}`);
+console.log('session   first(UTC)       turns   peak  cacheRead      t*    avoided   ratio  realizedDelay  realizedCr  notes  subTurns  subCacheRead  subNotes');
+for (const r of report.filter((x) => shown.has(x.id))) {
+  const tag = ctl?.id === r.id ? '<- control' : r.id === held?.id ? '<- held-out' : '';
+  console.log(`${r.id.slice(0, 8)}  ${r.first.slice(0, 16)}  ${String(r.turns).padStart(5)}  ${K(r.peak).padStart(5)}  ${M(r.cacheRead).padStart(9)}  ${String(r.tStar ?? '-').padStart(4)}  ${M(r.avoided).padStart(8)}  ${(r.ratio * 100).toFixed(1).padStart(5)}%  ${String(r.realizedDelay ?? '-').padStart(13)}  ${r.realizedCr === null ? '-' : M(r.realizedCr)}  ${String(r.notes.length).padStart(5)}  ${String(r.subTurns).padStart(8)}  ${M(r.subCr).padStart(12)}  ${r.subNotes} ${tag}`);
+  console.log(`   notes: ${r.notes.map((n) => `${n.kind}@t${n.turn}(${K(n.context)})`).join(' ') || '-'}`);
+}
+console.log(`held-out (rule: largest cacheRead among ${HELD_OUT_DAY} UTC sessions, not a named one): ${held ? held.id.slice(0, 8) : 'none'}`);
+const all = report.reduce((a, r) => ({ notes: a.notes + r.notes.length, subNotes: a.subNotes + r.subNotes, maxNotes: Math.max(a.maxNotes, r.notes.length) }), { notes: 0, subNotes: 0, maxNotes: 0 });
+console.log(`all main sessions: ${report.length}, notes ${all.notes}, max notes in one session ${all.maxNotes}, subagent notes ${all.subNotes}`);
+
 const checks = [];
 if (ctl) {
   checks.push(['1 control gets strong note', ctl.strongFired]);
-  console.log(`control t* ${ctl.tStar ?? 'none'} avoided ${Math.round(ctl.avoided / 1e6)}M of cacheRead ${Math.round(ctl.cacheRead / 1e6)}M`);
-  const ratio = ctl.cacheRead ? ctl.avoided / ctl.cacheRead : 0;
-  checks.push([`2 avoided upper bound >= 30% of control cacheRead (${(ratio * 100).toFixed(1)}%)`, ratio >= 0.3]);
+  checks.push([`2 control avoided/cacheRead >= 30% (${(ctl.ratio * 100).toFixed(1)}%; avoided ${M(ctl.avoided)} of ${M(ctl.cacheRead)})`, ctl.ratio >= 0.3]);
 } else {
   checks.push([`1-2 control session ${control || '(no --control given)'} not found`, false]);
 }
 checks.push(['3 each main session <= 5 notes', report.every((r) => r.notes.length <= 5)]);
 checks.push(['4 subagent turns get 0 notes', report.every((r) => r.subNotes === 0)]);
 for (const [name, ok] of checks) console.log(`${ok ? 'PASS' : 'FAIL'} ${name}`);
-process.exitCode = checks.every(([, ok]) => ok) ? 0 : 1;
+const pass = checks.every(([, ok]) => ok);
+
+if (summaryPath) {
+  writeFileSync(summaryPath, JSON.stringify({
+    rule: 'design §5 re-frozen 2026-10-18T14:01:32Z', B_cr: B, artifactKey, control: ctl?.id ?? null, held_out: held?.id ?? null,
+    checks: checks.map(([name, ok]) => ({ name, ok })), pass, sessions: report,
+  }, null, 2));
+}
+process.exitCode = pass ? 0 : 1;

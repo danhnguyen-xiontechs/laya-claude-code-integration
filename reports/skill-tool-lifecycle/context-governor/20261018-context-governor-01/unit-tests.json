@@ -3,11 +3,12 @@
     {
       "level": "unit",
       "command": "node --test \"tests/*.spec.ts\" (cwd context-governor/; Node v24.11.1)",
-      "passed": 11,
+      "passed": 19,
       "failed": 0,
       "skipped": 0,
       "notRun": 0,
-      "evidence": "evidence/tests/core-spec-output.txt"
+      "evidence": "evidence/tests/core-spec-output.txt",
+      "note": "P4 run: 13 core tests (2 new: stale swallowed by a threshold note; config note text) and 6 hook tests in tests/hook.spec.ts (toast text, jsonl context sum, failed state write, unknown session, unknown context, slow hook)"
     },
     {
       "level": "integration",
@@ -16,34 +17,38 @@
       "failed": 0,
       "skipped": 0,
       "notRun": 0,
-      "evidence": "evidence/tests/engine-test-output.txt"
+      "evidence": "evidence/tests/engine-test-output.txt",
+      "note": "same six tests as P2; the toast and jsonl sum are asserted in hook.spec.ts (fake $), not here, because the engine harness has no spy"
     },
     {
       "level": "smoke",
-      "command": "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude -p --plugin-dir ./context-governor --model haiku \"reply ok\" (real headless turn; metrics and state files checked by hand under ~/.claude/context-governor)",
+      "command": "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude -p --plugin-dir ./context-governor --model haiku \"reply ok\" (real headless turn, P4 re-run)",
       "passed": 1,
       "failed": 0,
       "skipped": 0,
       "notRun": 0,
-      "evidence": "evidence/tests/real-turn-check.txt"
+      "evidence": "evidence/tests/real-turn-check-p4.txt",
+      "note": "metrics line context 46400 = input 2 + cache_read 31426 + cache_creation 14972; no note at 46k"
     },
     {
       "level": "typecheck",
-      "command": "tsc -p context-governor/tsconfig.json",
-      "passed": 0,
+      "command": "npx -y -p typescript tsc -p context-governor/tsconfig.json --types node (@types/node@24 installed with --no-save)",
+      "passed": 1,
       "failed": 0,
       "skipped": 0,
-      "notRun": 1,
-      "evidence": "not run: no tsc on PATH in this session and no network install was attempted"
+      "notRun": 0,
+      "evidence": "evidence/tests/tsc-output.txt",
+      "note": "without --types node tsc reports 5 errors (node:test, node:assert, setTimeout): tsconfig has types [] and no @types/node is installed in the repo"
     },
     {
       "level": "replay",
-      "command": "node context-governor/scripts/replay.mjs --date 2026-10-18 --control <id>",
-      "passed": 0,
+      "command": "node context-governor/scripts/replay.mjs --control 82e30143 --summary evidence/replay/summary-run2.json (design §5 re-frozen 2026-10-18T14:01:32Z)",
+      "passed": 4,
       "failed": 0,
       "skipped": 0,
-      "notRun": 1,
-      "evidence": "not run by design: the offline replay gate is P3"
+      "notRun": 0,
+      "evidence": "evidence/replay/gate.md",
+      "note": "4 of 4 conditions PASS; control avoided/cacheRead 33.5% (threshold 30%). Gating run is run2; stale-coverage check run is output-run2-stale-coverage.txt (not gating, fails condition 3 there)"
     }
   ]
 }

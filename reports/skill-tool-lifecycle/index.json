@@ -1738,6 +1738,44 @@
     "reportExists": false
   },
   {
+    "experimentId": "20261018-context-governor-01",
+    "tool": {
+      "name": "context-governor",
+      "kind": "plugin",
+      "provider": "none",
+      "commit": null,
+      "branch": "claude/confident-meninsky-1f66fb"
+    },
+    "engine": "rules",
+    "status": "GATE_PASSED_AB_PENDING",
+    "recommendation": "INSUFFICIENT_EVIDENCE",
+    "finalDecision": null,
+    "confidence": "LOW",
+    "headline": "The re-frozen replay gate passes (control 33.5% upper bound against 30%), but the bound assumes the user acts at the 200k crossing: in the one session with a recorded compaction the user compacted 327 turns later, so the realized saving is unmeasured and the A/B (P3) has not run. Top suggestion: scope artifactDir to the experiment folder and raise staleTurns before any A/B, because a broad artifact folder gives 32 stale notes in one session.",
+    "arms": {
+      "A": null,
+      "B": null
+    },
+    "regressions": [],
+    "pairedCases": 0,
+    "unpairedCases": [],
+    "evidenceGaps": [],
+    "improvements": [],
+    "unitTotals": {
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    "openBlockingFindings": 0,
+    "lastRun": null,
+    "generatedAt": "2026-10-18T14:04:45.616Z",
+    "report": "report.html",
+    "href": "context-governor/20261018-context-governor-01/report.html",
+    "stale": false,
+    "reportExists": true
+  },
+  {
     "experimentId": "20261018-skills-router-agent-01",
     "tool": {
       "name": "skills-router",

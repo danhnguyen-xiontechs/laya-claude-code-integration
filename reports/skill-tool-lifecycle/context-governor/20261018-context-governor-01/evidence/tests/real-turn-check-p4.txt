@@ -1,0 +1,3 @@
+These settings files did not load, so nothing in them is in effect, including hooks and permission rules. Each loads again once the problem listed for it is fixed:
+  D:\XionTechs\Laya\.claude\worktrees\youthful-tereshkova-25b484\.claude\settings.json: Invalid or malformed JSON
+ok
