@@ -1,0 +1,19 @@
+✔ 119,999 gives no note; 120,000 gives the soft note once (1.3466ms)
+✔ 200k gives only the strong note; 180k to 250k afterwards give nothing (0.1374ms)
+✔ drop to 95k re-arms soft; rising back to 121k shows soft again (0.1406ms)
+✔ drop to 179k re-arms strong (0.1092ms)
+✔ single jump 50k to 210k gives only the strong note (0.1165ms)
+✔ stale counter resets on new mtime, fires on the 16th turn without one, then resets (0.2059ms)
+✔ empty or missing artifactDir (artifact null) turns the stale rule off (0.1657ms)
+✔ subagent turns give no note, leave counters unchanged, and are flagged at 90k (0.7676ms)
+✔ missing usage goes through the fallback path (contextOf undefined, caller uses session tokens) (0.1405ms)
+✔ mode off gives no notes but still advances state and arms (0.1883ms)
+✔ strong text names 200k and the compact path; soft text names the checkpoint (0.2484ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 112.054

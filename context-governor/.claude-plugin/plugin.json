@@ -1,0 +1,15 @@
+{
+  "name": "context-governor",
+  "version": "0.1.0",
+  "description": "Warn-only context watch: a checkpoint note at 120k context, a /fast-compact or handoff note at 200k, and a note when many turns pass without a new artifact. Never blocks, compacts or ends a turn.",
+  "author": { "name": "Danh Nguyen" },
+  "userConfig": {
+    "mode": { "type": "string", "title": "Mode", "description": "warn (show notes) or off (metrics only).", "options": ["warn", "off"], "default": "warn" },
+    "softTokens": { "type": "number", "title": "Checkpoint threshold", "description": "Context tokens for the soft checkpoint note.", "default": 120000 },
+    "strongTokens": { "type": "number", "title": "Compact threshold", "description": "Context tokens for the strong compact/handoff note.", "default": 200000 },
+    "rearmGapTokens": { "type": "number", "title": "Re-arm gap", "description": "A threshold re-arms when context falls below threshold minus this gap.", "default": 20000 },
+    "staleTurns": { "type": "number", "title": "Stale turns", "description": "Main-loop turns with no new artifact before the stale note.", "default": 15 },
+    "artifactDir": { "type": "string", "title": "Artifact folder", "description": "The active experiment folder. Empty turns the stale rule off. CONTEXT_GOVERNOR_ARTIFACT_DIR overrides it.", "default": "" },
+    "subagentFlagTokens": { "type": "number", "title": "Subagent flag tokens", "description": "Marks subagent turns in metrics only. Never produces a note.", "default": 90000 }
+  }
+}

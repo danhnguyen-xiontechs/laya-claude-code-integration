@@ -6,7 +6,7 @@
     "kind": "plugin",
     "provider": "none",
     "commit": null,
-    "branch": "claude/context-governor"
+    "branch": "claude/confident-meninsky-1f66fb"
   },
   "status": "DESIGN_READY",
   "recommendation": null,
@@ -36,7 +36,12 @@
     "repetitions": null,
     "criteriaFrozenAt": "2026-10-18T13:20:10.817Z",
     "deviations": [
-      "P1 context pack: two haiku-case attempts died from auto-compact thrashing (agent started at ~55k context with all tools, compaction triggers ~73k under a 100k window); a third general-purpose Haiku attempt was stopped at 143k context (over the user's 100k cap). Fixed by a tool whitelist on haiku-case (start context 17,288) and autoCompactWindow 98000; the fourth attempt finished at peak 97,436 with 0 compactions."
+      "P1 context pack: two haiku-case attempts died from auto-compact thrashing (agent started at ~55k context with all tools, compaction triggers ~73k under a 100k window); a third general-purpose Haiku attempt was stopped at 143k context (over the user's 100k cap). Fixed by a tool whitelist on haiku-case (start context 17,288) and autoCompactWindow 98000; the fourth attempt finished at peak 97,436 with 0 compactions.",
+      "P2 smart-context-trimming could not be loaded into the app session, so it was off for P2 (smartTrimMode off).",
+      "P2 smoke test (design §7): turn.complete fires in a plugin module with usage on Claude Code 2.1.300, so the full plugin was built; classic.Stop fallback not used.",
+      "P2 deviation from design §3: a failure to read or write the state or metrics files no longer hides a note (the test harness has no $.fs, and a metrics error should not hide a warning). Notes still never block a turn.",
+      "P2 test gaps: the engine harness gives the test $ no fs or session.id, and node:fs is not importable from tests; the jsonl context sum is checked by the real headless turn and core.spec, not by engine.test. The toast call is not asserted. tsc is not on PATH, so typecheck was not run.",
+      "P2 the worktree .claude/settings.json is malformed JSON and does not load; it was not touched."
     ]
   },
   "phases": [
@@ -45,6 +50,12 @@
       "sessionId": "local_70e0c4f6-6dec-4717-9c34-5340077f06d1 (context pack) + control-session Opus subagent (design)",
       "model": "haiku-case (peak 97,436 ctx, 0 compactions) + opus",
       "smartTrimMode": "n/a"
+    },
+    {
+      "phase": "P2",
+      "sessionId": "local_b2bf5971-54bd-421d-bfc4-c2ece997443b",
+      "model": "haiku (Haiku 5.5)",
+      "smartTrimMode": "off (not loadable in app session)"
     }
   ],
   "artifacts": {

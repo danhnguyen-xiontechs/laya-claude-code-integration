@@ -1,0 +1,4 @@
+Headless smoke, final plugin build (Haiku 5.5, one turn "reply ok"):
+- claude exit 0; answer "ok"
+- ~/.claude/context-governor/<session>.jsonl: 1 line, context 45798 (input 2 + cacheRead 32541 + cacheCreation 13255), notes [], hookMs 8, slow false
+- <session>.state.json: armed soft/strong true, turnsSinceArtifact 0, mainTurns 1

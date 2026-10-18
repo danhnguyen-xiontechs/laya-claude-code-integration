@@ -1,0 +1,49 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"tests/*.spec.ts\" (cwd context-governor/; Node v24.11.1)",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/core-spec-output.txt"
+    },
+    {
+      "level": "integration",
+      "command": "claude plugin test ./context-governor (Claude Code 2.1.300; tests/engine.test.ts)",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/engine-test-output.txt"
+    },
+    {
+      "level": "smoke",
+      "command": "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude -p --plugin-dir ./context-governor --model haiku \"reply ok\" (real headless turn; metrics and state files checked by hand under ~/.claude/context-governor)",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/real-turn-check.txt"
+    },
+    {
+      "level": "typecheck",
+      "command": "tsc -p context-governor/tsconfig.json",
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 1,
+      "evidence": "not run: no tsc on PATH in this session and no network install was attempted"
+    },
+    {
+      "level": "replay",
+      "command": "node context-governor/scripts/replay.mjs --date 2026-10-18 --control <id>",
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 1,
+      "evidence": "not run by design: the offline replay gate is P3"
+    }
+  ]
+}

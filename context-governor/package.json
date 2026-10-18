@@ -1,0 +1,12 @@
+{
+  "name": "context-governor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "test": "node --test \"tests/*.spec.ts\"",
+    "replay": "node scripts/replay.mjs",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
