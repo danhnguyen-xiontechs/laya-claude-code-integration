@@ -1,0 +1,49 @@
+-rwxr-xr-x 1 <user> 197121 25706 Oct 18 00:17 D:/XionTechs/Laya/.claude/worktrees/unruffled-booth-018859/.claude/skills/integration-verifier/scripts/verify.mjs
+v24.11.1
+# Integration verification — batch-c5
+
+**Batch status: FAIL** · base `main` · 2 stories · 2026-10-17T17:30:55.122Z
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **FAIL** | FAIL: combined test failed (unknown, attributed) — FAIL tests/profile.test.js: Cannot read properties of undefined (reading 'name') |
+| S2 | `story/S2` | **FAIL** | FAIL: combined test failed (unknown, attributed) — FAIL tests/profile.test.js: Cannot read properties of undefined (reading 'name') |
+
+## AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | check:test | PASS |
+| S2 | AC1 | met | check:test | PASS |
+
+## Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | PASS |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 1 | logs/combined-test.log | FAIL |
+
+Merged into integration worktree: S1, S2
+
+## Cross-story conflicts
+
+None found.
+
+## Failure clusters
+
+| Signature | Checks | Category (rules) | Likely stories | Jev suggestion (shadow, not used) |
+|---|---|---|---|---|
+| `FAIL tests/profile.test.js: Cannot read properties of undefined (reading 'name')` | test | unknown (rule-fallback) | S1, S2 | code_regression p=0.92 |
+
+## Missing evidence and next actions
+
+- None.
+
+- Resolve the FAIL / BLOCKED items above, re-run the stories' checks with logs, then re-run this verifier.
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76
+EXIT=127

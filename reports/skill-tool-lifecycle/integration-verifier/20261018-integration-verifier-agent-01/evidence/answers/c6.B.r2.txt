@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - an open High review finding, "SQL built by string concat", is recorded against it, but its diff (src/fmt.js) contains no SQL, so a human must confirm or close it.
+S2: REVIEW_REQUIRED - AC1 has no usable evidence: its manifest evidence is empty and the ac_coverage row cites tests/count.test.js, which exists in no commit (verify-batch.mjs reported PASS on that row alone, which is wrong).

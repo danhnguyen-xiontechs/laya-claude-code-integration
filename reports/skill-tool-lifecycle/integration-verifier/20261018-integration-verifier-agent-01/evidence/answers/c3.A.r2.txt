@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - Recorded test check exited 0 with a non-empty log, AC1 is backed by that passing check, changed files match the diff, no overlap with S2, and the combined merge passes node run-tests.js.
+S2: FAIL - Recorded required test run exited 1 (log: "FAIL tests/count.test.js: 3 == 2") while its manifest claims tests pass; a fresh run of story/S2 now exits 0, but the recorded failure is not cleared, so the check must be re-run and re-recorded.

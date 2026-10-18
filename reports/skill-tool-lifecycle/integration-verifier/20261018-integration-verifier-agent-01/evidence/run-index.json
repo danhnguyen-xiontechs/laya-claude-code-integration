@@ -1,0 +1,602 @@
+{
+  "c1.A.r1": {
+    "transcript": "agent-a305176ad6d986624.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.A.r1",
+    "startedAt": "2026-10-17T17:27:16.117Z",
+    "finishedAt": "2026-10-17T17:28:28.239Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 50,
+      "cacheReadTokens": 535799,
+      "cacheWriteTokens": 32494,
+      "modelTurns": 9,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a305176ad6d986624.jsonl",
+      "elapsedMs": 67110
+    },
+    "toolCallsByName": {
+      "Bash": 11
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c1.A.r2": {
+    "transcript": "agent-a0694db65e0f1bf51.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.A.r2",
+    "startedAt": "2026-10-17T17:32:35.193Z",
+    "finishedAt": "2026-10-17T17:33:25.323Z",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 57,
+      "cacheReadTokens": 445696,
+      "cacheWriteTokens": 25937,
+      "modelTurns": 8,
+      "toolCalls": 9,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a0694db65e0f1bf51.jsonl",
+      "elapsedMs": 45716
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c1.B.r1": {
+    "transcript": "agent-a2798008f6d082e39.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.B.r1",
+    "startedAt": "2026-10-17T17:27:55.861Z",
+    "finishedAt": "2026-10-17T17:29:12.255Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 70,
+      "cacheReadTokens": 547306,
+      "cacheWriteTokens": 40195,
+      "modelTurns": 9,
+      "toolCalls": 13,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a2798008f6d082e39.jsonl",
+      "elapsedMs": 69682
+    },
+    "toolCallsByName": {
+      "Bash": 9,
+      "Read": 2,
+      "mcp__ccd_turn__update_plan": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c1.B.r2": {
+    "transcript": "agent-a0c463d7d00ce6771.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.B.r2",
+    "startedAt": "2026-10-17T17:32:35.179Z",
+    "finishedAt": "2026-10-17T17:34:06.084Z",
+    "usage": {
+      "inputTokens": 26,
+      "outputTokens": 100,
+      "cacheReadTokens": 859886,
+      "cacheWriteTokens": 51855,
+      "modelTurns": 13,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a0c463d7d00ce6771.jsonl",
+      "elapsedMs": 84254
+    },
+    "toolCallsByName": {
+      "Bash": 4,
+      "PowerShell": 7,
+      "Read": 3
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c2.A.r1": {
+    "transcript": "agent-afb569007c06af54c.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.A.r1",
+    "startedAt": "2026-10-17T17:27:55.877Z",
+    "finishedAt": "2026-10-17T17:28:50.181Z",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 54,
+      "cacheReadTokens": 454452,
+      "cacheWriteTokens": 28617,
+      "modelTurns": 8,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-afb569007c06af54c.jsonl",
+      "elapsedMs": 49013
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Bash": 8
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c2.A.r2": {
+    "transcript": "agent-a0d571fb95d1bc011.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.A.r2",
+    "startedAt": "2026-10-17T17:32:35.226Z",
+    "finishedAt": "2026-10-17T17:34:10.244Z",
+    "usage": {
+      "inputTokens": 26,
+      "outputTokens": 84,
+      "cacheReadTokens": 810905,
+      "cacheWriteTokens": 36738,
+      "modelTurns": 13,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a0d571fb95d1bc011.jsonl",
+      "elapsedMs": 88484
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 14
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c2.B.r1": {
+    "transcript": "agent-a120cb0b217e1e8cc.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.B.r1",
+    "startedAt": "2026-10-17T17:27:55.893Z",
+    "finishedAt": "2026-10-17T17:28:56.624Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 97,
+      "cacheReadTokens": 668811,
+      "cacheWriteTokens": 42709,
+      "modelTurns": 11,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a120cb0b217e1e8cc.jsonl",
+      "elapsedMs": 56493
+    },
+    "toolCallsByName": {
+      "Bash": 6,
+      "PowerShell": 3,
+      "Read": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c2.B.r2": {
+    "transcript": "agent-a61ca46be78ae113c.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.B.r2",
+    "startedAt": "2026-10-17T17:32:35.207Z",
+    "finishedAt": "2026-10-17T17:33:52.999Z",
+    "usage": {
+      "inputTokens": 26,
+      "outputTokens": 114,
+      "cacheReadTokens": 800217,
+      "cacheWriteTokens": 35837,
+      "modelTurns": 13,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a61ca46be78ae113c.jsonl",
+      "elapsedMs": 72195
+    },
+    "toolCallsByName": {
+      "Bash": 13
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c3.A.r1": {
+    "transcript": "agent-a538c67aeeccbf2be.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.A.r1",
+    "startedAt": "2026-10-17T17:27:55.908Z",
+    "finishedAt": "2026-10-17T17:29:02.747Z",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 53,
+      "cacheReadTokens": 457005,
+      "cacheWriteTokens": 31412,
+      "modelTurns": 8,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a538c67aeeccbf2be.jsonl",
+      "elapsedMs": 62974
+    },
+    "toolCallsByName": {
+      "Read": 3,
+      "Bash": 10
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c3.A.r2": {
+    "transcript": "agent-a7c8d608c0cbe48d1.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.A.r2",
+    "startedAt": "2026-10-17T17:32:35.257Z",
+    "finishedAt": "2026-10-17T17:33:39.958Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 79,
+      "cacheReadTokens": 568387,
+      "cacheWriteTokens": 28073,
+      "modelTurns": 10,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a7c8d608c0cbe48d1.jsonl",
+      "elapsedMs": 59783
+    },
+    "toolCallsByName": {
+      "Bash": 7,
+      "PowerShell": 4
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c3.B.r1": {
+    "transcript": "agent-a849fb749da85b8dc.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.B.r1",
+    "startedAt": "2026-10-17T17:27:55.927Z",
+    "finishedAt": "2026-10-17T17:29:25.557Z",
+    "usage": {
+      "inputTokens": 26,
+      "outputTokens": 508,
+      "cacheReadTokens": 801142,
+      "cacheWriteTokens": 39305,
+      "modelTurns": 13,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a849fb749da85b8dc.jsonl",
+      "elapsedMs": 84738
+    },
+    "toolCallsByName": {
+      "Bash": 14,
+      "Grep": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c3.B.r2": {
+    "transcript": "agent-a256ca6a8f2201192.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.B.r2",
+    "startedAt": "2026-10-17T17:32:35.241Z",
+    "finishedAt": "2026-10-17T17:33:44.744Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 90,
+      "cacheReadTokens": 654943,
+      "cacheWriteTokens": 32269,
+      "modelTurns": 11,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a256ca6a8f2201192.jsonl",
+      "elapsedMs": 63945
+    },
+    "toolCallsByName": {
+      "Bash": 10,
+      "mcp__ccd_turn__update_plan": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c4.A.r1": {
+    "transcript": "agent-a03a2414db59333e5.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.A.r1",
+    "startedAt": "2026-10-17T17:30:12.403Z",
+    "finishedAt": "2026-10-17T17:31:04.280Z",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 37,
+      "cacheReadTokens": 395997,
+      "cacheWriteTokens": 28130,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a03a2414db59333e5.jsonl",
+      "elapsedMs": 46331
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 8
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c4.A.r2": {
+    "transcript": "agent-a22f879af75f7ee04.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.A.r2",
+    "startedAt": "2026-10-17T17:34:56.724Z",
+    "finishedAt": "2026-10-17T17:35:50.791Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 63,
+      "cacheReadTokens": 516293,
+      "cacheWriteTokens": 28627,
+      "modelTurns": 9,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a22f879af75f7ee04.jsonl",
+      "elapsedMs": 48358
+    },
+    "toolCallsByName": {
+      "Bash": 9
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c4.B.r1": {
+    "transcript": "agent-a7d1a28e9a6fb9aa0.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.B.r1",
+    "startedAt": "2026-10-17T17:30:12.418Z",
+    "finishedAt": "2026-10-17T17:31:30.832Z",
+    "usage": {
+      "inputTokens": 24,
+      "outputTokens": 92,
+      "cacheReadTokens": 729601,
+      "cacheWriteTokens": 33440,
+      "modelTurns": 12,
+      "toolCalls": 13,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a7d1a28e9a6fb9aa0.jsonl",
+      "elapsedMs": 73112
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Bash": 10,
+      "PowerShell": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c4.B.r2": {
+    "transcript": "agent-ae398ca61cecb91e5.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.B.r2",
+    "startedAt": "2026-10-17T17:34:56.707Z",
+    "finishedAt": "2026-10-17T17:35:57.221Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 85,
+      "cacheReadTokens": 657543,
+      "cacheWriteTokens": 30979,
+      "modelTurns": 11,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-ae398ca61cecb91e5.jsonl",
+      "elapsedMs": 54670
+    },
+    "toolCallsByName": {
+      "Bash": 7,
+      "PowerShell": 6
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c5.A.r1": {
+    "transcript": "agent-a5594ff8cdfc01a12.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.A.r1",
+    "startedAt": "2026-10-17T17:30:12.439Z",
+    "finishedAt": "2026-10-17T17:31:15.309Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 89,
+      "cacheReadTokens": 574974,
+      "cacheWriteTokens": 29828,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a5594ff8cdfc01a12.jsonl",
+      "elapsedMs": 58563
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 9
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c5.A.r2": {
+    "transcript": "agent-aaa9a80fa76aed87e.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.A.r2",
+    "startedAt": "2026-10-17T17:34:56.753Z",
+    "finishedAt": "2026-10-17T17:35:57.873Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 50,
+      "cacheReadTokens": 516734,
+      "cacheWriteTokens": 27844,
+      "modelTurns": 9,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-aaa9a80fa76aed87e.jsonl",
+      "elapsedMs": 55086
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 3,
+      "PowerShell": 5
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c5.B.r1": {
+    "transcript": "agent-ac259b4c33d7e14a7.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.B.r1",
+    "startedAt": "2026-10-17T17:30:12.462Z",
+    "finishedAt": "2026-10-17T17:31:40.774Z",
+    "usage": {
+      "inputTokens": 30,
+      "outputTokens": 121,
+      "cacheReadTokens": 952029,
+      "cacheWriteTokens": 35594,
+      "modelTurns": 15,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-ac259b4c33d7e14a7.jsonl",
+      "elapsedMs": 82674
+    },
+    "toolCallsByName": {
+      "Bash": 18,
+      "mcp__ccd_turn__update_plan": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c5.B.r2": {
+    "transcript": "agent-ac50fd7dca82014b8.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.B.r2",
+    "startedAt": "2026-10-17T17:34:56.738Z",
+    "finishedAt": "2026-10-17T17:36:21.123Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 62,
+      "cacheReadTokens": 620609,
+      "cacheWriteTokens": 41511,
+      "modelTurns": 10,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-ac50fd7dca82014b8.jsonl",
+      "elapsedMs": 79345
+    },
+    "toolCallsByName": {
+      "Bash": 14
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c6.A.r1": {
+    "transcript": "agent-a02d2100b8548577b.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.A.r1",
+    "startedAt": "2026-10-17T17:30:12.483Z",
+    "finishedAt": "2026-10-17T17:31:41.207Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 50,
+      "cacheReadTokens": 548145,
+      "cacheWriteTokens": 36868,
+      "modelTurns": 9,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a02d2100b8548577b.jsonl",
+      "elapsedMs": 83495
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 8
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c6.A.r2": {
+    "transcript": "agent-a84ce2fa34abb28d9.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.A.r2",
+    "startedAt": "2026-10-17T17:34:56.786Z",
+    "finishedAt": "2026-10-17T17:36:26.415Z",
+    "usage": {
+      "inputTokens": 28,
+      "outputTokens": 110,
+      "cacheReadTokens": 833754,
+      "cacheWriteTokens": 33705,
+      "modelTurns": 14,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a84ce2fa34abb28d9.jsonl",
+      "elapsedMs": 83578
+    },
+    "toolCallsByName": {
+      "Bash": 16
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c6.B.r1": {
+    "transcript": "agent-a611776b079362ce4.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.B.r1",
+    "startedAt": "2026-10-17T17:30:12.502Z",
+    "finishedAt": "2026-10-17T17:31:40.526Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 62,
+      "cacheReadTokens": 611466,
+      "cacheWriteTokens": 38335,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a611776b079362ce4.jsonl",
+      "elapsedMs": 81149
+    },
+    "toolCallsByName": {
+      "Bash": 9,
+      "mcp__ccd_turn__update_plan": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c6.B.r2": {
+    "transcript": "agent-a900a4d8f7a5469ea.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.B.r2",
+    "startedAt": "2026-10-17T17:34:56.768Z",
+    "finishedAt": "2026-10-17T17:36:31.284Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 65,
+      "cacheReadTokens": 619976,
+      "cacheWriteTokens": 39419,
+      "modelTurns": 10,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859\\293ede67-1e54-4a1a-aaca-4a105db0275b\\subagents\\agent-a900a4d8f7a5469ea.jsonl",
+      "elapsedMs": 87589
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Bash": 13
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  }
+}

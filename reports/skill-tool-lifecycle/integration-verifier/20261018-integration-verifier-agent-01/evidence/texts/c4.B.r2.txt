@@ -1,0 +1,47 @@
+Exit code 1
+# Integration verification — batch-c4
+
+**Batch status: FAIL** · base `main` · 2 stories · 2026-10-17T17:35:35.637Z
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **FAIL** | FAIL: duplicate_migration — migration version 0002 used by 2 files |
+| S2 | `story/S2` | **FAIL** | FAIL: duplicate_migration — migration version 0002 used by 2 files |
+
+## AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | check:test | PASS |
+| S2 | AC1 | met | check:test | PASS |
+
+## Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | PASS |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 0 | logs/combined-test.log | PASS |
+
+Merged into integration worktree: S1, S2
+
+## Cross-story conflicts
+
+| Type | Items | Stories | Status | Why |
+|---|---|---|---|---|
+| duplicate_migration | migrations/0002_add_email.sql; migrations/0002_add_phone.sql | S1, S2 | FAIL | migration version 0002 used by 2 files |
+
+## Failure clusters
+
+None.
+
+## Missing evidence and next actions
+
+- None.
+
+- Resolve the FAIL / BLOCKED items above, re-run the stories' checks with logs, then re-run this verifier.
+EXIT=1

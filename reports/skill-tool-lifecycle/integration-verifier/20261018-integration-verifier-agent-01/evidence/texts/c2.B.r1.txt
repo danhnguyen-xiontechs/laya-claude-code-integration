@@ -1,0 +1,364 @@
+1	#!/usr/bin/env node
+2	// verify.mjs — integration-verifier: checks a batch of parallel story branches together.
+3	// Zero dependencies, Node >= 18, needs git on PATH.
+4	//
+5	//   node verify.mjs --batch <batch.json> [--out <dir>] [--jev] [--keep-worktree]
+6	//
+7	// Deterministic rules decide every status. Jev (--jev, needs OPENROUTER_API_KEY) only adds a
+8	// labelled category suggestion to failure clusters the rules could not classify (shadow mode):
+9	// it never changes a status, so it can never turn FAIL / BLOCKED / missing evidence into PASS.
+10	import fs from 'node:fs';
+11	import os from 'node:os';
+12	import path from 'node:path';
+13	import { spawnSync } from 'node:child_process';
+14	import { fileURLToPath } from 'node:url';
+15	import { decide, top, appendJsonl } from './decision-provider.mjs';
+16	
+17	export const STATUSES = ['PASS', 'REVIEW_REQUIRED', 'BLOCKED', 'FAIL']; // ascending severity
+18	export const CATEGORIES = ['code_regression', 'test_data', 'environment', 'dependency', 'flaky_test', 'unknown'];
+19	export const MANIFEST_SCHEMA = 'integration-verifier/story-result@1';
+20	const worst = (...s) => s.reduce((a, b) => (STATUSES.indexOf(b) > STATUSES.indexOf(a) ? b : a), 'PASS');
+21	
+22	// ---------- path kinds (Phase 3 rules) ----------
+23	const RX = {
+24	  migration: /(^|\/)(migrations?|db\/migrate|alembic\/versions)\//i,
+25	  fixture: /(^|\/)(fixtures?|__fixtures__|testdata|__mocks__|mocks|seeds?)\//i,
+26	  config: /(^|\/)(config|settings)\/|(^|\/)(\.env[^/]*|appsettings[^/]*\.json|application[^/]*\.(ya?ml|properties)|[^/]*\.config\.(js|mjs|json))$/i,
+27	  contract: /(^|\/)(contracts?|dto|dtos|schemas?|openapi|proto|api)\/|\.(proto|graphql|d\.ts)$|openapi[^/]*\.(ya?ml|json)$/i,
+28	  generated: /(^|\/)(generated|gen|__generated__)\/|package-lock\.json$|yarn\.lock$|pnpm-lock\.yaml$/i,
+29	};
+30	export function pathKind(p) {
+31	  for (const k of ['migration', 'fixture', 'generated', 'contract', 'config']) if (RX[k].test(p)) return k;
+32	  return 'code';
+33	}
+34	/** Migration ordering key: leading version digits ("0003_add.sql" → "0003", "20241001120000_x" → that). */
+35	export const migrationKey = (p) => (path.basename(p).match(/^(\d+)/) || [])[1] ?? null;
+36	
+37	// ---------- environment / dependency signatures (deterministic triage first) ----------
+38	const ENV_RX = /ECONNREFUSED|ENOTFOUND|EAI_AGAIN|ETIMEDOUT|getaddrinfo|connection refused|could not connect|no space left|permission denied|EACCES|is not recognized as an internal or external command|command not found|docker daemon|service unavailable|database .* does not exist|port \d+ (is )?already in use|EADDRINUSE/i;
+39	const DEP_RX = /Cannot find module|ERR_MODULE_NOT_FOUND|ModuleNotFoundError|No module named|could not resolve dependency|ERESOLVE|package .* not found|unable to resolve/i;
+40	const FLAKY_RX = /\b(flaky|timed? ?out after|Timeout of \d+ms exceeded|retry \d+\/\d+)\b/i;
+41	export function deterministicCategory(log, exitCode) {
+42	  if (exitCode === 127 || exitCode === 9009) return 'environment'; // shell: command not found (posix / cmd.exe)
+43	  if (ENV_RX.test(log)) return 'environment';
+44	  if (DEP_RX.test(log)) return 'dependency';
+45	  if (FLAKY_RX.test(log)) return 'flaky_test';
+46	  return null; // ambiguous → optional Jev shadow suggestion, status stays as the rules set it
+47	}
+48	/** First meaningful error line, with digits/paths/hex normalised, so equal failures cluster. */
+49	export function signature(log) {
+50	  const lines = String(log).split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+51	  const hit = lines.find((l) => /error|fail|assert|exception|expected|cannot|refused|not found|undefined|not a function/i.test(l)) || lines.at(-1) || '';
+52	  return hit.replace(/[A-Za-z]:\\[^\s:]+|\/[^\s:]+\/[^\s:]+/g, '<path>').replace(/0x[0-9a-f]+/gi, '<hex>').replace(/\d+/g, '<n>').slice(0, 200);
+53	}
+54	/** Redact obvious secrets before anything leaves the machine. */
+55	export const redact = (s) => String(s)
+56	  .replace(/(api[_-]?key|token|secret|password|pwd|authorization)\s*[:=]\s*\S+/gi, '$1=<redacted>')
+57	  .replace(/\b(sk|pk|ghp|gho|xox[bp])[-_][A-Za-z0-9_-]{8,}/g, '<redacted>')
+58	  .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '<email>');
+59	
+60	// ---------- small process helpers ----------
+61	function sh(cmd, cwd, timeoutMs = 600000) {
+62	  const t0 = Date.now();
+63	  const r = spawnSync(cmd, { cwd, shell: true, encoding: 'utf8', timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024 });
+64	  const exit = r.error?.code === 'ETIMEDOUT' ? 124 : (r.status ?? 1);
+65	  return { exit, out: `${r.stdout || ''}${r.stderr || ''}${r.error ? `\n${r.error.message}` : ''}`, ms: Date.now() - t0 };
+66	}
+67	function git(args, cwd) {
+68	  const r = spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+69	  return { ok: r.status === 0, out: (r.stdout || '').trim(), err: (r.stderr || '').trim() };
+70	}
+71	const readJson = (f) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
+72	
+73	// ---------- Phase 1: load the per-story result manifest ----------
+74	export function validateManifest(m, storyId) {
+75	  const errs = [];
+76	  if (!m || typeof m !== 'object') return ['manifest missing or not JSON'];
+77	  if (m.schema !== MANIFEST_SCHEMA) errs.push(`schema must be "${MANIFEST_SCHEMA}"`);
+78	  if (m.story_id !== storyId) errs.push(`story_id "${m.story_id}" ≠ "${storyId}"`);
+79	  for (const k of ['acceptance_criteria', 'checks', 'changed_files']) if (!Array.isArray(m[k])) errs.push(`${k} must be an array`);
+80	  return errs;
+81	}
+82	function loadManifest(story, repo, baseDir) {
+83	  if (story.manifest) return readJson(path.resolve(baseDir, story.manifest));
+84	  const r = git(['show', `${story.branch}:.integration/${story.id}.json`], repo);
+85	  return r.ok ? (() => { try { return JSON.parse(r.out); } catch { return null; } })() : null;
+86	}
+87	
+88	// ---------- Phase 2a: per-story evidence ----------
+89	function verifyStory(story, ctx) {
+90	  const { batch, repo, baseDir, acMatrix, findings } = ctx;
+91	  const res = { id: story.id, branch: story.branch, status: 'PASS', reasons: [], checks: [], acs: [], files: [], manifest: null };
+92	  const add = (status, reason) => { res.status = worst(res.status, status); res.reasons.push(`${status}: ${reason}`); };
+93	
+94	  const ref = git(['rev-parse', '--verify', `${story.branch}^{commit}`], repo);
+95	  if (!ref.ok) { add('BLOCKED', `branch ${story.branch} not found`); return res; }
+96	  const d = git(['diff', '--name-only', `${batch.base}...${story.branch}`], repo);
+97	  res.files = d.ok ? d.out.split(/\r?\n/).filter(Boolean).filter((f) => !f.startsWith('.integration/')) : [];
+98	  if (!d.ok) add('BLOCKED', `git diff failed: ${d.err.slice(0, 120)}`);
+99	  if (!res.files.length) add('REVIEW_REQUIRED', 'branch has no changes against base');
+100	
+101	  const m = loadManifest(story, repo, baseDir);
+102	  const errs = validateManifest(m, story.id);
+103	  if (errs.length) { add('BLOCKED', `result manifest invalid: ${errs.join('; ')}`); return res; }
+104	  res.manifest = m;
+105	
+106	  // Claimed vs actual changed files (agent reports may omit or invent files).
+107	  const claimed = new Set(m.changed_files);
+108	  const unclaimed = res.files.filter((f) => !claimed.has(f));
+109	  const phantom = [...claimed].filter((f) => !res.files.includes(f));
+110	  if (unclaimed.length) add('REVIEW_REQUIRED', `changed but not declared: ${unclaimed.join(', ')}`);
+111	  if (phantom.length) add('REVIEW_REQUIRED', `declared but not in diff: ${phantom.join(', ')}`);
+112	
+113	  // Required checks: must be recorded with an exit code AND a non-empty log artifact.
+114	  const byName = Object.fromEntries(m.checks.map((c) => [c.name, c]));
+115	  for (const rc of batch.required_checks) {
+116	    const c = byName[rc.name];
+117	    const row = { name: rc.name, exit: c?.exit_code ?? null, log: c?.log_path ?? null, evidence: 'missing' };
+118	    if (!c) add('BLOCKED', `required check "${rc.name}" not run (no record)`);
+119	    else if (!c.log_path || !fs.existsSync(path.resolve(baseDir, c.log_path)) || !fs.statSync(path.resolve(baseDir, c.log_path)).size) add('BLOCKED', `required check "${rc.name}" has no log artifact — a claim without a log is not evidence`);
+120	    else if (typeof c.exit_code !== 'number') add('BLOCKED', `required check "${rc.name}" has no exit code`);
+121	    else if (c.exit_code !== 0) { row.evidence = 'log'; add('FAIL', `required check "${rc.name}" exited ${c.exit_code} in the story worktree`); }
+122	    else row.evidence = 'log';
+123	    res.checks.push(row);
+124	  }
+125	
+126	  // Acceptance criteria → evidence. Valid evidence: a passing check with a log, a covered row in
+127	  // the acceptance-criteria-coverage matrix, or an explicit human decision. Claims alone never count.
+128	  const passed = new Set(res.checks.filter((c) => c.evidence === 'log' && c.exit === 0).map((c) => c.name));
+129	  for (const c of m.checks) if (c.exit_code === 0 && c.log_path && fs.existsSync(path.resolve(baseDir, c.log_path))) passed.add(c.name);
+130	  for (const ac of m.acceptance_criteria) {
+131	    const ev = [];
+132	    for (const e of ac.evidence || []) {
+133	      if (e.type === 'check' && passed.has(e.name)) ev.push(`check:${e.name}`);
+134	      if (e.type === 'human' && e.by) ev.push(`human:${e.by}`);
+135	    }
+136	    const cov = acMatrix.filter((r) => r.story === story.id && r.ac === ac.id);
+137	    if (cov.some((r) => r.status === 'covered')) ev.push(`ac-coverage:${cov.find((r) => r.status === 'covered').test || 'covered'}`);
+138	    const uncovered = cov.some((r) => r.status === 'uncovered');
+139	    const row = { id: ac.id, claimed: ac.claimed ?? null, evidence: ev, status: 'PASS' };
+140	    if (ac.claimed === 'failed') { row.status = 'FAIL'; add('FAIL', `AC ${ac.id} reported failed`); }
+141	    else if (uncovered && !ev.length) { row.status = 'REVIEW_REQUIRED'; add('REVIEW_REQUIRED', `AC ${ac.id} uncovered in AC-coverage matrix`); }
+142	    else if (!ev.length) { row.status = 'REVIEW_REQUIRED'; add('REVIEW_REQUIRED', `AC ${ac.id} has no evidence (claim only)`); }
+143	    res.acs.push(row);
+144	  }
+145	  if (!m.acceptance_criteria.length) add('REVIEW_REQUIRED', 'no acceptance criteria listed');
+146	
+147	  // Consumed review findings (review-pr-jev-classify / subagent-validator artifacts), not re-called.
+148	  for (const f of findings.filter((x) => x.story === story.id)) {
+149	    const sev = String(f.severity || '').toLowerCase();
+150	    if (['blocker', 'critical', 'high'].includes(sev)) add('REVIEW_REQUIRED', `review finding [${f.severity}] ${f.title || ''}`.trim());
+151	  }
+152	  return res;
+153	}
+154	
+155	// ---------- Phase 3: cross-story consistency ----------
+156	export function crossStory(stories) {
+157	  const conflicts = [];
+158	  const touch = {};
+159	  for (const s of stories) for (const f of s.files) (touch[f] ||= []).push(s.id);
+160	  for (const [f, ids] of Object.entries(touch)) if (ids.length > 1) {
+161	    const kind = pathKind(f);
+162	    conflicts.push({ type: `shared_${kind}`, items: [f], stories: ids, status: kind === 'code' || kind === 'generated' ? 'REVIEW_REQUIRED' : 'FAIL', why: `${ids.length} stories change the same ${kind} file` });
+163	  }
+164	  // Duplicate migration versions (different files, same version key).
+165	  const mig = {};
+166	  for (const s of stories) for (const f of s.files) if (pathKind(f) === 'migration' && migrationKey(f)) (mig[`${path.dirname(f)}#${migrationKey(f)}`] ||= []).push({ f, id: s.id });
+167	  for (const [k, list] of Object.entries(mig)) {
+168	    const files = [...new Set(list.map((x) => x.f))];
+169	    if (files.length > 1) conflicts.push({ type: 'duplicate_migration', items: files, stories: [...new Set(list.map((x) => x.id))], status: 'FAIL', why: `migration version ${k.split('#')[1]} used by ${files.length} files` });
+170	  }
+171	  // Declared contracts: provided signature vs what other stories consume / provide.
+172	  const prov = {}, cons = [];
+173	  for (const s of stories) {
+174	    for (const c of s.manifest?.contracts?.provides || []) (prov[c.name] ||= []).push({ ...c, id: s.id });
+175	    for (const c of s.manifest?.contracts?.consumes || []) cons.push({ ...c, id: s.id });
+176	  }
+177	  for (const [name, list] of Object.entries(prov)) {
+178	    const sigs = [...new Set(list.map((x) => x.signature))];
+179	    if (sigs.length > 1) conflicts.push({ type: 'contract_divergence', items: [name, ...sigs], stories: list.map((x) => x.id), status: 'FAIL', why: `contract ${name} provided with ${sigs.length} different signatures` });
+180	  }
+181	  for (const c of cons) for (const p of prov[c.name] || []) if (p.id !== c.id && p.signature !== c.signature)
+182	    conflicts.push({ type: 'contract_mismatch', items: [c.name, `provides ${p.signature}`, `consumes ${c.signature}`], stories: [p.id, c.id], status: 'FAIL', why: `${c.id} consumes ${c.name} as "${c.signature}" but ${p.id} changes it to "${p.signature}"` });
+183	  // Same config key set to different values.
+184	  const cfg = {};
+185	  for (const s of stories) for (const [k, v] of Object.entries(s.manifest?.config || {})) (cfg[k] ||= []).push({ v: JSON.stringify(v), id: s.id });
+186	  for (const [k, list] of Object.entries(cfg)) if (new Set(list.map((x) => x.v)).size > 1)
+187	    conflicts.push({ type: 'config_conflict', items: [k, ...list.map((x) => `${x.id}=${x.v}`)], stories: list.map((x) => x.id), status: 'FAIL', why: `config key ${k} set to different values` });
+188	  return conflicts;
+189	}
+190	
+191	// ---------- Phase 2b: combined change in an isolated integration worktree ----------
+192	function combined(batch, repo, stories, outDir, keep) {
+193	  const wt = fs.mkdtempSync(path.join(os.tmpdir(), 'iv-wt-'));
+194	  const res = { worktree: wt, merged: [], merge_conflicts: [], checks: [], status: 'PASS' };
+195	  const add = git(['worktree', 'add', '--detach', wt, batch.base], repo);
+196	  if (!add.ok) { res.status = 'BLOCKED'; res.error = `worktree add failed: ${add.err.slice(0, 160)}`; return res; }
+197	  try {
+198	    const id = ['-c', 'user.name=integration-verifier', '-c', 'user.email=iv@localhost'];
+199	    for (const s of stories) {
+200	      if (!git(['rev-parse', '--verify', `${s.branch}^{commit}`], wt).ok) continue;
+201	      const m = git([...id, 'merge', '--no-ff', '--no-edit', s.branch], wt);
+202	      if (m.ok) { res.merged.push(s.id); continue; }
+203	      const files = git(['diff', '--name-only', '--diff-filter=U'], wt).out.split(/\r?\n/).filter(Boolean);
+204	      res.merge_conflicts.push({ story: s.id, files });
+205	      git(['merge', '--abort'], wt);
+206	    }
+207	    if (res.merge_conflicts.length) res.status = 'FAIL';
+208	    for (const rc of batch.required_checks) {
+209	      const r = sh(rc.cmd, wt, rc.timeout_ms);
+210	      const log = path.join(outDir, 'logs', `combined-${rc.name.replace(/[^\w.-]/g, '_')}.log`);
+211	      fs.mkdirSync(path.dirname(log), { recursive: true });
+212	      fs.writeFileSync(log, `$ ${rc.cmd}\n# exit ${r.exit} in ${r.ms} ms\n${r.out}`);
+213	      const cat = r.exit === 0 ? null : deterministicCategory(r.out, r.exit);
+214	      const status = r.exit === 0 ? 'PASS' : cat === 'environment' ? 'BLOCKED' : 'FAIL';
+215	      res.checks.push({ name: rc.name, cmd: rc.cmd, exit: r.exit, ms: r.ms, log: path.relative(outDir, log).replace(/\\/g, '/'), status, category: cat, signature: r.exit ? signature(r.out) : null, out: r.out });
+216	      res.status = worst(res.status, status);
+217	    }
+218	  } finally {
+219	    if (!keep) { git(['worktree', 'remove', '--force', wt], repo); fs.rmSync(wt, { recursive: true, force: true }); }
+220	  }
+221	  return res;
+222	}
+223	
+224	// ---------- Phase 5: failure clusters, attribution, Jev shadow triage ----------
+225	export function attribute(out, stories) {
+226	  // Stories whose changed files (or their basenames) appear in the failure output, ranked by hits.
+227	  const text = String(out).replace(/\\/g, '/');
+228	  return stories.map((s) => ({ id: s.id, hits: s.files.filter((f) => text.includes(f) || text.includes(path.basename(f, path.extname(f)))).length }))
+229	    .filter((x) => x.hits).sort((a, b) => b.hits - a.hits).map((x) => x.id);
+230	}
+231	export function buildTriageRequest(cluster, stories) {
+232	  const lines = String(cluster.excerpt).split(/\r?\n/).filter((l) => /error|fail|assert|expected|cannot|refused|not found|undefined|not a function|at /i.test(l)).slice(0, 12);
+233	  const text = [
+234	    `Check: ${cluster.check} (exit ${cluster.exit})`,
+235	    `Failure signature: ${cluster.signature}`,
+236	    `Failure excerpt (redacted):\n${redact(lines.join('\n')).slice(0, 1200)}`,
+237	    `Stories in the batch and the files they changed:`,
+238	    ...stories.map((s) => `- ${s.id}: ${s.files.slice(0, 12).join(', ')}`),
+239	  ].join('\n');
+240	  const criteria = {
+241	    code_regression: 'Production code is wrong or two stories\' code changes are incompatible (signature, interface, logic).',
+242	    test_data: 'Test fixtures, mocks, seed or expected test data are wrong or were changed inconsistently.',
+243	    environment: 'A service, network, permission, tool or machine problem outside the code.',
+244	    dependency: 'A package / module / version is missing or incompatible.',
+245	    flaky_test: 'Nondeterministic timing or ordering; the same code may pass on rerun.',
+246	    unknown: 'Not enough information to tell.',
+247	  };
+248	  return { state: { text }, questions: { category: { type: 'choice', instructions: 'Which category best explains this combined-build failure?', criteria } } };
+249	}
+250	async function triage(comb, stories, opts) {
+251	  const clusters = {};
+252	  for (const c of comb.checks.filter((x) => x.exit !== 0)) {
+253	    const key = `${c.category || '?'}|${c.signature}`;
+254	    (clusters[key] ||= { signature: c.signature, category: c.category, category_source: c.category ? 'rule' : null, checks: [], check: c.name, exit: c.exit, excerpt: c.out, stories: attribute(c.out, stories) }).checks.push(c.name);
+255	  }
+256	  const list = Object.values(clusters);
+257	  let calls = 0;
+258	  for (const cl of list) {
+259	    if (!cl.category && opts.jev && calls < opts.maxJev) {
+260	      calls++;
+261	      const { state, questions } = buildTriageRequest(cl, stories);
+262	      const r = await decide({ provider: 'jev', state, questions, timeoutMs: 15000 });
+263	      if (r.ok && r.answers.category) {
+264	        const t = top(r.answers.category.probabilities);
+265	        cl.jev = { suggestion: t.label, p: t.p, margin: Number((t.p - t.second).toFixed(3)), latencyMs: r.meta.latencyMs, cost: r.meta.cost };
+266	      } else cl.jev = { error: r.error };
+267	      appendJsonl(path.join(opts.outDir, 'jev-shadow.jsonl'), { batch: opts.batchId, signature: cl.signature, request_chars: state.text.length, result: cl.jev, model: r.meta.model });
+268	    }
+269	    if (!cl.category) { cl.category = 'unknown'; cl.category_source = 'rule-fallback'; }
+270	    delete cl.excerpt;
+271	  }
+272	  return { clusters: list, jev_calls: calls };
+273	}
+274	
+275	// ---------- assemble ----------
+276	export function finalize(storyRes, conflicts, comb, clusters) {
+277	  for (const c of conflicts) for (const id of c.stories) {
+278	    const s = storyRes.find((x) => x.id === id);
+279	    if (s) { s.status = worst(s.status, c.status); s.reasons.push(`${c.status}: ${c.type} — ${c.why}`); }
+280	  }
+281	  for (const mc of comb.merge_conflicts) {
+282	    const s = storyRes.find((x) => x.id === mc.story);
+283	    if (s) { s.status = worst(s.status, 'FAIL'); s.reasons.push(`FAIL: merge conflict in combined worktree (${mc.files.join(', ')})`); }
+284	  }
+285	  for (const cl of clusters) {
+286	    const st = cl.category === 'environment' ? 'BLOCKED' : 'FAIL';
+287	    // Attributed stories take the failure; every other story is at least REVIEW_REQUIRED (BLOCKED
+288	    // for an environment failure): a red combined run never leaves any story PASS.
+289	    for (const s of storyRes) {
+290	      const mine = cl.stories.includes(s.id);
+291	      const apply = mine ? st : st === 'BLOCKED' ? 'BLOCKED' : 'REVIEW_REQUIRED';
+292	      s.status = worst(s.status, apply);
+293	      s.reasons.push(`${apply}: combined ${cl.checks.join('+')} failed (${cl.category}, ${mine ? 'attributed' : 'not attributed'}) — ${cl.signature}`);
+294	    }
+295	  }
+296	  // Combined checks must have actually run and passed for any PASS.
+297	  if (comb.status === 'BLOCKED' && comb.error) for (const s of storyRes) { s.status = worst(s.status, 'BLOCKED'); s.reasons.push(`BLOCKED: ${comb.error}`); }
+298	  if (!comb.checks.length) for (const s of storyRes) { s.status = worst(s.status, 'BLOCKED'); s.reasons.push('BLOCKED: no combined check ran'); }
+299	  const batch = worst(comb.status, ...storyRes.map((s) => s.status), ...conflicts.map((c) => c.status));
+300	  return batch;
+301	}
+302	
+303	export function renderMarkdown(r) {
+304	  const L = [];
+305	  L.push(`# Integration verification — ${r.batch_id}`, '', `**Batch status: ${r.status}** · base \`${r.base}\` · ${r.stories.length} stories · ${r.generated_at}`, '');
+306	  L.push('No merge was performed: this report is evidence for a human gate (v1 never auto-merges).', '');
+307	  L.push('## Per-story status', '', '| Story | Branch | Status | Reasons |', '|---|---|---|---|');
+308	  for (const s of r.stories) L.push(`| ${s.id} | \`${s.branch}\` | **${s.status}** | ${s.reasons.map((x) => x.replace(/\|/g, '\\|')).join('<br>') || '—'} |`);
+309	  L.push('', '## AC → evidence', '', '| Story | AC | Claimed | Evidence | Status |', '|---|---|---|---|---|');
+310	  for (const s of r.stories) for (const a of s.acs) L.push(`| ${s.id} | ${a.id} | ${a.claimed ?? '—'} | ${a.evidence.join(', ') || '**none**'} | ${a.status} |`);
+311	  L.push('', '## Checks run', '', '| Where | Check | Exit | Log | Status |', '|---|---|---|---|---|');
+312	  for (const s of r.stories) for (const c of s.checks) L.push(`| ${s.id} (reported) | ${c.name} | ${c.exit ?? '—'} | ${c.log ?? '**missing**'} | ${c.evidence === 'missing' ? 'BLOCKED' : c.exit === 0 ? 'PASS' : 'FAIL'} |`);
+313	  for (const c of r.combined.checks) L.push(`| combined (run by verifier) | ${c.name} \`${c.cmd}\` | ${c.exit} | ${c.log} | ${c.status} |`);
+314	  L.push('', `Merged into integration worktree: ${r.combined.merged.join(', ') || 'none'}${r.combined.merge_conflicts.length ? ` · merge conflicts: ${r.combined.merge_conflicts.map((m) => `${m.story} (${m.files.join(', ')})`).join('; ')}` : ''}`);
+315	  L.push('', '## Cross-story conflicts', '');
+316	  if (!r.conflicts.length) L.push('None found.');
+317	  else { L.push('| Type | Items | Stories | Status | Why |', '|---|---|---|---|---|'); for (const c of r.conflicts) L.push(`| ${c.type} | ${c.items.join('; ')} | ${c.stories.join(', ')} | ${c.status} | ${c.why} |`); }
+318	  L.push('', '## Failure clusters', '');
+319	  if (!r.clusters.length) L.push('None.');
+320	  else {
+321	    L.push('| Signature | Checks | Category (rules) | Likely stories | Jev suggestion (shadow, not used) |', '|---|---|---|---|---|');
+322	    for (const c of r.clusters) L.push(`| \`${c.signature.replace(/\|/g, '\\|')}\` | ${c.checks.join(', ')} | ${c.category} (${c.category_source}) | ${c.stories.join(', ') || 'unattributed'} | ${c.jev ? (c.jev.error ? `error: ${c.jev.error}` : `${c.jev.suggestion} p=${c.jev.p}`) : '—'} |`);
+323	  }
+324	  L.push('', '## Missing evidence and next actions', '');
+325	  const miss = r.stories.flatMap((s) => s.reasons.filter((x) => /BLOCKED|no evidence|not declared|no log/.test(x)).map((x) => `- ${s.id}: ${x}`));
+326	  L.push(...(miss.length ? miss : ['- None.']));
+327	  L.push('', r.status === 'PASS' ? '- All required checks ran and passed on the combined change; hand to a human for merge.' : '- Resolve the FAIL / BLOCKED items above, re-run the stories\' checks with logs, then re-run this verifier.');
+328	  return L.join('\n') + '\n';
+329	}
+330	
+331	export async function verifyBatch(batchFile, opts = {}) {
+332	  const baseDir = path.dirname(path.resolve(batchFile));
+333	  const batch = readJson(batchFile);
+334	  if (!batch) throw new Error(`cannot read batch file ${batchFile}`);
+335	  const repo = path.resolve(baseDir, batch.repo);
+336	  const outDir = path.resolve(opts.out || path.join(baseDir, 'iv-out'));
+337	  fs.mkdirSync(outDir, { recursive: true });
+338	  const acMatrix = batch.artifacts?.ac_coverage ? readJson(path.resolve(baseDir, batch.artifacts.ac_coverage)) || [] : [];
+339	  const findings = batch.artifacts?.review_findings ? readJson(path.resolve(baseDir, batch.artifacts.review_findings)) || [] : [];
+340	  batch.required_checks ||= [];
+341	  const ctx = { batch, repo, baseDir, acMatrix, findings };
+342	  const stories = batch.stories.map((s) => verifyStory(s, ctx));
+343	  if (!batch.required_checks.length) for (const s of stories) { s.status = worst(s.status, 'BLOCKED'); s.reasons.push('BLOCKED: batch defines no required checks'); }
+344	  const conflicts = crossStory(stories);
+345	  const comb = combined(batch, repo, stories, outDir, opts.keepWorktree);
+346	  const { clusters, jev_calls } = await triage(comb, stories, { jev: !!opts.jev, maxJev: opts.maxJev ?? 3, outDir, batchId: batch.batch_id });
+347	  const status = finalize(stories, conflicts, comb, clusters);
+348	  for (const c of comb.checks) delete c.out;
+349	  const report = { schema: 'integration-verifier/report@1', batch_id: batch.batch_id, base: batch.base, status, generated_at: new Date().toISOString(), stories: stories.map(({ manifest, ...s }) => s), conflicts, combined: comb, clusters, jev_calls, jev_mode: opts.jev ? 'shadow' : 'off' };
+350	  fs.writeFileSync(path.join(outDir, 'report.json'), JSON.stringify(report, null, 2));
+351	  fs.writeFileSync(path.join(outDir, 'report.md'), renderMarkdown(report));
+352	  return report;
+353	}
+354	
+355	if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+356	  const a = process.argv.slice(2);
+357	  const get = (k) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : undefined; };
+358	  if (!get('--batch')) { console.error('usage: verify.mjs --batch <batch.json> [--out dir] [--jev] [--max-jev n] [--keep-worktree] [--json]'); process.exit(2); }
+359	  const r = await verifyBatch(get('--batch'), { out: get('--out'), jev: a.includes('--jev'), maxJev: Number(get('--max-jev') ?? 3), keepWorktree: a.includes('--keep-worktree') });
+360	  if (a.includes('--json')) console.log(JSON.stringify(r, null, 2));
+361	  else { console.log(`batch ${r.batch_id}: ${r.status}`); for (const s of r.stories) console.log(`  ${s.id}: ${s.status}`); }
+362	  process.exit(r.status === 'PASS' ? 0 : r.status === 'FAIL' ? 1 : 3);
+363	}
+364	

@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - check "test" claims exit 0 but logs/S1-test.log is missing from the batch logs folder, so the claim has no evidence.
+S2: PASS - test exit 0 with a non-empty log, AC1 backed by that check, declared files match the diff, and no conflict with S1 (the combined S1+S2 run-tests exits 0).

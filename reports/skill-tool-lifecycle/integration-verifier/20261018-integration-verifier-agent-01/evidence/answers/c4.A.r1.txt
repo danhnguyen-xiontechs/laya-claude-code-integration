@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - same migration version 0002 as S2 (migrations/0002_add_email.sql vs S2's 0002_add_phone.sql), a conflict; its own test check passed (exit 0, log "ok api.test.js")
+S2: FAIL - same migration version 0002 as S1 (migrations/0002_add_phone.sql vs S1's 0002_add_email.sql), a conflict; its own test check passed (exit 0, log "ok api.test.js")

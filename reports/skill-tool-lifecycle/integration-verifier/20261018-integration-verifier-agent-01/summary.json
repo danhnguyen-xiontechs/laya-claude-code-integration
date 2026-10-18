@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-integration-verifier-agent-01",
+  "tool": {
+    "name": "integration-verifier",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "f612ca1",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 6 two-story git batches (2 repetitions) plain Haiku 5.5 and Haiku with the verifier give the same answers (10 of 12 runs right in both arms; c6 wrong in all 4 runs), but the verifier arm spends 28% more tokens (7.03M -> 8.99M) because the agents re-checked the repo after reading the report; no case is worse. In c6 the tool said PASS for a story whose AC-coverage row cites a test that does not exist, and the agents overruled it. Top fix: print a short verdict-first report the agent can stop on, and check that a coverage row's test exists.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 10,
+      "fail": 2,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.8333333333333334,
+      "tokens": 7027418,
+      "inputTokens": 228,
+      "outputTokens": 776,
+      "toolCalls": 141,
+      "modelTurns": 114,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 58563,
+      "pairedTokens": 3513709
+    },
+    "B": {
+      "cases": 12,
+      "pass": 10,
+      "fail": 2,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.8333333333333334,
+      "tokens": 8986719,
+      "inputTokens": 276,
+      "outputTokens": 1466,
+      "toolCalls": 169,
+      "modelTurns": 138,
+      "providerCalls": 2,
+      "fallbacks": 0,
+      "providerLatencyMs": 763,
+      "elapsedMs": 73112,
+      "pairedTokens": 4493359.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": null,
+  "lastRun": "2026-10-17T17:36:31.284Z",
+  "generatedAt": "2026-10-17T17:37:59.261Z",
+  "report": "report.html"
+}

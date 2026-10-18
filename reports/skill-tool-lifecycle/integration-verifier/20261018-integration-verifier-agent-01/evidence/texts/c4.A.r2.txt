@@ -1,0 +1,43 @@
+{
+  "batch_id": "batch-c4",
+  "repo": "repo",
+  "base": "main",
+  "required_checks": [
+    {
+      "name": "test",
+      "cmd": "node run-tests.js"
+    }
+  ],
+  "stories": [
+    {
+      "id": "S1",
+      "branch": "story/S1"
+    },
+    {
+      "id": "S2",
+      "branch": "story/S2"
+    }
+  ]
+}-----
+total 18
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:33 ..
+-rw-r--r-- 1 <user> 197121 294 Oct 18 00:26 batch.json
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 logs
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 repo
+-rwxr-xr-x 1 <user> 197121 124 Oct 18 00:26 verify-batch.mjs
+-----
+total 6
+drwxr-xr-x 1 <user> 197121  0 Oct 18 00:26 .
+drwxr-xr-x 1 <user> 197121  0 Oct 18 00:26 ..
+-rw-r--r-- 1 <user> 197121 15 Oct 18 00:26 S1-test.log
+-rw-r--r-- 1 <user> 197121 15 Oct 18 00:26 S2-test.log
+-----
+* main
+  story/S1
+  story/S2
+-----
+* 0aca687 S1
+| * d83b472 S2
+|/  
+* 2c4b354 base

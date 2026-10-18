@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - changes getUser from getUser(id) to getUser({ id }), an incompatible contract that breaks S2's getUser(id) call; combined node run-tests.js exits 1
+S2: FAIL - tests/profile.test.js fails in the combined run (Cannot read properties of undefined, reading 'name') though it passes alone; it conflicts with S1's getUser contract change

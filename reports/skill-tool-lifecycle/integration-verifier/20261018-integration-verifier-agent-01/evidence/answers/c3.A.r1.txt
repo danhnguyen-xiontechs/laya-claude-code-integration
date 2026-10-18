@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - test check recorded exit 0 with a non-empty log, AC1 is backed by that passing check, declared files (src/fmt.js, tests/fmt.test.js) match the diff, S1 shares no files with S2, and a fresh combined run of main+S1+S2 passes.
+S2: FAIL - required check "test" was recorded with exit_code 1 (log: "FAIL tests/count.test.js: 3 == 2"), contradicting its "tests pass" claim; a fresh rerun on the same commit d418ef4 passes, but the story's own recorded failure is unexplained and needs a re-run and re-recorded log.

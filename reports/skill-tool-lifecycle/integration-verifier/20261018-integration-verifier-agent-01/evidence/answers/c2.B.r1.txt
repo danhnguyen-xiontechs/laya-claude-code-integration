@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - required check "test" has no log artifact: its manifest cites logs/S1-test.log, which does not exist (logs/ holds only S2-test.log), so the AC1 "met" claim is unbacked.
+S2: PASS - check "test" recorded with exit 0 and non-empty logs/S2-test.log, AC1 is backed by that check, declared files match the diff, no conflicts, and the combined run passes.

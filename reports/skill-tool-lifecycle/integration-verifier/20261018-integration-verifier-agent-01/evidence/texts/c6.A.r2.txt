@@ -1,0 +1,42 @@
+/tmp/claude/D--XionTechs-Laya--claude-worktrees-unruffled-booth-018859/293ede67-1e54-4a1a-aaca-4a105db0275b/scratchpad/iv/work/c6.A.r2
+total 20
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:33 ..
+-rw-r--r-- 1 <user> 197121 106 Oct 18 00:26 ac_coverage.json
+-rw-r--r-- 1 <user> 197121 401 Oct 18 00:26 batch.json
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 logs
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:26 repo
+-rw-r--r-- 1 <user> 197121  96 Oct 18 00:26 review_findings.json
+-rwxr-xr-x 1 <user> 197121 124 Oct 18 00:26 verify-batch.mjs
+---LOGS---
+total 6
+drwxr-xr-x 1 <user> 197121  0 Oct 18 00:26 .
+drwxr-xr-x 1 <user> 197121  0 Oct 18 00:26 ..
+-rw-r--r-- 1 <user> 197121 15 Oct 18 00:26 S1-test.log
+-rw-r--r-- 1 <user> 197121 15 Oct 18 00:26 S2-test.log
+---BATCH---
+{
+  "batch_id": "batch-c6",
+  "repo": "repo",
+  "base": "main",
+  "required_checks": [
+    {
+      "name": "test",
+      "cmd": "node run-tests.js"
+    }
+  ],
+  "stories": [
+    {
+      "id": "S1",
+      "branch": "story/S1"
+    },
+    {
+      "id": "S2",
+      "branch": "story/S2"
+    }
+  ],
+  "artifacts": {
+    "review_findings": "review_findings.json",
+    "ac_coverage": "ac_coverage.json"
+  }
+}

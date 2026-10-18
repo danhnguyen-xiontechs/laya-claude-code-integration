@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - duplicate migration version 0002 (migrations/0002_add_email.sql) collides with S2's migrations/0002_add_phone.sql; its own test check passed (exit 0).
+S2: FAIL - duplicate migration version 0002 (migrations/0002_add_phone.sql) collides with S1's migrations/0002_add_email.sql; its own test check passed (exit 0).

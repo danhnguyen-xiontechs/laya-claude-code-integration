@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - open High review finding "SQL built by string concat" in review_findings.json; the required check passes and there is no conflict, but no SQL exists in the S1 diff or main's src/api.js, so a human must close or confirm it.
+S2: REVIEW_REQUIRED - AC1 is claimed met with empty manifest evidence, and the coverage row cites tests/count.test.js, which does not exist on the branch and is not run by node run-tests.js (its log shows only api.test.js).
