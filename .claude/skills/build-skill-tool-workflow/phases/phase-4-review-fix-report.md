@@ -27,7 +27,7 @@ Stop and hand back the findings list (one line each). **Only the user accepts or
 
 ## 4b. Fix the accepted findings (Haiku, smart-context-trimming enforce)
 
-Started again from `capsule-P4.md` (it lists the accepted findings). One `haiku-case` agent (or the phase session) applies them on the experiment branch, re-runs the tests and rewrites `unit-tests.json`. If a fix changes the tool's behaviour, re-run the affected cases in both arms (same case ids, a new runId; smart-context-trimming off for that re-run). Set each fixed finding's `resolution` to `fixed in <commit>`. A redesign (not a fix) is not done here: it becomes a suggestion for Gate B and a new experiment id.
+Started again from `capsule-P4.md` (it lists the accepted findings). One `haiku-100k:haiku-case` agent (or the phase session) applies them on the experiment branch, re-runs the tests and rewrites `unit-tests.json`. If a fix changes the tool's behaviour, re-run the affected cases in both arms (same case ids, a new runId; smart-context-trimming off for that re-run). Set each fixed finding's `resolution` to `fixed in <commit>`. A redesign (not a fix) is not done here: it becomes a suggestion for Gate B and a new experiment id.
 
 ## 4c. Reports
 

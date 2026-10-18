@@ -1,10 +1,10 @@
 # Phase 1: Plan (Opus, Track N only)
 
-Who: a `haiku-case` agent gathers context; **one Opus call** with a closed pack writes the brief and the design. Track E skips this phase (see SKILL.md).
+Who: a `haiku-100k:haiku-case` agent gathers context; **one Opus call** with a closed pack writes the brief and the design. Track E skips this phase (see SKILL.md).
 
 ## Gather the context pack (Haiku)
 
-One `haiku-case` agent reads the existing implementation and its neighbours and writes `<expDir>/context-pack.md` (under ~2k words): what exists, file paths, contracts, prior experiments and their headlines, fixtures that can be reused. Opus gets this file's text pasted into its prompt, never the repo.
+One `haiku-100k:haiku-case` agent reads the existing implementation and its neighbours and writes `<expDir>/context-pack.md` (under ~2k words): what exists, file paths, contracts, prior experiments and their headlines, fixtures that can be reused. Opus gets this file's text pasted into its prompt, never the repo.
 
 ## 0. Intake
 

@@ -1,1 +1,5 @@
-{ "name": "haiku-100k", "version": "0.1.0", "description": "Keeps every Haiku request under the 100k-token price step: cuts a tool result that would push the next request past it, and counts any request above 100k." }
+{
+  "name": "haiku-100k",
+  "version": "0.2.0",
+  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, and a hook that cuts oversized tool results and flags any request over 100k."
+}

@@ -1,6 +1,6 @@
-# Phase 3: Measure A vs B (Haiku 5.5 xhigh + haiku-case case agents)
+# Phase 3: Measure A vs B (Haiku 5.5 xhigh + haiku-100k:haiku-case case agents)
 
-Input: `capsule-P3.md` (commit to measure, cases, frozen design). Output: `runs/`, `evidence/`, `summary.json` (built by `build_tool_report.mjs`). **smart-context-trimming off** (`SMART_TRIM_MODE=observe`) for the whole phase. Case agents: `subagent_type: "haiku-case"`, at most 4 in flight.
+Input: `capsule-P3.md` (commit to measure, cases, frozen design). Output: `runs/`, `evidence/`, `summary.json` (built by `build_tool_report.mjs`). **smart-context-trimming off** (`SMART_TRIM_MODE=observe`) for the whole phase. Case agents: `subagent_type: "haiku-100k:haiku-case"`, at most 4 in flight.
 
 ## The comparison: two arms only
 

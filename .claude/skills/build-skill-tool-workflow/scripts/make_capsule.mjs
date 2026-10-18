@@ -8,7 +8,7 @@ import path from 'node:path';
 const PHASES = {
   P2: { file: 'phase-2-build.md', model: 'Haiku 5.5, effort xhigh (main model)', trim: 'enforce',
     done: 'Approved design implemented behind its flag on the experiment branch; whole relevant suite run; `unit-tests.json` written from the real output; committed. Hand back in 5 lines or fewer.' },
-  P3: { file: 'phase-3-measure.md', model: 'Haiku 5.5, effort xhigh (main model); case agents `haiku-case`, at most 4 in flight', trim: 'off (SMART_TRIM_MODE=observe)',
+  P3: { file: 'phase-3-measure.md', model: 'Haiku 5.5, effort xhigh (main model); case agents `haiku-100k:haiku-case`, at most 4 in flight', trim: 'off (SMART_TRIM_MODE=observe)',
     done: 'Every case run in both arms (and repetitions) on the commit below; `results.json` per arm and run, evidence saved, `build_tool_report.mjs` run once so `summary.json` exists. Hand back in 5 lines or fewer.' },
   P4: { file: 'phase-4-review-fix-report.md', model: 'Haiku 5.5, effort xhigh (main model); one Opus review subagent with a closed pack', trim: 'enforce for fixes, off for any re-measure',
     done: 'Without accepted findings: Opus review saved to `agent-review.json` (+ `improvements.md` if the result is bad), then stop and hand back the findings. With accepted findings: fixes committed, tests re-run, affected cases re-measured if behaviour changed, both reports rebuilt. Hand back in 5 lines or fewer.' },
