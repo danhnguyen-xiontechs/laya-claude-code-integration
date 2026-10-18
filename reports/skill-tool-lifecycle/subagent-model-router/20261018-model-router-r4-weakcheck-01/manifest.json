@@ -58,6 +58,13 @@
       "from": "2026-10-18T14:53:25.346Z",
       "model": "claude-haiku-5-5",
       "smartTrimMode": "off (SMART_TRIM_MODE=observe)"
+    },
+    {
+      "phase": "P4",
+      "cwd": "D:\\XionTechs\\Laya\\.claude\\worktrees\\model-router-round4-p4-efbcb5",
+      "from": "2026-10-18T15:04:11.276Z",
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": "enforce for fixes, off for any re-measure"
     }
   ],
   "deviations": [
