@@ -1,0 +1,7 @@
+I fixed src/map-limit.js and `node --test` passed 7 of 7 on each of 10 runs. The bugs were:
+- **Order:** results were pushed in completion order, so I now write `results[i]`.
+- **Concurrency:** the loop used `running <= limit`, which allowed one extra call at once, so it is now `<`.
+- **Empty input:** it never settled, so it now resolves `[]`.
+- **First error:** after the first rejection no new calls start, and a synchronous throw from `fn` also rejects.
+
+I also made an invalid `limit` (below 1) reject with a RangeError, since it would otherwise hang. I extended test/map-limit.test.mjs with deterministic tests for order, the concurrency peak, empty input, rejection and synchronous throw, and an invalid limit.

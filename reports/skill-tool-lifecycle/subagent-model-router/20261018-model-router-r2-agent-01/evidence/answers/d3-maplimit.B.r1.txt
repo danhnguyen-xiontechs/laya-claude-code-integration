@@ -1,0 +1,1 @@
+Fixed src/map-limit.js: results are now stored by index instead of push order, the loop uses `running < limit` instead of `<=`, empty input resolves to `[]`, and a failure stops new launches (sync throws from `fn` also reject). I added tests for concurrency, empty input, error handling and sync throws, and `node --test` passed 5/5 on 6 consecutive runs.

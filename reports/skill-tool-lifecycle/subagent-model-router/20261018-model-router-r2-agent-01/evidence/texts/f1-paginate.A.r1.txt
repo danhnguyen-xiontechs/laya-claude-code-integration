@@ -1,0 +1,7 @@
+Work only inside the directory <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b/453b3ea2-7ac1-4da5-852c-953de6f164e1/scratchpad/r2/f1-paginate.A.r1 (it is the project root; do not read or write outside it). Use Node.js (`node`), no npm installs.
+
+`paginate(items, page, size)` in src/paginate.js returns the wrong slice: pages are 1-based but the last item of each page is dropped and page 1 is wrong. Fix it so `paginate([1..10], 2, 3)` returns [4, 5, 6] and an out-of-range page returns []. Run the tests with `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted) until they pass. Only change src/paginate.js.
+
+When done, reply with one short line saying what you did.
+
+Only use files inside that directory; other folders of the machine hold unrelated material and must not be read.

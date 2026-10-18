@@ -1,0 +1,1 @@
+I wrote `resolveOrder` in src/resolve.js (CommonJS) and 26 tests in test/resolve.test.mjs; `node --test` passes all 26. Two choices where the spec left room: a missing target's error says `(required by <root>)` with the literal text `<root>`, and "alphabetically smallest" uses plain code-unit comparison, so uppercase sorts before lowercase.

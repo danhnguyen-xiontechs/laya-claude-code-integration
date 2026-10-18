@@ -1,0 +1,146 @@
+{
+  "e1-locate.A.r1": {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "e1-locate.B.r1": {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "e2-count.A.r1": {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "e2-count.B.r1": {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "r1-rename.A.r1": {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "r1-rename.B.r1": {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "f1-paginate.A.r1": {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "f1-paginate.B.r1": {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "d3-maplimit.A.r1": {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "d3-maplimit.B.r1": {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "d5-deps.A.r1": {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 1,
+    "pass": true
+  },
+  "d5-deps.B.r1": {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 1,
+    "pass": true
+  },
+  "e1-locate.A.r2": {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "e1-locate.B.r2": {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  },
+  "e2-count.A.r2": {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "e2-count.B.r2": {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  },
+  "r1-rename.A.r2": {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "r1-rename.B.r2": {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  },
+  "f1-paginate.A.r2": {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "f1-paginate.B.r2": {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  },
+  "d3-maplimit.A.r2": {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "d3-maplimit.B.r2": {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  },
+  "d5-deps.A.r2": {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 2,
+    "pass": true
+  },
+  "d5-deps.B.r2": {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 2,
+    "pass": true
+  }
+}

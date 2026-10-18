@@ -1,0 +1,1 @@
+Searched the project under the work folder for "parseDuration". The only definition is `export function parseDuration(text) {` in src/core/parse/duration-impl.js (line 2). The other matches are re-exports or calls (src/core/duration.js, src/api/index.js, src/util/time.js). Wrote `src/core/parse/duration-impl.js` to answer.txt in the project root. No other files changed.

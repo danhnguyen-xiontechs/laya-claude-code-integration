@@ -1,0 +1,1 @@
+Top fix: add an opt-in rules-plus-cascade policy that skips the Jev call when the prompt carries an automatic check, the only change that moves f1, d3, d5 and r1 to Haiku in the routed tier (estimated -70% to -95% against all-Sonnet, to be measured with harder cases).
