@@ -1,0 +1,59 @@
+diff --git a/.claude/skills/build-skill-tool-workflow/SKILL.md b/.claude/skills/build-skill-tool-workflow/SKILL.md
+index 8bf06ea..65de9ad 100644
+--- a/.claude/skills/build-skill-tool-workflow/SKILL.md
++++ b/.claude/skills/build-skill-tool-workflow/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: build-skill-tool-workflow
+-description: Lifecycle for building a coding-agent tool (Claude Code skill, hook, plugin, MCP server, helper script) that uses TypeSafe Jev / Laya or rules, from brainstorm to the user's final review. Idea brief and user lock, design, implement behind a flag, unit tests, independent agent review, then one fair comparison on the same cases (plain Claude vs Claude + the tool with Jev/Laya/rules), with real token counts per case, a per-tool report.html and a main index.html that links to it. Use on "/build-skill-tool-workflow <idea|tool>", or when the user asks to brainstorm, build, measure or report a skill/hook/plugin/tool against plain Claude.
++description: Lifecycle for building a coding-agent tool (Claude Code skill, hook, plugin, MCP server, helper script) that uses TypeSafe Jev / Laya or rules, from brainstorm to the user's final review. Idea brief and user lock, design, implement behind a flag, unit tests, independent agent review, then one fair comparison on the same cases (plain Claude vs Claude + the tool with Jev/Laya/rules), with real token counts per case, a per-tool report.html and a main index.html that links to it. Two tracks: a new idea (Opus plans, Haiku builds and tests) or an existing tool (quick review, measure, Opus only to improve). Use on "/build-skill-tool-workflow <idea|tool>", or when the user asks to brainstorm, build, measure or report a skill/hook/plugin/tool against plain Claude.
+ argument-hint: "[idea, tool name, or experiment dir]"
+ ---
+ 
+@@ -18,6 +18,28 @@ The user owns two gates: **Gate A (idea lock)** before implementation and **Gate
+ 
+ Track the phase in `manifest.json` `status` (`schemas/experiment-manifest.schema.json`). A skipped phase is marked `N/A` with the reason, never silently dropped.
+ 
++## Two tracks: pick one at intake
++
++| | **Track N — new idea, no tool yet** | **Track E — the tool already exists** |
++|---|---|---|
++| Steps | 0 → 1 → Gate A → 2 → 3 → 4 → 5 → 6 → 7 → 7b → 8 → Gate B | 0 → 4 → 5 (quick) → 6 → 7 → 7b → 8 → Gate B; steps 1-3 are `N/A (existing tool)` |
++| Planning (1-2: brief, design) | **Opus**, default effort | no new plan; a short `idea-brief.md` that names the question this run answers and links the previous run (baseline) |
++| Implement, tests, measurement (3, 4, 6, 7) | **Haiku 5.5, effort xhigh**, run as subagents with the haiku-subagent settings | same |
++| Review (5) | one read-only agent, Haiku 5.5 xhigh (Sonnet if the diff is large), given the brief, design, diff and test output | quick: same agent, given the current code and its tests only |
++| Improvement (7b) | **Opus**, default effort, one call per round | same |
++| Next round | an approved improvement starts a new experiment id in Track E | same |
++
++Track E never re-plans from scratch: it reads the last `improvements.md`, applies what the user approved, measures, and goes back to Opus only when the result is still bad (7b).
++
++## Token budget (applies to both tracks)
++
++Measured on the 2026-10-18 rounds: the orchestrating sessions and open-ended Opus agents cost about as much as all the Haiku case agents together. So:
++- **Opus is called with a closed input pack**: paste the numbers of `summary.json`, the last `improvements.md`, the diff or design change and the new results table into its prompt; tell it not to open files or explore the repo, and to answer in under 600 words. One call for planning (Track N), one call per improvement round (7b). No other Opus calls.
++- **Case agents**: Haiku 5.5, effort xhigh, at most 4 in flight per session, at most 2 measuring sessions on the machine at once (more made helpers time out and the numbers noisy). 4 cases × 2 repetitions unless the brief says otherwise.
++- **Keep every subagent under ~100k tokens of context**: small self-contained briefs, one fresh work folder, answers handed back short. The haiku-subagent skill's PreToolUse hook (`.claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js`) trims a subagent's *starting prompt* to under 90k tokens; it does not compact a running subagent, and it only works when it is registered in `.claude/settings.json` (matcher `Agent|Task`). Check that before a run.
++- **Cheap checks before agent spend**: an offline gate (recall on gold tasks, a replay of recorded transcripts, a content run with `count_tokens.mjs`) runs first; the agent run starts only if the gate passes. Write the gate into `design.md` before running it.
++- **Few wake-ups for the orchestrator**: launch a batch of case agents, then end the turn or do other work; never poll, sleep or check status in a loop; collect a whole batch in one turn. Write outputs to files, keep chat short, and let the user `/compact` between phases of a long session.
++
+ ## The comparison: two arms only
+ 
+ | Arm | Folder | What runs |
+@@ -67,7 +89,7 @@ Run the whole relevant suite (unit, contract, integration such as `claude plugin
+ 
+ ## 5. Independent agent review
+ 
+-Spawn a separate reviewer (Agent tool, fresh context, read-only) with the brief, design, diff and test output. Checklist: matches the approved scope; edge cases, timeouts, fallback; hidden coupling to Jev/Laya; secrets, unsafe writes; weak or in-sample tests; whether the measurement is really sourced. Save `agent-review.json` (`Critical | Major | Minor | Suggestion`). Open Critical/Major block step 6 unless the user accepts them; a resolution starting with `fixed` or `accepted` closes a finding. Only the user can accept: the session that talks to the user asks (AskUserQuestion: accept and measure / fix first) and writes `accepted by the user for this run (<date>), not fixed` into each `resolution`, keeping the finding text. A delegated (sub)agent that reaches this point stops, writes what is ready and reports; it never accepts for the user. Findings about the measurement design (not the tool) are fixed in `design.md` and the helpers before step 6, whatever the user decides about the tool's findings.
++Spawn a separate reviewer (Agent tool, fresh context, read-only; Haiku 5.5 xhigh, Sonnet for a large diff; see the tracks table) with the brief, design, diff and test output. Checklist: matches the approved scope; edge cases, timeouts, fallback; hidden coupling to Jev/Laya; secrets, unsafe writes; weak or in-sample tests; whether the measurement is really sourced. Save `agent-review.json` (`Critical | Major | Minor | Suggestion`). Open Critical/Major block step 6 unless the user accepts them; a resolution starting with `fixed` or `accepted` closes a finding. Only the user can accept: the session that talks to the user asks (AskUserQuestion: accept and measure / fix first) and writes `accepted by the user for this run (<date>), not fixed` into each `resolution`, keeping the finding text. A delegated (sub)agent that reaches this point stops, writes what is ready and reports; it never accepts for the user. Findings about the measurement design (not the tool) are fixed in `design.md` and the helpers before step 6, whatever the user decides about the tool's findings.
+ 
+ ## 6. Measure A vs B — real tokens per case
+ 
+@@ -122,7 +144,7 @@ A result is **bad** when any of these holds in `summary.json`:
+ - The engine was called but changed nothing the agent used (its pick equals the rules / plain order, or the agent overrode it on every case), or it fell back on most calls.
+ - Recommendation would be `REWORK`, `DROP` or `INSUFFICIENT_EVIDENCE`.
+ 
+-Do not stop at the verdict. Review the tool against the evidence of this run, case by case:
++Do not stop at the verdict. This review is the round's single **Opus** call (default effort, closed input pack, see "Token budget"); collect the evidence below yourself first, on Haiku, and hand Opus the numbers, not the files. Review the tool against the evidence of this run, case by case:
+ 1. **Where B's extra tokens went**: compare turns and tool calls per case (`usage.modelTurns`, `toolCalls`) and what each arm read (`evidence/texts/<case>.<A|B>.txt`). Typical causes: the tool's output is long or needs a second step to use; the agent re-checks or overrides it; the wrapper is run several times.
+ 2. **Why a case got worse**: read B's answer next to the tool's output and the engine log. Was the tool wrong (bad ranking, wrong edge), or did the agent misread a correct output?
+ 3. **What the engine actually decided**: per call, did Jev/Laya change the rules' result, and was that change right? If it never changes anything, the call is pure cost.
