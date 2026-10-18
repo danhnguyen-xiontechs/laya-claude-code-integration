@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-model-router-r4-weakcheck-01",
+  "baseline": "20261018-model-router-r3-agent-01",
+  "track": "E",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "none",
+    "commit": "52f6583",
+    "branch": "claude/model-router-round4"
+  },
+  "status": "DESIGN_READY",
+  "arms": [
+    { "id": "A-claude", "description": "All case agents on Sonnet, no routing" },
+    { "id": "B-claude-jev", "description": "route.mjs --cascade tier, one scripted escalation to Sonnet on a failed visible (weak) check" }
+  ],
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md"
+  },
+  "approvals": {
+    "ideaApprovedAt": "N/A (existing tool, Track E; question chosen by the user 2026-10-18)"
+  },
+  "evaluation": {
+    "criteriaFrozenAt": "2026-10-18T14:42:35Z",
+    "caseCount": 6,
+    "repetitions": 2
+  },
+  "phases": [
+    { "phase": "P1", "status": "N/A (existing tool)" },
+    { "phase": "Control", "cwd": "D:\\XionTechs\\Laya", "pick": "busiest", "from": "2026-10-18T14:42:35Z", "model": "claude-opus-5-5" }
+  ],
+  "deviations": [
+    "smart-context-trimming cannot be loaded in a Claude Desktop app session: off in the control session.",
+    "Case agents at effort high (same as round 3, quota mode), not xhigh."
+  ]
+}
