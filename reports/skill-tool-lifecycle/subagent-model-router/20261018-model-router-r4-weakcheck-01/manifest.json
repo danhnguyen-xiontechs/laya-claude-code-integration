@@ -10,7 +10,7 @@
     "commit": "52f6583",
     "branch": "claude/model-router-round4"
   },
-  "status": "MEASURED",
+  "status": "INSUFFICIENT_EVIDENCE",
   "arms": [
     {
       "id": "A-claude",
@@ -23,10 +23,13 @@
   ],
   "artifacts": {
     "ideaBrief": "idea-brief.md",
-    "design": "design.md"
+    "design": "design.md",
+    "finalDecision": "final-decision.md"
   },
   "approvals": {
-    "ideaApprovedAt": "N/A (existing tool, Track E; question chosen by the user 2026-10-18)"
+    "ideaApprovedAt": "N/A (existing tool, Track E; question chosen by the user 2026-10-18)",
+    "finalDecisionAt": "2026-10-18",
+    "finalDecisionBy": "user"
   },
   "evaluation": {
     "criteriaFrozenAt": "2026-10-18T14:42:35Z",
@@ -88,5 +91,6 @@
   ],
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "low",
-  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Paired tokens 439,437 to 648,395 (+47%); price -93.9% is an estimate (-59.6% at a 1:3 Haiku:Sonnet ratio). The weak-check hypothesis was not tested: the case set is too easy for Haiku."
+  "headline": "Haiku passed the hidden strict check first time in all 12 cascade runs (0 escalations, 0 silent misses); all-Sonnet also 12/12. Paired tokens 439,437 to 648,395 (+47%); price -93.9% is an estimate (-59.6% at a 1:3 Haiku:Sonnet ratio). The weak-check hypothesis was not tested: the case set is too easy for Haiku.",
+  "finalDecision": "INSUFFICIENT_EVIDENCE"
 }

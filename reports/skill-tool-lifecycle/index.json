@@ -9,7 +9,7 @@
       "branch": "claude/model-router-round4"
     },
     "engine": "rules",
-    "status": "MEASURED",
+    "status": "INSUFFICIENT_EVIDENCE",
     "recommendation": "INSUFFICIENT_EVIDENCE",
     "finalDecision": null,
     "confidence": "low",
@@ -76,7 +76,7 @@
       "allTokens": 4432964
     },
     "lastRun": "2026-10-18T14:53:28.081Z",
-    "generatedAt": "2026-10-18T15:07:56.228Z",
+    "generatedAt": "2026-10-18T15:10:22.754Z",
     "report": "report.html",
     "href": "subagent-model-router/20261018-model-router-r4-weakcheck-01/report.html",
     "stale": false,
