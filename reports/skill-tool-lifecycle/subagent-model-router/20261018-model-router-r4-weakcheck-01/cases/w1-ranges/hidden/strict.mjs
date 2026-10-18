@@ -1,0 +1,22 @@
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { pathToFileURL } from 'node:url';
+const { mergeRanges } = await import(pathToFileURL(path.join(process.env.WORK_DIR, 'src/ranges.js')).href);
+let failed = 0;
+const t = (name, fn) => { try { fn(); } catch (e) { failed++; console.log(`FAIL ${name}: ${String(e.message).slice(0, 160)}`); } };
+t('touching ranges merge', () => assert.deepEqual(mergeRanges([[1, 3], [4, 6]]), [[1, 6]]));
+t('gap of one stays split', () => assert.deepEqual(mergeRanges([[1, 3], [5, 6]]), [[1, 3], [5, 6]]));
+t('containment keeps larger end', () => assert.deepEqual(mergeRanges([[1, 10], [2, 3]]), [[1, 10]]));
+t('unsorted input sorted output', () => assert.deepEqual(mergeRanges([[10, 12], [1, 2], [2, 4]]), [[1, 4], [10, 12]]));
+t('empty input', () => assert.deepEqual(mergeRanges([]), []));
+t('no mutation and fresh pairs', () => {
+  const input = [[3, 4], [1, 2]];
+  const out = mergeRanges(input);
+  assert.deepEqual(input, [[3, 4], [1, 2]]);
+  out[0][0] = 99;
+  assert.deepEqual(input, [[3, 4], [1, 2]]);
+});
+t('single range copied', () => { const r = [[7, 7]]; const out = mergeRanges(r); assert.deepEqual(out, [[7, 7]]); assert.notEqual(out[0], r[0]); });
+t('bad range message', () => assert.throws(() => mergeRanges([[1, 2], [5, 2]]), (e) => e instanceof RangeError && e.message === 'bad range: [5,2]'));
+process.exitCode = failed ? 1 : 0;
+console.log(failed ? `${failed} failed` : 'all strict checks passed');
