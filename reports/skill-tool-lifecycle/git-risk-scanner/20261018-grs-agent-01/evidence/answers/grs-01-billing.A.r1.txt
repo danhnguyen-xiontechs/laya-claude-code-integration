@@ -1,0 +1,1 @@
+Simplified shop/billing.py in place (invoice_total is now one sum() expression, apply_discount uses min() for the 100% cap and drops the extra Decimal(100) wrapper), keeping the negative-discount guard, the None-line skip, the int() truncation and the REV stamp; the 3 existing tests pass and an old-vs-new comparison over 965 inputs matched exactly.

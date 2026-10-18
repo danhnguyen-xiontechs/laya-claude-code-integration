@@ -1,0 +1,1 @@
+Removed the unused REV and TUNING_0-5 constants and the redundant int() wrap on the returned count in <home>\AppData\Local\Temp\rw\grs\grs-02-sync.A.r1\shop\sync.py; the existing test still passes (1 passed, same as baseline).

@@ -1,0 +1,9 @@
+# Triage: git-risk-scanner
+
+Retro measurement of a PILOT tool of the Laya/Jev report (run 2026-10-18). Source: the JEV repo, branch `claude/review-5-plans-idea-folder-ce4d36`, commit e551872 **plus the uncommitted working tree** (the three skills, their examples and tests are untracked there; the working tree was copied read-only and measured as it was).
+
+1. **What it decides.** How risky it is to change a file, from its git history: a deterministic 0-10 formula (fix ratio, churn, authors, commits, dormancy, size). A file at or above 4.5 gets a "Defensive mode" block (read the recent fixes, find callers, run/add tests, small diff).
+2. **What Jev adds.** Jev reads the last 15 commit subjects of each file (redacted) and answers "does this read like a fragile history?"; that moves the score by at most +-1.5 (less with fewer than 5 commits). It can lift a file whose messages say workaround/incident but contain no fix keyword, and lower one whose "fixes" are typos and lint. Elsewhere the formula alone decides.
+3. **What a fair agent task with a checkable gold answer looks like.** A task whose success depends on knowing the history: "simplify this module, remove redundant checks, keep the tests green", where the module holds guards that look redundant but were added by fix commits (visible tests do not cover them; hidden edge-case tests do). Pass = visible tests green, hidden tests green, original tests untouched, module shorter. Plain Claude can run `git log` itself, so the value is whether the tool makes the agent read history when it should, and costs little when it should not.
+
+Verdict of the triage: measurable with agents. Jev's own contribution can only show in grs-02 (the one case where it moves the file over the threshold); the other three cases measure the skill as a whole and the cost of a scan that finds nothing.

@@ -1,0 +1,516 @@
+{
+  "dcf-01-demo.A.r1": {
+    "status": "pass",
+    "observed": "18/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 2 neutral; missed D05,D06,D11",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "18/21 dead items found (need 16); missed D05,D06,D11"
+      }
+    ],
+    "detail": {
+      "listed": 23,
+      "deadFound": 18,
+      "deadTotal": 21,
+      "need": 16,
+      "decoyHits": [],
+      "neutral": [
+        "N1",
+        "N2"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": [
+        "D05",
+        "D06",
+        "D11"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-01-demo.B.r1": {
+    "status": "pass",
+    "observed": "20/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D06",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "20/21 dead items found (need 16); missed D06"
+      }
+    ],
+    "detail": {
+      "listed": 24,
+      "deadFound": 20,
+      "deadTotal": 21,
+      "need": 16,
+      "decoyHits": [],
+      "neutral": [
+        "N1"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": [
+        "D06"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-02-ordersapi.A.r1": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-02-ordersapi.B.r1": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 2
+  },
+  "dcf-03-pluglib.A.r1": {
+    "status": "pass",
+    "observed": "4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "4/4 dead items found (need 3); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 7,
+      "deadFound": 4,
+      "deadTotal": 4,
+      "need": 3,
+      "decoyHits": [],
+      "neutral": [
+        "N2",
+        "N1",
+        "N5"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-03-pluglib.B.r1": {
+    "status": "pass",
+    "observed": "4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "4/4 dead items found (need 3); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 7,
+      "deadFound": 4,
+      "deadTotal": 4,
+      "need": 3,
+      "decoyHits": [],
+      "neutral": [
+        "N1",
+        "N5",
+        "N2"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-04-shopapp.A.r1": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-04-shopapp.B.r1": {
+    "status": "pass",
+    "observed": "6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D3,D4",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "6/8 dead items found (need 6); missed D3,D4"
+      }
+    ],
+    "detail": {
+      "listed": 8,
+      "deadFound": 6,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [
+        "N2"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": [
+        "D3",
+        "D4"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-01-demo.B.r2": {
+    "status": "pass",
+    "observed": "19/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 5 neutral; missed D06,D11",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "19/21 dead items found (need 16); missed D06,D11"
+      }
+    ],
+    "detail": {
+      "listed": 27,
+      "deadFound": 19,
+      "deadTotal": 21,
+      "need": 16,
+      "decoyHits": [],
+      "neutral": [
+        "N1",
+        "N3",
+        "J15",
+        "J16",
+        "N2"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": [
+        "D06",
+        "D11"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 1
+  },
+  "dcf-01-demo.A.r2": {
+    "status": "fail",
+    "observed": "19/21 dead found, 1 decoy(s) listed (J14), 0 unlisted wrong, 2 neutral; missed D05,D11",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "fail",
+        "notes": "decoys: J14; unlisted: -"
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "19/21 dead items found (need 16); missed D05,D11"
+      }
+    ],
+    "detail": {
+      "listed": 25,
+      "deadFound": 19,
+      "deadTotal": 21,
+      "need": 16,
+      "decoyHits": [
+        "J14"
+      ],
+      "neutral": [
+        "J15",
+        "J16"
+      ],
+      "unlisted": [],
+      "wrong": 1,
+      "missed": [
+        "D05",
+        "D11"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-02-ordersapi.B.r2": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-02-ordersapi.A.r2": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-03-pluglib.B.r2": {
+    "status": "pass",
+    "observed": "4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "4/4 dead items found (need 3); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 7,
+      "deadFound": 4,
+      "deadTotal": 4,
+      "need": 3,
+      "decoyHits": [],
+      "neutral": [
+        "N1",
+        "N5",
+        "N2"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 1
+  },
+  "dcf-03-pluglib.A.r2": {
+    "status": "pass",
+    "observed": "4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "4/4 dead items found (need 3); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 5,
+      "deadFound": 4,
+      "deadTotal": 4,
+      "need": 3,
+      "decoyHits": [],
+      "neutral": [
+        "N1"
+      ],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "dcf-04-shopapp.B.r2": {
+    "status": "pass",
+    "observed": "6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed D3,D4",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "6/8 dead items found (need 6); missed D3,D4"
+      }
+    ],
+    "detail": {
+      "listed": 7,
+      "deadFound": 6,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": [
+        "D3",
+        "D4"
+      ]
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 1
+  },
+  "dcf-04-shopapp.A.r2": {
+    "status": "pass",
+    "observed": "8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -",
+    "criteria": [
+      {
+        "criterionId": "no-wrong-deletion",
+        "status": "pass",
+        "notes": ""
+      },
+      {
+        "criterionId": "recall-75",
+        "status": "pass",
+        "notes": "8/8 dead items found (need 6); missed -"
+      }
+    ],
+    "detail": {
+      "listed": 9,
+      "deadFound": 8,
+      "deadTotal": 8,
+      "need": 6,
+      "decoyHits": [],
+      "neutral": [],
+      "unlisted": [],
+      "wrong": 0,
+      "missed": []
+    },
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  }
+}

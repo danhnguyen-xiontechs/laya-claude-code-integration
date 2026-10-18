@@ -1,0 +1,5 @@
+Simplified shop/sync.py (<home>\AppData\Local\Temp\rw\grs\grs-02-sync.B.r1\shop\sync.py): removed the unused REV and TUNING_0 to TUNING_5 constants (nothing in the repo or on any branch references them) and replaced `count = int(written); return count` with `return written`. The null-owner skip, the sleep calls and the Locked retry are kept on purpose: the git history shows them as workarounds for past incidents.
+
+Added tests/test_sync_characterization.py with 3 tests covering the null-owner skip, the single Locked retry, and a second Locked propagating. The existing tests/test_sync.py is untouched. All 4 tests pass both before and after the edit (`D:\XionTechs\JEV\.venv\Scripts\python.exe -m pytest -q`).
+
+Risk: the git-risk scanner flagged the file (risk 4.6, fragile history, 20 commits, most of them "temporary" workarounds). The only residual risk is code outside this repo that imports REV or TUNING_* or greps the file for "REV = "; none was found here, but I could not check that.

@@ -1,0 +1,1 @@
+{"t":"2026-10-17T17:57:08.003Z","case":"grs-01-billing","arm":"B","rep":2,"args":["shop/billing.py"],"status":"ok","requests":1,"latencyMs":641,"cost":0.000032634,"inputTokens":777,"threshold":4.5,"rows":[{"file":"shop/billing.py","formula":5.5,"risk":6.85,"flagged":true,"jev":{"status":"ok","p":0.95,"kind":"bugfix_churn","adjust":1.35,"error":null,"reason":null}}]}

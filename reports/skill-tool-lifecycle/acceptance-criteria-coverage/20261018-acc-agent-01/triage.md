@@ -1,0 +1,9 @@
+# Triage: acceptance-criteria-coverage
+
+Retro measurement of a PILOT tool of the Laya/Jev report (run 2026-10-18). Source: the JEV repo, branch `claude/review-5-plans-idea-folder-ce4d36`, commit e551872 **plus the uncommitted working tree** (the three skills, their examples and tests are untracked there; the working tree was copied read-only and measured as it was).
+
+1. **What it decides.** For each acceptance criterion: which existing tests cover it and how well (Covered / Partial / Missing / Unclear). A local script ranks candidate tests per criterion by word overlap; Claude reads the tests and writes the verdicts; the report script renders them.
+2. **What Jev adds.** Jev (typesafe/jev-1.13, one Choice question per criterion x candidate test) labels each pair direct_coverage / partial_coverage / name_only / unrelated / insufficient_evidence and marks a pair `skippable` when it says unrelated with p >= 0.9, so Claude can skip reading it. It never decides coverage: the verdicts are Claude's.
+3. **What a fair agent task with a checkable gold answer looks like.** A story with 6-7 criteria and a small pytest suite (8-15 tests) built so that the gold coverage per criterion is known by construction (Covered / Partial / Missing, including a test whose name promises the criterion but asserts something else). The agent returns a verdict per criterion; a script compares with the key. Pass = every criterion right. Weak point: with a suite this small plain Claude can read every test, so the cases may be too easy for any helper to show value; the tool is meant for larger suites.
+
+Verdict of the triage: measurable with agents. Cases are small and seeded, so this measures whether the tool helps or costs on easy, fully known material; it cannot say how it behaves on a large real codebase.

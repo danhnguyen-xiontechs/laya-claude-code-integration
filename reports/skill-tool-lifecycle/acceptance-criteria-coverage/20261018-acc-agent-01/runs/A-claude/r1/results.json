@@ -1,0 +1,303 @@
+{
+  "experimentId": "20261018-acc-agent-01",
+  "arm": "A",
+  "runId": "r1",
+  "startedAt": "2026-10-17T17:51:05.184Z",
+  "finishedAt": "2026-10-17T17:53:26.028Z",
+  "cases": [
+    {
+      "experimentId": "20261018-acc-agent-01",
+      "caseId": "acc-01-registration",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:51:05.184Z",
+      "finishedAt": "2026-10-17T17:52:02.564Z",
+      "status": "pass",
+      "goldOutcome": {
+        "AC-01": "Covered",
+        "AC-02": "Partial",
+        "AC-03a": "Covered",
+        "AC-03b": "Covered",
+        "AC-04": "Missing|Unclear",
+        "AC-05": "Missing",
+        "AC-06": "Covered"
+      },
+      "observedOutcome": "7/7 criteria right: AC-01 Covered; AC-02 Partial; AC-03a Covered; AC-03b Covered; AC-04 Missing; AC-05 Missing; AC-06 Covered",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "AC-01",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-02",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-03a",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-03b",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-04",
+          "status": "pass",
+          "notes": "Missing"
+        },
+        {
+          "criterionId": "AC-05",
+          "status": "pass",
+          "notes": "Missing"
+        },
+        {
+          "criterionId": "AC-06",
+          "status": "pass",
+          "notes": "Covered"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 45,
+        "cacheReadTokens": 332569,
+        "cacheWriteTokens": 31346,
+        "modelTurns": 6,
+        "toolCalls": 14,
+        "elapsedMs": 51493,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/acc-01-registration.A.r1.txt",
+        "../../../evidence/answers/acc-01-registration.A.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-acc-agent-01",
+      "caseId": "acc-02-cart",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:51:05.208Z",
+      "finishedAt": "2026-10-17T17:51:52.988Z",
+      "status": "pass",
+      "goldOutcome": {
+        "AC-01": "Covered",
+        "AC-02": "Partial",
+        "AC-03": "Covered",
+        "AC-04": "Partial",
+        "AC-05": "Missing|Unclear",
+        "AC-06": "Partial"
+      },
+      "observedOutcome": "6/6 criteria right: AC-01 Covered; AC-02 Partial; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Partial",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "AC-01",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-02",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-03",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-04",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-05",
+          "status": "pass",
+          "notes": "Missing"
+        },
+        {
+          "criterionId": "AC-06",
+          "status": "pass",
+          "notes": "Partial"
+        }
+      ],
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 43,
+        "cacheReadTokens": 267145,
+        "cacheWriteTokens": 29007,
+        "modelTurns": 5,
+        "toolCalls": 12,
+        "elapsedMs": 41428,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/acc-02-cart.A.r1.txt",
+        "../../../evidence/answers/acc-02-cart.A.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-acc-agent-01",
+      "caseId": "acc-03-uploads",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:52:41.250Z",
+      "finishedAt": "2026-10-17T17:53:26.028Z",
+      "status": "pass",
+      "goldOutcome": {
+        "AC-01": "Partial",
+        "AC-02": "Covered|Partial",
+        "AC-03": "Covered",
+        "AC-04": "Partial",
+        "AC-05": "Missing",
+        "AC-06": "Covered"
+      },
+      "observedOutcome": "6/6 criteria right: AC-01 Partial; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Covered",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "AC-01",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-02",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-03",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-04",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-05",
+          "status": "pass",
+          "notes": "Missing"
+        },
+        {
+          "criterionId": "AC-06",
+          "status": "pass",
+          "notes": "Covered"
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 42,
+        "cacheReadTokens": 389583,
+        "cacheWriteTokens": 27122,
+        "modelTurns": 7,
+        "toolCalls": 14,
+        "elapsedMs": 39183,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/acc-03-uploads.A.r1.txt",
+        "../../../evidence/answers/acc-03-uploads.A.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-acc-agent-01",
+      "caseId": "acc-04-booking",
+      "arm": "A",
+      "runId": "r1",
+      "startedAt": "2026-10-17T17:52:41.272Z",
+      "finishedAt": "2026-10-17T17:53:23.717Z",
+      "status": "pass",
+      "goldOutcome": {
+        "AC-01": "Covered",
+        "AC-02": "Covered",
+        "AC-03": "Covered",
+        "AC-04": "Partial",
+        "AC-05": "Partial|Covered",
+        "AC-06": "Missing|Unclear"
+      },
+      "observedOutcome": "6/6 criteria right: AC-01 Covered; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Partial; AC-06 Missing",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "AC-01",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-02",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-03",
+          "status": "pass",
+          "notes": "Covered"
+        },
+        {
+          "criterionId": "AC-04",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-05",
+          "status": "pass",
+          "notes": "Partial"
+        },
+        {
+          "criterionId": "AC-06",
+          "status": "pass",
+          "notes": "Missing"
+        }
+      ],
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 31,
+        "cacheReadTokens": 205536,
+        "cacheWriteTokens": 23826,
+        "modelTurns": 4,
+        "toolCalls": 12,
+        "elapsedMs": 37077,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "cost": null,
+        "costKind": "unavailable",
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/acc-04-booking.A.r1.txt",
+        "../../../evidence/answers/acc-04-booking.A.r1.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context, opus), one per tool; ran the tool's unit tests and read the tool, harness, fixtures and keys",
+  "reviewedAt": "2026-10-18",
+  "findings": [
+    {
+      "severity": "Critical",
+      "finding": "The answer key can be read from every work folder (keys, make_acc.py, acc.mjs DEMO_GOLD, jev-src demo gold.json are a few levels up; the A forbid regex does not match them).",
+      "ref": "harness/tools/acc.mjs",
+      "resolution": "fixed before the runs: work folders moved to <home>\\AppData\\Local\\Temp\\rw (keys, harness, the JEV copy with demo gold files and the case generators stay under the scratchpad); the wrappers import a JEV copy without gold.json/run outputs/tests; the forbid check now runs on BOTH arms and also matches scratchpad, keys, hidden_test, make_*, gold.json, harness. Folders of the other arm remain reachable by path: a residual caveat listed in the manifest deviations."
+    },
+    {
+      "severity": "Critical",
+      "finding": "Arm A can read arm B's tool output in sibling folders and arm B is never checked for forbidden reads (forbid only ran over A).",
+      "ref": "harness/retro.mjs:116",
+      "resolution": "fixed before the runs: work folders moved to <home>\\AppData\\Local\\Temp\\rw (keys, harness, the JEV copy with demo gold files and the case generators stay under the scratchpad); the wrappers import a JEV copy without gold.json/run outputs/tests; the forbid check now runs on BOTH arms and also matches scratchpad, keys, hidden_test, make_*, gold.json, harness. Folders of the other arm remain reachable by path: a residual caveat listed in the manifest deviations."
+    },
+    {
+      "severity": "Major",
+      "finding": "Smoke-run leftovers (.tool-output, a log line) would contaminate acc-02-cart.B.r1.",
+      "ref": "harness/retro.mjs:57",
+      "resolution": "fixed before the runs: all work folders, prompts and logs were rebuilt after the smoke runs; the log is removed per B run at make time."
+    },
+    {
+      "severity": "Major",
+      "finding": "Gold of acc-03 AC-02 (\"any other type rejected\") is ambiguous with one non-allowed type tested.",
+      "ref": "build/out3/keys/acc-03-uploads.json",
+      "resolution": "fixed before the runs: key now accepts Covered or Partial."
+    },
+    {
+      "severity": "Major",
+      "finding": "acc-01 AC-03b has a failing test (digit rule not enforced) while the key says Covered; agents that run pytest may downgrade it.",
+      "ref": "harness/tools/acc.mjs",
+      "resolution": "fixed before the runs: the prompt now says to judge what tests assert, not whether they pass."
+    },
+    {
+      "severity": "Minor",
+      "finding": "acc-04 AC-05 is borderline (removal asserted, re-booking not).",
+      "ref": "build/out3/keys/acc-04-booking.json",
+      "resolution": "fixed before the runs: key accepts Partial or Covered."
+    },
+    {
+      "severity": "Minor",
+      "finding": "\"Do not change any file\" conflicts with the tool writing .tool-output in arm B.",
+      "ref": "harness/tools/acc.mjs",
+      "resolution": "fixed before the runs: prompt says \"Do not change any project file\"."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Grader exact-match on the verdict word, tests field unchecked.",
+      "ref": "harness/tools/acc.mjs",
+      "resolution": "fixed before the runs: verdict word is case-normalised; the cited tests are recorded but not scored (kept as is, said in design.md)."
+    },
+    {
+      "severity": "Minor",
+      "finding": "All-criteria-right pass rule over few cases is coarse.",
+      "ref": "design.md",
+      "resolution": "fixed before the runs: criteria right and false-Covered are reported next to pass/fail in every observedOutcome and in the report notes."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Forbid failure produced null instead of stopping; the Python path names the JEV venv (a breadcrumb).",
+      "ref": "harness/retro.mjs:117",
+      "resolution": "fixed before the runs: make() with --arm A only rebuilds the A folders and no longer deletes the B log; a failing forbid check now stops collect instead of recording null. The Python path stays (no other Python 3 is installed); it is the same in both arms."
+    },
+    {
+      "severity": "Major",
+      "finding": "jev.decide breaks its \"never raises\": a JSON body that is not an object or non-UTF-8 bytes raise, so classify crashes instead of going Claude-only.",
+      "ref": "jev_skills/common/jev.py:89",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "A partial batch failure hides the cause (status ok, pairs get \"invalid-answer\" instead of \"timeout\").",
+      "ref": "jev_skills/ac_coverage/classify.py:82",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Unparsable test files are skipped silently; a criterion whose only test is there becomes no_candidates.",
+      "ref": "jev_skills/ac_coverage/discover.py:114",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Discovery misses nested test classes, unittest.TestCase not named Test*, and custom pytest python_files/classes/functions.",
+      "ref": "jev_skills/ac_coverage/discover.py:118",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "classify imports jev_advisor.redact at module level (ImportError instead of Claude-only) and the criterion text is not redacted.",
+      "ref": "jev_skills/ac_coverage/classify.py:7",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The report does not validate verdict test references; Unverified rows list nodeids with execution status that read like evidence.",
+      "ref": "jev_skills/ac_coverage/report.py:40",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Labels cannot become coverage claims, but skippable pairs can steer Claude: in the smoke run Jev labelled the AC-05 name-only trap partial_coverage p=0.83 (the key says Missing).",
+      "ref": "jev_skills/ac_coverage/report.py:33",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Unit tests are weak/in-sample: nothing exercises jev.decide parsing, parametrized tests, duplicate names, an unparsable file, empty criteria, partial batch failure.",
+      "ref": "tests/test_ac_coverage.py:87",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    }
+  ]
+}

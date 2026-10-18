@@ -1,0 +1,29 @@
+{
+  "source": "Story SHOP-7 'Cart and coupons'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Adding an item sets its quantity and raises the subtotal; adding the same SKU twice merges into one line."
+    },
+    {
+      "id": "AC-02",
+      "text": "Coupon SAVE10 takes 10% off the subtotal; the shipping fee is not discounted."
+    },
+    {
+      "id": "AC-03",
+      "text": "A second coupon is rejected with CouponError and the first coupon stays applied."
+    },
+    {
+      "id": "AC-04",
+      "text": "Removing the last item empties the cart and clears any applied coupon."
+    },
+    {
+      "id": "AC-05",
+      "text": "A coupon worth more than the subtotal makes the item total zero, never negative; shipping is still charged."
+    },
+    {
+      "id": "AC-06",
+      "text": "Adding an out-of-stock item raises OutOfStock and leaves the cart unchanged."
+    }
+  ]
+}

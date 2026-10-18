@@ -1,0 +1,29 @@
+{
+  "source": "Story FILES-12 'Image upload'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "A file larger than 5 MB is rejected with HTTP 413 and nothing is stored."
+    },
+    {
+      "id": "AC-02",
+      "text": "Only PNG and JPEG images are accepted; any other type is rejected with HTTP 415."
+    },
+    {
+      "id": "AC-03",
+      "text": "The stored file name has any directory part removed, so a name like ../../etc/passwd.png is stored as passwd.png."
+    },
+    {
+      "id": "AC-04",
+      "text": "Uploading identical content again returns HTTP 200 with the existing id and stores no second copy."
+    },
+    {
+      "id": "AC-05",
+      "text": "Every upload is passed to the virus scanner before it is stored; an infected file gets HTTP 422 and is not stored."
+    },
+    {
+      "id": "AC-06",
+      "text": "Only the owner can delete a file; anyone else gets HTTP 403 and the file remains."
+    }
+  ]
+}

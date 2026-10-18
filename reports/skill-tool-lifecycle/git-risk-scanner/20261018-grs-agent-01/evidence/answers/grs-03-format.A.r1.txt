@@ -1,0 +1,1 @@
+Removed the unused REV constant, replaced the slugify loop with one regex (re.sub(r"[\W_]+", "-", ...)), and used divmod for the cents split in format_money; I kept the None-to-USD default because it changes output, and both existing tests pass and about 1.2M randomized inputs match the original module's output.

@@ -1,0 +1,226 @@
+{
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-01-demo.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a4c885d2d1263d1d6.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 24,
+      "cacheReadTokens": 210576,
+      "cacheWriteTokens": 44367,
+      "modelTurns": 4,
+      "toolCalls": 21,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a4c885d2d1263d1d6.jsonl",
+      "elapsedMs": 104636
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-01-demo.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a381a51b48998bf68.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 31,
+      "cacheReadTokens": 275927,
+      "cacheWriteTokens": 59591,
+      "modelTurns": 5,
+      "toolCalls": 24,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a381a51b48998bf68.jsonl",
+      "elapsedMs": 129131
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-02-ordersapi.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a7cce5fc47f5b6f8d.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 28,
+      "cacheReadTokens": 206595,
+      "cacheWriteTokens": 26359,
+      "modelTurns": 4,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a7cce5fc47f5b6f8d.jsonl",
+      "elapsedMs": 35835
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-02-ordersapi.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-afafae87ea8f43916.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 30,
+      "cacheReadTokens": 343780,
+      "cacheWriteTokens": 39466,
+      "modelTurns": 6,
+      "toolCalls": 19,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-afafae87ea8f43916.jsonl",
+      "elapsedMs": 59880
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-03-pluglib.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a15d6cc376e4cb640.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 19,
+      "cacheReadTokens": 276288,
+      "cacheWriteTokens": 32422,
+      "modelTurns": 5,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a15d6cc376e4cb640.jsonl",
+      "elapsedMs": 66026
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-03-pluglib.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a8c1ff32621b88d2b.jsonl",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 68,
+      "cacheReadTokens": 622679,
+      "cacheWriteTokens": 40113,
+      "modelTurns": 10,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a8c1ff32621b88d2b.jsonl",
+      "elapsedMs": 98934
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-04-shopapp.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-ae4294a05942ea85e.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 21,
+      "cacheReadTokens": 208020,
+      "cacheWriteTokens": 30825,
+      "modelTurns": 4,
+      "toolCalls": 19,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-ae4294a05942ea85e.jsonl",
+      "elapsedMs": 63313
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-04-shopapp.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-acc4f1fa85aa8dbe9.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 37,
+      "cacheReadTokens": 351276,
+      "cacheWriteTokens": 47081,
+      "modelTurns": 6,
+      "toolCalls": 22,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-acc4f1fa85aa8dbe9.jsonl",
+      "elapsedMs": 80451
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-01-demo.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-afa7d21da40f5700a.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 55,
+      "cacheReadTokens": 351177,
+      "cacheWriteTokens": 56650,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-afa7d21da40f5700a.jsonl",
+      "elapsedMs": 142898
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-01-demo.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-adf8624d6f0b7fb26.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 24,
+      "cacheReadTokens": 209925,
+      "cacheWriteTokens": 46968,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-adf8624d6f0b7fb26.jsonl",
+      "elapsedMs": 109644
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-02-ordersapi.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a9ba69a479283b7c2.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 51,
+      "cacheReadTokens": 331321,
+      "cacheWriteTokens": 29532,
+      "modelTurns": 6,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a9ba69a479283b7c2.jsonl",
+      "elapsedMs": 52329
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-02-ordersapi.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a02ba7083e1b8665f.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 26,
+      "cacheReadTokens": 206985,
+      "cacheWriteTokens": 29806,
+      "modelTurns": 4,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a02ba7083e1b8665f.jsonl",
+      "elapsedMs": 53002
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-03-pluglib.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a092dca56af56a4e3.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 30,
+      "cacheReadTokens": 274115,
+      "cacheWriteTokens": 36843,
+      "modelTurns": 5,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a092dca56af56a4e3.jsonl",
+      "elapsedMs": 69290
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-03-pluglib.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a9e41d44c53a1273e.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 24,
+      "cacheReadTokens": 206955,
+      "cacheWriteTokens": 28920,
+      "modelTurns": 4,
+      "toolCalls": 18,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a9e41d44c53a1273e.jsonl",
+      "elapsedMs": 45334
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-04-shopapp.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a96c7525491addeb4.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 43,
+      "cacheReadTokens": 333765,
+      "cacheWriteTokens": 33482,
+      "modelTurns": 6,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a96c7525491addeb4.jsonl",
+      "elapsedMs": 57827
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw\\dcf\\dcf-04-shopapp.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a61a0739b0cc1e9d8.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 23,
+      "cacheReadTokens": 207031,
+      "cacheWriteTokens": 34220,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\subagents\\agent-a61a0739b0cc1e9d8.jsonl",
+      "elapsedMs": 65496
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"t":"2026-10-17T17:48:01.340Z","case":"grs-02-sync","arm":"B","rep":1,"args":["shop/sync.py"],"status":"ok","requests":1,"latencyMs":671,"cost":0.0000357,"inputTokens":850,"threshold":4.5,"rows":[{"file":"shop/sync.py","formula":3.21,"risk":4.62,"flagged":true,"jev":{"status":"ok","p":0.97,"kind":"workaround_or_hack","adjust":1.41,"error":null,"reason":null}}]}

@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-acc-agent-01",
+  "tool": {
+    "name": "acceptance-criteria-coverage",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "e551872+working-tree",
+    "branch": "claude/review-5-plans-idea-folder-ce4d36"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 4 small suites (8-15 tests, 6-7 criteria) plain Haiku 5.5 and Haiku with the tool pass every run (8/8 vs 8/8, identical verdicts in all 8 pairs); tokens 2.30M -> 2.27M (-1%, B lower in 4 of 8 pairs), which is noise. Jev marked 118 of 210 pairs skippable and no agent used a skipped test as evidence, but it also labelled the cart \"name-only\" trap partial_coverage (p 0.76-0.80), which both arms ignored. The suites are too small for any helper to show value; top suggestion: re-measure on a suite of 60+ tests where reading everything is costly.",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 2296037,
+      "inputTokens": 78,
+      "outputTokens": 296,
+      "toolCalls": 102,
+      "modelTurns": 39,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 37077,
+      "pairedTokens": 1148018.5
+    },
+    "B": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 2271848,
+      "inputTokens": 76,
+      "outputTokens": 349,
+      "toolCalls": 66,
+      "modelTurns": 38,
+      "providerCalls": 8,
+      "fallbacks": 0,
+      "providerLatencyMs": 859,
+      "elapsedMs": 40981,
+      "pairedTokens": 1135924
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T18:01:40.441Z",
+  "generatedAt": "2026-10-17T18:11:09.869Z",
+  "report": "report.html"
+}

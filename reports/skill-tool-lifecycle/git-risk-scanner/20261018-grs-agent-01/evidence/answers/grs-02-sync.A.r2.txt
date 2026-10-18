@@ -1,0 +1,1 @@
+Removed the unused REV/TUNING_* constants and the redundant int() wrap and continue branch in shop/sync.py, keeping all runtime behavior (the existing test passes and 8 edge cases match the original).

@@ -1,0 +1,9 @@
+Simplified shop/sync.py in place: removed the unused REV and TUNING_0..5 constants, inverted the null-owner check to drop a `continue`, and returned the counter directly instead of via `int()` and a temp variable (-14/+4 lines).
+
+Tests: `D:\XionTechs\JEV\.venv\Scripts\python.exe -m pytest -q` gives 4 passed (the 1 original test plus 3 new ones). The existing tests/test_sync.py is untouched.
+
+I added tests/test_sync_characterization.py (new file, delete it if unwanted). It covers the null-owner skip, the single commit retry on Locked with sleeps [0.2, 0.5], and a second Locked propagating. I ran it against the original code first and it passed, so it pins current behaviour.
+
+Kept on purpose: both time.sleep calls and the Locked retry. The git history shows they were added as stopgaps for flaky commits and lock contention, so removing them could bring those failures back. The null-owner skip also came from an upstream-data hack and is not provably redundant from the code alone.
+
+Risk: the git-risk scanner flagged the file (4.6/10, 20 commits, mostly constant bumps and workarounds). The REV/TUNING constants had no readers anywhere in the tracked repo; if anything outside the repo imports them, it will break.

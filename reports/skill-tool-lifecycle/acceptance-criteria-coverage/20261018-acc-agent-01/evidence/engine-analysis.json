@@ -1,0 +1,127 @@
+{
+  "acc-01-registration.r1": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 18,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-04",
+        "labels": []
+      },
+      {
+        "id": "AC-05",
+        "labels": []
+      }
+    ]
+  },
+  "acc-01-registration.r2": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 17,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-04",
+        "labels": []
+      },
+      {
+        "id": "AC-05",
+        "labels": []
+      }
+    ]
+  },
+  "acc-02-cart.r1": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 13,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-05",
+        "labels": [
+          "test_total_never_negative=partial_coverage p=0.8",
+          "test_half_coupon_halves_subtotal=partial_coverage p=0.64"
+        ]
+      }
+    ]
+  },
+  "acc-02-cart.r2": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 15,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-05",
+        "labels": [
+          "test_total_never_negative=partial_coverage p=0.76"
+        ]
+      }
+    ]
+  },
+  "acc-03-uploads.r1": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 18,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-05",
+        "labels": []
+      }
+    ]
+  },
+  "acc-03-uploads.r2": {
+    "wrapperRuns": 1,
+    "pairs": 30,
+    "labelled": 30,
+    "skippable": 19,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-05",
+        "labels": []
+      }
+    ]
+  },
+  "acc-04-booking.r1": {
+    "wrapperRuns": 1,
+    "pairs": 15,
+    "labelled": 15,
+    "skippable": 9,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-06",
+        "labels": []
+      }
+    ]
+  },
+  "acc-04-booking.r2": {
+    "wrapperRuns": 1,
+    "pairs": 15,
+    "labelled": 15,
+    "skippable": 9,
+    "skippableButCitedByAgent": 0,
+    "verdictsIdenticalAB": true,
+    "missingCriteriaWithPositiveLabel": [
+      {
+        "id": "AC-06",
+        "labels": []
+      }
+    ]
+  }
+}

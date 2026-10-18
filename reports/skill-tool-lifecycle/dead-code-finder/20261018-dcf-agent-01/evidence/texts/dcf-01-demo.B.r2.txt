@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+// Neutral wrapper, arm B: runs the real dead-code-finder scan (Jev live) on this folder, prints the report.md the skill says
+// to read, and appends one decision line (tiers, Jev cost/latency, per-candidate tier with and without Jev) to the run log.
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+const CASE = "dcf-01-demo", REP = 2;
+const here = import.meta.dirname;
+const env = { ...process.env, PYTHONPATH: "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\jev-run", PYTHONIOENCODING: 'utf-8' };
+const out = path.join(here, '.dead-code', 'run');
+const log = (o) => { fs.mkdirSync("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\logs\\dcf", { recursive: true }); fs.appendFileSync(path.join("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\logs\\dcf", CASE + '.B.r' + REP + '.jsonl'), JSON.stringify({ t: new Date().toISOString(), case: CASE, arm: 'B', rep: REP, ...o }) + '\n'); };
+const r = spawnSync("D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe", ['-m', 'jev_skills.dead_code', 'scan', '.', '-o', out], { cwd: here, encoding: 'utf8', env });
+if (r.status !== 0) { log({ status: 'error', error: 'scan failed' }); console.log('tool failed: ' + (r.stderr || '').split('\n').slice(-3).join(' ')); process.exit(0); }
+const report = fs.readFileSync(path.join(out, 'report.md'), 'utf8');
+console.log((r.stdout || '').trim().replace(/[A-Za-z]:\\[^ ]*[\\/]/g, '') + '\n\n' + report);
+const cands = fs.readFileSync(path.join(out, 'candidates.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+const answered = cands.filter((c) => c.jev && c.jev.status === 'ok').length;
+const m = /JEV (\d+) sent, \$([0-9.]+), (\d+) ms/.exec(r.stdout || '');
+log({
+  status: !m || +m[1] === 0 ? 'rules-only' : answered > 0 ? 'ok' : 'jev-unavailable', sent: m ? +m[1] : 0, answered, cost: m ? +m[2] : null, latencyMs: m ? +m[3] : null, requests: +((/JEV: (\d+) request/.exec(report) || [])[1] || 0),
+  tiers: { A: cands.filter((c) => c.tier === 'A').length, B: cands.filter((c) => c.tier === 'B').length, C: cands.filter((c) => c.tier === 'C').length },
+  changedByJev: cands.filter((c) => c.tier_no_jev !== c.tier).length,
+  candidates: cands.map((c) => ({ id: c.id, file: c.file, symbol: c.symbol ?? null, kind: c.kind, tierNoJev: c.tier_no_jev, tier: c.tier, jev: c.jev?.label ?? null, p: c.jev?.p ?? null, jevStatus: c.jev?.status ?? null })),
+});
+fs.copyFileSync(path.join(out, 'report.md'), path.join("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-hopeful-mestorf-48efe4\\5094744c-e3de-4fcd-9e26-951de47c9650\\scratchpad\\logs\\dcf", CASE + '.B.r' + REP + '.report.md'));
+----
+   5 demo_pkg/__init__.py
+  36 demo_pkg/cli.py
+  72 demo_pkg/core.py
+   5 demo_pkg/debug_tools.py
+  25 demo_pkg/formatting.py
+  41 demo_pkg/handlers.py
+   5 demo_pkg/hooks.py
+  25 demo_pkg/jobs.py
+  11 demo_pkg/legacy_report.py
+  11 demo_pkg/plugins.py
+  48 demo_pkg/web.py
+  13 tests/conftest.py
+  14 tests/test_core.py
+   6 config/jobs.yaml
+   4 config/settings.json
+  10 pyproject.toml
+ 331 total

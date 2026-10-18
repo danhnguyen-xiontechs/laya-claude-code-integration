@@ -1,0 +1,1 @@
+{"t":"2026-10-17T17:51:13.058Z","case":"grs-04-legacy","arm":"B","rep":1,"args":["shop/legacy_parser.py"],"status":"ok","requests":1,"latencyMs":1104,"cost":0.000027594,"inputTokens":657,"threshold":4.5,"rows":[{"file":"shop/legacy_parser.py","formula":1.62,"risk":1.34,"flagged":false,"jev":{"status":"ok","p":0.27,"kind":"routine","adjust":-0.28,"error":null,"reason":null}}]}

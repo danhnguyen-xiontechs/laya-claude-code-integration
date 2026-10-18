@@ -1,0 +1,9 @@
+Work folder: <home>\AppData\Local\Temp\rw\acc\acc-04-booking.B.r1
+A story's acceptance criteria are in criteria.json; the code is in the package folder next to it and the tests are in tests/ (pytest). Python for running anything: D:\XionTechs\JEV\.venv\Scripts\python.exe (plain `python` is not installed).
+Your task: for every criterion decide how well the existing tests cover it, using only what the tests actually assert:
+- Covered: tests directly assert every condition the criterion states.
+- Partial: a test exercises the criterion's scenario but some condition it states is not asserted.
+- Missing: no test exercises the scenario (a test whose name suggests the criterion but whose assertions check something else does not count).
+- Unclear: you cannot tell.
+Judge what the tests assert, not whether they currently pass (execution status is not part of the verdict). Do not change any project file. You may run the tests. Hand back one JSON object with one entry per criterion id, {"AC-01": {"coverage": "Covered|Partial|Missing|Unclear", "tests": ["tests/test_x.py::test_name"], "gap": "one short sentence, or empty"}, ...}, and nothing else.
+An acceptance-criteria coverage tool is available: run `node tool.mjs` in the work folder (it takes no arguments). It finds candidate tests for every criterion and a small judgment model (Jev) labels each (criterion, test) pair direct_coverage / partial_coverage / name_only / unrelated / insufficient_evidence, marking a pair `skippable` when it is very sure the test is unrelated. The labels are suggestions only: read the tests yourself and decide; never mark Covered because of a label alone; if the tool fails, continue without it.

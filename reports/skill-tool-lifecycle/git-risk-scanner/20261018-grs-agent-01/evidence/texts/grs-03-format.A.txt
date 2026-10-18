@@ -1,0 +1,48 @@
+2274913 add tests
+5d407ce fix lint warnings
+6547029 add slugify helper
+total 14
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 ..
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:48 .git
+-rw-r--r-- 1 <user> 197121  32 Oct 18 00:41 README.md
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 shop
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 tests
+-rwxr-xr-x 1 <user> 197121 116 Oct 18 00:46 tool.mjs
+shop:
+total 6
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 ..
+-rw-r--r-- 1 <user> 197121   0 Oct 18 00:41 __init__.py
+-rw-r--r-- 1 <user> 197121 527 Oct 18 00:41 format_utils.py
+-rw-r--r-- 1 <user> 197121  55 Oct 18 00:41 util.py
+
+tests:
+total 5
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 00:46 ..
+-rw-r--r-- 1 <user> 197121   0 Oct 18 00:41 __init__.py
+-rw-r--r-- 1 <user> 197121 247 Oct 18 00:41 test_fmt.py
+"""Formatting helpers."""
+
+REV = 15
+
+
+def format_money(cents, currency="USD"):
+    if currency is None:
+        currency = "USD"
+    sign = "-" if cents < 0 else ""
+    cents = abs(int(cents))
+    return f"{sign}{cents // 100}.{cents % 100:02d} {currency}"
+
+
+def slugify(text):
+    text = str(text)
+    text = text.strip().lower()
+    out = ""
+    for ch in text:
+        if ch.isalnum():
+            out += ch
+        elif out and not out.endswith("-"):
+            out += "-"
+    return out.strip("-")

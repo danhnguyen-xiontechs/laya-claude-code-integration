@@ -1,0 +1,678 @@
+{
+  "acc-01-registration.A.r1": {
+    "status": "pass",
+    "observed": "7/7 criteria right: AC-01 Covered; AC-02 Partial; AC-03a Covered; AC-03b Covered; AC-04 Missing; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03a",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03b",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 7,
+    "n": 7,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-01-registration.B.r1": {
+    "status": "pass",
+    "observed": "7/7 criteria right: AC-01 Covered; AC-02 Partial; AC-03a Covered; AC-03b Covered; AC-04 Missing; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03a",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03b",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 7,
+    "n": 7,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-02-cart.A.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Partial; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Partial",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Partial"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-02-cart.B.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Partial; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Partial",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Partial"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-03-uploads.A.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Partial; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-03-uploads.B.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Partial; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-04-booking.A.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Partial; AC-06 Missing",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Missing"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-04-booking.B.r1": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Partial; AC-06 Missing",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Missing"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-01-registration.B.r2": {
+    "status": "pass",
+    "observed": "7/7 criteria right: AC-01 Covered; AC-02 Partial; AC-03a Covered; AC-03b Covered; AC-04 Missing; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03a",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03b",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 7,
+    "n": 7,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-01-registration.A.r2": {
+    "status": "pass",
+    "observed": "7/7 criteria right: AC-01 Covered; AC-02 Partial; AC-03a Covered; AC-03b Covered; AC-04 Missing; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03a",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03b",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 7,
+    "n": 7,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-02-cart.B.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Partial; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Partial",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Partial"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-02-cart.A.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Partial; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Partial",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Partial"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-03-uploads.B.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Partial; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-03-uploads.A.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Partial; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Missing; AC-06 Covered",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Missing"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Covered"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-04-booking.B.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Partial; AC-06 Missing",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Missing"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  },
+  "acc-04-booking.A.r2": {
+    "status": "pass",
+    "observed": "6/6 criteria right: AC-01 Covered; AC-02 Covered; AC-03 Covered; AC-04 Partial; AC-05 Partial; AC-06 Missing",
+    "criteria": [
+      {
+        "criterionId": "AC-01",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-02",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-03",
+        "status": "pass",
+        "notes": "Covered"
+      },
+      {
+        "criterionId": "AC-04",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-05",
+        "status": "pass",
+        "notes": "Partial"
+      },
+      {
+        "criterionId": "AC-06",
+        "status": "pass",
+        "notes": "Missing"
+      }
+    ],
+    "right": 6,
+    "n": 6,
+    "falseCovered": 0,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0
+  }
+}

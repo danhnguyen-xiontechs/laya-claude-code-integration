@@ -1,0 +1,126 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context, opus), one per tool; ran the tool's unit tests and read the tool, harness, fixtures and keys",
+  "reviewedAt": "2026-10-18",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "grs-03 was not a control: the hidden tests checked three guards that look redundant and have no history behind them.",
+      "ref": "build/make_grs.py:258-271",
+      "resolution": "fixed before the runs: hidden tests of grs-03 now check ordinary behaviour only; every sensible simplification passes; verified 4/4 on the original."
+    },
+    {
+      "severity": "Major",
+      "finding": "The \"sleep before commit\" trap of grs-02 was not guarded (the retry branch hid it).",
+      "ref": "build/make_grs.py:47-50,232-234",
+      "resolution": "fixed before the runs: test_waits_before_commit now also asserts exactly one commit call."
+    },
+    {
+      "severity": "Major",
+      "finding": "The answer key and the other arm's files were reachable from every work folder; forbid ran on A only.",
+      "ref": "harness/tools/grs.mjs:139-140; harness/retro.mjs:116",
+      "resolution": "fixed before the runs: work folders moved to <home>\\AppData\\Local\\Temp\\rw (keys, harness, the JEV copy with demo gold files and the case generators stay under the scratchpad); the wrappers import a JEV copy without gold.json/run outputs/tests; the forbid check now runs on BOTH arms and also matches scratchpad, keys, hidden_test, make_*, gold.json, harness. Folders of the other arm remain reachable by path: a residual caveat listed in the manifest deviations."
+    },
+    {
+      "severity": "Major",
+      "finding": "Arm A's sentence restricted ordinary commands and named a \"git-risk tool\" (a hint).",
+      "ref": "harness/tools/grs.mjs:28",
+      "resolution": "fixed before the runs: A now says: no risk scanner is available; do not look for any skill, script or helper; ordinary git and test commands are fine."
+    },
+    {
+      "severity": "Major",
+      "finding": "The re-run procedure rebuilt B folders and deleted the B engine log.",
+      "ref": "harness/retro.mjs:48,52,57",
+      "resolution": "fixed before the runs: make() with --arm A only rebuilds the A folders and no longer deletes the B log; a failing forbid check now stops collect instead of recording null."
+    },
+    {
+      "severity": "Major",
+      "finding": "The Defensive-mode block says to add a characterization test; the prompt said not to edit tests and the grader failed any change of tests/*.py.",
+      "ref": "harness/tools/grs.mjs:107,119",
+      "resolution": "fixed before the runs: prompt: existing tests must not be edited, adding a new test file is fine (the grader only hashes the original test files)."
+    },
+    {
+      "severity": "Minor",
+      "finding": "A deleted module graded as error instead of fail; pytest had no timeout.",
+      "ref": "harness/tools/grs.mjs:93,102",
+      "resolution": "fixed before the runs: missing target = fail; 120 s timeout."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The \"fewer code lines\" rule can be gamed (joined lines) and legacy has no planted redundant line.",
+      "ref": "harness/tools/grs.mjs:81-91",
+      "resolution": "not fixed (measurement note): the rule counts logical statement lines of non-blank, non-comment, non-docstring lines; grs-04 needs a restructure to pass, which is part of why it is the \"tool cannot help\" case. Stated in design.md."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Some behaviour changes pass the hidden tests (dropping `or 0` on price, a falsy owner check).",
+      "ref": "build/make_grs.py:185-190,243-246",
+      "resolution": "not fixed (measurement note): hidden tests cover the planted traps, not every possible change."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Jev flips grs-02 only if p >= 0.93 and the case sits on a tuned margin (TUNING_ constants); design.md said filler changes only REV.",
+      "ref": "build/make_grs.py:41; design.md:24,30",
+      "resolution": "fixed before the runs: design.md says the six TUNING_ constants are what puts the formula at 3.2; the Jev p of every call is logged."
+    },
+    {
+      "severity": "Minor",
+      "finding": "grs-04 was described as old and dormant, but its history is 34 days.",
+      "ref": "design.md:26",
+      "resolution": "fixed before the runs: description corrected."
+    },
+    {
+      "severity": "Major",
+      "finding": "COSMETIC_RX vetoes real fixes that mention comment/format/etc.; fix regex misses \"fixing\", \"fixup\", \"resolve\", \"correct\" and counts \"add regression tests\", \"bump patch version\".",
+      "ref": "jev_skills/git_risk/risk.py:15-25",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Renames are not followed; a renamed fragile file restarts with no history.",
+      "ref": "jev_skills/git_risk/gitlog.py:60-63",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "No shallow-clone detection; --max-count=20000 and the 200 per-file cap distort age and dormancy.",
+      "ref": "jev_skills/git_risk/gitlog.py:62",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Empty files are treated as binary; missing/untracked paths are dropped silently.",
+      "ref": "jev_skills/git_risk/gitlog.py:71-80",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "jev.decide raises on a non-object JSON body or non-UTF-8 bytes; the scan crashes instead of falling back to the formula.",
+      "ref": "jev_skills/common/jev.py:76-89",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Hook: file marked seen before scoring, cache key ignores weights/maxCommits, a Jev outage is cached for that HEAD, import-time failure is not fail-open.",
+      "ref": "jev_skills/git_risk/hook.py:52-70",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The monotonicity claim is false for size and commits; capped flag set at exactly n == maxCommits.",
+      "ref": "jev_skills/git_risk/risk.py:98,123-131",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Tests are weak/in-sample (tautology at line 77; threshold tuned on the demo repo); none for renames, merges, shallow clones, CRLF, regex false negatives.",
+      "ref": "tests/test_git_risk.py:77",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Redaction covers commit subjects only; file paths go to Jev unredacted; merge commits are excluded.",
+      "ref": "jev_skills/git_risk/risk.py:166-173",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool finding: the tool is not edited in this run."
+    }
+  ]
+}
