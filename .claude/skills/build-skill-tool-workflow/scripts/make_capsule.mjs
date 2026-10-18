@@ -90,6 +90,7 @@ if (phase === 'P4') {
   }
 }
 
+out.push('', '## First step', `Add your row to \`manifest.phases[]\` in \`${rel('manifest.json')}\`: { "phase": "${phase}", "cwd": "<your working directory>", "from": "<ISO time now>", "model": "<your model>", "smartTrimMode": "${P.trim}" }. It lets phase_usage.mjs measure this phase.`);
 out.push('', '## Done when', P.done, '',
   'Keep output quiet: scripts print one line, git with `-q` and `-c core.safecrlf=false`, long output through `| tail -n 5`; never paste diffs or logs into chat.');
 

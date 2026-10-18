@@ -20,13 +20,15 @@ Every experiment measures **what Jev / Laya (or the tool's rules) adds on top of
 
 - **Track N (new idea):** P1 → Gate A → P2 → P3 → P4 → Gate B.
 - **Track E (tool exists):** P1 is `N/A (existing tool)`; write a short `idea-brief.md` naming the question this run answers and the baseline experiment, then P2 (only the approved changes, or none) → P3 → P4 → Gate B. An approved improvement from Gate B starts a new experiment id in Track E.
-- Track the phase in `manifest.json` `status` (`schemas/experiment-manifest.schema.json`); a skipped phase is `N/A` with the reason, never silently dropped. Record each phase session in `manifest.phases[]` (phase, sessionId, model, smart-trim mode) so its cost can be measured.
+- Track the phase in `manifest.json` `status` (`schemas/experiment-manifest.schema.json`); a skipped phase is `N/A` with the reason, never silently dropped. Every round's own cost is measured from `manifest.phases[]` with `scripts/phase_usage.mjs` (step 4c):
+  - **Control row**, written by the control session when the round starts (at Gate A; for Track E when P2/P3 starts): `{ "phase": "Control", "cwd": "<its working directory>", "pick": "busiest", "from": "<ISO now>", "model": "<its model>" }`. P4 sets `"to"` when it builds the reports.
+  - **Phase rows**, written by each phase session as its first step: `{ "phase": "P2", "cwd": "<its working directory>", "from": "<ISO now>", "model": "...", "smartTrimMode": "..." }`. No session id or transcript path needed: `phase_usage` finds the transcripts from `cwd` (all of them for a phase worktree, including headless `claude -p` runs; the busiest one inside [from, to] for the control row).
 
 ## Starting a phase (capsule handoff)
 
 1. Control writes the capsule: `node .claude/skills/build-skill-tool-workflow/scripts/make_capsule.mjs <expDir> --phase P2|P3|P4` → `<expDir>/capsule-<phase>.md` (goal, approved decisions, branch/commit, files, test command, artifact paths, done-when, model; capped at ~3k tokens, no chat history).
 2. Control starts a **fresh** session (context `fresh`, model Haiku for P2-P4) whose whole prompt is: "Read `<expDir>/capsule-<phase>.md` and follow `.claude/skills/build-skill-tool-workflow/phases/<file>`."
-3. The phase session writes its artifacts, commits on the experiment branch and ends with a hand-back of **5 lines or fewer** (what is done, where, what is blocked). It never asks the user for a gate decision: it stops and reports.
+3. The phase session first adds its row to `manifest.phases[]` (see above), then writes its artifacts, commits on the experiment branch and ends with a hand-back of **5 lines or fewer** (what is done, where, what is blocked). It never asks the user for a gate decision: it stops and reports.
 4. Control reads the hand-back and at most a few fields of `summary.json` / `agent-review.json` (one-line `node -e`), then asks the user at the gate.
 
 **Starting rules:** a phase session can be started only on the user's own words in the control session; on a turn that another session or an automated event started, propose it as a card for the user to click. **Gate decisions** (Gate A, accepting findings, any change to frozen criteria) are written by the control session into the experiment files and committed (`resolution`, `design.md`, `manifest.json`); never relay them to a phase session by cross-session message: it cannot verify them and rightly refuses.

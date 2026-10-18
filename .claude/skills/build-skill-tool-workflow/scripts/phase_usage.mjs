@@ -1,10 +1,18 @@
 #!/usr/bin/env node
 // Real token use of the workflow itself: one Claude Code session per phase (P1 plan, P2 build, P3 measure,
-// P4 review + fix), listed in manifest.json phases[]. Each transcript is summed with transcript_usage.mjs
-// (its subagents included, e.g. the Opus review subagent of P4). A missing transcript gives nulls, never an estimate.
+// P4 review + fix) plus the control session's slice of the round, listed in manifest.json phases[]. Each
+// transcript is summed with transcript_usage.mjs (its subagents included, e.g. the Opus review subagent of P4).
+// A missing transcript gives nulls, never an estimate.
 //
 // Usage: node phase_usage.mjs <experimentDir>
-// Reads:  manifest.json phases[] { phase, sessionId, transcript, model, smartTrimMode }
+// Reads:  manifest.json phases[] { phase, cwd | transcript, from?, to?, pick?, sessionId?, model, smartTrimMode }
+//   transcript  explicit session .jsonl (relative to the experiment folder, or ~/...)
+//   cwd         the session's working directory; its transcripts are found under ~/.claude/projects/<cwd with every character other
+//               than a letter or digit replaced by ->/*.jsonl (override the root with CLAUDE_PROJECTS_DIR). All files there are
+//               summed (a phase worktree holds the phase session plus any headless `claude -p` runs it started),
+//               unless pick is "busiest": then only the file with the most turns in [from, to] (the control row,
+//               whose folder holds many other sessions).
+//   from / to   ISO times; only turns inside the window count (the control row: round start → report time)
 // Writes: evidence/phase-usage.json, read by build_tool_report.mjs ("Workflow cost per phase")
 import fs from 'node:fs';
 import os from 'node:os';
@@ -24,16 +32,42 @@ try {
   process.exit(2);
 }
 const KEYS = ['modelTurns', 'peakContext', 'cacheRead', 'cacheWrite', 'input', 'output'];
+const projectsRoot = process.env.CLAUDE_PROJECTS_DIR || path.join(os.homedir(), '.claude', 'projects');
+const projectDirOf = (cwd) => path.join(projectsRoot, cwd.replace(/[^A-Za-z0-9]/g, '-'));
 const resolveTranscript = (p) => (!p ? null : path.resolve(dir, p.replace(/^~(?=[\/])/, os.homedir())));
+const window = (ph) => ({
+  from: ph.from ? Date.parse(ph.from) : -Infinity,
+  to: ph.to ? Date.parse(ph.to) : Infinity,
+});
+
+function filesFor(ph) {
+  if (ph.transcript) {
+    const t = resolveTranscript(ph.transcript);
+    return t && fs.existsSync(t) ? [t] : [];
+  }
+  if (!ph.cwd) return [];
+  const pd = projectDirOf(ph.cwd);
+  if (!fs.existsSync(pd)) return [];
+  const files = fs.readdirSync(pd).filter((f) => f.endsWith('.jsonl')).map((f) => path.join(pd, f));
+  if (ph.pick !== 'busiest') return files;
+  const w = window(ph);
+  const scored = files.map((f) => ({ f, n: transcriptUsage(f, { ...w, subagents: false }).modelTurns })).filter((x) => x.n > 0);
+  scored.sort((a, b) => b.n - a.n);
+  return scored.length ? [scored[0].f] : [];
+}
 
 const phases = (manifest.phases ?? []).map((ph) => {
-  const transcript = resolveTranscript(ph.transcript);
-  const base = { phase: ph.phase, sessionId: ph.sessionId ?? null, model: ph.model ?? null, smartTrimMode: ph.smartTrimMode ?? null, transcript: ph.transcript ?? null };
-  if (!transcript || !fs.existsSync(transcript)) return { ...base, measured: false, ...Object.fromEntries(KEYS.map((k) => [k, null])) };
-  const u = transcriptUsage(transcript);
+  const base = { phase: ph.phase, sessionId: ph.sessionId ?? null, model: ph.model ?? null, smartTrimMode: ph.smartTrimMode ?? null,
+    transcript: ph.transcript ?? null, cwd: ph.cwd ?? null, from: ph.from ?? null, to: ph.to ?? null };
+  const files = filesFor(ph);
+  const us = files.map((f) => transcriptUsage(f, window(ph))).filter((u) => u.modelTurns > 0);
+  if (!us.length) return { ...base, measured: false, ...Object.fromEntries(KEYS.map((k) => [k, null])) };
+  const sum = (k) => us.reduce((a, u) => a + (u[k] ?? 0), 0);
   return {
-    ...base, measured: true, modelsSeen: u.models, modelTurns: u.modelTurns, subagentTurns: u.subagentTurns, peakContext: u.peakContext,
-    cacheRead: u.cacheReadTokens, cacheWrite: u.cacheWriteTokens, input: u.inputTokens, output: u.outputTokens, source: u.source,
+    ...base, measured: true, files: us.length, modelsSeen: [...new Set(us.flatMap((u) => u.models ?? []))],
+    modelTurns: sum('modelTurns'), subagentTurns: sum('subagentTurns'), peakContext: Math.max(...us.map((u) => u.peakContext ?? 0)),
+    cacheRead: sum('cacheReadTokens'), cacheWrite: sum('cacheWriteTokens'), input: sum('inputTokens'), output: sum('outputTokens'),
+    source: us.map((u) => u.source).join(' | '),
   };
 });
 const measured = phases.filter((p) => p.measured);

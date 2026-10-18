@@ -31,6 +31,14 @@ Started again from `capsule-P4.md` (it lists the accepted findings). One `haiku-
 
 ## 4c. Reports
 
+First measure the round's own cost: set `"to"` (ISO now) on the `Control` row of `manifest.phases[]`, then
+
+```bash
+node .claude/skills/build-skill-tool-workflow/scripts/phase_usage.mjs "reports/skill-tool-lifecycle/<tool>/<experiment-id>"
+```
+
+It writes `evidence/phase-usage.json` (per phase and control: turns, peak context, cache read/write), which the report shows as "Workflow cost per phase". Put the round's total cache read, the control's peak context and the highest phase peak in `evaluation.deviations`. Compare them with the previous round, or with the v1 baseline in `reports/skill-tool-lifecycle/context-governor/20261018-context-governor-01/evidence/workflow-cost-comparison.md` (phase sessions 21.3M, control slice 25.0M at a peak of 319k; v1 rounds about 7-30M each). A phase row with `measured: false` is a caveat, never an estimate.
+
 Set `recommendation` (`ADOPT | PILOT | REWORK | DROP | INSUFFICIENT_EVIDENCE`), `confidence` (LOW/MEDIUM/HIGH), a plain one-to-two-sentence `headline` (tokens A → B, whether any case got worse, what blocks adoption) and `evaluation.deviations` (caveats in plain words) in `manifest.json`, then:
 
 ```bash
