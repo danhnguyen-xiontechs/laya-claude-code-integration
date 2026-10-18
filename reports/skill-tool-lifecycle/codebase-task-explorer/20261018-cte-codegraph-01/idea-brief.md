@@ -1,7 +1,7 @@
 # Idea Brief — codebase-task-explorer on codegraph (replace codemap)
 
 - **Experiment ID:** `20261018-cte-codegraph-01`
-- **Status:** `WAITING_FOR_IDEA_APPROVAL` (Gate A)
+- **Status:** `APPROVED_FOR_IMPLEMENTATION` (Gate A passed 2026-10-18)
 - **Owner:** user (XionTechs / Laya)
 - **Date:** 2026-10-18
 - **Related:** `.claude/skills/codebase-task-explorer/` (codemap engine), runs `20261017-cte-agent-01`, `20261017-cte-agent-02`, `20261018-cte-r2-agent-01`; codegraph: [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph) (npm `@colbymchenry/codegraph`, MIT)
@@ -70,7 +70,7 @@ A helper only pays when it gives what grep cannot give cheaply, and gives it fas
 `PROCEED` with the recommended option: codegraph CLI engine, short rules-free output, no Jev, codemap kept only as a temporary fallback. It answers the user's request (drop codemap) and tests the only place a helper has a real chance to beat grep (call-graph questions), cheaply (offline gate before any agent spend).
 
 ## Human decision
-- **Decision:** `APPROVED | REVISE | HOLD | REJECTED`
-- **Approved scope / changes:**
-- **Decision date:**
-- **Notes:**
+- **Decision:** APPROVED
+- **Approved scope / changes:** the recommended option as written (codegraph CLI engine, short rules-free output, no Jev, codemap kept only as a temporary labelled fallback); telemetry off; `codegraph install` never run.
+- **Decision date:** 2026-10-18
+- **Notes:** run in quota-saving mode (Haiku effort high for cases, one Opus call with a closed input pack, at most 2 sessions at once).
