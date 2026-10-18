@@ -42,7 +42,7 @@ e3cb7bc5 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 c4cf5e0b turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 9c66a8b4 turns 72 peak 288k cacheRead 14M notes 2 [soft@t13(122k) strong@t38(200k)] sub 114 subNotes 0 subFlagged 15
 453b3ea2 turns 95 peak 275k cacheRead 17M notes 2 [soft@t18(121k) strong@t59(201k)] sub 208 subNotes 0 subFlagged 48
-82e30143 turns 210 peak 953k cacheRead 105M notes 3 [strong@t1(657k) soft@t130(120k) strong@t173(200k)] sub 51 subNotes 0 subFlagged 14
+82e30143 turns 220 peak 953k cacheRead 108M notes 3 [strong@t1(657k) soft@t130(120k) strong@t173(200k)] sub 51 subNotes 0 subFlagged 14
 30797a4a turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 7ca6189e turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 88ebdcd9 turns 106 peak 275k cacheRead 21M notes 2 [soft@t10(121k) strong@t48(202k)] sub 2 subNotes 0 subFlagged 0
@@ -218,7 +218,7 @@ ff382078 turns 1 peak 50k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 ff48fae5 turns 1 peak 50k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 19c5f8b3 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 293ede67 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
-7579e462 turns 5 peak 88k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
+7579e462 turns 18 peak 108k cacheRead 2M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 ce30cfbc turns 78 peak 413k cacheRead 26M notes 1 [strong@t1(274k)] sub 338 subNotes 0 subFlagged 54
 ad6c6f90 turns 117 peak 428k cacheRead 30M notes 2 [soft@t18(124k) strong@t39(203k)] sub 231 subNotes 0 subFlagged 158
 28835acd turns 149 peak 362k cacheRead 32M notes 2 [soft@t13(126k) strong@t68(201k)] sub 342 subNotes 0 subFlagged 23
@@ -230,7 +230,8 @@ c97ba924 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 05c23a91 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 fd81f618 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
 742916a0 turns 0 peak 0k cacheRead 0M notes 0 [-] sub 0 subNotes 0 subFlagged 0
+control t* 173 avoided 7M of cacheRead 108M
 PASS 1 control gets strong note
-PASS 2 avoided upper bound >= 30% of control cacheRead (121.4%)
+FAIL 2 avoided upper bound >= 30% of control cacheRead (6.7%)
 PASS 3 each main session <= 5 notes
 PASS 4 subagent turns get 0 notes

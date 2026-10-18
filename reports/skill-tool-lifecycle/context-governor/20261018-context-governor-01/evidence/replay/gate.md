@@ -1,28 +1,23 @@
-# P3 offline gate (design §5): context-governor replay, 2026-10-18
+# P3 offline gate (design §5, amended formula): context-governor replay, 2026-10-18
 
-Run: `node context-governor/scripts/replay.mjs --date 2026-10-18 --control 82e30143` (exit 0). Full output: `output.txt`. Per-session numbers: `summary.json`.
-Scope: 231 session files that have 2026-10-18 turns, plus their subagent files. Base (median first-turn context) = 47,239.
+Run: `node context-governor/scripts/replay.mjs --date 2026-10-18 --control 82e30143` (exit 1). Full output: `output.txt`. The first run with the literal formula is kept in `output-literal.txt`.
 
-## Pass conditions, as written
+## Result: **BLOCKED** (condition 2 fails)
 
-| # | Condition | Result | Key numbers |
-|---|---|---|---|
-| 1 | Control session gets the strong note at least once | PASS | strong at turn 1 (657k), again at turn 173 (200k) |
-| 2 | Avoided upper bound >= 30% of control cache read | PASS as written, but NOT credible (see caveat) | literal 127M avoided vs 105M cache read = 121.4% |
-| 3 | Each main session gets <= 5 notes | PASS | max 3 (control); all others 0-2 |
-| 4 | Subagent turns get 0 notes | PASS | subNotes 0 in every session |
+- control t* 173 avoided 7M of cacheRead 108M
+- PASS 1 control gets strong note
+- FAIL 2 avoided upper bound >= 30% of control cacheRead (6.7%)
+- PASS 3 each main session <= 5 notes
+- PASS 4 subagent turns get 0 notes
 
-Gate result as written: **PASS (4 of 4)**.
+## What changed
 
-## Caveat on condition 2 (read before P4)
+- The user amended the §5 upper bound after the first run: t* = first crossing of 200k from below; avoided(t) = max(0, min(ctx(t), ctx(t*)) - B).
+- First run (literal formula, t* = turn 1 at 657k): 121.4% of cache read. That is impossible as a saving, so it was not credible.
+- Amended formula: t* = turn 173 (200k). The upper bound is about 7M of 108M cache read (6.7%), under the 30% condition.
 
-- The control session's first turn is already at 657k context, so the strong note fires at turn 1. Design §5 takes t* = first strong crossing, which makes t* = turn 1.
-- The literal formula gives 127M avoided tokens. The session's total context summed over all 210 turns is only 107M (cache read 105M), so the "upper bound" exceeds everything the session read. It cannot be a saving; the formula is not a valid bound when ctx(t*) is far above the later contexts (102 of 210 turns are below 657k).
-- Alternative, same formula with t* = first strong crossing after turn 1 (turn 173, 200k): avoided 6M = **5.4%** of cache read, which would FAIL condition 2.
-- The control's main-loop cache read is 105M. The 200M+ figure in the brief includes cache creation and subagent turns, which this replay does not count in cache read.
+## Reading
 
-Recommendation for P4 (not decided here): the design's t* / upper-bound definition needs a fix before trusting condition 2. Condition 2 passes only on the literal reading.
-
-## Status
-
-`EVALUATION_COMPLETE` per the literal gate rule. The A/B (design §6) has not been run and needs real workflow sessions with `--plugin-dir`.
+- The control session was already at 657k context on its first replayed turn: it continued an earlier, longer conversation. A warning at 200k could only have helped before that, which this replay cannot see.
+- After turn 173 the session stayed close to the threshold. Even an ideal compact at t* would have saved little.
+- Per design §5, P3 stops here and the A/B does not run. The decision goes to P4 (Opus review) and then the user.

@@ -2,6 +2,7 @@
 
 > Criteria frozen on 2026-10-18 by the user's Gate A approval. P2 and P3 do not change these thresholds or criteria.
 > Written by the P1 Opus call (closed pack: idea-brief.md and context-pack.md).
+> §5 formula amended on 2026-10-18 by the user after P3: the literal bound exceeded the session's total cache read (121.4%).
 
 ## 1. Contract
 
@@ -97,8 +98,8 @@ context-governor/
 - Prints, per session: the turn index and context at which each note would fire, the number of notes, the peak context and the total cache read.
 
 **Avoided cache read (an upper bound).**
-- At the first strong crossing t\*, assume the context resets to a base B, the median first-turn context of the phase sessions.
-- Avoided = Σ over t > t\* of max(0, ctx(t\*) − B).
+- t* is the first crossing of 200k from below. A session or stretch whose first turn is already at or above 200k has no t* until context falls below the threshold and crosses again.
+- Avoided = Σ over t > t* of max(0, min(ctx(t), ctx(t*)) − B), where B is the median first-turn context of the phase sessions.
 - This assumes context grows the same way after the reset and that the handoff itself costs nothing. The report labels it as an upper bound.
 
 **Pass condition.** All four must hold:

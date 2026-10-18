@@ -95,11 +95,16 @@ for (const s of mainSessions) {
     if (d.flagged) subFlagged += 1;
   }
   const strong = notes.find((n) => n.kind === 'strong');
+  // Upper bound (design §5, amended 2026-10-18 by the user): t* is the first crossing of
+  // strongTokens from below (a stretch that starts at or above it has no t* until it drops
+  // below and crosses again); avoided(t) = max(0, min(ctx(t), ctx(t*)) - base) for t > t*.
+  const thr = cfg.strongTokens ?? 200000;
+  const tStar = ctxs.findIndex((c, i) => i > 0 && c >= thr && ctxs[i - 1] < thr);
   let avoided = 0;
-  if (strong) {
-    for (let i = strong.turn; i < ctxs.length; i++) avoided += Math.max(0, strong.context - base);
+  if (tStar >= 0) {
+    for (let i = tStar + 1; i < ctxs.length; i++) avoided += Math.max(0, Math.min(ctxs[i], ctxs[tStar]) - base);
   }
-  report.push({ id: s.id, turns: s.main.length, peak, cacheRead, notes, subTurns: s.subs.length, subNotes, subFlagged, avoided, strongFired: !!strong });
+  report.push({ id: s.id, turns: s.main.length, peak, cacheRead, notes, subTurns: s.subs.length, subNotes, subFlagged, avoided, tStar: tStar >= 0 ? tStar + 1 : null, strongFired: !!strong });
 }
 
 console.log(`date ${date}  sessions ${report.length}  base(median first-turn ctx) ${Math.round(base)}`);
@@ -112,6 +117,7 @@ const ctl = report.find((r) => control && r.id.startsWith(control));
 const checks = [];
 if (ctl) {
   checks.push(['1 control gets strong note', ctl.strongFired]);
+  console.log(`control t* ${ctl.tStar ?? 'none'} avoided ${Math.round(ctl.avoided / 1e6)}M of cacheRead ${Math.round(ctl.cacheRead / 1e6)}M`);
   const ratio = ctl.cacheRead ? ctl.avoided / ctl.cacheRead : 0;
   checks.push([`2 avoided upper bound >= 30% of control cacheRead (${(ratio * 100).toFixed(1)}%)`, ratio >= 0.3]);
 } else {

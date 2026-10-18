@@ -8,7 +8,7 @@
     "commit": null,
     "branch": "claude/confident-meninsky-1f66fb"
   },
-  "status": "EVALUATION_COMPLETE",
+  "status": "EVALUATION_BLOCKED",
   "recommendation": null,
   "confidence": null,
   "headline": null,
@@ -41,7 +41,8 @@
       "P2 smoke test (design §7): turn.complete fires in a plugin module with usage on Claude Code 2.1.300, so the full plugin was built; classic.Stop fallback not used.",
       "P2 deviation from design §3: a failure to read or write the state or metrics files no longer hides a note (the test harness has no $.fs, and a metrics error should not hide a warning). Notes still never block a turn.",
       "P2 test gaps: the engine harness gives the test $ no fs or session.id, and node:fs is not importable from tests; the jsonl context sum is checked by the real headless turn and core.spec, not by engine.test. The toast call is not asserted. tsc is not on PATH, so typecheck was not run.",
-      "P2 the worktree .claude/settings.json is malformed JSON and does not load; it was not touched."
+      "P2 the worktree .claude/settings.json is malformed JSON and does not load; it was not touched.",
+      "§5 upper bound amended by the user on 2026-10-18 after P3: the literal formula gave 121.4% of the control session's cache read (t* = turn 1 at 657k, impossible as a saving). With the amended formula (t* = first crossing of 200k from below = turn 173; avoided(t) = max(0, min(ctx(t), ctx(t*)) - B)) the bound is 6.7%. Condition 2 fails, so the gate is blocked and the A/B was not run."
     ]
   },
   "phases": [
