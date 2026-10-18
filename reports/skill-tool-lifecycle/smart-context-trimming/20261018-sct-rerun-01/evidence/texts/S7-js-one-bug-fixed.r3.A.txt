@@ -1,0 +1,58 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 314 → 45 original lines kept verbatim (rule).
+[smart-trim] Command FAILED (Exit code 1); the error status is preserved.
+[smart-trim] Full raw output: /raw/S7-js-one-bug-fixed.r3.log (Read it if you need an omitted section).
+[smart-trim] 2 of 264 tests failed, by name: ✖ clamp 4 · ✔ sum 35 · ✔ last 35 · ✔ add 40 · ✔ square 40 · ✔ isEven 40 · ✔ upper 35 · ✔ reverse 35
+✔ sum #1 [[]] (4.882ms)
+✔ sum #2 [[0]] (0.2268ms)
+✔ sum #3 [[0,1]] (0.1854ms)
+✔ sum #4 [[0,1,2]] (0.2426ms)
+✔ sum #5 [[0,1,2,3]] (0.1711ms)
+[smart-trim] … 259 line(s) omitted (6-264) …
+[smart-trim] --- line 265: summary ---
+ℹ tests 264
+[smart-trim] … 1 line(s) omitted (266-266) …
+[smart-trim] --- line 267: summary ---
+ℹ pass 262
+ℹ fail 2
+[smart-trim] … 7 line(s) omitted (269-275) …
+[smart-trim] --- line 276: failed_test ---
+✖ clamp #1 [5,0,10] (2.614ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  0 !== 5
+  
+      at TestContext.<anonymous> (file:///<js-one-bug>/test/range.test.js:4:40)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 5,
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+[smart-trim] … 2 line(s) omitted (293-294) …
+[smart-trim] --- line 295: failed_test ---
+✖ clamp #3 [42,0,10] (0.8345ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  0 !== 10
+  
+      at TestContext.<anonymous> (file:///<js-one-bug>/test/range.test.js:6:41)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 10,
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

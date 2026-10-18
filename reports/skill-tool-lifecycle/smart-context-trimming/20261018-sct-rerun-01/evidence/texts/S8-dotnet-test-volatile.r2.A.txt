@@ -1,0 +1,26 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 463 → 20 original lines kept verbatim (rule).
+[smart-trim] Command succeeded (exit code 0).
+[smart-trim] Full raw output: /raw/S8-dotnet-test-volatile.r2.log (Read it if you need an omitted section).
+Determining projects to restore...
+  Restored C:\src\Proj0\Proj0.csproj (in 103 ms).
+  Restored C:\src\Proj1\Proj1.csproj (in 104 ms).
+  Restored C:\src\Proj2\Proj2.csproj (in 105 ms).
+  Restored C:\src\Proj3\Proj3.csproj (in 106 ms).
+[smart-trim] … 443 line(s) omitted (6-448) …
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_406 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_407 [6 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_408 [7 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_409 [8 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_410 [9 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_411 [10 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_412 [11 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_413 [12 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_414 [4 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_415 [5 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_416 [6 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_417 [7 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_418 [8 ms]
+  Passed Contoso.Hr.Tests.LeaveServiceTests.Case_419 [9 ms]
+[smart-trim] --- line 463: summary ---
+Passed!  - Failed:     0, Passed:   420, Skipped:     0, Total:   420, Duration: 4 s
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

@@ -1,0 +1,894 @@
+diff -ruN -x __pycache__ -x .pytest_cache jev-r2/.claude/skills/acceptance-criteria-coverage/SKILL.md jev-r3/.claude/skills/acceptance-criteria-coverage/SKILL.md
+--- jev-r2/.claude/skills/acceptance-criteria-coverage/SKILL.md	2026-10-18 14:28:10.734782800 +0700
++++ jev-r3/.claude/skills/acceptance-criteria-coverage/SKILL.md	2026-10-18 14:29:05.505441000 +0700
+@@ -1,90 +1,90 @@
+----
+-name: acceptance-criteria-coverage
+-description: Check whether a story's acceptance criteria are backed by tests that actually assert them, and produce a coverage matrix (Covered/Partial/Missing/Unclear, with execution status kept separate). Use when verifying a feature against its acceptance criteria, before finishing a story or review, or when asked "are the ACs covered/tested?". Python/pytest repos only. Not line/branch code coverage.
+----
+-
+-# Acceptance criteria coverage
+-
+-Requirement-to-test coverage. A local script finds candidate tests, JEV (a small judgment model)
+-suggests how each test relates to each criterion, **you** read the tests and decide, and the
+-script renders the report. All commands run from the repo root; put working files in a scratch
+-directory such as `.tool-output/ac/` (gitignored).
+-
+-## Steps
+-
+-1. **Find the authoritative criteria.** The work item, story, spec or the user's message. If
+-   there are none, or they conflict, ask the user; do not invent criteria from the code.
+-
+-2. **Write `criteria.json`.** Keep the source's ids and wording. Split compound criteria into
+-   independently testable parts (`AC-03` -> `AC-03a`, `AC-03b`, each with `"parent": "AC-03"`)
+-   without changing their meaning.
+-   ```json
+-   {"source": "ADO-123 Create user", "criteria": [{"id": "AC-01", "text": "Duplicate email returns 409 and creates no user."}]}
+-   ```
+-
+-3. **Execution evidence (optional but recommended).** If a JUnit file from the current code
+-   already exists, use it. Otherwise run the relevant tests with `--junitxml=<file>` through the
+-   repo's advisor wrapper when its profile allows it
+-   (`.venv/Scripts/python.exe -m jev_advisor run <profile> -- <args>`). If you cannot produce
+-   one, skip `--junit`: every execution status will be `Unknown`, which is correct.
+-
+-4. **Candidates.**
+-   ```
+-   .venv/Scripts/python.exe -m jev_skills.ac_coverage candidates --criteria .tool-output/ac/criteria.json --tests <tests dir> [--junit <junit.xml>] [--top 5] -o .tool-output/ac/pack.json
+-   ```
+-   Node ids are relative to the parent of `--tests` (override with `--root`). Criteria with
+-   `no_candidates: true` had no test sharing any meaningful word with them; still grep for
+-   other names before calling them Missing.
+-
+-5. **Classify with JEV.**
+-   ```
+-   .venv/Scripts/python.exe -m jev_skills.ac_coverage classify --pack .tool-output/ac/pack.json -o .tool-output/ac/results.json
+-   ```
+-   `--dry-run` prints the exact request (state + questions) without sending it. Test code is
+-   redacted first; a test with an unremovable secret is not sent and gets a local
+-   `insufficient_evidence`. If JEV is unavailable, pairs have `label: null`: continue Claude-only.
+-
+-6. **Read the tests and verify.**
+-   Print the reading list with `.venv/Scripts/python.exe -m jev_skills.ac_coverage digest --pack .tool-output/ac/pack.json --results .tool-output/ac/results.json`. It shows each candidate's assertions and helper calls, with skippable pairs hidden. For every pair that is not `skippable`, open the test (file and
+-   line are in the pack) and check: the scenario is the criterion's scenario; assertions check the
+-   required behavior, not just that code ran; every condition is asserted (status *and* side
+-   effects such as persistence, messages, calls); negative cases where required. Pairs marked
+-   `skippable: true` (JEV `unrelated`, p >= 0.9) may be skipped. Read them anyway if the
+-   criterion would otherwise end up Missing or Partial.
+-
+-7. **Write `verdicts.json`** (your decision, one entry per criterion):
+-   ```json
+-   {"AC-01": {"coverage": "Partial", "tests": ["tests/test_users.py::test_duplicate_email"], "gap": "Asserts 409 only; no check that no second user is stored."}}
+-   ```
+-   `coverage` is one of `Covered` (every condition directly asserted), `Partial`, `Missing`,
+-   `Unclear` (evidence ambiguous or insufficient). `tests` lists only tests you verified.
+-
+-8. **Report.**
+-   ```
+-   .venv/Scripts/python.exe -m jev_skills.ac_coverage report --pack .tool-output/ac/pack.json --results .tool-output/ac/results.json --verdicts .tool-output/ac/verdicts.json -o <report.md>
+-   ```
+-   Use the repo's artifact location if it has one. Summarize the matrix for the user: gaps first,
+-   then failing tests behind Covered criteria.
+-
+-9. **Gaps.** For Partial/Missing/Unclear decide whether a test is absent, an assertion is weak,
+-   or the criterion is ambiguous (ask). Add or strengthen tests only when that is part of the
+-   current task; then rerun the tests and steps 4–8.
+-
+-## Rules
+-
+-- Never claim a test passed without run evidence from this code (JUnit or wrapper output).
+-  Coverage and execution are separate: a Covered criterion can have a Failed test.
+-- JEV labels are suggestions, never coverage. Coverage comes only from your verdicts; without a
+-  verdict the report shows `Unverified`.
+-- JEV failure, invalid labels, truncated or redacted evidence: treat as `Unclear` until you have
+-  read the source yourself. Never mark Covered by default.
+-- Do not delete or rewrite tests, or change production code, because of a JEV label alone.
+-- Do not paste secrets or whole files into criteria.json or verdicts.json.
+-
+-## Benchmark (maintainers)
+-
+-`examples/ac_coverage_demo/` has a labelled demo. With a gold file:
+-```
+-.venv/Scripts/python.exe -m jev_skills.ac_coverage bench --pack <pack.json> --results <results.json> --gold examples/ac_coverage_demo/gold.json [--verdicts <verdicts.json>]
+-```
+-It prints label accuracy, confusion, skippable pairs and whether any skippable pair was relevant.
++---
++name: acceptance-criteria-coverage
++description: Check whether a story's acceptance criteria are backed by tests that actually assert them, and produce a coverage matrix (Covered/Partial/Missing/Unclear, with execution status kept separate). Use when verifying a feature against its acceptance criteria, before finishing a story or review, or when asked "are the ACs covered/tested?". Python/pytest repos only. Not line/branch code coverage.
++---
++
++# Acceptance criteria coverage
++
++Requirement-to-test coverage. A local script finds candidate tests, JEV (a small judgment model)
++suggests how each test relates to each criterion, **you** read the tests and decide, and the
++script renders the report. All commands run from the repo root; put working files in a scratch
++directory such as `.tool-output/ac/` (gitignored).
++
++## Steps
++
++1. **Find the authoritative criteria.** The work item, story, spec or the user's message. If
++   there are none, or they conflict, ask the user; do not invent criteria from the code.
++
++2. **Write `criteria.json`.** Keep the source's ids and wording. Split compound criteria into
++   independently testable parts (`AC-03` -> `AC-03a`, `AC-03b`, each with `"parent": "AC-03"`)
++   without changing their meaning.
++   ```json
++   {"source": "ADO-123 Create user", "criteria": [{"id": "AC-01", "text": "Duplicate email returns 409 and creates no user."}]}
++   ```
++
++3. **Execution evidence (optional but recommended).** If a JUnit file from the current code
++   already exists, use it. Otherwise run the relevant tests with `--junitxml=<file>` through the
++   repo's advisor wrapper when its profile allows it
++   (`.venv/Scripts/python.exe -m jev_advisor run <profile> -- <args>`). If you cannot produce
++   one, skip `--junit`: every execution status will be `Unknown`, which is correct.
++
++4. **Candidates.**
++   ```
++   .venv/Scripts/python.exe -m jev_skills.ac_coverage candidates --criteria .tool-output/ac/criteria.json --tests <tests dir> [--junit <junit.xml>] [--top 3] -o .tool-output/ac/pack.json
++   ```
++   Node ids are relative to the parent of `--tests` (override with `--root`). Criteria with
++   `no_candidates: true` had no test sharing any meaningful word with them; still grep for
++   other names before calling them Missing.
++
++5. **Classify with JEV.**
++   ```
++   .venv/Scripts/python.exe -m jev_skills.ac_coverage classify --pack .tool-output/ac/pack.json -o .tool-output/ac/results.json
++   ```
++   `--dry-run` prints the exact request (state + questions) without sending it. Test code is
++   redacted first; a test with an unremovable secret is not sent and gets a local
++   `insufficient_evidence`. If JEV is unavailable, pairs have `label: null`: continue Claude-only.
++
++6. **Read the tests and verify.**
++   Print the reading list with `.venv/Scripts/python.exe -m jev_skills.ac_coverage digest --pack .tool-output/ac/pack.json --results .tool-output/ac/results.json`. It shows each candidate's assertions and helper calls, with skippable pairs hidden. For every pair that is not `skippable`, open the test (file and
++   line are in the pack) and check: the scenario is the criterion's scenario; assertions check the
++   required behavior, not just that code ran; every condition is asserted (status *and* side
++   effects such as persistence, messages, calls); negative cases where required. Pairs marked
++   `skippable: true` (JEV `unrelated`, p >= 0.9) may be skipped. Read them anyway if the
++   criterion would otherwise end up Missing or Partial.
++
++7. **Write `verdicts.json`** (your decision, one entry per criterion):
++   ```json
++   {"AC-01": {"coverage": "Partial", "tests": ["tests/test_users.py::test_duplicate_email"], "gap": "Asserts 409 only; no check that no second user is stored."}}
++   ```
++   `coverage` is one of `Covered` (every condition directly asserted), `Partial`, `Missing`,
++   `Unclear` (evidence ambiguous or insufficient). `tests` lists only tests you verified.
++
++8. **Report.**
++   ```
++   .venv/Scripts/python.exe -m jev_skills.ac_coverage report --pack .tool-output/ac/pack.json --results .tool-output/ac/results.json --verdicts .tool-output/ac/verdicts.json -o <report.md>
++   ```
++   Use the repo's artifact location if it has one. Summarize the matrix for the user: gaps first,
++   then failing tests behind Covered criteria.
++
++9. **Gaps.** For Partial/Missing/Unclear decide whether a test is absent, an assertion is weak,
++   or the criterion is ambiguous (ask). Add or strengthen tests only when that is part of the
++   current task; then rerun the tests and steps 4–8.
++
++## Rules
++
++- Never claim a test passed without run evidence from this code (JUnit or wrapper output).
++  Coverage and execution are separate: a Covered criterion can have a Failed test.
++- JEV labels are suggestions, never coverage. Coverage comes only from your verdicts; without a
++  verdict the report shows `Unverified`.
++- JEV failure, invalid labels, truncated or redacted evidence: treat as `Unclear` until you have
++  read the source yourself. Never mark Covered by default.
++- Do not delete or rewrite tests, or change production code, because of a JEV label alone.
++- Do not paste secrets or whole files into criteria.json or verdicts.json.
++
++## Benchmark (maintainers)
++
++`examples/ac_coverage_demo/` has a labelled demo. With a gold file:
++```
++.venv/Scripts/python.exe -m jev_skills.ac_coverage bench --pack <pack.json> --results <results.json> --gold examples/ac_coverage_demo/gold.json [--verdicts <verdicts.json>]
++```
++It prints label accuracy, confusion, skippable pairs and whether any skippable pair was relevant.
+diff -ruN -x __pycache__ -x .pytest_cache jev-r2/jev_skills/ac_coverage/__main__.py jev-r3/jev_skills/ac_coverage/__main__.py
+--- jev-r2/jev_skills/ac_coverage/__main__.py	2026-10-18 14:28:10.688265500 +0700
++++ jev-r3/jev_skills/ac_coverage/__main__.py	2026-10-18 14:29:05.476922600 +0700
+@@ -1,7 +1,7 @@
+ """CLI.
+ 
+   python -m jev_skills.ac_coverage candidates --criteria C.json --tests DIR [--root DIR] [--junit J.xml]
+-                                              [--top 5] [--max-chars 1500] -o pack.json
++                                              [--top 3] [--max-chars 1500] -o pack.json
+   python -m jev_skills.ac_coverage classify --pack pack.json -o results.json [--dry-run]
+   python -m jev_skills.ac_coverage report --pack pack.json [--results results.json] [--verdicts V.json] -o report.md
+   python -m jev_skills.ac_coverage bench --pack pack.json --results results.json --gold gold.json [--verdicts V.json] [-o bench.txt]
+@@ -33,7 +33,7 @@
+     c.add_argument("--tests", required=True)
+     c.add_argument("--root", help="directory node ids are relative to (default: parent of --tests)")
+     c.add_argument("--junit")
+-    c.add_argument("--top", type=int, default=5)
++    c.add_argument("--top", type=int, default=3)
+     c.add_argument("--max-chars", type=int, default=1500)
+     c.add_argument("-o", required=True)
+     k = sub.add_parser("classify")
+diff -ruN -x __pycache__ -x .pytest_cache jev-r2/jev_skills/ac_coverage/discover.py jev-r3/jev_skills/ac_coverage/discover.py
+--- jev-r2/jev_skills/ac_coverage/discover.py	2026-10-18 14:28:10.677264300 +0700
++++ jev-r3/jev_skills/ac_coverage/discover.py	2026-10-18 14:29:05.445345200 +0700
+@@ -132,8 +132,8 @@
+     return {"name": tokens(t["name"] + " " + (t["class"] or "")), "doc": tokens(t["docstring"]), "body": tokens(body)}
+ 
+ 
+-def rank(criteria: list[dict], tests: list[dict], top: int = 5) -> list[list[tuple[float, int, list[str]]]]:
+-    """Per criterion: up to `top` (score, test index, matched tokens), best first, score > 0 only."""
++def rank(criteria: list[dict], tests: list[dict], top: int = 3) -> list[list[tuple[float, int, list[str]]]]:
++    """Per criterion: up to `top` (default 3) (score, test index, matched tokens), best first, score > 0 only."""
+     fields = [_fields(t) for t in tests]
+     n = len(tests)
+     df: dict[str, int] = {}
+@@ -188,7 +188,7 @@
+ 
+ # ---------- pack ----------
+ 
+-def build_pack(criteria_doc: dict, tests_dir: Path, root: Path, junit: Path | None, top: int = 5, max_chars: int = 1500) -> dict:
++def build_pack(criteria_doc: dict, tests_dir: Path, root: Path, junit: Path | None, top: int = 3, max_chars: int = 1500) -> dict:
+     criteria = criteria_doc["criteria"]
+     tests = discover(tests_dir, root, max_chars)
+     statuses = junit_statuses(junit) if junit else None
+diff -ruN -x __pycache__ -x .pytest_cache jev-r2/tests/test_ac_coverage.py jev-r3/tests/test_ac_coverage.py
+--- jev-r2/tests/test_ac_coverage.py	2026-10-18 14:28:10.420042700 +0700
++++ jev-r3/tests/test_ac_coverage.py	2026-10-18 14:29:05.534967400 +0700
+@@ -1,331 +1,331 @@
+-import os
+-import tempfile
+-import unittest
+-from pathlib import Path
+-from unittest import mock
+-
+-from jev_skills.ac_coverage import bench, classify, discover, report
+-
+-TEST_SRC = '''
+-import pytest
+-
+-
+-def test_duplicate_email_returns_conflict(svc):
+-    """Duplicate email gives 409."""
+-    assert svc.register("a@x.com").status == 409
+-
+-
+-class TestPasswords:
+-    def test_short_password_rejected(self, svc):
+-        with pytest.raises(ValueError):
+-            svc.check("abc")
+-
+-    def helper(self):
+-        pass
+-
+-
+-def test_mail_sent(mailer):
+-    mailer.send.assert_called_once_with("a@x.com")
+-
+-
+-def not_a_test():
+-    pass
+-'''
+-
+-LONG_SRC = "def test_long():\n" + "".join(f"    x{i} = {i}\n" for i in range(200)) + "    assert x199 == 199\n"
+-
+-JUNIT = """<?xml version="1.0"?><testsuites><testsuite>
+-<testcase classname="tests.test_app" name="test_duplicate_email_returns_conflict"/>
+-<testcase classname="tests.test_app.TestPasswords" name="test_short_password_rejected"><failure message="x"/></testcase>
+-<testcase classname="tests.test_app" name="test_mail_sent[a]"/>
+-<testcase classname="tests.test_app" name="test_mail_sent[b]"><skipped/></testcase>
+-</testsuite></testsuites>"""
+-
+-CRITERIA = {"source": "story", "criteria": [
+-    {"id": "AC-01", "text": "A duplicate email returns HTTP 409 conflict."},
+-    {"id": "AC-02", "text": "Short passwords are rejected."},
+-    {"id": "AC-03", "text": "Rate limiting throttles repeated attempts."},
+-]}
+-
+-
+-class Fixture(unittest.TestCase):
+-    def setUp(self):
+-        self.tmp = tempfile.TemporaryDirectory()
+-        self.root = Path(self.tmp.name)
+-        (self.root / "tests").mkdir()
+-        (self.root / "tests" / "test_app.py").write_text(TEST_SRC, encoding="utf-8")
+-        (self.root / "tests" / "helpers.py").write_text("def test_ignored():\n    pass\n", encoding="utf-8")
+-        (self.root / "junit.xml").write_text(JUNIT, encoding="utf-8")
+-
+-    def tearDown(self):
+-        self.tmp.cleanup()
+-
+-    def pack(self, junit=True):
+-        return discover.build_pack(CRITERIA, self.root / "tests", self.root, self.root / "junit.xml" if junit else None, top=5)
+-
+-
+-class DiscoverTest(Fixture):
+-    def test_discovery_nodeids_and_assertions(self):
+-        found = {t["nodeid"]: t for t in discover.discover(self.root / "tests", self.root)}
+-        self.assertEqual(sorted(found), [
+-            "tests/test_app.py::TestPasswords::test_short_password_rejected",
+-            "tests/test_app.py::test_duplicate_email_returns_conflict",
+-            "tests/test_app.py::test_mail_sent",
+-        ])
+-        self.assertEqual(found["tests/test_app.py::test_duplicate_email_returns_conflict"]["assertions"],
+-                         ['assert svc.register("a@x.com").status == 409'])
+-        self.assertEqual(found["tests/test_app.py::TestPasswords::test_short_password_rejected"]["assertions"], ["pytest.raises(ValueError)"])
+-        self.assertEqual(found["tests/test_app.py::test_mail_sent"]["assertions"], ['mailer.send.assert_called_once_with("a@x.com")'])
+-
+-    def test_ranking_and_no_candidates(self):
+-        pack = self.pack()
+-        by_id = {c["id"]: c for c in pack["criteria"]}
+-        self.assertEqual(pack["tests"][by_id["AC-01"]["candidates"][0]["tid"]]["name"], "test_duplicate_email_returns_conflict")
+-        self.assertEqual(pack["tests"][by_id["AC-02"]["candidates"][0]["tid"]]["name"], "test_short_password_rejected")
+-        self.assertTrue(by_id["AC-03"]["no_candidates"])
+-        self.assertEqual(by_id["AC-03"]["candidates"], [])
+-        self.assertEqual(self.pack(), {**pack, "createdAt": self.pack()["createdAt"]})  # deterministic
+-
+-    def test_truncation_marker(self):
+-        (self.root / "tests" / "test_long.py").write_text(LONG_SRC, encoding="utf-8")
+-        t = next(t for t in discover.discover(self.root / "tests", self.root, max_chars=300) if t["name"] == "test_long")
+-        self.assertTrue(t["truncated"])
+-        self.assertRegex(t["code"], r"…\[truncated \d+ lines\]$")
+-        self.assertLessEqual(len(t["code"]), 330)
+-
+-    def test_junit_statuses(self):
+-        pack = self.pack()
+-        ex = {t["name"]: t["execution"] for t in pack["tests"].values()}
+-        self.assertEqual(ex["test_duplicate_email_returns_conflict"], "Passed")
+-        self.assertEqual(ex["test_short_password_rejected"], "Failed")
+-        sts = discover.junit_statuses(self.root / "junit.xml")
+-        mail = next(t for t in discover.discover(self.root / "tests", self.root) if t["name"] == "test_mail_sent")
+-        self.assertEqual(discover.execution_for(mail, sts), "Skipped")  # worst parametrized case wins
+-        self.assertEqual(discover.execution_for({**mail, "name": "test_gone"}, sts), "NotRun")
+-        self.assertEqual({t["execution"] for t in self.pack(junit=False)["tests"].values()}, {"Unknown"})
+-
+-
+-def _choice(label, p):
+-    rest = (1 - p) / (len(classify.LABELS) - 1)
+-    return {"type": "choice", "choice": label, "probabilities": {k: (p if k == label else rest) for k in classify.LABELS}, "confidence": 0.5}
+-
+-
+-class ClassifyTest(Fixture):
+-    def setUp(self):
+-        super().setUp()
+-        self.env = mock.patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-test-key-not-real"})
+-        self.env.start()
+-
+-    def tearDown(self):
+-        self.env.stop()
+-        super().tearDown()
+-
+-    def run_with(self, answer_for):
+-        def fake(state, questions, **kw):
+-            return {"status": "ok", "error": None, "answers": {q: a for q in questions if (a := answer_for(q))},
+-                    "invalid": [], "latencyMs": 5, "usage": {"input_tokens": 10, "cost": 1e-5}}
+-        pack = self.pack()
+-        with mock.patch("jev_skills.common.jev.decide", side_effect=fake) as m:
+-            res = classify.classify(pack)
+-        return pack, res, m
+-
+-    def test_valid_labels_and_skippable(self):
+-        pack, res, m = self.run_with(lambda q: _choice("unrelated", 0.95) if "T02" in q or "T03" in q else _choice("direct_coverage", 0.8))
+-        self.assertEqual(m.call_count, 1)  # batched
+-        q = next(iter(m.call_args.args[1].values()))
+-        self.assertEqual(set(q["criteria"]), set(classify.LABELS))
+-        self.assertIn("insufficient_evidence", q["instructions"])
+-        self.assertTrue(all(p["label"] for p in res["pairs"]))
+-        for p in res["pairs"]:
+-            self.assertEqual(p["skippable"], p["label"] == "unrelated")
+-        self.assertEqual(res["skippableCount"], sum(p["skippable"] for p in res["pairs"]))
+-
+-    def test_low_probability_unrelated_is_not_skippable(self):
+-        self.assertFalse(classify.is_skippable({"source": "jev", "label": "unrelated", "p": 0.89}))
+-        self.assertTrue(classify.is_skippable({"source": "jev", "label": "unrelated", "p": 0.9}))
+-        self.assertFalse(classify.is_skippable({"source": "jev", "label": "partial_coverage", "p": 0.99}))
+-
+-    def test_invalid_label_and_unavailable_give_no_label(self):
+-        bad = {"type": "choice", "choice": "covered_for_sure", "probabilities": {"covered_for_sure": 1.0}, "confidence": 1}
+-        pack = self.pack()
+-        items, pairs = classify.build_request(pack)
+-        classify.apply_answers(pairs, {"answers": {pairs[0]["qid"]: bad}})
+-        self.assertIsNone(pairs[0]["label"])
+-        self.assertEqual(pairs[0]["reason"], "jev-invalid-label")
+-        with mock.patch("jev_skills.common.jev.decide", return_value={"status": "unavailable", "error": "timeout", "answers": {}, "invalid": [], "latencyMs": 1}):
+-            res = classify.classify(pack)
+-        self.assertTrue(all(p["label"] is None and p["reason"] == "jev-timeout" and not p["skippable"] for p in res["pairs"]))
+-        md = report.render(pack, res, None)
+-        self.assertNotIn("| Covered |", md)
+-        self.assertIn("Unverified (JEV: no answer)", md)
+-
+-    def test_unsafe_redaction_is_not_sent(self):
+-        pack = self.pack()
+-        tid = pack["criteria"][0]["candidates"][0]["tid"]
+-        pack["tests"][tid]["code"] += "\n    blob = 'Zx9Qw8Er7Ty6Ui5Op4As3Df2Gh1Jk0LzXcVbNm12345'"
+-        items, pairs = classify.build_request(pack)
+-        sent = str(items)
+-        self.assertNotIn("Zx9Qw8Er7Ty6", sent)
+-        local = [p for p in pairs if p["tid"] == tid]
+-        self.assertTrue(all(p["label"] == "insufficient_evidence" and p["source"] == "local" for p in local))
+-        self.assertFalse(any(classify.is_skippable(p) for p in local))
+-
+-
+-class ReportBenchTest(Fixture):
+-    def results(self, label="direct_coverage", p=0.97):
+-        pack = self.pack()
+-        _, pairs = classify.build_request(pack)
+-        classify.apply_answers(pairs, {"answers": {x["qid"]: _choice(label, p) for x in pairs}})
+-        return pack, {"model": "m", "status": "ok", "error": None, "usage": {}, "pairs": pairs, "skippableCount": 0}
+-
+-    def test_never_covered_without_verdict(self):
+-        pack, res = self.results()
+-        md = report.render(pack, res, None)
+-        self.assertNotIn("| Covered |", md)
+-        self.assertIn("Unverified (JEV: direct_coverage)", md)
+-        node = pack["criteria"][0]["candidates"][0]["nodeid"]
+-        md = report.render(pack, res, {"AC-01": {"coverage": "Covered", "tests": [node], "gap": ""},
+-                                       "AC-02": {"coverage": "Covered", "tests": []}})
+-        rows = {ln.split(" | ")[0]: ln for ln in md.splitlines() if ln.startswith("| AC-")}
+-        self.assertIn("| Covered | Passed |", rows["| AC-01"])
+-        self.assertIn("Unclear (Covered claimed without test references)", rows["| AC-02"])
+-        self.assertIn("- **AC-03**", md.split("## Criteria with no candidate tests")[1].split("##")[0])
+-
+-    def test_bench_counts_skippable_relevant(self):
+-        pack, res = self.results("unrelated", 0.95)
+-        gold = {"pairs": [{"criterion": p["criterion"], "test": p["nodeid"], "label": "unrelated"} for p in res["pairs"]]}
+-        gold["pairs"][0]["label"] = "direct_coverage"
+-        s = bench.score(pack, res, gold)
+-        self.assertEqual(s["graded"], len(res["pairs"]))
+-        self.assertEqual(len(s["skippableButRelevant"]), 1)
+-        self.assertAlmostEqual(s["accuracy"], (len(res["pairs"]) - 1) / len(res["pairs"]))
+-        self.assertIn("skippable but actually relevant: 1", bench.render(s))
+-
+-
+-
+-MORE_SRC = '''
+-def test_duplicate_email_full(svc):
+-    r = svc.register("a@x.com")
+-    assert r.status == 409
+-    assert r.error == "email taken"
+-    assert svc.users == 1
+-    assert_status(r, 409)
+-'''
+-
+-HIDDEN = {"tests/test_app.py::TestPasswords::test_short_password_rejected", "tests/test_app.py::test_mail_sent"}
+-
+-
+-class DigestTest(Fixture):
+-    def setUp(self):
+-        super().setUp()
+-        (self.root / "tests" / "test_more.py").write_text(MORE_SRC, encoding="utf-8")
+-
+-    def results(self, pack, label_for, status="ok", error=None):
+-        _, pairs = classify.build_request(pack)
+-        for p in pairs:
+-            label, prob, skip = label_for(p)
+-            p.update(label=label, p=prob, skippable=skip)
+-        return {"status": status, "error": error, "pairs": pairs, "usage": {},
+-                "skippableCount": sum(p["skippable"] for p in pairs)}
+-
+-    def hide_some(self, p):
+-        if p["nodeid"] in HIDDEN:
+-            return ("unrelated", 0.95, True)
+-        return ("direct_coverage", 0.8, False)
+-
+-    def test_hides_skippable_and_names_them(self):
+-        pack = self.pack()
+-        res = self.results(pack, self.hide_some)
+-        text = report.digest(pack, res)
+-        self.assertIn(f"{res['skippableCount']} skippable hidden", text.splitlines()[0])
+-        candidates = {cand["nodeid"] for c in pack["criteria"] for cand in c["candidates"]}
+-        hidden_candidates = sorted(HIDDEN & candidates)
+-        self.assertTrue(hidden_candidates)
+-        self.assertIn("all 1 candidates hidden as skippable: test_short_password_rejected", text)
+-        for nodeid in hidden_candidates:
+-            self.assertNotIn(nodeid + " (", text)
+-            self.assertIn(nodeid.split("::")[-1], text)
+-
+-    def test_show_skippable_prints_all(self):
+-        pack = self.pack()
+-        text = report.digest(pack, self.results(pack, self.hide_some), show_skippable=True)
+-        for c in pack["criteria"]:
+-            for cand in c["candidates"]:
+-                self.assertIn(cand["nodeid"] + " (", text)
+-        self.assertNotIn("hidden as skippable", text)
+-
+-    def test_assertions_capped_and_helpers_listed(self):
+-        pack = self.pack()
+-        text = report.digest(pack, None, max_asserts=1)
+-        self.assertIn("assert r.status == 409", text)
+-        self.assertIn("(+2 more assertions)", text)
+-        self.assertIn("helpers: assert_status (their assertions are not shown: open them)", text)
+-
+-    def test_no_results_and_unavailable_never_hide(self):
+-        pack = self.pack()
+-        text = report.digest(pack, None)
+-        self.assertIn("JEV not run", text.splitlines()[0])
+-        self.assertIn("jev=not run", text)
+-        self.assertNotIn("hidden as skippable", text)
+-        timeout = self.results(pack, lambda p: (None, None, False), status="timeout", error="jev-timeout")
+-        for p in timeout["pairs"]:
+-            p["reason"] = "jev-timeout"
+-        text = report.digest(pack, timeout)
+-        self.assertIn("jev=none (jev-timeout)", text)
+-        self.assertNotIn("hidden as skippable", text)
+-
+-    def test_no_candidates_hint(self):
+-        pack = self.pack()
+-        text = report.digest(pack, None)
+-        section = text.split("AC-03:")[1]
+-        self.assertIn("no test shares a meaningful word with this criterion", section)
+-
+-    def test_repeat_test_printed_once(self):
+-        crit = {"source": "story", "criteria": [
+-            {"id": "AC-01", "text": "A duplicate email returns HTTP 409 conflict."},
+-            {"id": "AC-04", "text": "Duplicate email registrations are refused."}]}
+-        pack = discover.build_pack(crit, self.root / "tests", self.root, None, top=5)
+-        text = report.digest(pack, None)
+-        self.assertEqual(text.count('assert svc.register("a@x.com").status == 409'), 1)
+-        self.assertIn("(assertions shown under AC-01)", text)
+-
+-    def test_deterministic_and_no_coverage_words(self):
+-        pack = self.pack()
+-        res = self.results(pack, self.hide_some)
+-        text = report.digest(pack, res)
+-        self.assertEqual(text, report.digest(pack, res))
+-        for word in ("Covered", "Partial", "Missing", "Unclear"):
+-            self.assertNotIn(word, text)
+-
+-    def test_cli_digest_writes_file(self):
+-        import contextlib
+-        import io
+-        import json
+-        from jev_skills.ac_coverage.__main__ import main
+-
+-        pack = self.pack()
+-        res = self.results(pack, self.hide_some)
+-        (self.root / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
+-        (self.root / "results.json").write_text(json.dumps(res), encoding="utf-8")
+-        out = self.root / "digest.txt"
+-        buf = io.StringIO()
+-        with contextlib.redirect_stdout(buf):
+-            code = main(["digest", "--pack", str(self.root / "pack.json"), "--results", str(self.root / "results.json"), "-o", str(out)])
+-        self.assertEqual(code, 0)
+-        self.assertEqual(out.read_text(encoding="utf-8"), buf.getvalue())
+-
+-    def test_candidates_top_default_is_5(self):
+-        import contextlib
+-        import io
+-        import json
+-        from jev_skills.ac_coverage.__main__ import main
+-
+-        (self.root / "criteria.json").write_text(json.dumps(CRITERIA), encoding="utf-8")
+-        out = self.root / "pack.json"
+-        with contextlib.redirect_stdout(io.StringIO()):
+-            code = main(["candidates", "--criteria", str(self.root / "criteria.json"), "--tests", str(self.root / "tests"), "-o", str(out)])
+-        self.assertEqual(code, 0)
+-        self.assertEqual(json.loads(out.read_text(encoding="utf-8"))["topK"], 5)
+-
+-if __name__ == "__main__":
+-    unittest.main()
++import os
++import tempfile
++import unittest
++from pathlib import Path
++from unittest import mock
++
++from jev_skills.ac_coverage import bench, classify, discover, report
++
++TEST_SRC = '''
++import pytest
++
++
++def test_duplicate_email_returns_conflict(svc):
++    """Duplicate email gives 409."""
++    assert svc.register("a@x.com").status == 409
++
++
++class TestPasswords:
++    def test_short_password_rejected(self, svc):
++        with pytest.raises(ValueError):
++            svc.check("abc")
++
++    def helper(self):
++        pass
++
++
++def test_mail_sent(mailer):
++    mailer.send.assert_called_once_with("a@x.com")
++
++
++def not_a_test():
++    pass
++'''
++
++LONG_SRC = "def test_long():\n" + "".join(f"    x{i} = {i}\n" for i in range(200)) + "    assert x199 == 199\n"
++
++JUNIT = """<?xml version="1.0"?><testsuites><testsuite>
++<testcase classname="tests.test_app" name="test_duplicate_email_returns_conflict"/>
++<testcase classname="tests.test_app.TestPasswords" name="test_short_password_rejected"><failure message="x"/></testcase>
++<testcase classname="tests.test_app" name="test_mail_sent[a]"/>
++<testcase classname="tests.test_app" name="test_mail_sent[b]"><skipped/></testcase>
++</testsuite></testsuites>"""
++
++CRITERIA = {"source": "story", "criteria": [
++    {"id": "AC-01", "text": "A duplicate email returns HTTP 409 conflict."},
++    {"id": "AC-02", "text": "Short passwords are rejected."},
++    {"id": "AC-03", "text": "Rate limiting throttles repeated attempts."},
++]}
++
++
++class Fixture(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.root = Path(self.tmp.name)
++        (self.root / "tests").mkdir()
++        (self.root / "tests" / "test_app.py").write_text(TEST_SRC, encoding="utf-8")
++        (self.root / "tests" / "helpers.py").write_text("def test_ignored():\n    pass\n", encoding="utf-8")
++        (self.root / "junit.xml").write_text(JUNIT, encoding="utf-8")
++
++    def tearDown(self):
++        self.tmp.cleanup()
++
++    def pack(self, junit=True):
++        return discover.build_pack(CRITERIA, self.root / "tests", self.root, self.root / "junit.xml" if junit else None, top=5)
++
++
++class DiscoverTest(Fixture):
++    def test_discovery_nodeids_and_assertions(self):
++        found = {t["nodeid"]: t for t in discover.discover(self.root / "tests", self.root)}
++        self.assertEqual(sorted(found), [
++            "tests/test_app.py::TestPasswords::test_short_password_rejected",
++            "tests/test_app.py::test_duplicate_email_returns_conflict",
++            "tests/test_app.py::test_mail_sent",
++        ])
++        self.assertEqual(found["tests/test_app.py::test_duplicate_email_returns_conflict"]["assertions"],
++                         ['assert svc.register("a@x.com").status == 409'])
++        self.assertEqual(found["tests/test_app.py::TestPasswords::test_short_password_rejected"]["assertions"], ["pytest.raises(ValueError)"])
++        self.assertEqual(found["tests/test_app.py::test_mail_sent"]["assertions"], ['mailer.send.assert_called_once_with("a@x.com")'])
++
++    def test_ranking_and_no_candidates(self):
++        pack = self.pack()
++        by_id = {c["id"]: c for c in pack["criteria"]}
++        self.assertEqual(pack["tests"][by_id["AC-01"]["candidates"][0]["tid"]]["name"], "test_duplicate_email_returns_conflict")
++        self.assertEqual(pack["tests"][by_id["AC-02"]["candidates"][0]["tid"]]["name"], "test_short_password_rejected")
++        self.assertTrue(by_id["AC-03"]["no_candidates"])
++        self.assertEqual(by_id["AC-03"]["candidates"], [])
++        self.assertEqual(self.pack(), {**pack, "createdAt": self.pack()["createdAt"]})  # deterministic
++
++    def test_truncation_marker(self):
++        (self.root / "tests" / "test_long.py").write_text(LONG_SRC, encoding="utf-8")
++        t = next(t for t in discover.discover(self.root / "tests", self.root, max_chars=300) if t["name"] == "test_long")
++        self.assertTrue(t["truncated"])
++        self.assertRegex(t["code"], r"…\[truncated \d+ lines\]$")
++        self.assertLessEqual(len(t["code"]), 330)
++
++    def test_junit_statuses(self):
++        pack = self.pack()
++        ex = {t["name"]: t["execution"] for t in pack["tests"].values()}
++        self.assertEqual(ex["test_duplicate_email_returns_conflict"], "Passed")
++        self.assertEqual(ex["test_short_password_rejected"], "Failed")
++        sts = discover.junit_statuses(self.root / "junit.xml")
++        mail = next(t for t in discover.discover(self.root / "tests", self.root) if t["name"] == "test_mail_sent")
++        self.assertEqual(discover.execution_for(mail, sts), "Skipped")  # worst parametrized case wins
++        self.assertEqual(discover.execution_for({**mail, "name": "test_gone"}, sts), "NotRun")
++        self.assertEqual({t["execution"] for t in self.pack(junit=False)["tests"].values()}, {"Unknown"})
++
++
++def _choice(label, p):
++    rest = (1 - p) / (len(classify.LABELS) - 1)
++    return {"type": "choice", "choice": label, "probabilities": {k: (p if k == label else rest) for k in classify.LABELS}, "confidence": 0.5}
++
++
++class ClassifyTest(Fixture):
++    def setUp(self):
++        super().setUp()
++        self.env = mock.patch.dict(os.environ, {"OPENROUTER_API_KEY": "sk-test-key-not-real"})
++        self.env.start()
++
++    def tearDown(self):
++        self.env.stop()
++        super().tearDown()
++
++    def run_with(self, answer_for):
++        def fake(state, questions, **kw):
++            return {"status": "ok", "error": None, "answers": {q: a for q in questions if (a := answer_for(q))},
++                    "invalid": [], "latencyMs": 5, "usage": {"input_tokens": 10, "cost": 1e-5}}
++        pack = self.pack()
++        with mock.patch("jev_skills.common.jev.decide", side_effect=fake) as m:
++            res = classify.classify(pack)
++        return pack, res, m
++
++    def test_valid_labels_and_skippable(self):
++        pack, res, m = self.run_with(lambda q: _choice("unrelated", 0.95) if "T02" in q or "T03" in q else _choice("direct_coverage", 0.8))
++        self.assertEqual(m.call_count, 1)  # batched
++        q = next(iter(m.call_args.args[1].values()))
++        self.assertEqual(set(q["criteria"]), set(classify.LABELS))
++        self.assertIn("insufficient_evidence", q["instructions"])
++        self.assertTrue(all(p["label"] for p in res["pairs"]))
++        for p in res["pairs"]:
++            self.assertEqual(p["skippable"], p["label"] == "unrelated")
++        self.assertEqual(res["skippableCount"], sum(p["skippable"] for p in res["pairs"]))
++
++    def test_low_probability_unrelated_is_not_skippable(self):
++        self.assertFalse(classify.is_skippable({"source": "jev", "label": "unrelated", "p": 0.89}))
++        self.assertTrue(classify.is_skippable({"source": "jev", "label": "unrelated", "p": 0.9}))
++        self.assertFalse(classify.is_skippable({"source": "jev", "label": "partial_coverage", "p": 0.99}))
++
++    def test_invalid_label_and_unavailable_give_no_label(self):
++        bad = {"type": "choice", "choice": "covered_for_sure", "probabilities": {"covered_for_sure": 1.0}, "confidence": 1}
++        pack = self.pack()
++        items, pairs = classify.build_request(pack)
++        classify.apply_answers(pairs, {"answers": {pairs[0]["qid"]: bad}})
++        self.assertIsNone(pairs[0]["label"])
++        self.assertEqual(pairs[0]["reason"], "jev-invalid-label")
++        with mock.patch("jev_skills.common.jev.decide", return_value={"status": "unavailable", "error": "timeout", "answers": {}, "invalid": [], "latencyMs": 1}):
++            res = classify.classify(pack)
++        self.assertTrue(all(p["label"] is None and p["reason"] == "jev-timeout" and not p["skippable"] for p in res["pairs"]))
++        md = report.render(pack, res, None)
++        self.assertNotIn("| Covered |", md)
++        self.assertIn("Unverified (JEV: no answer)", md)
++
++    def test_unsafe_redaction_is_not_sent(self):
++        pack = self.pack()
++        tid = pack["criteria"][0]["candidates"][0]["tid"]
++        pack["tests"][tid]["code"] += "\n    blob = 'Zx9Qw8Er7Ty6Ui5Op4As3Df2Gh1Jk0LzXcVbNm12345'"
++        items, pairs = classify.build_request(pack)
++        sent = str(items)
++        self.assertNotIn("Zx9Qw8Er7Ty6", sent)
++        local = [p for p in pairs if p["tid"] == tid]
++        self.assertTrue(all(p["label"] == "insufficient_evidence" and p["source"] == "local" for p in local))
++        self.assertFalse(any(classify.is_skippable(p) for p in local))
++
++
++class ReportBenchTest(Fixture):
++    def results(self, label="direct_coverage", p=0.97):
++        pack = self.pack()
++        _, pairs = classify.build_request(pack)
++        classify.apply_answers(pairs, {"answers": {x["qid"]: _choice(label, p) for x in pairs}})
++        return pack, {"model": "m", "status": "ok", "error": None, "usage": {}, "pairs": pairs, "skippableCount": 0}
++
++    def test_never_covered_without_verdict(self):
++        pack, res = self.results()
++        md = report.render(pack, res, None)
++        self.assertNotIn("| Covered |", md)
++        self.assertIn("Unverified (JEV: direct_coverage)", md)
++        node = pack["criteria"][0]["candidates"][0]["nodeid"]
++        md = report.render(pack, res, {"AC-01": {"coverage": "Covered", "tests": [node], "gap": ""},
++                                       "AC-02": {"coverage": "Covered", "tests": []}})
++        rows = {ln.split(" | ")[0]: ln for ln in md.splitlines() if ln.startswith("| AC-")}
++        self.assertIn("| Covered | Passed |", rows["| AC-01"])
++        self.assertIn("Unclear (Covered claimed without test references)", rows["| AC-02"])
++        self.assertIn("- **AC-03**", md.split("## Criteria with no candidate tests")[1].split("##")[0])
++
++    def test_bench_counts_skippable_relevant(self):
++        pack, res = self.results("unrelated", 0.95)
++        gold = {"pairs": [{"criterion": p["criterion"], "test": p["nodeid"], "label": "unrelated"} for p in res["pairs"]]}
++        gold["pairs"][0]["label"] = "direct_coverage"
++        s = bench.score(pack, res, gold)
++        self.assertEqual(s["graded"], len(res["pairs"]))
++        self.assertEqual(len(s["skippableButRelevant"]), 1)
++        self.assertAlmostEqual(s["accuracy"], (len(res["pairs"]) - 1) / len(res["pairs"]))
++        self.assertIn("skippable but actually relevant: 1", bench.render(s))
++
++
++
++MORE_SRC = '''
++def test_duplicate_email_full(svc):
++    r = svc.register("a@x.com")
++    assert r.status == 409
++    assert r.error == "email taken"
++    assert svc.users == 1
++    assert_status(r, 409)
++'''
++
++HIDDEN = {"tests/test_app.py::TestPasswords::test_short_password_rejected", "tests/test_app.py::test_mail_sent"}
++
++
++class DigestTest(Fixture):
++    def setUp(self):
++        super().setUp()
++        (self.root / "tests" / "test_more.py").write_text(MORE_SRC, encoding="utf-8")
++
++    def results(self, pack, label_for, status="ok", error=None):
++        _, pairs = classify.build_request(pack)
++        for p in pairs:
++            label, prob, skip = label_for(p)
++            p.update(label=label, p=prob, skippable=skip)
++        return {"status": status, "error": error, "pairs": pairs, "usage": {},
++                "skippableCount": sum(p["skippable"] for p in pairs)}
++
++    def hide_some(self, p):
++        if p["nodeid"] in HIDDEN:
++            return ("unrelated", 0.95, True)
++        return ("direct_coverage", 0.8, False)
++
++    def test_hides_skippable_and_names_them(self):
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        text = report.digest(pack, res)
++        self.assertIn(f"{res['skippableCount']} skippable hidden", text.splitlines()[0])
++        candidates = {cand["nodeid"] for c in pack["criteria"] for cand in c["candidates"]}
++        hidden_candidates = sorted(HIDDEN & candidates)
++        self.assertTrue(hidden_candidates)
++        self.assertIn("all 1 candidates hidden as skippable: test_short_password_rejected", text)
++        for nodeid in hidden_candidates:
++            self.assertNotIn(nodeid + " (", text)
++            self.assertIn(nodeid.split("::")[-1], text)
++
++    def test_show_skippable_prints_all(self):
++        pack = self.pack()
++        text = report.digest(pack, self.results(pack, self.hide_some), show_skippable=True)
++        for c in pack["criteria"]:
++            for cand in c["candidates"]:
++                self.assertIn(cand["nodeid"] + " (", text)
++        self.assertNotIn("hidden as skippable", text)
++
++    def test_assertions_capped_and_helpers_listed(self):
++        pack = self.pack()
++        text = report.digest(pack, None, max_asserts=1)
++        self.assertIn("assert r.status == 409", text)
++        self.assertIn("(+2 more assertions)", text)
++        self.assertIn("helpers: assert_status (their assertions are not shown: open them)", text)
++
++    def test_no_results_and_unavailable_never_hide(self):
++        pack = self.pack()
++        text = report.digest(pack, None)
++        self.assertIn("JEV not run", text.splitlines()[0])
++        self.assertIn("jev=not run", text)
++        self.assertNotIn("hidden as skippable", text)
++        timeout = self.results(pack, lambda p: (None, None, False), status="timeout", error="jev-timeout")
++        for p in timeout["pairs"]:
++            p["reason"] = "jev-timeout"
++        text = report.digest(pack, timeout)
++        self.assertIn("jev=none (jev-timeout)", text)
++        self.assertNotIn("hidden as skippable", text)
++
++    def test_no_candidates_hint(self):
++        pack = self.pack()
++        text = report.digest(pack, None)
++        section = text.split("AC-03:")[1]
++        self.assertIn("no test shares a meaningful word with this criterion", section)
++
++    def test_repeat_test_printed_once(self):
++        crit = {"source": "story", "criteria": [
++            {"id": "AC-01", "text": "A duplicate email returns HTTP 409 conflict."},
++            {"id": "AC-04", "text": "Duplicate email registrations are refused."}]}
++        pack = discover.build_pack(crit, self.root / "tests", self.root, None, top=5)
++        text = report.digest(pack, None)
++        self.assertEqual(text.count('assert svc.register("a@x.com").status == 409'), 1)
++        self.assertIn("(assertions shown under AC-01)", text)
++
++    def test_deterministic_and_no_coverage_words(self):
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        text = report.digest(pack, res)
++        self.assertEqual(text, report.digest(pack, res))
++        for word in ("Covered", "Partial", "Missing", "Unclear"):
++            self.assertNotIn(word, text)
++
++    def test_cli_digest_writes_file(self):
++        import contextlib
++        import io
++        import json
++        from jev_skills.ac_coverage.__main__ import main
++
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        (self.root / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
++        (self.root / "results.json").write_text(json.dumps(res), encoding="utf-8")
++        out = self.root / "digest.txt"
++        buf = io.StringIO()
++        with contextlib.redirect_stdout(buf):
++            code = main(["digest", "--pack", str(self.root / "pack.json"), "--results", str(self.root / "results.json"), "-o", str(out)])
++        self.assertEqual(code, 0)
++        self.assertEqual(out.read_text(encoding="utf-8"), buf.getvalue())
++
++    def test_candidates_top_default_is_3(self):
++        import contextlib
++        import io
++        import json
++        from jev_skills.ac_coverage.__main__ import main
++
++        (self.root / "criteria.json").write_text(json.dumps(CRITERIA), encoding="utf-8")
++        out = self.root / "pack.json"
++        with contextlib.redirect_stdout(io.StringIO()):
++            code = main(["candidates", "--criteria", str(self.root / "criteria.json"), "--tests", str(self.root / "tests"), "-o", str(out)])
++        self.assertEqual(code, 0)
++        self.assertEqual(json.loads(out.read_text(encoding="utf-8"))["topK"], 3)
++
++if __name__ == "__main__":
++    unittest.main()

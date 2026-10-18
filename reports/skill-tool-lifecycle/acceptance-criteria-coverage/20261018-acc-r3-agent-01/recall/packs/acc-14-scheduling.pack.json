@@ -1,0 +1,722 @@
+{
+  "source": "Story CLN-30 'Online booking'",
+  "createdAt": "2026-10-18T07:29:26+00:00",
+  "testsDir": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-14-scheduling/tests",
+  "root": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-14-scheduling",
+  "junit": null,
+  "junitSummary": null,
+  "testsDiscovered": 89,
+  "topK": 3,
+  "maxBodyChars": 1500,
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Patients can book only free slots; booking a taken slot raises SlotTaken.",
+      "candidates": [
+        {
+          "tid": "T01",
+          "nodeid": "tests/test_booking.py::test_taken_slot_raises",
+          "score": 23.537,
+          "matched": [
+            "book",
+            "rais",
+            "slot",
+            "taken"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_search.py::test_earliest_free_skips_taken",
+          "score": 20.511,
+          "matched": [
+            "book",
+            "fre",
+            "slot",
+            "taken"
+          ]
+        },
+        {
+          "tid": "T03",
+          "nodeid": "tests/test_booking.py::test_book_free_slot",
+          "score": 14.392,
+          "matched": [
+            "book",
+            "fre",
+            "slot"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-02",
+      "text": "Slots are 20 minutes long and start on the hour or at :20 and :40.",
+      "candidates": [
+        {
+          "tid": "T04",
+          "nodeid": "tests/test_slot_grid.py::test_grid",
+          "score": 12.518,
+          "matched": [
+            "20",
+            "40",
+            "hour",
+            "minut",
+            "slot",
+            "start"
+          ]
+        },
+        {
+          "tid": "T05",
+          "nodeid": "tests/test_search.py::test_free_slots_for_second_provider",
+          "score": 10.316,
+          "matched": [
+            "20",
+            "40",
+            "slot",
+            "start"
+          ]
+        },
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_slot_grid.py::test_grid_empty_without_hours",
+          "score": 10.045,
+          "matched": [
+            "hour",
+            "slot",
+            "start"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-03",
+      "text": "No slots are offered on public holidays or on the provider's leave days.",
+      "candidates": [
+        {
+          "tid": "T07",
+          "nodeid": "tests/test_slots.py::test_no_slots_on_days_off",
+          "score": 23.879,
+          "matched": [
+            "day",
+            "holiday",
+            "no",
+            "offer",
+            "slot"
+          ]
+        },
+        {
+          "tid": "T08",
+          "nodeid": "tests/test_holidays.py::test_no_slots_on_christmas",
+          "score": 18.666,
+          "matched": [
+            "holiday",
+            "no",
+            "offer",
+            "slot"
+          ]
+        },
+        {
+          "tid": "T09",
+          "nodeid": "tests/test_waitlist.py::test_no_offer_without_waitlist",
+          "score": 18.191,
+          "matched": [
+            "no",
+            "offer",
+            "slot"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-04",
+      "text": "Cancelling more than 24 hours before is free; later cancellations cost a 25 EUR fee.",
+      "candidates": [
+        {
+          "tid": "T10",
+          "nodeid": "tests/test_limits.py::test_cancelled_booking_frees_a_place",
+          "score": 15.192,
+          "matched": [
+            "cancell",
+            "fre"
+          ]
+        },
+        {
+          "tid": "T11",
+          "nodeid": "tests/test_cancel_fees.py::test_fee_by_notice",
+          "score": 13.202,
+          "matched": [
+            "25",
+            "fee",
+            "hour"
+          ]
+        },
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_cancel_fees.py::test_fee_recorded_on_appointment",
+          "score": 9.778,
+          "matched": [
+            "fee",
+            "hour"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-05",
+      "text": "A cancelled slot becomes free again and is offered to the first patient on the waitlist.",
+      "candidates": [
+        {
+          "tid": "T13",
+          "nodeid": "tests/test_waitlist.py::test_first_in_line_gets_offer",
+          "score": 18.534,
+          "matched": [
+            "first",
+            "offer",
+            "waitlist"
+          ]
+        },
+        {
+          "tid": "T09",
+          "nodeid": "tests/test_waitlist.py::test_no_offer_without_waitlist",
+          "score": 18.191,
+          "matched": [
+            "offer",
+            "slot",
+            "waitlist"
+          ]
+        },
+        {
+          "tid": "T10",
+          "nodeid": "tests/test_limits.py::test_cancelled_booking_frees_a_place",
+          "score": 17.687,
+          "matched": [
+            "cancell",
+            "first",
+            "fre"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-06",
+      "text": "Reminder messages are sent 24 hours before the appointment.",
+      "candidates": [
+        {
+          "tid": "T14",
+          "nodeid": "tests/test_notify.py::test_sent_notice_not_sent_again",
+          "score": 13.032,
+          "matched": [
+            "messag",
+            "sent"
+          ]
+        },
+        {
+          "tid": "T15",
+          "nodeid": "tests/test_notify.py::test_outbox_records_messages",
+          "score": 10.905,
+          "matched": [
+            "messag",
+            "reminder"
+          ]
+        },
+        {
+          "tid": "T16",
+          "nodeid": "tests/test_reminders.py::test_reminder_text_names_time",
+          "score": 10.063,
+          "matched": [
+            "appointment",
+            "reminder"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-07",
+      "text": "Patients receive no reminder for an appointment they cancelled.",
+      "candidates": [
+        {
+          "tid": "T17",
+          "nodeid": "tests/test_reminders.py::test_no_reminder_after_cancel",
+          "score": 19.076,
+          "matched": [
+            "cancell",
+            "no",
+            "reminder"
+          ]
+        },
+        {
+          "tid": "T18",
+          "nodeid": "tests/test_reminders.py::test_reminder_addressed_to_patient",
+          "score": 13.664,
+          "matched": [
+            "patient",
+            "reminder"
+          ]
+        },
+        {
+          "tid": "T19",
+          "nodeid": "tests/test_cancel_fees.py::test_new_booking_has_no_fee",
+          "score": 10.494,
+          "matched": [
+            "appointment",
+            "no"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-08",
+      "text": "A patient cannot hold more than 2 future appointments with one provider; past appointments do not count.",
+      "candidates": [
+        {
+          "tid": "T20",
+          "nodeid": "tests/test_slots.py::test_free_slots_skip_booked_ones",
+          "score": 12.1,
+          "matched": [
+            "one",
+            "provider"
+          ]
+        },
+        {
+          "tid": "T21",
+          "nodeid": "tests/test_booking.py::test_booking_stores_appointment",
+          "score": 10.388,
+          "matched": [
+            "appointment",
+            "patient",
+            "provider"
+          ]
+        },
+        {
+          "tid": "T22",
+          "nodeid": "tests/test_reminders.py::test_one_reminder_per_booking",
+          "score": 10.27,
+          "matched": [
+            "one"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-10",
+      "text": "Online booking closes 2 hours before a slot starts.",
+      "candidates": [
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_slot_grid.py::test_grid_empty_without_hours",
+          "score": 10.045,
+          "matched": [
+            "hour",
+            "slot",
+            "start"
+          ]
+        },
+        {
+          "tid": "T03",
+          "nodeid": "tests/test_booking.py::test_book_free_slot",
+          "score": 9.551,
+          "matched": [
+            "book",
+            "slot",
+            "start"
+          ]
+        },
+        {
+          "tid": "T20",
+          "nodeid": "tests/test_slots.py::test_free_slots_skip_booked_ones",
+          "score": 9.551,
+          "matched": [
+            "book",
+            "slot",
+            "start"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-11",
+      "text": "Fees are shown in EUR with two decimals.",
+      "candidates": [
+        {
+          "tid": "T23",
+          "nodeid": "tests/test_limits.py::test_two_bookings_allowed",
+          "score": 13.499,
+          "matched": [
+            "two"
+          ]
+        },
+        {
+          "tid": "T11",
+          "nodeid": "tests/test_cancel_fees.py::test_fee_by_notice",
+          "score": 7.486,
+          "matched": [
+            "fee"
+          ]
+        },
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_cancel_fees.py::test_fee_recorded_on_appointment",
+          "score": 7.486,
+          "matched": [
+            "fee"
+          ]
+        }
+      ],
+      "no_candidates": false
+    }
+  ],
+  "tests": {
+    "T01": {
+      "nodeid": "tests/test_booking.py::test_taken_slot_raises",
+      "file": "tests/test_booking.py",
+      "line": 21,
+      "name": "test_taken_slot_raises",
+      "class": null,
+      "docstring": "",
+      "code": "def test_taken_slot_raises(service):\n    service.book(\"pat-1\", \"p1\", at(TUE, \"09:20\"))\n\n    with pytest.raises(SlotTaken):\n        service.book(\"pat-2\", \"p1\", at(TUE, \"09:20\"))\n\n    assert len(service.appointments) == 1",
+      "assertions": [
+        "pytest.raises(SlotTaken)",
+        "assert len(service.appointments) == 1"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T02": {
+      "nodeid": "tests/test_search.py::test_earliest_free_skips_taken",
+      "file": "tests/test_search.py",
+      "line": 20,
+      "name": "test_earliest_free_skips_taken",
+      "class": null,
+      "docstring": "",
+      "code": "def test_earliest_free_skips_taken(service):\n    service.book(\"pat-1\", \"p1\", at(TUE, \"09:00\"))\n    service.book(\"pat-2\", \"p1\", at(TUE, \"09:20\"))\n\n    slot = earliest_free(service, \"p1\", TUE)\n\n    assert slot.start == at(TUE, \"09:40\")",
+      "assertions": [
+        "assert slot.start == at(TUE, \"09:40\")"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T03": {
+      "nodeid": "tests/test_booking.py::test_book_free_slot",
+      "file": "tests/test_booking.py",
+      "line": 13,
+      "name": "test_book_free_slot",
+      "class": null,
+      "docstring": "",
+      "code": "def test_book_free_slot(service):\n    appt = service.book(\"pat-1\", \"p1\", at(TUE, \"09:20\"))\n\n    assert appt.status == \"booked\"\n    assert appt.start == at(TUE, \"09:20\")\n    assert at(TUE, \"09:20\") not in [s.start for s in service.free_slots(\"p1\", TUE)]",
+      "assertions": [
+        "assert appt.status == \"booked\"",
+        "assert appt.start == at(TUE, \"09:20\")",
+        "assert at(TUE, \"09:20\") not in [s.start for s in service.free_slots(\"p1\", TUE)]"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T04": {
+      "nodeid": "tests/test_slot_grid.py::test_grid",
+      "file": "tests/test_slot_grid.py",
+      "line": 24,
+      "name": "test_grid",
+      "class": null,
+      "docstring": "",
+      "code": "@pytest.mark.parametrize(\n    \"hours, expected\",\n    [\n        ((9, 10), [\"09:00\", \"09:20\", \"09:40\"]),\n        ((14, 15), [\"14:00\", \"14:20\", \"14:40\"]),\n        ((8, 10), [\"08:00\", \"08:20\", \"08:40\", \"09:00\", \"09:20\", \"09:40\"]),\n    ],\n)\ndef test_grid(hours, expected):\n    provider = Provider(\"px\", \"Dr Test\", start_hour=hours[0], end_hour=hours[1])\n\n    slots = day_slots(provider, TUE)\n\n    assert [s.start.strftime(\"%H:%M\") for s in slots] == expected\n    assert all(s.end - s.start == timedelta(minutes=20) for s in slots)",
+      "assertions": [
+        "assert [s.start.strftime(\"%H:%M\") for s in slots] == expected",
+        "assert all(s.end - s.start == timedelta(minutes=20) for s in slots)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T05": {
+      "nodeid": "tests/test_search.py::test_free_slots_for_second_provider",
+      "file": "tests/test_search.py",
+      "line": 45,
+      "name": "test_free_slots_for_second_provider",
+      "class": null,
+      "docstring": "",
+      "code": "def test_free_slots_for_second_provider(service):\n    free = service.free_slots(\"p2\", WED)\n\n    assert [s.start for s in free][:3] == [at(WED, \"14:00\"), at(WED, \"14:20\"), at(WED, \"14:40\")]\n    assert len(free) == 9",
+      "assertions": [
+        "assert [s.start for s in free][:3] == [at(WED, \"14:00\"), at(WED, \"14:20\"), at(WED, \"14:40\")]",
+        "assert len(free) == 9"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T06": {
+      "nodeid": "tests/test_slot_grid.py::test_grid_empty_without_hours",
+      "file": "tests/test_slot_grid.py",
+      "line": 37,
+      "name": "test_grid_empty_without_hours",
+      "class": null,
+      "docstring": "",
+      "code": "def test_grid_empty_without_hours():\n    assert grid_times(9, 9) == []\n\n    provider = Provider(\"px\", \"Dr Test\", start_hour=13, end_hour=13)\n\n    assert day_slots(provider, TUE) == []",
+      "assertions": [
+        "assert grid_times(9, 9) == []",
+        "assert day_slots(provider, TUE) == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T07": {
+      "nodeid": "tests/test_slots.py::test_no_slots_on_days_off",
+      "file": "tests/test_slots.py",
+      "line": 32,
+      "name": "test_no_slots_on_days_off",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_slots_on_days_off(directory, holidays):\n    saturday = offered_slots(directory.get(\"p1\"), SAT, holidays)\n    friday_p2 = offered_slots(directory.get(\"p2\"), SAT - timedelta(days=1), holidays)\n\n    assert saturday == []\n    assert friday_p2 == []",
+      "assertions": [
+        "assert saturday == []",
+        "assert friday_p2 == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T08": {
+      "nodeid": "tests/test_holidays.py::test_no_slots_on_christmas",
+      "file": "tests/test_holidays.py",
+      "line": 14,
+      "name": "test_no_slots_on_christmas",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_slots_on_christmas(directory, holidays):\n    christmas = date(2026, 12, 25)\n\n    assert offered_slots(directory.get(\"p1\"), christmas, holidays) == []",
+      "assertions": [
+        "assert offered_slots(directory.get(\"p1\"), christmas, holidays) == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T09": {
+      "nodeid": "tests/test_waitlist.py::test_no_offer_without_waitlist",
+      "file": "tests/test_waitlist.py",
+      "line": 24,
+      "name": "test_no_offer_without_waitlist",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_offer_without_waitlist(service, outbox):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n\n    cancel(service, appt)\n\n    assert outbox.of_kind(\"slot offer\") == []",
+      "assertions": [
+        "assert outbox.of_kind(\"slot offer\") == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T10": {
+      "nodeid": "tests/test_limits.py::test_cancelled_booking_frees_a_place",
+      "file": "tests/test_limits.py",
+      "line": 41,
+      "name": "test_cancelled_booking_frees_a_place",
+      "class": null,
+      "docstring": "",
+      "code": "def test_cancelled_booking_frees_a_place(service):\n    first = service.book(\"pat-1\", \"p1\", at(TUE, \"09:00\"))\n    service.book(\"pat-1\", \"p1\", at(WED, \"09:00\"))\n    cancel(service, first)\n\n    third = service.book(\"pat-1\", \"p1\", at(THU, \"09:00\"))\n\n    assert third.status == \"booked\"",
+      "assertions": [
+        "assert third.status == \"booked\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T11": {
+      "nodeid": "tests/test_cancel_fees.py::test_fee_by_notice",
+      "file": "tests/test_cancel_fees.py",
+      "line": 15,
+      "name": "test_fee_by_notice",
+      "class": null,
+      "docstring": "",
+      "code": "@pytest.mark.parametrize(\"hours_before, fee\", [(48, 0), (25, 0)])\ndef test_fee_by_notice(service, clock, hours_before, fee):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n    clock.set(appt.start - timedelta(hours=hours_before))\n\n    charged = cancel(service, appt)\n\n    assert charged == fee\n    assert appt.fee == fee",
+      "assertions": [
+        "assert charged == fee",
+        "assert appt.fee == fee"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T12": {
+      "nodeid": "tests/test_cancel_fees.py::test_fee_recorded_on_appointment",
+      "file": "tests/test_cancel_fees.py",
+      "line": 35,
+      "name": "test_fee_recorded_on_appointment",
+      "class": null,
+      "docstring": "",
+      "code": "def test_fee_recorded_on_appointment(service, clock):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n    clock.set(appt.start - timedelta(hours=30))\n\n    cancel(service, appt)\n\n    assert service.get(appt.id).fee == 0",
+      "assertions": [
+        "assert service.get(appt.id).fee == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T13": {
+      "nodeid": "tests/test_waitlist.py::test_first_in_line_gets_offer",
+      "file": "tests/test_waitlist.py",
+      "line": 14,
+      "name": "test_first_in_line_gets_offer",
+      "class": null,
+      "docstring": "",
+      "code": "def test_first_in_line_gets_offer(service, waitlist, outbox):\n    waitlist.join(\"pat-2\", \"p1\")\n    waitlist.join(\"pat-3\", \"p1\")\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n\n    cancel(service, appt)\n\n    expect_offer(outbox, \"pat-2\", at(THU, \"10:00\"))",
+      "assertions": [],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T14": {
+      "nodeid": "tests/test_notify.py::test_sent_notice_not_sent_again",
+      "file": "tests/test_notify.py",
+      "line": 53,
+      "name": "test_sent_notice_not_sent_again",
+      "class": null,
+      "docstring": "",
+      "code": "def test_sent_notice_not_sent_again(service, notifier, outbox):\n    service.book(\"pat-1\", \"p1\", at(TUE, \"11:00\"))\n\n    notifier.send_due(at(TUE, \"11:00\"))\n    notifier.send_due(at(TUE, \"12:00\"))\n\n    assert len(outbox.messages) == 1\n    assert notifier.pending() == []",
+      "assertions": [
+        "assert len(outbox.messages) == 1",
+        "assert notifier.pending() == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T15": {
+      "nodeid": "tests/test_notify.py::test_outbox_records_messages",
+      "file": "tests/test_notify.py",
+      "line": 21,
+      "name": "test_outbox_records_messages",
+      "class": null,
+      "docstring": "",
+      "code": "def test_outbox_records_messages():\n    outbox = Outbox()\n\n    outbox.send(\"pat-1\", \"reminder\", {\"start\": \"x\"})\n    outbox.send(\"pat-2\", \"slot offer\")\n\n    assert [m.kind for m in outbox.messages] == [\"reminder\", \"slot offer\"]\n    assert len(outbox.of_kind(\"reminder\")) == 1\n    assert outbox.messages[1].data == {}\n    assert outbox.messages[0].to == \"pat-1\"",
+      "assertions": [
+        "assert [m.kind for m in outbox.messages] == [\"reminder\", \"slot offer\"]",
+        "assert len(outbox.of_kind(\"reminder\")) == 1",
+        "assert outbox.messages[1].data == {}",
+        "assert outbox.messages[0].to == \"pat-1\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T16": {
+      "nodeid": "tests/test_reminders.py::test_reminder_text_names_time",
+      "file": "tests/test_reminders.py",
+      "line": 20,
+      "name": "test_reminder_text_names_time",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reminder_text_names_time(service, directory):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n\n    text = reminder_text(appt, directory.get(\"p1\").name)\n\n    assert text == \"Reminder: your appointment with Dr Ana Weber is on Thursday 05 March at 10:00.\"",
+      "assertions": [
+        "assert text == \"Reminder: your appointment with Dr Ana Weber is on Thursday 05 March at 10:00.\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T17": {
+      "nodeid": "tests/test_reminders.py::test_no_reminder_after_cancel",
+      "file": "tests/test_reminders.py",
+      "line": 12,
+      "name": "test_no_reminder_after_cancel",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_reminder_after_cancel(service):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n\n    cancel(service, appt)\n\n    assert appt.status == \"cancelled\"",
+      "assertions": [
+        "assert appt.status == \"cancelled\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T18": {
+      "nodeid": "tests/test_reminders.py::test_reminder_addressed_to_patient",
+      "file": "tests/test_reminders.py",
+      "line": 28,
+      "name": "test_reminder_addressed_to_patient",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reminder_addressed_to_patient(service, notifier):\n    appt = service.book(\"pat-3\", \"p2\", at(TUE, \"15:00\"))\n\n    items = notifier.pending(appt.id)\n\n    assert len(items) == 1\n\n    item = items[0]\n\n    assert item.to == \"pat-3\"\n    assert item.kind == \"reminder\"",
+      "assertions": [
+        "assert len(items) == 1",
+        "assert item.to == \"pat-3\"",
+        "assert item.kind == \"reminder\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T19": {
+      "nodeid": "tests/test_cancel_fees.py::test_new_booking_has_no_fee",
+      "file": "tests/test_cancel_fees.py",
+      "line": 54,
+      "name": "test_new_booking_has_no_fee",
+      "class": null,
+      "docstring": "",
+      "code": "def test_new_booking_has_no_fee(service):\n    appt = service.book(\"pat-1\", \"p1\", at(THU, \"10:00\"))\n    other = service.book(\"pat-2\", \"p2\", at(THU, \"14:00\"))\n\n    assert appt.fee == 0\n    assert other.fee == 0\n    assert all(a.fee == 0 for a in service.appointments)",
+      "assertions": [
+        "assert appt.fee == 0",
+        "assert other.fee == 0",
+        "assert all(a.fee == 0 for a in service.appointments)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T20": {
+      "nodeid": "tests/test_slots.py::test_free_slots_skip_booked_ones",
+      "file": "tests/test_slots.py",
+      "line": 40,
+      "name": "test_free_slots_skip_booked_ones",
+      "class": null,
+      "docstring": "",
+      "code": "def test_free_slots_skip_booked_ones(service):\n    service.book(\"pat-1\", \"p1\", at(TUE, \"09:20\"))\n\n    free = [s.start for s in service.free_slots(\"p1\", TUE)]\n\n    assert at(TUE, \"09:20\") not in free\n    assert at(TUE, \"09:00\") in free\n    assert len(free) == 8\n\n    other_provider = service.free_slots(\"p2\", TUE)\n\n    assert len(other_provider) == 9",
+      "assertions": [
+        "assert at(TUE, \"09:20\") not in free",
+        "assert at(TUE, \"09:00\") in free",
+        "assert len(free) == 8",
+        "assert len(other_provider) == 9"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T21": {
+      "nodeid": "tests/test_booking.py::test_booking_stores_appointment",
+      "file": "tests/test_booking.py",
+      "line": 40,
+      "name": "test_booking_stores_appointment",
+      "class": null,
+      "docstring": "",
+      "code": "def test_booking_stores_appointment(service):\n    appt = service.book(\"pat-1\", \"p2\", at(WED, \"15:40\"))\n\n    assert service.appointments == [appt]\n    assert appt.end == at(WED, \"16:00\")\n    assert appt.provider_id == \"p2\"\n    assert appt.patient_id == \"pat-1\"\n    assert service.for_patient(\"pat-1\") == [appt]",
+      "assertions": [
+        "assert service.appointments == [appt]",
+        "assert appt.end == at(WED, \"16:00\")",
+        "assert appt.provider_id == \"p2\"",
+        "assert appt.patient_id == \"pat-1\"",
+        "assert service.for_patient(\"pat-1\") == [appt]"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T22": {
+      "nodeid": "tests/test_reminders.py::test_one_reminder_per_booking",
+      "file": "tests/test_reminders.py",
+      "line": 41,
+      "name": "test_one_reminder_per_booking",
+      "class": null,
+      "docstring": "",
+      "code": "def test_one_reminder_per_booking(service, notifier):\n    service.book(\"pat-1\", \"p1\", at(TUE, \"09:00\"))\n    service.book(\"pat-2\", \"p1\", at(TUE, \"09:20\"))\n    service.book(\"pat-3\", \"p2\", at(TUE, \"14:00\"))\n\n    assert len(notifier.pending()) == 3",
+      "assertions": [
+        "assert len(notifier.pending()) == 3"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T23": {
+      "nodeid": "tests/test_limits.py::test_two_bookings_allowed",
+      "file": "tests/test_limits.py",
+      "line": 21,
+      "name": "test_two_bookings_allowed",
+      "class": null,
+      "docstring": "",
+      "code": "def test_two_bookings_allowed(service):\n    first = service.book(\"pat-1\", \"p1\", at(TUE, \"09:00\"))\n    second = service.book(\"pat-1\", \"p1\", at(WED, \"10:20\"))\n\n    assert service.for_patient(\"pat-1\") == [first, second]\n    assert first.status == second.status == \"booked\"",
+      "assertions": [
+        "assert service.for_patient(\"pat-1\") == [first, second]",
+        "assert first.status == second.status == \"booked\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    }
+  }
+}

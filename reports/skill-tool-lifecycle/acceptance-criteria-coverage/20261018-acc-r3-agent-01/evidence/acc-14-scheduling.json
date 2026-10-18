@@ -1,0 +1,104 @@
+{
+  "AC-01": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_booking.py::test_taken_slot_raises",
+      "tests/test_booking.py::test_book_free_slot"
+    ],
+    "trap": "control"
+  },
+  "AC-02": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_slot_grid.py::test_grid"
+    ],
+    "trap": "parametrised"
+  },
+  "AC-03": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_holidays.py::test_no_slots_on_christmas"
+    ],
+    "trap": "exists-asserts-other"
+  },
+  "AC-04": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_cancel_fees.py::test_fee_by_notice"
+    ],
+    "trap": "parametrised-row-absent"
+  },
+  "AC-05": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_cancellation.py::test_cancel_frees_slot",
+      "tests/test_waitlist.py::test_first_in_line_gets_offer"
+    ],
+    "trap": "split-files+helper"
+  },
+  "AC-06": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_notify.py::test_day_before_notice_scheduled",
+      "tests/test_notify.py::test_send_due_sends_at_run_time"
+    ],
+    "trap": "vocabulary"
+  },
+  "AC-07": {
+    "gold": "Missing",
+    "accepted": [
+      "Missing",
+      "Unclear"
+    ],
+    "decisive": [
+      "tests/test_reminders.py::test_no_reminder_after_cancel"
+    ],
+    "trap": "name-only"
+  },
+  "AC-08": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_limits.py::test_third_booking_rejected"
+    ],
+    "trap": "partial-assert"
+  },
+  "AC-10": {
+    "gold": "Missing",
+    "accepted": [
+      "Missing"
+    ],
+    "decisive": [],
+    "trap": "no-test"
+  },
+  "AC-11": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_fees.py::test_fee_display"
+    ],
+    "trap": "partial-helper"
+  }
+}

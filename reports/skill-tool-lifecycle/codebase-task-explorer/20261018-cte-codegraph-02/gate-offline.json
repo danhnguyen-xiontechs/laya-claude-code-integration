@@ -1,0 +1,433 @@
+{
+  "summary": {
+    "tasks": 9,
+    "K": 8,
+    "merged": 0.648,
+    "codegraph": 0.593,
+    "codemapRules": 0.704,
+    "codemapTaskOnly": 0.593,
+    "callGraphTasks": 2,
+    "callGraphMerged": 0.75,
+    "callGraphCodegraph": 0.75,
+    "callGraphCodemapRules": 0.75,
+    "latencyMs": {
+      "p50": 21486,
+      "max": 23820,
+      "mean": 21965.222
+    },
+    "codegraphEngine": "codegraph 1.6.2",
+    "gatedEngine": "merged (codegraph + codemap, RRF)",
+    "gate": {
+      "recall": false,
+      "latency": false,
+      "pass": false
+    }
+  },
+  "rows": [
+    {
+      "id": "t1-bug-merge-verdict",
+      "mode": "bug",
+      "groups": 2,
+      "merged": 0.5,
+      "codegraph": 0.5,
+      "codemapRules": 0.5,
+      "codemapTaskOnly": 0.5,
+      "mergedMs": 21419,
+      "mergedCodemapMs": 20309,
+      "codegraphMs": 1331,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+          ".claude/skills/subagent-model-router/bench/tasks/e4-config/files/config/index.js",
+          "workflow/settings_merge.py",
+          "eval/analyze.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs",
+          ".claude/skills/review-pr-jev-classify/tests/jev.test.mjs",
+          ".claude/skills/subagent-model-router/bench/tasks/e4-config/files/config/index.js",
+          ".claude/skills/web-test-jev-gate/scripts/build_report.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+          "workflow/settings_merge.py",
+          ".claude/skills/review-pr-jev-classify/scripts/pr-fetch.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/pr-fetch.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/laya-eval.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs"
+        ]
+      }
+    },
+    {
+      "id": "t2-feature-model-hook",
+      "mode": "feature",
+      "groups": 2,
+      "merged": 1,
+      "codegraph": 1,
+      "codemapRules": 1,
+      "codemapTaskOnly": 0.5,
+      "mergedMs": 22747,
+      "mergedCodemapMs": 21368,
+      "codegraphMs": 1112,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/subagent-model-router/scripts/router.mjs",
+          ".claude/skills/subagent-model-router/scripts/route.mjs",
+          ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+          "proxy/router_proxy.py",
+          ".claude/skills/subagent-model-router/scripts/govern.mjs",
+          ".claude/skills/subagent-model-router/bench/lib/mutation.mjs",
+          ".claude/skills/subagent-model-router/bench/tasks/d1-lru/check.mjs",
+          ".claude/skills/subagent-model-router/bench/tasks/d2-ratelimit/check.mjs"
+        ],
+        "codegraph": [
+          "fast-compact/types/claude-code.d.ts",
+          "retry-loop-breaker/types/claude-code.d.ts",
+          ".claude/skills/subagent-model-router/scripts/router.mjs",
+          ".claude/skills/subagent-model-router/scripts/governor.mjs",
+          ".claude/skills/subagent-model-router/scripts/route.mjs",
+          "proxy/router_proxy.py",
+          ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+          ".claude/skills/subagent-model-router/scripts/pricing.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/subagent-model-router/scripts/router.mjs",
+          ".claude/skills/subagent-model-router/scripts/govern.mjs",
+          ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+          ".claude/skills/subagent-model-router/scripts/route.mjs",
+          "proxy/router_proxy.py",
+          ".claude/skills/subagent-model-router/test/bench.test.mjs",
+          ".claude/skills/subagent-model-router/test/governor.test.mjs",
+          ".claude/skills/subagent-model-router/test/router.test.mjs"
+        ]
+      }
+    },
+    {
+      "id": "t3-refactor-decide",
+      "mode": "refactor",
+      "groups": 3,
+      "merged": 0.3333333333333333,
+      "codegraph": 0.3333333333333333,
+      "codemapRules": 0.3333333333333333,
+      "codemapTaskOnly": 0.3333333333333333,
+      "mergedMs": 23820,
+      "mergedCodemapMs": 22553,
+      "codegraphMs": 1374,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/skills-router/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/skills-router/scripts/decision-provider.mjs",
+          ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs",
+          ".claude/skills/story-batch-planner/scripts/decision-provider.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/skills-router/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/story-batch-planner/scripts/decision-provider.mjs"
+        ]
+      }
+    },
+    {
+      "id": "t4-newfeature-gate",
+      "mode": "new-feature",
+      "groups": 2,
+      "merged": 1,
+      "codegraph": 0.5,
+      "codemapRules": 0.5,
+      "codemapTaskOnly": 0.5,
+      "mergedMs": 21732,
+      "mergedCodemapMs": 20419,
+      "codegraphMs": 1544,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+          "workflow/hooks/laya_step_router.py",
+          ".claude/skills/web-test-jev-oracle/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-gate/tests/jev-lib.test.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-wait/scripts/jev-lib.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-verdict/tests/verdict.test.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-wait/scripts/build_execution_log.mjs"
+        ],
+        "codemapRules": [
+          "workflow/hooks/laya_step_router.py",
+          ".claude/skills/web-test-jev-gate/scripts/jev-check.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/jev-check.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/jev-check.mjs",
+          ".claude/skills/web-test-jev-wait/scripts/jev-check.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/laya-check.mjs"
+        ]
+      }
+    },
+    {
+      "id": "t5-bug-grounding",
+      "mode": "bug",
+      "groups": 2,
+      "merged": 0.5,
+      "codegraph": 0.5,
+      "codemapRules": 0.5,
+      "codemapTaskOnly": 0,
+      "mergedMs": 23414,
+      "mergedCodemapMs": 22133,
+      "codegraphMs": 1237,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/web-test-jev-ground/scripts/laya/serve.py",
+          ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/ground-question.mjs",
+          ".claude/skills/web-test-laya-ground/scripts/laya/serve.py",
+          "audit/audit.py",
+          ".claude/skills/bmad-help-jev/scripts/suggest.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs"
+        ],
+        "codegraph": [
+          "fast-compact/types/claude-code.d.ts",
+          "retry-loop-breaker/types/claude-code.d.ts",
+          ".claude/skills/web-test-jev-ground/scripts/laya/serve.py",
+          ".claude/skills/web-test-laya-ground/scripts/laya/serve.py",
+          ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/ground-question.mjs"
+        ],
+        "codemapRules": [
+          "audit/audit.py",
+          ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/laya/serve.py",
+          ".claude/skills/bmad-help-jev/scripts/suggest.mjs",
+          ".claude/skills/skills-router/scripts/shadow-report.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/ground-question.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/rules-lib.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/outcome-labels.mjs"
+        ]
+      }
+    },
+    {
+      "id": "cg1-refactor-decide-signature",
+      "mode": "refactor",
+      "groups": 2,
+      "merged": 0.5,
+      "codegraph": 0.5,
+      "codemapRules": 0.5,
+      "codemapTaskOnly": 0.5,
+      "mergedMs": 21166,
+      "mergedCodemapMs": 19940,
+      "codegraphMs": 1202,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/decision-provider.mjs",
+          ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+          ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs",
+          ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+          ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/decision-provider.mjs",
+          ".claude/skills/web-test-jev-wait/scripts/decision-provider.mjs",
+          ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs",
+          ".claude/skills/story-batch-planner/scripts/decision-provider.mjs"
+        ]
+      }
+    },
+    {
+      "id": "cg2-entry-reaches-ask",
+      "mode": "feature",
+      "groups": 2,
+      "merged": 1,
+      "codegraph": 1,
+      "codemapRules": 1,
+      "codemapTaskOnly": 1,
+      "mergedMs": 21486,
+      "mergedCodemapMs": 20442,
+      "codegraphMs": 1059,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-laya-gate/tests/gate-action.test.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-gate/tests/gate.test.mjs",
+          ".claude/skills/web-test-jev-ground/scripts/ground-question.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/jev-lib.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-verdict/tests/verdict.test.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/integration-verifier/tests/fixtures.test.mjs",
+          "eval/data/build-datasets.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-gate/tests/gate-action.test.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/jev-check.mjs",
+          ".claude/skills/web-test-laya-gate/tests/gate-action.test.mjs",
+          ".claude/skills/web-test-jev-gate/tests/gate.test.mjs",
+          ".claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/jev-check.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/jev-check.mjs"
+        ]
+      }
+    },
+    {
+      "id": "cg3-find-step-verdict",
+      "mode": "bug",
+      "groups": 1,
+      "merged": 0,
+      "codegraph": 0,
+      "codemapRules": 1,
+      "codemapTaskOnly": 1,
+      "mergedMs": 21143,
+      "mergedCodemapMs": 19954,
+      "codegraphMs": 1097,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-jev-verdict/tests/verdict.test.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-oracle/scripts/build_report.mjs",
+          ".claude/skills/web-test-jev-oracle/scripts/build_report.mjs",
+          "eval/analyze.mjs"
+        ],
+        "codegraph": [
+          ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-jev-verdict/tests/verdict.test.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-gate/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-ground/scripts/build_execution_log.mjs",
+          ".claude/skills/web-test-laya-oracle/scripts/build_execution_log.mjs"
+        ],
+        "codemapRules": [
+          ".claude/skills/web-test-laya-verdict/scripts/verdict.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/verdict.mjs",
+          ".claude/skills/web-test-jev-verdict/tests/verdict.test.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-oracle/scripts/build_report.mjs",
+          ".claude/skills/web-test-laya-verdict/scripts/laya-check.mjs",
+          "eval/analyze.mjs"
+        ]
+      }
+    },
+    {
+      "id": "cg4-find-explorer-cli-flags",
+      "mode": "feature",
+      "groups": 1,
+      "merged": 1,
+      "codegraph": 1,
+      "codemapRules": 1,
+      "codemapTaskOnly": 1,
+      "mergedMs": 20760,
+      "mergedCodemapMs": 19715,
+      "codegraphMs": 1084,
+      "codegraphFailed": 0,
+      "top8": {
+        "merged": [
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/explore.mjs",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          ".claude/skills/skills-router/scripts/decision-provider.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/eval/run-eval.mjs",
+          ".claude/skills/subagent-model-router/bench/tasks/f4-await/files/src/batch.js",
+          ".claude/skills/subagent-model-router/bench/tasks/f4-await/solution/src/batch.js"
+        ],
+        "codegraph": [
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/explore.mjs",
+          ".claude/skills/codebase-task-explorer/eval/run-eval.mjs",
+          "fast-compact/hooks/fast-compact.ts",
+          ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+          "retry-loop-breaker/hooks/core.ts",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+          "smart-context-trimming/hooks/trim-core.ts"
+        ],
+        "codemapRules": [
+          ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/scripts/explore.mjs",
+          "reports/skill-tool-lifecycle/codebase-task-explorer/20261018-cte-codegraph-01/diag-queries-only.mjs",
+          "research/ab-1697/laya_launcher.py",
+          ".claude/skills/skills-router/scripts/decision-provider.mjs",
+          ".claude/skills/codebase-task-explorer/tests/explore.test.mjs",
+          ".claude/skills/codebase-task-explorer/tests/fixtures/fake-codegraph.mjs",
+          ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "experimentId": "20261018-acc-r3-agent-01",
+  "verdict": "INSUFFICIENT_EVIDENCE",
+  "armA": {"verdictsRight": "72/76", "fullyRightRuns": "4/8", "falseCovered": 0, "subagentTokens": 754955},
+  "armB": {"verdictsRight": "74/76", "fullyRightRuns": "6/8", "falseCovered": 0, "subagentTokens": 786678},
+  "tokenDeltaPct": 4.2,
+  "offlineRecall": {"criteriaWithDecisiveGold": 37, "allDecisiveInTop3": 24, "someDecisiveInTop3": 2, "noneInTop3": 11},
+  "unitTests": {"passed": 19, "failed": 0},
+  "opusCalls": 0
+}

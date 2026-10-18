@@ -1,0 +1,95 @@
+{
+  "AC-01": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_reservations.py::test_reserve_reduces_available"
+    ],
+    "trap": "control"
+  },
+  "AC-02": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_reservations.py::test_over_reserve_rejected"
+    ],
+    "trap": "partial-assert"
+  },
+  "AC-03": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_expiry.py::test_release_after_hours"
+    ],
+    "trap": "parametrised+helper"
+  },
+  "AC-04": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_reorder.py::test_suggestion_created_below_point"
+    ],
+    "trap": "partial-assert"
+  },
+  "AC-05": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered",
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_transfers.py::test_transfer_moves_quantity"
+    ],
+    "trap": "control"
+  },
+  "AC-06": {
+    "gold": "Missing",
+    "accepted": [
+      "Missing",
+      "Unclear"
+    ],
+    "decisive": [
+      "tests/test_transfers.py::test_transfer_insufficient_stock_rejected"
+    ],
+    "trap": "name-only"
+  },
+  "AC-07": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_counts.py::test_stocktake_variance_posts_correction"
+    ],
+    "trap": "vocabulary"
+  },
+  "AC-08": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_ledger.py::test_short_move_rejected"
+    ],
+    "trap": "parametrised-partial"
+  },
+  "AC-09": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_orders.py::test_cancel_sets_status",
+      "tests/test_orders.py::test_cancel_refunds_paid_amount"
+    ],
+    "trap": "partial-release-unasserted"
+  }
+}

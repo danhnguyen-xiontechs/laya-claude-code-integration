@@ -1,0 +1,5 @@
+[smart-trim] Same result as run #1 of this command (Command FAILED (Exit code 1); the error status is preserved.); 45 of 45 kept lines identical, total lines 315 → 314. Only the changed lines follow.
+[smart-trim] Changed (+ in this run, - only in run #1):
+- ✖ failing tests:
+[smart-trim] Full raw output of this run: /raw/S7-js-one-bug-fixed.r2.log (Read it if you need an omitted section).
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

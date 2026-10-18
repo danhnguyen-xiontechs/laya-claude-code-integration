@@ -1,0 +1,676 @@
+{
+  "source": "Story ACC-9 'Sign-in security'",
+  "createdAt": "2026-10-18T07:29:25+00:00",
+  "testsDir": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-12-accounts/tests",
+  "root": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-12-accounts",
+  "junit": null,
+  "junitSummary": null,
+  "testsDiscovered": 87,
+  "topK": 3,
+  "maxBodyChars": 1500,
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Signing up with an email already in use returns the error \"email taken\" and creates no second account.",
+      "candidates": [
+        {
+          "tid": "T01",
+          "nodeid": "tests/test_email_change.py::test_change_to_taken_email_refused",
+          "score": 15.183,
+          "matched": [
+            "email",
+            "error",
+            "taken"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_reset.py::test_token_single_use",
+          "score": 14.453,
+          "matched": [
+            "email",
+            "use"
+          ]
+        },
+        {
+          "tid": "T03",
+          "nodeid": "tests/test_reset.py::test_unknown_email_gets_no_token",
+          "score": 12.436,
+          "matched": [
+            "email",
+            "no"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-02",
+      "text": "Emails are compared case-insensitively at signup and at login.",
+      "candidates": [
+        {
+          "tid": "T04",
+          "nodeid": "tests/test_signup.py::test_duplicate_email_any_case",
+          "score": 18.471,
+          "matched": [
+            "cas",
+            "email",
+            "signup"
+          ]
+        },
+        {
+          "tid": "T05",
+          "nodeid": "tests/test_login.py::test_login_unknown_email_denied",
+          "score": 7.863,
+          "matched": [
+            "email",
+            "login"
+          ]
+        },
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_signup.py::test_signup_creates_user",
+          "score": 6.949,
+          "matched": [
+            "email",
+            "signup"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-03",
+      "text": "After 5 failed logins within 15 minutes the account is locked for 30 minutes.",
+      "candidates": [
+        {
+          "tid": "T07",
+          "nodeid": "tests/test_lockout.py::test_failed_login_is_counted",
+          "score": 18.374,
+          "matched": [
+            "fail",
+            "login",
+            "minut"
+          ]
+        },
+        {
+          "tid": "T08",
+          "nodeid": "tests/test_passwords.py::test_tampered_hash_fails",
+          "score": 11.386,
+          "matched": [
+            "fail"
+          ]
+        },
+        {
+          "tid": "T09",
+          "nodeid": "tests/test_lockout.py::test_lock_after_five_failures",
+          "score": 10.889,
+          "matched": [
+            "lock",
+            "login",
+            "minut"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-04",
+      "text": "A locked account cannot log in even with the correct password.",
+      "candidates": [
+        {
+          "tid": "T10",
+          "nodeid": "tests/test_lockout.py::test_correct_password_while_locked",
+          "score": 20.415,
+          "matched": [
+            "correct",
+            "lock",
+            "password"
+          ]
+        },
+        {
+          "tid": "T11",
+          "nodeid": "tests/test_login.py::test_login_with_correct_password",
+          "score": 13.314,
+          "matched": [
+            "correct",
+            "password"
+          ]
+        },
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_passwords.py::test_verify_correct_password",
+          "score": 13.314,
+          "matched": [
+            "correct",
+            "password"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-05",
+      "text": "A password reset token expires after 1 hour.",
+      "candidates": [
+        {
+          "tid": "T13",
+          "nodeid": "tests/test_clock.py::test_advance_minutes_and_hours",
+          "score": 8.223,
+          "matched": [
+            "hour"
+          ]
+        },
+        {
+          "tid": "T14",
+          "nodeid": "tests/test_reset.py::test_invalid_token_rejected",
+          "score": 7.922,
+          "matched": [
+            "password",
+            "reset",
+            "token"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_reset.py::test_token_single_use",
+          "score": 7.922,
+          "matched": [
+            "password",
+            "reset",
+            "token"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-06",
+      "text": "A reset token can be used only once.",
+      "candidates": [
+        {
+          "tid": "T15",
+          "nodeid": "tests/test_reset_mail.py::test_reset_mail_contains_link",
+          "score": 7.83,
+          "matched": [
+            "reset",
+            "token"
+          ]
+        },
+        {
+          "tid": "T14",
+          "nodeid": "tests/test_reset.py::test_invalid_token_rejected",
+          "score": 6.609,
+          "matched": [
+            "reset",
+            "token"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_reset.py::test_token_single_use",
+          "score": 6.609,
+          "matched": [
+            "reset",
+            "token"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-07",
+      "text": "Changing the password ends all other active sessions of the user but keeps the current one.",
+      "candidates": [
+        {
+          "tid": "T16",
+          "nodeid": "tests/test_sessions.py::test_logout_ends_session",
+          "score": 22.863,
+          "matched": [
+            "activ",
+            "end",
+            "password",
+            "session"
+          ]
+        },
+        {
+          "tid": "T17",
+          "nodeid": "tests/test_sessions.py::test_password_change_revokes_sessions",
+          "score": 21.532,
+          "matched": [
+            "activ",
+            "chang",
+            "current",
+            "password",
+            "session"
+          ]
+        },
+        {
+          "tid": "T18",
+          "nodeid": "tests/test_login.py::test_login_returns_active_session",
+          "score": 15.527,
+          "matched": [
+            "activ",
+            "password",
+            "session",
+            "user"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-09",
+      "text": "Admins can unlock a locked account; non-admins get PermissionDenied.",
+      "candidates": [
+        {
+          "tid": "T19",
+          "nodeid": "tests/test_roles.py::test_non_admin_cannot_delete_user",
+          "score": 28.014,
+          "matched": [
+            "admin",
+            "deny",
+            "get",
+            "non",
+            "permission"
+          ]
+        },
+        {
+          "tid": "T20",
+          "nodeid": "tests/test_unlock.py::test_admin_unlocks",
+          "score": 18.302,
+          "matched": [
+            "admin",
+            "lock",
+            "unlock"
+          ]
+        },
+        {
+          "tid": "T21",
+          "nodeid": "tests/test_roles.py::TestRolePermissions::test_admin_permissions",
+          "score": 15.298,
+          "matched": [
+            "admin",
+            "permission"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-10",
+      "text": "Sessions expire after 8 hours of inactivity.",
+      "candidates": [
+        {
+          "tid": "T13",
+          "nodeid": "tests/test_clock.py::test_advance_minutes_and_hours",
+          "score": 8.223,
+          "matched": [
+            "hour"
+          ]
+        },
+        {
+          "tid": "T18",
+          "nodeid": "tests/test_login.py::test_login_returns_active_session",
+          "score": 5.751,
+          "matched": [
+            "session"
+          ]
+        },
+        {
+          "tid": "T22",
+          "nodeid": "tests/test_session_tokens.py::TestTokenLookup::test_get_returns_the_session",
+          "score": 5.751,
+          "matched": [
+            "session"
+          ]
+        }
+      ],
+      "no_candidates": false
+    }
+  ],
+  "tests": {
+    "T01": {
+      "nodeid": "tests/test_email_change.py::test_change_to_taken_email_refused",
+      "file": "tests/test_email_change.py",
+      "line": 28,
+      "name": "test_change_to_taken_email_refused",
+      "class": null,
+      "docstring": "",
+      "code": "def test_change_to_taken_email_refused(store, outbox, ann, bob):\n    error = change_email(store, outbox, ann, \"bob@example.com\")\n\n    assert error == \"email taken\"\n    assert ann.email == \"ann@example.com\"",
+      "assertions": [
+        "assert error == \"email taken\"",
+        "assert ann.email == \"ann@example.com\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T02": {
+      "nodeid": "tests/test_reset.py::test_token_single_use",
+      "file": "tests/test_reset.py",
+      "line": 27,
+      "name": "test_token_single_use",
+      "class": null,
+      "docstring": "",
+      "code": "def test_token_single_use(resets, ann):\n    token = resets.request(ANN_EMAIL)\n\n    resets.complete(token, NEW_PASSWORD)\n\n    assert verify_password(NEW_PASSWORD, ann.password_hash)",
+      "assertions": [
+        "assert verify_password(NEW_PASSWORD, ann.password_hash)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T03": {
+      "nodeid": "tests/test_reset.py::test_unknown_email_gets_no_token",
+      "file": "tests/test_reset.py",
+      "line": 35,
+      "name": "test_unknown_email_gets_no_token",
+      "class": null,
+      "docstring": "",
+      "code": "def test_unknown_email_gets_no_token(resets, ann):\n    token = resets.request(\"nobody@example.com\")\n\n    assert token is None\n    assert resets.tokens == {}\n\n    real = resets.request(ANN_EMAIL)\n\n    assert real is not None\n    assert resets.tokens[real].user_id == ann.id",
+      "assertions": [
+        "assert token is None",
+        "assert resets.tokens == {}",
+        "assert real is not None",
+        "assert resets.tokens[real].user_id == ann.id"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T04": {
+      "nodeid": "tests/test_signup.py::test_duplicate_email_any_case",
+      "file": "tests/test_signup.py",
+      "line": 33,
+      "name": "test_duplicate_email_any_case",
+      "class": null,
+      "docstring": "",
+      "code": "@pytest.mark.parametrize(\n    \"variant\",\n    [\n        \"Ann@example.com\",\n        \"ANN@EXAMPLE.COM\",\n        \"ann@Example.Com\",\n        \"aNN@eXample.com\",\n        \" ann@example.com \",\n    ],\n)\ndef test_duplicate_email_any_case(signups, ann, variant):\n    result = signups.signup(variant, \"another-pass-2\")\n\n    assert result.ok is False\n    assert result.error == \"email taken\"",
+      "assertions": [
+        "assert result.ok is False",
+        "assert result.error == \"email taken\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T05": {
+      "nodeid": "tests/test_login.py::test_login_unknown_email_denied",
+      "file": "tests/test_login.py",
+      "line": 38,
+      "name": "test_login_unknown_email_denied",
+      "class": null,
+      "docstring": "",
+      "code": "def test_login_unknown_email_denied(auth, ann):\n    result = auth.login(\"nobody@example.com\", PASSWORD)\n\n    assert_login_denied(result, reason=\"unknown email\")\n    assert result.user_id is None\n    assert result.session is None\n    assert ann.failures == []",
+      "assertions": [
+        "assert result.user_id is None",
+        "assert result.session is None",
+        "assert ann.failures == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T06": {
+      "nodeid": "tests/test_signup.py::test_signup_creates_user",
+      "file": "tests/test_signup.py",
+      "line": 40,
+      "name": "test_signup_creates_user",
+      "class": null,
+      "docstring": "",
+      "code": "def test_signup_creates_user(signups, store, clock):\n    clock.advance(minutes=30)\n\n    result = signups.signup(\n        \"carol@example.com\",\n        \"carol-pass-42\",\n        name=\"Carol Diaz\",\n    )\n\n    assert result.ok is True\n    assert result.error is None\n    assert store.get(result.user.id) is result.user\n    assert result.user.email == \"carol@example.com\"\n    assert result.user.created_at == clock.now()",
+      "assertions": [
+        "assert result.ok is True",
+        "assert result.error is None",
+        "assert store.get(result.user.id) is result.user",
+        "assert result.user.email == \"carol@example.com\"",
+        "assert result.user.created_at == clock.now()"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T07": {
+      "nodeid": "tests/test_lockout.py::test_failed_login_is_counted",
+      "file": "tests/test_lockout.py",
+      "line": 36,
+      "name": "test_failed_login_is_counted",
+      "class": null,
+      "docstring": "",
+      "code": "def test_failed_login_is_counted(auth, clock, ann):\n    started = clock.now()\n\n    auth.login(ANN_EMAIL, WRONG)\n    clock.advance(minutes=2)\n    auth.login(ANN_EMAIL, WRONG)\n\n    assert len(ann.failures) == 2\n    assert ann.failures[0] == started\n    assert ann.failures[-1] == clock.now()",
+      "assertions": [
+        "assert len(ann.failures) == 2",
+        "assert ann.failures[0] == started",
+        "assert ann.failures[-1] == clock.now()"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T08": {
+      "nodeid": "tests/test_passwords.py::test_tampered_hash_fails",
+      "file": "tests/test_passwords.py",
+      "line": 30,
+      "name": "test_tampered_hash_fails",
+      "class": null,
+      "docstring": "",
+      "code": "def test_tampered_hash_fails(ann):\n    salt, _, digest = ann.password_hash.partition(\"$\")\n    tampered = f\"{salt}${digest[:-1]}0\" if digest[-1] != \"0\" else f\"{salt}${digest[:-1]}1\"\n\n    assert not verify_password(PASSWORD, tampered)\n    assert verify_password(PASSWORD, ann.password_hash)",
+      "assertions": [
+        "assert not verify_password(PASSWORD, tampered)",
+        "assert verify_password(PASSWORD, ann.password_hash)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T09": {
+      "nodeid": "tests/test_lockout.py::test_lock_after_five_failures",
+      "file": "tests/test_lockout.py",
+      "line": 10,
+      "name": "test_lock_after_five_failures",
+      "class": null,
+      "docstring": "",
+      "code": "def test_lock_after_five_failures(auth, clock, ann):\n    for _ in range(5):\n        auth.login(ANN_EMAIL, WRONG)\n        clock.advance(minutes=1)\n\n    assert ann.is_locked(clock.now())",
+      "assertions": [
+        "assert ann.is_locked(clock.now())"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T10": {
+      "nodeid": "tests/test_lockout.py::test_correct_password_while_locked",
+      "file": "tests/test_lockout.py",
+      "line": 18,
+      "name": "test_correct_password_while_locked",
+      "class": null,
+      "docstring": "",
+      "code": "def test_correct_password_while_locked(auth, ann):\n    for _ in range(5):\n        auth.login(ANN_EMAIL, WRONG)\n\n    result = auth.login(ANN_EMAIL, PASSWORD)\n\n    assert_login_denied(result, reason=\"locked\")",
+      "assertions": [],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T11": {
+      "nodeid": "tests/test_login.py::test_login_with_correct_password",
+      "file": "tests/test_login.py",
+      "line": 10,
+      "name": "test_login_with_correct_password",
+      "class": null,
+      "docstring": "",
+      "code": "def test_login_with_correct_password(auth, ann, bob):\n    result = auth.login(ANN_EMAIL, PASSWORD)\n\n    assert result.ok is True\n    assert result.reason is None\n    assert result.user_id == ann.id\n\n    other = auth.login(BOB_EMAIL, BOB_PASSWORD)\n\n    assert other.ok is True\n    assert other.user_id == bob.id",
+      "assertions": [
+        "assert result.ok is True",
+        "assert result.reason is None",
+        "assert result.user_id == ann.id",
+        "assert other.ok is True",
+        "assert other.user_id == bob.id"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T12": {
+      "nodeid": "tests/test_passwords.py::test_verify_correct_password",
+      "file": "tests/test_passwords.py",
+      "line": 21,
+      "name": "test_verify_correct_password",
+      "class": null,
+      "docstring": "",
+      "code": "def test_verify_correct_password(ann):\n    assert verify_password(PASSWORD, ann.password_hash)",
+      "assertions": [
+        "assert verify_password(PASSWORD, ann.password_hash)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T13": {
+      "nodeid": "tests/test_clock.py::test_advance_minutes_and_hours",
+      "file": "tests/test_clock.py",
+      "line": 19,
+      "name": "test_advance_minutes_and_hours",
+      "class": null,
+      "docstring": "",
+      "code": "def test_advance_minutes_and_hours(clock):\n    clock.advance(minutes=45)\n    clock.advance(hours=2)\n\n    assert clock.now() == datetime(2026, 3, 2, 11, 45, 0)\n\n    returned = clock.advance(days=2, seconds=30)\n\n    assert returned == clock.now()\n    assert clock.now() == datetime(2026, 3, 4, 11, 45, 30)",
+      "assertions": [
+        "assert clock.now() == datetime(2026, 3, 2, 11, 45, 0)",
+        "assert returned == clock.now()",
+        "assert clock.now() == datetime(2026, 3, 4, 11, 45, 30)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T14": {
+      "nodeid": "tests/test_reset.py::test_invalid_token_rejected",
+      "file": "tests/test_reset.py",
+      "line": 57,
+      "name": "test_invalid_token_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_invalid_token_rejected(resets, ann):\n    resets.request(ANN_EMAIL)\n\n    with pytest.raises(InvalidToken):\n        resets.complete(\"not-a-real-token\", NEW_PASSWORD)\n\n    assert not verify_password(NEW_PASSWORD, ann.password_hash)\n    assert verify_password(PASSWORD, ann.password_hash)",
+      "assertions": [
+        "pytest.raises(InvalidToken)",
+        "assert not verify_password(NEW_PASSWORD, ann.password_hash)",
+        "assert verify_password(PASSWORD, ann.password_hash)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T15": {
+      "nodeid": "tests/test_reset_mail.py::test_reset_mail_contains_link",
+      "file": "tests/test_reset_mail.py",
+      "line": 32,
+      "name": "test_reset_mail_contains_link",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reset_mail_contains_link(resets, outbox, ann):\n    token = resets.request(ANN_EMAIL)\n\n    body = outbox.last_to(ANN_EMAIL).body\n\n    assert f\"{RESET_URL}{token}\" in body\n    assert body.startswith(\"Open https://\")",
+      "assertions": [
+        "assert f\"{RESET_URL}{token}\" in body",
+        "assert body.startswith(\"Open https://\")"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T16": {
+      "nodeid": "tests/test_sessions.py::test_logout_ends_session",
+      "file": "tests/test_sessions.py",
+      "line": 41,
+      "name": "test_logout_ends_session",
+      "class": null,
+      "docstring": "",
+      "code": "def test_logout_ends_session(auth, sessions, ann):\n    session = auth.login(ANN_EMAIL, PASSWORD).session\n\n    other = auth.login(ANN_EMAIL, PASSWORD).session\n\n    auth.logout(session.token)\n\n    assert not sessions.is_active(session.token)\n    assert sessions.get(session.token).revoked is True\n    assert sessions.is_active(other.token)",
+      "assertions": [
+        "assert not sessions.is_active(session.token)",
+        "assert sessions.get(session.token).revoked is True",
+        "assert sessions.is_active(other.token)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T17": {
+      "nodeid": "tests/test_sessions.py::test_password_change_revokes_sessions",
+      "file": "tests/test_sessions.py",
+      "line": 10,
+      "name": "test_password_change_revokes_sessions",
+      "class": null,
+      "docstring": "",
+      "code": "def test_password_change_revokes_sessions(auth, sessions, ann):\n    # Ann is signed in on three devices and changes her password on the first\n    current = auth.login(ANN_EMAIL, PASSWORD).session\n    laptop = auth.login(ANN_EMAIL, PASSWORD).session\n    phone = auth.login(ANN_EMAIL, PASSWORD).session\n\n    auth.change_password(ann, PASSWORD, NEW_PASSWORD, current_token=current.token)\n\n    assert not sessions.is_active(laptop.token)\n    assert not sessions.is_active(phone.token)",
+      "assertions": [
+        "assert not sessions.is_active(laptop.token)",
+        "assert not sessions.is_active(phone.token)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T18": {
+      "nodeid": "tests/test_login.py::test_login_returns_active_session",
+      "file": "tests/test_login.py",
+      "line": 47,
+      "name": "test_login_returns_active_session",
+      "class": null,
+      "docstring": "",
+      "code": "def test_login_returns_active_session(auth, sessions, ann):\n    result = auth.login(ANN_EMAIL, PASSWORD)\n\n    session = result.session\n\n    assert session.user_id == ann.id\n    assert sessions.is_active(session.token)\n    assert sessions.get(session.token) is session",
+      "assertions": [
+        "assert session.user_id == ann.id",
+        "assert sessions.is_active(session.token)",
+        "assert sessions.get(session.token) is session"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T19": {
+      "nodeid": "tests/test_roles.py::test_non_admin_cannot_delete_user",
+      "file": "tests/test_roles.py",
+      "line": 12,
+      "name": "test_non_admin_cannot_delete_user",
+      "class": null,
+      "docstring": "",
+      "code": "def test_non_admin_cannot_delete_user(store, ann, bob):\n    with pytest.raises(PermissionDenied):\n        delete_user(bob, store, ann)\n\n    assert store.get(ann.id) is ann",
+      "assertions": [
+        "pytest.raises(PermissionDenied)",
+        "assert store.get(ann.id) is ann"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T20": {
+      "nodeid": "tests/test_unlock.py::test_admin_unlocks",
+      "file": "tests/test_unlock.py",
+      "line": 15,
+      "name": "test_admin_unlocks",
+      "class": null,
+      "docstring": "",
+      "code": "def test_admin_unlocks(auth, clock, ann, admin):\n    _lock(auth, ANN_EMAIL)\n    assert ann.is_locked(clock.now())\n\n    auth.unlock(admin, ann)\n\n    assert not ann.is_locked(clock.now())",
+      "assertions": [
+        "assert ann.is_locked(clock.now())",
+        "assert not ann.is_locked(clock.now())"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T21": {
+      "nodeid": "tests/test_roles.py::TestRolePermissions::test_admin_permissions",
+      "file": "tests/test_roles.py",
+      "line": 31,
+      "name": "test_admin_permissions",
+      "class": "TestRolePermissions",
+      "docstring": "",
+      "code": "def test_admin_permissions(self, admin, bob):\n    for action in (\"delete_user\", \"assign_role\", \"view_audit\"):\n        assert can(admin, action)\n        assert not can(bob, action)\n\n    assert can(admin, \"delete_user\")\n    assert can(admin, \"assign_role\")\n    assert PERMISSIONS[\"admin\"] >= {\"delete_user\", \"assign_role\", \"view_audit\"}",
+      "assertions": [
+        "assert can(admin, action)",
+        "assert not can(bob, action)",
+        "assert can(admin, \"delete_user\")",
+        "assert can(admin, \"assign_role\")",
+        "assert PERMISSIONS[\"admin\"] >= {\"delete_user\", \"assign_role\", \"view_audit\"}"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T22": {
+      "nodeid": "tests/test_session_tokens.py::TestTokenLookup::test_get_returns_the_session",
+      "file": "tests/test_session_tokens.py",
+      "line": 30,
+      "name": "test_get_returns_the_session",
+      "class": "TestTokenLookup",
+      "docstring": "",
+      "code": "def test_get_returns_the_session(self, sessions, ann, bob):\n    first = sessions.create(ann.id)\n    second = sessions.create(bob.id)\n\n    assert sessions.get(first.token) is first\n    assert sessions.get(second.token) is second\n    assert sessions.get(first.token).user_id == ann.id",
+      "assertions": [
+        "assert sessions.get(first.token) is first",
+        "assert sessions.get(second.token) is second",
+        "assert sessions.get(first.token).user_id == ann.id"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    }
+  }
+}

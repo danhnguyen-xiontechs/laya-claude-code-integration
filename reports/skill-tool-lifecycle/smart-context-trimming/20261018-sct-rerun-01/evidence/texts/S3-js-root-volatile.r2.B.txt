@@ -1,0 +1,4 @@
+[smart-trim] Same result as run #1 of this command (Command FAILED (Exit code 1); the error status is preserved.); 94 of 94 kept lines identical, total lines 909 → 909. Only the changed lines follow.
+[smart-trim] No kept line changed.
+[smart-trim] Full raw output of this run: /raw/S3-js-root-volatile.r2.log (Read it if you need an omitted section).
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

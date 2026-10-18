@@ -1,0 +1,4 @@
+[smart-trim] Same result as run #2 of this command (Command succeeded (exit code 0).); 20 of 20 kept lines identical, total lines 463 → 463. Only the changed lines follow.
+[smart-trim] No kept line changed.
+[smart-trim] Full raw output of this run: /raw/S8-dotnet-test-volatile.r3.log (Read it if you need an omitted section).
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0 -- D:\XionTechs\JEV\.venv\Scripts\python.exe
+rootdir: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416\9c66a8b4-5ea2-479c-b118-0ddfef33d072\scratchpad\r3\jev-r3
+configfile: pytest.ini
+collecting ... collected 19 items
+
+tests/test_ac_coverage.py::DiscoverTest::test_discovery_nodeids_and_assertions PASSED [  5%]
+tests/test_ac_coverage.py::DiscoverTest::test_junit_statuses PASSED      [ 10%]
+tests/test_ac_coverage.py::DiscoverTest::test_ranking_and_no_candidates PASSED [ 15%]
+tests/test_ac_coverage.py::DiscoverTest::test_truncation_marker PASSED   [ 21%]
+tests/test_ac_coverage.py::ClassifyTest::test_invalid_label_and_unavailable_give_no_label PASSED [ 26%]
+tests/test_ac_coverage.py::ClassifyTest::test_low_probability_unrelated_is_not_skippable PASSED [ 31%]
+tests/test_ac_coverage.py::ClassifyTest::test_unsafe_redaction_is_not_sent PASSED [ 36%]
+tests/test_ac_coverage.py::ClassifyTest::test_valid_labels_and_skippable PASSED [ 42%]
+tests/test_ac_coverage.py::ReportBenchTest::test_bench_counts_skippable_relevant PASSED [ 47%]
+tests/test_ac_coverage.py::ReportBenchTest::test_never_covered_without_verdict PASSED [ 52%]
+tests/test_ac_coverage.py::DigestTest::test_assertions_capped_and_helpers_listed PASSED [ 57%]
+tests/test_ac_coverage.py::DigestTest::test_candidates_top_default_is_3 PASSED [ 63%]
+tests/test_ac_coverage.py::DigestTest::test_cli_digest_writes_file PASSED [ 68%]
+tests/test_ac_coverage.py::DigestTest::test_deterministic_and_no_coverage_words PASSED [ 73%]
+tests/test_ac_coverage.py::DigestTest::test_hides_skippable_and_names_them PASSED [ 78%]
+tests/test_ac_coverage.py::DigestTest::test_no_candidates_hint PASSED    [ 84%]
+tests/test_ac_coverage.py::DigestTest::test_no_results_and_unavailable_never_hide PASSED [ 89%]
+tests/test_ac_coverage.py::DigestTest::test_repeat_test_printed_once PASSED [ 94%]
+tests/test_ac_coverage.py::DigestTest::test_show_skippable_prints_all PASSED [100%]
+
+============================= 19 passed in 0.34s ==============================

@@ -49,6 +49,7 @@
 8. **`subagent-model-router`** (per-subagent model choice, new build): on 18 tasks with an automatic check, rules + escalate on failure pass 18/18 at **14% of the cost** of always using Opus (always-Sonnet 61%, Jev 48%). **Pilot on 6 real ess-be stories:** 6/6 passed, as with Sonnet, at **36% of subagent quota**. → `PILOT` with the best real evidence, the largest quota-saving potential for running many stories in parallel.
 9. **Group G: 4 skills for orchestrating parallel story batches** (2026-10-16, quick tests on hand-written fixtures only): `story-batch-planner` 0/13 false-parallel pairs and 7/8 dependencies found with rules alone; `agent-budget-governor` 29/29 tests, correctly overrode Jev on 2/5 stories where it proposed a lower tier for high-risk work; `integration-verifier` 10/10 cases, **0 false PASS**; `codebase-task-explorer` Recall@5 0.27 (codemap only) → 0.47 (rules) → **0.93 (rules + Jev)** on 5 tasks. Rule parts are `PILOT`; Jev stays `SHADOW` except in the explorer (Jev `PILOT`, its clearest win in this round).
 10. **Group H: 2 Claude Code Mods** (observe by default, not installed): `smart-context-trimming` cuts test/build output by a median **89%** with rules alone (Jev adds ~2 points) and loses 0 critical diagnostics; `retry-loop-breaker` 22/22 tests, **0 false blocks**. Both are `PILOT` for the rules, Jev only for ambiguous cases.
+11. **Agent-run A/B with build-skill-tool-workflow (2026-10-17 → 10-18; Haiku 5.5 case agents, Jev live, plain Claude vs Claude + tool on the same tasks, real tokens from transcripts):** of 13 tools measured, only `smart-context-trimming` cut session tokens (−18% then −24%, 20/20 and 10/10 pass), and `subagent-model-router` with a rules + cascade policy kept 16/16 while cutting the price by 82%. Everywhere else plain Haiku already passed almost every case, and the helper added turns, so B cost the same or more → `REWORK` or `INSUFFICIENT_EVIDENCE`; `retry-loop-breaker` → `DROP`. Details in section 14.
 
 **Recommendation:**
 - Do not use Laya as an automatic router or classifier.
@@ -57,6 +58,7 @@
 - `PILOT` the 5 new Jev skills on a real team repo, alongside a run where Claude does the same work without the skill, for comparison.
 - `ADOPT` the rule-based parts now, including the `web-test-laya-ground` skill (the best variant in real runs, thanks to its `find.mjs` rules) and the `fast-compact` plugin (77% context reduction in 57 ms, with no model call).
 - `PILOT` groups G and H in rule form (Jev in shadow); run them on one real ADO sprint and a few real sessions before turning on enforce for the 2 mods.
+- From the agent A/B (section 14): keep `smart-context-trimming` as `PILOT` and finish its re-run collapse; decide on round 3 of `subagent-model-router` (16/16, −82% price); invest no more in tools whose helper only adds turns until a harder case set shows plain Claude failing.
 
 ---
 
@@ -100,20 +102,20 @@
 | B6 | `laya-launcher` (trims tools/context by intent) | New tool | Laya | ✅ manual + 5-run A/B | `PILOT` (as static flags) |
 | B7 | `fast-compact` plugin | New tool | Jev tried and dropped; runs on rules | ✅ 1 session · 📊 · 🧪 13 tests | `ADOPT` (merged into `main`, PR #3) |
 | B8 | Laya Windows install package | New tool | Laya | ✅ installed on 2 machines | `DONE` |
-| D1 | `acceptance-criteria-coverage` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
-| D2 | `dead-code-finder` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
-| D3 | `git-risk-scanner` (+ hook) | New skill (`JEV` repo) | Jev | ✅ 2 sessions · 📊 · 🧪 | `PILOT` |
+| D1 | `acceptance-criteria-coverage` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `INSUFFICIENT_EVIDENCE` (agent A/B, §14) |
+| D2 | `dead-code-finder` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (agent A/B, §14) |
+| D3 | `git-risk-scanner` (+ hook) | New skill (`JEV` repo) | Jev | ✅ 2 sessions · 📊 · 🧪 | `INSUFFICIENT_EVIDENCE` (agent A/B, §14) |
 | D4 | `subagent-validator` (hook) | New skill (`JEV` repo) | Jev | ✅ 3 runs · 📊 · 🧪 | `PILOT` |
-| D5 | `context-curator` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
-| D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `PILOT` |
-| E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `PILOT` (BM25 default, Jev optional) |
-| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `PILOT` (best real evidence) |
-| G1 | `story-batch-planner` (waves for a story batch) | New skill | Rules + Jev (shadow) | 🧪 14 tests · 📊 8 fixture batches | `PILOT` rules, Jev `SHADOW` |
+| D5 | `context-curator` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (agent A/B, §14) |
+| D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `INSUFFICIENT_EVIDENCE` (agent A/B, §14) |
+| E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `REWORK` (agent A/B, §14) |
+| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `REWORK` → round 3 −82% price, waiting for a decision (§14) |
+| G1 | `story-batch-planner` (waves for a story batch) | New skill | Rules + Jev (shadow) | 🧪 14 tests · 📊 8 fixture batches | `REWORK` (agent A/B, §14) |
 | G2 | `agent-budget-governor` (child of F1) | New module | Rules + Jev (shadow) | 🧪 29/29 · 5 live Jev calls | `SHADOW` |
-| G3 | `integration-verifier` (checks the combined change) | New skill | Rules + Jev (shadow) | 🧪 · 📊 10 fixture batches, 0 false PASS | `PILOT` rules, Jev `SHADOW` |
-| G4 | `codebase-task-explorer` (codemap + Jev) | New skill | codemap + rules + Jev | 🧪 5 tests · 📊 5 tasks, Recall@5 0.93 | `PILOT` |
-| H1 | `smart-context-trimming` | Claude Code Mod | Rules + Jev (optional) | ✅ e2e `claude -p` · 🧪 21 + 7 tests | `PILOT` rules, Jev `SHADOW` |
-| H2 | `retry-loop-breaker` | Claude Code Mod | Rules + Jev (ambiguous cases) | 🧪 14 + 8 tests, 0 false blocks | `PILOT` (observe) |
+| G3 | `integration-verifier` (checks the combined change) | New skill | Rules + Jev (shadow) | 🧪 · 📊 10 fixture batches, 0 false PASS | `REWORK` (agent A/B, §14) |
+| G4 | `codebase-task-explorer` (codemap + Jev) | New skill | codemap + rules + Jev | 🧪 5 tests · 📊 5 tasks, Recall@5 0.93 | `REWORK` (agent A/B; codegraph not adopted, §14) |
+| H1 | `smart-context-trimming` | Claude Code Mod | Rules + Jev (optional) | ✅ e2e `claude -p` · 🧪 21 + 7 tests | `PILOT` (agent A/B −18% → −24% tokens, §14) |
+| H2 | `retry-loop-breaker` | Claude Code Mod | Rules + Jev (ambiguous cases) | 🧪 14 + 8 tests, 0 false blocks | `DROP` (agent A/B + replay, §14) |
 | C1–C9 | Evaluation experiments (section 8) | Research | Laya / Jev | 📊 / ✅ | See section 8 |
 
 \* Provided Security approves sending data off the network. For the `web-test` skills, the "wrong tab" bug is fixed on branch `claude/web-test-fixes-4fdcd7` and needs a re-run on ESS.
@@ -843,7 +845,33 @@ Two mods hooking Bash `tool.call`, default `observe` mode, not installed anywher
 
 ---
 
-## 14. Overall conclusions
+## 14. Agent-run A/B measurements (build-skill-tool-workflow, 2026-10-16 → 10-18)
+
+**Method.** Each tool was measured with the repo skill `build-skill-tool-workflow`: plain Claude (arm A) against Claude + the tool (arm B) on the same real tasks, one fresh Haiku 5.5 subagent per case, arm and repetition (usually 4-6 cases × 2 repetitions), Jev live in arm B, pass graded by a script (never by the agent's claim), and real token counts read from each subagent's transcript. An independent reviewer checked each tool first; a bad result triggered a review that wrote ranked improvements, and an approved improvement started a new round. Every experiment has a `report.html`; the index is `reports/skill-tool-lifecycle/index.html`, the status summary `reports/skill-tool-lifecycle/STATUS-2026-10-18.md`.
+
+| Tool | First run (pass A · B, tokens B vs A) | Later rounds | Decision now |
+|---|---|---|---|
+| `smart-context-trimming` (H1) | bench: output −52%; agent v1: −3% (node test output not recognised) | v2 (fix): 20/20 · 20/20, **−18%**; round 2: 10/10 · 10/10, **−24%**; re-run collapse (content run): repeated output **−73%** bytes, 0 diagnostics lost, agent run not done yet | `PILOT` (user) |
+| `subagent-model-router` (F1) | 12/12 · 12/12, price −35% | round 2: −33%; **round 3 (rules + cascade for checked tasks): 16/16 after escalation, price −82%** incl. retries (raw tokens +81%, Haiku takes more turns) | `REWORK` for round 1; round 3 waiting for a decision |
+| `skills-router` (E1) | 12/12 · 12/12, +72% | round 2 (one-line hint): 12/12 · 12/12, +9% | `REWORK`; round 2 waiting |
+| `integration-verifier` (G3) | 10/12 · 10/12, +28% | round 2 (verdict-first report): 10/12 · 10/12, +0% | `REWORK` |
+| `context-curator` (D5) | 8/8 · 8/8, +38% | round 2 (pointer list): 8/8 · 8/8, +7% | `REWORK`; round 2 waiting |
+| `story-batch-planner` (G1) | 4/4 · 4/4, +155% (first arm A discarded: agents called the planner skill themselves) | after bug fixes: 6/6 · 6/6, +167%; round 2: 6/6 · 6/6, +151% | `REWORK` |
+| `codebase-task-explorer` (G4) | 4/4 · 3/4, +11% | rework: 12/12 · 12/12, +11%; round 2: 11/12 · 12/12, +43%; codegraph engine: offline gate failed twice (Recall@8 0.519, then merged with codemap 0.648, vs codemap 0.704; merged latency 23.8 s) | `REWORK`; codegraph not adopted |
+| `dead-code-finder` (D2) | 7/8 · 8/8, +61% | round 2 (short report): 7/8 · 7/8, +84% | `REWORK` |
+| `acceptance-criteria-coverage` (D1) | 8/8 · 8/8, −1% | round 3 (suites of 81-89 tests): verdicts 72/76 · 74/76, fully right runs 4/8 · 6/8, +4% | `INSUFFICIENT_EVIDENCE` |
+| `git-risk-scanner` (D3) | 8/8 · 8/8, −5% | — | `INSUFFICIENT_EVIDENCE` |
+| `jev_advisor` (D0) | 8/8 · 8/8, +7% | — (round 2 built; its gold chunk never reaches Jev, not measured) | `INSUFFICIENT_EVIDENCE` |
+| `retry-loop-breaker` (H2) | 11/12 · 12/12, −2% | round 2: 12/12 · 12/12, +3%; round 3 pilot gate failed; offline replay over 579 agent transcripts: **0 would-block in 3,474 Bash calls** | `DROP` (user); the idea moved into smart-context-trimming |
+| `subagent-validator` (D4) | not measured (a hook that needs the real harness) | — | — |
+
+**What the measurements say.**
+- Only one tool reduced what Claude spends in real agent runs: `smart-context-trimming`, by cutting what Claude reads. `subagent-model-router` saves money, not tokens, by sending checked tasks to Haiku with one escalation on a failed check.
+- Everywhere else plain Haiku already passed nearly every case. The helper's output added turns (reading a long report, re-checking it), so arm B cost the same or more. Short, verdict-first output removed most of that extra cost (`skills-router` +72% → +9%, `integration-verifier` +28% → +0%, `context-curator` +38% → +7%) but did not make Claude more correct.
+- Jev rarely changed an outcome: 0 tier lowerings in 72 calls (`subagent-model-router`), never called in 48 runs (`retry-loop-breaker`), never changed a useful #1 (`codebase-task-explorer`).
+- Measurement lessons now built into the workflow skill: arm A sees the session's skills, so it must be told the tool is unavailable and checked mechanically (`subagent_usage.mjs --forbid`); answer keys must be stripped from what agents see; cheap offline gates (recall, transcript replay, content runs) come before any agent spend; Opus is called once per round with a closed input pack; case agents use a Haiku agent that auto-compacts at 100k tokens.
+
+## 15. Overall conclusions
 
 | Question | Answer |
 |---|---|
@@ -858,7 +886,7 @@ Two mods hooking Bash `tool.call`, default `observe` mode, not installed anywher
 
 ---
 
-## 15. Risks and notes
+## 16. Risks and notes
 
 - **The repo is public** but contains real data:
   - `ado/items*.json`: 190 PXP / XT-Smart-Platform work items.
@@ -885,7 +913,7 @@ Two mods hooking Bash `tool.call`, default `observe` mode, not installed anywher
 
 ---
 
-## 16. Open items and suggested next steps
+## 17. Open items and suggested next steps
 
 1. Ask Security whether data may be sent to Jev / OpenRouter, or measure **Kev** (a local Jev, not yet measured).
 2. The wrong-tab bug is fixed (branch `claude/web-test-fixes-4fdcd7`); what remains is repeating the agent runs 2–3 times per variant (estimated ~40M tokens).

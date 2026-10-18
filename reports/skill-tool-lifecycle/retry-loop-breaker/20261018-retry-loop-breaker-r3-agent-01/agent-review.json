@@ -1,0 +1,11 @@
+{
+  "reviewer": "Haiku, read-only, diff only (first pass, before fixes)",
+  "findings": [
+    {"severity": "Major", "file": "retry-loop-breaker/hooks/core.ts", "issue": "cd target with $( was stripped, so an unsafe command became eligible", "outcome": "fixed: cd target may not contain $ ` ( ) or operators"},
+    {"severity": "Major", "file": "retry-loop-breaker/hooks/register.ts", "issue": "key dropped the cd target, so different directories shared one record", "outcome": "fixed: key is the whole command"},
+    {"severity": "Major", "file": "retry-loop-breaker/hooks/core.ts", "issue": "| tail/head pipelines exit with tail's status; failures recorded as passed", "outcome": "fixed: pipe-wrapped runs are ignored (not evidence)"},
+    {"severity": "Major", "file": "retry-loop-breaker/hooks/register.ts", "issue": "echo EXIT suffix without an EXIT line fell through to isError; first EXIT match used", "outcome": "fixed: ignored when no line; last match used"},
+    {"severity": "Minor", "file": "retry-loop-breaker/hooks/register.ts", "issue": "announcement overwrote existing context; text hardcoded 3", "outcome": "fixed: context appended; threshold from options"},
+    {"severity": "Minor", "file": "retry-loop-breaker/hooks/register.ts", "issue": "announcement repeats if the state write fails", "outcome": "accepted: noted, not fixed"}
+  ]
+}

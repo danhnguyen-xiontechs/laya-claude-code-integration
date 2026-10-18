@@ -1,0 +1,11 @@
+{
+  "reviewer": "haiku, read-only, diff only (diff/tool-change-r3.diff)",
+  "findings": [
+    {"severity": "Minor", "file": "tests/test_ac_coverage.py", "finding": "The default-top change is not exercised at the build_pack/rank layer: Fixture.pack() and test_repeat_test_printed_once still pass top=5 explicitly, so only the CLI test checks the new default of 3.", "resolution": "open: not fixed in round 3; the CLI test covers the shipped default"},
+    {"severity": "Minor", "file": ".claude/skills/acceptance-criteria-coverage/SKILL.md", "finding": "SKILL.md and the test file show whole-file hunks in the diff, probably a line-ending artefact of the scratch copy; the real change is one line.", "resolution": "open: diff artefact, verify line endings before commit in the tool repo"},
+    {"severity": "Suggestion", "file": "jev_skills/ac_coverage/discover.py", "finding": "The rank docstring has two adjacent parentheticals, '(default 3) (score, test index, matched tokens)'.", "resolution": "open"},
+    {"severity": "Suggestion", "file": "jev_skills/ac_coverage/discover.py", "finding": "The default 3 is repeated in rank, build_pack and the argparse default; a DEFAULT_TOP constant would stop drift like the old 5.", "resolution": "open"}
+  ],
+  "critical_or_major": 0,
+  "note": "No Critical or Major findings, so nothing needed fixing before the run."
+}

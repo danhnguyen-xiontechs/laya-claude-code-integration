@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-acc-r3-agent-01",
+  "tool": {
+    "name": "acceptance-criteria-coverage",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "claude/acc-round3",
+    "startedFrom": "claude/acc-round2 (1418222)",
+    "toolSource": "JEV repo, worktree review-5-plans-idea-folder-ce4d36 (read-only), round-2 tool copy plus round-3 diff in diff/tool-change-r3.diff"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "confidence": "low",
+  "headline": "Round 3 (4 stories of 9-10 criteria, 81-89 tests in 15-18 files, 2 repetitions): plain Claude 72/76 verdicts right, 4 of 8 runs fully right; Claude + shortlist 74/76, 6 of 8; tokens A 754,955 -> B 786,678 (+4.2%, within run-to-run noise); no run marked Covered falsely in either arm. The shortlist missed a decisive test in its top 3 for 11 of 38 criteria, so the tool is not yet shown to help. Top suggestion: measure recall at k=5 and 8 offline first and cut the Jev call if it adds no skippable saving.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "evaluation": {
+    "caseCount": 4,
+    "repetitions": 2,
+    "agentsRun": 18,
+    "agentsCountedInResults": 16,
+    "opusCalls": 0,
+    "caseModel": "haiku (claude-haiku-5-5), effort high",
+    "criteriaFrozenAt": "2026-10-18 (round 3, before the offline recall check)",
+    "tokens": {
+      "source": "subagent_tokens as reported by the Agent tool per case agent (not subagent_usage.mjs, which was not run)",
+      "armA": 754955,
+      "armB": 786678,
+      "pairedDiffPerRunMean": 3965,
+      "pairedDiffs": [202, 6619, 4289, -960, 1267, 12364, 11071, -3129]
+    },
+    "verdictsRight": {"A": "72/76", "B": "74/76"},
+    "fullyRightRuns": {"A": "4/8", "B": "6/8"},
+    "falseCovered": {"A": 0, "B": 0},
+    "offlineRecall": "24 of 37 criteria with decisive gold had all decisive tests in the top-3 shortlist; 11 had none, 2 had some",
+    "deviations": [
+      "Measurement-design fixes to the six criteria flagged by the round-2 Opus fixture review (resolved by the author, not by Opus): acc-11 AC-10 gold Missing -> Partial (test_reminder_goes_to_customer_email asserts the email, not the weekly cap); acc-12 AC-08 dropped (snapshot test always skips, no snapshot store); acc-13 AC-05 accepted set {Covered, Partial} (control total only implied); acc-13 AC-09 gold Missing -> Partial (cancel tests place and cancel an order but never assert the release); acc-14 AC-06 decisive set gains test_send_due_sends_at_run_time; acc-14 AC-09 dropped (same snapshot-only problem). Criteria: 38 in 4 stories (was 40); criterion ids are kept, so gaps appear (acc-12 has no AC-08, acc-14 no AC-09). See diff/fixture-key-fixes.diff.",
+      "Tool change: candidates --top default 5 -> 3 (discover.rank, discover.build_pack, CLI); unit test renamed to test_candidates_top_default_is_3; SKILL.md step 4. Digest already hid skippable pairs in round 2 (not changed). 19 unit tests pass (unit-tests output in recall/unit-tests-output.txt).",
+      "Arm A contamination: two arm-A runs read the neutral helper tool.mjs (acc-11 r2 and acc-13 r1, the latter also ran cat tool.mjs). Both were discarded, kept in answers/contaminated/ and in contaminated/ (work folders), and re-run as A2 in new work folders with tool.mjs removed from the folder. So in the A2 folders arm A has no helper file at all, unlike the other arm-A folders, which keep a helper that prints 'tool disabled'. Results count the A2 runs.",
+      "Forbid check: done by grepping tool_use inputs in each subagent transcript for tool.mjs, jev_skills, ac_coverage, build/r3 and /keys/ (after A2 re-run: 0 for both A2 runs and for all other A runs). subagent_usage.mjs --forbid was not run.",
+      "Answers were taken verbatim from the SubagentHandback message of each case agent (saved in answers/), not from the transcript's final text.",
+      "Token figures are the subagent_tokens reported per Agent call; subagent_usage.mjs was not run, so they are not the same counting method as earlier rounds.",
+      "Keys were kept out of the work folders (fixtures/ has no key; the keys are in evidence/ for grading only). Keys were written after the runs, as in round 1.",
+      "build_tool_report.mjs was not run for this folder; no report.html is produced in this round.",
+      "The SKILL.md change shows a whole-file diff in tool-change-r3.diff (line endings in the scratch copy); the real change is one line.",
+      "Round-3 recommendation was not sent to Opus: the result is not bad by the step-7b rule (B passes more full runs at +4.2% tokens)."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "unitTestReport": "recall/unit-tests-output.txt",
+    "offlineRecall": "recall/offline-recall.txt",
+    "toolChange": "diff/tool-change-r3.diff",
+    "fixtureKeyFixes": "diff/fixture-key-fixes.diff",
+    "fixtures": "fixtures/",
+    "answers": "answers/",
+    "grades": "grades.md",
+    "summary": "summary.json",
+    "baseline": "../20261018-acc-agent-01/",
+    "previousRound": "../20261018-acc-r2-agent-01/"
+  }
+}

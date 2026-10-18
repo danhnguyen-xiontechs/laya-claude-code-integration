@@ -1,0 +1,41 @@
+{
+  "source": "Story WH-14 'Reservations and reorder'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Reserving stock reduces available quantity but not on-hand quantity."
+    },
+    {
+      "id": "AC-02",
+      "text": "A reservation larger than available stock is rejected with InsufficientStock and reserves nothing."
+    },
+    {
+      "id": "AC-03",
+      "text": "Reservations not confirmed within 48 hours are released automatically."
+    },
+    {
+      "id": "AC-04",
+      "text": "When available stock falls below the reorder point one purchase suggestion is created, and no duplicate while one is open."
+    },
+    {
+      "id": "AC-05",
+      "text": "Transfers between locations keep the total on-hand quantity unchanged."
+    },
+    {
+      "id": "AC-06",
+      "text": "A transfer from a location with insufficient stock fails and changes neither location."
+    },
+    {
+      "id": "AC-07",
+      "text": "Cycle count differences are booked as an adjustment move with reason \"count\"."
+    },
+    {
+      "id": "AC-08",
+      "text": "A move that would make on-hand negative raises NegativeStock and leaves on-hand unchanged."
+    },
+    {
+      "id": "AC-09",
+      "text": "Reservations are released when their order is cancelled."
+    }
+  ]
+}

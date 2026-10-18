@@ -1,0 +1,12 @@
+{
+  "command": "node --test \"test/*.test.mjs\"  (run in .claude/skills/subagent-model-router)",
+  "node": "v24.11.1",
+  "result": { "tests": 36, "pass": 36, "fail": 0 },
+  "new_tests": [
+    "rule features: product names with a .js suffix are not files",
+    "checked policy: a checked task without a hard verb makes no provider call",
+    "checked policy: an unchecked task asks k times (gate+sc); a hard checked task too",
+    "combine checked: rule tier when checked and not hard; gate+sc otherwise"
+  ],
+  "changed_pin": "bench/results/route-none.json regenerated (t1-slugify-tests and t2-csv-tests: sonnet -> haiku, why: checked)"
+}

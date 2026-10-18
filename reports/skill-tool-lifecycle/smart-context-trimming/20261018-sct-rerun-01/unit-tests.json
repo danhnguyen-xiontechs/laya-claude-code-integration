@@ -1,0 +1,14 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"tests/*.spec.ts\"",
+      "cwd": "smart-context-trimming",
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "note": "includes tests/rerun.spec.ts (9 new: first run byte-identical, identical re-run, one new failure line, different exit status, volatile-only changes, more than 20 changes, flag off / observe, per command memory, normaliseVolatile). Round-2 suite was 29 tests; all still pass."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "source": "Story CLN-30 'Online booking'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Patients can book only free slots; booking a taken slot raises SlotTaken."
+    },
+    {
+      "id": "AC-02",
+      "text": "Slots are 20 minutes long and start on the hour or at :20 and :40."
+    },
+    {
+      "id": "AC-03",
+      "text": "No slots are offered on public holidays or on the provider's leave days."
+    },
+    {
+      "id": "AC-04",
+      "text": "Cancelling more than 24 hours before is free; later cancellations cost a 25 EUR fee."
+    },
+    {
+      "id": "AC-05",
+      "text": "A cancelled slot becomes free again and is offered to the first patient on the waitlist."
+    },
+    {
+      "id": "AC-06",
+      "text": "Reminder messages are sent 24 hours before the appointment."
+    },
+    {
+      "id": "AC-07",
+      "text": "Patients receive no reminder for an appointment they cancelled."
+    },
+    {
+      "id": "AC-08",
+      "text": "A patient cannot hold more than 2 future appointments with one provider; past appointments do not count."
+    },
+    {
+      "id": "AC-10",
+      "text": "Online booking closes 2 hours before a slot starts."
+    },
+    {
+      "id": "AC-11",
+      "text": "Fees are shown in EUR with two decimals."
+    }
+  ]
+}

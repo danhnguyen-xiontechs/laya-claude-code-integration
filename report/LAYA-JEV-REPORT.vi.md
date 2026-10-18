@@ -42,6 +42,7 @@
 8. **`subagent-model-router`** (chọn model cho từng subagent, build mới): trên 18 task có kiểm tra tự động, rule + leo model khi trượt pass 18/18 với **14% chi phí** so với luôn dùng Opus (luôn Sonnet 61%, Jev 48%). **Pilot trên 6 story ess-be thật:** pass 6/6 như bản Sonnet với **36% quota subagent**. → `PILOT` có bằng chứng thật tốt nhất, tiềm năng tiết kiệm quota lớn nhất cho kịch bản chạy song song nhiều story.
 9. **Nhóm G: 4 skill điều phối lô story song song** (2026-10-16, mới test nhanh trên fixture tự viết): `story-batch-planner` 0/13 cặp song song sai, tìm được 7/8 phụ thuộc chỉ bằng rule; `agent-budget-governor` 29/29 test, chặn đúng 2/5 lần Jev đề xuất tier thấp cho story rủi ro cao; `integration-verifier` 10/10 ca, **0 PASS sai**; `codebase-task-explorer` Recall@5 0.27 (chỉ codemap) → 0.47 (rule) → **0.93 (rule + Jev)** trên 5 task. Phần rule đều `PILOT`; Jev `SHADOW`, trừ explorer (Jev là `PILOT`, là chỗ Jev thắng rõ nhất của đợt này).
 10. **Nhóm H: 2 Claude Code Mod** (mặc định observe, chưa cài): `smart-context-trimming` giảm output test/build trung vị **89%** chỉ bằng rule (Jev thêm ~2 điểm), 0 chẩn đoán quan trọng bị mất; `retry-loop-breaker` 22/22 test, **0 lần chặn sai**. Cả hai `PILOT` phần rule, Jev chỉ cho ca mơ hồ.
+11. **Đo A/B bằng agent với build-skill-tool-workflow (2026-10-17 → 10-18; case agent Haiku 5.5, Jev live, Claude thuần so với Claude + tool trên cùng task, token thật từ transcript):** trong 13 tool được đo, chỉ `smart-context-trimming` giảm token của cả phiên (−18% rồi −24%, đúng 20/20 và 10/10), còn `subagent-model-router` với policy rules + cascade giữ 16/16 và giảm chi phí quy giá 82%. Các tool còn lại: Haiku tự làm đã đúng gần hết, helper chỉ thêm lượt nên B tốn bằng hoặc hơn → `REWORK` hoặc `INSUFFICIENT_EVIDENCE`; `retry-loop-breaker` → `DROP`. Chi tiết ở mục 14.
 
 **Khuyến nghị:**
 - Không đưa Laya vào làm router hoặc bộ phân loại tự động.
@@ -50,6 +51,7 @@
 - `PILOT` 5 skill Jev mới trên repo thật của team, kèm bản để Claude tự làm (không dùng skill) để so sánh.
 - `ADOPT` ngay các phần rule-based, gồm skill `web-test-laya-ground` (biến thể tốt nhất khi chạy thật nhờ rule `find.mjs`) và plugin `fast-compact` (rút gọn context 77% trong 57 ms, không gọi model).
 - `PILOT` nhóm G và H ở dạng rule (Jev shadow), chạy trên một sprint ADO thật và vài session thật trước khi bật enforce cho 2 mod.
+- Theo kết quả A/B bằng agent (mục 14): giữ `smart-context-trimming` ở `PILOT` và hoàn tất phần gộp output khi chạy lại; ra quyết định cho vòng 3 của `subagent-model-router` (16/16, −82% chi phí); không đầu tư thêm cho các tool mà helper chỉ thêm lượt, cho tới khi có bộ case khó hơn mà Claude thuần thật sự làm sai.
 
 ---
 
@@ -93,20 +95,20 @@
 | B6 | `laya-launcher` (cắt bớt tools/context theo intent) | Công cụ mới | Laya | ✅ thử tay + A/B 5 run | `PILOT` (dùng flag tĩnh) |
 | B7 | `fast-compact` plugin | Công cụ mới | Đã thử Jev, bỏ; chạy bằng rule | ✅ 1 session · 📊 · 🧪 13 test | `ADOPT` (đã merge vào `main`, PR #3) |
 | B8 | Gói cài Laya cho Windows | Công cụ mới | Laya | ✅ cài thật 2 máy | `DONE` |
-| D1 | `acceptance-criteria-coverage` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
-| D2 | `dead-code-finder` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` |
-| D3 | `git-risk-scanner` (+ hook) | Skill mới (repo `JEV`) | Jev | ✅ 2 session · 📊 · 🧪 | `PILOT` |
+| D1 | `acceptance-criteria-coverage` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `INSUFFICIENT_EVIDENCE` (A/B agent, §14) |
+| D2 | `dead-code-finder` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (A/B agent, §14) |
+| D3 | `git-risk-scanner` (+ hook) | Skill mới (repo `JEV`) | Jev | ✅ 2 session · 📊 · 🧪 | `INSUFFICIENT_EVIDENCE` (A/B agent, §14) |
 | D4 | `subagent-validator` (hook) | Skill mới (repo `JEV`) | Jev | ✅ 3 lần chạy · 📊 · 🧪 | `PILOT` |
-| D5 | `context-curator` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `PILOT` (shadow) |
-| D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `PILOT` |
-| E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `PILOT` (mặc định BM25, Jev tùy chọn) |
-| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `PILOT` (bằng chứng thật tốt nhất) |
-| G1 | `story-batch-planner` (chia wave cho lô story) | Skill mới | Rule + Jev (shadow) | 🧪 14 test · 📊 8 batch fixture | `PILOT` rule, Jev `SHADOW` |
+| D5 | `context-curator` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (A/B agent, §14) |
+| D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `INSUFFICIENT_EVIDENCE` (A/B agent, §14) |
+| E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `REWORK` (A/B agent, §14) |
+| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `REWORK` → vòng 3 −82% chi phí, chờ quyết định (§14) |
+| G1 | `story-batch-planner` (chia wave cho lô story) | Skill mới | Rule + Jev (shadow) | 🧪 14 test · 📊 8 batch fixture | `REWORK` (A/B agent, §14) |
 | G2 | `agent-budget-governor` (con của F1) | Module mới | Rule + Jev (shadow) | 🧪 29/29 · 5 lần gọi Jev thật | `SHADOW` |
-| G3 | `integration-verifier` (kiểm tra thay đổi gộp) | Skill mới | Rule + Jev (shadow) | 🧪 · 📊 10 lô fixture, 0 PASS sai | `PILOT` rule, Jev `SHADOW` |
-| G4 | `codebase-task-explorer` (codemap + Jev) | Skill mới | codemap + rule + Jev | 🧪 5 test · 📊 5 task, Recall@5 0.93 | `PILOT` |
-| H1 | `smart-context-trimming` | Claude Code Mod | Rule + Jev (tùy chọn) | ✅ e2e `claude -p` · 🧪 21 + 7 test | `PILOT` rule, Jev `SHADOW` |
-| H2 | `retry-loop-breaker` | Claude Code Mod | Rule + Jev (ca mơ hồ) | 🧪 14 + 8 test, 0 chặn sai | `PILOT` (observe) |
+| G3 | `integration-verifier` (kiểm tra thay đổi gộp) | Skill mới | Rule + Jev (shadow) | 🧪 · 📊 10 lô fixture, 0 PASS sai | `REWORK` (A/B agent, §14) |
+| G4 | `codebase-task-explorer` (codemap + Jev) | Skill mới | codemap + rule + Jev | 🧪 5 test · 📊 5 task, Recall@5 0.93 | `REWORK` (A/B agent; không dùng codegraph, §14) |
+| H1 | `smart-context-trimming` | Claude Code Mod | Rule + Jev (tùy chọn) | ✅ e2e `claude -p` · 🧪 21 + 7 test | `PILOT` (A/B agent −18% → −24% token, §14) |
+| H2 | `retry-loop-breaker` | Claude Code Mod | Rule + Jev (ca mơ hồ) | 🧪 14 + 8 test, 0 chặn sai | `DROP` (A/B agent + replay, §14) |
 | C1–C9 | Các thí nghiệm đánh giá (mục 8) | Nghiên cứu | Laya / Jev | 📊 / ✅ | Xem mục 8 |
 
 \* Với điều kiện Security cho phép gửi dữ liệu ra ngoài. Riêng các skill `web-test`: bug "đọc nhầm tab" đã sửa trên nhánh `claude/web-test-fixes-4fdcd7`, cần chạy lại trên ESS.
@@ -830,7 +832,33 @@ Hai mod móc vào `tool.call` của Bash, mặc định chế độ `observe`, c
 
 ---
 
-## 14. Kết luận chung
+## 14. Đo A/B bằng agent (build-skill-tool-workflow, 2026-10-16 → 10-18)
+
+**Cách đo.** Mỗi tool được đo bằng skill `build-skill-tool-workflow` của repo: Claude thuần (arm A) so với Claude + tool (arm B) trên cùng các task thật, mỗi case, arm và lần lặp là một subagent Haiku 5.5 mới (thường 4-6 case × 2 lần), Jev live ở arm B, chấm pass bằng script (không tin lời agent tự báo), token thật đọc từ transcript của từng subagent. Mỗi tool có review độc lập trước khi đo; kết quả xấu thì có bước review viết danh sách cải thiện, và cải thiện nào được duyệt thì mở vòng đo mới. Mỗi thí nghiệm có `report.html`; trang tổng hợp ở `reports/skill-tool-lifecycle/index.html`, bản tóm tắt tình hình ở `reports/skill-tool-lifecycle/STATUS-2026-10-18.md`.
+
+| Tool | Lần đầu (pass A · B, token B so với A) | Các vòng sau | Quyết định hiện tại |
+|---|---|---|---|
+| `smart-context-trimming` (H1) | bench: output −52%; agent v1: −3% (chưa nhận output node test) | v2 (đã sửa): 20/20 · 20/20, **−18%**; vòng 2: 10/10 · 10/10, **−24%**; gộp output khi chạy lại (content run): output lặp **−73%** byte, không mất chẩn đoán nào, chưa chạy agent | `PILOT` (người dùng) |
+| `subagent-model-router` (F1) | 12/12 · 12/12, chi phí −35% | vòng 2: −33%; **vòng 3 (rules + cascade cho task có check): 16/16 sau khi leo model, chi phí −82%** kể cả retry (token thô +81%, Haiku chạy nhiều lượt hơn) | `REWORK` cho vòng 1; vòng 3 chờ quyết định |
+| `skills-router` (E1) | 12/12 · 12/12, +72% | vòng 2 (gợi ý một dòng): 12/12 · 12/12, +9% | `REWORK`; vòng 2 chờ quyết định |
+| `integration-verifier` (G3) | 10/12 · 10/12, +28% | vòng 2 (báo cáo verdict trước): 10/12 · 10/12, +0% | `REWORK` |
+| `context-curator` (D5) | 8/8 · 8/8, +38% | vòng 2 (danh sách trỏ): 8/8 · 8/8, +7% | `REWORK`; vòng 2 chờ quyết định |
+| `story-batch-planner` (G1) | 4/4 · 4/4, +155% (arm A lần đầu bị loại vì agent tự gọi skill planner) | sau khi sửa lỗi: 6/6 · 6/6, +167%; vòng 2: 6/6 · 6/6, +151% | `REWORK` |
+| `codebase-task-explorer` (G4) | 4/4 · 3/4, +11% | rework: 12/12 · 12/12, +11%; vòng 2: 11/12 · 12/12, +43%; engine codegraph: cổng offline không đạt hai lần (Recall@8 0,519, rồi gộp với codemap 0,648, so với codemap 0,704; độ trễ bản gộp 23,8 s) | `REWORK`; không dùng codegraph |
+| `dead-code-finder` (D2) | 7/8 · 8/8, +61% | vòng 2 (báo cáo ngắn): 7/8 · 7/8, +84% | `REWORK` |
+| `acceptance-criteria-coverage` (D1) | 8/8 · 8/8, −1% | vòng 3 (suite 81-89 test): verdict 72/76 · 74/76, run đúng hoàn toàn 4/8 · 6/8, +4% | `INSUFFICIENT_EVIDENCE` |
+| `git-risk-scanner` (D3) | 8/8 · 8/8, −5% | — | `INSUFFICIENT_EVIDENCE` |
+| `jev_advisor` (D0) | 8/8 · 8/8, +7% | — (đã build vòng 2; gold chunk không bao giờ tới Jev, chưa đo) | `INSUFFICIENT_EVIDENCE` |
+| `retry-loop-breaker` (H2) | 11/12 · 12/12, −2% | vòng 2: 12/12 · 12/12, +3%; vòng 3 không qua cổng pilot; replay offline trên 579 transcript agent: **0 lần chặn trong 3.474 lệnh Bash** | `DROP` (người dùng); ý tưởng chuyển vào smart-context-trimming |
+| `subagent-validator` (D4) | chưa đo (hook cần harness thật) | — | — |
+
+**Kết quả cho thấy gì.**
+- Chỉ một tool giảm được chi phí thật khi chạy agent: `smart-context-trimming`, nhờ cắt bớt thứ Claude phải đọc. `subagent-model-router` tiết kiệm tiền chứ không tiết kiệm token, bằng cách đưa task có check tự động xuống Haiku và leo model một lần nếu check fail.
+- Ở các tool còn lại, Haiku tự làm đã đúng gần hết. Output của helper thêm lượt (đọc báo cáo dài, kiểm tra lại), nên arm B tốn bằng hoặc hơn. Output ngắn, đưa verdict trước đã gỡ phần lớn chi phí thừa (`skills-router` +72% → +9%, `integration-verifier` +28% → +0%, `context-curator` +38% → +7%) nhưng không làm Claude đúng hơn.
+- Jev hiếm khi thay đổi kết quả: 0 lần hạ tier trong 72 lần gọi (`subagent-model-router`), không được gọi lần nào trong 48 run (`retry-loop-breaker`), không đổi kết quả hữu ích ở vị trí #1 (`codebase-task-explorer`).
+- Bài học về cách đo đã đưa vào skill workflow: arm A thấy được skill của session, nên phải nói rõ tool không có sẵn và kiểm tra bằng máy (`subagent_usage.mjs --forbid`); đáp án phải được giấu khỏi agent; cổng kiểm tra rẻ (recall, replay transcript, content run) chạy trước khi tốn agent; Opus chỉ gọi một lần mỗi vòng với input đóng; case agent dùng agent Haiku tự compact ở 100k token.
+
+## 15. Kết luận chung
 
 | Câu hỏi | Trả lời |
 |---|---|
@@ -845,7 +873,7 @@ Hai mod móc vào `tool.call` của Bash, mặc định chế độ `observe`, c
 
 ---
 
-## 15. Rủi ro và lưu ý
+## 16. Rủi ro và lưu ý
 
 - **Repo đang public** nhưng có dữ liệu thật:
   - `ado/items*.json`: 190 work item PXP / XT-Smart-Platform.
@@ -872,7 +900,7 @@ Hai mod móc vào `tool.call` của Bash, mặc định chế độ `observe`, c
 
 ---
 
-## 16. Việc còn mở / bước tiếp theo đề xuất
+## 17. Việc còn mở / bước tiếp theo đề xuất
 
 1. Xin ý kiến Security về việc gửi dữ liệu ra Jev / OpenRouter (hoặc đo **Kev**, bản Jev chạy local, chưa đo).
 2. Bug đọc nhầm tab đã sửa (nhánh `claude/web-test-fixes-4fdcd7`); còn lại là chạy lại agent run 2–3 lần mỗi biến thể (ước tính ~40M token).

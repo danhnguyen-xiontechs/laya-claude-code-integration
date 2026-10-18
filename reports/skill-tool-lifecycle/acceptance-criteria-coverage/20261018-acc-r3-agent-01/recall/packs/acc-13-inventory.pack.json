@@ -1,0 +1,704 @@
+{
+  "source": "Story WH-14 'Reservations and reorder'",
+  "createdAt": "2026-10-18T07:29:25+00:00",
+  "testsDir": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-13-inventory/tests",
+  "root": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-13-inventory",
+  "junit": null,
+  "junitSummary": null,
+  "testsDiscovered": 81,
+  "topK": 3,
+  "maxBodyChars": 1500,
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Reserving stock reduces available quantity but not on-hand quantity.",
+      "candidates": [
+        {
+          "tid": "T01",
+          "nodeid": "tests/test_reservations.py::test_reserve_reduces_available",
+          "score": 25.168,
+          "matched": [
+            "availabl",
+            "hand",
+            "reduc",
+            "reserv"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_ledger.py::test_issue_reduces_on_hand",
+          "score": 14.738,
+          "matched": [
+            "hand",
+            "reduc"
+          ]
+        },
+        {
+          "tid": "T03",
+          "nodeid": "tests/test_scrap.py::test_scrap_reduces_on_hand",
+          "score": 14.738,
+          "matched": [
+            "hand",
+            "reduc"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-02",
+      "text": "A reservation larger than available stock is rejected with InsufficientStock and reserves nothing.",
+      "candidates": [
+        {
+          "tid": "T04",
+          "nodeid": "tests/test_transfers.py::test_transfer_insufficient_stock_rejected",
+          "score": 16.432,
+          "matched": [
+            "insufficient",
+            "reject"
+          ]
+        },
+        {
+          "tid": "T05",
+          "nodeid": "tests/test_reservations.py::test_over_reserve_rejected",
+          "score": 14.55,
+          "matched": [
+            "insufficient",
+            "reject",
+            "reserv"
+          ]
+        },
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_expiry.py::test_confirmed_reservation_is_kept",
+          "score": 13.7,
+          "matched": [
+            "availabl",
+            "reserv",
+            "reservation"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-03",
+      "text": "Reservations not confirmed within 48 hours are released automatically.",
+      "candidates": [
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_expiry.py::test_confirmed_reservation_is_kept",
+          "score": 25.278,
+          "matched": [
+            "confirm",
+            "hour",
+            "releas",
+            "reservation"
+          ]
+        },
+        {
+          "tid": "T07",
+          "nodeid": "tests/test_expiry.py::test_release_after_hours",
+          "score": 22.064,
+          "matched": [
+            "48",
+            "hour",
+            "releas"
+          ]
+        },
+        {
+          "tid": "T08",
+          "nodeid": "tests/test_expiry.py::test_only_old_reservations_released",
+          "score": 21.394,
+          "matched": [
+            "hour",
+            "releas",
+            "reservation"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-04",
+      "text": "When available stock falls below the reorder point one purchase suggestion is created, and no duplicate while one is open.",
+      "candidates": [
+        {
+          "tid": "T09",
+          "nodeid": "tests/test_reorder.py::test_suggestion_created_below_point",
+          "score": 41.755,
+          "matched": [
+            "below",
+            "creat",
+            "point",
+            "reorder",
+            "suggestion"
+          ]
+        },
+        {
+          "tid": "T10",
+          "nodeid": "tests/test_reorder.py::test_no_suggestion_above_point",
+          "score": 29.715,
+          "matched": [
+            "no",
+            "point",
+            "reorder",
+            "suggestion"
+          ]
+        },
+        {
+          "tid": "T11",
+          "nodeid": "tests/test_reorder.py::test_no_suggestion_without_rule",
+          "score": 22.121,
+          "matched": [
+            "no",
+            "reorder",
+            "suggestion"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-05",
+      "text": "Transfers between locations keep the total on-hand quantity unchanged.",
+      "candidates": [
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_ledger.py::test_on_hand_total_across_locations",
+          "score": 23.076,
+          "matched": [
+            "hand",
+            "location",
+            "total"
+          ]
+        },
+        {
+          "tid": "T13",
+          "nodeid": "tests/test_transfers.py::test_transfer_keeps_reference",
+          "score": 20.476,
+          "matched": [
+            "keep",
+            "location",
+            "transfer"
+          ]
+        },
+        {
+          "tid": "T14",
+          "nodeid": "tests/test_transfers.py::test_transfer_moves_quantity",
+          "score": 17.709,
+          "matched": [
+            "hand",
+            "quantity",
+            "transfer"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-06",
+      "text": "A transfer from a location with insufficient stock fails and changes neither location.",
+      "candidates": [
+        {
+          "tid": "T04",
+          "nodeid": "tests/test_transfers.py::test_transfer_insufficient_stock_rejected",
+          "score": 18.771,
+          "matched": [
+            "insufficient",
+            "transfer"
+          ]
+        },
+        {
+          "tid": "T15",
+          "nodeid": "tests/test_transfers.py::test_transfer_to_same_location_rejected",
+          "score": 12.709,
+          "matched": [
+            "location",
+            "transfer"
+          ]
+        },
+        {
+          "tid": "T16",
+          "nodeid": "tests/test_transfers.py::test_transfer_to_unknown_location_rejected",
+          "score": 12.709,
+          "matched": [
+            "location",
+            "transfer"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-07",
+      "text": "Cycle count differences are booked as an adjustment move with reason \"count\".",
+      "candidates": [
+        {
+          "tid": "T17",
+          "nodeid": "tests/test_counts.py::test_count_without_difference_posts_nothing",
+          "score": 22.719,
+          "matched": [
+            "count",
+            "differenc",
+            "mov"
+          ]
+        },
+        {
+          "tid": "T18",
+          "nodeid": "tests/test_moves.py::test_adjustment_can_go_either_way",
+          "score": 12.121,
+          "matched": [
+            "adjustment",
+            "reason"
+          ]
+        },
+        {
+          "tid": "T19",
+          "nodeid": "tests/test_moves.py::test_moves_recorded_in_order",
+          "score": 9.884,
+          "matched": [
+            "adjustment",
+            "mov",
+            "reason"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-08",
+      "text": "A move that would make on-hand negative raises NegativeStock and leaves on-hand unchanged.",
+      "candidates": [
+        {
+          "tid": "T20",
+          "nodeid": "tests/test_scrap.py::test_scrap_move_is_negative",
+          "score": 13.597,
+          "matched": [
+            "mov",
+            "negativ"
+          ]
+        },
+        {
+          "tid": "T21",
+          "nodeid": "tests/test_counts.py::test_negative_count_rejected",
+          "score": 10.555,
+          "matched": [
+            "negativ",
+            "rais"
+          ]
+        },
+        {
+          "tid": "T22",
+          "nodeid": "tests/test_reorder.py::test_rule_point_cannot_be_negative",
+          "score": 10.555,
+          "matched": [
+            "negativ",
+            "rais"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-09",
+      "text": "Reservations are released when their order is cancelled.",
+      "candidates": [
+        {
+          "tid": "T08",
+          "nodeid": "tests/test_expiry.py::test_only_old_reservations_released",
+          "score": 19.882,
+          "matched": [
+            "order",
+            "releas",
+            "reservation"
+          ]
+        },
+        {
+          "tid": "T23",
+          "nodeid": "tests/test_orders.py::test_cancelled_order_cannot_ship",
+          "score": 14.628,
+          "matched": [
+            "cancell",
+            "order"
+          ]
+        },
+        {
+          "tid": "T24",
+          "nodeid": "tests/test_orders.py::test_shipped_order_cannot_be_cancelled",
+          "score": 14.628,
+          "matched": [
+            "cancell",
+            "order"
+          ]
+        }
+      ],
+      "no_candidates": false
+    }
+  ],
+  "tests": {
+    "T01": {
+      "nodeid": "tests/test_reservations.py::test_reserve_reduces_available",
+      "file": "tests/test_reservations.py",
+      "line": 13,
+      "name": "test_reserve_reduces_available",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reserve_reduces_available(ledger, book):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    book.reserve(BOLTS, 4, order_id=\"SO-1001\", now=NOW)\n\n    assert book.available(BOLTS) == 6\n    assert ledger.on_hand(BOLTS) == 10",
+      "assertions": [
+        "assert book.available(BOLTS) == 6",
+        "assert ledger.on_hand(BOLTS) == 10"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T02": {
+      "nodeid": "tests/test_ledger.py::test_issue_reduces_on_hand",
+      "file": "tests/test_ledger.py",
+      "line": 44,
+      "name": "test_issue_reduces_on_hand",
+      "class": null,
+      "docstring": "",
+      "code": "def test_issue_reduces_on_hand(ledger):\n    stock(ledger, BOLTS, SHELF_A, 40)\n\n    move = ledger.issue(BOLTS, SHELF_A, 15, ref=\"SO-1001\")\n\n    assert ledger.on_hand_at(BOLTS, SHELF_A) == 25\n    assert move.kind == \"issue\"\n    assert move.qty == -15\n\n    ledger.issue(BOLTS, SHELF_A, 25, ref=\"SO-1002\")\n\n    assert ledger.on_hand_at(BOLTS, SHELF_A) == 0",
+      "assertions": [
+        "assert ledger.on_hand_at(BOLTS, SHELF_A) == 25",
+        "assert move.kind == \"issue\"",
+        "assert move.qty == -15",
+        "assert ledger.on_hand_at(BOLTS, SHELF_A) == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T03": {
+      "nodeid": "tests/test_scrap.py::test_scrap_reduces_on_hand",
+      "file": "tests/test_scrap.py",
+      "line": 12,
+      "name": "test_scrap_reduces_on_hand",
+      "class": null,
+      "docstring": "",
+      "code": "def test_scrap_reduces_on_hand(ledger):\n    stock(ledger, GLOVES, QUARANTINE, 30)\n\n    ledger.scrap(GLOVES, QUARANTINE, 12, reason=\"water damage\")\n\n    assert ledger.on_hand_at(GLOVES, QUARANTINE) == 18",
+      "assertions": [
+        "assert ledger.on_hand_at(GLOVES, QUARANTINE) == 18"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T04": {
+      "nodeid": "tests/test_transfers.py::test_transfer_insufficient_stock_rejected",
+      "file": "tests/test_transfers.py",
+      "line": 23,
+      "name": "test_transfer_insufficient_stock_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_transfer_insufficient_stock_rejected(ledger):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    transfer(ledger, BOLTS, SHELF_A, SHELF_B, 4)\n\n    assert ledger.moves[-1].kind == \"transfer\"",
+      "assertions": [
+        "assert ledger.moves[-1].kind == \"transfer\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T05": {
+      "nodeid": "tests/test_reservations.py::test_over_reserve_rejected",
+      "file": "tests/test_reservations.py",
+      "line": 22,
+      "name": "test_over_reserve_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_over_reserve_rejected(ledger, book):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    with pytest.raises(InsufficientStock):\n        book.reserve(BOLTS, 11, order_id=\"SO-1002\", now=NOW)",
+      "assertions": [
+        "pytest.raises(InsufficientStock)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T06": {
+      "nodeid": "tests/test_expiry.py::test_confirmed_reservation_is_kept",
+      "file": "tests/test_expiry.py",
+      "line": 23,
+      "name": "test_confirmed_reservation_is_kept",
+      "class": null,
+      "docstring": "",
+      "code": "def test_confirmed_reservation_is_kept(ledger, book):\n    stock(ledger, BOLTS, SHELF_A, 10)\n    res = book.reserve(BOLTS, 4, order_id=\"SO-2002\", now=NOW)\n    book.confirm(res.id)\n\n    released = book.release_expired(hours_later(200))\n\n    assert released == []\n    assert book.reserved(BOLTS) == 4\n\n    status = book.status(BOLTS)\n\n    assert (status.on_hand, status.reserved, status.available) == (10, 4, 6)",
+      "assertions": [
+        "assert released == []",
+        "assert book.reserved(BOLTS) == 4",
+        "assert (status.on_hand, status.reserved, status.available) == (10, 4, 6)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T07": {
+      "nodeid": "tests/test_expiry.py::test_release_after_hours",
+      "file": "tests/test_expiry.py",
+      "line": 14,
+      "name": "test_release_after_hours",
+      "class": null,
+      "docstring": "",
+      "code": "@pytest.mark.parametrize(\"hours, expected\", [(47, False), (48, True)])\ndef test_release_after_hours(ledger, book, hours, expected):\n    stock(ledger, BOLTS, SHELF_A, 10)\n    book.reserve(BOLTS, 4, order_id=\"SO-2001\", now=NOW)\n\n    book.release_expired(hours_later(hours))\n\n    assert_released(book.status(BOLTS), expected)",
+      "assertions": [],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T08": {
+      "nodeid": "tests/test_expiry.py::test_only_old_reservations_released",
+      "file": "tests/test_expiry.py",
+      "line": 38,
+      "name": "test_only_old_reservations_released",
+      "class": null,
+      "docstring": "",
+      "code": "def test_only_old_reservations_released(ledger, book):\n    stock(ledger, BOLTS, SHELF_A, 10)\n    stock(ledger, NUTS, SHELF_A, 10)\n    old = book.reserve(BOLTS, 4, order_id=\"SO-2003\", now=NOW)\n    fresh = book.reserve(NUTS, 3, order_id=\"SO-2004\", now=hours_later(40))\n\n    released = book.release_expired(hours_later(50))\n\n    assert released == [old]\n    assert fresh.released is False",
+      "assertions": [
+        "assert released == [old]",
+        "assert fresh.released is False"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T09": {
+      "nodeid": "tests/test_reorder.py::test_suggestion_created_below_point",
+      "file": "tests/test_reorder.py",
+      "line": 12,
+      "name": "test_suggestion_created_below_point",
+      "class": null,
+      "docstring": "",
+      "code": "def test_suggestion_created_below_point(ledger, book, reorder):\n    stock(ledger, BOLTS, SHELF_A, 12)\n    reorder.add_rule(BOLTS, point=10, qty=50, supplier=\"FAST\")\n    book.reserve(BOLTS, 5, order_id=\"SO-3001\", now=NOW)\n\n    reorder.check(BOLTS, NOW)\n\n    assert reorder.suggestions[0].sku == BOLTS",
+      "assertions": [
+        "assert reorder.suggestions[0].sku == BOLTS"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T10": {
+      "nodeid": "tests/test_reorder.py::test_no_suggestion_above_point",
+      "file": "tests/test_reorder.py",
+      "line": 22,
+      "name": "test_no_suggestion_above_point",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_suggestion_above_point(ledger, book, reorder):\n    stock(ledger, BOLTS, SHELF_A, 30)\n    reorder.add_rule(BOLTS, point=10, qty=50, supplier=\"FAST\")\n    book.reserve(BOLTS, 5, order_id=\"SO-3002\", now=NOW)\n\n    result = reorder.check(BOLTS, NOW)\n\n    assert result is None\n    assert reorder.suggestions == []",
+      "assertions": [
+        "assert result is None",
+        "assert reorder.suggestions == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T11": {
+      "nodeid": "tests/test_reorder.py::test_no_suggestion_without_rule",
+      "file": "tests/test_reorder.py",
+      "line": 47,
+      "name": "test_no_suggestion_without_rule",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_suggestion_without_rule(ledger, reorder):\n    stock(ledger, NUTS, SHELF_A, 1)\n\n    result = reorder.check(NUTS, NOW)\n\n    assert result is None\n    assert reorder.suggestions == []\n    assert reorder.rules == {}",
+      "assertions": [
+        "assert result is None",
+        "assert reorder.suggestions == []",
+        "assert reorder.rules == {}"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T12": {
+      "nodeid": "tests/test_ledger.py::test_on_hand_total_across_locations",
+      "file": "tests/test_ledger.py",
+      "line": 29,
+      "name": "test_on_hand_total_across_locations",
+      "class": null,
+      "docstring": "",
+      "code": "def test_on_hand_total_across_locations(ledger):\n    stock(ledger, BOLTS, SHELF_A, 40)\n    stock(ledger, BOLTS, SHELF_B, 25)\n    stock(ledger, NUTS, SHELF_A, 100)\n\n    assert ledger.on_hand(BOLTS) == 65\n    assert ledger.on_hand(NUTS) == 100\n    assert ledger.by_location(BOLTS) == {SHELF_A: 40, SHELF_B: 25}\n\n    ledger.issue(BOLTS, SHELF_B, 5)\n\n    assert ledger.on_hand(BOLTS) == 60\n    assert ledger.skus() == [BOLTS, NUTS]",
+      "assertions": [
+        "assert ledger.on_hand(BOLTS) == 65",
+        "assert ledger.on_hand(NUTS) == 100",
+        "assert ledger.by_location(BOLTS) == {SHELF_A: 40, SHELF_B: 25}",
+        "assert ledger.on_hand(BOLTS) == 60",
+        "assert ledger.skus() == [BOLTS, NUTS]"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T13": {
+      "nodeid": "tests/test_transfers.py::test_transfer_keeps_reference",
+      "file": "tests/test_transfers.py",
+      "line": 63,
+      "name": "test_transfer_keeps_reference",
+      "class": null,
+      "docstring": "",
+      "code": "def test_transfer_keeps_reference(ledger):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    move = transfer(ledger, BOLTS, SHELF_A, SHELF_B, 3, ref=\"REPLEN-7\")\n\n    assert move.ref == \"REPLEN-7\"\n    assert move.location == SHELF_A\n    assert move.to_location == SHELF_B\n    assert move.qty == 3",
+      "assertions": [
+        "assert move.ref == \"REPLEN-7\"",
+        "assert move.location == SHELF_A",
+        "assert move.to_location == SHELF_B",
+        "assert move.qty == 3"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T14": {
+      "nodeid": "tests/test_transfers.py::test_transfer_moves_quantity",
+      "file": "tests/test_transfers.py",
+      "line": 14,
+      "name": "test_transfer_moves_quantity",
+      "class": null,
+      "docstring": "",
+      "code": "def test_transfer_moves_quantity(ledger):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    transfer(ledger, BOLTS, SHELF_A, SHELF_B, 5)\n\n    assert ledger.on_hand_at(BOLTS, SHELF_A) == 10 - 5\n    assert ledger.on_hand_at(BOLTS, SHELF_B) == 0 + 5",
+      "assertions": [
+        "assert ledger.on_hand_at(BOLTS, SHELF_A) == 10 - 5",
+        "assert ledger.on_hand_at(BOLTS, SHELF_B) == 0 + 5"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T15": {
+      "nodeid": "tests/test_transfers.py::test_transfer_to_same_location_rejected",
+      "file": "tests/test_transfers.py",
+      "line": 31,
+      "name": "test_transfer_to_same_location_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_transfer_to_same_location_rejected(ledger):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    with pytest.raises(ValueError):\n        transfer(ledger, BOLTS, SHELF_A, SHELF_A, 4)",
+      "assertions": [
+        "pytest.raises(ValueError)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T16": {
+      "nodeid": "tests/test_transfers.py::test_transfer_to_unknown_location_rejected",
+      "file": "tests/test_transfers.py",
+      "line": 38,
+      "name": "test_transfer_to_unknown_location_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_transfer_to_unknown_location_rejected(ledger):\n    stock(ledger, BOLTS, SHELF_A, 10)\n\n    with pytest.raises(UnknownLocation):\n        transfer(ledger, BOLTS, SHELF_A, \"Z-99-99\", 4)",
+      "assertions": [
+        "pytest.raises(UnknownLocation)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T17": {
+      "nodeid": "tests/test_counts.py::test_count_without_difference_posts_nothing",
+      "file": "tests/test_counts.py",
+      "line": 25,
+      "name": "test_count_without_difference_posts_nothing",
+      "class": null,
+      "docstring": "",
+      "code": "def test_count_without_difference_posts_nothing(ledger, counts):\n    stock(ledger, BOLTS, SHELF_A, 20)\n    moves_before = len(ledger.moves)\n\n    result = counts.record(BOLTS, SHELF_A, counted=20, counted_by=\"mia\", now=NOW)\n\n    assert result.variance == 0\n    assert len(ledger.moves) == moves_before",
+      "assertions": [
+        "assert result.variance == 0",
+        "assert len(ledger.moves) == moves_before"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T18": {
+      "nodeid": "tests/test_moves.py::test_adjustment_can_go_either_way",
+      "file": "tests/test_moves.py",
+      "line": 62,
+      "name": "test_adjustment_can_go_either_way",
+      "class": null,
+      "docstring": "",
+      "code": "def test_adjustment_can_go_either_way(ledger):\n    stock(ledger, NUTS, SHELF_B, 80)\n\n    up = ledger.adjust(NUTS, SHELF_B, 4, reason=\"found in returns bin\")\n    down = ledger.adjust(NUTS, SHELF_B, -6, reason=\"label mix-up\")\n\n    assert (up.qty, down.qty) == (4, -6)\n    assert up.kind == down.kind == \"adjustment\"\n    assert ledger.on_hand_at(NUTS, SHELF_B) == 78",
+      "assertions": [
+        "assert (up.qty, down.qty) == (4, -6)",
+        "assert up.kind == down.kind == \"adjustment\"",
+        "assert ledger.on_hand_at(NUTS, SHELF_B) == 78"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T19": {
+      "nodeid": "tests/test_moves.py::test_moves_recorded_in_order",
+      "file": "tests/test_moves.py",
+      "line": 10,
+      "name": "test_moves_recorded_in_order",
+      "class": null,
+      "docstring": "",
+      "code": "def test_moves_recorded_in_order(ledger):\n    stock(ledger, BOLTS, SHELF_A, 50)\n    ledger.issue(BOLTS, SHELF_A, 10)\n    ledger.scrap(BOLTS, SHELF_A, 2, reason=\"rusted\")\n    ledger.adjust(BOLTS, SHELF_A, 1, reason=\"found behind shelf\")\n\n    kinds = [m.kind for m in ledger.moves]\n\n    assert kinds == [\n        \"receipt\",\n        \"issue\",\n        \"scrap\",\n        \"adjustment\",\n    ]\n    assert ledger.on_hand_at(BOLTS, SHELF_A) == 39",
+      "assertions": [
+        "assert kinds == [ \"receipt\", \"issue\", \"scrap\", \"adjustment\", ]",
+        "assert ledger.on_hand_at(BOLTS, SHELF_A) == 39"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T20": {
+      "nodeid": "tests/test_scrap.py::test_scrap_move_is_negative",
+      "file": "tests/test_scrap.py",
+      "line": 48,
+      "name": "test_scrap_move_is_negative",
+      "class": null,
+      "docstring": "",
+      "code": "def test_scrap_move_is_negative(ledger):\n    stock(ledger, GLOVES, QUARANTINE, 30)\n\n    ledger.scrap(GLOVES, QUARANTINE, 5, reason=\"expired\")\n\n    assert ledger.moves[-1].qty == -5\n    assert sum(m.qty for m in ledger.moves_for(GLOVES)) == 25",
+      "assertions": [
+        "assert ledger.moves[-1].qty == -5",
+        "assert sum(m.qty for m in ledger.moves_for(GLOVES)) == 25"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T21": {
+      "nodeid": "tests/test_counts.py::test_negative_count_rejected",
+      "file": "tests/test_counts.py",
+      "line": 61,
+      "name": "test_negative_count_rejected",
+      "class": null,
+      "docstring": "",
+      "code": "def test_negative_count_rejected(ledger, counts):\n    stock(ledger, BOLTS, SHELF_A, 20)\n\n    with pytest.raises(ValueError):\n        counts.record(BOLTS, SHELF_A, counted=-1, counted_by=\"mia\", now=NOW)\n\n    assert counts.results == []",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert counts.results == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T22": {
+      "nodeid": "tests/test_reorder.py::test_rule_point_cannot_be_negative",
+      "file": "tests/test_reorder.py",
+      "line": 67,
+      "name": "test_rule_point_cannot_be_negative",
+      "class": null,
+      "docstring": "",
+      "code": "def test_rule_point_cannot_be_negative(reorder):\n    with pytest.raises(ValueError):\n        reorder.add_rule(BOLTS, point=-1, qty=50, supplier=\"FAST\")\n\n    with pytest.raises(ValueError):\n        reorder.add_rule(BOLTS, point=10, qty=0, supplier=\"FAST\")\n\n    assert reorder.rules == {}",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert reorder.rules == {}"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T23": {
+      "nodeid": "tests/test_orders.py::test_cancelled_order_cannot_ship",
+      "file": "tests/test_orders.py",
+      "line": 90,
+      "name": "test_cancelled_order_cannot_ship",
+      "class": null,
+      "docstring": "",
+      "code": "def test_cancelled_order_cannot_ship(ledger, orders):\n    stock(ledger, BOLTS, SHELF_A, 10)\n    stock(ledger, NUTS, SHELF_A, 50)\n    order = _order(\"SO-4006\")\n    orders.place(order, NOW)\n    orders.cancel(order)\n\n    with pytest.raises(ValueError):\n        orders.ship(order, SHELF_A)\n\n    assert ledger.on_hand(BOLTS) == 10\n    assert order.status == \"cancelled\"",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert ledger.on_hand(BOLTS) == 10",
+        "assert order.status == \"cancelled\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T24": {
+      "nodeid": "tests/test_orders.py::test_shipped_order_cannot_be_cancelled",
+      "file": "tests/test_orders.py",
+      "line": 104,
+      "name": "test_shipped_order_cannot_be_cancelled",
+      "class": null,
+      "docstring": "",
+      "code": "def test_shipped_order_cannot_be_cancelled(ledger, orders):\n    stock(ledger, BOLTS, SHELF_A, 10)\n    stock(ledger, NUTS, SHELF_A, 50)\n    order = _order(\"SO-4005\", paid=12900)\n    orders.place(order, NOW)\n    orders.ship(order, SHELF_A)\n\n    with pytest.raises(ValueError):\n        orders.cancel(order)\n\n    assert order.status == \"shipped\"\n    assert order.refunded == 0",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert order.status == \"shipped\"",
+        "assert order.refunded == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    }
+  }
+}

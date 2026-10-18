@@ -1,0 +1,45 @@
+{
+  "source": "Story BILL-21 'Issue invoices'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "An invoice's net total is the sum of quantity x unit price of its lines."
+    },
+    {
+      "id": "AC-02",
+      "text": "Standard VAT of 20% is applied to the net total and rounded half-up to the cent."
+    },
+    {
+      "id": "AC-03",
+      "text": "Customers flagged tax-exempt are charged no VAT, and the invoice shows the note \"VAT exempt\"."
+    },
+    {
+      "id": "AC-04",
+      "text": "A percentage discount is applied before VAT."
+    },
+    {
+      "id": "AC-05",
+      "text": "A fixed discount larger than the net total brings the net to zero, never negative."
+    },
+    {
+      "id": "AC-06",
+      "text": "Issuing an invoice assigns the next number in the form INV-YYYY-NNNN and sets its status to issued."
+    },
+    {
+      "id": "AC-07",
+      "text": "An issued invoice cannot be edited: adding a line raises InvoiceLocked."
+    },
+    {
+      "id": "AC-08",
+      "text": "Voiding an issued invoice creates a credit note for the full gross amount."
+    },
+    {
+      "id": "AC-09",
+      "text": "Invoices not paid 30 days after issue are marked overdue."
+    },
+    {
+      "id": "AC-10",
+      "text": "Reminder emails for overdue invoices are sent at most once per week."
+    }
+  ]
+}

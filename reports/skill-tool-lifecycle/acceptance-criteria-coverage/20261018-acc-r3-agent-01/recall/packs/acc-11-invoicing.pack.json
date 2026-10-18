@@ -1,0 +1,826 @@
+{
+  "source": "Story BILL-21 'Issue invoices'",
+  "createdAt": "2026-10-18T07:29:25+00:00",
+  "testsDir": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-11-invoicing/tests",
+  "root": "<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-modest-bouman-d03416/9c66a8b4-5ea2-479c-b118-0ddfef33d072/scratchpad/r3/build/r3/repos/acc-11-invoicing",
+  "junit": null,
+  "junitSummary": null,
+  "testsDiscovered": 86,
+  "topK": 3,
+  "maxBodyChars": 1500,
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "An invoice's net total is the sum of quantity x unit price of its lines.",
+      "candidates": [
+        {
+          "tid": "T01",
+          "nodeid": "tests/test_lines.py::test_line_total_is_quantity_times_price",
+          "score": 30.156,
+          "matched": [
+            "lin",
+            "pric",
+            "quantity",
+            "total"
+          ]
+        },
+        {
+          "tid": "T02",
+          "nodeid": "tests/test_totals.py::test_net_is_sum_of_lines",
+          "score": 23.331,
+          "matched": [
+            "lin",
+            "net",
+            "sum"
+          ]
+        },
+        {
+          "tid": "T03",
+          "nodeid": "tests/test_lines.py::test_unit_price_cannot_be_negative",
+          "score": 22.927,
+          "matched": [
+            "lin",
+            "pric",
+            "unit"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-02",
+      "text": "Standard VAT of 20% is applied to the net total and rounded half-up to the cent.",
+      "candidates": [
+        {
+          "tid": "T04",
+          "nodeid": "tests/test_rounding.py::test_display_rounds_half_up",
+          "score": 31.409,
+          "matched": [
+            "half",
+            "round",
+            "up"
+          ]
+        },
+        {
+          "tid": "T05",
+          "nodeid": "tests/test_rounding.py::test_display_rounds_down_below_half",
+          "score": 20.057,
+          "matched": [
+            "half",
+            "round"
+          ]
+        },
+        {
+          "tid": "T06",
+          "nodeid": "tests/test_tax_rates.py::test_standard_rate_constant",
+          "score": 17.099,
+          "matched": [
+            "20",
+            "standard",
+            "vat"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-03",
+      "text": "Customers flagged tax-exempt are charged no VAT, and the invoice shows the note \"VAT exempt\".",
+      "candidates": [
+        {
+          "tid": "T07",
+          "nodeid": "tests/test_tax_exempt.py::test_non_exempt_customer_pays_vat",
+          "score": 18.587,
+          "matched": [
+            "exempt",
+            "tax",
+            "vat"
+          ]
+        },
+        {
+          "tid": "T08",
+          "nodeid": "tests/test_tax_exempt.py::test_exempt_customer_has_zero_tax",
+          "score": 15.871,
+          "matched": [
+            "exempt",
+            "tax"
+          ]
+        },
+        {
+          "tid": "T09",
+          "nodeid": "tests/test_tax_exempt.py::test_exempt_flag_from_customer_record",
+          "score": 13.874,
+          "matched": [
+            "exempt",
+            "tax",
+            "vat"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-04",
+      "text": "A percentage discount is applied before VAT.",
+      "candidates": [
+        {
+          "tid": "T10",
+          "nodeid": "tests/test_discounts_fixed.py::test_fixed_applied_after_percent",
+          "score": 15.428,
+          "matched": [
+            "apply",
+            "discount"
+          ]
+        },
+        {
+          "tid": "T11",
+          "nodeid": "tests/test_discounts_percent.py::test_percent_discount_before_vat",
+          "score": 13.16,
+          "matched": [
+            "discount",
+            "vat"
+          ]
+        },
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_credit_notes.py::test_line_credit_amount_includes_vat",
+          "score": 7.07,
+          "matched": [
+            "vat"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-05",
+      "text": "A fixed discount larger than the net total brings the net to zero, never negative.",
+      "candidates": [
+        {
+          "tid": "T13",
+          "nodeid": "tests/test_discounts_fixed.py::test_fixed_discount_never_negative",
+          "score": 39.755,
+          "matched": [
+            "discount",
+            "fix",
+            "negativ",
+            "net",
+            "never"
+          ]
+        },
+        {
+          "tid": "T14",
+          "nodeid": "tests/test_totals.py::test_empty_invoice_totals_zero",
+          "score": 17.681,
+          "matched": [
+            "net",
+            "total",
+            "zero"
+          ]
+        },
+        {
+          "tid": "T15",
+          "nodeid": "tests/test_discounts_fixed.py::test_fixed_discount_lowers_gross_too",
+          "score": 16.188,
+          "matched": [
+            "discount",
+            "fix",
+            "net"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-06",
+      "text": "Issuing an invoice assigns the next number in the form INV-YYYY-NNNN and sets its status to issued.",
+      "candidates": [
+        {
+          "tid": "T16",
+          "nodeid": "tests/test_issue.py::test_issue_sets_status",
+          "score": 22.922,
+          "matched": [
+            "inv",
+            "issu",
+            "set",
+            "statu"
+          ]
+        },
+        {
+          "tid": "T17",
+          "nodeid": "tests/test_void.py::test_void_sets_status_void",
+          "score": 20.265,
+          "matched": [
+            "inv",
+            "issu",
+            "set",
+            "statu"
+          ]
+        },
+        {
+          "tid": "T18",
+          "nodeid": "tests/test_numbering.py::test_credit_note_numbers_increase",
+          "score": 12.094,
+          "matched": [
+            "next",
+            "number"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-07",
+      "text": "An issued invoice cannot be edited: adding a line raises InvoiceLocked.",
+      "candidates": [
+        {
+          "tid": "T19",
+          "nodeid": "tests/test_issue.py::TestLockedInvoice::test_add_line_after_issue_raises",
+          "score": 26.458,
+          "matched": [
+            "add",
+            "issu",
+            "lin",
+            "lock",
+            "rais"
+          ]
+        },
+        {
+          "tid": "T20",
+          "nodeid": "tests/test_issue.py::TestLockedInvoice::test_remove_line_after_issue_raises",
+          "score": 22.163,
+          "matched": [
+            "issu",
+            "lin",
+            "lock",
+            "rais"
+          ]
+        },
+        {
+          "tid": "T21",
+          "nodeid": "tests/test_issue.py::TestLockedInvoice::test_discount_after_issue_raises",
+          "score": 19.382,
+          "matched": [
+            "add",
+            "issu",
+            "lock",
+            "rais"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-08",
+      "text": "Voiding an issued invoice creates a credit note for the full gross amount.",
+      "candidates": [
+        {
+          "tid": "T22",
+          "nodeid": "tests/test_void.py::test_void_creates_credit_note",
+          "score": 34.718,
+          "matched": [
+            "creat",
+            "credit",
+            "issu",
+            "not",
+            "void"
+          ]
+        },
+        {
+          "tid": "T12",
+          "nodeid": "tests/test_credit_notes.py::test_line_credit_amount_includes_vat",
+          "score": 16.798,
+          "matched": [
+            "amount",
+            "credit",
+            "issu",
+            "not"
+          ]
+        },
+        {
+          "tid": "T23",
+          "nodeid": "tests/test_credit_notes.py::test_credit_note_keeps_reason",
+          "score": 16.392,
+          "matched": [
+            "credit",
+            "issu",
+            "not",
+            "void"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-09",
+      "text": "Invoices not paid 30 days after issue are marked overdue.",
+      "candidates": [
+        {
+          "tid": "T24",
+          "nodeid": "tests/test_due_dates.py::test_days_overdue_count",
+          "score": 16.166,
+          "matched": [
+            "day",
+            "issu",
+            "overdu"
+          ]
+        },
+        {
+          "tid": "T25",
+          "nodeid": "tests/test_due_dates.py::test_draft_cannot_be_paid",
+          "score": 15.641,
+          "matched": [
+            "day",
+            "issu",
+            "mark",
+            "paid"
+          ]
+        },
+        {
+          "tid": "T26",
+          "nodeid": "tests/test_due_dates.py::test_paid_invoice_is_paid",
+          "score": 15.641,
+          "matched": [
+            "day",
+            "issu",
+            "mark",
+            "paid"
+          ]
+        }
+      ],
+      "no_candidates": false
+    },
+    {
+      "id": "AC-10",
+      "text": "Reminder emails for overdue invoices are sent at most once per week.",
+      "candidates": [
+        {
+          "tid": "T27",
+          "nodeid": "tests/test_reminders.py::test_reminder_goes_to_customer_email",
+          "score": 19.511,
+          "matched": [
+            "email",
+            "reminder"
+          ]
+        },
+        {
+          "tid": "T28",
+          "nodeid": "tests/test_reminders.py::test_no_reminder_for_paid_invoice",
+          "score": 13.806,
+          "matched": [
+            "reminder",
+            "sent"
+          ]
+        },
+        {
+          "tid": "T29",
+          "nodeid": "tests/test_reminders.py::test_reminder_subject_and_content",
+          "score": 12.731,
+          "matched": [
+            "overdu",
+            "reminder"
+          ]
+        }
+      ],
+      "no_candidates": false
+    }
+  ],
+  "tests": {
+    "T01": {
+      "nodeid": "tests/test_lines.py::test_line_total_is_quantity_times_price",
+      "file": "tests/test_lines.py",
+      "line": 25,
+      "name": "test_line_total_is_quantity_times_price",
+      "class": null,
+      "docstring": "",
+      "code": "def test_line_total_is_quantity_times_price():\n    chairs = Line(\"Office chair, mesh back\", 4, 18990)\n    lamps = Line(\"Ergonomic desk lamp\", 1, 3450)\n    setup = Line(\"Setup (waived)\", 1, 0)\n\n    assert chairs.total == 4 * 18990\n    assert lamps.total == 3450\n    assert setup.total == 0",
+      "assertions": [
+        "assert chairs.total == 4 * 18990",
+        "assert lamps.total == 3450",
+        "assert setup.total == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T02": {
+      "nodeid": "tests/test_totals.py::test_net_is_sum_of_lines",
+      "file": "tests/test_totals.py",
+      "line": 15,
+      "name": "test_net_is_sum_of_lines",
+      "class": null,
+      "docstring": "",
+      "code": "def test_net_is_sum_of_lines(customer):\n    inv = Invoice(customer)\n    inv.add_line(\"Consulting, senior (hours)\", 3, SENIOR_RATE)\n    inv.add_line(\"Consulting, junior (hours)\", 5, JUNIOR_RATE)\n    inv.add_line(\"Travel flat fee\", 1, TRAVEL_FEE)\n\n    expected = 3 * SENIOR_RATE + 5 * JUNIOR_RATE + 1 * TRAVEL_FEE\n\n    assert inv.net == expected\n    assert inv.net == 70550",
+      "assertions": [
+        "assert inv.net == expected",
+        "assert inv.net == 70550"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T03": {
+      "nodeid": "tests/test_lines.py::test_unit_price_cannot_be_negative",
+      "file": "tests/test_lines.py",
+      "line": 45,
+      "name": "test_unit_price_cannot_be_negative",
+      "class": null,
+      "docstring": "",
+      "code": "def test_unit_price_cannot_be_negative(invoice):\n    with pytest.raises(ValueError):\n        invoice.add_line(\"Goodwill refund\", 1, -500)\n\n    with pytest.raises(ValueError):\n        Line(\"Goodwill refund\", 3, -1)\n\n    assert invoice.lines == []",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert invoice.lines == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T04": {
+      "nodeid": "tests/test_rounding.py::test_display_rounds_half_up",
+      "file": "tests/test_rounding.py",
+      "line": 12,
+      "name": "test_display_rounds_half_up",
+      "class": null,
+      "docstring": "",
+      "code": "def test_display_rounds_half_up():\n    assert round_for_display(Decimal(\"10.005\")) == \"10.01\"\n    assert round_for_display(Decimal(\"0.125\")) == \"0.13\"\n    assert round_for_display(Decimal(\"2.675\")) == \"2.68\"",
+      "assertions": [
+        "assert round_for_display(Decimal(\"10.005\")) == \"10.01\"",
+        "assert round_for_display(Decimal(\"0.125\")) == \"0.13\"",
+        "assert round_for_display(Decimal(\"2.675\")) == \"2.68\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T05": {
+      "nodeid": "tests/test_rounding.py::test_display_rounds_down_below_half",
+      "file": "tests/test_rounding.py",
+      "line": 18,
+      "name": "test_display_rounds_down_below_half",
+      "class": null,
+      "docstring": "",
+      "code": "def test_display_rounds_down_below_half():\n    assert round_for_display(Decimal(\"10.004\")) == \"10.00\"\n    assert round_for_display(Decimal(\"3.3333\")) == \"3.33\"",
+      "assertions": [
+        "assert round_for_display(Decimal(\"10.004\")) == \"10.00\"",
+        "assert round_for_display(Decimal(\"3.3333\")) == \"3.33\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T06": {
+      "nodeid": "tests/test_tax_rates.py::test_standard_rate_constant",
+      "file": "tests/test_tax_rates.py",
+      "line": 31,
+      "name": "test_standard_rate_constant",
+      "class": null,
+      "docstring": "",
+      "code": "def test_standard_rate_constant():\n    assert VAT_RATE == Decimal(\"0.20\")\n    assert RATES[\"standard\"] is VAT_RATE\n    assert rate_for(\"standard\") == Decimal(\"0.20\")",
+      "assertions": [
+        "assert VAT_RATE == Decimal(\"0.20\")",
+        "assert RATES[\"standard\"] is VAT_RATE",
+        "assert rate_for(\"standard\") == Decimal(\"0.20\")"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T07": {
+      "nodeid": "tests/test_tax_exempt.py::test_non_exempt_customer_pays_vat",
+      "file": "tests/test_tax_exempt.py",
+      "line": 26,
+      "name": "test_non_exempt_customer_pays_vat",
+      "class": null,
+      "docstring": "",
+      "code": "def test_non_exempt_customer_pays_vat(customer):\n    inv = Invoice(customer)\n    inv.add_line(\"Charity gala catering\", 2, 5000)\n\n    assert inv.net == 10000\n    assert inv.tax == 2000\n    assert inv.gross == 12000",
+      "assertions": [
+        "assert inv.net == 10000",
+        "assert inv.tax == 2000",
+        "assert inv.gross == 12000"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T08": {
+      "nodeid": "tests/test_tax_exempt.py::test_exempt_customer_has_zero_tax",
+      "file": "tests/test_tax_exempt.py",
+      "line": 11,
+      "name": "test_exempt_customer_has_zero_tax",
+      "class": null,
+      "docstring": "",
+      "code": "def test_exempt_customer_has_zero_tax(exempt_customer):\n    inv = Invoice(exempt_customer)\n    inv.add_line(\"Charity gala catering\", 2, 5000)\n\n    assert inv.tax == 0",
+      "assertions": [
+        "assert inv.tax == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T09": {
+      "nodeid": "tests/test_tax_exempt.py::test_exempt_flag_from_customer_record",
+      "file": "tests/test_tax_exempt.py",
+      "line": 18,
+      "name": "test_exempt_flag_from_customer_record",
+      "class": null,
+      "docstring": "",
+      "code": "def test_exempt_flag_from_customer_record(exempt_customer, customer):\n    assert exempt_customer.tax_exempt is True\n    assert customer.tax_exempt is False\n\n    assert exempt_customer.vat_id == \"DE987654321\"\n    assert exempt_customer.email == \"office@helpinghands.example\"",
+      "assertions": [
+        "assert exempt_customer.tax_exempt is True",
+        "assert customer.tax_exempt is False",
+        "assert exempt_customer.vat_id == \"DE987654321\"",
+        "assert exempt_customer.email == \"office@helpinghands.example\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T10": {
+      "nodeid": "tests/test_discounts_fixed.py::test_fixed_applied_after_percent",
+      "file": "tests/test_discounts_fixed.py",
+      "line": 52,
+      "name": "test_fixed_applied_after_percent",
+      "class": null,
+      "docstring": "",
+      "code": "def test_fixed_applied_after_percent(customer):\n    inv = make_invoice(\n        customer,\n        (\"Analytics suite, annual licence\", 1, 10000),\n    )\n\n    inv.add_discount(FixedDiscount(1000))\n    inv.add_discount(PercentDiscount(10))\n\n    assert inv.net == 8000",
+      "assertions": [
+        "assert inv.net == 8000"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T11": {
+      "nodeid": "tests/test_discounts_percent.py::test_percent_discount_before_vat",
+      "file": "tests/test_discounts_percent.py",
+      "line": 16,
+      "name": "test_percent_discount_before_vat",
+      "class": null,
+      "docstring": "",
+      "code": "def test_percent_discount_before_vat(customer):\n    inv = Invoice(customer)\n    inv.add_line(*LICENCE)\n    inv.add_discount(PercentDiscount(10))\n\n    assert_totals(inv, net=9000, tax=1800, gross=10800)",
+      "assertions": [],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T12": {
+      "nodeid": "tests/test_credit_notes.py::test_line_credit_amount_includes_vat",
+      "file": "tests/test_credit_notes.py",
+      "line": 30,
+      "name": "test_line_credit_amount_includes_vat",
+      "class": null,
+      "docstring": "",
+      "code": "def test_line_credit_amount_includes_vat(book, sequence, customer):\n    inv = issued_invoice(\n        book,\n        customer,\n        SUPPORT,\n        (\"Onboarding call\", 1, 1000),\n    )\n\n    note = credit_line(inv, 1, sequence, ISSUE_DAY)\n\n    assert note.amount == 1200\n    assert inv.status == \"issued\"",
+      "assertions": [
+        "assert note.amount == 1200",
+        "assert inv.status == \"issued\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T13": {
+      "nodeid": "tests/test_discounts_fixed.py::test_fixed_discount_never_negative",
+      "file": "tests/test_discounts_fixed.py",
+      "line": 16,
+      "name": "test_fixed_discount_never_negative",
+      "class": null,
+      "docstring": "",
+      "code": "def test_fixed_discount_never_negative(customer):\n    inv = Invoice(customer)\n    inv.add_line(*SEAT)\n    inv.add_discount(FixedDiscount(500))\n\n    assert inv.net == 2500",
+      "assertions": [
+        "assert inv.net == 2500"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T14": {
+      "nodeid": "tests/test_totals.py::test_empty_invoice_totals_zero",
+      "file": "tests/test_totals.py",
+      "line": 27,
+      "name": "test_empty_invoice_totals_zero",
+      "class": null,
+      "docstring": "",
+      "code": "def test_empty_invoice_totals_zero(invoice):\n    assert invoice.lines == []\n\n    assert invoice.line_total == 0\n    assert invoice.net == 0\n    assert invoice.tax == 0\n    assert invoice.gross == 0",
+      "assertions": [
+        "assert invoice.lines == []",
+        "assert invoice.line_total == 0",
+        "assert invoice.net == 0",
+        "assert invoice.tax == 0",
+        "assert invoice.gross == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T15": {
+      "nodeid": "tests/test_discounts_fixed.py::test_fixed_discount_lowers_gross_too",
+      "file": "tests/test_discounts_fixed.py",
+      "line": 24,
+      "name": "test_fixed_discount_lowers_gross_too",
+      "class": null,
+      "docstring": "",
+      "code": "def test_fixed_discount_lowers_gross_too(customer):\n    inv = make_invoice(customer, SEAT)\n\n    inv.add_discount(FixedDiscount(1000))\n\n    assert inv.net == 2000\n    assert inv.tax == 400\n    assert inv.gross == 2400",
+      "assertions": [
+        "assert inv.net == 2000",
+        "assert inv.tax == 400",
+        "assert inv.gross == 2400"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T16": {
+      "nodeid": "tests/test_issue.py::test_issue_sets_status",
+      "file": "tests/test_issue.py",
+      "line": 14,
+      "name": "test_issue_sets_status",
+      "class": null,
+      "docstring": "",
+      "code": "def test_issue_sets_status(book, customer):\n    inv = make_invoice(customer, HOSTING)\n\n    book.issue(inv, ISSUE_DAY)\n\n    check_issued(inv)",
+      "assertions": [],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T17": {
+      "nodeid": "tests/test_void.py::test_void_sets_status_void",
+      "file": "tests/test_void.py",
+      "line": 24,
+      "name": "test_void_sets_status_void",
+      "class": null,
+      "docstring": "",
+      "code": "def test_void_sets_status_void(book, sequence, customer):\n    inv = issued_invoice(book, customer, SUPPORT)\n\n    void(inv, sequence, ISSUE_DAY)\n\n    assert inv.status == \"void\"\n    assert inv.payment_state(days_after_issue(60)) == \"void\"",
+      "assertions": [
+        "assert inv.status == \"void\"",
+        "assert inv.payment_state(days_after_issue(60)) == \"void\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T18": {
+      "nodeid": "tests/test_numbering.py::test_credit_note_numbers_increase",
+      "file": "tests/test_numbering.py",
+      "line": 22,
+      "name": "test_credit_note_numbers_increase",
+      "class": null,
+      "docstring": "",
+      "code": "def test_credit_note_numbers_increase():\n    seq = CreditNoteSequence()\n\n    numbers = [\n        seq.next(date(2026, 2, 1)),\n        seq.next(date(2026, 2, 3)),\n        seq.next(date(2026, 4, 9)),\n    ]\n\n    assert numbers == [\"CN-2026-0001\", \"CN-2026-0002\", \"CN-2026-0003\"]",
+      "assertions": [
+        "assert numbers == [\"CN-2026-0001\", \"CN-2026-0002\", \"CN-2026-0003\"]"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T19": {
+      "nodeid": "tests/test_issue.py::TestLockedInvoice::test_add_line_after_issue_raises",
+      "file": "tests/test_issue.py",
+      "line": 51,
+      "name": "test_add_line_after_issue_raises",
+      "class": "TestLockedInvoice",
+      "docstring": "",
+      "code": "def test_add_line_after_issue_raises(self, book, customer):\n    inv = make_invoice(customer, HOSTING)\n    book.issue(inv, ISSUE_DAY)\n\n    with pytest.raises(InvoiceLocked):\n        inv.add_line(\"Late extra: SSL certificate\", 1, 500)\n\n    assert len(inv.lines) == 1",
+      "assertions": [
+        "pytest.raises(InvoiceLocked)",
+        "assert len(inv.lines) == 1"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T20": {
+      "nodeid": "tests/test_issue.py::TestLockedInvoice::test_remove_line_after_issue_raises",
+      "file": "tests/test_issue.py",
+      "line": 60,
+      "name": "test_remove_line_after_issue_raises",
+      "class": "TestLockedInvoice",
+      "docstring": "",
+      "code": "def test_remove_line_after_issue_raises(self, book, customer):\n    inv = issued_invoice(book, customer, HOSTING, BACKUP)\n\n    with pytest.raises(InvoiceLocked):\n        inv.remove_line(0)\n\n    assert len(inv.lines) == 2",
+      "assertions": [
+        "pytest.raises(InvoiceLocked)",
+        "assert len(inv.lines) == 2"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T21": {
+      "nodeid": "tests/test_issue.py::TestLockedInvoice::test_discount_after_issue_raises",
+      "file": "tests/test_issue.py",
+      "line": 68,
+      "name": "test_discount_after_issue_raises",
+      "class": "TestLockedInvoice",
+      "docstring": "",
+      "code": "def test_discount_after_issue_raises(self, book, customer):\n    inv = issued_invoice(book, customer, HOSTING)\n\n    with pytest.raises(InvoiceLocked):\n        inv.add_discount(PercentDiscount(5))\n\n    assert inv.discounts == []",
+      "assertions": [
+        "pytest.raises(InvoiceLocked)",
+        "assert inv.discounts == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T22": {
+      "nodeid": "tests/test_void.py::test_void_creates_credit_note",
+      "file": "tests/test_void.py",
+      "line": 14,
+      "name": "test_void_creates_credit_note",
+      "class": null,
+      "docstring": "",
+      "code": "def test_void_creates_credit_note(book, sequence, customer):\n    inv = make_invoice(customer, SUPPORT)\n    book.issue(inv, ISSUE_DAY)\n\n    note = void(inv, sequence, days_after_issue(3))\n\n    assert note in inv.credit_notes\n    assert note.invoice_number == inv.number",
+      "assertions": [
+        "assert note in inv.credit_notes",
+        "assert note.invoice_number == inv.number"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T23": {
+      "nodeid": "tests/test_credit_notes.py::test_credit_note_keeps_reason",
+      "file": "tests/test_credit_notes.py",
+      "line": 21,
+      "name": "test_credit_note_keeps_reason",
+      "class": null,
+      "docstring": "",
+      "code": "def test_credit_note_keeps_reason(book, sequence, customer):\n    inv = issued_invoice(book, customer, SUPPORT)\n\n    note = void(inv, sequence, ISSUE_DAY, reason=\"duplicate order\")\n\n    assert note.reason == \"duplicate order\"\n    assert note.issued_on == ISSUE_DAY",
+      "assertions": [
+        "assert note.reason == \"duplicate order\"",
+        "assert note.issued_on == ISSUE_DAY"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T24": {
+      "nodeid": "tests/test_due_dates.py::test_days_overdue_count",
+      "file": "tests/test_due_dates.py",
+      "line": 52,
+      "name": "test_days_overdue_count",
+      "class": null,
+      "docstring": "",
+      "code": "def test_days_overdue_count(book, customer):\n    inv = issued_invoice(book, customer, HOSTING)\n\n    assert inv.days_overdue(days_after_issue(40)) == 10\n    assert inv.days_overdue(days_after_issue(5)) == 0",
+      "assertions": [
+        "assert inv.days_overdue(days_after_issue(40)) == 10",
+        "assert inv.days_overdue(days_after_issue(5)) == 0"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T25": {
+      "nodeid": "tests/test_due_dates.py::test_draft_cannot_be_paid",
+      "file": "tests/test_due_dates.py",
+      "line": 41,
+      "name": "test_draft_cannot_be_paid",
+      "class": null,
+      "docstring": "",
+      "code": "def test_draft_cannot_be_paid(customer):\n    inv = Invoice(customer)\n    inv.add_line(*HOSTING)\n\n    with pytest.raises(ValueError):\n        inv.mark_paid(ISSUE_DAY)\n\n    assert inv.due_date is None\n    assert inv.payment_state(ISSUE_DAY) == \"draft\"",
+      "assertions": [
+        "pytest.raises(ValueError)",
+        "assert inv.due_date is None",
+        "assert inv.payment_state(ISSUE_DAY) == \"draft\""
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T26": {
+      "nodeid": "tests/test_due_dates.py::test_paid_invoice_is_paid",
+      "file": "tests/test_due_dates.py",
+      "line": 32,
+      "name": "test_paid_invoice_is_paid",
+      "class": null,
+      "docstring": "",
+      "code": "def test_paid_invoice_is_paid(book, customer):\n    inv = issued_invoice(book, customer, HOSTING)\n\n    inv.mark_paid(days_after_issue(12))\n\n    assert inv.payment_state(days_after_issue(12)) == \"paid\"\n    assert inv.paid_on == days_after_issue(12)",
+      "assertions": [
+        "assert inv.payment_state(days_after_issue(12)) == \"paid\"",
+        "assert inv.paid_on == days_after_issue(12)"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T27": {
+      "nodeid": "tests/test_reminders.py::test_reminder_goes_to_customer_email",
+      "file": "tests/test_reminders.py",
+      "line": 23,
+      "name": "test_reminder_goes_to_customer_email",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reminder_goes_to_customer_email(book, customer, outbox, reminder_log):\n    issued_invoice(book, customer, HOSTING)\n\n    send_reminders(book.invoices, LATE, outbox, reminder_log)\n\n    recipients = [m[\"to\"] for m in outbox.messages]\n\n    assert recipients == [\"accounts@northwind.example\"]",
+      "assertions": [
+        "assert recipients == [\"accounts@northwind.example\"]"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T28": {
+      "nodeid": "tests/test_reminders.py::test_no_reminder_for_paid_invoice",
+      "file": "tests/test_reminders.py",
+      "line": 33,
+      "name": "test_no_reminder_for_paid_invoice",
+      "class": null,
+      "docstring": "",
+      "code": "def test_no_reminder_for_paid_invoice(book, customer, outbox, reminder_log):\n    inv = issued_invoice(book, customer, HOSTING)\n    inv.mark_paid(days_after_issue(20))\n\n    sent = send_reminders(book.invoices, LATE, outbox, reminder_log)\n\n    assert sent == []\n    assert outbox.messages == []",
+      "assertions": [
+        "assert sent == []",
+        "assert outbox.messages == []"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    },
+    "T29": {
+      "nodeid": "tests/test_reminders.py::test_reminder_subject_and_content",
+      "file": "tests/test_reminders.py",
+      "line": 13,
+      "name": "test_reminder_subject_and_content",
+      "class": null,
+      "docstring": "",
+      "code": "def test_reminder_subject_and_content(book, customer):\n    inv = issued_invoice(book, customer, HOSTING)\n\n    msg = reminder_message(inv, LATE)\n\n    assert msg[\"subject\"].startswith(\"Payment reminder\")\n    assert \"5 days overdue\" in msg[\"body\"]\n    assert msg[\"body\"].startswith(\"Dear Northwind Traders\")",
+      "assertions": [
+        "assert msg[\"subject\"].startswith(\"Payment reminder\")",
+        "assert \"5 days overdue\" in msg[\"body\"]",
+        "assert msg[\"body\"].startswith(\"Dear Northwind Traders\")"
+      ],
+      "truncated": false,
+      "execution": "Unknown"
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "AC-01": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_signup.py::test_duplicate_email"
+    ],
+    "trap": "control"
+  },
+  "AC-02": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_signup.py::test_duplicate_email_any_case"
+    ],
+    "trap": "parametrised-partial"
+  },
+  "AC-03": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_lockout.py::test_lock_after_five_failures"
+    ],
+    "trap": "partial-assert"
+  },
+  "AC-04": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_lockout.py::test_correct_password_while_locked"
+    ],
+    "trap": "helper"
+  },
+  "AC-05": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_reset.py::test_token_validity"
+    ],
+    "trap": "parametrised"
+  },
+  "AC-06": {
+    "gold": "Missing",
+    "accepted": [
+      "Missing",
+      "Unclear"
+    ],
+    "decisive": [
+      "tests/test_reset.py::test_token_single_use"
+    ],
+    "trap": "name-only"
+  },
+  "AC-07": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_sessions.py::test_password_change_revokes_sessions"
+    ],
+    "trap": "partial-assert"
+  },
+  "AC-09": {
+    "gold": "Partial",
+    "accepted": [
+      "Partial"
+    ],
+    "decisive": [
+      "tests/test_unlock.py::test_admin_unlocks"
+    ],
+    "trap": "exists-asserts-other"
+  },
+  "AC-10": {
+    "gold": "Covered",
+    "accepted": [
+      "Covered"
+    ],
+    "decisive": [
+      "tests/test_sessions.py::test_idle_timeout"
+    ],
+    "trap": "vocabulary"
+  }
+}

@@ -1,0 +1,86 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 347 → 63 original lines kept verbatim (rule).
+[smart-trim] Command FAILED (Exit code 1); the error status is preserved.
+[smart-trim] Full raw output: /raw/S6-js-feature-flaky.r1.log (Read it if you need an omitted section).
+[smart-trim] 6 of 266 tests failed, by name: ✖ slugify 6 · ✔ sum 35 · ✔ last 35 · ✔ add 40 · ✔ square 40 · ✔ isEven 40 · ✔ upper 35 · ✔ reverse 35
+✔ sum #1 [[]] (5.6435ms)
+✔ sum #2 [[0]] (0.73ms)
+✔ sum #3 [[0,1]] (0.2403ms)
+✔ sum #4 [[0,1,2]] (0.1776ms)
+✔ sum #5 [[0,1,2,3]] (0.1846ms)
+[smart-trim] … 261 line(s) omitted (6-266) …
+[smart-trim] --- line 267: summary ---
+ℹ tests 266
+[smart-trim] … 1 line(s) omitted (268-268) …
+[smart-trim] --- line 269: summary ---
+ℹ pass 260
+ℹ fail 6
+[smart-trim] … 5 line(s) omitted (271-275) …
+[smart-trim] --- line 276: failed_test ---
+✖ failing tests:
+[smart-trim] … 2 line(s) omitted (277-278) …
+[smart-trim] --- line 279: failed_test ---
+✖ slugify #1 ["Hello World"] (1.2088ms)
+  Error: not implemented
+      at slugify (file:///<js-feature>/src/text.js:3:9)
+      at TestContext.<anonymous> (file:///<js-feature>/test/text.test.js:4:65)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17)
+[smart-trim] … 2 line(s) omitted (287-288) …
+[smart-trim] --- line 289: failed_test ---
+✖ slugify #2 ["  Trim me  "] (0.205ms)
+  Error: not implemented
+      at slugify (file:///<js-feature>/src/text.js:3:9)
+      at TestContext.<anonymous> (file:///<js-feature>/test/text.test.js:5:65)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3)
+[smart-trim] … 2 line(s) omitted (299-300) …
+[smart-trim] --- line 301: failed_test ×3 ---
+✖ slugify #3 ["a--b__c"] (0.1624ms)
+  Error: not implemented
+      at slugify (file:///<js-feature>/src/text.js:3:9)
+      at TestContext.<anonymous> (file:///<js-feature>/test/text.test.js:6:61)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+[smart-trim] … 2 line(s) omitted (311-312) …
+[smart-trim] --- line 313: failed_test ---
+✖ slugify #4 ["Already-slug"] (0.1358ms)
+  Error: not implemented
+      at slugify (file:///<js-feature>/src/text.js:3:9)
+      at TestContext.<anonymous> (file:///<js-feature>/test/text.test.js:7:66)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+[smart-trim] … 2 line(s) omitted (323-324) …
+[smart-trim] --- line 325: failed_test ---
+✖ slugify #5 ["C# & .NET 8!"] (0.2283ms)
+[smart-trim] … 7 line(s) omitted (326-332) …
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+
+test at test\text.test.js:9:1
+[smart-trim] --- line 337: failed_test ---
+✖ slugify #6 ["x"] (0.1428ms)
+  Error: not implemented
+      at slugify (file:///<js-feature>/src/text.js:3:9)
+      at TestContext.<anonymous> (file:///<js-feature>/test/text.test.js:9:55)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

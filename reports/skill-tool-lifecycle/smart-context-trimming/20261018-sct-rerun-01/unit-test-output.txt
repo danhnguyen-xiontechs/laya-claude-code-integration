@@ -1,0 +1,48 @@
+✔ fixture long_passing_dotnet_test: trim, criticals kept (rules only) (4.9064ms)
+✔ fixture multiple_failing_tests: trim, criticals kept (rules only) (2.6304ms)
+✔ fixture dotnet_compiler_errors: trim, criticals kept (rules only) (1.3415ms)
+✔ fixture exception_stack_trace: trim, criticals kept (rules only) (0.8286ms)
+✔ fixture warnings_then_fatal: trim, criticals kept (rules only) (1.2154ms)
+✔ fixture secret_like_strings: trim, criticals kept (rules only) (0.686ms)
+✔ fixture malformed_log: pass, criticals kept (rules only) (1.1517ms)
+✔ fixture short_output: pass, criticals kept (rules only) (0.2381ms)
+✔ fixture unmatched_command: pass, criticals kept (rules only) (0.94ms)
+✔ fixture piped_to_head_excluded: pass, criticals kept (rules only) (0.292ms)
+✔ jev timeout: falls back to rules, criticals kept, no stall (87.9449ms)
+✔ jev invalid_json: falls back to rules, criticals kept, no stall (3.7644ms)
+✔ jev http_500: falls back to rules, criticals kept, no stall (3.3085ms)
+✔ jev transport: falls back to rules, criticals kept, no stall (5.1064ms)
+✔ jev unknown_strategy: falls back to rules, criticals kept, no stall (4.0901ms)
+✔ jev low confidence → rule plan kept (2.631ms)
+✔ jev "drop everything" cannot drop mandatory evidence (7.3777ms)
+✔ jev keep_full_output → original passes through (0.7631ms)
+✔ validator rejects out-of-range / extra / missing answers (0.2265ms)
+✔ redaction: secrets never reach the Jev request (0.7202ms)
+✔ Jev request stays under maxJevInputBytes (4.03ms)
+✔ node --test: ✖ failures and ℹ summary are recognised and trimmed (1.6752ms)
+✔ many failures with one cause: 2 detail blocks kept, the rest as names only, every test name kept (2.3601ms)
+✔ different failure details are never folded together (0.5191ms)
+✔ node --test: a failure block keeps its actual/expected past the whitespace-only gap line (0.3547ms)
+✔ node --test digest: a green run names each test group with its count, so trimmed output needs no raw-log grep (0.227ms)
+✔ node --test digest: failing heads printed twice count once; the trimmed output carries the digest (1.3557ms)
+✔ node --test: a long deepStrictEqual diff still reaches actual/expected (0.2853ms)
+✔ digest is node-only: eslint and mocha-style ✔/✖ lines get no test digest (0.0909ms)
+✔ first run: byte-identical to the output without memory (6.3909ms)
+✔ identical re-run: collapsed to a note, no kept line changed, raw path kept (3.3881ms)
+✔ one new failure line: collapsed, and the new line and the changed summary are shown verbatim (3.4988ms)
+✔ different exit status: never collapsed, full output again (2.4395ms)
+✔ volatile parts only (timestamps, durations): collapsed as unchanged (4.0589ms)
+✔ many changes (more than 20 changed lines): full output, not a collapse (3.2571ms)
+✔ flag off or no memory (observe): full output both times (3.2823ms)
+✔ memory is per command: a different command is a first run (1.4164ms)
+✔ normaliseVolatile: timestamps, durations, temp paths, ports and PIDs are neutralised, words are not (0.2222ms)
+✔ a pass in between clears the baseline: the next failure is shown in full, not as "unchanged" (2.1639ms)
+✔ values that differ are never normalised away: "after 5s" vs "after 30s" is a change (0.2523ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8273.2545

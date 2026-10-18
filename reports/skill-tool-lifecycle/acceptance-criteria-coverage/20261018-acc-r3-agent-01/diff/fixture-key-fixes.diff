@@ -1,0 +1,83 @@
+diff -u -r acc_r2_cases_r2orig/c11.py harness/acc_r2_cases/c11.py
+--- acc_r2_cases_r2orig/c11.py	2026-10-18 14:28:52.743542500 +0700
++++ harness/acc_r2_cases/c11.py	2026-10-18 14:28:52.831198400 +0700
+@@ -37,7 +37,8 @@
+               "trap": "split-files+vocabulary"},
+     "AC-09": {"gold": "Covered", "accepted": ["Covered"],
+               "decisive": ["tests/test_due_dates.py::test_status_by_age"], "trap": "parametrised"},
+-    "AC-10": {"gold": "Missing", "accepted": ["Missing"], "decisive": [], "trap": "no-test"},
++    "AC-10": {"gold": "Partial", "accepted": ["Partial"],
++              "decisive": ["tests/test_reminders.py::test_reminder_goes_to_customer_email"], "trap": "partial-cap-unasserted"},
+ }
+ 
+ FILES = {}
+diff -u -r acc_r2_cases_r2orig/c12.py harness/acc_r2_cases/c12.py
+--- acc_r2_cases_r2orig/c12.py	2026-10-18 14:28:52.744542300 +0700
++++ harness/acc_r2_cases/c12.py	2026-10-18 14:28:52.831198400 +0700
+@@ -11,7 +11,6 @@
+     ("AC-05", "A password reset token expires after 1 hour."),
+     ("AC-06", "A reset token can be used only once."),
+     ("AC-07", "Changing the password ends all other active sessions of the user but keeps the current one."),
+-    ("AC-08", "Every successful and failed login writes an audit entry with the user id and outcome."),
+     ("AC-09", "Admins can unlock a locked account; non-admins get PermissionDenied."),
+     ("AC-10", "Sessions expire after 8 hours of inactivity."),
+ ]
+@@ -31,8 +30,6 @@
+               "decisive": ["tests/test_reset.py::test_token_single_use"], "trap": "name-only"},
+     "AC-07": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_sessions.py::test_password_change_revokes_sessions"], "trap": "partial-assert"},
+-    "AC-08": {"gold": "Unclear", "accepted": ["Unclear"],
+-              "decisive": ["tests/test_audit.py::test_login_is_audited"], "trap": "unclear-snapshot"},
+     "AC-09": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_unlock.py::test_admin_unlocks"], "trap": "exists-asserts-other"},
+     "AC-10": {"gold": "Covered", "accepted": ["Covered"],
+diff -u -r acc_r2_cases_r2orig/c13.py harness/acc_r2_cases/c13.py
+--- acc_r2_cases_r2orig/c13.py	2026-10-18 14:28:52.737542000 +0700
++++ harness/acc_r2_cases/c13.py	2026-10-18 14:28:52.842719900 +0700
+@@ -24,7 +24,7 @@
+               "decisive": ["tests/test_expiry.py::test_release_after_hours"], "trap": "parametrised+helper"},
+     "AC-04": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_reorder.py::test_suggestion_created_below_point"], "trap": "partial-assert"},
+-    "AC-05": {"gold": "Covered", "accepted": ["Covered"],
++    "AC-05": {"gold": "Covered", "accepted": ["Covered", "Partial"],
+               "decisive": ["tests/test_transfers.py::test_transfer_moves_quantity"], "trap": "control"},
+     "AC-06": {"gold": "Missing", "accepted": ["Missing", "Unclear"],
+               "decisive": ["tests/test_transfers.py::test_transfer_insufficient_stock_rejected"], "trap": "name-only"},
+@@ -32,7 +32,9 @@
+               "decisive": ["tests/test_counts.py::test_stocktake_variance_posts_correction"], "trap": "vocabulary"},
+     "AC-08": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_ledger.py::test_short_move_rejected"], "trap": "parametrised-partial"},
+-    "AC-09": {"gold": "Missing", "accepted": ["Missing"], "decisive": [], "trap": "no-test"},
++    "AC-09": {"gold": "Partial", "accepted": ["Partial"],
++              "decisive": ["tests/test_orders.py::test_cancel_sets_status",
++                           "tests/test_orders.py::test_cancel_refunds_paid_amount"], "trap": "partial-release-unasserted"},
+ }
+ 
+ FILES = {}
+diff -u -r acc_r2_cases_r2orig/c14.py harness/acc_r2_cases/c14.py
+--- acc_r2_cases_r2orig/c14.py	2026-10-18 14:28:52.739539900 +0700
++++ harness/acc_r2_cases/c14.py	2026-10-18 14:28:52.853722400 +0700
+@@ -12,7 +12,6 @@
+     ("AC-06", "Reminder messages are sent 24 hours before the appointment."),
+     ("AC-07", "Patients receive no reminder for an appointment they cancelled."),
+     ("AC-08", "A patient cannot hold more than 2 future appointments with one provider; past appointments do not count."),
+-    ("AC-09", "Booking confirmations include the clinic address and the provider's name."),
+     ("AC-10", "Online booking closes 2 hours before a slot starts."),
+     ("AC-11", "Fees are shown in EUR with two decimals."),
+ ]
+@@ -31,13 +30,12 @@
+               "decisive": ["tests/test_cancellation.py::test_cancel_frees_slot",
+                            "tests/test_waitlist.py::test_first_in_line_gets_offer"], "trap": "split-files+helper"},
+     "AC-06": {"gold": "Covered", "accepted": ["Covered"],
+-              "decisive": ["tests/test_notify.py::test_day_before_notice_scheduled"], "trap": "vocabulary"},
++              "decisive": ["tests/test_notify.py::test_day_before_notice_scheduled",
++                           "tests/test_notify.py::test_send_due_sends_at_run_time"], "trap": "vocabulary"},
+     "AC-07": {"gold": "Missing", "accepted": ["Missing", "Unclear"],
+               "decisive": ["tests/test_reminders.py::test_no_reminder_after_cancel"], "trap": "name-only"},
+     "AC-08": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_limits.py::test_third_booking_rejected"], "trap": "partial-assert"},
+-    "AC-09": {"gold": "Unclear", "accepted": ["Unclear"],
+-              "decisive": ["tests/test_confirmation.py::test_confirmation_content"], "trap": "unclear-snapshot"},
+     "AC-10": {"gold": "Missing", "accepted": ["Missing"], "decisive": [], "trap": "no-test"},
+     "AC-11": {"gold": "Partial", "accepted": ["Partial"],
+               "decisive": ["tests/test_fees.py::test_fee_display"], "trap": "partial-helper"},

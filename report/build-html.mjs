@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-const VERDICTS = new Set(['ADOPT', 'PILOT', 'SHADOW', 'SHELVED', 'DROP', 'IDEA', 'DONE']);
+const VERDICTS = new Set(['ADOPT', 'PILOT', 'SHADOW', 'SHELVED', 'DROP', 'IDEA', 'DONE', 'REWORK', 'INSUFFICIENT_EVIDENCE']);
 
 const LANGS = {
   vi: {
@@ -17,7 +17,7 @@ const LANGS = {
       ['14%', 'chi phí subagent', 'rule + leo model, so với luôn Opus'],
       ['18/20', 'ado-classify', 'kết quả tốt nhất của Laya'],
       ['96%', 'Jev write-gate', 'offline, so với Laya 58%'],
-      ['0', 'biến thể giảm token', 'khi chạy agent thật'],
+      ['1', 'tool giảm token thật', 'smart-context-trimming, A/B agent'],
     ],
   },
   en: {
@@ -28,7 +28,7 @@ const LANGS = {
       ['14%', 'subagent cost', 'rules + escalation vs always-Opus'],
       ['18/20', 'ado-classify', "Laya's best result"],
       ['96%', 'Jev write-gate', 'offline, vs Laya 58%'],
-      ['0', 'variants cut tokens', 'in real agent runs'],
+      ['1', 'tool cuts tokens', 'smart-context-trimming, agent A/B'],
     ],
   },
 };

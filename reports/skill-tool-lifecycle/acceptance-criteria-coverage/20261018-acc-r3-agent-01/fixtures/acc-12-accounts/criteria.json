@@ -1,0 +1,41 @@
+{
+  "source": "Story ACC-9 'Sign-in security'",
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "Signing up with an email already in use returns the error \"email taken\" and creates no second account."
+    },
+    {
+      "id": "AC-02",
+      "text": "Emails are compared case-insensitively at signup and at login."
+    },
+    {
+      "id": "AC-03",
+      "text": "After 5 failed logins within 15 minutes the account is locked for 30 minutes."
+    },
+    {
+      "id": "AC-04",
+      "text": "A locked account cannot log in even with the correct password."
+    },
+    {
+      "id": "AC-05",
+      "text": "A password reset token expires after 1 hour."
+    },
+    {
+      "id": "AC-06",
+      "text": "A reset token can be used only once."
+    },
+    {
+      "id": "AC-07",
+      "text": "Changing the password ends all other active sessions of the user but keeps the current one."
+    },
+    {
+      "id": "AC-09",
+      "text": "Admins can unlock a locked account; non-admins get PermissionDenied."
+    },
+    {
+      "id": "AC-10",
+      "text": "Sessions expire after 8 hours of inactivity."
+    }
+  ]
+}

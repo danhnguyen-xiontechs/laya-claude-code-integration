@@ -1,0 +1,746 @@
+{
+  "experiment": "20261018-sct-rerun-01",
+  "options": {
+    "mode": "observe",
+    "minLines": 250,
+    "minBytes": 20000,
+    "headLines": 5,
+    "tailLines": 15,
+    "maxJevInputBytes": 12000,
+    "maxJevLatencyMs": 8000,
+    "minJevConfidence": 0.6,
+    "useJev": false,
+    "rawOutputTtlHours": 24,
+    "collapseReruns": true
+  },
+  "sequences": [
+    {
+      "id": "S1-build-flaky",
+      "base": "dotnet-build",
+      "command": "dotnet build --nologo -clp:NoSummary;Summary",
+      "source": "round-2 agent run, case dotnet-build, arm A raw output",
+      "edits": [
+        "base",
+        "same",
+        "same"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 65232,
+          "rawLines": 516,
+          "A": {
+            "bytes": 2952,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S1-build-flaky.r1.A.txt"
+          },
+          "B": {
+            "bytes": 2952,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S1-build-flaky.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 65232,
+          "rawLines": 516,
+          "A": {
+            "bytes": 2952,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S1-build-flaky.r2.A.txt"
+          },
+          "B": {
+            "bytes": 423,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S1-build-flaky.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 65232,
+          "rawLines": 516,
+          "A": {
+            "bytes": 2952,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S1-build-flaky.r3.A.txt"
+          },
+          "B": {
+            "bytes": 423,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S1-build-flaky.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S2-build-error-fixed",
+      "base": "dotnet-build",
+      "command": "dotnet build --nologo -clp:NoSummary;Summary",
+      "source": "round-2 agent run, case dotnet-build, arm A raw output",
+      "edits": [
+        "base",
+        "fix",
+        "same"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 65232,
+          "rawLines": 516,
+          "A": {
+            "bytes": 2958,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S2-build-error-fixed.r1.A.txt"
+          },
+          "B": {
+            "bytes": 2958,
+            "lines": 37,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S2-build-error-fixed.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 64595,
+          "rawLines": 515,
+          "A": {
+            "bytes": 2836,
+            "lines": 36,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S2-build-error-fixed.r2.A.txt"
+          },
+          "B": {
+            "bytes": 574,
+            "lines": 5,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S2-build-error-fixed.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 64595,
+          "rawLines": 515,
+          "A": {
+            "bytes": 2836,
+            "lines": 36,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S2-build-error-fixed.r3.A.txt"
+          },
+          "B": {
+            "bytes": 429,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S2-build-error-fixed.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S3-js-root-volatile",
+      "base": "js-root-exception",
+      "command": "node --test",
+      "source": "round-2 agent run, case js-root-exception, arm A raw output",
+      "edits": [
+        "base",
+        "volatile",
+        "same"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 47486,
+          "rawLines": 909,
+          "A": {
+            "bytes": 9068,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S3-js-root-volatile.r1.A.txt"
+          },
+          "B": {
+            "bytes": 9068,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S3-js-root-volatile.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 47330,
+          "rawLines": 909,
+          "A": {
+            "bytes": 9061,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S3-js-root-volatile.r2.A.txt"
+          },
+          "B": {
+            "bytes": 428,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S3-js-root-volatile.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 40,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 47330,
+          "rawLines": 909,
+          "A": {
+            "bytes": 9061,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S3-js-root-volatile.r3.A.txt"
+          },
+          "B": {
+            "bytes": 428,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S3-js-root-volatile.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S4-js-root-two-fixed",
+      "base": "js-root-exception",
+      "command": "node --test",
+      "source": "round-2 agent run, case js-root-exception, arm A raw output",
+      "edits": [
+        "base",
+        "fix",
+        "fix"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 47486,
+          "rawLines": 909,
+          "A": {
+            "bytes": 9069,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S4-js-root-two-fixed.r1.A.txt"
+          },
+          "B": {
+            "bytes": 9069,
+            "lines": 185,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S4-js-root-two-fixed.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 46559,
+          "rawLines": 908,
+          "A": {
+            "bytes": 8958,
+            "lines": 182,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S4-js-root-two-fixed.r2.A.txt"
+          },
+          "B": {
+            "bytes": 471,
+            "lines": 5,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S4-js-root-two-fixed.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 45917,
+          "rawLines": 898,
+          "A": {
+            "bytes": 8265,
+            "lines": 171,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S4-js-root-two-fixed.r3.A.txt"
+          },
+          "B": {
+            "bytes": 8265,
+            "lines": 171,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S4-js-root-two-fixed.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S5-js-three-new-failure",
+      "base": "js-three-bugs",
+      "command": "node --test",
+      "source": "round-2 agent run, case js-three-bugs, arm A raw output",
+      "edits": [
+        "base",
+        "new",
+        "same"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 15819,
+          "rawLines": 400,
+          "A": {
+            "bytes": 5286,
+            "lines": 140,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S5-js-three-new-failure.r1.A.txt"
+          },
+          "B": {
+            "bytes": 5286,
+            "lines": 140,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S5-js-three-new-failure.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 16216,
+          "rawLines": 429,
+          "A": {
+            "bytes": 6082,
+            "lines": 169,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S5-js-three-new-failure.r2.A.txt"
+          },
+          "B": {
+            "bytes": 6082,
+            "lines": 169,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S5-js-three-new-failure.r2.B.txt"
+          },
+          "newDiagnostics": 1,
+          "newShownByA": 1,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 16216,
+          "rawLines": 429,
+          "A": {
+            "bytes": 6082,
+            "lines": 169,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S5-js-three-new-failure.r3.A.txt"
+          },
+          "B": {
+            "bytes": 434,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S5-js-three-new-failure.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S6-js-feature-flaky",
+      "base": "js-feature",
+      "command": "node --test",
+      "source": "round-2 agent run, case js-feature, arm A raw output",
+      "edits": [
+        "base",
+        "same",
+        "volatile"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 15365,
+          "rawLines": 347,
+          "A": {
+            "bytes": 4617,
+            "lines": 86,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S6-js-feature-flaky.r1.A.txt"
+          },
+          "B": {
+            "bytes": 4617,
+            "lines": 86,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S6-js-feature-flaky.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 15365,
+          "rawLines": 347,
+          "A": {
+            "bytes": 4617,
+            "lines": 86,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S6-js-feature-flaky.r2.A.txt"
+          },
+          "B": {
+            "bytes": 428,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S6-js-feature-flaky.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 15243,
+          "rawLines": 347,
+          "A": {
+            "bytes": 4617,
+            "lines": 86,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S6-js-feature-flaky.r3.A.txt"
+          },
+          "B": {
+            "bytes": 428,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S6-js-feature-flaky.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 6,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S7-js-one-bug-fixed",
+      "base": "js-one-bug",
+      "command": "node --test",
+      "source": "round-2 agent run, case js-one-bug, arm A raw output",
+      "edits": [
+        "base",
+        "fix",
+        "volatile"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 13028,
+          "rawLines": 315,
+          "A": {
+            "bytes": 2547,
+            "lines": 61,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S7-js-one-bug-fixed.r1.A.txt"
+          },
+          "B": {
+            "bytes": 2547,
+            "lines": 61,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S7-js-one-bug-fixed.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 12695,
+          "rawLines": 314,
+          "A": {
+            "bytes": 2436,
+            "lines": 58,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S7-js-one-bug-fixed.r2.A.txt"
+          },
+          "B": {
+            "bytes": 470,
+            "lines": 5,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S7-js-one-bug-fixed.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command FAILED (Exit code 1); the error status is preserved.",
+          "rawBytes": 12561,
+          "rawLines": 314,
+          "A": {
+            "bytes": 2436,
+            "lines": 58,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S7-js-one-bug-fixed.r3.A.txt"
+          },
+          "B": {
+            "bytes": 428,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S7-js-one-bug-fixed.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 2,
+          "missingInB": []
+        }
+      ]
+    },
+    {
+      "id": "S8-dotnet-test-volatile",
+      "base": "dotnet-test-raw",
+      "command": "dotnet test --no-build",
+      "source": "local raw log saved by the observe-mode mod on 2026-10-15 (command text not recorded; assumed)",
+      "edits": [
+        "base",
+        "volatile",
+        "same"
+      ],
+      "runs": [
+        {
+          "run": 1,
+          "status": "Command succeeded (exit code 0).",
+          "rawBytes": 27371,
+          "rawLines": 463,
+          "A": {
+            "bytes": 1588,
+            "lines": 26,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S8-dotnet-test-volatile.r1.A.txt"
+          },
+          "B": {
+            "bytes": 1588,
+            "lines": 26,
+            "action": "trim",
+            "reason": "rule",
+            "collapsed": false,
+            "file": "evidence/texts/S8-dotnet-test-volatile.r1.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 2,
+          "status": "Command succeeded (exit code 0).",
+          "rawBytes": 27509,
+          "rawLines": 463,
+          "A": {
+            "bytes": 1591,
+            "lines": 26,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S8-dotnet-test-volatile.r2.A.txt"
+          },
+          "B": {
+            "bytes": 404,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S8-dotnet-test-volatile.r2.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        },
+        {
+          "run": 3,
+          "status": "Command succeeded (exit code 0).",
+          "rawBytes": 27509,
+          "rawLines": 463,
+          "A": {
+            "bytes": 1591,
+            "lines": 26,
+            "action": "trim",
+            "reason": "rule",
+            "file": "evidence/texts/S8-dotnet-test-volatile.r3.A.txt"
+          },
+          "B": {
+            "bytes": 404,
+            "lines": 4,
+            "action": "trim",
+            "reason": "rule+rerun_collapsed",
+            "collapsed": true,
+            "file": "evidence/texts/S8-dotnet-test-volatile.r3.B.txt"
+          },
+          "newDiagnostics": 0,
+          "newShownByA": 0,
+          "newNotShownByA": 0,
+          "volatileOnlyLines": 0,
+          "missingInB": []
+        }
+      ]
+    }
+  ]
+}

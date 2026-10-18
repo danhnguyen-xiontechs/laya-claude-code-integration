@@ -1,0 +1,5 @@
+[smart-trim] Same result as run #1 of this command (Command FAILED (Exit code 1); the error status is preserved.); 23 of 23 kept lines identical, total lines 516 → 515. Only the changed lines follow.
+[smart-trim] Changed (+ in this run, - only in run #1):
+- <dotnet-build>\Order.cs(5,90): error CS0029: Cannot implicitly convert type 'int' to 'string' [<dotnet-build>\App.csproj]
+[smart-trim] Full raw output of this run: /raw/S2-build-error-fixed.r2.log (Read it if you need an omitted section).
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

@@ -1,0 +1,38 @@
+acc-11-invo AC-01 False 3 ALL 
+acc-11-invo AC-02 False 3 NONE ['tests/test_tax_rates.py::test_vat_amount']
+acc-11-invo AC-03 False 3 ALL 
+acc-11-invo AC-04 False 3 ALL 
+acc-11-invo AC-05 False 3 ALL 
+acc-11-invo AC-06 False 3 ALL 
+acc-11-invo AC-07 False 3 ALL 
+acc-11-invo AC-08 False 3 some ['tests/test_void.py::test_void_creates_credit_note', 'tests/test_credit_notes.py::test_reversal_amount_matches_original']
+acc-11-invo AC-09 False 3 NONE ['tests/test_due_dates.py::test_status_by_age']
+acc-11-invo AC-10 False 3 ALL 
+acc-12-acco AC-01 False 3 NONE ['tests/test_signup.py::test_duplicate_email']
+acc-12-acco AC-02 False 3 ALL 
+acc-12-acco AC-03 False 3 ALL 
+acc-12-acco AC-04 False 3 ALL 
+acc-12-acco AC-05 False 3 NONE ['tests/test_reset.py::test_token_validity']
+acc-12-acco AC-06 False 3 ALL 
+acc-12-acco AC-07 False 3 ALL 
+acc-12-acco AC-09 False 3 ALL 
+acc-12-acco AC-10 False 3 NONE ['tests/test_sessions.py::test_idle_timeout']
+acc-13-inve AC-01 False 3 ALL 
+acc-13-inve AC-02 False 3 ALL 
+acc-13-inve AC-03 False 3 ALL 
+acc-13-inve AC-04 False 3 ALL 
+acc-13-inve AC-05 False 3 ALL 
+acc-13-inve AC-06 False 3 ALL 
+acc-13-inve AC-07 False 3 NONE ['tests/test_counts.py::test_stocktake_variance_posts_correction']
+acc-13-inve AC-08 False 3 NONE ['tests/test_ledger.py::test_short_move_rejected']
+acc-13-inve AC-09 False 3 NONE ['tests/test_orders.py::test_cancel_sets_status', 'tests/test_orders.py::test_cancel_refunds_paid_amount']
+acc-14-sche AC-01 False 3 ALL 
+acc-14-sche AC-02 False 3 ALL 
+acc-14-sche AC-03 False 3 ALL 
+acc-14-sche AC-04 False 3 ALL 
+acc-14-sche AC-05 False 3 some ['tests/test_cancellation.py::test_cancel_frees_slot', 'tests/test_waitlist.py::test_first_in_line_gets_offer']
+acc-14-sche AC-06 False 3 NONE ['tests/test_notify.py::test_day_before_notice_scheduled', 'tests/test_notify.py::test_send_due_sends_at_run_time']
+acc-14-sche AC-07 False 3 ALL 
+acc-14-sche AC-08 False 3 NONE ['tests/test_limits.py::test_third_booking_rejected']
+acc-14-sche AC-11 False 3 NONE ['tests/test_fees.py::test_fee_display']
+criteria with decisive gold: 37; all decisive tests in shortlist: 24

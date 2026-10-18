@@ -1,0 +1,169 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 429 → 148 original lines kept verbatim (rule).
+[smart-trim] Command FAILED (Exit code 1); the error status is preserved.
+[smart-trim] Full raw output: /raw/S5-js-three-new-failure.r2.log (Read it if you need an omitted section).
+[smart-trim] 6 of 271 tests failed, by name: ✖ chunk 4 · ✖ isLeap 4 · ✖ padLeft 3 · ✔ sum 35 · ✔ last 35 · ✔ add 40 · ✔ square 40 · ✔ isEven 40 · ✔ upper 35 · ✔ reverse 35
+✖ chunk #1 [[1,2,3,4,5],2] (4.2156ms)
+✖ chunk #2 [[1],3] (0.6084ms)
+✔ chunk #3 [[],2] (0.4363ms)
+✔ isLeap #1 [2024] (1.5054ms)
+✔ isLeap #2 [1900] (0.2309ms)
+[smart-trim] … 265 line(s) omitted (6-270) …
+[smart-trim] --- line 271: summary ---
+ℹ tests 270
+[smart-trim] … 1 line(s) omitted (272-272) …
+[smart-trim] --- line 273: summary ---
+ℹ pass 265
+ℹ fail 5
+[smart-trim] … 5 line(s) omitted (275-279) …
+[smart-trim] --- line 280: failed_test ---
+✖ failing tests:
+[smart-trim] … 2 line(s) omitted (281-282) …
+[smart-trim] --- line 283: failed_test ---
+✖ chunk #1 [[1,2,3,4,5],2] (4.2156ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        1,
+        2
+      ],
+  ...
+      ],
+  -   [
+  -     5
+  -   ]
+    ]
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/chunk.test.js:4:47)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 1, 2 ], [ 3, 4 ] ],
+    expected: [ [ 1, 2 ], [ 3, 4 ], [ 5 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+✖ chunk #1 [[1,2,3,4,5],2] (4.2156ms) [retry]
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        1,
+        2
+      ],
+  ...
+      ],
+  -   [
+  -     5
+  -   ]
+    ]
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/chunk.test.js:4:47)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 1, 2 ], [ 3, 4 ] ],
+    expected: [ [ 1, 2 ], [ 3, 4 ], [ 5 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+[smart-trim] … 2 line(s) omitted (341-342) …
+[smart-trim] --- line 343: failed_test ---
+✖ chunk #2 [[1],3] (0.6084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   [
+  -     1
+  -   ]
+  - ]
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/chunk.test.js:5:39)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ [ 1 ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+[smart-trim] … 2 line(s) omitted (368-369) …
+[smart-trim] --- line 370: failed_test ---
+✖ isLeap #3 [2000] (1.402ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/leap.test.js:6:39)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+[smart-trim] … 2 line(s) omitted (389-390) …
+[smart-trim] --- line 391: failed_test ---
+✖ padLeft #1 ["7",3,"0"] (3.0939ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  '07' !== '007'
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/pad.test.js:4:45)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.start (node:internal/test_runner/test:1003:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '07',
+    expected: '007',
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+[smart-trim] … 2 line(s) omitted (408-409) …
+[smart-trim] --- line 410: failed_test ---
+✖ padLeft #3 ["x",4,"-"] (0.3419ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  '--x' !== '---x'
+  
+      at TestContext.<anonymous> (file:///<js-three-bugs>/test/pad.test.js:6:45)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '--x',
+    expected: '---x',
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

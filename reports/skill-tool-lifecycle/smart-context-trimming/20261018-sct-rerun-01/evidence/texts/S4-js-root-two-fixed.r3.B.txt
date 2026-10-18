@@ -1,0 +1,171 @@
+[smart-trim] Output trimmed by the smart-context-trimming mod: 898 → 83 original lines kept verbatim (rule).
+[smart-trim] Command FAILED (Exit code 1); the error status is preserved.
+[smart-trim] Full raw output: /raw/S4-js-root-two-fixed.r3.log (Read it if you need an omitted section).
+[smart-trim] 40 of 340 tests failed, by name: ✖ get missing key 40 · ✔ get present key 40 · ✔ sum 35 · ✔ last 35 · ✔ add 40 · ✔ square 40 · ✔ isEven 40 · ✔ upper 35 · ✔ reverse 35
+[smart-trim] --- line 1: failed_test ---
+✖ get missing key #0 (3.318ms)
+✔ get present key #0 (0.4296ms)
+✖ get missing key #1 (0.2259ms)
+✔ get present key #1 (0.2108ms)
+✖ get missing key #2 (0.1475ms)
+[smart-trim] … 335 line(s) omitted (6-340) …
+[smart-trim] --- line 341: summary ---
+ℹ tests 340
+[smart-trim] … 1 line(s) omitted (342-342) …
+[smart-trim] --- line 343: summary ---
+ℹ pass 300
+ℹ fail 40
+[smart-trim] … 9 line(s) omitted (345-353) …
+[smart-trim] --- line 354: failed_test ×38 ---
+✖ get missing key #1 (0.2259ms)
+  TypeError: Cannot read properties of undefined (reading 'toString')
+      at normalize (file:///<js-root-exception>/src/config.js:3:39)
+      at readKey (file:///<js-root-exception>/src/config.js:2:37)
+      at get (file:///<js-root-exception>/src/config.js:4:40)
+      at TestContext.<anonymous> (file:///<js-root-exception>/test/config.test.js:6:47)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+[smart-trim] … 2 line(s) omitted (366-367) …
+[smart-trim] --- line 368: failed_test ---
+✖ get missing key #2 (0.1475ms)
+  TypeError: Cannot read properties of undefined (reading 'toString')
+      at normalize (file:///<js-root-exception>/src/config.js:3:39)
+      at readKey (file:///<js-root-exception>/src/config.js:2:37)
+      at get (file:///<js-root-exception>/src/config.js:4:40)
+      at TestContext.<anonymous> (file:///<js-root-exception>/test/config.test.js:8:47)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+[smart-trim] … 2 line(s) omitted (380-381) …
+[smart-trim] --- line 382: failed_test ---
+✖ get missing key #3 (0.1339ms)
+[smart-trim] … 13 line(s) omitted (383-395) …
+[smart-trim] --- line 396: failed_test ---
+✖ get missing key #4 (0.1856ms)
+[smart-trim] … 13 line(s) omitted (397-409) …
+[smart-trim] --- line 410: failed_test ---
+✖ get missing key #5 (0.2137ms)
+[smart-trim] … 13 line(s) omitted (411-423) …
+[smart-trim] --- line 424: failed_test ---
+✖ get missing key #6 (0.1183ms)
+[smart-trim] … 13 line(s) omitted (425-437) …
+[smart-trim] --- line 438: failed_test ---
+✖ get missing key #7 (0.1141ms)
+[smart-trim] … 13 line(s) omitted (439-451) …
+[smart-trim] --- line 452: failed_test ---
+✖ get missing key #8 (0.1307ms)
+[smart-trim] … 13 line(s) omitted (453-465) …
+[smart-trim] --- line 466: failed_test ---
+✖ get missing key #9 (0.1316ms)
+[smart-trim] … 13 line(s) omitted (467-479) …
+[smart-trim] --- line 480: failed_test ---
+✖ get missing key #10 (0.1366ms)
+[smart-trim] … 13 line(s) omitted (481-493) …
+[smart-trim] --- line 494: failed_test ---
+✖ get missing key #11 (0.1441ms)
+[smart-trim] … 13 line(s) omitted (495-507) …
+[smart-trim] --- line 508: failed_test ---
+✖ get missing key #12 (0.1164ms)
+[smart-trim] … 13 line(s) omitted (509-521) …
+[smart-trim] --- line 522: failed_test ---
+✖ get missing key #13 (0.1083ms)
+[smart-trim] … 13 line(s) omitted (523-535) …
+[smart-trim] --- line 536: failed_test ---
+✖ get missing key #14 (0.2513ms)
+[smart-trim] … 13 line(s) omitted (537-549) …
+[smart-trim] --- line 550: failed_test ---
+✖ get missing key #15 (0.1342ms)
+[smart-trim] … 13 line(s) omitted (551-563) …
+[smart-trim] --- line 564: failed_test ---
+✖ get missing key #16 (0.1686ms)
+[smart-trim] … 13 line(s) omitted (565-577) …
+[smart-trim] --- line 578: failed_test ---
+✖ get missing key #17 (0.6788ms)
+[smart-trim] … 13 line(s) omitted (579-591) …
+[smart-trim] --- line 592: failed_test ---
+✖ get missing key #18 (0.1528ms)
+[smart-trim] … 13 line(s) omitted (593-605) …
+[smart-trim] --- line 606: failed_test ---
+✖ get missing key #19 (0.1243ms)
+[smart-trim] … 13 line(s) omitted (607-619) …
+[smart-trim] --- line 620: failed_test ---
+✖ get missing key #20 (0.1406ms)
+[smart-trim] … 13 line(s) omitted (621-633) …
+[smart-trim] --- line 634: failed_test ---
+✖ get missing key #21 (0.1241ms)
+[smart-trim] … 13 line(s) omitted (635-647) …
+[smart-trim] --- line 648: failed_test ---
+✖ get missing key #22 (0.1745ms)
+[smart-trim] … 13 line(s) omitted (649-661) …
+[smart-trim] --- line 662: failed_test ---
+✖ get missing key #23 (0.1128ms)
+[smart-trim] … 13 line(s) omitted (663-675) …
+[smart-trim] --- line 676: failed_test ---
+✖ get missing key #24 (0.1135ms)
+[smart-trim] … 13 line(s) omitted (677-689) …
+[smart-trim] --- line 690: failed_test ---
+✖ get missing key #25 (0.1151ms)
+[smart-trim] … 13 line(s) omitted (691-703) …
+[smart-trim] --- line 704: failed_test ---
+✖ get missing key #26 (0.0938ms)
+[smart-trim] … 13 line(s) omitted (705-717) …
+[smart-trim] --- line 718: failed_test ---
+✖ get missing key #27 (0.0866ms)
+[smart-trim] … 13 line(s) omitted (719-731) …
+[smart-trim] --- line 732: failed_test ---
+✖ get missing key #28 (0.0991ms)
+[smart-trim] … 13 line(s) omitted (733-745) …
+[smart-trim] --- line 746: failed_test ---
+✖ get missing key #29 (0.0974ms)
+[smart-trim] … 13 line(s) omitted (747-759) …
+[smart-trim] --- line 760: failed_test ---
+✖ get missing key #30 (0.099ms)
+[smart-trim] … 13 line(s) omitted (761-773) …
+[smart-trim] --- line 774: failed_test ---
+✖ get missing key #31 (0.0971ms)
+[smart-trim] … 13 line(s) omitted (775-787) …
+[smart-trim] --- line 788: failed_test ---
+✖ get missing key #32 (0.0966ms)
+[smart-trim] … 13 line(s) omitted (789-801) …
+[smart-trim] --- line 802: failed_test ---
+✖ get missing key #33 (0.2479ms)
+[smart-trim] … 13 line(s) omitted (803-815) …
+[smart-trim] --- line 816: failed_test ---
+✖ get missing key #34 (0.113ms)
+[smart-trim] … 13 line(s) omitted (817-829) …
+[smart-trim] --- line 830: failed_test ---
+✖ get missing key #35 (0.1116ms)
+[smart-trim] … 13 line(s) omitted (831-843) …
+[smart-trim] --- line 844: failed_test ---
+✖ get missing key #36 (0.1843ms)
+[smart-trim] … 13 line(s) omitted (845-857) …
+[smart-trim] --- line 858: failed_test ---
+✖ get missing key #37 (0.1164ms)
+[smart-trim] … 13 line(s) omitted (859-871) …
+[smart-trim] --- line 872: failed_test ---
+✖ get missing key #38 (0.1072ms)
+[smart-trim] … 11 line(s) omitted (873-883) …
+
+test at test\config.test.js:82:1
+[smart-trim] --- line 886: failed_test ---
+✖ get missing key #39 (0.0966ms)
+  TypeError: Cannot read properties of undefined (reading 'toString')
+      at normalize (file:///<js-root-exception>/src/config.js:3:39)
+      at readKey (file:///<js-root-exception>/src/config.js:2:37)
+      at get (file:///<js-root-exception>/src/config.js:4:40)
+      at TestContext.<anonymous> (file:///<js-root-exception>/test/config.test.js:82:48)
+      at Test.runInAsyncScope (node:async_hooks:214:14)
+      at Test.run (node:internal/test_runner/test:1106:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:788:18)
+      at Test.postRun (node:internal/test_runner/test:1235:19)
+      at Test.run (node:internal/test_runner/test:1163:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7)
+
+[smart-trim] end of trimmed output. Turn trimming off with /smart-trim off.

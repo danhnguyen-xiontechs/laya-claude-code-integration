@@ -1,0 +1,110 @@
+{
+  "turns": {
+    "A": 63,
+    "B": 106
+  },
+  "tokens": {
+    "A": 3779146,
+    "B": 6855559
+  },
+  "perCaseTurns": {
+    "e1-locate.A.r1": [
+      2
+    ],
+    "e1-locate.A.r2": [
+      3
+    ],
+    "e1-locate.B.r1": [
+      3
+    ],
+    "e1-locate.B.r2": [
+      3
+    ],
+    "e2-count.A.r1": [
+      3
+    ],
+    "e2-count.A.r2": [
+      3
+    ],
+    "e2-count.B.r1": [
+      4
+    ],
+    "e2-count.B.r2": [
+      5
+    ],
+    "r1-rename.A.r1": [
+      3
+    ],
+    "r1-rename.A.r2": [
+      3
+    ],
+    "r1-rename.B.r1": [
+      4
+    ],
+    "r1-rename.B.r2": [
+      4
+    ],
+    "f1-paginate.A.r1": [
+      3
+    ],
+    "f1-paginate.A.r2": [
+      3
+    ],
+    "f1-paginate.B.r1": [
+      4
+    ],
+    "f1-paginate.B.r2": [
+      4
+    ],
+    "d3-maplimit.A.r1": [
+      4
+    ],
+    "d3-maplimit.A.r2": [
+      4
+    ],
+    "d3-maplimit.B.r1": [
+      7
+    ],
+    "d3-maplimit.B.r2": [
+      9
+    ],
+    "d5-deps.A.r1": [
+      4
+    ],
+    "d5-deps.A.r2": [
+      4
+    ],
+    "d5-deps.B.r1": [
+      6,
+      4
+    ],
+    "d5-deps.B.r2": [
+      8,
+      4
+    ],
+    "d1-lru.A.r1": [
+      5
+    ],
+    "d1-lru.A.r2": [
+      5
+    ],
+    "d1-lru.B.r1": [
+      10
+    ],
+    "d1-lru.B.r2": [
+      9
+    ],
+    "d4-expr.A.r1": [
+      5
+    ],
+    "d4-expr.A.r2": [
+      9
+    ],
+    "d4-expr.B.r1": [
+      10
+    ],
+    "d4-expr.B.r2": [
+      8
+    ]
+  }
+}
