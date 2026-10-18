@@ -8,14 +8,14 @@
     "commit": "e551872 + uncommitted curator.py",
     "branch": "claude/review-5-plans-idea-folder-ce4d36"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "INSUFFICIENT_EVIDENCE",
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "LOW",
   "headline": "Directional only (4 cases x 2 repetitions, Haiku 5.5): plain Claude and Claude + jev_advisor both get 8/8 right, but the advisor arm spends about 7% more tokens (3.38M -> 3.63M, higher in 6 of 8 pairs, within the 2x spread between repetitions); no case got worse. Jev answered every call (about 1.1 s) but 4 of the 8 B agents wrote that a hint pointed at noise or only the symptom; the cases are too easy (1-2 KB sources name the cause) to show any value. Top fix: re-measure on a harder set where the cause is not visible in the source, with the hints reduced to the one anchor line.",
   "approvals": {
     "ideaApprovedAt": null,
-    "finalDecision": null,
-    "finalDecisionAt": null
+    "finalDecision": "INSUFFICIENT_EVIDENCE",
+    "finalDecisionAt": "2026-10-18T02:03:40.406Z"
   },
   "arms": [
     {

@@ -8,12 +8,14 @@
     "commit": "e551872+working-tree",
     "branch": "claude/review-5-plans-idea-folder-ce4d36"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "INSUFFICIENT_EVIDENCE",
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "LOW",
   "headline": "On 4 small suites (8-15 tests, 6-7 criteria) plain Haiku 5.5 and Haiku with the tool pass every run (8/8 vs 8/8, identical verdicts in all 8 pairs); tokens 2.30M -> 2.27M (-1%, B lower in 4 of 8 pairs), which is noise. Jev marked 118 of 210 pairs skippable and no agent used a skipped test as evidence, but it also labelled the cart \"name-only\" trap partial_coverage (p 0.76-0.80), which both arms ignored. The suites are too small for any helper to show value; top suggestion: re-measure on a suite of 60+ tests where reading everything is costly.",
   "approvals": {
-    "ideaApprovedAt": null
+    "ideaApprovedAt": null,
+    "finalDecision": "INSUFFICIENT_EVIDENCE",
+    "finalDecisionAt": "2026-10-18T02:03:40.406Z"
   },
   "arms": [
     {

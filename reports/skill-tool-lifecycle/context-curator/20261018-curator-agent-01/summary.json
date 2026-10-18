@@ -8,9 +8,9 @@
     "branch": "claude/review-5-plans-idea-folder-ce4d36"
   },
   "engine": "JEV",
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
-  "finalDecision": null,
+  "finalDecision": "REWORK",
   "confidence": "LOW",
   "headline": "Directional only (4 cases x 2 repetitions, Haiku 5.5): both arms get 8/8 right, but the curated view costs 38% more tokens than the plain log (2.58M -> 3.56M, higher in all 8 pairs); no case got worse. Jev answered every call but the view was only 17-44% smaller than the full log and B agents ran more turns (57 vs 42). Top fix: do not print the curated view as a replacement; keep the full log in a file and give only a ranked pointer list (or drop the curator until it can cut at least 70% of the log).",
   "arms": {
@@ -66,6 +66,6 @@
   },
   "openBlockingFindings": 0,
   "lastRun": "2026-10-17T18:15:37.705Z",
-  "generatedAt": "2026-10-18T01:07:35.058Z",
+  "generatedAt": "2026-10-18T02:03:41.269Z",
   "report": "report.html"
 }

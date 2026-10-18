@@ -8,12 +8,14 @@
     "commit": "e551872+working-tree",
     "branch": "claude/review-5-plans-idea-folder-ce4d36"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "INSUFFICIENT_EVIDENCE",
   "recommendation": "INSUFFICIENT_EVIDENCE",
   "confidence": "LOW",
   "headline": "Plain Haiku 5.5 and Haiku with the scanner both pass all 8 runs (visible and hidden tests green), tokens 4.70M -> 4.48M (-4.5%, B lower in 5 of 8 pairs; run-to-run noise on a single A case is 2.5x): the plain agent already read git history or fuzzed old against new and kept every planted guard. Jev changed the outcome where it was meant to (grs-02 formula 3.2 -> 4.6, flagged; grs-03 2.0 -> 0.7), and in 4 of 8 B runs the agent followed the defensive-mode step and added characterization tests (0 of 8 in A), but no case got a different result. Top suggestion: measure on tasks where the reason for a guard exists only in commit messages and the code gives no hint.",
   "approvals": {
-    "ideaApprovedAt": null
+    "ideaApprovedAt": null,
+    "finalDecision": "INSUFFICIENT_EVIDENCE",
+    "finalDecisionAt": "2026-10-18T02:03:40.406Z"
   },
   "arms": [
     {

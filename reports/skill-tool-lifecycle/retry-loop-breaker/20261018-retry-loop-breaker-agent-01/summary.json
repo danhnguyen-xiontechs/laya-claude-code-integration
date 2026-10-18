@@ -8,9 +8,9 @@
     "branch": "main"
   },
   "engine": "JEV",
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "INSUFFICIENT_EVIDENCE",
   "recommendation": "INSUFFICIENT_EVIDENCE",
-  "finalDecision": null,
+  "finalDecision": "INSUFFICIENT_EVIDENCE",
   "confidence": "LOW",
   "headline": "On 6 small cases (3 impossible, 3 legitimate retries) Haiku 5.5 never looped: it stopped after 1-2 runs on all impossible cases in both arms, so tokens barely moved (A 4.55M -> B 4.44M, -2.4%, inside the run-to-run noise) and pass is 11/12 vs 12/12 (the A miss is the agent declining to rerun). The Mod showed the agent nothing (0 notes, 0 Jev calls) and would have blocked the passing third run of flaky-twice in both repetitions (silent false block); no case is worse in B. The cases were too easy to show value. Top fix: re-measure on cases where the baseline really loops (and fix the fail-fail-pass false block in core.ts).",
   "arms": {
@@ -68,6 +68,6 @@
   },
   "openBlockingFindings": 0,
   "lastRun": "2026-10-17T17:30:10.220Z",
-  "generatedAt": "2026-10-18T01:07:35.528Z",
+  "generatedAt": "2026-10-18T02:03:41.353Z",
   "report": "report.html"
 }

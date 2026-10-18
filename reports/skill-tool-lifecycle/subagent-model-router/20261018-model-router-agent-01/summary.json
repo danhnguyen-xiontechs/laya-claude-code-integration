@@ -8,9 +8,9 @@
     "branch": "main"
   },
   "engine": "JEV",
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
-  "finalDecision": null,
+  "finalDecision": "REWORK",
   "confidence": "LOW",
   "headline": "On 6 small checked tasks x 2 repetitions both arms passed 12/12 on the first attempt (no escalation needed), and the router's tier choice cost $0.97 against $1.51 for all-Sonnet (-35%, price-weighted; raw tokens the same, 3.25M). The whole saving is the two lookup tasks sent to Haiku (-95%); in the other 8 pairs B ran on Sonnet like A, and Jev never lowered a tier. The README's \"14% of opus cost\" is stale (current rules route 11 of 18 bench prompts to Sonnet), so it is not reproduced. Top fix: re-run the routing benchmark on the current prompts and pin ruleTier to it with a test, then make the \"checked\" rule ignore test globs.",
   "arms": {
@@ -66,6 +66,6 @@
   },
   "openBlockingFindings": 0,
   "lastRun": "2026-10-17T17:26:39.464Z",
-  "generatedAt": "2026-10-18T01:07:35.725Z",
+  "generatedAt": "2026-10-18T02:03:41.026Z",
   "report": "report.html"
 }

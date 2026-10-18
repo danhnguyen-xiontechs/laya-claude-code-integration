@@ -8,14 +8,14 @@
     "commit": "f612ca1",
     "branch": "main"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
   "confidence": "LOW",
   "headline": "On 6 two-story git batches (2 repetitions) plain Haiku 5.5 and Haiku with the verifier give the same answers (10 of 12 runs right in both arms; c6 wrong in all 4 runs), but the verifier arm spends 28% more tokens (7.03M -> 8.99M) because the agents re-checked the repo after reading the report; no case is worse. In c6 the tool said PASS for a story whose AC-coverage row cites a test that does not exist, and the agents overruled it. Top fix: print a short verdict-first report the agent can stop on, and check that a coverage row's test exists.",
   "approvals": {
     "ideaApprovedAt": null,
-    "finalDecision": null,
-    "finalDecisionAt": null
+    "finalDecision": "REWORK",
+    "finalDecisionAt": "2026-10-18T02:03:40.406Z"
   },
   "arms": [
     {

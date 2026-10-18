@@ -8,9 +8,9 @@
     "branch": "claude/review-5-plans-idea-folder-ce4d36"
   },
   "engine": "JEV",
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
-  "finalDecision": null,
+  "finalDecision": "REWORK",
   "confidence": "LOW",
   "headline": "Plain Haiku 5.5 passes 7 of 8 runs and Haiku with the scanner 8 of 8 (the one A failure listed a \"disabled with reason\" decoy in the in-sample demo), but B costs 61% more tokens (2.01M -> 3.23M, higher in 8 of 8 pairs) for 1-5 extra turns reading a long report, and in dcf-04 both B runs missed 2 dead items that A found (6/8 vs 8/8). Jev's Tier A was precise (0 live items in Tier A of 25 unused-code candidates) but covers only 24 of 41 dead items. Top suggestion: make the report short (Tier A and B only, Tier C as a count).",
   "arms": {
@@ -66,6 +66,6 @@
   },
   "openBlockingFindings": 0,
   "lastRun": "2026-10-17T18:04:57.834Z",
-  "generatedAt": "2026-10-18T01:07:35.146Z",
+  "generatedAt": "2026-10-18T02:03:41.190Z",
   "report": "report.html"
 }

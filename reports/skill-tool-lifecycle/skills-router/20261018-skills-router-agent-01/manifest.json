@@ -8,14 +8,14 @@
     "commit": "56bfcf2",
     "branch": "main"
   },
-  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "status": "REWORK",
   "recommendation": "REWORK",
   "confidence": "LOW",
   "headline": "On 6 pick-a-skill requests (4 with a skill as the answer, 2 needing none) with Haiku 5.5, plain Claude (A) with the full skill list picked right 12 of 12 times and Claude + the router hint (B, Jev live) also 12 of 12, so the hint changed no answer, while B used 72% more tokens (1.49M -> 2.56M) and about twice the turns (25 -> 44); no case got worse. The router itself was right on all 6 requests (0 Jev errors, ~0.8 s per call), but the cases were too easy to show value, and 3 Major tool findings stay open. Top fix: print the hint as one short line instead of a 2k-token JSON after a 30 KB list.",
   "approvals": {
     "ideaApprovedAt": null,
-    "finalDecision": null,
-    "finalDecisionAt": null
+    "finalDecision": "REWORK",
+    "finalDecisionAt": "2026-10-18T02:03:40.406Z"
   },
   "arms": [
     {
