@@ -1,0 +1,44 @@
+{
+  "K": 5,
+  "tasks": 5,
+  "meanRulesOrder": 0.4666666666666666,
+  "meanCodemapOrder": 0.6333333333333333,
+  "p50ms": 9065,
+  "rows": [
+    {
+      "id": "t1-bug-merge-verdict",
+      "rulesOrder": 0.5,
+      "codemapOrder": 0.5,
+      "elapsedMs": 12204,
+      "notes": []
+    },
+    {
+      "id": "t2-feature-model-hook",
+      "rulesOrder": 1,
+      "codemapOrder": 0.5,
+      "elapsedMs": 9013,
+      "notes": []
+    },
+    {
+      "id": "t3-refactor-decide",
+      "rulesOrder": 0.3333333333333333,
+      "codemapOrder": 0.6666666666666666,
+      "elapsedMs": 9065,
+      "notes": []
+    },
+    {
+      "id": "t4-newfeature-gate",
+      "rulesOrder": 0.5,
+      "codemapOrder": 1,
+      "elapsedMs": 9075,
+      "notes": []
+    },
+    {
+      "id": "t5-bug-grounding",
+      "rulesOrder": 0,
+      "codemapOrder": 0.5,
+      "elapsedMs": 8978,
+      "notes": []
+    }
+  ]
+}
