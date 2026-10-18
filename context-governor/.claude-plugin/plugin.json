@@ -10,6 +10,9 @@
     "rearmGapTokens": { "type": "number", "title": "Re-arm gap", "description": "A threshold re-arms when context falls below threshold minus this gap.", "default": 20000 },
     "staleTurns": { "type": "number", "title": "Stale turns", "description": "Main-loop turns with no new artifact before the stale note.", "default": 15 },
     "artifactDir": { "type": "string", "title": "Artifact folder", "description": "The active experiment folder. Empty turns the stale rule off. CONTEXT_GOVERNOR_ARTIFACT_DIR overrides it.", "default": "" },
-    "subagentFlagTokens": { "type": "number", "title": "Subagent flag tokens", "description": "Marks subagent turns in metrics only. Never produces a note.", "default": 90000 }
+    "subagentFlagTokens": { "type": "number", "title": "Subagent flag tokens", "description": "Marks subagent turns in metrics only. Never produces a note.", "default": 90000 },
+    "softText": { "type": "string", "title": "Checkpoint note text", "description": "Placeholders: {k} context in thousands.", "default": "checkpoint: context {k}, consider writing state to the experiment folder" },
+    "strongText": { "type": "string", "title": "Compact note text", "description": "Placeholders: {k} context and {limit} threshold, both in thousands.", "default": "context {k} ≥ {limit}k: run `/fast-compact` then `/compact`, or hand off with `make_capsule.mjs` to a fresh phase session" },
+    "staleText": { "type": "string", "title": "Stale note text", "description": "Placeholder: {turns} turns without a new artifact.", "default": "{turns} turns without a new artifact: logs piling up?" }
   }
 }

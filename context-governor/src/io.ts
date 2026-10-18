@@ -8,12 +8,19 @@ const MAX_ENTRIES = 500;
 
 /** userConfig with defaults; a bad or missing value falls back to its default. */
 export function readConfig(raw: Readonly<Record<string, unknown>> = {}): Config {
-  const num = (k: keyof Omit<Config, 'mode'>): number => {
+  const num = (k: 'softTokens' | 'strongTokens' | 'rearmGapTokens' | 'staleTurns' | 'subagentFlagTokens'): number => {
     const v = raw[k];
     return typeof v === 'number' && Number.isFinite(v) ? v : DEFAULTS[k];
   };
+  const str = (k: 'softText' | 'strongText' | 'staleText'): string => {
+    const v = raw[k];
+    return typeof v === 'string' && v.trim() ? v : DEFAULTS[k];
+  };
   return {
     mode: raw.mode === 'off' ? 'off' : 'warn',
+    softText: str('softText'),
+    strongText: str('strongText'),
+    staleText: str('staleText'),
     softTokens: num('softTokens'),
     strongTokens: num('strongTokens'),
     rearmGapTokens: num('rearmGapTokens'),

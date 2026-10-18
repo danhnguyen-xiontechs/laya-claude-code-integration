@@ -89,3 +89,23 @@ test('strong text names 200k and the compact path; soft text names the checkpoin
   assert.match(noteText('soft', 121_000, CFG), /^checkpoint: context 121k/);
   assert.match(noteText('stale', 0, CFG), /^16 turns without a new artifact/);
 });
+
+test('a stale note swallowed by a threshold note keeps the counter, and shows on the next turn', () => {
+  const cfg: Config = { ...CFG, staleTurns: 2 };
+  const seq: Turn[] = [
+    MAIN(10_000, { mtimeMs: 1 }), MAIN(10_000, { mtimeMs: 1 }), MAIN(10_000, { mtimeMs: 1 }),
+    MAIN(125_000, { mtimeMs: 1 }), // counter 3 > 2, but soft shows, so stale is not shown and the counter stays
+    MAIN(10_000, { mtimeMs: 1 }), // stale shows now
+    MAIN(10_000, { mtimeMs: 1 }), // counter reset, nothing
+  ];
+  let s = emptyState();
+  const notes = seq.map((t) => { const d = decide(s, t, cfg); s = d.state; return d.notes; });
+  assert.deepEqual(notes, [[], [], [], ['soft'], ['stale'], []]);
+});
+
+test('note text comes from config, with placeholders filled', () => {
+  const cfg: Config = { ...CFG, softText: 'save {k} now', strongText: 'compact at {limit}k, now {k}', staleText: '{turns} idle' };
+  assert.equal(noteText('soft', 121_000, cfg), 'save 121k now');
+  assert.equal(noteText('strong', 210_000, cfg), 'compact at 200k, now 210k');
+  assert.equal(noteText('stale', 0, cfg), '16 idle');
+});

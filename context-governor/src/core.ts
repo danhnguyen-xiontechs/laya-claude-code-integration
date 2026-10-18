@@ -8,6 +8,9 @@ export type Config = {
   rearmGapTokens: number;
   staleTurns: number;
   subagentFlagTokens: number;
+  softText: string;
+  strongText: string;
+  staleText: string;
 };
 
 export const DEFAULTS: Config = {
@@ -17,6 +20,10 @@ export const DEFAULTS: Config = {
   rearmGapTokens: 20_000,
   staleTurns: 15,
   subagentFlagTokens: 90_000,
+  // Placeholders: {k} context in thousands, {limit} strongTokens in thousands, {turns} staleTurns + 1.
+  softText: 'checkpoint: context {k}, consider writing state to the experiment folder',
+  strongText: 'context {k} ≥ {limit}k: run `/fast-compact` then `/compact`, or hand off with `make_capsule.mjs` to a fresh phase session',
+  staleText: '{turns} turns without a new artifact: logs piling up?',
 };
 
 export type State = {
@@ -86,9 +93,10 @@ export function decide(prev: State, turn: Turn, cfg: Config): Decision {
     } else {
       s.turnsSinceArtifact += 1;
     }
-    if (s.turnsSinceArtifact > cfg.staleTurns) {
+    // The counter resets only when the stale note is actually shown; a threshold note in the same turn keeps it pending.
+    if (s.turnsSinceArtifact > cfg.staleTurns && notes.length === 0) {
+      notes.push('stale');
       s.turnsSinceArtifact = 0;
-      if (notes.length === 0) notes.push('stale');
     }
   }
 
@@ -97,10 +105,11 @@ export function decide(prev: State, turn: Turn, cfg: Config): Decision {
 
 /** The text shown for a note (design §1 "What the user sees"). */
 export function noteText(note: Note, context: number, cfg: Config): string {
-  const k = `${Math.round(context / 1000)}k`;
-  if (note === 'soft') return `checkpoint: context ${k}, consider writing state to the experiment folder`;
-  if (note === 'strong') {
-    return `context ${k} ≥ ${Math.round(cfg.strongTokens / 1000)}k: run \`/fast-compact\` then \`/compact\`, or hand off with \`make_capsule.mjs\` to a fresh phase session`;
-  }
-  return `${cfg.staleTurns + 1} turns without a new artifact: logs piling up?`;
+  const fill = (t: string) => t
+    .replaceAll('{k}', `${Math.round(context / 1000)}k`)
+    .replaceAll('{limit}', String(Math.round(cfg.strongTokens / 1000)))
+    .replaceAll('{turns}', String(cfg.staleTurns + 1));
+  if (note === 'soft') return fill(cfg.softText);
+  if (note === 'strong') return fill(cfg.strongText);
+  return fill(cfg.staleText);
 }
