@@ -21,3 +21,13 @@ Fill `templates/idea-brief.md`: problem, what plain Claude does today, hypothesi
 Short `design.md` (`templates/experiment-plan.md` as checklist): contracts (hook I/O, CLI/JSON, MCP schema), what Claude decides vs what the tool decides, the flag that turns it off, timeout/malformed/unavailable fallback, redaction, the case set with what "pass" means per case, and how tokens will be measured. Freeze it (`evaluation.criteriaFrozenAt`) before running step 6.
 
 The brief and the design are written by the single Opus call from the context pack; the control session shows the brief to the user for Gate A.
+
+## Gate and metric definitions (in design.md, frozen before any data)
+
+Every offline gate and success metric in `design.md` states, before it runs:
+- **Units:** numerator and denominator in the same unit (e.g. both cache_read tokens). A bound must be ≤ the total by construction; add an assertion to the script.
+- **Window:** which data it reads (whole session histories, not a date cut; UTC vs local time), which sessions, and a held-out session from another day.
+- **Edge cases:** sessions that start already past a threshold, sessions with no event of interest.
+- **Reporting extras:** what is reported but not gating (e.g. the user's realized delay).
+
+A change after the first result is a deviation: the user must approve it, the new definition is frozen in `design.md` (with a dated line) before the re-run, and both results stay in the evidence. (context-governor 2026-10-18: a bound mixing units reached an impossible 121%, then the formula changed twice.)

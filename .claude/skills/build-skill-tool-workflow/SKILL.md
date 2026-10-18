@@ -29,21 +29,24 @@ Every experiment measures **what Jev / Laya (or the tool's rules) adds on top of
 3. The phase session writes its artifacts, commits on the experiment branch and ends with a hand-back of **5 lines or fewer** (what is done, where, what is blocked). It never asks the user for a gate decision: it stops and reports.
 4. Control reads the hand-back and at most a few fields of `summary.json` / `agent-review.json` (one-line `node -e`), then asks the user at the gate.
 
+**Starting rules:** a phase session can be started only on the user's own words in the control session; on a turn that another session or an automated event started, propose it as a card for the user to click. **Gate decisions** (Gate A, accepting findings, any change to frozen criteria) are written by the control session into the experiment files and committed (`resolution`, `design.md`, `manifest.json`); never relay them to a phase session by cross-session message: it cannot verify them and rightly refuses.
+
 **Control-session rules:** never read a log, report, transcript or diff longer than ~50 lines; never run measurement or builds itself; talk to the user only at the gates and when a phase is blocked. When the control session's context grows past ~150k, suggest `/fast-compact` to the user at a phase boundary.
 
 ## Token budget
 
 - **Opus: at most 2 calls per round**: P1 planning (Track N only) and the P4 review. Each gets a **closed input pack** pasted into its prompt (no file reading, no repo exploration), answers in under ~800 words. No other Opus calls; Opus is never the main model of a phase session.
-- **Haiku everywhere else**: `subagent_type: "haiku-case"` (`.claude/agents/haiku-case.md`: Haiku 5.5, `autoCompactWindow: 100000`) with `model: "haiku"`, `effort: "xhigh"`. Without that agent type a Haiku 5.5 subagent compacts only near ~967k tokens (0 compactions were seen on 2026-10-18).
+- **Haiku everywhere else**: `subagent_type: "haiku-case"` (`.claude/agents/haiku-case.md`: Haiku 5.5, `autoCompactWindow: 98000`, tools limited to Read, Grep, Glob, Bash, Write, Edit, Skill) with `model: "haiku"`, `effort: "xhigh"`. Every Haiku agent stays **under 100k context** (the user's cost rule). The tool whitelist keeps its starting context at ~17k; with all tools it started at ~55k, and compaction (which fires near ~73k under a 100k window) thrashed and killed the agent. Never use `general-purpose` Haiku as a workaround: it has no compaction window and ran to 143k. Without `haiku-case` a Haiku 5.5 subagent compacts only near ~967k tokens.
 - **Case agents**: at most 4 in flight per session, at most 2 measuring sessions on the machine at once; 4 cases × 2 repetitions unless the brief says otherwise.
 - **Cheap checks before agent spend**: an offline gate (recall on gold tasks, replay of recorded transcripts, a content run with `count_tokens.mjs`) runs first, written into `design.md` before it runs; the agent run starts only if it passes.
 - **Skipping a model step** (no review, no Opus call) to save quota needs the user's OK; record it as `N/A (quota, user OK <date>)` in `manifest.json` and in `deviations`.
-- **smart-context-trimming**: `enforce` in P2 and in the fix part of P4 (test/build output, re-runs); **off** (`SMART_TRIM_MODE=observe`) in P3, because subagents share the session's hooks and arm A must stay plain. Record the mode per phase in `manifest.phases[]`.
+- **smart-context-trimming** (cannot be loaded into a Claude Desktop app session; there it is off and recorded in `deviations`): `enforce` in P2 and in the fix part of P4 (test/build output, re-runs); **off** (`SMART_TRIM_MODE=observe`) in P3, because subagents share the session's hooks and arm A must stay plain. Record the mode per phase in `manifest.phases[]`.
+- **Big files**: never Read a file over ~100 KB whole (e.g. a generated `.d.ts`): Grep it with `-n` and Read at most ~60 lines around a match; give agents the same rule in their prompt, naming the big files when known.
 - **Few wake-ups**: launch a batch of agents, then end the turn; never poll, sleep or check status in a loop; collect a whole batch in one turn.
 
 ## Quiet commands (all phases)
 
-Every script prints **one summary line** and writes details to a file. Git: `-q`, `-c core.safecrlf=false` (no CRLF warning dumps), long output through `| tail -n 5`. Never paste `git diff`, logs, transcripts or JSON dumps into chat; point to the file. Combine steps into one script or one batched tool message: every model turn re-reads the whole context, so turns cost as much as length.
+Every script prints **one summary line** and writes details to a file. Git: `-q`, and `-c core.safecrlf=false` on **`git add` as well as commit** (the CRLF warnings come from `add`), long output through `| tail -n 5`. **Stage explicit paths only** (the experiment folder, `index.html`, `index.json`), never a whole `reports/` folder: untracked folders of other sessions get swept into the commit. Never paste `git diff`, logs, transcripts or JSON dumps into chat; point to the file. Combine steps into one script or one batched tool message: every model turn re-reads the whole context, so turns cost as much as length.
 
 ## Artifact layout
 
