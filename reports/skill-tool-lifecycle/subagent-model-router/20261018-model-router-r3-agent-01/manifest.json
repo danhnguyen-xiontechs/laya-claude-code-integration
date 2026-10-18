@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-model-router-r3-agent-01",
+  "baseline": "../20261018-model-router-r2-agent-01/",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "none",
+    "branch": "claude/model-router-round3"
+  },
+  "status": "PILOT",
+  "recommendation": "PILOT",
+  "confidence": "MEDIUM",
+  "headline": "Round 3 (checked policy: rules only for tasks with an automatic check, one escalation to Sonnet on a failed check): 16/16 after escalation vs 16/16 all-Sonnet, price-weighted cost $1.682 -> $0.298 (-82%) incl. retries; first attempt 14/16 (d5-deps missed twice, fixed by escalation). Raw tokens +81% (Haiku takes more turns), so the saving is price, not tokens. PILOT as an opt-in policy; test weak checks and real stories before making it the default.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": "PILOT",
+    "finalDecisionAt": "2026-10-18"
+  },
+  "evaluation": {
+    "caseCount": 8,
+    "repetitions": 2,
+    "deviations": [
+      "No runs/ folder or summary.json: results are in results.md and evidence/ (grades.json, cost.json, subagent-usage.json), so build_tool_report.mjs cannot build report.html for this round.",
+      "No independent review of the round-3 diff (quota mode); 36/36 unit tests pass (unit-tests.json).",
+      "Branched from the round-2 code, not from main.",
+      "Effort high for all case agents (round 2 used xhigh)."
+    ]
+  }
+}

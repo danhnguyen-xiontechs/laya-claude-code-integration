@@ -58,7 +58,7 @@
 - `PILOT` the 5 new Jev skills on a real team repo, alongside a run where Claude does the same work without the skill, for comparison.
 - `ADOPT` the rule-based parts now, including the `web-test-laya-ground` skill (the best variant in real runs, thanks to its `find.mjs` rules) and the `fast-compact` plugin (77% context reduction in 57 ms, with no model call).
 - `PILOT` groups G and H in rule form (Jev in shadow); run them on one real ADO sprint and a few real sessions before turning on enforce for the 2 mods.
-- From the agent A/B (section 14): keep `smart-context-trimming` as `PILOT` and finish its re-run collapse; decide on round 3 of `subagent-model-router` (16/16, −82% price); invest no more in tools whose helper only adds turns until a harder case set shows plain Claude failing.
+- From the agent A/B (section 14): keep `smart-context-trimming` as `PILOT` and finish its re-run collapse; pilot round 3 of `subagent-model-router` as an opt-in cascade (16/16, −82% price; decided `PILOT`), then test weak checks and real stories; invest no more in tools whose helper only adds turns until a harder case set shows plain Claude failing.
 
 ---
 
@@ -109,7 +109,7 @@
 | D5 | `context-curator` | New skill (`JEV` repo) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (agent A/B, §14) |
 | D0 | `jev_advisor` (test wrapper, base of D5) | New tool (`JEV` repo) | Jev | ✅ A/B/C 30 runs · 🧪 | `INSUFFICIENT_EVIDENCE` (agent A/B, §14) |
 | E1 | `skills-router` (broad skill suggestion, inspired by `bmad-help`) | New skill | BM25 + Jev / Laya (optional) | ✅ 368 real prompts · 📊 199 scenarios · 🧪 65/65 | `REWORK` (agent A/B, §14) |
-| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `REWORK` → round 3 −82% price, waiting for a decision (§14) |
+| F1 | `subagent-model-router` (per-subagent model choice) | New skill + hook | Rules + Jev (optional) | ✅ 6 real ess-be stories (36% quota) · 📊 18-task benchmark · 🧪 20/20 | `REWORK` → round 3 `PILOT` (opt-in cascade, −82% price, §14) |
 | G1 | `story-batch-planner` (waves for a story batch) | New skill | Rules + Jev (shadow) | 🧪 14 tests · 📊 8 fixture batches | `REWORK` (agent A/B, §14) |
 | G2 | `agent-budget-governor` (child of F1) | New module | Rules + Jev (shadow) | 🧪 29/29 · 5 live Jev calls | `SHADOW` |
 | G3 | `integration-verifier` (checks the combined change) | New skill | Rules + Jev (shadow) | 🧪 · 📊 10 fixture batches, 0 false PASS | `REWORK` (agent A/B, §14) |
@@ -852,7 +852,7 @@ Two mods hooking Bash `tool.call`, default `observe` mode, not installed anywher
 | Tool | First run (pass A · B, tokens B vs A) | Later rounds | Decision now |
 |---|---|---|---|
 | `smart-context-trimming` (H1) | bench: output −52%; agent v1: −3% (node test output not recognised) | v2 (fix): 20/20 · 20/20, **−18%**; round 2: 10/10 · 10/10, **−24%**; re-run collapse (content run): repeated output **−73%** bytes, 0 diagnostics lost, agent run not done yet | `PILOT` (user) |
-| `subagent-model-router` (F1) | 12/12 · 12/12, price −35% | round 2: −33%; **round 3 (rules + cascade for checked tasks): 16/16 after escalation, price −82%** incl. retries (raw tokens +81%, Haiku takes more turns) | `REWORK` for round 1; round 3 waiting for a decision |
+| `subagent-model-router` (F1) | 12/12 · 12/12, price −35% | round 2: −33%; **round 3 (rules + cascade for checked tasks): 16/16 after escalation, price −82%** incl. retries (raw tokens +81%, Haiku takes more turns) | `REWORK` for round 1; round 3 **`PILOT`** (user, opt-in `--cascade`) |
 | `skills-router` (E1) | 12/12 · 12/12, +72% | round 2 (one-line hint): 12/12 · 12/12, +9% | `REWORK`; round 2 waiting |
 | `integration-verifier` (G3) | 10/12 · 10/12, +28% | round 2 (verdict-first report): 10/12 · 10/12, +0% | `REWORK` |
 | `context-curator` (D5) | 8/8 · 8/8, +38% | round 2 (pointer list): 8/8 · 8/8, +7% | `REWORK`; round 2 waiting |

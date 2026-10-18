@@ -51,7 +51,7 @@
 - `PILOT` 5 skill Jev mới trên repo thật của team, kèm bản để Claude tự làm (không dùng skill) để so sánh.
 - `ADOPT` ngay các phần rule-based, gồm skill `web-test-laya-ground` (biến thể tốt nhất khi chạy thật nhờ rule `find.mjs`) và plugin `fast-compact` (rút gọn context 77% trong 57 ms, không gọi model).
 - `PILOT` nhóm G và H ở dạng rule (Jev shadow), chạy trên một sprint ADO thật và vài session thật trước khi bật enforce cho 2 mod.
-- Theo kết quả A/B bằng agent (mục 14): giữ `smart-context-trimming` ở `PILOT` và hoàn tất phần gộp output khi chạy lại; ra quyết định cho vòng 3 của `subagent-model-router` (16/16, −82% chi phí); không đầu tư thêm cho các tool mà helper chỉ thêm lượt, cho tới khi có bộ case khó hơn mà Claude thuần thật sự làm sai.
+- Theo kết quả A/B bằng agent (mục 14): giữ `smart-context-trimming` ở `PILOT` và hoàn tất phần gộp output khi chạy lại; pilot vòng 3 của `subagent-model-router` dưới dạng cascade tùy chọn (16/16, −82% chi phí; đã chốt `PILOT`), sau đó thử check yếu và story thật; không đầu tư thêm cho các tool mà helper chỉ thêm lượt, cho tới khi có bộ case khó hơn mà Claude thuần thật sự làm sai.
 
 ---
 
@@ -102,7 +102,7 @@
 | D5 | `context-curator` | Skill mới (repo `JEV`) | Jev | ✅ 1 session · 📊 · 🧪 | `REWORK` (A/B agent, §14) |
 | D0 | `jev_advisor` (wrapper test, nền của D5) | Công cụ mới (repo `JEV`) | Jev | ✅ A/B/C 30 run · 🧪 | `INSUFFICIENT_EVIDENCE` (A/B agent, §14) |
 | E1 | `skills-router` (gợi ý skill diện rộng, cảm hứng từ `bmad-help`) | Skill mới | BM25 + Jev / Laya (tùy chọn) | ✅ 368 prompt thật · 📊 199 scenario · 🧪 65/65 | `REWORK` (A/B agent, §14) |
-| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `REWORK` → vòng 3 −82% chi phí, chờ quyết định (§14) |
+| F1 | `subagent-model-router` (chọn model cho từng subagent) | Skill mới + hook | Rule + Jev (tùy chọn) | ✅ 6 story ess-be thật (36% quota) · 📊 benchmark 18 task · 🧪 20/20 | `REWORK` → vòng 3 `PILOT` (cascade tùy chọn, −82% chi phí, §14) |
 | G1 | `story-batch-planner` (chia wave cho lô story) | Skill mới | Rule + Jev (shadow) | 🧪 14 test · 📊 8 batch fixture | `REWORK` (A/B agent, §14) |
 | G2 | `agent-budget-governor` (con của F1) | Module mới | Rule + Jev (shadow) | 🧪 29/29 · 5 lần gọi Jev thật | `SHADOW` |
 | G3 | `integration-verifier` (kiểm tra thay đổi gộp) | Skill mới | Rule + Jev (shadow) | 🧪 · 📊 10 lô fixture, 0 PASS sai | `REWORK` (A/B agent, §14) |
@@ -839,7 +839,7 @@ Hai mod móc vào `tool.call` của Bash, mặc định chế độ `observe`, c
 | Tool | Lần đầu (pass A · B, token B so với A) | Các vòng sau | Quyết định hiện tại |
 |---|---|---|---|
 | `smart-context-trimming` (H1) | bench: output −52%; agent v1: −3% (chưa nhận output node test) | v2 (đã sửa): 20/20 · 20/20, **−18%**; vòng 2: 10/10 · 10/10, **−24%**; gộp output khi chạy lại (content run): output lặp **−73%** byte, không mất chẩn đoán nào, chưa chạy agent | `PILOT` (người dùng) |
-| `subagent-model-router` (F1) | 12/12 · 12/12, chi phí −35% | vòng 2: −33%; **vòng 3 (rules + cascade cho task có check): 16/16 sau khi leo model, chi phí −82%** kể cả retry (token thô +81%, Haiku chạy nhiều lượt hơn) | `REWORK` cho vòng 1; vòng 3 chờ quyết định |
+| `subagent-model-router` (F1) | 12/12 · 12/12, chi phí −35% | vòng 2: −33%; **vòng 3 (rules + cascade cho task có check): 16/16 sau khi leo model, chi phí −82%** kể cả retry (token thô +81%, Haiku chạy nhiều lượt hơn) | `REWORK` cho vòng 1; vòng 3 **`PILOT`** (người dùng, tùy chọn `--cascade`) |
 | `skills-router` (E1) | 12/12 · 12/12, +72% | vòng 2 (gợi ý một dòng): 12/12 · 12/12, +9% | `REWORK`; vòng 2 chờ quyết định |
 | `integration-verifier` (G3) | 10/12 · 10/12, +28% | vòng 2 (báo cáo verdict trước): 10/12 · 10/12, +0% | `REWORK` |
 | `context-curator` (D5) | 8/8 · 8/8, +38% | vòng 2 (danh sách trỏ): 8/8 · 8/8, +7% | `REWORK`; vòng 2 chờ quyết định |
