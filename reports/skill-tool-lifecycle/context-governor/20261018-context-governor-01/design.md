@@ -89,26 +89,42 @@ context-governor/
 - An event with `agentId` returns no text.
 - Latency: 100 synthetic turns, each under 200 ms.
 
-## 5. Offline gate (before any agent spend)
+## 5. Offline gate (re-frozen before the second replay)
 
-**What `scripts/replay.mjs` does.**
-- Reads the 2026-10-18 transcripts: the main sessions and their subagent jsonl files.
-- Takes assistant records, deduplicated by `message.id`, and computes context per turn as `input + cache_read + cache_creation`.
-- Runs the same `core.decide` over them.
-- Prints, per session: the turn index and context at which each note would fire, the number of notes, the peak context and the total cache read.
+§5 re-frozen 2026-10-18T14:01:32Z before the second replay, per accepted findings #1-#4.
 
-**Avoided cache read (an upper bound).**
-- t* is the first crossing of 200k from below. A session or stretch whose first turn is already at or above 200k has no t* until context falls below the threshold and crosses again.
-- Avoided = Σ over t > t* of max(0, min(ctx(t), ctx(t*)) − B), where B is the median first-turn context of the phase sessions.
-- This assumes context grows the same way after the reset and that the handoff itself costs nothing. The report labels it as an upper bound.
+History. The first P3 replay used the literal formula (121.4%, context units against cache_read) and then the amended formula (6.7%, one day only, from 2026-10-18 00:00 UTC). Both are kept as evidence. This section replaces both and is the only gate for the second replay. Its numbers are not compared with the earlier ones as a pass.
 
-**Pass condition.** All four must hold:
-1. The 2026-10-18 control session would have received the strong note at least once.
-2. The upper-bound avoided cache read is at least 30% of that session's cache read.
-3. Each main session gets at most 5 notes (noise).
+**Data.** Every main session file under `~/.claude/projects/**` (top-level `*.jsonl`) and its `subagents/*.jsonl`. No date filter: each session is replayed over its whole history. Timestamps are UTC (`Z` suffix); no figure uses a local day.
+
+**Per main session, in file order.** Assistant records with `message.usage`, deduplicated by `message.id`. For turn i (1-based):
+- ctx(i) = input + cache_read + cache_creation (design §1).
+- cr(i) = cache_read_input_tokens. The avoided figure and the denominator are both in cache_read tokens.
+- t* = the first i with ctx(i) >= 200000 and ctx(i-1) < 200000 (first crossing from below). A session that never crosses has no t*.
+- B_cr = median over all replayed main sessions of cr(1) (first-turn cache_read).
+- avoided = sum over i > t* of max(0, min(cr(i), cr(t*)) - B_cr).
+- cacheRead = sum over all turns of cr(i). The replay asserts avoided <= cacheRead and exits with an error otherwise.
+- ratio = avoided / cacheRead.
+
+**Realized delay (reported, not gating).** c* = the first `compact_boundary` record after t*'s timestamp; when a session has none, the first turn after t* with ctx below 100000 (a drop with no recorded compaction). realizedDelay = c* - t* in turns, and realizedCr = sum of cr over turns t*+1 to c*. This counts the turns the note would sit unused before the user compacted.
+
+**Notes.** The same `core.decide` as the plugin, with the default config, run over one main session at a time. Artifact rule: a turn counts as a write when an assistant `tool_use` named Write, Edit or MultiEdit has a `file_path` containing `20261018-context-governor-01` (forward slashes); artifact(i) = {mtimeMs: timestamp of the latest such write so far} or null before the first. Subagent turns: `decide` with agentId; their notes and cache_read are counted on a separate line and are not in cacheRead.
+
+**Sessions reported.**
+- Control 82e30143-e152-4ee9-b306-ffbd1654c94d: gates conditions 1 and 2.
+- Named sessions b266357b, 5b84aa0f and 3e716326: table only.
+- Held-out: the main session whose first timestamp is on 2026-10-17 (UTC) with the largest cacheRead, excluding the four sessions above. Chosen by this rule, fixed here before the run. Table only.
+- All replayed main sessions: conditions 3 and 4.
+
+**Pass conditions** (the same four as before; condition 2 is now in cache_read units):
+1. The control session would have received the strong note at least once.
+2. The control session's ratio is at least 30%.
+3. Each replayed main session gets at most 5 notes.
 4. Subagent turns get 0 notes.
 
-If any condition fails, stop and report. P3 does not run.
+Conditions 1 and 2 are evaluated on the control session. The other sessions are reported and do not gate. Any failing condition gives BLOCKED: stop and report; the A/B (P3) does not run.
+
+**Outputs.** `evidence/replay/output-run2.txt`, `summary-run2.json`, `gate.md`. Earlier outputs are kept as `output-run1.txt`, `summary-run1.json`, `gate-run1.md` and `output-literal.txt`.
 
 ## 6. A/B measurement (P3)
 
