@@ -1,0 +1,1 @@
+{ "id": "c1-money", "kind": "control", "module": "src/money.js", "type": "general-purpose" }

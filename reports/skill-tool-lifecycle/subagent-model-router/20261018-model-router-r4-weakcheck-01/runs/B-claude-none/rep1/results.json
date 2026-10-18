@@ -1,0 +1,183 @@
+{
+  "experimentId": "20261018-model-router-r4-weakcheck-01",
+  "arm": "B",
+  "runId": "rep1",
+  "startedAt": "2026-10-18T14:53:25.552Z",
+  "finishedAt": "2026-10-18T14:53:27.843Z",
+  "cases": [
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "c1-money",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 55,
+        "cacheReadTokens": 55027,
+        "cacheWriteTokens": 20695,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "cost": 0.003165,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/c1-money.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:25.552Z",
+      "finishedAt": "2026-10-18T14:53:25.624Z"
+    },
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "w1-ranges",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 38,
+        "cacheReadTokens": 54884,
+        "cacheWriteTokens": 20248,
+        "modelTurns": 4,
+        "toolCalls": 4,
+        "cost": 0.0031,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/w1-ranges.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:25.971Z",
+      "finishedAt": "2026-10-18T14:53:26.045Z"
+    },
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "w2-limiter",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 64,
+        "cacheReadTokens": 81794,
+        "cacheWriteTokens": 15583,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "cost": 0.002799,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/w2-limiter.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:26.401Z",
+      "finishedAt": "2026-10-18T14:53:26.470Z"
+    },
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "w3-template",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 36,
+        "cacheReadTokens": 81468,
+        "cacheWriteTokens": 14960,
+        "modelTurns": 5,
+        "toolCalls": 6,
+        "cost": 0.002704,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/w3-template.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:26.825Z",
+      "finishedAt": "2026-10-18T14:53:26.893Z"
+    },
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "w4-csv",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 78,
+        "cacheReadTokens": 106169,
+        "cacheWriteTokens": 17915,
+        "modelTurns": 6,
+        "toolCalls": 6,
+        "cost": 0.003341,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/w4-csv.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:27.246Z",
+      "finishedAt": "2026-10-18T14:53:27.312Z"
+    },
+    {
+      "schemaVersion": 1,
+      "experimentId": "20261018-model-router-r4-weakcheck-01",
+      "arm": "B",
+      "runId": "rep1",
+      "status": "pass",
+      "caseId": "w5-pages",
+      "observedOutcome": "hidden strict pass; visible pass; silentMiss false; tier haiku; attempts 1",
+      "correct": true,
+      "silentMiss": false,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 39,
+        "cacheReadTokens": 81393,
+        "cacheWriteTokens": 15569,
+        "modelTurns": 5,
+        "toolCalls": 6,
+        "cost": 0.002781,
+        "costKind": "estimated",
+        "source": "subagent transcript usage (transcript_usage.mjs) priced with pricing.mjs list prices"
+      },
+      "errors": [],
+      "deviations": [],
+      "evidenceRefs": [
+        "evidence/answers/w5-pages.B.r1.txt"
+      ],
+      "startedAt": "2026-10-18T14:53:27.754Z",
+      "finishedAt": "2026-10-18T14:53:27.843Z"
+    }
+  ]
+}

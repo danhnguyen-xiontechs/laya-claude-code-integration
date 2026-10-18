@@ -1,0 +1,1 @@
+Created src/money.js (CommonJS, exports parseAmount) in the a1 folder. It validates with a regex, does integer cents math on the digit strings, throws RangeError "bad amount: <input>" otherwise, and `node check.mjs` prints PASS.

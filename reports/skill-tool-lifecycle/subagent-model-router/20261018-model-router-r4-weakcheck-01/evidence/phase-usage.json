@@ -1,0 +1,118 @@
+{
+  "experimentId": "20261018-model-router-r4-weakcheck-01",
+  "phases": [
+    {
+      "phase": "P1",
+      "sessionId": null,
+      "model": null,
+      "smartTrimMode": null,
+      "transcript": null,
+      "cwd": null,
+      "from": null,
+      "to": null,
+      "measured": false,
+      "modelTurns": null,
+      "peakContext": null,
+      "cacheRead": null,
+      "cacheWrite": null,
+      "input": null,
+      "output": null
+    },
+    {
+      "phase": "Control",
+      "sessionId": null,
+      "model": "claude-opus-5-5",
+      "smartTrimMode": null,
+      "transcript": null,
+      "cwd": "D:\\XionTechs\\Laya",
+      "from": "2026-10-18T14:42:35Z",
+      "to": "2026-10-18T15:07:38.449Z",
+      "measured": true,
+      "files": 1,
+      "modelsSeen": [
+        "claude-opus-5-5"
+      ],
+      "modelTurns": 29,
+      "subagentTurns": 0,
+      "peakContext": 114935,
+      "cacheRead": 2933807,
+      "cacheWrite": 28708,
+      "input": 58,
+      "output": 13853,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya\\ca56e2e6-2429-402d-a217-32b7c0b9cb4e.jsonl"
+    },
+    {
+      "phase": "P2",
+      "sessionId": null,
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": "enforce",
+      "transcript": null,
+      "cwd": "D:XionTechsLaya.claudeworktreesmodel-router-round4-p2-c32ad3",
+      "from": "2026-10-18T14:50:19Z",
+      "to": null,
+      "measured": false,
+      "modelTurns": null,
+      "peakContext": null,
+      "cacheRead": null,
+      "cacheWrite": null,
+      "input": null,
+      "output": null
+    },
+    {
+      "phase": "P3",
+      "sessionId": null,
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": "off (SMART_TRIM_MODE=observe)",
+      "transcript": null,
+      "cwd": "D:\\XionTechs\\Laya\\.claude\\worktrees\\model-router-round4-p3-a75eb5\\reports\\skill-tool-lifecycle\\subagent-model-router\\20261018-model-router-r4-weakcheck-01",
+      "from": "2026-10-18T14:53:25.346Z",
+      "to": null,
+      "measured": false,
+      "modelTurns": null,
+      "peakContext": null,
+      "cacheRead": null,
+      "cacheWrite": null,
+      "input": null,
+      "output": null
+    },
+    {
+      "phase": "P4",
+      "sessionId": null,
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": "enforce for fixes, off for any re-measure",
+      "transcript": null,
+      "cwd": "D:\\XionTechs\\Laya\\.claude\\worktrees\\model-router-round4-p4-efbcb5",
+      "from": "2026-10-18T15:04:11.276Z",
+      "to": null,
+      "measured": true,
+      "files": 1,
+      "modelsSeen": [
+        "claude-haiku-5-5"
+      ],
+      "modelTurns": 13,
+      "subagentTurns": 0,
+      "peakContext": 121999,
+      "cacheRead": 1424959,
+      "cacheWrite": 21254,
+      "input": 26,
+      "output": 10299,
+      "source": "C:\\Users\\ADMIN\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-model-router-round4-p4-efbcb5\\83364800-918f-498e-a3cf-3fa38c69c4a5.jsonl + 1 subagent transcript(s)"
+    }
+  ],
+  "measuredPhases": 2,
+  "missingPhases": [
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "totals": {
+    "modelTurns": 42,
+    "peakContext": 121999,
+    "cacheRead": 4358766,
+    "cacheWrite": 49962,
+    "input": 84,
+    "output": 24152,
+    "allTokens": 4432964
+  },
+  "generatedAt": "2026-10-18T15:07:45.615Z"
+}

@@ -1,0 +1,49 @@
+{
+  "model": "claude-opus-5-5",
+  "mode": "closed pack, one subagent call",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "Pricing looks wrong: pricing.mjs sets Haiku at 1/20 of Sonnet on every rate (input 0.1 vs 2, output 0.5 vs 10, cache read 0.01 vs 0.2). That gives -93.9% for +47% tokens. Haiku list prices are closer to 1/3 of Sonnet, which would give about -51%. The threshold for ADOPT is -50%, so the verdict depends on this.",
+      "ref": "scripts/pricing.mjs; summary.json priceUSD",
+      "proposedFix": "Verify the Haiku rate against the current price table, then recompute A and B per arm and show the per-model rates and token split.",
+      "resolution": "ACCEPTED (user 2026-10-18): label the price as an estimate in the report and add a sensitivity line at a Haiku:Sonnet ratio of 1:3; do not change pricing.mjs without official prices; fixed in 34e791c"
+    },
+    {
+      "severity": "Major",
+      "finding": "Raw tokens are exactly 2x paired tokens in both arms (878874 = 2 x 439437; 1296790 = 2 x 648395). Likely per-repetition averaging, but not documented; the bad-token rule uses paired, the headline uses raw.",
+      "ref": "summary.json tokens/pairedTokens",
+      "proposedFix": "Document the definition and assert it in a unit test.",
+      "resolution": "ACCEPTED (user 2026-10-18): explain the raw vs paired token arithmetic in the report; use one unit in the headline; fixed in 34e791c"
+    },
+    {
+      "severity": "Major",
+      "finding": "The cascade was never exercised live: 0 visible-check failures, 0 escalations. Escalation path, its cost accounting and silent-miss detection have no real evidence. Rule-of-three upper bound on Haiku strict-fail is about 25% at 0/12.",
+      "ref": "design success criteria; summary.json",
+      "proposedFix": "Add cases where Haiku fails the visible check, plus a forced-fail control run.",
+      "resolution": "ACCEPTED (user 2026-10-18): write into Limits in the report and improvements.md; no code change; fixed in 34e791c"
+    },
+    {
+      "severity": "Minor",
+      "finding": "INSUFFICIENT_EVIDENCE stands: the frozen precondition (Haiku passes strict first time on every case) fired, and the token rule (B +47% with no extra passes) also fired. Do not upgrade the verdict.",
+      "ref": "design.md frozen criteria",
+      "proposedFix": "Keep verdict; record both triggers in deviations.",
+      "resolution": "ACCEPTED (user 2026-10-18): keep INSUFFICIENT_EVIDENCE; write into Limits; no code change; fixed in 34e791c"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Offline gate checks routing only for haiku and tests planted bugs written by the author; it does not show that Haiku makes such mistakes.",
+      "ref": "scripts/offline_gate.mjs",
+      "proposedFix": "Build ref/wrong from real failing Haiku outputs in a pilot.",
+      "resolution": "ACCEPTED (user 2026-10-18): write into Limits in the report and improvements.md; no code change; fixed in 34e791c"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "B used more turns (66 vs 47) and tool calls (69 vs 53). Per-run attribution (route call, visible check reruns, wrapper) is not logged, so the cause is unproven.",
+      "ref": "runs/B-claude-none/rep*/results.json",
+      "proposedFix": "Log route, visible-check and wrapper turns separately in the driver.",
+      "resolution": "ACCEPTED (user 2026-10-18): add per-run logging of turns and tool calls (route call, visible-check reruns, wrapper) to run_cascade.mjs for the next round; no re-measure in this round; fixed in 34e791c"
+    }
+  ],
+  "improvementsRef": "improvements.md"
+}

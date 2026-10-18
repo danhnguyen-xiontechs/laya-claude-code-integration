@@ -1,0 +1,1 @@
+Created src/pages.js in the work folder a1 (ESM export pageWindow: validates page, throws RangeError "page out of range: N", centres a window of min(span, totalPages) pages with floor(span/2) before the page, clamps to 1..totalPages). `node check.mjs` prints PASS (exit 0).

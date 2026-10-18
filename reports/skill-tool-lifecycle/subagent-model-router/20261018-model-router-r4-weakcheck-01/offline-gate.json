@@ -1,0 +1,93 @@
+{
+  "gate": "PASS",
+  "cases": 6,
+  "weak": 5,
+  "control": 1,
+  "haikuFirst": 6,
+  "rows": [
+    {
+      "id": "c1-money",
+      "kind": "control",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": false,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    },
+    {
+      "id": "w1-ranges",
+      "kind": "weak",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": true,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    },
+    {
+      "id": "w2-limiter",
+      "kind": "weak",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": true,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    },
+    {
+      "id": "w3-template",
+      "kind": "weak",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": true,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    },
+    {
+      "id": "w4-csv",
+      "kind": "weak",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": true,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    },
+    {
+      "id": "w5-pages",
+      "kind": "weak",
+      "good": {
+        "visible": true,
+        "strict": true
+      },
+      "wrong": {
+        "visible": true,
+        "strict": false
+      },
+      "tier": "haiku",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{ "id": "w2-limiter", "kind": "weak", "module": "src/limiter.js", "type": "general-purpose" }

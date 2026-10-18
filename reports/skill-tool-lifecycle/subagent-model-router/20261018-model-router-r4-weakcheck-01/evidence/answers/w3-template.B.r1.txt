@@ -1,0 +1,1 @@
+Created src/template.js in the work folder: render(template, vars) replaces {{name}} (spaces allowed inside the braces) in one pass with String(vars[name]), so values stay literal. Missing names (not own properties) throw "missing variable: <name>" for the first one in template order. node check.mjs prints PASS.

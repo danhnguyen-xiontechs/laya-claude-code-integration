@@ -1,0 +1,25 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"test/*.test.mjs\" (in .claude/skills/subagent-model-router, node v24.11.1)",
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "unit-tests.json"
+    },
+    {
+      "level": "offline-gate",
+      "command": "node scripts/offline_gate.mjs",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "offline-gate.json"
+    }
+  ],
+  "commit": "398dc64 (router code unchanged from 52f6583)",
+  "measuredAt": "2026-10-18T15:00:46.797Z",
+  "note": "P3 re-run of the P2 checks on the measured commit; the 36 router tests and the offline gate both pass."
+}
