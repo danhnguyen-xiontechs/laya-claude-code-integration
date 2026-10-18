@@ -235,7 +235,7 @@ const devs = [
   ...(evidenceGaps.length ? [`What Claude read is saved for one arm only: ${evidenceGaps.join(", ")}. Save evidence/texts/<case>.<A|B>.txt for both arms.`] : []),
   ...(manifest.evaluation?.deviations ?? []),
 ];
-const docs = ['idea-brief.md', 'design.md', 'experiment-plan.md', 'agent-review.md', 'final-decision.md', 'manifest.json', 'summary.json'].filter((f) => fs.existsSync(path.join(dir, f)));
+const docs = ['idea-brief.md', 'design.md', 'experiment-plan.md', 'agent-review.md', 'improvements.md', 'final-decision.md', 'manifest.json', 'summary.json'].filter((f) => fs.existsSync(path.join(dir, f)));
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(manifest.tool?.name)} report</title><style>${CSS()}</style></head><body><main>

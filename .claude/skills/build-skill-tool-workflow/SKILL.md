@@ -12,7 +12,8 @@ The user owns two gates: **Gate A (idea lock)** before implementation and **Gate
 
 ```text
 0 Intake → 1 Brainstorm ─[Gate A]→ 2 Design → 3 Implement (flag) → 4 Tests → 5 Agent review
- → 6 Measure A vs B on the same cases (real tokens) → 7 Per-tool report → 8 Main report ─[Gate B]→ decision
+ → 6 Measure A vs B on the same cases (real tokens) → 7 Per-tool report → 7b Bad result? review the tool, suggest improvements
+ → 8 Main report ─[Gate B]→ decision
 ```
 
 Track the phase in `manifest.json` `status` (`schemas/experiment-manifest.schema.json`). A skipped phase is marked `N/A` with the reason, never silently dropped.
@@ -113,6 +114,23 @@ node .claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs "rep
 
 `report.html` reads top-down: verdict + headline → 4 cards (tokens A → B, cases passed, engine calls/latency, tests · review) → case-by-case table (pass/fail each arm, tokens each arm, change, bar, links to what Claude read) → caveats → collapsed review, tests, all numbers, raw data. A case that passes in A and fails in B is highlighted as **worse** and must be in the headline.
 
+## 7b. Bad result → review the tool and suggest improvements (required)
+
+A result is **bad** when any of these holds in `summary.json`:
+- B costs more tokens than A (`pairedTokens` B > A by more than the noise you saw between repetitions, or > 10% with one repetition) and B does not pass more cases than A. Example: Claude + Jev spends more than plain Claude and helps with nothing.
+- Any case is **worse** (passes in A, fails in B).
+- The engine was called but changed nothing the agent used (its pick equals the rules / plain order, or the agent overrode it on every case), or it fell back on most calls.
+- Recommendation would be `REWORK`, `DROP` or `INSUFFICIENT_EVIDENCE`.
+
+Do not stop at the verdict. Review the tool against the evidence of this run, case by case:
+1. **Where B's extra tokens went**: compare turns and tool calls per case (`usage.modelTurns`, `toolCalls`) and what each arm read (`evidence/texts/<case>.<A|B>.txt`). Typical causes: the tool's output is long or needs a second step to use; the agent re-checks or overrides it; the wrapper is run several times.
+2. **Why a case got worse**: read B's answer next to the tool's output and the engine log. Was the tool wrong (bad ranking, wrong edge), or did the agent misread a correct output?
+3. **What the engine actually decided**: per call, did Jev/Laya change the rules' result, and was that change right? If it never changes anything, the call is pure cost.
+4. **Whether the cases could show value at all**: if plain Claude already passes everything, say the case set is too easy rather than blaming the tool.
+5. Cross-check with the open review findings (step 5): a known bug may explain the result.
+
+Write `improvements.md` in the experiment folder: a short diagnosis (2-4 sentences, with the numbers), then at most 5 suggestions ranked by expected effect, each with **change** (file/function), **why** (the evidence above), **expected effect** (tokens, pass rate) and **how to verify** (which case or test, next run). Include "drop the engine call / keep rules only" or "drop the tool" when the evidence points there. Put the top suggestion in one sentence at the end of the `headline`. Do not implement the suggestions here: they go to the user at Gate B, and an approved one starts a new experiment (new id) through this workflow.
+
 ## 8. Main report
 
 ```bash
@@ -123,7 +141,7 @@ One row per experiment from its `summary.json`: verdict, tokens A → B, cases p
 
 ## 9. Gate B — final user review
 
-Send `index.html` and the experiment's `report.html` (SendUserFile, `display: "render"`). In chat: what was built (branch/commit), tests and review, tokens A → B and any worse case, recommendation, and the one decision needed. Record it in `manifest.approvals.finalDecision` (+ `finalDecisionAt`, and `status` = the decision) + `final-decision.md`, rebuild both reports; "Waiting on you" then drops the experiment. Until then the tool stays behind its flag.
+Send `index.html` and the experiment's `report.html` (SendUserFile, `display: "render"`). In chat: what was built (branch/commit), tests and review, tokens A → B and any worse case, recommendation, the top 1-3 suggestions from `improvements.md` when the result was bad (step 7b), and the one decision needed. Record it in `manifest.approvals.finalDecision` (+ `finalDecisionAt`, and `status` = the decision) + `final-decision.md`, rebuild both reports; "Waiting on you" then drops the experiment. Until then the tool stays behind its flag.
 
 ## Self-test
 

@@ -43,11 +43,12 @@ const tokChange = (i) => {
   return a == null || b == null || !a ? null : (b - a) / a;
 };
 const passed = (g) => (g ? `${g.pass}/${g.pass + g.fail}` : '—');
+// a recorded final decision means the user has seen the report: nothing in it is waiting any more
 const needsYou = (i) =>
-  [
+  i.finalDecision ? [] : [
     !i.recommendation && 'no recommendation yet',
-    !i.finalDecision && ['PILOT', 'INSUFFICIENT_EVIDENCE'].includes(i.recommendation) && i.recommendation,
-    !i.finalDecision && i.recommendation && 'final decision not recorded',
+    ['PILOT', 'INSUFFICIENT_EVIDENCE'].includes(i.recommendation) && i.recommendation,
+    i.recommendation && 'final decision not recorded',
     i.openBlockingFindings && `${i.openBlockingFindings} open Critical/Major`,
     i.regressions?.length && `worse on ${i.regressions.join(', ')}`,
     i.unpairedCases?.length && `${i.unpairedCases.length} case(s) not compared`,

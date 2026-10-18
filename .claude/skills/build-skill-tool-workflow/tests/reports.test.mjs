@@ -175,6 +175,7 @@ describe('evidence and final decision', () => {
     const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
     assert.doesNotMatch(html, /final decision not recorded/);
     assert.doesNotMatch(html, /demo-tool<\/a>: PILOT/);
+    assert.doesNotMatch(html, /worse on T1/); // a decided experiment is not waiting for anything
   });
 });
 
@@ -212,5 +213,14 @@ describe('subagent_usage --forbid', () => {
     // without --forbid the field is absent
     const plain = JSON.parse(spawnSync(process.execPath, [path.join(SCRIPTS, 'subagent_usage.mjs'), d, work], { encoding: 'utf8' }).stdout);
     assert.equal('forbiddenCalls' in plain[work], false);
+  });
+});
+
+describe('step 7b improvements', () => {
+  it('links improvements.md from the per-tool report when it exists', () => {
+    const { exp } = fixture();
+    fs.writeFileSync(path.join(exp, 'improvements.md'), '# Improvements\n');
+    assert.equal(node('build_tool_report.mjs', exp).status, 0);
+    assert.match(fs.readFileSync(path.join(exp, 'report.html'), 'utf8'), /href="improvements\.md"/);
   });
 });
