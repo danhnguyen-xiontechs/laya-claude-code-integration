@@ -8,28 +8,28 @@
       "finding": "The gate cannot see most of the control session's cost. The amended t* (first crossing from below) skips turns 1 to about 129, which ran at 657k to 953k and carried most of the 108M cacheRead, yet the denominator still counts all 220 turns. After t173 the avoided amount is capped at about (200k-47k) x 47 turns, roughly 7.2M, so 6.7% was the most the tool could ever score here.",
       "ref": "context-governor/scripts/replay.mjs (tStar, ratio); design.md §5",
       "proposedFix": "Give the stretch that is already above 200k at the window start its own row, or pull in the earlier turns of the conversation. Compute the numerator and the denominator over the same turns.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in dc50515 (§5 re-frozen in bb82fb7)"
     },
     {
       "severity": "Major",
       "finding": "The numerator and denominator use different units. Avoided is counted in context tokens (input + cache_read + cache_creation), but the denominator is cache_read only. That is why the literal formula could reach 121.4%.",
       "ref": "context-governor/scripts/replay.mjs (avoided vs cacheRead)",
       "proposedFix": "Count both in cache_read, or both in context tokens. Report the creation share separately.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in dc50515 (§5 re-frozen in bb82fb7)"
     },
     {
       "severity": "Major",
       "finding": "The gate formula was changed after its result was known. The literal version gave 121.4%, the amended one 6.7%. Either way the metric is not pre-registered.",
       "ref": "design.md §5 amendment; capsule deviation (d)",
       "proposedFix": "Freeze the formula, sessions and threshold in writing before the next replay run.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in dc50515 (§5 re-frozen in bb82fb7)"
     },
     {
       "severity": "Major",
       "finding": "The `timestamp starts with the date` filter cuts the control session at midnight. The control session continues an earlier conversation, so its real 200k crossing and most of its cost fall outside the window. Reviewer note: not verified in this session; the brief's >200M against 108M here is consistent with that.",
       "ref": "context-governor/scripts/replay.mjs (turnsOf)",
       "proposedFix": "Replay the session's whole history, ignoring date. Check whether the timestamps are UTC or local time.",
-      "resolution": "accepted by the user (2026-10-18)"
+      "resolution": "fixed in dc50515 (§5 re-frozen in bb82fb7)"
     },
     {
       "severity": "Major",
