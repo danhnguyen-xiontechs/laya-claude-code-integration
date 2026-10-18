@@ -1,0 +1,80 @@
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/git_risk/risk.py b/src/jev_skills/git_risk/risk.py
+index e6cadbe..0729ece 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/git_risk/risk.py
++++ b/src/jev_skills/git_risk/risk.py
+@@ -37,6 +37,7 @@ DEFAULTS = {
+     "maxCommits": 200,  # per file
+     "maxSubjects": 15,  # commit subjects sent to JEV per file
+     "jevFullWeightAt": 5,  # JEV's adjustment is scaled by min(1, messages / this)
++    "guidanceVersion": 2,  # 1 = round-1 guidance text, 2 = pickaxe step and conditional characterization tests
+ }
+ CONFIG_FILE = ".git-risk.json"
+ 
+@@ -254,7 +255,7 @@ def finalize(r: dict, cfg: dict) -> None:
+     r["reasons"] = reasons(r["metrics"], cfg["weights"])
+     if r["jev"]["status"] in ("unavailable",):
+         r["jevNote"] = "JEV unavailable: risk = formula"
+-    r["guidance"] = guidance(r) if r["flagged"] else None
++    r["guidance"] = guidance(r, cfg.get("guidanceVersion", 2)) if r["flagged"] else None
+ 
+ 
+ def evidence(r: dict) -> str:
+@@ -271,8 +272,8 @@ def evidence(r: dict) -> str:
+     return "; ".join(bits)
+ 
+ 
+-def guidance(r: dict) -> str:
+-    """Ready-to-inject defensive-mode block for one flagged file."""
++def _guidance_v1(r: dict) -> str:
++    """Round-1 defensive-mode block (guidanceVersion 1), kept byte for byte."""
+     f, m = r["file"], r["metrics"]
+     stem = Path(f).stem
+     return (
+@@ -287,6 +288,24 @@ def guidance(r: dict) -> str:
+     )
+ 
+ 
++def guidance(r: dict, version: int = 2) -> str:
++    """Ready-to-inject defensive-mode block for one flagged file. Any version other than 1 gives the v2 text."""
++    if version == 1:
++        return _guidance_v1(r)
++    f = r["file"]
++    stem = Path(f).stem
++    return (
++        f"Defensive mode for {f} (risk {r['risk']:.1f}/10, formula {r['formula']:.1f}).\n"
++        f"Evidence: {evidence(r)}.\n"
++        "Before and while editing this file:\n"
++        f"1. Before you remove or loosen a check, branch, retry, sleep, default or exception handler, find the commit that added it: `git log -S '<distinctive fragment of the line, without quote characters>' -- {f}` (read the full message, not only the subject). Keep it if that commit fixed a real failure, unless you can show the failure can no longer happen.\n"
++        f"2. Read the recent fixes: `git log -n 5 -p -- {f}`; do not reintroduce a bug they fixed.\n"
++        f"3. Find callers and side effects: `git grep -n \"{stem}\"`; note I/O, globals, caches, DB writes you might change.\n"
++        "4. Run the existing tests that cover this file before and after each edit. Add a characterization test only for behaviour you change that no existing test exercises.\n"
++        "5. Keep the diff small (one concern per change, no drive-by refactors, renames or reformatting); in your summary mention the risk and every check you kept on purpose."
++    )
++
++
+ # ---------------------------------------------------------------- rendering
+ 
+ 
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/.claude/skills/git-risk-scanner/SKILL.md b/src/.claude/skills/git-risk-scanner/SKILL.md
+index 629d7e3..d5b1a55 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/.claude/skills/git-risk-scanner/SKILL.md
++++ b/src/.claude/skills/git-risk-scanner/SKILL.md
+@@ -30,11 +30,13 @@ at or above the threshold), formula, jev p, commits, authors, age, days since th
+ Each flagged file gets a `Defensive mode for <file>` block with the evidence, for example
+ "31 of 41 commits are fixes; 4 authors; last revert 2026-05-24; JEV p=0.97". Do what it says:
+ 
+-1. Read the recent fixes: `git log -n 5 -p -- <file>`. Do not reintroduce a bug they fixed.
+-2. Find callers and side effects (I/O, globals, caches, DB writes) before you change behaviour.
+-3. Run the tests that cover the file first. If there are none, add a small characterization test.
+-4. Keep the diff small. Make one change at a time and avoid drive-by refactors, renames or reformatting.
+-5. Re-run the tests after each edit, and mention the risk in your summary.
++1. Before you remove or loosen a check, find the commit that added it: `git log -S "<line>" -- <file>`. Read the full message. Keep the check if that commit fixed a real failure.
++2. Read the recent fixes: `git log -n 5 -p -- <file>`. Do not reintroduce a bug they fixed.
++3. Find callers and side effects (I/O, globals, caches, DB writes) before you change behaviour.
++4. Run the tests that cover the file before and after each edit. Add a characterization test only for behaviour you change that no existing test exercises.
++5. Keep the diff small. Make one change at a time, avoid drive-by refactors, renames or reformatting, and mention the risk and every check you kept on purpose.
++
++`guidanceVersion: 1` in `.git-risk.json` restores the round-1 text.
+ 
+ Files below the threshold need no special handling. A file with no history is new and scores low.
+ 

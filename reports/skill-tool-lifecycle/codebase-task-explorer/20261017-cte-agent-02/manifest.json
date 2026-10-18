@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261017-cte-agent-02",
+  "tool": { "name": "codebase-task-explorer", "kind": "skill", "provider": "JEV", "commit": "6a338b4", "branch": "claude/cte-rework" },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "After the rework (8 Major findings fixed, 15/15 tests), Jev clearly beats the tool's own rules offline (Recall@5 pass 4/5 vs 1/5 on eval/tasks.json, 5/6 vs 3/6 on new blind-query tasks), but Haiku agents found the right file in every case either way: 12/12 vs 12/12 over 6 new tasks x 2 reps, and B used 11% more tokens (10.76M -> 11.90M). No case worse. The ranking is better, but on these tasks it does not change the agent's answer.",
+  "approvals": { "ideaApprovedAt": null, "finalDecision": null, "finalDecisionAt": null },
+  "arms": [
+    { "id": "A", "name": "Plain Claude + unranked candidate list (same codemap pool, raw order, top 10)", "candidateEnabled": false, "engineEnabled": false, "model": "haiku (claude-haiku-5-5)", "effort": "xhigh" },
+    { "id": "B", "name": "Claude + codebase-task-explorer (rules + Jev batches, top 10)", "candidateEnabled": true, "engineEnabled": true, "model": "haiku (claude-haiku-5-5)", "effort": "xhigh", "engineVersion": "typesafe/jev via OpenRouter decisions API, advisory ranking" }
+  ],
+  "evaluation": {
+    "planVersion": "agent-retro-v2",
+    "datasetVersion": "tasks-new.json (6 tasks, queries written blind by a Haiku agent from the task text only); repo copy of a89dc8a with answer-key files removed",
+    "caseCount": 6,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript",
+    "deviations": [
+      "Ceiling: both arms passed every case (12/12). The new tasks were still easy enough for Haiku to grep its way to the gold file, so the run cannot show a pass-rate gain; only tokens differ. One gold group per case.",
+      "Offline score (evidence/offline-score.json, offline-score-new.json) is on the live worktree, not the scrubbed copy; one n4 pool entry was this experiment's own offline_score.mjs. It uses the same pool for rules, Jev and raw order, no agents.",
+      "Load: 20 agents ran at once, so each B helper call took about 3 minutes (15 s alone) and several agents' Bash calls passed their 120 s timeout and finished in the background. Checked in the transcripts (evidence/helper-seen.json): B 12/12 and A 11/12 agents received the helper output (n4 r2 A did not). The waiting adds turns and tokens in both arms.",
+      "Scoring rule added after seeing answers: a relative path ('scripts/subagent_usage.mjs') counts when the answer names the gold's top folder as its base. It turned two correct answers (n6 r1 A, n1 r2 B) from fail to pass, one in each arm; same rule for both arms.",
+      "Arm A contamination check: subagent_usage.mjs --forbid 'codebase-task-explorer|explore.mjs' found 0 forbidden calls in all 12 A runs.",
+      "The independent review of the rework found no Critical/Major; 7 Minor/2 Suggestions open (malformed answers.best shape, rg exit 2 with partial output hidden, bin/out build output can now rank, no upper bound on numeric options, 12 other decision-provider.mjs copies still accept a bad 200 body, in-sample tests).",
+      "The repo copy and work folders were under D:/cte2 (short path for Windows), outside the repo; the helper's .codemap/ cache was written into each copy.",
+      "build_tool_report.mjs combines repetitions by majority with ties broken by run order (found by the n3 case agents); here every case passed in both reps, so it does not affect this report."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "../20261017-cte-agent-01/idea-brief.md", "design": "design.md", "experimentPlan": null, "unitTestReport": "unit-tests.json", "agentReview": "agent-review.json",
+    "perToolReport": "report.html", "perToolHtmlReport": "report.html", "mainReport": "../../index.html",
+    "runDirectories": ["runs/A-claude/r1", "runs/A-claude/r2", "runs/B-claude-jev/r1", "runs/B-claude-jev/r2"],
+    "rawResults": ["evidence/texts", "evidence/answers", "evidence/logs", "evidence/usage.scrubbed.json", "evidence/scores.json", "evidence/offline-score.json", "evidence/offline-score-new.json", "evidence/helper-seen.json"],
+    "executionLogs": []
+  }
+}

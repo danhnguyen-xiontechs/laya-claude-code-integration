@@ -1,0 +1,14 @@
+[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1) · 823 of 4976 lines omitted · full log: .tool-output/smoke-ptr.log
+#1 lines 11-30 · failure · anchor · __________________________ test_quote_standard_item ___________________________
+#2 lines 839-858 · failure · anchor · ___________________________ test_quote_is_positive ____________________________
+#3 lines 1680-1699 · failure · anchor · ___________________________ test_label_has_currency ___________________________
+#4 lines 2506-2525 · failure · anchor · ____________________________ test_label_has_weight ____________________________
+#5 lines 3327-3346 · failure · anchor · ______________________ test_hazmat_surcharge_not_applied ______________________
+#6 lines 4153-4172 · failure · anchor · _________________________ test_quote_rounds_to_cents __________________________
+#7 lines 34-45 · captured log call · pinned · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+#8 lines 214-225 · captured log call · pinned (JEV p=0.05) · ERROR    svc.storage:noise_hard.py:80 optional thumbnail missing, ignored
+#9 lines 322-333 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#10 lines 454-465 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+#11 lines 562-573 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+#12 lines 766-777 · captured log call · pinned · ERROR    svc.storage:noise_hard.py:80 optional thumbnail missing, ignored
+[curator] 328 more kept chunks not listed · open the first pointer: Read .tool-output/smoke-ptr.log offset 11 limit 20

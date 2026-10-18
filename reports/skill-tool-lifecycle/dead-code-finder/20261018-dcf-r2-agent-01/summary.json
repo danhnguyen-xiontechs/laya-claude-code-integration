@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-dcf-r2-agent-01",
+  "tool": {
+    "name": "dead-code-finder",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "e551872 + working tree (JEV worktree, untouched) + round-2 patch tool-change.patch (report only)",
+    "branch": "claude/dead-code-round2 (this repo; the tool code is in the JEV repo, not committed here)"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "MEDIUM",
+  "headline": "Still bad after the short-report change: plain Haiku 5.5 passes 7 of 8 runs and Haiku with the scanner 7 of 8 (A fails dcf-01 r2 on one decoy, B on one unlisted line in the same case), and B costs 84% more tokens (2.36M -> 4.34M, higher in 8 of 8 pairs, 7-10 model turns against 4-6). The short report cut report.md from about 12 KB to 2-4 KB, but not the extra turns: the agents still re-check candidates by hand. Top suggestion: skip the scan below about 2,000 lines and judge the tool only on a large case, where reading every file costs more than reading the report.",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 7,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.875,
+      "tokens": 2360762,
+      "inputTokens": 76,
+      "outputTokens": 215,
+      "toolCalls": 117,
+      "modelTurns": 38,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 57719,
+      "pairedTokens": 1180381
+    },
+    "B": {
+      "cases": 8,
+      "pass": 7,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.875,
+      "tokens": 4340524,
+      "inputTokens": 126,
+      "outputTokens": 422,
+      "toolCalls": 94,
+      "modelTurns": 63,
+      "providerCalls": 10,
+      "fallbacks": 0,
+      "providerLatencyMs": 779,
+      "elapsedMs": 88333,
+      "pairedTokens": 2170262
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:34:03.638Z",
+  "generatedAt": "2026-10-18T06:51:47.981Z",
+  "report": "report.html"
+}

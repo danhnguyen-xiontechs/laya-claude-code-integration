@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - test check exited 0 with a non-empty log, AC1 is backed by that passing check, changed files match the diff, no file overlap with S2, and the combined main+S1+S2 run passes.
+S2: FAIL - required check "test" recorded exit 1 with "FAIL tests/count.test.js: 3 == 2", which the branch code cannot produce (count([1,2]) returns 2); a clean rerun of story/S2 passes, but the recorded failure stands and AC1 has no passing evidence.

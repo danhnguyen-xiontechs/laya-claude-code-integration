@@ -1,0 +1,88 @@
+1	{
+2	  "name": "hr-org",
+3	  "stories": [
+4	    {
+5	      "id": "R-1",
+6	      "title": "Org chart fixes",
+7	      "description": "Misc."
+8	    },
+9	    {
+10	      "id": "R-2",
+11	      "title": "Org chart PNG export",
+12	      "description": "Depends on R-1. Export the org chart as a PNG from portal/org/Export.tsx with manager names under each box.",
+13	      "ac": [
+14	        "PNG downloads with names"
+15	      ]
+16	    },
+17	    {
+18	      "id": "R-3",
+19	      "title": "Department on positions",
+20	      "description": "Add column department_id to the positions table with a migration.",
+21	      "ac": [
+22	        "Column exists with a foreign key"
+23	      ]
+24	    },
+25	    {
+26	      "id": "R-4",
+27	      "title": "Rename employee grade",
+28	      "description": "Migration: rename column grade to pay_grade on the employees table.",
+29	      "ac": [
+30	        "Old column gone, data kept"
+31	      ]
+32	    },
+33	    {
+34	      "id": "R-5",
+35	      "title": "Department per position",
+36	      "description": "Show the department of each position in portal/org/Positions.tsx, read from department_id on the positions table.",
+37	      "ac": [
+38	        "Department shown in the list"
+39	      ]
+40	    },
+41	    {
+42	      "id": "R-6",
+43	      "title": "SSO groups to roles",
+44	      "description": "Map identity-provider groups to portal roles in auth/RoleMapper.cs.",
+45	      "links": [
+46	        {
+47	          "type": "depends_on",
+48	          "id": "HR-404"
+49	        }
+50	      ],
+51	      "ac": [
+52	        "Group admins get the admin role"
+53	      ]
+54	    },
+55	    {
+56	      "id": "R-7",
+57	      "title": "Role-based menu",
+58	      "description": "Builds on R-6: hide admin menu items in portal/nav/Menu.tsx for users without the admin role.",
+59	      "ac": [
+60	        "Non-admins see no admin items"
+61	      ]
+62	    },
+63	    {
+64	      "id": "R-8",
+65	      "title": "Employee search API",
+66	      "description": "Introduces EmployeeSearchRequest and GET /api/employees/search in hr/api/SearchController.cs.",
+67	      "ac": [
+68	        "Search by name and email"
+69	      ]
+70	    },
+71	    {
+72	      "id": "R-9",
+73	      "title": "Directory page",
+74	      "description": "The directory page portal/directory/Directory.tsx calls GET /api/employees/search as the user types.",
+75	      "ac": [
+76	        "Results update while typing"
+77	      ]
+78	    },
+79	    {
+80	      "id": "R-10",
+81	      "title": "Password reset email copy",
+82	      "description": "Rewrite the password reset email text in notify/templates/reset.html.",
+83	      "ac": [
+84	        "New copy approved by HR"
+85	      ]
+86	    }
+87	  ]
+88	}

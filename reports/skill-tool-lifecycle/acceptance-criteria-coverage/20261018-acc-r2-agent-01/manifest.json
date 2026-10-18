@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-acc-r2-agent-01",
+  "tool": {
+    "name": "acceptance-criteria-coverage",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "claude/acc-round2"
+  },
+  "status": "IMPLEMENTED",
+  "headline": "Round 2 built and unit-tested (digest subcommand, 4 harder stories); not measured. The user stopped the run before the case agents to review the fixtures and the cost.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "evaluation": {
+    "caseCount": 4,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "deviations": [
+      "Not measured: the run was stopped by the user before the case agents (cost and fixture review).",
+      "Fixtures not frozen: 6 criteria are flagged by the Opus fixture review (see design.md). Offline recall not run.",
+      "The tool code is the JEV review worktree copy (e551872 plus the uncommitted files), not a commit on claude/acc-round2; JEV is read-only for this session. The change is carried as diff/tool-change.diff.",
+      "The no-candidates hint was reworded to avoid the word Missing, because the digest must not print a coverage word.",
+      "Generators and answer keys are kept outside the repo until grading, so the agents cannot read them."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "toolChange": "diff/tool-change.diff",
+    "baseline": "../20261018-acc-agent-01/"
+  }
+}

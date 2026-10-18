@@ -1,0 +1,57 @@
+# retry-loop-breaker round 2 fix (epoch-scoped flaky) test output (2026-10-18T03:59:19Z), branch claude/retry-loop-round2, node v24.11.1
+
+$ cd retry-loop-breaker && node --test "tests/*.unit.ts"
+✔ 1. exact same failing test repeated without change → blocked at threshold 2 (option), noise-masked (3.1856ms)
+✔ 1b. threshold 1 blocks the first repeat (0.2759ms)
+✔ 2. same build with identical compiler errors (elapsed time differs) → blocked (0.7205ms)
+✔ 3. rerun after a successful edit → allowed, every time (0.2865ms)
+✔ 4. same command, changed failure signature → count restarts, allowed (0.376ms)
+✔ 5. transient network failure → never blocked (0.2652ms)
+✔ 6. flaky test (fail → pass → fail → fail) → never blocked (0.2904ms)
+✔ 7. near-duplicate targeting another test → ambiguous (JEV), never a deterministic block (0.6244ms)
+✔ 8. permission denial is not evidence (recorded as ignored) (0.166ms)
+✔ 9. side-effect / compound / unknown commands are ineligible (0.6243ms)
+✔ 10. JEV timeout / invalid JSON / out-of-enum / low confidence → allow (0.3359ms)
+✔ 11. user asks for a retry → epoch bump → allowed (same path as an edit) (0.6143ms)
+✔ 12. new session / other workspace / TTL: no leak (0.3812ms)
+✔ 13. fail, fail, pass (flaky twice) → third run allowed; the flaky exemption ends at the next edit (0.7736ms)
+✔ 14. four identical failures without change → the fourth is blocked (0.5774ms)
+✔ 15. pass, file edit, then failures → not flaky; identical failures still count toward a block (0.3875ms)
+✔ 16. pass then fail at the same epoch → flaky, never blocked while nothing changes (0.2648ms)
+✔ 17. threshold 2 (option) still blocks the third identical run (0.3279ms)
+✔ 18. legacy state: a bare-string passed entry (epoch unknown) never marks flaky; a new pass replaces it (0.2579ms)
+✔ 19. a transient failure never marks a key flaky (pass → transient fail, transient fail → pass) (0.3531ms)
+✔ 20. the near-duplicate path gets no exemption from a flaky key (0.3366ms)
+✔ 21. old state (0ddf988): a bare-string flaky entry never exempts; a new flaky mark replaces it (0.5303ms)
+﹣ live JEV on near-duplicates: zero false blocks (0.0725ms) # SKIP
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 148.7635
+exit code: 0
+
+$ claude plugin validate retry-loop-breaker && claude plugin test retry-loop-breaker   (validate output: last 3 lines)
+      /plugin install retry-loop-breaker --marketplace <owner>/<repo>
+
+✔ Validation passed
+
+tests\engine.test.ts:
+(pass) phase 0: a stored failure denies the next equivalent call without running it [100.04ms]
+(pass) threshold 1 blocks the first identical repeat [52.39ms]
+(pass) default threshold (3): fail, fail, pass runs all three; four identical failures deny the fourth [57.80ms]
+(pass) flaky (fail, pass) is exempt until a real Edit; then 5 identical failures deny the 4th and 5th [67.16ms]
+(pass) a successful Edit between attempts lets the rerun through [48.76ms]
+(pass) a permission denial is not recorded as a failure [51.32ms]
+(pass) side-effect and compound commands are never guarded [42.75ms]
+(pass) observe mode (default) never blocks [56.33ms]
+(pass) subagent calls are left alone (mainAgentOnly) [35.97ms]
+(pass) /retry-guard reset clears the records [49.24ms]
+
+ 10 pass
+ 0 fail
+Ran 10 tests across 1 file. [0.79s]
+exit code: 0

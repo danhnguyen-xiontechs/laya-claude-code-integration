@@ -1,0 +1,18 @@
+Where to start: BLOCKED vs FAIL is decided in the integration-verifier skill, mainly in scripts/verify.mjs.
+
+Mechanism (read directly, lines are in verify.mjs unless noted):
+- deterministicCategory (l.41-47) labels a failed check "environment" when the exit code is 127 or 9009, or the output matches ENV_RX (ECONNREFUSED, EACCES, "command not found", "no space left", etc.).
+- combined() (l.208-216) gives each combined required check: PASS if exit 0; BLOCKED if the category is environment; otherwise FAIL.
+- finalize() (l.285-295) applies a failure cluster: environment means BLOCKED for the stories it is attributed to; every other story gets at least REVIEW_REQUIRED, so a red combined run never leaves a story PASS.
+- BLOCKED is also used for missing evidence, not FAIL: a required check with no log or no exit code (l.118-120), a worktree failure (l.196), no required checks defined (l.343), and no combined check ran (l.297-298).
+- FAIL is for real code/conflict failures: a non-environment check exit, a merge conflict (l.207, 283), shared fixtures or contract/config/migration conflicts (l.162-187), and a claimed-failed AC.
+- Jev is shadow only (l.250-273; SKILL.md l.56-63). Its suggestion is logged and never changes a status.
+
+Five files, most relevant first:
+1. /D:/cte3/w/n2-feature-blocked-status-be984b/repo/.claude/skills/integration-verifier/scripts/verify.mjs — holds all the status logic (deterministicCategory, combined, finalize), so it is the first place to read.
+2. /D:/cte3/w/n2-feature-blocked-status-be984b/repo/.claude/skills/integration-verifier/SKILL.md — the rule table (l.40-54): an environment signature gives "BLOCKED, not FAIL", and PASS requires every condition. The helper did not list it, but it is the written spec.
+3. /D:/cte3/w/n2-feature-blocked-status-be984b/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs — tests the category mapping (l.125-127), an "environment-only" batch that must come out BLOCKED (l.104), and that Jev cannot lift a status (l.129-132).
+4. /D:/cte3/w/n2-feature-blocked-status-be984b/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs — the helper's #2. It only makes the Jev call (shadow, no status effect), so it is relevant only if you need to confirm Jev cannot change a verdict.
+5. /D:/cte3/w/n2-feature-blocked-status-be984b/repo/.claude/skills/story-batch-planner/scripts/planner.mjs — the helper's #3. I did not open it; it covers wave planning, not verdicts, so this is a weak match.
+
+Helper output: the codebase-task-explorer run exited 0 with coverage "partial" (unresolved imports noted). Its list was verify.mjs, decision-provider.mjs, planner.mjs, plan.mjs, and test_cache_expiry_gate.py. The last is off-topic (a cache-expiry hook test). I reordered by what I verified and added SKILL.md and fixtures.test.mjs, which the helper missed. Nothing was modified.

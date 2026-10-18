@@ -1,0 +1,9 @@
+CAUSE: Ledger.flush() wraps the entire posting loop in one try/except, so the entry {"amount": 7} (no "rate" key) raises KeyError at line 20, the broad except logs it and abandons the rest of the batch, and the final {"amount": 3, "rate": 1} is never added (10 + 10 = 20). The test expects the bad entry to be skipped while the others still post (10 + 10 + 3 = 23), so the error handling is scoped to the whole batch instead of each entry.
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h06_swallowed_exception.B.r1\svc\ledger.py:18-22 (try/except in Ledger.flush; the raising access is line 20)
+EVIDENCE:
+  tests\test_ledger.py:6 (log lines 16-17): "E       AssertionError: assert 20 == 23"
+  ledger.py:22 (log line 791): "ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries"
+  Traceback (log lines 793-796): "  File \"...\svc\ledger.py\", line 20, in flush" / "    self.balance += e[\"amount\"] * e[\"rate\"]" / "KeyError: 'rate'"
+  Summary (log line 3328): "FAILED tests/test_ledger.py::test_settle_adds_all_entries - AssertionError: a..."
+  The "noise_hard.py" ERROR/WARNING lines in the log are unrelated chatter from the test harness; the only ERROR from svc.ledger is the one above.
+RUNS: 1

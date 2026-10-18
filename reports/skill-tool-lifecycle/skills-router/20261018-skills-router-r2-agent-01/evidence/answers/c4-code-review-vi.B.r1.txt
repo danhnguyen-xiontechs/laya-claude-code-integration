@@ -1,0 +1,2 @@
+PICK: code-review
+The request is a correctness-bug review of a branch before merge, which is the built-in code-review skill's job (it reviews a branch's diff for correctness bugs), and no more specialized installed skill covers it.

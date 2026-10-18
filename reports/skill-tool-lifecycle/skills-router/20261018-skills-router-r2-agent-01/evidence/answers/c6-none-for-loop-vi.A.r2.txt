@@ -1,0 +1,2 @@
+PICK: none
+A plain request to write a for loop that prints even numbers is ordinary coding that Claude can answer directly, and no installed skill, command or subagent covers it.

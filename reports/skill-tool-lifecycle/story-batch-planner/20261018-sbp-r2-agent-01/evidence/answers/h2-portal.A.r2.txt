@@ -1,0 +1,3 @@
+{"waves": [["Q-4", "Q-9", "Q-10"], ["Q-7"], ["Q-5", "Q-6"], ["Q-8"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Reasoning: Q-1 and Q-2 form a cycle (Q-1 says it needs Q-2 first, but Q-2's link says depends_on Q-1), Q-3 builds on the unresolved Q-2, and Q-11 has no acceptance criteria, so those four are held; the timesheet chain is serialized by the shared POST /api/timesheets endpoint and TimesheetDto (Q-4, then Q-7), then the two consumers Q-5 and Q-6, and Q-8 last because it shares tests/fixtures/timesheets.json with Q-5; Q-9 and Q-10 touch disjoint files and run in wave 1.

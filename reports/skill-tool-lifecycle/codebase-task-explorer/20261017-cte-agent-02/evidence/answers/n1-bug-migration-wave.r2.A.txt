@@ -1,0 +1,19 @@
+Top 5 starting points for "two migration stories landed in the same wave" (most relevant first):
+
+1. D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/scripts/planner.mjs. Root cause. The migration flag is set only by the singular-word regex on title/description/AC (line 37, extract() at lines 53 and 67) or by an explicit migrations[] array. Migration file paths (Migrations/...cs, db/migrations/...sql) never set it. The protected check at lines 108-111 needs the flag, so two migration stories with no shared file or module get no edge and land in one wave.
+2. D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/test/planner.test.mjs. The migration test (lines 48-54) only covers the singular "migration" wording via fixture 04. Add the regression test here.
+3. D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/fixtures/04-migration.json. The only migration fixture, and its text ("a migration", "(new migration)") is the case the regex catches, so it hides the gap. Add a plural/path-only case beside it.
+4. D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/scripts/plan.mjs. The CLI entry passes the batch straight into plan() with no normalization, so migration metadata the orchestrator leaves out is never inferred from text or file paths.
+5. D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/SKILL.md. The input contract (line 15) says schema work is declared via migrations[], and the protection table (line 35) assumes that. If the batch omits it, the planner silently treats the stories as independent.
+
+Reproduced in memory with plan() (no files written):
+- Both stories say "a database migration" (singular): flagged, protected, waves [[S-1],[S-2]].
+- Both stories give migration files in text ("db/Migrations/...cs", "EF migrations" plural), disjoint vocabulary and modules, no metadata: migration=false, zero edges, waves [[S-1,S-2]]. This is the same-wave bug.
+- Same stories with explicit migrations:[path] metadata: flagged, serialized, separate waves. So the planner is correct once the caller supplies the field.
+- Plural or path wording that happens to share words or a module was separated only by the fuzzy "unknown" prefilter, not by migration protection. That separation is accidental, and the pair is not marked protected.
+
+Notes:
+- The helper's codemap output was unranked; its top hit (planner.mjs) matches my own search. The other hits (review-pr-jev-classify, triage/*.py, ado-classify) are noise for this question.
+- The helper created an untracked directory D:/cte2/w/n1-bug-migration-wave-4ef898/repo/.codemap/ (config.json, 00:01:23). It is the only change in the repo; tracked files are untouched. You may want to delete it.
+- I accidentally wrote a 0-byte probe.mjs to <home>/AppData/Local/Temp and have removed it.
+- The user's actual batch file is not in the work folder, so the repro uses synthetic stories.

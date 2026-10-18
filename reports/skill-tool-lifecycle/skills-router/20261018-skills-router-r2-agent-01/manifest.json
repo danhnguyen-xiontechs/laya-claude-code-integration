@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-skills-router-r2-agent-01",
+  "tool": {
+    "name": "skills-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "ada217d",
+    "branch": "claude/skills-router-round2"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "confidence": "LOW",
+  "headline": "On the same 6 requests (Haiku 5.5, 2 repetitions), plain Claude (A) passed 12 of 12 and Claude + the one-line hint (B, Jev live) also 12 of 12, with no case worse; B used 9.2% more tokens (1.51M -> 1.65M) instead of the 72% of round 1, and the whole gap is two runs with a stray harness tool call (the other 10 pairs differ by -0.08% in total). The cases are still too easy to show value, so the verdict stays INSUFFICIENT_EVIDENCE. Top suggestion: measure on cases that plain Claude with the full listing gets wrong, with only Bash and the hand-back tool available to the pick agents.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": {
+    "0": {
+      "id": "A",
+      "name": "Plain Claude + the plain skill listing (48 entries, full descriptions)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh"
+    },
+    "1": {
+      "id": "B",
+      "name": "Claude + the one-line skills-router hint first, then the listing (route.mjs --json -> formatLine, Jev live, agreement low)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev via OpenRouter decisions API, advisory hint"
+    }
+  },
+  "evaluation": {
+    "planVersion": "agent-retro-v1 (round 2)",
+    "datasetVersion": "the same 6 requests as round 1 (S071, S077, S060, S044, S094, S172, test split) and the same gold; catalog = scrubbed git archive of ada217d (48 entries)",
+    "caseCount": 6,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18T00:00:00.000Z",
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript (subagent_usage.mjs); the router's Jev call runs inside the helper and is in _logs, not in the agent's tokens",
+    "deviations": [
+      "Round-1 suggestion 1 applied (one-line hint, printed first in arm B). Suggestion 2 (gate the router call) not applied: the harness always calls the router, so it cannot be measured here. Suggestion 3 (new cases) not applied: this round keeps the same six cases. Suggestion 4 (three Major findings) stays open and is accepted for this run. Suggestion 5 (drop the tool) not applied.",
+      "The measured commit is ada217d. Its `via` label takes the provider name even when no engine call happened: for an empty shortlist (c6, both repetitions) the line says `via: jev` and no Jev call was made. Not fixed in the measured commit; listed as suggestion 3 in improvements.md.",
+      "summary.json `providerCalls` (12) counts route calls, not engine calls (two were empty-shortlist abstains with no engine call). `providerLatencyMs` (1265) does not equal the sum of the B logs (14,608 ms). Harness metric issues, not fixed in this run.",
+      "Two B runs (c1 r2, c6 r2) had one extra tool call: a stray `mcp__ccd_session__hand_off_to_session` call with placeholder arguments that the harness rejected; the agent then gave the correct pick. Each extra turn re-read about 69k cached tokens and accounts for the whole +9.2%. Count: 2 of 12 B runs, 0 of 12 A runs (not significant). Neither run re-read the listing or re-ran the helper.",
+      "The pick agents see this session skill list and the repo; arm A was checked mechanically (0 router calls in 12 runs) and both arms for the answer key (0 hits in 24 runs). The gold stays in cases.json, outside the work folders.",
+      "Unit tests: 73 of 75 pass at ada217d; the 2 failures are the scenario-file sha256 tests, which fail the same way on main (CRLF checkout of eval/scenarios.jsonl). Not caused by this change.",
+      "Agent review (opus, read-only, on the pre-fix diff): 1 Major and 4 Minor fixed before the commit; the rest are open or accepted, with resolutions in agent-review.json.",
+      "Models: case agents Haiku 5.5 with effort xhigh, both arms, 24 runs (forced by the user). Improvement reasoning (spec, review, step 7b) on Opus. The round-1 folder and its helper are untouched; the round-1 helper would not parse the new default output if re-run."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": {
+      "0": "runs/A-claude/r1",
+      "1": "runs/A-claude/r2",
+      "2": "runs/B-claude-jev/r1",
+      "3": "runs/B-claude-jev/r2"
+    },
+    "rawResults": {
+      "0": "evidence/texts",
+      "1": "evidence/answers",
+      "2": "evidence/logs",
+      "3": "evidence/usage.scrubbed.json",
+      "4": "evidence/scores.json",
+      "5": "improvements.md"
+    },
+    "baseline": "../20261018-skills-router-agent-01"
+  }
+}

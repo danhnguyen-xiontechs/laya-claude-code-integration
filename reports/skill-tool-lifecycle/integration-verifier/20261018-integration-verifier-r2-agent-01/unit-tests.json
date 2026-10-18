@@ -1,0 +1,24 @@
+{
+  "suites": [
+    {
+      "level": "unit+fixture",
+      "command": "node --test \".claude/skills/integration-verifier/tests/*.test.mjs\" (claude/integration-verifier-round2 @ b7883e5, Node v24.11.1)",
+      "passed": 6, "failed": 0, "skipped": 0, "notRun": 0,
+      "evidence": "evidence/tests/node-test-output.txt",
+      "note": "6 tests: the 10-batch fixture file plus 5 round-2 tests (missing cited test -> REVIEW_REQUIRED; cited test present -> PASS; no test field -> not evidence; verdict-first report; verdictLines)."
+    },
+    {
+      "level": "fixture",
+      "command": "node .claude/skills/integration-verifier/tests/fixtures.test.mjs (10 hand-labelled batches, c6 expectation changed to REVIEW_REQUIRED for S2)",
+      "passed": 10, "failed": 0, "skipped": 0, "notRun": 0,
+      "evidence": "evidence/tests/fixtures-test-output.txt",
+      "note": "0 mismatches, 0 false PASS against the fixture labels."
+    },
+    {
+      "level": "integration",
+      "command": "node .claude/skills/integration-verifier/tests/fixtures.test.mjs --jev (not re-run this round)",
+      "passed": 0, "failed": 0, "skipped": 0, "notRun": 1,
+      "evidence": "measurement B arms (24 wrapper runs) call verifyBatch with jev: true; 2 Jev calls in total (c5), see evidence/_logs"
+    }
+  ]
+}

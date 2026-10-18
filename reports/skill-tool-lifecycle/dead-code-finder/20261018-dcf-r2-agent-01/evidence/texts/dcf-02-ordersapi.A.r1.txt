@@ -1,0 +1,63 @@
+  19 ./ordersapi/cli.py
+  32 ./ordersapi/core.py
+   2 ./ordersapi/debug.py
+   8 ./ordersapi/exporters.py
+   9 ./ordersapi/handlers.py
+  20 ./ordersapi/tasks.py
+  28 ./ordersapi/web.py
+   3 ./ordersapi/__init__.py
+   9 ./pyproject.toml
+   2 ./settings.toml
+  18 ./tests/test_core.py
+   3 ./tool.mjs
+ 153 total
+=== pyproject.toml
+     1	[project]
+     2	name = "ordersapi"
+     3	version = "0.3.0"
+     4	
+     5	[project.scripts]
+     6	orders = "ordersapi.cli:main"
+     7	
+     8	[project.entry-points."ordersapi.exporters"]
+     9	csv = "ordersapi.exporters:CsvExporter"
+=== settings.toml
+     1	[tasks]
+     2	schedule = ["rebuild_index"]
+=== ordersapi/__init__.py
+     1	from .core import Order, total_for
+     2	
+     3	__all__ = ["Order", "total_for"]
+=== ordersapi/core.py
+     1	import json
+     2	from decimal import Decimal
+     3	
+     4	ROUND_MODE = "half-up"
+     5	TAX = Decimal("0.2")
+     6	
+     7	
+     8	class Order:
+     9	    def __init__(self, items):
+    10	        self.items = items
+    11	
+    12	    def total(self):
+    13	        return sum(price * qty for price, qty in self.items)
+    14	
+    15	    def to_dict(self):
+    16	        return {"items": self.items, "total": self.total()}
+    17	
+    18	    def to_xml(self):
+    19	        rows = "".join(f"<item price='{p}' qty='{q}'/>" for p, q in self.items)
+    20	        return f"<order>{rows}</order>"
+    21	
+    22	
+    23	def total_for(order):
+    24	    return order.total() * (1 + TAX)
+    25	
+    26	
+    27	def legacy_total(order):
+    28	    return sum(p for p, _ in order.items)
+    29	
+    30	
+    31	def _cents(value):
+    32	    return int(round(value * 100))

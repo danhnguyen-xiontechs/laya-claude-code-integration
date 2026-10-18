@@ -1,0 +1,14 @@
+{ "name": "portal-timesheets",
+  "stories": [
+    { "id": "Q-1", "title": "Profile API", "description": "Adds GET /api/profile returning ProfileDto from portal/api/ProfileController.cs. Needs Q-2 merged first because it reuses the avatar store that Q-2 introduces.", "ac": ["Profile returns name and avatar"] },
+    { "id": "Q-2", "title": "Avatar store", "description": "Introduce the avatar blob store in portal/storage/AvatarStore.cs and show the avatar in the profile header.", "links": [{ "type": "depends_on", "id": "Q-1" }], "ac": ["Avatar uploaded and shown"] },
+    { "id": "Q-3", "title": "Avatar cropping", "description": "Builds on Q-2: let employees crop the avatar before saving, in portal/profile/Crop.tsx.", "ac": ["Cropped image saved"] },
+    { "id": "Q-4", "title": "Timesheet submit API", "description": "Adds POST /api/timesheets accepting TimesheetDto in portal/api/TimesheetController.cs.", "ac": ["201 on valid week"] },
+    { "id": "Q-5", "title": "Timesheet entry page", "description": "The weekly entry page portal/timesheets/Entry.tsx calls POST /api/timesheets. Tests use the fixture tests/fixtures/timesheets.json.", "ac": ["Week submitted from the page"] },
+    { "id": "Q-6", "title": "Mobile timesheet submit", "description": "The mobile app screen mobile/timesheets/Submit.tsx calls POST /api/timesheets.", "ac": ["Week submitted from the phone"] },
+    { "id": "Q-7", "title": "Overtime field on timesheets", "description": "Extends TimesheetDto with an overtimeHours field in portal/api/dto/TimesheetDto.cs.", "ac": ["Overtime hours stored"] },
+    { "id": "Q-8", "title": "Timesheet approval tests", "description": "Add approval scenarios to the fixture tests/fixtures/timesheets.json and to tests/approval/ApprovalTests.cs.", "ac": ["Approval tests green"] },
+    { "id": "Q-9", "title": "Dark mode", "description": "Add a dark theme in portal/theme/dark.css with a toggle in the settings menu.", "ac": ["Theme persists after reload"] },
+    { "id": "Q-10", "title": "Help page", "description": "Static help page portal/help/Help.tsx with links to the HR policies.", "ac": ["Help reachable from the footer"] },
+    { "id": "Q-11", "title": "Timesheet tweaks", "description": "Small changes." }
+  ] }

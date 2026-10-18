@@ -1,0 +1,14 @@
+Starting points for "a plugin hook that saves a short summary file of the session right before compaction", most relevant first. Read-only; no tracked files changed.
+
+1. D:/cte3/w/n5-newfeature-precompact-743f60/repo/fast-compact/hooks/fast-compact.ts - the only existing hook on the compaction path: `on('session.compact', ...)` receives the transcript (`event.messages`) just before compaction, writes files via `$.fs.write` under `~/.claude/fast-compact/`, and falls back with `next(event)` so it never blocks compaction. A summary-save hook should follow this pattern.
+2. D:/cte3/w/n5-newfeature-precompact-743f60/repo/fast-compact/types/claude-code.d.ts - the API contract: `session.compact` input (trigger, agentId, instructions, messages; around line 7222) and the native `PreCompact` command-hook input (around line 5562, trigger and custom_instructions only). `BaseHookInput` (around line 554) includes `transcript_path`, so a native PreCompact command hook could also read the transcript from disk.
+3. D:/cte3/w/n5-newfeature-precompact-743f60/repo/fast-compact/tests/fast-compact.test.ts - the node --test suite for `planCompaction`; new hook tests should follow this style.
+4. D:/cte3/w/n5-newfeature-precompact-743f60/repo/fast-compact/hooks/hooks.json - module registry (`{ "modules": ["./fast-compact.ts"] }`); any new hook module must be listed here.
+5. D:/cte3/w/n5-newfeature-precompact-743f60/repo/fast-compact/.claude-plugin/plugin.json - manifest with userConfig options (preserveRecentMessages, minReductionRatio); the place to declare any summary-output or on/off option.
+
+Notes:
+- The helper's ranking is low confidence (Jev top-1 p=0.41). Its three rows do not fit: log-hook.js is a prompt-budget tool, and workflow/runs/persist-sessions/{laya,baseline}/session_store.py persists router sessions in a run folder with no compaction code. I did not use them.
+- A repo-wide search for pre-compact / compaction / PreCompact found fast-compact as the only compaction-related plugin.
+- Assumption: "a plugin hook" means a hook inside the fast-compact plugin. If a new plugin folder is wanted, retry-loop-breaker/hooks/register.ts is a template (on(...) registrations with .catch fallbacks).
+- Function hooks need CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 (fast-compact/README.md; early access, 2.1.274+).
+- `git status` in the repo shows an untracked `.codemap/` directory, most likely written by the helper's codemap step. I did not delete it because the task was read-only.

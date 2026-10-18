@@ -1,0 +1,348 @@
+diff --git a/jev_advisor/advisor.py b/jev_advisor/advisor.py
+index 53d85e2..8f388cf 100644
+--- a/jev_advisor/advisor.py
++++ b/jev_advisor/advisor.py
+@@ -112,7 +112,7 @@ def run_worker(request_path: Path) -> int:
+         except OSError:
+             lines = []
+         state = "ok" if res.get("status") == "ok" else f"unavailable ({res.get('error')})"
+-        out, _ = final_block(ctx, req, res, adv, lines, state)
++        out, _, _ = final_block(ctx, req, res, adv, lines, state)
+         Path(ctx["adviceTxt"]).write_text("\n".join(out) + "\n", encoding="utf-8")
+     return 0
+ 
+@@ -121,7 +121,8 @@ def final_block(ctx: dict, request: dict | None, advice: dict | None, adv: dict,
+     """The advisor block, shared by the wrapper and the late-finishing worker. Returns (lines, hint rows)."""
+     from . import render
+ 
+-    rows = hints(ctx["parsed"], request, advice, adv, lines) if request else []
++    info = hint_rows(ctx["parsed"], request, advice, adv, lines) if request else {"shown": [], "flagged": 0, "anchorRepeats": 0}
++    rows = info["shown"]
+     show = ctx["show"]
+     out = render.block(
+         exit_code=ctx["exitCode"],
+@@ -133,8 +134,11 @@ def final_block(ctx: dict, request: dict | None, advice: dict | None, adv: dict,
+         jev_state=jev_state if show else None,
+         checked=ctx["checked"],
+         advice_rel=ctx["adviceRel"],
++        jev_flagged=info["flagged"],
++        jev_repeats=info["anchorRepeats"],
++        excerpt_chars=int(adv.get("hintExcerptChars", 200)),
+     )
+-    return out, rows
++    return out, rows, info
+ 
+ 
+ LEVEL = re.compile(r"\b(CRITICAL|ERROR|WARNING|WARN|FATAL)\b")
+@@ -169,17 +173,46 @@ def focus_line(lines: list[str], start: int, end: int) -> tuple[int, str]:
+     return best, (lines[best - 1] if 0 < best <= len(lines) else "")
+ 
+ 
+-def hints(parsed: dict, request: dict, advice: dict | None, adv: dict, lines: list[str] | None = None) -> list[dict]:
+-    """Chunks to print as JEV hints: p >= threshold, highest first, at most maxJevHints."""
++_LOG_PREFIX = re.compile(r"^(DEBUG|INFO|WARNING|ERROR|CRITICAL)\s+\S+\s+")
++_EXC_PREFIX = re.compile(r"^[\w.]*(Error|Exception|Exceeded|Exit)\w*:\s*")
++
++
++def _norm(s: str) -> str:
++    return re.sub(r"\d+", "#", " ".join(s.lower().split()))
++
++
++def _repeats_anchor(row: dict, parsed: dict, lines: list[str]) -> bool:
++    """True when the chunk's focus line only repeats the failure message the local parser already printed."""
++    fails = [f for f in parsed["failures"] if f["id"] == row["failure"]] if row.get("failure") else parsed["failures"]
++    if any(f["anchorStart"] <= row["focusLine"] <= f["anchorEnd"] for f in fails):
++        return True
++    focus = _norm(_LOG_PREFIX.sub("", row.get("focusText") or ""))
++    for f in fails:
++        texts = [re.sub(r"\.\.\.$", "", f["message"])]
++        if 0 < f["errorLine"] <= len(lines):
++            texts.append(lines[f["errorLine"] - 1].lstrip().removeprefix("E").lstrip())
++        for t in list(texts):
++            texts.append(_EXC_PREFIX.sub("", t))
++        for t in texts:
++            a = _norm(t)
++            if len(a) >= 16 and ((a in focus and len(focus) - len(a) <= 24) or (focus in a and len(focus) >= 16)):
++                return True
++    return False
++
++
++def hint_rows(parsed: dict, request: dict, advice: dict | None, adv: dict, lines: list[str] | None = None) -> dict:
++    """Chunks to print as JEV hints. `flagged` counts the flags that are not repeats of the local anchor
++    (the repeats are counted in `anchorRepeats`); at most maxJevHints are shown."""
++    empty = {"shown": [], "flagged": 0, "anchorRepeats": 0}
+     if not advice or advice.get("status") != "ok":
+-        return []
++        return empty
+     by_id = {m["id"]: m for m in request["chunks"] if "id" in m}
+     rows = [
+         {**by_id[cid], "p": p, "text": request["state"]["chunks"][cid]["text"]}
+         for cid, p in advice["answers"].items()
+         if cid in by_id and p >= float(adv["hintThreshold"])
+     ]
+-    rows.sort(key=lambda r: -r["p"])
++    rows.sort(key=lambda r: (-r["p"], r["start"]))
+     seen, unique = set(), []
+     for r in rows:
+         n, text = focus_line(lines or [], r["start"], r["end"])
+@@ -188,9 +221,23 @@ def hints(parsed: dict, request: dict, advice: dict | None, adv: dict, lines: li
+         if sig not in seen:  # same message repeated in another chunk of the same failure: one hint is enough
+             seen.add(sig)
+             unique.append(r)
++    repeats = 0
++    if adv.get("dropAnchorRepeats", True):
++        kept = []
++        for r in unique:
++            if _repeats_anchor(r, parsed, lines or []):
++                repeats += 1
++            else:
++                kept.append(r)
++        unique = kept
+     # best hint of each failure first, then the rest by probability
+     firsts, rest, covered = [], [], set()
+     for r in unique:
+         (rest if r["failure"] in covered else firsts).append(r)
+         covered.add(r["failure"])
+-    return (firsts + rest)[: int(adv["maxJevHints"])]
++    return {"shown": (firsts + rest)[: int(adv["maxJevHints"])], "flagged": len(unique), "anchorRepeats": repeats}
++
++
++def hints(parsed: dict, request: dict, advice: dict | None, adv: dict, lines: list[str] | None = None) -> list[dict]:
++    """Chunks to print as JEV hints (see hint_rows)."""
++    return hint_rows(parsed, request, advice, adv, lines)["shown"]
+diff --git a/jev_advisor/config.py b/jev_advisor/config.py
+index 88e1bd7..8e51df3 100644
+--- a/jev_advisor/config.py
++++ b/jev_advisor/config.py
+@@ -17,7 +17,9 @@ DEFAULT_ADVISOR = {
+     "maxChunkChars": 1200,
+     "maxJevInputChars": 90000,
+     "hintThreshold": 0.6,
+-    "maxJevHints": 3,
++    "maxJevHints": 1,
++    "dropAnchorRepeats": True,
++    "hintExcerptChars": 200,
+     "jevTimeoutSec": 15,
+     "model": "typesafe/jev-1.13",
+     "endpoint": "https://openrouter.ai/api/alpha/decisions",
+diff --git a/jev_advisor/render.py b/jev_advisor/render.py
+index 321c319..a99a74e 100644
+--- a/jev_advisor/render.py
++++ b/jev_advisor/render.py
+@@ -17,7 +17,8 @@ def _excerpt(text: str, n: int = 80) -> str:
+     return ""
+ 
+ 
+-def block(*, exit_code, interrupted, total_lines, log_rel, parsed, jev_rows, jev_state, checked, advice_rel) -> list[str]:
++def block(*, exit_code, interrupted, total_lines, log_rel, parsed, jev_rows, jev_state, checked, advice_rel,
++          jev_flagged=0, jev_repeats=0, excerpt_chars=80) -> list[str]:
+     """jev_state: None (not used), "ok", "pending", or "unavailable (<class>)"."""
+     out = [f"{P} exit code {exit_code} (unchanged){' · interrupted' if interrupted else ''} · {total_lines} lines in {log_rel}"]
+     if parsed is None:
+@@ -37,14 +38,18 @@ def block(*, exit_code, interrupted, total_lines, log_rel, parsed, jev_rows, jev
+         out.append(f"  [local] … {len(fails) - 3} more failures (see the short test summary)")
+     for r in jev_rows:
+         who = f"captured output of {r['failure']}" if r["failure"] else r["kind"]
+-        out.append(f"  [jev p={r['p']:.2f}] L{r['start']}-{r['end']} ({who}), e.g. L{r['focusLine']}: {_excerpt(r['focusText'])}")
++        out.append(f"  [jev p={r['p']:.2f}] L{r['start']}-{r['end']} ({who}), e.g. L{r['focusLine']}: {_excerpt(r['focusText'], excerpt_chars)}")
+     if jev_state == "ok":
+         rest = checked - len(jev_rows)
+-        out.append(
+-            f"  [jev] {rest} other chunks checked, none flagged"
+-            if jev_rows
+-            else f"  [jev] {checked} chunks checked, none flagged as likely relevant"
+-        )
++        repeat_note = f"; {jev_repeats} flagged chunk(s) repeat the first error line and are not shown" if jev_repeats else ""
++        if jev_rows and jev_flagged > len(jev_rows):
++            out.append(f"  [jev] {rest} other chunks checked, {jev_flagged - len(jev_rows)} lower-ranked flags not shown{repeat_note}")
++        elif jev_rows:
++            out.append(f"  [jev] {rest} other chunks checked, none flagged{repeat_note}")
++        elif jev_repeats > 0:
++            out.append(f"  [jev] {checked} chunks checked; the flagged ones only repeat the first error line and are not shown")
++        else:
++            out.append(f"  [jev] {checked} chunks checked, none flagged as likely relevant")
+     elif jev_state == "pending":
+         out.append(f"  [jev] advice still pending; re-read {advice_rel} in a few seconds for the hints")
+     elif jev_state:
+diff --git a/jev_advisor/runner.py b/jev_advisor/runner.py
+index d498ee5..ca1eee1 100644
+--- a/jev_advisor/runner.py
++++ b/jev_advisor/runner.py
+@@ -122,7 +122,7 @@ def run(cfg: dict, profile_name: str, args: list[str]) -> int:
+         "log": log_rel,
+         "lines": len(lines),
+         "bytes": paths["log"].stat().st_size,
+-        "advisor": {"threshold": adv["hintThreshold"], "maxJevHints": adv["maxJevHints"], "model": adv["model"], "showJevHints": adv.get("showJevHints", True)},
++        "advisor": {"threshold": adv["hintThreshold"], "maxJevHints": adv["maxJevHints"], "model": adv["model"], "showJevHints": adv.get("showJevHints", True), "dropAnchorRepeats": adv.get("dropAnchorRepeats", True), "hintExcerptChars": adv.get("hintExcerptChars", 200)},
+     }
+     try:
+         _advise(cfg, profile, run_id, paths, lines, record)
+@@ -202,7 +202,7 @@ def _advise(cfg, profile, run_id, paths, lines, record) -> None:
+         # the worker re-renders the block when it finishes, so a "pending" file gets the hints later
+         req = storage.read_json(paths["request"]) or {}
+         storage.write_json(paths["request"], {**req, "render": ctx})
+-    lines_out, rows = advisor.final_block(ctx, request, advice, adv, lines, jev_state)
++    lines_out, rows, hint_info = advisor.final_block(ctx, request, advice, adv, lines, jev_state)
+     for line in lines_out:
+         _say(line)
+     paths["advice_txt"].write_text("\n".join(lines_out) + "\n", encoding="utf-8")
+@@ -211,13 +211,15 @@ def _advise(cfg, profile, run_id, paths, lines, record) -> None:
+         advice = storage.read_json(paths["advice"])
+         if advice:
+             jev_state = "ok" if advice.get("status") == "ok" else f"unavailable ({advice.get('error')})"
+-            late, rows = advisor.final_block(ctx, request, advice, adv, lines, jev_state)
++            late, rows, hint_info = advisor.final_block(ctx, request, advice, adv, lines, jev_state)
+             paths["advice_txt"].write_text("\n".join(late) + "\n", encoding="utf-8")
+     record["jev"] = {
+         "state": jev_state,
+         "waitedMs": waited,
+         "shown": show,
+         "hints": [{k: r[k] for k in ("id", "start", "end", "failure", "p", "focusLine")} for r in rows],
++        "flagged": hint_info["flagged"],
++        "anchorRepeats": hint_info["anchorRepeats"],
+     }
+     record["blockChars"] = sum(len(l) + 1 for l in lines_out) + len(render.header(record["runId"], record["log"], storage.rel(cfg, paths["advice_txt"]))) + 1
+ 
+diff --git a/tests/test_parser_and_advisor.py b/tests/test_parser_and_advisor.py
+index d95056f..aa940b3 100644
+--- a/tests/test_parser_and_advisor.py
++++ b/tests/test_parser_and_advisor.py
+@@ -69,8 +69,9 @@ class AdvisorTest(unittest.TestCase):
+         for cid in f1:
+             answers[cid] = 0.9
+         answers[f2[0]] = 0.65
+-        rows = advisor.hints(self.parsed, req, {"status": "ok", "answers": answers}, DEFAULT_ADVISOR, self.lines)
+-        self.assertLessEqual(len(rows), DEFAULT_ADVISOR["maxJevHints"])
++        adv = {**DEFAULT_ADVISOR, "maxJevHints": 3, "dropAnchorRepeats": False}
++        rows = advisor.hints(self.parsed, req, {"status": "ok", "answers": answers}, adv, self.lines)
++        self.assertLessEqual(len(rows), adv["maxJevHints"])
+         self.assertEqual(rows[1]["failure"], "f2")  # f2's best hint comes before f1's second one
+         self.assertTrue(all(r["p"] >= DEFAULT_ADVISOR["hintThreshold"] for r in rows))
+ 
+@@ -92,5 +93,126 @@ class AdvisorTest(unittest.TestCase):
+         self.assertNotIn("irrelevant", text)
+ 
+ 
++    def _ids(self, req, needle):
++        return [m["id"] for m in req["chunks"] if "id" in m and needle in req["state"]["chunks"][m["id"]]["text"]]
++
++    def test_one_hint_by_default(self):
++        req = advisor.build_request(self.parsed, DEFAULT_ADVISOR)
++        f1 = [m["id"] for m in req["chunks"] if m.get("failure") == "f1" and "id" in m][:3]
++        self.assertEqual(len(f1), 3)
++        answers = {cid: 0.1 for cid in req["questions"]}
++        for cid, p in zip(f1, (0.9, 0.8, 0.7)):
++            answers[cid] = p
++        info = advisor.hint_rows(self.parsed, req, {"status": "ok", "answers": answers}, DEFAULT_ADVISOR, self.lines)
++        self.assertEqual(len(info["shown"]), 1)
++        self.assertEqual(info["shown"][0]["p"], 0.9)
++        self.assertEqual(info["flagged"], 3)
++
++    def test_anchor_repeat_is_dropped_next_hint_shown(self):
++        req = advisor.build_request(self.parsed, DEFAULT_ADVISOR)
++        log = synthetic_log()
++        parsed = pytest_parser.parse(log, DEFAULT_ADVISOR)
++        req = advisor.build_request(parsed, DEFAULT_ADVISOR)
++        answers = {cid: 0.1 for cid in req["questions"]}
++        for cid in self._ids(req, "ERROR    svc.pipeline"):
++            answers[cid] = 0.95
++        for cid in self._ids(req, "elapsed_ms=4800"):
++            answers[cid] = 0.8
++        info = advisor.hint_rows(parsed, req, {"status": "ok", "answers": answers}, DEFAULT_ADVISOR, log)
++        self.assertEqual(info["anchorRepeats"], 1)
++        self.assertEqual(len(info["shown"]), 1)
++        self.assertIn("elapsed_ms=4800", info["shown"][0]["text"])
++
++    def test_only_anchor_repeats_gives_no_hint_and_says_so(self):
++        log = synthetic_log()
++        parsed = pytest_parser.parse(log, DEFAULT_ADVISOR)
++        req = advisor.build_request(parsed, DEFAULT_ADVISOR)
++        answers = {cid: 0.1 for cid in req["questions"]}
++        for cid in self._ids(req, "ERROR    svc.pipeline"):
++            answers[cid] = 0.95
++        advice = {"status": "ok", "answers": answers}
++        self.assertEqual(advisor.hint_rows(parsed, req, advice, DEFAULT_ADVISOR, log)["shown"], [])
++        ctx = {"parsed": parsed, "show": True, "exitCode": 1, "interrupted": False, "totalLines": len(log),
++               "log": "run.log", "checked": len(req["questions"]), "adviceRel": "advice.json"}
++        out, rows, info = advisor.final_block(ctx, req, advice, DEFAULT_ADVISOR, log, "ok")
++        self.assertEqual(rows, [])
++        self.assertIn("only repeat the first error line", "\n".join(out))
++
++    def test_truncated_summary_is_not_an_anchor(self):
++        log = synthetic_log(message="AssertionErro...", e_line="E       AssertionError: assert False", error="")
++        parsed = pytest_parser.parse(log, DEFAULT_ADVISOR)
++        req = advisor.build_request(parsed, DEFAULT_ADVISOR)
++        answers = {cid: 0.1 for cid in req["questions"]}
++        for cid in self._ids(req, "elapsed_ms=4800"):
++            answers[cid] = 0.7
++        self.assertTrue(parsed["failures"][0]["message"].endswith("..."))
++        info = advisor.hint_rows(parsed, req, {"status": "ok", "answers": answers}, DEFAULT_ADVISOR, log)
++        self.assertEqual(info["anchorRepeats"], 0)
++        self.assertTrue(info["shown"])
++
++    def test_render_counts_suppressed_flags(self):
++        row = {"p": 0.9, "start": 1, "end": 2, "failure": "f1", "kind": "x", "focusLine": 1, "focusText": "a line"}
++        out = render.block(exit_code=1, interrupted=False, total_lines=5, log_rel="run.log", parsed=self.parsed,
++                           jev_rows=[row], jev_state="ok", checked=9, advice_rel="a.json", jev_flagged=3)
++        text = "\n".join(out)
++        self.assertIn("2 lower-ranked flags not shown", text)
++        self.assertNotIn("none flagged", text)
++
++    def test_excerpt_length(self):
++        row = {"p": 0.9, "start": 1, "end": 2, "failure": "f1", "kind": "x", "focusLine": 1, "focusText": "w" * 300}
++        kw = dict(exit_code=1, interrupted=False, total_lines=5, log_rel="run.log", parsed=self.parsed,
++                  jev_rows=[row], jev_state="ok", checked=9, advice_rel="a.json")
++        line = [l for l in render.block(**kw, excerpt_chars=200) if "[jev p=" in l][0]
++        excerpt = line.split(": ", 2)[-1]
++        self.assertEqual(len(excerpt), 200)
++        self.assertTrue(excerpt.endswith("…"))
++        self.assertEqual(DEFAULT_ADVISOR["hintExcerptChars"], 200)
++
++    def test_old_behaviour_flags(self):
++        req = advisor.build_request(self.parsed, DEFAULT_ADVISOR)
++        f1 = [m["id"] for m in req["chunks"] if m.get("failure") == "f1" and "id" in m][:3]
++        answers = {cid: 0.1 for cid in req["questions"]}
++        for cid, p in zip(f1, (0.9, 0.8, 0.7)):
++            answers[cid] = p
++        old = {**DEFAULT_ADVISOR, "maxJevHints": 3, "dropAnchorRepeats": False, "hintExcerptChars": 80}
++        rows = advisor.hints(self.parsed, req, {"status": "ok", "answers": answers}, old, self.lines)
++        self.assertEqual([r["p"] for r in rows], [0.9, 0.8, 0.7])
++
++
++def synthetic_log(message="deadline exceeded in stage geo_lookup", e_line=None,
++                  error="ERROR    svc.pipeline:pipeline.py:31 deadline exceeded in stage geo_lookup"):
++    e_line = e_line or f"E   svc.pipeline.DeadlineExceeded: {message}"
++    head = [
++        "============================= test session starts ==============================",
++        "collected 1 item",
++        "",
++        "tests/test_pipeline.py F                                                 [100%]",
++        "",
++        "=================================== FAILURES ===================================",
++        "__________________________________ test_geo_lookup ___________________________________",
++        "",
++        "    def test_geo_lookup():",
++        ">       run_stage()",
++        "",
++        "tests/test_pipeline.py:9: ",
++        "svc/pipeline.py:31: in run_stage",
++        f'    raise DeadlineExceeded("{message}")',
++        e_line,
++        "",
++        "----------------------------- Captured log call -----------------------------",
++    ]
++    body = ["DEBUG    svc.pipeline:pipeline.py:%d stage=geo_lookup start" % (10 + i) for i in range(4)]
++    body += ["DEBUG    svc.pipeline:pipeline.py:27 stage=geo_lookup elapsed_ms=4800 budget_left_ms=-70"]
++    body += ["INFO     svc.pipeline:pipeline.py:28 retrying stage geo_lookup later"] * 14
++    body += [error] if error else []
++    tail = [
++        "",
++        "=========================== short test summary info ============================",
++        f"FAILED tests/test_pipeline.py::test_geo_lookup - {message}",
++        "========================= 1 failed in 0.12s =========================",
++    ]
++    return head + body + tail
++
++
+ if __name__ == "__main__":
+     unittest.main()

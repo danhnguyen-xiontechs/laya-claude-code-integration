@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - open High review finding "SQL built by string concat" in review_findings.json has no resolution, so a human must triage it (checks pass: exit 0, log present, reproduced).
+S2: REVIEW_REQUIRED - AC1 has no evidence (empty list in story/S2 manifest); its ac_coverage row cites tests/count.test.js, which does not exist on story/S2, so it does not count.

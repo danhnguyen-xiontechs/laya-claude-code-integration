@@ -1,0 +1,10 @@
+{"waves": [["P-1", "P-3", "P-5", "P-10", "P-11"], ["P-2", "P-4", "P-6", "P-9", "P-12"]], "needs_decision": ["P-7", "P-8"]}
+
+Reasoning: the edges P-1→P-2, P-3→P-4, P-3→P-12, P-5→P-6 (explicit link), plus P-11→P-6 (both touch notify/templates/payslip.html) and P-1→P-9 (migration chain) fit in two waves; P-7 waits on FIN-12, which is outside the batch, and P-8 has no ACs and is too thin to schedule.
+
+Notes:
+- I ran plan.mjs --summary. Its 4-wave split (P-11 alone in wave 2) is not forced by any edge. P-11 has no predecessor, so it can run in wave 1 with the others.
+- The planner's Jev shadow values were not used for any decision.
+- P-3's "totals" may depend on P-2's withholding, but the story text does not say so, so I did not add that edge. If it does, move P-3 and its dependents (P-4, P-12) to wave 2 and P-4/P-12 to wave 3.
+- P-12 may need a migration if it adds an actor column, which would conflict with P-1 and P-9 on the migration chain. The text does not say so, so I did not add an edge.
+- Planner logs were written to the scratchpad _logs folder by the plan.mjs wrapper. Nothing was deleted.

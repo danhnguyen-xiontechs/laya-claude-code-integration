@@ -1,0 +1,20 @@
+BLOCKED vs FAIL is decided by deterministic rules in integration-verifier's verify.mjs. Jev and the agents' own claims cannot set it.
+
+How it decides:
+- Story level (verifyStory, verify.mjs L95-124): BLOCKED if the branch is missing, the manifest is invalid, or a required check has no record, no non-empty log, or no numeric exit code. A recorded non-zero exit on the story's own check is FAIL (L121), with no environment classification.
+- Combined run (L208-217): exit 0 is PASS. Non-zero is BLOCKED only if deterministicCategory() returns 'environment' (L41-47: exit 127 or 9009, or ENV_RX matched against the whole output). Otherwise FAIL.
+- finalize (L276-301): an environment cluster marks every story BLOCKED. A code cluster marks attributed stories FAIL and the rest REVIEW_REQUIRED. Jev (triage, L250-273) only fills a shadow field and never sets the category.
+- Batch-level BLOCKED also comes from no required checks (L343), no combined check run (L298), or a failed worktree add (L196). Worst status wins: FAIL > BLOCKED > REVIEW_REQUIRED > PASS.
+
+5 most relevant files, most relevant first:
+1. <home>/... no: D:/cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/scripts/verify.mjs : holds every BLOCKED/FAIL decision (verifyStory L95-124, combined L208-217, deterministicCategory L41-47, finalize L276-301).
+2. D:/cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/SKILL.md : the documented status table (around L28-52) that the code should implement; compare it with the code.
+3. D:/cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs : fixtures with expected batch statuses. missing-logs and environment-only expect BLOCKED (L95, L104); contract-mismatch, duplicate-migration and claim-only-and-story-fail expect FAIL; L129-133 asserts Jev cannot lift FAIL.
+4. D:/cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/references/manifest.md : the story result manifest contract (exit_code, log_path relative to the batch folder); a missing or empty log drives the story BLOCKED path.
+5. D:/cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs : the Jev provider imported by verify.mjs; relevant only to confirm it is shadow-only and not in the status path (triage L259-268).
+
+Things worth a check (from reading, not run):
+- ENV_RX runs against the full combined output (L43, L213), so a real code failure whose log mentions "permission denied" or "ETIMEDOUT" would be reported BLOCKED instead of FAIL.
+- The same failure is FAIL for a story's own check (L121) but BLOCKED in the combined run. This may be intentional; SKILL.md mentions only the combined case.
+
+Not verified: this was a read-only task. I did not run verify.mjs or the fixtures tests; statuses above come from reading the code and the fixture expectations. The find.mjs helper's first run returned an unranked candidate list (verify.mjs first; the rest were mostly unrelated story-batch-planner and test files). Its retry timed out and was not repeated. No skill or other script was used.

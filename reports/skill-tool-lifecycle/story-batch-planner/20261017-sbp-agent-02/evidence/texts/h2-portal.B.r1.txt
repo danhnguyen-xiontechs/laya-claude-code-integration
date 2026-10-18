@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+// Neutral wrapper, arm B: real story-batch-planner on this folder's batch (Jev shadow on); logs one line per call.
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+const KEY = "h2-portal.B.r1";
+const PLANNER = "D:\\XionTechs\\Laya\\.claude\\worktrees\\brave-wu-480bf0\\.claude\\skills\\story-batch-planner\\scripts\\plan.mjs";
+const LOGS = "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\_logs";
+const HOME = "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\_home\\h2-portal.B.r1";
+const here = import.meta.dirname;
+fs.mkdirSync(LOGS, { recursive: true }); fs.mkdirSync(HOME, { recursive: true });
+const planJson = path.join(LOGS, KEY + '.plan.json');
+const r = spawnSync(process.execPath, [PLANNER, '--in', path.join(here, 'batch.json'), '--out', planJson, '--jev', '--summary'], { encoding: 'utf8', env: { ...process.env, HOME, USERPROFILE: HOME } });
+if (r.status !== 0) { process.stderr.write(r.stderr || 'planner failed\n'); process.exit(r.status ?? 1); }
+process.stdout.write(r.stdout);
+const plan = JSON.parse(fs.readFileSync(planJson, 'utf8'));
+const jev = plan.edges.filter((e) => e.jev_suggestion).map((e) => ({ pair: e.pair, deterministic: e.relation, jev: e.jev_suggestion.label, p: e.jev_suggestion.p ?? null, valid: e.jev_suggestion.valid, error: e.jev_suggestion.error ?? null }));
+fs.appendFileSync(path.join(LOGS, KEY + '.jsonl'), JSON.stringify({ t: new Date().toISOString(), key: KEY, waves: plan.waves.map((w) => w.stories), jev_shadow: plan.jev_shadow ?? null, jev }) + '\n');
+--- SUMMARY ---
+# Story batch plan (11 stories, 4 waves, Jev shadow)
+
+PLAN_JSON {"waves":[["Q-4","Q-5","Q-6","Q-9"],["Q-10"],["Q-7","Q-8"],["Q-11"]],"needs_decision":[{"kind":"cycle","stories":["Q-1","Q-2"]},{"kind":"blocked","stories":["Q-3"]},{"kind":"incomplete","stories":["Q-11"]}]}
+
+- Wave 1: Q-4, Q-5, Q-6, Q-9
+- Wave 2: Q-10
+- Wave 3: Q-7, Q-8
+- Wave 4: Q-11
+- Not scheduled: Q-1, Q-2, Q-3
+
+## Dependencies and conflicts
+- Q-1 depends on Q-2 [text_reference, high]: Q-1 text references Q-2
+- Q-2 depends on Q-1 [explicit_link, high]: link Q-2 → Q-1
+- Q-1 ↔ Q-3 likely_independent [deterministic, low]: no shared resource; shared terms only: profil, port, avatar · Jev(shadow): independent 0.52
+- Q-1 ↔ Q-4 unknown → Q-4 then Q-1 [prefilter, low]: same module: portal/api; shared terms: api, add, port · Jev(shadow): shared_module_or_contract 0.52
+- Q-1 ↔ Q-5 likely_independent [deterministic, low]: no shared resource; shared terms only: api, port · Jev(shadow): independent 0.99
+- Q-1 ↔ Q-7 unknown → Q-7 then Q-1 [prefilter, low]: same module: portal/api; shared terms: api, port · Jev(shadow): independent 0.52
+- Q-1 ↔ Q-11 likely_independent [deterministic, low]: no shared resource found
+- Q-3 depends on Q-2 [text_reference, high]: Q-3 text references Q-2
+- Q-2 ↔ Q-11 likely_independent [deterministic, low]: no shared resource found
+- Q-3 ↔ Q-5 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- Q-3 ↔ Q-10 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- Q-3 ↔ Q-11 likely_independent [deterministic, low]: no shared resource found
+- Q-4 ↔ Q-5 likely_independent [deterministic, low]: no shared resource; shared terms only: timesheet, api, post, port · Jev(shadow): depends_on_A 0.74
+- Q-4 ↔ Q-6 likely_independent [deterministic, low]: no shared resource; shared terms only: timesheet, submit, api, post · Jev(shadow): depends_on_A 0.79
+- Q-4 ↔ Q-7 shared_resource → Q-4 then Q-7 [deterministic, high]: contract: TimesheetDto (both change it)
+- Q-4 ↔ Q-11 unknown → Q-4 then Q-11 [prefilter, low]: incomplete story; shared terms: timesheet · Jev(shadow): unknown 0.5
+- Q-5 ↔ Q-6 likely_independent [deterministic, low]: no shared resource; shared terms only: timesheet, tsx, call, post, api · Jev(shadow): shared_module_or_contract 0.92
+- Q-5 ↔ Q-7 likely_independent [deterministic, low]: no shared resource; shared terms only: timesheet, port, api · Jev(shadow): unknown
+- Q-5 ↔ Q-8 shared_resource → Q-5 then Q-8 [deterministic, high]: file: tests/fixtures/timesheets.json; fixture: tests/fixtures/timesheets.json
+- Q-5 ↔ Q-10 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): unknown
+- Q-5 ↔ Q-11 unknown → Q-5 then Q-11 [prefilter, low]: incomplete story; shared terms: timesheet · Jev(shadow): unknown
+- Q-6 ↔ Q-7 likely_independent [deterministic, low]: no shared resource; shared terms only: timesheet, api · Jev(shadow): unknown
+- Q-6 ↔ Q-11 unknown → Q-6 then Q-11 [prefilter, low]: incomplete story; shared terms: timesheet · Jev(shadow): unknown
+- Q-7 ↔ Q-11 unknown → Q-7 then Q-11 [prefilter, low]: incomplete story; shared terms: timesheet · Jev(shadow): unknown
+- Q-8 ↔ Q-11 unknown → Q-8 then Q-11 [prefilter, low]: incomplete story; shared terms: timesheet · Jev(shadow): unknown
+- Q-9 ↔ Q-11 likely_independent [deterministic, low]: no shared resource found
+- Q-10 ↔ Q-11 likely_independent [deterministic, low]: no shared resource found
+
+## Needs a decision
+- [cycle] Q-1, Q-2: dependency cycle Q-1 → Q-2 → Q-1; planning decision needed, no order invented
+- [blocked] Q-3: depends on a story in a cycle or outside the batch
+- [incomplete] Q-11: description too thin to infer relationships; scheduled alone in its own wave after its prerequisites
+- [pair] Q-1, Q-4: same module, no file/contract evidence
+- [pair] Q-1, Q-7: same module, no file/contract evidence
+- [pair] Q-4, Q-11: incomplete description
+- [pair] Q-5, Q-11: incomplete description
+- [pair] Q-6, Q-11: incomplete description
+- [pair] Q-7, Q-11: incomplete description
+- [pair] Q-8, Q-11: incomplete description
+
+## Assumptions
+- Q-1: no repository metadata; modules/files inferred from text only
+- Q-2: no repository metadata; modules/files inferred from text only
+- Q-3: no repository metadata; modules/files inferred from text only
+- Q-4: no repository metadata; modules/files inferred from text only
+- Q-5: no repository metadata; modules/files inferred from text only
+- Q-6: no repository metadata; modules/files inferred from text only
+- Q-7: no repository metadata; modules/files inferred from text only
+- Q-8: no repository metadata; modules/files inferred from text only
+- Q-9: no repository metadata; modules/files inferred from text only
+- Q-10: no repository metadata; modules/files inferred from text only
+- Q-11: no repository metadata; modules/files inferred from text only

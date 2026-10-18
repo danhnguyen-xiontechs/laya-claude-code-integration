@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-skills-router-r2-agent-01",
+  "tool": {
+    "name": "skills-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "ada217d",
+    "branch": "claude/skills-router-round2"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On the same 6 requests (Haiku 5.5, 2 repetitions), plain Claude (A) passed 12 of 12 and Claude + the one-line hint (B, Jev live) also 12 of 12, with no case worse; B used 9.2% more tokens (1.51M -> 1.65M) instead of the 72% of round 1, and the whole gap is two runs with a stray harness tool call (the other 10 pairs differ by -0.08% in total). The cases are still too easy to show value, so the verdict stays INSUFFICIENT_EVIDENCE. Top suggestion: measure on cases that plain Claude with the full listing gets wrong, with only Bash and the hand-back tool available to the pick agents.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1514780,
+      "inputTokens": 48,
+      "outputTokens": 76,
+      "toolCalls": 24,
+      "modelTurns": 24,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 6265,
+      "pairedTokens": 757390
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1653849,
+      "inputTokens": 52,
+      "outputTokens": 109,
+      "toolCalls": 26,
+      "modelTurns": 26,
+      "providerCalls": 12,
+      "fallbacks": 0,
+      "providerLatencyMs": 1265,
+      "elapsedMs": 8686,
+      "pairedTokens": 826924.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 73,
+    "failed": 2,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": null,
+  "generatedAt": "2026-10-18T06:51:48.800Z",
+  "report": "report.html"
+}

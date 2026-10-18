@@ -1,0 +1,21 @@
+Starting points for "plugin hook that saves a short summary file of the session right before compaction". Read-only; nothing was modified.
+
+The find.mjs helper output was a weak, unranked keyword match (audit/audit.py, proxy/router_proxy.py, skill scripts). None of those touch compaction, so I did not use them. The ranking below comes from my own search.
+
+Ranked, most relevant first:
+
+1. D:/cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/hooks/fast-compact.ts - the only existing plugin hook on the `session.compact` event. It runs before compaction, reads `event.messages` and `event.trigger`, and falls through with `next(event)`, so it is the closest template for a hook that observes compaction without changing it.
+
+2. D:/cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/types/claude-code.d.ts - authoritative API shapes: `SessionCompactInput` (around line 7225: trigger, messages, instructions, agentId), `SessionCompactTrigger` (around line 7285: manual | auto | plugin | precompute), `$.fs` (around line 2608), `$.session.messages()` (around line 2266). The classic `PreCompactHookInput` (around line 5561, with trigger and custom_instructions) is the alternative route.
+
+3. D:/cte2/w/n5-newfeature-precompact-a3549f/repo/smart-context-trimming/hooks/register.ts - the save-to-disk pattern: `$.env.get('USERPROFILE')` or HOME, a `~/.claude/<plugin>/` directory, `$.fs.write`, best-effort try/catch, and cleanup at session.start.
+
+4. D:/cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/hooks/hooks.json - the plugin wiring: a one-line `{ "modules": ["./fast-compact.ts"] }` that a new hook module must be listed in. Its sibling fast-compact/.claude-plugin/plugin.json shows the userConfig options pattern for things like an output directory.
+
+5. D:/cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/tests/fast-compact.test.ts - unit-test pattern for a `session.compact` hook: lines around 114-122 drive the hook with a fake `$` engine and capture the handler registered under 'session.compact'.
+
+Key findings for the design:
+- Use the function-hook route `on('session.compact', ...)`, the same as the existing plugins. The repo's plugin hooks.json files only list modules, so the classic PreCompact settings hook is not the pattern used here.
+- Pass through with `return next(event)` so the built-in summary still runs. The new hook must not alter the result.
+- Skip trigger `precompute`. The types describe it as a dispatch that installs nothing, so it should not write a summary file.
+- The engine offers a tool-less completion over the session's own transcript (around line 2172 of claude-code.d.ts). That is one option if the summary should be model-written. A deterministic summary built from `event.messages` (user prompts, tool names, turn count) needs no model call.

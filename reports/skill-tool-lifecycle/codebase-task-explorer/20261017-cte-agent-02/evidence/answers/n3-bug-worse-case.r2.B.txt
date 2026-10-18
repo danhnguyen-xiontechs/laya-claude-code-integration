@@ -1,0 +1,28 @@
+Task: find where to start for "the per-tool experiment report does not highlight a case as worse when the tool arm fails and plain Claude passes". Read-only; nothing was modified (the one inline node check ran in memory, no files written).
+
+The find.mjs helper (codebase-task-explorer ranking, rules + Jev) ranked build_tool_report.mjs first, then reports.test.mjs. I checked the code myself and ranked as follows.
+
+Top 5 file paths, most relevant first (repo root D:/cte2/w/n3-bug-worse-case-0699de/repo):
+
+1. D:/cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs
+   Lines 105-109 (majority), 110-125 (caseRows and the "worse" rule at 120-121), 131 (regressions). This is where the per-tool report decides whether a case is worse.
+2. D:/cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs
+   Line 58 checks that a worse row renders; lines 74-88 assert that pass to error is NOT worse. This encodes the exclusion that may hide the case.
+3. D:/cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/SKILL.md
+   Section 6 defines worse (only pass in A and fail in B, both decided); section 7 says a worse case "must be in the headline". The script does not enforce that, since the headline is hand-typed in manifest.json.
+4. D:/cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs
+   Lines 52 and 66 pass summary.regressions through to the index ("worse on ..."). Downstream surface only; it is correct if summary.json is correct.
+5. D:/cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json
+   The status enum (pass, fail, blocked, skipped, not-run, error) defines which outcomes count as neither better nor worse.
+
+Likely mechanisms, verified by reading and a quick inline check:
+
+- Tie-break in majority() (build_tool_report.mjs:105-109). With two repetitions per arm, a fail/pass split is resolved by insertion order, i.e. directory order of r1 and r2. Tool arm [pass, fail] gives B = pass, so the case is not flagged. [fail, pass] gives B = fail, so it is flagged. The result depends on which repetition ran first, which is the most likely silent miss.
+- Non-pass/fail outcomes are excluded by design (build_tool_report.mjs:120-121, asserted in reports.test.mjs:88). If "the tool arm fails" means status error or blocked, plain Claude pass to tool error is never "worse". It only shows up in the "not compared" caveat (line 207) and is not highlighted.
+- The verdict headline comes from manifest.headline (lines 151, 244-245) and is never checked against the computed regressions.
+
+Ruled out: the CSS for tr.worse exists and --badbg is defined (report_style.mjs:3-16), and the okIcon and row class rendering (line 201) is correct for worse.
+
+Minor: the "Cases passed" card (aggregate, line 62-70) counts every repetition, while the table uses the majority per case, so the two can disagree.
+
+Helper output noise: its other hits (web-test-*-verdict/build_report.mjs, eval/analyze.mjs, eval/run-context-arm.mjs, review-pr-laya-classify/laya-severity.mjs) match on "verdict" or "report" and are not relevant to this report path.

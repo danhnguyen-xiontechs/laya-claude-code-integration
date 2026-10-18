@@ -1,0 +1,2 @@
+PICK: code-review
+The request asks for a bug check on the current branch before merging, which is what the built-in code-review skill does (correctness review of the branch diff); security-review, simplify and the jev/laya PR variants cover narrower or different jobs.

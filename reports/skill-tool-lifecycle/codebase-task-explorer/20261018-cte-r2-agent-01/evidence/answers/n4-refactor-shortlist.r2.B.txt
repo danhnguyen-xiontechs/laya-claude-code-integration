@@ -1,0 +1,14 @@
+Top 5 starting points for moving the keyword shortlist scoring into its own module (most relevant first). Paths are under D:/cte3/w/n4-refactor-shortlist-108016/repo/.claude/skills/skills-router/.
+
+1. scripts/route.mjs (full path: D:/cte3/w/n4-refactor-shortlist-108016/repo/.claude/skills/skills-router/scripts/route.mjs): this is the extraction source. The stage-1 BM25 code sits between the "stage 1: BM25" banner (line 69) and shortlist() (line 245): STOP list, stem/tokenize, buildIndex, bm25, mentions, explicitAllowed, the variant logic (baseOf, variantIndex, variantTokens, asksForVariant), and shortlist(). route() calls shortlist() at line 452.
+2. tests/variants.test.mjs: imports asksForVariant, shortlist and variantTokens from route.mjs (line 6). These tests pin the variant-matching behaviour the move must preserve, and their import path changes.
+3. tests/route.test.mjs: imports bm25, buildIndex, explicitAllowed, mentions, shortlist, stem, tokenize and whyPhrase from route.mjs (lines 6-8). These are direct stage-1 tests. whyPhrase is stage-2 presentation and can stay in route.mjs.
+4. README.md: the scripts table (around line 20) and the Routing step 1 "Shortlist (stage 1)" (around line 97) describe BM25 as part of route.mjs. A new module needs a row there and the text updated.
+5. scripts/catalog.mjs: supplies the entry shape the index consumes (name, description, head, explicitOnly, id) and exports bareName, which the shortlist code imports. It sets the boundary: the new module should take entries as input and not depend on discovery or on route.mjs.
+
+Notes:
+- eval.mjs was ranked 3rd by the helper, but it only imports combineRuns, DEFAULT_THRESHOLDS, finalize and route. It uses nothing from stage 1, so the move should not touch it. splitOf/answerOf are history-eval helpers.
+- bmad-help-jev/scripts/suggest.mjs (helper row 2) is a false positive. Its scoreEval is eval scoring, unrelated to keyword shortlisting.
+- Avoid a cycle: the new module must not import route.mjs. MAX_K is used both by route() and as shortlist's default, so it needs to live in the new module or be imported from a shared place.
+- Helper reliability: the second run with --no-gate returned 2 rows, not the 10 the first run reported. Coverage is partial (14 of 17 project-relative Python imports unresolved), so I treated the ranking as advisory and verified by reading source.
+- Side effect: git status in the repo shows an untracked .codemap/ directory, most likely created by the helper's codemap run. I did not remove it. I modified no tracked files.

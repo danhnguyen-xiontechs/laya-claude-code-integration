@@ -1,0 +1,47 @@
+[dead-code] jev: unused A/B/C 6/1/16, junk A/B/C 1/1/4; JEV 13 sent, $0.000182, 671 ms
+[dead-code] report: report.md  details: candidates.jsonl
+
+# Dead code report: `dcf-02-ordersapi.B.r2`
+
+Run `20261018-102945`, mode **jev**, Tier A threshold p >= 0.9. Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), counted here and listed with --full.
+
+## Funnel
+
+| Step | Unused code | Junk |
+|---|---|---|
+| Discovered | 23 | 6 |
+| After keep rules | 7 | 6 |
+| Sent to JEV | 7 | 6 |
+| JEV answered | 7 | 6 |
+| Tier A / B / C | 6/1/16 | 1/1/4 |
+
+JEV: 1 request(s), 4341 input tokens, $0.000182, 671 ms total (status ok).
+
+Scanned 9 Python files and 2 text files. Excluded: none.
+
+## Tier A: safe to delete (in batches) (7)
+
+| ID | Tier | Kind | Location | What | JEV | Action |
+|---|---|---|---|---|---|---|
+| C004 | A | unused_constant | `ordersapi/core.py:4` | `ROUND_MODE` | likely_dead 1.00 | Delete |
+| C006 | A | unused_function | `ordersapi/core.py:27-28` | `legacy_total` | likely_dead 1.00 | Delete |
+| C007 | A | unused_function | `ordersapi/core.py:31-32` | `_cents` | likely_dead 0.99 | Delete |
+| C016 | A | unused_function | `ordersapi/tasks.py:19-20` | `send_digest` | likely_dead 0.98 | Delete |
+| C017 | A | unused_function | `ordersapi/web.py:17-18` | `render_xml` | likely_dead 0.99 | Delete |
+| C023 | A | unused_import | `ordersapi/core.py:1` | `json` | likely_dead 1.00 | Remove import |
+| J001 | A | commented_code | `ordersapi/cli.py:14-15` | `total = order.total()` | dead_code_comment 1.00 | Delete comment |
+
+## Tier B: review (2)
+
+| ID | Tier | Kind | Location | What | Key evidence | JEV | Action |
+|---|---|---|---|---|---|---|---|
+| C008 | B | unused_function | `ordersapi/debug.py:1-2` | `dump_order` | 0 refs, test refs 2 | test_only 0.99 | Review |
+| J002 | B | debug_print | `ordersapi/cli.py:9` | `print('DEBUG argv', sys.argv)` | in `main`; rule: intentional_output | debug_leftover 0.94 | Review |
+
+## Tier C: keep (20)
+
+Not listed here (kept code). `candidates.jsonl` has them, or run the scan with `--full`.
+
+Full evidence and snippets: `candidates.jsonl` (one JSON object per ID).
+
+EXIT 0

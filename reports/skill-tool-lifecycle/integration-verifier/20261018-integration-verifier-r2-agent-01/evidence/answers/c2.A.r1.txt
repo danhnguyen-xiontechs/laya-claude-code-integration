@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - manifest records test exit 0 with log logs/S1-test.log, but that log is missing (logs/ holds only S2-test.log), so the check evidence is unusable.
+S2: PASS - test exit 0 with non-empty logs/S2-test.log, AC1 backed by the passing test check, no file overlap with S1, and the combined run passes.

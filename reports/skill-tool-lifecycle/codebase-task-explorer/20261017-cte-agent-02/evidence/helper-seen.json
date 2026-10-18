@@ -1,0 +1,122 @@
+[
+ {
+  "key": "n1-bug-migration-wave.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n1-bug-migration-wave.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n2-feature-blocked-status.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n2-feature-blocked-status.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n3-bug-worse-case.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n3-bug-worse-case.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n4-refactor-shortlist.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n4-refactor-shortlist.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n5-newfeature-precompact.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n5-newfeature-precompact.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n6-feature-subagent-tokens.r1",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n6-feature-subagent-tokens.r1",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n1-bug-migration-wave.r2",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n1-bug-migration-wave.r2",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n2-feature-blocked-status.r2",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n2-feature-blocked-status.r2",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n3-bug-worse-case.r2",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n3-bug-worse-case.r2",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n4-refactor-shortlist.r2",
+  "arm": "A",
+  "helperSeen": false
+ },
+ {
+  "key": "n4-refactor-shortlist.r2",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n5-newfeature-precompact.r2",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n5-newfeature-precompact.r2",
+  "arm": "B",
+  "helperSeen": true
+ },
+ {
+  "key": "n6-feature-subagent-tokens.r2",
+  "arm": "A",
+  "helperSeen": true
+ },
+ {
+  "key": "n6-feature-subagent-tokens.r2",
+  "arm": "B",
+  "helperSeen": true
+ }
+]

@@ -1,0 +1,2 @@
+PICK: web-test
+The request is an ESS story test on the dev environment with screenshot evidence and an HTML report, which is the exact trigger for web-test, and the Jev/Laya variants are A/B experiments the request does not ask for.

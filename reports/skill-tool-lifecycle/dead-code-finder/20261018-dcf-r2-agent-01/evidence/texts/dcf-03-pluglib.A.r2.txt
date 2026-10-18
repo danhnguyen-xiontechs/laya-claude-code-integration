@@ -1,0 +1,6 @@
+1	from . import builtin  # noqa: F401  (registers the built-in plugins)
+2	from .registry import Plugin, get_plugin, available
+3	from .text import normalize
+4	
+5	__all__ = ["Plugin", "get_plugin", "available", "normalize"]
+6	

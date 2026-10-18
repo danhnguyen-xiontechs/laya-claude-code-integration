@@ -1,0 +1,12 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"tests/*.spec.ts\" (smart-context-trimming @ cac9aec; output in unit-test-output.txt)",
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+CAUSE: The session-scoped `item` fixture pins the stale fixture set "v1" (only sku/name/price), but the catalog schema is v2 and `svc/shipping.py` reads `weight_g`, `hazmat` and `currency`. `catalog.load` only logs a warning on that v1/v2 mismatch instead of rejecting it, so the v1 dict reaches `quote()`/`label()` and all 6 tests fail with KeyError.
+
+LOCATION: tests/conftest.py:9 (`return catalog.load("v1")`). The mismatch is silently accepted at svc/catalog.py:13-14.
+
+EVIDENCE (verbatim from .tool-output/last.log):
+- `WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway`
+- `item = {'sku': 'A-1', 'name': 'Widget', 'price': 9.5}`
+- `E       KeyError: 'weight_g'`
+- `svc\shipping.py:10: KeyError`
+- `FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g'`
+- `FAILED tests/test_shipping.py::test_label_has_currency - KeyError: 'currency'`
+- `============================== 6 failed in 0.52s ==============================`
+
+RUNS: 1
+
+NOTES: The `BrokenPipeError`, the `KeyError: 'locale'` tracebacks and the other ERROR lines come from the injected noise logger (`noise_hard.py`, raised inside `shipping.chatter`). They are not the cause. During the investigation I also ran a directory listing of `../_shared`, which is outside the work folder, to see two file names. I did not open or use those files.

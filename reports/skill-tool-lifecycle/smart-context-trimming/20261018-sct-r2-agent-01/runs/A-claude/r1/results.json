@@ -1,0 +1,144 @@
+{
+  "experimentId": "20261017-sct-agent-02",
+  "arm": "A",
+  "runId": "r1",
+  "startedAt": "2026-10-18T03:42:41.704Z",
+  "finishedAt": "2026-10-18T03:42:50.409Z",
+  "cases": [
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-one-bug",
+      "arm": "A",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green",
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 47,
+        "cacheReadTokens": 344173,
+        "cacheWriteTokens": 36495,
+        "modelTurns": 6,
+        "toolCalls": 9,
+        "elapsedMs": 24170,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-one-bug.A.txt"
+      ],
+      "startedAt": "2026-10-18T03:42:41.703Z",
+      "finishedAt": "2026-10-18T03:42:41.704Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-three-bugs",
+      "arm": "A",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green",
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 50,
+        "cacheReadTokens": 366523,
+        "cacheWriteTokens": 41243,
+        "modelTurns": 6,
+        "toolCalls": 12,
+        "elapsedMs": 30989,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-three-bugs.A.txt"
+      ],
+      "startedAt": "2026-10-18T03:42:43.022Z",
+      "finishedAt": "2026-10-18T03:42:43.022Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-root-exception",
+      "arm": "A",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green",
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 92,
+        "cacheReadTokens": 717896,
+        "cacheWriteTokens": 39203,
+        "modelTurns": 11,
+        "toolCalls": 14,
+        "elapsedMs": 80998,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-root-exception.A.txt"
+      ],
+      "startedAt": "2026-10-18T03:42:45.329Z",
+      "finishedAt": "2026-10-18T03:42:45.329Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-feature",
+      "arm": "A",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green",
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 25,
+        "cacheReadTokens": 204668,
+        "cacheWriteTokens": 29651,
+        "modelTurns": 4,
+        "toolCalls": 8,
+        "elapsedMs": 21686,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-feature.A.txt"
+      ],
+      "startedAt": "2026-10-18T03:42:46.455Z",
+      "finishedAt": "2026-10-18T03:42:46.455Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "dotnet-build",
+      "arm": "A",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "build passes; Legacy.cs unchanged",
+      "observedOutcome": "suite green",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 34,
+        "cacheReadTokens": 280193,
+        "cacheWriteTokens": 28291,
+        "modelTurns": 5,
+        "toolCalls": 7,
+        "elapsedMs": 50022,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dotnet-build.A.txt"
+      ],
+      "startedAt": "2026-10-18T03:42:50.409Z",
+      "finishedAt": "2026-10-18T03:42:50.409Z"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+## Candidate starting points — new-feature
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 33 → considered 33
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+**LOW CONFIDENCE** (Jev top-1 p=0.36): this ranking is weak. Search the codebase yourself first; the rows below are only a weak hint.
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/haiku-subagent/tools/prompt-budget/log-hook.js` | 3 queries: log-hook.js | 0 |
+| 2 | `workflow/runs/persist-sessions/laya/session_store.py` | 2 queries: session_store.py | 3 |
+| 3 | `workflow/runs/persist-sessions/baseline/session_store.py` | 2 queries: session_store.py | 3 |
+
+(Showing 3 of 10 rows; Jev top-1 p=0.36. Re-run with --no-gate for all rows.)
+
+Jev: 3 call(s), 2 batch(es), survivors 8. Advisory ranking only — verify by reading source.

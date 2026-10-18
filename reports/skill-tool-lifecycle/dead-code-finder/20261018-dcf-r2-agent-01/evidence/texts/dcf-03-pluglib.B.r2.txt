@@ -1,0 +1,44 @@
+[dead-code] jev: unused A/B/C 4/4/14, junk A/B/C 0/0/0; JEV 8 sent, $0.000126, 733 ms
+[dead-code] report: report.md  details: candidates.jsonl
+
+# Dead code report: `dcf-03-pluglib.B.r2`
+
+Run `20261018-103051`, mode **jev**, Tier A threshold p >= 0.9. Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), counted here and listed with --full.
+
+## Funnel
+
+| Step | Unused code | Junk |
+|---|---|---|
+| Discovered | 22 | 0 |
+| After keep rules | 8 | 0 |
+| Sent to JEV | 8 | 0 |
+| JEV answered | 8 | 0 |
+| Tier A / B / C | 4/4/14 | 0/0/0 |
+
+JEV: 1 request(s), 2994 input tokens, $0.000126, 733 ms total (status ok).
+
+Scanned 8 Python files and 2 text files. Excluded: none.
+
+## Tier A: safe to delete (in batches) (4)
+
+| ID | Tier | Kind | Location | What | JEV | Action |
+|---|---|---|---|---|---|---|
+| C001 | A | orphan_module | `pluglib/compat.py:1-7` | `pluglib.compat` | likely_dead 0.99 | Delete |
+| C010 | A | unused_function | `pluglib/compat.py:6-7` | `text_type` | likely_dead 0.99 | Delete |
+| C017 | A | unused_constant | `pluglib/text.py:5` | `MAX_LEN` | likely_dead 1.00 | Delete |
+| C018 | A | unused_function | `pluglib/text.py:12-13` | `strip_accents` | likely_dead 0.99 | Delete |
+
+## Tier B: review (4)
+
+| ID | Tier | Kind | Location | What | Key evidence | JEV | Action |
+|---|---|---|---|---|---|---|---|
+| C004 | B | unused_class | `pluglib/builtin.py:5-9` | `Upper` | 0 refs | likely_dead 0.61 | Review |
+| C006 | B | unused_class | `pluglib/builtin.py:12-16` | `Reverse` | 0 refs | likely_dead 0.59 | Review |
+| C008 | B | unused_class | `pluglib/builtin.py:19-21` | `Experimental` | 0 refs | likely_dead 0.84 | Review |
+| C016 | B | unused_function | `pluglib/registry.py:24-25` | `unregister` | 0 refs, test refs 2 | test_only 0.97 | Review |
+
+## Tier C: keep (14)
+
+Not listed here (kept code). `candidates.jsonl` has them, or run the scan with `--full`.
+
+Full evidence and snippets: `candidates.jsonl` (one JSON object per ID).

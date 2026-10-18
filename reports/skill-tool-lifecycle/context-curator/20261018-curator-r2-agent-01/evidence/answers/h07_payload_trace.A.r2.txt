@@ -1,0 +1,13 @@
+CAUSE: The `sanitize` step drops every string value that is all-lowercase and exactly 3 characters long, which also removes the valid lowercase currency code "usd" from the payload. `enrich` then fills the missing key with its default "eur", so `handle()` returns "eur" instead of "usd". The failing test is test_usd_request_keeps_currency; test_euro_requests_are_priced passes. The ERROR lines from svc.metrics, svc.cache and svc.http in the log are unrelated noise from the shared noise_hard module and are not the cause.
+
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h07_payload_trace.A.r2\svc\chain.py:26 (the sanitize filter `not (isinstance(v, str) and v.islower() and len(v) == 3)`; the default that masks it is at svc\chain.py:32 in enrich)
+
+EVIDENCE:
+DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}
+E       AssertionError: assert 'eur' == 'usd'
+FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...
+========================= 1 failed, 1 passed in 0.95s =========================
+
+RUNS: 2 (both runs gave the same single failure; run 2 output saved to .tool-output/run2_stdout.txt, full log in .tool-output/last.log). No code was edited.

@@ -1,0 +1,11 @@
+Five starting points, most relevant first. The helper's ranking was low confidence (Jev top-1 p=0.24), so I searched directly. Nothing was modified.
+
+1. D:/cte3/w/n6-feature-subagent-tokens-ae44f8/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs - This is where subagent tokens are added. It sums input, output, cache-read and cache-write tokens over the session .jsonl plus every <session>/subagents/*.jsonl, counts each API message id once (one message spans several lines), and skips subagents only with --no-subagents.
+
+2. D:/cte3/w/n6-feature-subagent-tokens-ae44f8/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs - This maps each A/B case to its subagent transcript by the work-dir path in the prompt, then calls transcript_usage.mjs with --no-subagents. Zero or multiple matches give null, not a guess.
+
+3. D:/cte3/w/n6-feature-subagent-tokens-ae44f8/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs - This builds the arm totals for the A/B table from each case's usage (totalTokens at line 58, paired-only totals). Caveat: sumOrNull (line 53) returns null only when every value is null, and otherwise counts a missing value as 0, so check that partial nulls cannot undercount.
+
+4. D:/cte3/w/n6-feature-subagent-tokens-ae44f8/repo/.claude/skills/build-skill-tool-workflow/SKILL.md - This states the rule. Subagent runs are measured from the session transcript and its subagents folder, separate-session runs use transcript_usage.mjs with --from/--to, and the numbers go into case.usage in results.json. The test at tests/reports.test.mjs (lines 99-112) checks the subagent summing.
+
+5. D:/cte3/w/n6-feature-subagent-tokens-ae44f8/repo/research/ab-1697/compare.py - This is the A/B #1697 report (COMPARE.md). It reads only the top-level result.usage from the stream-json result event and never reads subagent transcripts, so subagent tokens are not added in this report. Check this first if the question is about that specific report. run_ab.py has no subagent handling either.

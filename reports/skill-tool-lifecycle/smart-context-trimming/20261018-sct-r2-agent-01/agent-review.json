@@ -1,0 +1,55 @@
+{
+  "reviewer": "opus (fresh context)",
+  "scope": "round2 diff: trim-core gap rule, node-internal frames, testDigest",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "Suggestion 1 is still not met on the round-1 evidence it was written for. In js-three-bugs.A.txt, both chunk blocks still lose actual/expected. chunk #1 (lines 283-295) stops at '  -   [' halfway through the deepEqual diff, so '-     5', 'actual: [ [ 1, 2 ], [ 3, 4 ] ],' and 'expected: [ [ 1, 2 ], [ 3, 4 ], [ 5 ] ],' are missing from the trimmed output. chunk #2 (314-332) stops at 'generatedMessage: true,', so 'actual: [],' and 'expected: [ [ 1 ] ],' are missing (checked with decideAndBuild, rules only). Cause: the multi-line diff lines and the gap lines all count toward FAILED_DETAIL_MAX=12, so a deepEqual diff of more than about 6 lines uses up the budget before the trailing actual/expected. The new spec test passes only because its block is exactly 12 counted lines.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:136-143",
+      "resolution": "fixed: FAILED_DETAIL_MAX 12 -> 30 (node diff lines no longer use up the budget); js-three-bugs round-1 texts now show 10 actual/expected lines (was 2); spec test \"a long deepStrictEqual diff still reaches actual/expected\""
+    },
+    {
+      "severity": "Major",
+      "finding": "testDigest runs on every trimmed output and matches any ✔/✖ line, so it can state something false. With mocha (in js_test via 'npx mocha'; its spec reporter prints '✔ name' for passes and '1) name' for failures), a run with 400 passes and 1 failure gets the header line '[smart-trim] all 400 tests passed, by name: ...', while the kept summary says '1 failing'. Verified with buildCompact. eslint (js_build) gives '[smart-trim] 1 of 1 tests failed, by name: ✖ 1 problem (1 error, 0 warnings) 1'. Limit the digest to node --test output, for example when an 'ℹ tests N' summary line is present, or skip it when the category or command is not node --test.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:47-65,407-408",
+      "resolution": "fixed: testDigest returns null unless the output has node's \"ℹ tests N\" summary; spec test \"digest is node-only\""
+    },
+    {
+      "severity": "Minor",
+      "finding": "The digest totals do not match node's own counts. Suites ('✔ A (0.6ms)' / '✖ math (8ms)') are counted as tests, TODO tests are counted as passed, and identical heads in different suites ('  ✔ works (0.3ms)' in describe A and in describe B, after trim) can collapse or not depending on the duration. Real node 24 output: one nested file gives '4 of 8 tests failed' while ℹ says tests 7 / fail 3; another gives 'all 5 tests passed' while ℹ says tests 4 / pass 2. A TODO head keeps its suffix in the name: '✔ later (1.3202ms) # TODO 1'. Consider taking the totals from the ℹ lines and using the heads only for the per-name breakdown.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:49-63",
+      "resolution": "open: Minor/Suggestion, not fixed in this run (does not block step 6)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Name normalisation cuts legitimate names: '.replace(/\\s+#\\d+.*$/)' turns 'fix #12 regression' into 'fix', and '.replace(/\\s+\\[.*$/)' turns 'parses [x] input' into 'parses' (verified on real node output), so unrelated tests can merge into one group. The rules could match only the node parameterised suffix: ' #\\d+' followed by an optional ' [..]' just before the duration.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:53",
+      "resolution": "open: Minor/Suggestion, not fixed in this run (does not block step 6)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "NODE_INTERNAL_FRAME needs '(node:' with a paren, so node frames without parens such as 'at node:internal/test_runner/test:1516:71' and 'at node:internal/per_context/primordials:464:82', plus 'at new Promise (<anonymous>)' and 'at Array.map (<anonymous>) {', still use up the budget. In a real node 24 run, the first failing test inside a describe() loses 'actual: 1,' / 'expected: 2,' to this. The '1 !== 2' line survives, so detail is lost but the fold is not affected.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:98",
+      "resolution": "open: Minor/Suggestion, not fixed in this run (does not block step 6)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The gap rule can now carry a block across a whitespace-only line into the next test's lines when they are indented. No content is lost, because the block is mandatory, but the next item is no longer its own candidate. Examples: dotnet '  Failed T1 ... Stack Trace ... \"   \" ... \"  Passed T2 [1 ms]\" ... \"  Standard Output Messages:\"' becomes one block (1-8), where the old code stopped at the gap. Jest '    ✕ subs' + '  ' + '  ● math › subs' becomes one block. Summary lines at column 0 ('ℹ tests', 'Tests:', 'Failed!') are never swallowed, and a truly empty line still ends the block. Nested node siblings ('  ✔ subs' after '  ✖ adds') were already swallowed before this diff.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:139",
+      "resolution": "open: Minor/Suggestion, not fixed in this run (does not block step 6)"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "'✖ clamp 4' (2 failed + 2 passed) reads like 4 failures, and '✖ broken 1 1' runs the count into a name that ends in a number. Use a form like '✖ clamp 2/4 failed' or '✔ add ×40'.",
+      "ref": "smart-context-trimming/hooks/trim-core.ts:61",
+      "resolution": "open: Minor/Suggestion, not fixed in this run (does not block step 6)"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Test fixture typo: 'test at test\\range.test.js:6:1' in a single-quoted JS string contains '\\r' (a carriage return), so splitLines breaks it into two lines. The test still passes, but the fixture no longer looks like node output. Use '\\\\r' or '/'. The three new tests are real regressions: test 1 fails on the old loop (it stops at the '  ' gap, and without the internal-frame rule it would stop at 'code:'), and tests 2 and 3 fail without testDigest and without the head dedupe. No new test fails to fail, but none covers a deepEqual diff block longer than the cap or a non-node output that contains ✔/✖.",
+      "ref": "smart-context-trimming/tests/core.spec.ts:163",
+      "resolution": "fixed: fixture path uses \"/\" instead of \"\r\" (test/range.test.js line)"
+    }
+  ],
+  "round": "1 (first pass, 8 findings); fixes applied in the same commit; not re-reviewed"
+}

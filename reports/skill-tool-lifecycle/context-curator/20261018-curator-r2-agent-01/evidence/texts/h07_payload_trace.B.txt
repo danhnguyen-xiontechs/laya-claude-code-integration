@@ -1,0 +1,14 @@
+[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1) · 916 of 2105 lines omitted · full log: .tool-output/20261018-105034_a8cb.log
+#1 lines 11-21 · failure · anchor · _______________________ test_usd_request_keeps_currency _______________________
+#2 lines 1343-1354 · captured log call · JEV p=0.31 · raise make()
+#3 lines 107-118 · captured log call · pinned (JEV p=0.10) · ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+#4 lines 179-190 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+#5 lines 455-466 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#6 lines 575-586 · captured log call · pinned · ERROR    svc.http:noise_hard.py:80 request failed, retrying (attempt 1/3)
+#7 lines 1091-1102 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+#8 lines 1151-1162 · captured log call · pinned (JEV p=0.11) · ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+#9 lines 1331-1342 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#10 lines 1403-1414 · captured log call · pinned · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+#11 lines 1547-1558 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#12 lines 1655-1666 · captured log call · pinned · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+[curator] 86 more kept chunks not listed · open the first pointer: Read .tool-output/20261018-105034_a8cb.log offset 11 limit 11

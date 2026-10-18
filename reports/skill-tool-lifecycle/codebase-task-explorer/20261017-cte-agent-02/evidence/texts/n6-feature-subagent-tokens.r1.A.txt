@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — feature
+
+Engine: codemap codemap 4.6.0 · pool 82. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `proxy/router_proxy.py` |
+| 2 | `.claude/skills/skills-router/scripts/shadow-report.mjs` |
+| 3 | `audit/audit.py` |
+| 4 | `workflow/step_report.py` |
+| 5 | `.claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs` |
+| 6 | `.claude/skills/skills-router/scripts/route.mjs` |
+| 7 | `.claude/skills/subagent-model-router/scripts/pricing.mjs` |
+| 8 | `ado-classify/eval_history.py` |
+| 9 | `workflow/runs/persist-sessions/baseline/session_store.py` |
+| 10 | `triage/v2/extract_transcripts.py` |

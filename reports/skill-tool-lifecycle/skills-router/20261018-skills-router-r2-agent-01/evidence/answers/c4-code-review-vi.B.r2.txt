@@ -1,0 +1,2 @@
+PICK: code-review
+The request asks for a correctness bug check of this branch's diff before merging, which is what the built-in code-review skill does, while security-review covers only security, simplify explicitly skips bug hunting, and integration-verifier is for batches of parallel story branches.

@@ -1,0 +1,15 @@
+{ "name": "payroll-release",
+  "stories": [
+    { "id": "P-1", "title": "Store employee tax code", "description": "Add column tax_code to the employees table with a migration and backfill it from the HR import file.", "ac": ["Column exists and is filled for active employees"] },
+    { "id": "P-2", "title": "Withholding by tax code", "description": "Compute monthly withholding in payroll/tax/TaxCalculator.cs using the tax_code read from the employees table.", "ac": ["Withholding matches the 2026 tax table"] },
+    { "id": "P-3", "title": "Payroll run endpoint", "description": "Expose POST /api/payroll/run in payroll/api/RunController.cs; it starts a run and returns PayrollRunResponse with the run id and totals.", "ac": ["202 with run id"] },
+    { "id": "P-4", "title": "Payroll dashboard run button", "description": "The finance dashboard in portal/payroll/Dashboard.tsx calls POST /api/payroll/run and displays the totals from PayrollRunResponse.", "ac": ["Totals shown after the run"] },
+    { "id": "P-5", "title": "Payslip PDF", "description": "Defines PayslipDto and renders it to PDF in payroll/pdf/PayslipRenderer.cs.", "ac": ["PDF matches the template"] },
+    { "id": "P-6", "title": "Email payslips", "description": "Monthly job sends each employee the payslip PDF via notify/PayslipMailer.cs using the template notify/templates/payslip.html.", "links": [{ "type": "depends_on", "id": "P-5" }], "ac": ["Email has the PDF attached"] },
+    { "id": "P-7", "title": "Bank transfer export", "description": "Export the approved net pay as a SEPA file in payroll/bank/SepaExport.cs for the treasury team.", "links": [{ "type": "depends_on", "id": "FIN-12" }], "ac": ["File validates against the bank schema"] },
+    { "id": "P-8", "title": "Payroll fixes", "description": "Misc cleanup." },
+    { "id": "P-9", "title": "Index payroll runs by date", "description": "Add index on payroll_runs table run_date via a new migration to speed up the history page.", "ac": ["History query under 200 ms"] },
+    { "id": "P-10", "title": "Leave balance widget", "description": "Show remaining leave days in portal/leave/Balance.tsx on the employee home page.", "ac": ["Balance visible on home"] },
+    { "id": "P-11", "title": "Vietnamese payslip email", "description": "Translate the payslip email in notify/templates/payslip.html and add a Vietnamese variant notify/templates/payslip.vi.html.", "ac": ["Vietnamese staff get the vi template"] },
+    { "id": "P-12", "title": "Audit payroll runs", "description": "Builds on P-3: record who triggered each payroll run in audit/PayrollAudit.cs.", "ac": ["Every run has an actor in the audit log"] }
+  ] }

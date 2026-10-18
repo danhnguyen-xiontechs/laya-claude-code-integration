@@ -1,0 +1,5 @@
+{"waves": [["R-3", "R-8", "R-10"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7"]}
+
+Reasoning: R-5 reads the positions.department_id column that R-3 adds, R-3 and R-4 both add migrations so they run in sequence, R-9 needs the search endpoint R-8 introduces, and R-10 is independent; R-1 is "Misc." with no acceptance criteria and R-2 depends on it, R-6 needs HR-404 which is outside the batch and R-7 depends on R-6. R-5 overlaps R-1 in portal/org only by an unknown guess, so re-check that overlap once R-1 is specified.
+
+(Planner run: `node plan.mjs --summary` gave the same waves and holds. The Jev shadow did not change any wave. The wrapper also appended one line to the sbp3 _logs folder, as it is set up to do.)

@@ -1,0 +1,1 @@
+Implemented `resolveOrder` in src/resolve.js (CommonJS) and added 25 tests in test/resolve.test.mjs; `node --test` passes all 25. The ordering compares names by plain string order (code units), not locale order.

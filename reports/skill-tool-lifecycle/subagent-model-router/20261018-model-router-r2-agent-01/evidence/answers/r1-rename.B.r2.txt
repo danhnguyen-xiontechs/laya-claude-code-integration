@@ -1,0 +1,1 @@
+Renamed getUserName to fetchUserName in all 5 files (definition, re-export, both callers including the `users.` namespace call, and the test), left getUserNameLength unchanged, and `node --test` passes (2/2).

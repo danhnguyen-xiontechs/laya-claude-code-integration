@@ -1,0 +1,17 @@
+Where to start (read-only, nothing modified). I ran the helper as instructed; its unranked output (codemap) pointed at the same story-batch-planner files I confirmed by reading. I did not execute planner.mjs, so this is from code reading, not a reproduction.
+
+Most likely cause: a migration story is not flagged as a migration, so its pair is classified likely_independent and the planner puts both in the same layer. Two flagged migrations would be serialized.
+
+1. D:\cte3\w\n1-bug-migration-wave-cc152a\repo\.claude\skills\story-batch-planner\scripts\planner.mjs: extract() sets `migration` only from prose (RX.migration, L32-37, L67) or from the `migration`/`migrations` fields (L53). The regex misses plural "migrations", "add a column", "schema changes", and path-only mentions like `files: ["db/migrations/0043.sql"]`. classifyPair L110 and the order edges at L193-199 are what serialize migration pairs, so a missed flag leaves them unordered and in the same layer from L145-158/L202.
+
+2. D:\cte3\w\n1-bug-migration-wave-cc152a\repo\.claude\skills\story-batch-planner\test\planner.test.mjs: L14-23 and L48-54 cover only the exact phrasing "Add column ... via a migration". No test covers plural, article, or path-only migrations, so this gap was never caught. Put the regression test here.
+
+3. D:\cte3\w\n1-bug-migration-wave-cc152a\repo\.claude\skills\integration-verifier\scripts\verify.mjs: L24 detects migrations by file path (`migrations?/`, `db/migrate`, `alembic/versions`). The planner has no equivalent, so the two components disagree on what counts as a migration.
+
+4. D:\cte3\w\n1-bug-migration-wave-cc152a\repo\.claude\skills\story-batch-planner\SKILL.md: documents the input contract (`migrations[]`, `files[]`) and the rule "both add migrations → shared_resource, protected, serialize" (L35). That is the spec the detector should meet.
+
+5. D:\cte3\w\n1-bug-migration-wave-cc152a\repo\.claude\skills\story-batch-planner\fixtures\04-migration.json: the only migration fixture, and every story is phrased in prose. Extend it with a plural or path-only migration story as a benchmark case.
+
+Ruled out: config.json `protectedKinds` does not gate ordering, since every shared_resource edge is serialized regardless (L193-199). layer() (L145-158) looks correct when an ordering edge exists.
+
+To confirm, check the user's batch JSON for which story lacks a `migrations[]` entry and whose prose or files don't match RX.migration.

@@ -1,0 +1,3 @@
+{"waves": [["Q-7", "Q-9", "Q-10"], ["Q-4", "Q-8"], ["Q-5", "Q-6"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Q-1 and Q-2 form a cycle (Q-1 says it needs Q-2 first, Q-2 has depends_on Q-1), Q-3 builds on the undecided Q-2, and Q-11 has no AC and no files, so these four are held; Q-7 goes first because Q-4 accepts the TimesheetDto that Q-7 extends, Q-4 gates the Q-5 and Q-6 consumers of POST /api/timesheets, and Q-5 waits for Q-8 because they share tests/fixtures/timesheets.json (Q-8 is placed after Q-7 and beside Q-4 on the assumption that its approval scenarios use fixtures and not the live submit endpoint; if they call POST /api/timesheets, move Q-8 to wave 3 with Q-5).

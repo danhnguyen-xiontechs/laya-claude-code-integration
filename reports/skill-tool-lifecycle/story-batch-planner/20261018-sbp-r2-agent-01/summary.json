@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-sbp-r2-agent-01",
+  "tool": {
+    "name": "story-batch-planner",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "a36ee9b",
+    "branch": "claude/sbp-round2"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "Round 2 (incomplete stories held in needs_decision, endpoint fix): both arms pass 6/6 on the same 3 batches, but the planner arm still uses 2.5x the tokens (654k -> 1,644k; was 2.7x). h2 got cheaper (112k/170k vs 248k/399k before), h1 B r2 cost 671k. Plain Haiku solves these batches in 2 turns, so the tool cannot beat A on cost here. Top suggestion: fix layer() so it stops splitting levels into chunks of 4 that push independent stories into extra waves.",
+  "arms": {
+    "A": {
+      "cases": 6,
+      "pass": 6,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 654103,
+      "inputTokens": 24,
+      "outputTokens": 47,
+      "toolCalls": 12,
+      "modelTurns": 12,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 33493,
+      "pairedTokens": 327051.5
+    },
+    "B": {
+      "cases": 6,
+      "pass": 6,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1643780,
+      "inputTokens": 52,
+      "outputTokens": 227,
+      "toolCalls": 37,
+      "modelTurns": 26,
+      "providerCalls": 54,
+      "fallbacks": null,
+      "providerLatencyMs": 526,
+      "elapsedMs": 45773,
+      "pairedTokens": 821890
+    }
+  },
+  "regressions": [],
+  "pairedCases": 3,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:29:29.524Z",
+  "generatedAt": "2026-10-18T06:51:49.511Z",
+  "report": "report.html"
+}

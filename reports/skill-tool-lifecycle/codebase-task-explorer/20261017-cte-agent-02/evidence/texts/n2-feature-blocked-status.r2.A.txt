@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — feature
+
+Engine: codemap codemap 4.6.0 · pool 59. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/integration-verifier/scripts/verify.mjs` |
+| 2 | `.claude/skills/story-batch-planner/scripts/decision-provider.mjs` |
+| 3 | `.claude/skills/story-batch-planner/scripts/plan.mjs` |
+| 4 | `workflow/runs/persist-sessions/laya/test_sessions.py` |
+| 5 | `.claude/skills/story-batch-planner/bench/eval.mjs` |
+| 6 | `.claude/skills/story-batch-planner/test/planner.test.mjs` |
+| 7 | `workflow/runs/persist-sessions/baseline/test_sessions.py` |
+| 8 | `hooks/tests/test_cache_expiry_gate.py` |
+| 9 | `.claude/skills/integration-verifier/scripts/decision-provider.mjs` |
+| 10 | `workflow/runs/persist-sessions/static/test_sessions.py` |

@@ -1,0 +1,12 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "python -m pytest tests/test_ac_coverage.py -q -p no:cacheprovider (round-2 copy, JEV review worktree .venv)",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  ]
+}

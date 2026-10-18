@@ -1,0 +1,7 @@
+I fixed `mapLimit` in src/map-limit.js and `node --test` passed 6 times in a row, with all 5 tests green each run. The old code had four bugs, all fixed:
+- **Wrong order:** results were pushed in completion order. They are now stored by index.
+- **Too many calls at once:** the loop used `running <= limit`. It is now `running < limit`.
+- **Empty input never settled:** it now resolves to `[]` straight away.
+- **Errors:** after the first rejection no new calls start and later results are ignored. A synchronous throw from `fn` is also turned into a rejection.
+
+I also added four tests to test/map-limit.test.mjs covering order, the concurrency cap, empty input, and first-error-stops-new-calls.

@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261017-sbp-agent-02",
+  "tool": {
+    "name": "story-batch-planner",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "aff05cf",
+    "branch": "claude/sbp-fix-rework"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 3 harder batches (10-12 stories, x2 reps) the planner arm passed 6/6 and plain Haiku 5/6, but the planner arm used 2.7x the tokens (656k -> 1,747k). The one A failure is debatable (it held an independent story whose AC needs HR sign-off). The planner's own output was wrong on h2-portal (endpoint with a trailing period), and the agents corrected it. That bug is open.",
+  "arms": {
+    "A": {
+      "cases": 6,
+      "pass": 5,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.8333333333333334,
+      "tokens": 655511,
+      "inputTokens": 24,
+      "outputTokens": 46,
+      "toolCalls": 12,
+      "modelTurns": 12,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 27765,
+      "pairedTokens": 327755.5
+    },
+    "B": {
+      "cases": 6,
+      "pass": 6,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 1747138,
+      "inputTokens": 52,
+      "outputTokens": 319,
+      "toolCalls": 31,
+      "modelTurns": 26,
+      "providerCalls": 54,
+      "fallbacks": null,
+      "providerLatencyMs": 528,
+      "elapsedMs": 46040,
+      "pairedTokens": 873569
+    }
+  },
+  "regressions": [],
+  "pairedCases": 3,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 1,
+  "lastRun": "2026-10-17T16:51:13.942Z",
+  "generatedAt": "2026-10-18T06:51:49.413Z",
+  "report": "report.html"
+}

@@ -1,0 +1,450 @@
+{
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2cd52aed715c1524.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 41,
+      "cacheReadTokens": 355527,
+      "cacheWriteTokens": 52321,
+      "modelTurns": 6,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2cd52aed715c1524.jsonl",
+      "elapsedMs": 142894
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a524414450b10baf7.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 52,
+      "cacheReadTokens": 517904,
+      "cacheWriteTokens": 64134,
+      "modelTurns": 8,
+      "toolCalls": 23,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a524414450b10baf7.jsonl",
+      "elapsedMs": 166863
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aebe02f249af81ecb.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 22,
+      "cacheReadTokens": 203645,
+      "cacheWriteTokens": 27887,
+      "modelTurns": 4,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aebe02f249af81ecb.jsonl",
+      "elapsedMs": 46966
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a918acc16cd3bd2e6.jsonl",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 74,
+      "cacheReadTokens": 650581,
+      "cacheWriteTokens": 47958,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a918acc16cd3bd2e6.jsonl",
+      "elapsedMs": 86927
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a86ab86794143a031.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 33,
+      "cacheReadTokens": 335455,
+      "cacheWriteTokens": 30367,
+      "modelTurns": 6,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a86ab86794143a031.jsonl",
+      "elapsedMs": 59112
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a4bc9bf3adccb0c6c.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 45,
+      "cacheReadTokens": 407001,
+      "cacheWriteTokens": 42094,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a4bc9bf3adccb0c6c.jsonl",
+      "elapsedMs": 81816
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2836ed456f18a64e.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 15,
+      "cacheReadTokens": 207410,
+      "cacheWriteTokens": 31120,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2836ed456f18a64e.jsonl",
+      "elapsedMs": 57719
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a8084dab11d3b874f.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 46,
+      "cacheReadTokens": 411169,
+      "cacheWriteTokens": 49337,
+      "modelTurns": 7,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a8084dab11d3b874f.jsonl",
+      "elapsedMs": 142332
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a534ea328d82fcd7e.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 57,
+      "cacheReadTokens": 475615,
+      "cacheWriteTokens": 74274,
+      "modelTurns": 7,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a534ea328d82fcd7e.jsonl",
+      "elapsedMs": 214463
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aa8c71d1a1a762581.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 25,
+      "cacheReadTokens": 287866,
+      "cacheWriteTokens": 52973,
+      "modelTurns": 5,
+      "toolCalls": 9,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aa8c71d1a1a762581.jsonl",
+      "elapsedMs": 133456
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a724e30632dae84d7.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 43,
+      "cacheReadTokens": 509779,
+      "cacheWriteTokens": 45816,
+      "modelTurns": 8,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a724e30632dae84d7.jsonl",
+      "elapsedMs": 54587
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2470e3cd7286519f.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 38,
+      "cacheReadTokens": 270596,
+      "cacheWriteTokens": 32092,
+      "modelTurns": 5,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2470e3cd7286519f.jsonl",
+      "elapsedMs": 47944
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a0ad27834522f43e3.jsonl",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 62,
+      "cacheReadTokens": 532937,
+      "cacheWriteTokens": 38309,
+      "modelTurns": 9,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a0ad27834522f43e3.jsonl",
+      "elapsedMs": 88333
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a17207065059eab10.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 21,
+      "cacheReadTokens": 204581,
+      "cacheWriteTokens": 27167,
+      "modelTurns": 4,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a17207065059eab10.jsonl",
+      "elapsedMs": 42299
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a71a00acc32f98120.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 43,
+      "cacheReadTokens": 427384,
+      "cacheWriteTokens": 45684,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a71a00acc32f98120.jsonl",
+      "elapsedMs": 120245
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a78c9188753e5457c.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 20,
+      "cacheReadTokens": 206071,
+      "cacheWriteTokens": 35393,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a78c9188753e5457c.jsonl",
+      "elapsedMs": 68463
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2cd52aed715c1524.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 41,
+      "cacheReadTokens": 355527,
+      "cacheWriteTokens": 52321,
+      "modelTurns": 6,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2cd52aed715c1524.jsonl",
+      "elapsedMs": 142894
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a524414450b10baf7.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 52,
+      "cacheReadTokens": 517904,
+      "cacheWriteTokens": 64134,
+      "modelTurns": 8,
+      "toolCalls": 23,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a524414450b10baf7.jsonl",
+      "elapsedMs": 166863
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aebe02f249af81ecb.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 22,
+      "cacheReadTokens": 203645,
+      "cacheWriteTokens": 27887,
+      "modelTurns": 4,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aebe02f249af81ecb.jsonl",
+      "elapsedMs": 46966
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a918acc16cd3bd2e6.jsonl",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 74,
+      "cacheReadTokens": 650581,
+      "cacheWriteTokens": 47958,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a918acc16cd3bd2e6.jsonl",
+      "elapsedMs": 86927
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a86ab86794143a031.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 33,
+      "cacheReadTokens": 335455,
+      "cacheWriteTokens": 30367,
+      "modelTurns": 6,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a86ab86794143a031.jsonl",
+      "elapsedMs": 59112
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a4bc9bf3adccb0c6c.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 45,
+      "cacheReadTokens": 407001,
+      "cacheWriteTokens": 42094,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a4bc9bf3adccb0c6c.jsonl",
+      "elapsedMs": 81816
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2836ed456f18a64e.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 15,
+      "cacheReadTokens": 207410,
+      "cacheWriteTokens": 31120,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2836ed456f18a64e.jsonl",
+      "elapsedMs": 57719
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a8084dab11d3b874f.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 46,
+      "cacheReadTokens": 411169,
+      "cacheWriteTokens": 49337,
+      "modelTurns": 7,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a8084dab11d3b874f.jsonl",
+      "elapsedMs": 142332
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a534ea328d82fcd7e.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 57,
+      "cacheReadTokens": 475615,
+      "cacheWriteTokens": 74274,
+      "modelTurns": 7,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a534ea328d82fcd7e.jsonl",
+      "elapsedMs": 214463
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-01-demo.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aa8c71d1a1a762581.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 25,
+      "cacheReadTokens": 287866,
+      "cacheWriteTokens": 52973,
+      "modelTurns": 5,
+      "toolCalls": 9,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-aa8c71d1a1a762581.jsonl",
+      "elapsedMs": 133456
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a724e30632dae84d7.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 43,
+      "cacheReadTokens": 509779,
+      "cacheWriteTokens": 45816,
+      "modelTurns": 8,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a724e30632dae84d7.jsonl",
+      "elapsedMs": 54587
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-02-ordersapi.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2470e3cd7286519f.jsonl",
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 38,
+      "cacheReadTokens": 270596,
+      "cacheWriteTokens": 32092,
+      "modelTurns": 5,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a2470e3cd7286519f.jsonl",
+      "elapsedMs": 47944
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a0ad27834522f43e3.jsonl",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 62,
+      "cacheReadTokens": 532937,
+      "cacheWriteTokens": 38309,
+      "modelTurns": 9,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a0ad27834522f43e3.jsonl",
+      "elapsedMs": 88333
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-03-pluglib.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a17207065059eab10.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 21,
+      "cacheReadTokens": 204581,
+      "cacheWriteTokens": 27167,
+      "modelTurns": 4,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a17207065059eab10.jsonl",
+      "elapsedMs": 42299
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a71a00acc32f98120.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 43,
+      "cacheReadTokens": 427384,
+      "cacheWriteTokens": 45684,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a71a00acc32f98120.jsonl",
+      "elapsedMs": 120245
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\rw-r2\\dcf\\dcf-04-shopapp.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a78c9188753e5457c.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 20,
+      "cacheReadTokens": 206071,
+      "cacheWriteTokens": 35393,
+      "modelTurns": 4,
+      "toolCalls": 20,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\subagents\\agent-a78c9188753e5457c.jsonl",
+      "elapsedMs": 68463
+    }
+  }
+}

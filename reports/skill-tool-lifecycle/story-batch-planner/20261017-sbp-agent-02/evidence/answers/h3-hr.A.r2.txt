@@ -1,0 +1,3 @@
+{"waves": [["R-3", "R-8"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7", "R-10"]}
+
+R-3 and R-8 are independent and go first; R-5 and R-9 wait for the department_id column and the search endpoint they consume; R-4 is serialized after R-3 because both add migrations; R-1 is "Misc." with no acceptance criteria and R-2 depends on it; R-6 depends on HR-404, which is outside this batch, and R-7 builds on R-6; R-10's acceptance criterion needs HR approval that an agent cannot verify.

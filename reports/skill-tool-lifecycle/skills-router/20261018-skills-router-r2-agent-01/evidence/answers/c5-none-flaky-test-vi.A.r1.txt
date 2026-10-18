@@ -1,0 +1,2 @@
+PICK: none
+No installed skill diagnoses flaky tests, and codebase-task-explorer only locates where to start (discovery, no root-cause work), so Claude should read the test and rerun it directly.

@@ -1,0 +1,17 @@
+{"delete": [
+  {"file": "ordersapi/core.py", "what": "json"},
+  {"file": "ordersapi/core.py", "what": "ROUND_MODE"},
+  {"file": "ordersapi/core.py", "what": "legacy_total"},
+  {"file": "ordersapi/core.py", "what": "_cents"},
+  {"file": "ordersapi/tasks.py", "what": "send_digest"},
+  {"file": "ordersapi/web.py", "what": "render_xml"},
+  {"file": "ordersapi/cli.py", "what": "# total = order.total()"},
+  {"file": "ordersapi/cli.py", "what": "# print(\"old total\", total)"},
+  {"file": "ordersapi/cli.py", "what": "print(\"DEBUG argv\", sys.argv)"}
+]}
+
+Notes for the caller (not part of the list):
+- Checked by copying the project to the scratchpad and applying exactly these 9 deletions there: pytest went 3 passed before and 3 passed after, and the CLI output is unchanged apart from the removed DEBUG line. No project file in the work folder was changed. tool.mjs wrote its output into .dead-code/ inside the work folder.
+- Scanner tiers: A 7, B 2, C 20. I took all Tier A items, with two changes: the commented-out block in cli.py is listed as two exact lines, and the DEBUG print (scanner Tier B, rule "intentional_output") is included because its "DEBUG" label and raw sys.argv dump make it a leftover. The other prints in cli.main (usage line, results, route/task listing) are deliberate output and were kept.
+- Kept on purpose: debug.dump_order (used by tests/test_core.py); Handler.on_cancelled (reached through getattr dispatch in Handler.dispatch); CsvExporter and BaseExporter.export (csv entry point in pyproject.toml, and the override); tasks.nightly_cleanup and rebuild_index, web.list_orders and health (registered by @task/@route; rebuild_index is also named in settings.toml); cli.main (orders entry point).
+- Not listed: Order.to_xml becomes unused once render_xml is removed. It is a method of Order, which is exported in __all__, so I treated it as public API. Remove it only if you decide the Order serialization methods are internal.

@@ -1,0 +1,16 @@
+Five starting points for "a plugin hook that saves a short summary file of the session right before compaction", most relevant first. Paths are in the repo at D:/cte2/w/n5-newfeature-precompact-5370ba/repo.
+
+1. D:/cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/fast-compact.ts. It already registers `on('session.compact', ...)`, the hook that runs just before compaction. It receives `event.messages`, `trigger` and `agentId`, and writes files through `$.fs.write` under ~/.claude/fast-compact. It is the template for the new hook.
+2. D:/cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/types/claude-code.d.ts. This is the API contract. `SessionCompactInput` has trigger (manual|auto|plugin|precompute), agentId, instructions and messages. The result is `{messages}` or `{skip}`. It also defines the classic `PreCompactHookInput` (trigger, custom_instructions) and the `$.fs`, `$.session` and `$.env` surface.
+3. D:/cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/hooks.json. It is just `{ "modules": ["./fast-compact.ts"] }`, so a new hook module file has to be listed here to load.
+4. D:/cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/.claude-plugin/plugin.json. The manifest (v0.1.1) with `userConfig` options (preserveRecentMessages, minReductionRatio). Any new setting, such as a summary on/off switch or output dir, is declared here.
+5. D:/cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/scripts/preview.ts. It maps the JSONL transcript to SessionMessage-shaped entries from the last `compact_boundary` on. This is the reference for building a summary from the same messages offline.
+
+Notes for the implementer:
+- The existing guard in fast-compact.ts returns the built-in path for `auto` triggers and subagents (`agentId`). A summary hook has to decide deliberately whether to cover auto-compaction, and should skip `precompute`, which would otherwise write duplicate files.
+- Errors should fall back to `next(event)` unchanged, as fast-compact does, so a failed summary never blocks compaction.
+- A classic PreCompact event exists in the types, but no repo plugin uses it.
+
+Helper output: the codebase-task-explorer ranking was not useful here. Its top 10 matched mostly on the word "session" (workflow/runs/persist-sessions/*, haiku-subagent log-hook, skills-router shadow-hook) and none were in fast-compact. I used grep for PreCompact|compaction instead.
+
+Side effect: an untracked `.codemap/` directory now exists in the repo root. It was created around the time the helper ran, probably by it. I did not modify any tracked files.

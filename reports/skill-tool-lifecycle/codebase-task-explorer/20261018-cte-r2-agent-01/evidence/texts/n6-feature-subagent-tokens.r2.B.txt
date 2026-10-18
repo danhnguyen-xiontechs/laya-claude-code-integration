@@ -1,0 +1,19 @@
+## Candidate starting points — feature
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 82 → considered 82
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+**LOW CONFIDENCE** (Jev top-1 p=0.24): this ranking is weak. Search the codebase yourself first; the rows below are only a weak hint.
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `research/ab-1697/compare.py` | 1 query:  | 0 |
+| 2 | `.claude/skills/haiku-subagent/tools/prompt-budget/report.js` | 2 queries: report.js, buildReport | 0 |
+| 3 | `.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs` | 1 query: build_main_report.mjs | 0 |
+
+(Showing 3 of 10 rows; Jev top-1 p=0.24. Re-run with --no-gate for all rows.)
+
+Jev: 5 call(s), 4 batch(es), survivors 16. Advisory ranking only — verify by reading source.

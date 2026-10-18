@@ -1,0 +1,15 @@
+Where to start (read-only; I read the code and did not run the build or tests, so the behaviour below is inferred from source).
+
+The "per-tool experiment report" is the build-skill-tool-workflow report. The worse flag only fires when plain Claude (A) passes and the tool arm (B) fails. If B errors, is blocked, or is skipped, the case is treated as "not compared", so it gets no highlight and no count. That is the most likely reading of the bug, but it is partly a design choice, so check it against the intent.
+
+Five most relevant files, most relevant first:
+
+1. D:/cte3/w/n3-bug-worse-case-7498ed/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs: lines 120-121 set change to "worse" only for a=pass and b=fail. Lines 122-129 mark any case with a non-pass/fail status as unpaired, and line 199 renders it as a plain untagged row. Line 183 counts only regressions. Lines 105-109 resolve a repetition tie by insertion order, so a 1-of-2 fail can go unflagged.
+2. D:/cte3/w/n3-bug-worse-case-7498ed/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs: lines 74-95 assert that pass in A to error in B is "not worse". This locks in the current behaviour, so any fix must change this test. No test covers a tie across repetitions.
+3. D:/cte3/w/n3-bug-worse-case-7498ed/repo/.claude/skills/build-skill-tool-workflow/SKILL.md: section 7 (around line 114) is the spec. A case that passes in A and fails in B must be highlighted as worse and named in the headline. The headline is hand-written in manifest.json and nothing enforces it.
+4. D:/cte3/w/n3-bug-worse-case-7498ed/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs: lines 52 and 66 show "worse on" only from regressions, so the portfolio index misses these cases too. Line 53 only counts "not compared".
+5. D:/cte3/w/n3-bug-worse-case-7498ed/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json: defines the statuses (pass, fail, blocked, skipped, not-run, error). This decides what "fails" means for the tool arm.
+
+Ruled out: report_style.mjs already has the tr.worse style (line 16), so the CSS is not the cause. Git history has a single commit (a194896 "snap") for these files, so there is no earlier version to diff.
+
+If the tool arm's status really is "fail" in a single repetition and the case still isn't flagged, check two things: whether B's results.json parsed (build_tool_report.mjs line 46 silently skips unreadable results), and whether the case exists in B's run at all.

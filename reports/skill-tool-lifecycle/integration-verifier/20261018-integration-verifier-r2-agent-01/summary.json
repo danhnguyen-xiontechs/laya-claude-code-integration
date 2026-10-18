@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-integration-verifier-r2-agent-01",
+  "tool": {
+    "name": "integration-verifier",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "b7883e5",
+    "branch": "claude/integration-verifier-round2"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 6 two-story git batches (2 repetitions, Haiku 5.5 xhigh, Jev live) plain Haiku and Haiku with the round-2 verifier both pass 10 of 12 runs; c6 is wrong in both arms because its gold (S2 PASS) is inherited from the tool's own fixture, whose AC-coverage row cites a test that is on no branch. Tokens 7.54M -> 7.56M (+0.2%; round 1 was +28%), inside the repetition noise, with no case worse; the report still did not replace the agents' own merge and test runs. Top fix: rebuild the cases as harder multi-fault batches with a corrected c6 gold.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 10,
+      "fail": 2,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.8333333333333334,
+      "tokens": 7542094,
+      "inputTokens": 246,
+      "outputTokens": 841,
+      "toolCalls": 151,
+      "modelTurns": 123,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 67203,
+      "pairedTokens": 3771047
+    },
+    "B": {
+      "cases": 12,
+      "pass": 10,
+      "fail": 2,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.8333333333333334,
+      "tokens": 7558841,
+      "inputTokens": 238,
+      "outputTokens": 1774,
+      "toolCalls": 143,
+      "modelTurns": 119,
+      "providerCalls": 2,
+      "fallbacks": 0,
+      "providerLatencyMs": 763,
+      "elapsedMs": 79817,
+      "pairedTokens": 3779420.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 1
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:41:51.243Z",
+  "generatedAt": "2026-10-18T06:51:48.313Z",
+  "report": "report.html"
+}

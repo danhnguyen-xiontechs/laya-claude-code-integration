@@ -1,0 +1,75 @@
+#!/usr/bin/env node
+// Neutral wrapper, arm B: runs the real dead-code-finder scan (Jev live) on this folder, prints the report.md the skill says
+// to read, and appends one decision line (tiers, Jev cost/latency, per-candidate tier with and without Jev) to the run log.
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+const CASE = "dcf-04-shopapp", REP = 2;
+const here = import.meta.dirname;
+const env = { ...process.env, PYTHONPATH: "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\scratchpad\\jev-run", PYTHONIOENCODING: 'utf-8' };
+const out = path.join(here, '.dead-code', 'run');
+const log = (o) => { fs.mkdirSync("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\scratchpad\\logs\\dcf", { recursive: true }); fs.appendFileSync(path.join("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\scratchpad\\logs\\dcf", CASE + '.B.r' + REP + '.jsonl'), JSON.stringify({ t: new Date().toISOString(), case: CASE, arm: 'B', rep: REP, ...o }) + '\n'); };
+const r = spawnSync("D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe", ['-m', 'jev_skills.dead_code', 'scan', '.', '-o', out], { cwd: here, encoding: 'utf8', env });
+if (r.status !== 0) { log({ status: 'error', error: 'scan failed' }); console.log('tool failed: ' + (r.stderr || '').split('\n').slice(-3).join(' ')); process.exit(0); }
+const report = fs.readFileSync(path.join(out, 'report.md'), 'utf8');
+console.log((r.stdout || '').trim().replace(/[A-Za-z]:\\[^ ]*[\\/]/g, '') + '\n\n' + report);
+const cands = fs.readFileSync(path.join(out, 'candidates.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+const answered = cands.filter((c) => c.jev && c.jev.status === 'ok').length;
+const m = /JEV (\d+) sent, \$([0-9.]+), (\d+) ms/.exec(r.stdout || '');
+log({
+  status: !m || +m[1] === 0 ? 'rules-only' : answered > 0 ? 'ok' : 'jev-unavailable', sent: m ? +m[1] : 0, answered, cost: m ? +m[2] : null, latencyMs: m ? +m[3] : null, requests: +((/JEV: (\d+) request/.exec(report) || [])[1] || 0),
+  tiers: { A: cands.filter((c) => c.tier === 'A').length, B: cands.filter((c) => c.tier === 'B').length, C: cands.filter((c) => c.tier === 'C').length },
+  changedByJev: cands.filter((c) => c.tier_no_jev !== c.tier).length,
+  candidates: cands.map((c) => ({ id: c.id, file: c.file, symbol: c.symbol ?? null, kind: c.kind, tierNoJev: c.tier_no_jev, tier: c.tier, jev: c.jev?.label ?? null, p: c.jev?.p ?? null, jevStatus: c.jev?.status ?? null })),
+});
+fs.copyFileSync(path.join(out, 'report.md'), path.join("<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\\b4ad4a01-0dce-45af-ad3a-983bf75323ed\\scratchpad\\logs\\dcf", CASE + '.B.r' + REP + '.report.md'));
+----
+[dead-code] jev: unused A/B/C 5/5/21, junk A/B/C 2/1/0; JEV 15 sent, $0.000224, 801 ms
+[dead-code] report: report.md  details: candidates.jsonl
+
+# Dead code report: `dcf-04-shopapp.B.r2`
+
+Run `20261018-103054`, mode **jev**, Tier A threshold p >= 0.9. Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), counted here and listed with --full.
+
+## Funnel
+
+| Step | Unused code | Junk |
+|---|---|---|
+| Discovered | 31 | 3 |
+| After keep rules | 12 | 3 |
+| Sent to JEV | 12 | 3 |
+| JEV answered | 12 | 3 |
+| Tier A / B / C | 5/5/21 | 2/1/0 |
+
+JEV: 1 request(s), 5326 input tokens, $0.000224, 801 ms total (status ok).
+
+Scanned 14 Python files and 1 text files. Excluded: none.
+
+## Tier A: safe to delete (in batches) (7)
+
+| ID | Tier | Kind | Location | What | JEV | Action |
+|---|---|---|---|---|---|---|
+| C017 | A | unused_method | `shopapp/models.py:14-15` | `Order.recalculate_legacy` | likely_dead 1.00 | Delete |
+| C022 | A | unused_function | `shopapp/signals.py:16-17` | `_unused_signal_helper` | likely_dead 0.95 | Delete |
+| C023 | A | unused_constant | `shopapp/utils.py:4` | `OLD_DATE_FMT` | likely_dead 1.00 | Delete |
+| C025 | A | unused_function | `shopapp/utils.py:11-12` | `slug` | likely_dead 1.00 | Delete |
+| C028 | A | unused_function | `shopapp/views.py:12-13` | `order_export` | likely_dead 0.92 | Delete |
+| J001 | A | debug_print | `shopapp/middleware.py:11` | `print('took', time.time() - start)` | debug_leftover 0.99 | Remove call |
+| J002 | A | commented_code | `shopapp/management/commands/purge.py:11-12` | `for o in old_orders():` | dead_code_comment 0.99 | Delete comment |
+
+## Tier B: review (6)
+
+| ID | Tier | Kind | Location | What | Key evidence | JEV | Action |
+|---|---|---|---|---|---|---|---|
+| C005 | B | orphan_module | `shopapp/management/commands/purge.py:1-13` | `shopapp.management.commands.purge` | 0 refs, dynamic import in repo | likely_dead 0.57 | Review |
+| C012 | B | unused_class | `shopapp/middleware.py:15-20` | `DebugToolbarMiddleware` | 0 refs | likely_dead 0.70 | Review |
+| C019 | B | unused_class | `shopapp/payments.py:6-8` | `PaypalBackend` | 0 refs | dynamic_use_possible 0.57 | Review |
+| C020 | B | unused_constant | `shopapp/settings.py:3` | `URLCONF` | 0 refs | likely_dead 0.85 | Review |
+| C024 | B | unused_function | `shopapp/utils.py:7-8` | `today` | 0 refs, test refs 2 | test_only 0.99 | Review |
+| J003 | B | debug_print | `shopapp/management/commands/purge.py:10` | `print('purging')` | in `handle`; rule: debug_leftover | intentional_output 0.54 | Review |
+
+## Tier C: keep (21)
+
+Not listed here (kept code). `candidates.jsonl` has them, or run the scan with `--full`.
+
+Full evidence and snippets: `candidates.jsonl` (one JSON object per ID).

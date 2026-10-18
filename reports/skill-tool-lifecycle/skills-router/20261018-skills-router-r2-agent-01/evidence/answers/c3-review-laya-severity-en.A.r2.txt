@@ -1,0 +1,2 @@
+PICK: review-pr-laya-classify
+The request asks for a PR review plus the Laya severity check on each finding, which is exactly the "explicit request to test the Laya severity check" case that this skill's description names, while plain review-pr is not in the installed list.

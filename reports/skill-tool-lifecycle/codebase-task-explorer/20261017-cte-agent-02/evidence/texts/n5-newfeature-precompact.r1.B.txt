@@ -1,0 +1,22 @@
+## Candidate starting points — new-feature
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 33 → considered 33
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/haiku-subagent/tools/prompt-budget/log-hook.js` | 3 queries: log-hook.js | 0 |
+| 2 | `workflow/runs/persist-sessions/laya/session_store.py` | 2 queries: session_store.py | 3 |
+| 3 | `workflow/runs/persist-sessions/baseline/session_store.py` | 2 queries: session_store.py | 3 |
+| 4 | `workflow/runs/persist-sessions/static/session_store.py` | 2 queries: session_store.py | 3 |
+| 5 | `workflow/step_report.py` | 1 query: tier_of | 0 |
+| 6 | `hooks/tests/fixtures/build.py` | 1 query:  | 1 |
+| 7 | `workflow/runs/persist-sessions/laya/test_sessions.py` | 2 queries: test_missing_file, test_corrupt_file | 0 |
+| 8 | `.claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs` | 1 query: layaLineOf, mergeLineOf | 0 |
+| 9 | `.claude/skills/skills-router/scripts/shadow-hook.mjs` | 3 queries: shadow-hook.mjs, runHook | 3 |
+| 10 | `.claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js` | 3 queries: subagent-hook.js | 0 |
+
+Jev: 3 call(s), 2 batch(es), survivors 8. Advisory ranking only — verify by reading source.

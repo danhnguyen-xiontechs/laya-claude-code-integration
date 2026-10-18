@@ -1,0 +1,2 @@
+# Design — 20261018-cte-r2-agent-01
+Same design as `20261017-cte-agent-02/design.md` (tasks-new.json, blind queries, Recall@5 pass rule, A = same codemap pool in raw order top 10, B = tool rules+Jev top 10 through the new gate, `subagent_usage.mjs --forbid` on A). Differences: tool commit 92aa80d (gate), at most 6 case agents in flight (4 waves), repo copy `git archive 92aa80d` with answer-key files removed, rep 2 launched B first. Gate constants 0.5 / 0.9 / 5 / 3 are provisional (taken from the baseline's 12 runs, in-sample).

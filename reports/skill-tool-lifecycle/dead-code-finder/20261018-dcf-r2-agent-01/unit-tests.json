@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "python -m pytest tests/test_dead_code.py -v (JEV venv pytest 9.1.1, run on the round-2 copy with the report change; baseline copy: 12 passed)",
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "evidence/tests/pytest-output.txt"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "index-warmup.A.p1": {
+    "transcript": "<subagents>/agent-a36b5de3a625303fa.jsonl",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 56,
+      "cacheReadTokens": 369129,
+      "cacheWriteTokens": 67472,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-lucid-bell-e1bc21\\516abd83-d573-48b4-8f03-817278fca200\\subagents\\agent-a36b5de3a625303fa.jsonl",
+      "elapsedMs": 45665
+    },
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5",
+    "keyFolderCalls": 0
+  },
+  "devserver-ready.A.p1": {
+    "transcript": "<subagents>/agent-a2b0bb62dc7e60a30.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 43,
+      "cacheReadTokens": 445420,
+      "cacheWriteTokens": 73423,
+      "modelTurns": 8,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-lucid-bell-e1bc21\\516abd83-d573-48b4-8f03-817278fca200\\subagents\\agent-a2b0bb62dc7e60a30.jsonl",
+      "elapsedMs": 57024
+    },
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5",
+    "keyFolderCalls": 0
+  },
+  "codegen-wait.A.p1": {
+    "transcript": "<subagents>/agent-a918c73e864aacd5c.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 44,
+      "cacheReadTokens": 305662,
+      "cacheWriteTokens": 65128,
+      "modelTurns": 6,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-lucid-bell-e1bc21\\516abd83-d573-48b4-8f03-817278fca200\\subagents\\agent-a918c73e864aacd5c.jsonl",
+      "elapsedMs": 48264
+    },
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5",
+    "keyFolderCalls": 0
+  }
+}

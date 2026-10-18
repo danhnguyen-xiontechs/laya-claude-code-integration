@@ -1,0 +1,44 @@
+# Integration verification — batch-c1
+
+**Batch status: PASS** · base `main` · 2 stories · 2026-10-18T03:26:17.429Z
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **PASS** | — |
+| S2 | `story/S2` | **PASS** | — |
+
+## AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | check:test | PASS |
+| S2 | AC1 | met | check:test | PASS |
+
+## Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | PASS |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 0 | logs/combined-test.log | PASS |
+
+Merged into integration worktree: S1, S2
+
+## Cross-story conflicts
+
+None found.
+
+## Failure clusters
+
+None.
+
+## Missing evidence and next actions
+
+- None.
+
+- All required checks ran and passed on the combined change; hand to a human for merge.
+verifier_exit=0

@@ -1,0 +1,1 @@
+Wrote `src/core/parse/duration-impl.js` to answer.txt, since `parseDuration` is defined there and the other files only re-export or use it.

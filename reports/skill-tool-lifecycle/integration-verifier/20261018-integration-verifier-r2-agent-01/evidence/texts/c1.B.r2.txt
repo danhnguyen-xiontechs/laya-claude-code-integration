@@ -1,0 +1,49 @@
+BATCH: PASS
+S1: PASS - no issues
+S2: PASS - no issues
+combined run re-executed by the verifier: exit 0
+
+No merge was performed: this report is evidence for a human gate (v1 never auto-merges).
+
+## Details
+
+Integration verification — batch-c1 · base `main` · 2 stories · 2026-10-18T03:31:50.272Z
+
+### Per-story status
+
+| Story | Branch | Status | Reasons |
+|---|---|---|---|
+| S1 | `story/S1` | **PASS** | — |
+| S2 | `story/S2` | **PASS** | — |
+
+### AC → evidence
+
+| Story | AC | Claimed | Evidence | Status |
+|---|---|---|---|---|
+| S1 | AC1 | met | check:test | PASS |
+| S2 | AC1 | met | check:test | PASS |
+
+### Checks run
+
+| Where | Check | Exit | Log | Status |
+|---|---|---|---|---|
+| S1 (reported) | test | 0 | logs/S1-test.log | PASS |
+| S2 (reported) | test | 0 | logs/S2-test.log | PASS |
+| combined (run by verifier) | test `node run-tests.js` | 0 | logs/combined-test.log | PASS |
+
+Merged into integration worktree: S1, S2
+
+### Cross-story conflicts
+
+None found.
+
+### Failure clusters
+
+None.
+
+### Missing evidence and next actions
+
+- None.
+
+- All required checks ran and passed on the combined change; hand to a human for merge.
+exit=0

@@ -1,0 +1,13 @@
+Starting points for the "save a short session summary right before compaction" plugin hook. Read-only: nothing was modified.
+
+The find.mjs helper output was not useful. Its 10 candidates were keyword matches (audit/audit.py, proxy/router_proxy.py, planner.mjs, and others) with no compaction code. The ranking below comes from my own grep for PreCompact, compaction, and session.compact.
+
+1. D:/cte3/w/n5-newfeature-precompact-35e2c4/repo/fast-compact/hooks/fast-compact.ts: the only existing compaction hook in the repo. It registers a `session.compact` function hook with the `register(on, options)` pattern, filters on `event.trigger`, reads `event.messages`, logs best-effort, and falls back with `.catch`. A summary hook should copy this shape.
+2. D:/cte3/w/n5-newfeature-precompact-35e2c4/repo/fast-compact/types/claude-code.d.ts: the API contract. It defines `SessionCompactInput` (trigger, messages, instructions, agentId, around line 7222), `SessionMessage` (around line 7470), and the classic `PreCompactHookInput` (line 5561: transcript_path, trigger manual|auto, custom_instructions). The PreCompact type is the stable command-hook alternative, and it gives a transcript path.
+3. D:/cte3/w/n5-newfeature-precompact-35e2c4/repo/fast-compact/hooks/hooks.json: the module registry (`{ "modules": ["./fast-compact.ts"] }`). A new hook module must be listed here to load.
+4. D:/cte3/w/n5-newfeature-precompact-35e2c4/repo/fast-compact/.claude-plugin/plugin.json: the plugin manifest. Its `userConfig` block (preserveRecentMessages, minReductionRatio) is where new options such as an enable switch or summary length would go.
+5. D:/cte3/w/n5-newfeature-precompact-35e2c4/repo/smart-context-trimming/hooks/register.ts: the file-saving pattern. It writes per-session files under `~/.claude/<plugin>/` via `$.fs.write`, uses USERPROFILE/HOME, runs a best-effort TTL cleanup on `session.start`, and wraps writes in try/catch so they never block the run.
+
+Notes for the implementer:
+- The `session.compact` function hook is early access. It needs CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 and Claude Code 2.1.274 or later (fast-compact/README.md). A classic PreCompact command hook (item 2) avoids that requirement but returns no messages, so it fits a file-only summary.
+- `git status` showed an untracked `.codemap/` directory at the start. The helper's codemap engine may have written it; I did not create it.

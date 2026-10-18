@@ -1,0 +1,14 @@
+CAUSE: `flush()` wraps the whole batch loop in a single `try/except Exception`, so the `KeyError` raised for the entry `{"amount": 7}` (it has no `rate` key) is caught at batch scope and the loop is abandoned. The valid trailing entry `{"amount": 3, "rate": 1}` is never applied, so the balance is 20 (10 + 10) instead of the expected 23 (10 + 10 + 3).
+
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h06_swallowed_exception.A.r1\svc\ledger.py:18-22 (the `try` opens at line 18 around the loop, the `KeyError` is raised at line 20 by `e["rate"]`, and it is swallowed at lines 21-22)
+
+EVIDENCE: (from .tool-output/last.log, run 1; the same lines appear in run 2)
+- line 791: `ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries`
+- line 794: `self.balance += e["amount"] * e["rate"]`
+- line 796: `KeyError: 'rate'`
+- line 3327-3328 / test section: `E       AssertionError: assert 20 == 23`
+- final summary: `FAILED tests/test_ledger.py::test_settle_adds_all_entries - AssertionError: a...`
+
+Note: the many ConnectionResetError, BrokenPipeError, TimeoutError, FileNotFoundError and "flush failed, will retry" lines come from the shared `noise_hard` chatter module and are unrelated to the failure.
+
+RUNS: 2

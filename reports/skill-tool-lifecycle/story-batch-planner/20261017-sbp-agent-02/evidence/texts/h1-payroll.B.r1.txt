@@ -1,0 +1,179 @@
+total 12
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 23:48 .
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 23:48 ..
+-rw-r--r-- 1 ADMIN 197121 3263 Oct 17 23:48 batch.json
+-rwxr-xr-x 1 ADMIN 197121 1795 Oct 17 23:48 plan.mjs
+---BATCH---
+{
+  "name": "payroll-release",
+  "stories": [
+    {
+      "id": "P-1",
+      "title": "Store employee tax code",
+      "description": "Add column tax_code to the employees table with a migration and backfill it from the HR import file.",
+      "ac": [
+        "Column exists and is filled for active employees"
+      ]
+    },
+    {
+      "id": "P-2",
+      "title": "Withholding by tax code",
+      "description": "Compute monthly withholding in payroll/tax/TaxCalculator.cs using the tax_code read from the employees table.",
+      "ac": [
+        "Withholding matches the 2026 tax table"
+      ]
+    },
+    {
+      "id": "P-3",
+      "title": "Payroll run endpoint",
+      "description": "Expose POST /api/payroll/run in payroll/api/RunController.cs; it starts a run and returns PayrollRunResponse with the run id and totals.",
+      "ac": [
+        "202 with run id"
+      ]
+    },
+    {
+      "id": "P-4",
+      "title": "Payroll dashboard run button",
+      "description": "The finance dashboard in portal/payroll/Dashboard.tsx calls POST /api/payroll/run and displays the totals from PayrollRunResponse.",
+      "ac": [
+        "Totals shown after the run"
+      ]
+    },
+    {
+      "id": "P-5",
+      "title": "Payslip PDF",
+      "description": "Defines PayslipDto and renders it to PDF in payroll/pdf/PayslipRenderer.cs.",
+      "ac": [
+        "PDF matches the template"
+      ]
+    },
+    {
+      "id": "P-6",
+      "title": "Email payslips",
+      "description": "Monthly job sends each employee the payslip PDF via notify/PayslipMailer.cs using the template notify/templates/payslip.html.",
+      "links": [
+        {
+          "type": "depends_on",
+          "id": "P-5"
+        }
+      ],
+      "ac": [
+        "Email has the PDF attached"
+      ]
+    },
+    {
+      "id": "P-7",
+      "title": "Bank transfer export",
+      "description": "Export the approved net pay as a SEPA file in payroll/bank/SepaExport.cs for the treasury team.",
+      "links": [
+        {
+          "type": "depends_on",
+          "id": "FIN-12"
+        }
+      ],
+      "ac": [
+        "File validates against the bank schema"
+      ]
+    },
+    {
+      "id": "P-8",
+      "title": "Payroll fixes",
+      "description": "Misc cleanup."
+    },
+    {
+      "id": "P-9",
+      "title": "Index payroll runs by date",
+      "description": "Add index on payroll_runs table run_date via a new migration to speed up the history page.",
+      "ac": [
+        "History query under 200 ms"
+      ]
+    },
+    {
+      "id": "P-10",
+      "title": "Leave balance widget",
+      "description": "Show remaining leave days in portal/leave/Balance.tsx on the employee home page.",
+      "ac": [
+        "Balance visible on home"
+      ]
+    },
+    {
+      "id": "P-11",
+      "title": "Vietnamese payslip email",
+      "description": "Translate the payslip email in notify/templates/payslip.html and add a Vietnamese variant notify/templates/payslip.vi.html.",
+      "ac": [
+        "Vietnamese staff get the vi template"
+      ]
+    },
+    {
+      "id": "P-12",
+      "title": "Audit payroll runs",
+      "description": "Builds on P-3: record who triggered each payroll run in audit/PayrollAudit.cs.",
+      "ac": [
+        "Every run has an actor in the audit log"
+      ]
+    }
+  ]
+}
+---PLAN---
+# Story batch plan (12 stories, 5 waves, Jev shadow)
+
+PLAN_JSON {"waves":[["P-1","P-3","P-5","P-10"],["P-11"],["P-2","P-6","P-9"],["P-8"],["P-4","P-12"]],"needs_decision":[{"kind":"external_dependency","stories":["P-7"]},{"kind":"incomplete","stories":["P-8"]}]}
+
+- Wave 1: P-1, P-3, P-5, P-10
+- Wave 2: P-11
+- Wave 3: P-2, P-6, P-9
+- Wave 4: P-8
+- Wave 5: P-4, P-12
+- Not scheduled: P-7
+
+## Dependencies and conflicts
+- P-1 ↔ P-2 shared_resource → P-1 then P-2 [deterministic, high]: schema: employees (one changes a table the other uses)
+- P-1 ↔ P-8 likely_independent [deterministic, low]: no shared resource found
+- P-1 ↔ P-9 shared_resource → P-1 then P-9 [deterministic, high]: migration: migration chain (both add migrations)
+- P-2 ↔ P-6 likely_independent [deterministic, low]: no shared resource; shared terms only: monthly, us, employe · Jev(shadow): independent 0.9
+- P-2 ↔ P-8 unknown → P-2 then P-8 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown 0.77
+- P-2 ↔ P-9 likely_independent [deterministic, low]: no shared resource; shared terms only: payroll, tabl · Jev(shadow): independent 0.99
+- P-4 depends on P-3 [contract_role, medium]: P-3 produces /api/payroll/run, P-4 consumes it
+- P-3 ↔ P-8 unknown → P-3 then P-8 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown 0.77
+- P-3 ↔ P-9 likely_independent [deterministic, low]: no shared resource; shared terms only: payroll, run · Jev(shadow): independent 0.82
+- P-12 depends on P-3 [text_reference, high]: P-12 text references P-3
+- P-4 ↔ P-8 unknown → P-8 then P-4 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown 0.77
+- P-4 ↔ P-9 likely_independent [deterministic, low]: no shared resource; shared terms only: payroll, run · Jev(shadow): independent 0.93
+- P-4 ↔ P-10 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- P-4 ↔ P-12 likely_independent [deterministic, low]: no shared resource; shared terms only: payroll, run · Jev(shadow): independent 0.63
+- P-6 depends on P-5 [explicit_link, high]: link P-6 → P-5
+- P-5 ↔ P-8 unknown → P-5 then P-8 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown 0.68
+- P-6 ↔ P-8 likely_independent [deterministic, low]: no shared resource found
+- P-6 ↔ P-11 shared_resource → P-11 then P-6 [deterministic, high]: file: notify/templates/payslip.html
+- P-7 ↔ P-8 unknown → P-7 then P-8 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown
+- P-8 ↔ P-9 unknown → P-9 then P-8 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown
+- P-8 ↔ P-10 likely_independent [deterministic, low]: no shared resource found
+- P-8 ↔ P-11 likely_independent [deterministic, low]: no shared resource found
+- P-8 ↔ P-12 unknown → P-8 then P-12 [prefilter, low]: incomplete story; shared terms: payroll · Jev(shadow): unknown
+- P-9 ↔ P-12 likely_independent [deterministic, low]: no shared resource; shared terms only: payroll, run · Jev(shadow): unknown
+
+## Needs a decision
+- [external_dependency] P-7: depends on FIN-12, which is not in this batch; confirm it is done before scheduling
+- [incomplete] P-8: description too thin to infer relationships; scheduled alone in its own wave after its prerequisites
+- [pair] P-2, P-8: incomplete description
+- [pair] P-3, P-8: incomplete description
+- [pair] P-4, P-8: incomplete description
+- [pair] P-5, P-8: incomplete description
+- [pair] P-7, P-8: incomplete description
+- [pair] P-8, P-9: incomplete description
+- [pair] P-8, P-12: incomplete description
+
+## Assumptions
+- P-1: no repository metadata; modules/files inferred from text only
+- P-2: no repository metadata; modules/files inferred from text only
+- P-3: no repository metadata; modules/files inferred from text only
+- P-4: no repository metadata; modules/files inferred from text only
+- P-5: no repository metadata; modules/files inferred from text only
+- P-6: no repository metadata; modules/files inferred from text only
+- P-7 depends on FIN-12, not in this batch: held back until confirmed done
+- P-7: no repository metadata; modules/files inferred from text only
+- P-8: no repository metadata; modules/files inferred from text only
+- P-9: no repository metadata; modules/files inferred from text only
+- P-10: no repository metadata; modules/files inferred from text only
+- P-11: no repository metadata; modules/files inferred from text only
+- P-12: no repository metadata; modules/files inferred from text only

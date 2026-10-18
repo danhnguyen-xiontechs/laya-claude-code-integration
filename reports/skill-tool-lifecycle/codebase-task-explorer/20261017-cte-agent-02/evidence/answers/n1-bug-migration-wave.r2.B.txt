@@ -1,0 +1,15 @@
+Where to start: the wave assignment lives in the story-batch-planner skill. The likely cause is that the migration detector misses some wording, so the two migration stories never get an ordering edge and fall into the same wave. I read the code and did not execute it, so this is unconfirmed.
+
+The 5 most relevant files, most relevant first (all under D:/cte2/w/n1-bug-migration-wave-affb57/repo/.claude/skills/story-batch-planner/):
+
+1. scripts/planner.mjs. Holds the whole path: the migration regex at line 37 (`migration|schema change|alter table|add column|drop column|new column|index on`, no plural and no "add a column"), the flag set in extract() at line 67, the pair rule at line 110 that only fires when BOTH stories are flagged, the fallback to `likely_independent` at lines 121-126, the ordering loop at lines 193-199 (likely_independent edges are never ordered), and layer() at lines 145-159, which puts unordered stories in the same wave.
+2. scripts/plan.mjs. The CLI entry (`--in batch.json --summary`) that calls plan() and prints the waves. Use it to reproduce with the two real stories.
+3. test/planner.test.mjs. The migration test at lines 48-54 passes only because the fixture uses the literal word "migration" and "Add column". Nothing covers a migration written in other wording, so the gap is untested.
+4. fixtures/04-migration.json. The only migration fixture. It is the passing case; a copy with "migrations" or "add a column" wording would reproduce the bug.
+5. SKILL.md. The policy table at line 35 says "both add migrations" is protected and serialized. That is the intended behaviour the code does not meet for every wording.
+
+Notes:
+- The helper's top four match the list above except decision-provider.mjs, which I excluded: Jev only annotates ambiguous pairs in jevShadow() (planner.mjs ~274-293) and never changes order or waves.
+- Helper ranks 5-10 are noise for this question: proxy/router_proxy.py, audit/audit.py, hooks/tests/test_cache_expiry_gate.py, bench/eval.mjs, codebase-task-explorer/scripts/explore.mjs, subagent-model-router/scripts/governor.mjs. The helper also reported partial coverage (2 of 255 JS imports unresolved).
+- Next check: give me or run the two stories' JSON through plan.mjs. If both stories carry an explicit `migration` or `migrations` field, detection is not the cause and the next place to look is the batch `policy` override path (plan.mjs lines 13-15).
+- Nothing was modified.

@@ -1,0 +1,4 @@
+{ "suites": [
+  { "level": "unit", "command": "cd retry-loop-breaker && node --test \"tests/*.unit.ts\" (@ 18a6a6f, no JEV_LIVE: live Jev test skipped)", "passed": 22, "failed": 0, "skipped": 1, "notRun": 0, "evidence": "test-output.txt" },
+  { "level": "engine", "command": "claude plugin validate retry-loop-breaker && claude plugin test retry-loop-breaker (@ 18a6a6f, tests/engine.test.ts; validate passed)", "passed": 10, "failed": 0, "skipped": 0, "notRun": 0, "evidence": "test-output.txt" }
+] }

@@ -1,0 +1,176 @@
+{
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h1-payroll.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a0ff7d8558cc2666f.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 6,
+      "cacheReadTokens": 52867,
+      "cacheWriteTokens": 56564,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a0ff7d8558cc2666f.jsonl",
+      "elapsedMs": 20679
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h1-payroll.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a67dfffeed6706578.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 91126,
+      "cacheWriteTokens": 18193,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a67dfffeed6706578.jsonl",
+      "elapsedMs": 27765
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h2-portal.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a6bd013ea3f966639.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 10,
+      "cacheReadTokens": 52865,
+      "cacheWriteTokens": 56596,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a6bd013ea3f966639.jsonl",
+      "elapsedMs": 44346
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h2-portal.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a8170249085160697.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 9,
+      "cacheReadTokens": 91124,
+      "cacheWriteTokens": 18129,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a8170249085160697.jsonl",
+      "elapsedMs": 39016
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h3-hr.A.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a83d313f4b408bad5.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 52865,
+      "cacheWriteTokens": 55990,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a83d313f4b408bad5.jsonl",
+      "elapsedMs": 30044
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h3-hr.A.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a6e83bca74a099e0d.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 6,
+      "cacheReadTokens": 91124,
+      "cacheWriteTokens": 17998,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a6e83bca74a099e0d.jsonl",
+      "elapsedMs": 26987
+    },
+    "forbiddenCalls": 0
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h1-payroll.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a7bd5574506f79bfb.jsonl",
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 52855,
+      "cacheWriteTokens": 58966,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a7bd5574506f79bfb.jsonl",
+      "elapsedMs": 46040
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h1-payroll.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a28f8a266b79e35da.jsonl",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 210,
+      "cacheReadTokens": 571542,
+      "cacheWriteTokens": 61764,
+      "modelTurns": 8,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a28f8a266b79e35da.jsonl",
+      "elapsedMs": 114574
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h2-portal.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a36d3d9e9c74b7592.jsonl",
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 32,
+      "cacheReadTokens": 170404,
+      "cacheWriteTokens": 77582,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a36d3d9e9c74b7592.jsonl",
+      "elapsedMs": 62899
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h2-portal.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a7b878fb221c13f12.jsonl",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 38,
+      "cacheReadTokens": 354194,
+      "cacheWriteTokens": 44765,
+      "modelTurns": 6,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a7b878fb221c13f12.jsonl",
+      "elapsedMs": 89037
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h3-hr.B.r1": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-aae5573314d10fb29.jsonl",
+    "usage": {
+      "inputTokens": 6,
+      "outputTokens": 16,
+      "cacheReadTokens": 110901,
+      "cacheWriteTokens": 64919,
+      "modelTurns": 3,
+      "toolCalls": 3,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-aae5573314d10fb29.jsonl",
+      "elapsedMs": 38000
+    }
+  },
+  "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp2\\work\\h3-hr.B.r2": {
+    "transcript": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a148ba1799b07c5c3.jsonl",
+    "usage": {
+      "inputTokens": 6,
+      "outputTokens": 16,
+      "cacheReadTokens": 148228,
+      "cacheWriteTokens": 30647,
+      "modelTurns": 3,
+      "toolCalls": 3,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\subagents\\agent-a148ba1799b07c5c3.jsonl",
+      "elapsedMs": 32736
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-curator-r2-agent-01",
+  "tool": {
+    "name": "context-curator",
+    "kind": "helper",
+    "provider": "JEV",
+    "commit": "round-1 state e551872 + uncommitted curator.py; round-2 patch tool-change/curator-r2.patch",
+    "branch": "claude/context-curator-round2 (this repo)"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "Round 2 (ranked pointer list, Haiku 5.5, 4 cases x 2 repetitions, Jev live): both arms pass 8/8 and no case is worse; tokens 2.91M (A) -> 3.11M (B), +7% instead of +38% in round 1, but within the noise (B cheaper in 4 of 8 pairs). B agents barely used the list: all 8 B runs spent a turn reading the log head first. Top suggestion: make the pointer list self-sufficient (error-line previews, lines of the top 2-3 pointers) so that extra read turn goes away.",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 2906986,
+      "inputTokens": 94,
+      "outputTokens": 257,
+      "toolCalls": 79,
+      "modelTurns": 47,
+      "providerCalls": null,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": 33787,
+      "pairedTokens": 1453493
+    },
+    "B": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3112204,
+      "inputTokens": 102,
+      "outputTokens": 605,
+      "toolCalls": 74,
+      "modelTurns": 51,
+      "providerCalls": 10,
+      "fallbacks": 0,
+      "providerLatencyMs": 1134,
+      "elapsedMs": 44296,
+      "pairedTokens": 1556102
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 131,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:49:58.843Z",
+  "generatedAt": "2026-10-18T06:51:47.770Z",
+  "report": "report.html"
+}

@@ -1,0 +1,3 @@
+{"waves": [["R-3", "R-8", "R-10"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7"]}
+
+Reasoning: R-1 is "Misc." with no AC and R-2 depends on it, R-6 has a depends_on link to HR-404 which is not in the batch, and R-7 builds on R-6, so those four are held; R-3 and R-4 both write schema migrations so they are split across waves, and R-5 (reads R-3's department_id) and R-9 (calls R-8's search endpoint) move to wave 2, while R-3, R-8 and R-10 share no files in wave 1.

@@ -1,0 +1,11 @@
+Five starting points for moving the keyword shortlist scoring of the skill suggestion router into its own module, most relevant first. Read-only; nothing was modified.
+
+1. D:/cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/route.mjs: holds all of stage 1 (`buildIndex`, `bm25`, `mentions`, `explicitAllowed`, `asksForVariant`, `shortlist`, roughly lines 69-253), and `route()` calls `shortlist` at line 452. The tokenizer (`stem`, `tokenize`, `STOP`, lines 29-67) is also used by stage 2 and the variant code, so the new module should export it rather than duplicate it.
+2. D:/cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/tests/route.test.mjs: imports `bm25, buildIndex, explicitAllowed, mentions, shortlist, stem, tokenize` directly from route.mjs (lines 4-8) and tests them there, so its imports must change or route.mjs must keep re-exports.
+3. D:/cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/tests/variants.test.mjs: imports `shortlist, asksForVariant, variantTokens` from route.mjs (line 6) and pins the explicit-only variant filter that is part of stage 1.
+4. D:/cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/eval.mjs: imports `combineRuns, DEFAULT_THRESHOLDS, finalize, route` from route.mjs (line 30) and scores the BM25-only path, so its results must not change after the move.
+5. D:/cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/catalog.mjs: supplies the entry shape the scoring reads (`name`, `description`, `head`, `explicitOnly`) and `bareName` (line 279), which `mentions` and the variant logic use.
+
+Also to update after the move: README.md line 20 (the file table maps "Stage 1 BM25 shortlist" to route.mjs) and README.md lines 97-98 (the stage 1 description).
+
+Helper note: find.mjs timed out at 120 s, then finished with exit 0. Its list was unranked and mostly unrelated (ado-classify, laya_step_router.py, pricing.mjs, router_proxy.py, eval_history.py, extract_transcripts.py, two xt-config.mjs). Only route.mjs and eval.mjs from that list were relevant. Items 2, 3 and 5 came from my own grep for shortlist/bm25/mentions/explicitAllowed/asksForVariant across the skill.

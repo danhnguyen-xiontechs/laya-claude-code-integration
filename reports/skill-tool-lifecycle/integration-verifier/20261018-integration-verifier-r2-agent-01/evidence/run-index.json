@@ -1,0 +1,603 @@
+{
+  "c1.A.r1": {
+    "transcript": "agent-a7fc32acb0fc2338b.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.A.r1",
+    "startedAt": "2026-10-18T03:25:11.694Z",
+    "finishedAt": "2026-10-18T03:26:26.727Z",
+    "usage": {
+      "inputTokens": 24,
+      "outputTokens": 61,
+      "cacheReadTokens": 672904,
+      "cacheWriteTokens": 71466,
+      "modelTurns": 12,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a7fc32acb0fc2338b.jsonl",
+      "elapsedMs": 70374
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 7,
+      "PowerShell": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c1.A.r2": {
+    "transcript": "agent-a36103de88840482c.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.A.r2",
+    "startedAt": "2026-10-18T03:30:51.717Z",
+    "finishedAt": "2026-10-18T03:31:50.696Z",
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 66,
+      "cacheReadTokens": 441623,
+      "cacheWriteTokens": 27194,
+      "modelTurns": 8,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a36103de88840482c.jsonl",
+      "elapsedMs": 54012
+    },
+    "toolCallsByName": {
+      "Bash": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c1.B.r1": {
+    "transcript": "agent-a51afac81d4d7c246.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.B2.r1",
+    "startedAt": "2026-10-18T03:39:39.336Z",
+    "finishedAt": "2026-10-18T03:41:31.043Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 65,
+      "cacheReadTokens": 644415,
+      "cacheWriteTokens": 31424,
+      "modelTurns": 11,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a51afac81d4d7c246.jsonl",
+      "elapsedMs": 105948
+    },
+    "toolCallsByName": {
+      "Bash": 4,
+      "PowerShell": 6
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c1.B.r2": {
+    "transcript": "agent-ac02dbc8157fe3593.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c1.B.r2",
+    "startedAt": "2026-10-18T03:30:51.692Z",
+    "finishedAt": "2026-10-18T03:32:06.731Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 64,
+      "cacheReadTokens": 541376,
+      "cacheWriteTokens": 35845,
+      "modelTurns": 9,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ac02dbc8157fe3593.jsonl",
+      "elapsedMs": 68806
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Bash": 10
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c2.A.r1": {
+    "transcript": "agent-ae5ce22e64786282c.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.A.r1",
+    "startedAt": "2026-10-18T03:25:11.760Z",
+    "finishedAt": "2026-10-18T03:26:23.097Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 34,
+      "cacheReadTokens": 491439,
+      "cacheWriteTokens": 71104,
+      "modelTurns": 9,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ae5ce22e64786282c.jsonl",
+      "elapsedMs": 66250
+    },
+    "toolCallsByName": {
+      "Bash": 10
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c2.A.r2": {
+    "transcript": "agent-ad5d0894289c040db.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.A.r2",
+    "startedAt": "2026-10-18T03:30:51.775Z",
+    "finishedAt": "2026-10-18T03:32:03.520Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 53,
+      "cacheReadTokens": 579664,
+      "cacheWriteTokens": 29544,
+      "modelTurns": 10,
+      "toolCalls": 11,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ad5d0894289c040db.jsonl",
+      "elapsedMs": 63773
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 4,
+      "PowerShell": 5
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c2.B.r1": {
+    "transcript": "agent-aa68303cf4ab4fdfc.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.B2.r1",
+    "startedAt": "2026-10-18T03:39:39.358Z",
+    "finishedAt": "2026-10-18T03:41:51.243Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 68,
+      "cacheReadTokens": 626348,
+      "cacheWriteTokens": 47782,
+      "modelTurns": 10,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-aa68303cf4ab4fdfc.jsonl",
+      "elapsedMs": 125139
+    },
+    "toolCallsByName": {
+      "Bash": 9
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c2.B.r2": {
+    "transcript": "agent-ab602d662a94862b3.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c2.B2.r2",
+    "startedAt": "2026-10-18T03:39:39.400Z",
+    "finishedAt": "2026-10-18T03:41:19.465Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 428,
+      "cacheReadTokens": 672000,
+      "cacheWriteTokens": 37956,
+      "modelTurns": 11,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ab602d662a94862b3.jsonl",
+      "elapsedMs": 93946
+    },
+    "toolCallsByName": {
+      "Bash": 11
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c3.A.r1": {
+    "transcript": "agent-ac9ee79640a5e4157.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.A.r1",
+    "startedAt": "2026-10-18T03:25:11.831Z",
+    "finishedAt": "2026-10-18T03:26:30.685Z",
+    "usage": {
+      "inputTokens": 24,
+      "outputTokens": 63,
+      "cacheReadTokens": 675175,
+      "cacheWriteTokens": 72240,
+      "modelTurns": 12,
+      "toolCalls": 13,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ac9ee79640a5e4157.jsonl",
+      "elapsedMs": 72562
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 4,
+      "PowerShell": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c3.A.r2": {
+    "transcript": "agent-a9cd359fcf83ca24d.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.A.r2",
+    "startedAt": "2026-10-18T03:30:51.840Z",
+    "finishedAt": "2026-10-18T03:32:24.927Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 68,
+      "cacheReadTokens": 592594,
+      "cacheWriteTokens": 35060,
+      "modelTurns": 10,
+      "toolCalls": 13,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a9cd359fcf83ca24d.jsonl",
+      "elapsedMs": 88385
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 11
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c3.B.r1": {
+    "transcript": "agent-ac2ee2475d9a7014d.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.B2.r1",
+    "startedAt": "2026-10-18T03:39:39.380Z",
+    "finishedAt": "2026-10-18T03:41:17.094Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 58,
+      "cacheReadTokens": 532366,
+      "cacheWriteTokens": 32949,
+      "modelTurns": 9,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ac2ee2475d9a7014d.jsonl",
+      "elapsedMs": 90145
+    },
+    "toolCallsByName": {
+      "Bash": 8,
+      "mcp__ccd_turn__update_plan": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c3.B.r2": {
+    "transcript": "agent-add581a8e368a0757.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c3.B.r2",
+    "startedAt": "2026-10-18T03:30:51.803Z",
+    "finishedAt": "2026-10-18T03:31:43.310Z",
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 44,
+      "cacheReadTokens": 331793,
+      "cacheWriteTokens": 28077,
+      "modelTurns": 6,
+      "toolCalls": 9,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-add581a8e368a0757.jsonl",
+      "elapsedMs": 43581
+    },
+    "toolCallsByName": {
+      "Bash": 6,
+      "Read": 2
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c4.A.r1": {
+    "transcript": "agent-a057dd9076ea468e8.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.A.r1",
+    "startedAt": "2026-10-18T03:28:48.401Z",
+    "finishedAt": "2026-10-18T03:30:00.910Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 103,
+      "cacheReadTokens": 645363,
+      "cacheWriteTokens": 30099,
+      "modelTurns": 11,
+      "toolCalls": 16,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a057dd9076ea468e8.jsonl",
+      "elapsedMs": 67203
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Read": 1,
+      "Bash": 13
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c4.A.r2": {
+    "transcript": "agent-a5d1925256525477f.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.A.r2",
+    "startedAt": "2026-10-18T03:32:56.762Z",
+    "finishedAt": "2026-10-18T03:33:58.502Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 58,
+      "cacheReadTokens": 568168,
+      "cacheWriteTokens": 25730,
+      "modelTurns": 10,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a5d1925256525477f.jsonl",
+      "elapsedMs": 57000
+    },
+    "toolCallsByName": {
+      "Bash": 9
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c4.B.r1": {
+    "transcript": "agent-a20088a83d8eb9317.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.B.r1",
+    "startedAt": "2026-10-18T03:28:48.416Z",
+    "finishedAt": "2026-10-18T03:29:35.369Z",
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 34,
+      "cacheReadTokens": 395695,
+      "cacheWriteTokens": 27607,
+      "modelTurns": 7,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a20088a83d8eb9317.jsonl",
+      "elapsedMs": 41376
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "PowerShell": 2,
+      "Read": 1,
+      "Bash": 5
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c4.B.r2": {
+    "transcript": "agent-adf546263c84c01c2.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c4.B.r2",
+    "startedAt": "2026-10-18T03:32:56.741Z",
+    "finishedAt": "2026-10-18T03:34:21.348Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 101,
+      "cacheReadTokens": 655125,
+      "cacheWriteTokens": 31860,
+      "modelTurns": 11,
+      "toolCalls": 13,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-adf546263c84c01c2.jsonl",
+      "elapsedMs": 79817
+    },
+    "toolCallsByName": {
+      "Bash": 12
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c5.A.r1": {
+    "transcript": "agent-a19a43d5f879884b3.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.A.r1",
+    "startedAt": "2026-10-18T03:28:48.431Z",
+    "finishedAt": "2026-10-18T03:30:01.582Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 84,
+      "cacheReadTokens": 584372,
+      "cacheWriteTokens": 31438,
+      "modelTurns": 10,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a19a43d5f879884b3.jsonl",
+      "elapsedMs": 68614
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 12
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c5.A.r2": {
+    "transcript": "agent-addeee93f2a7afb54.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.A.r2",
+    "startedAt": "2026-10-18T03:32:56.820Z",
+    "finishedAt": "2026-10-18T03:34:31.599Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 92,
+      "cacheReadTokens": 648105,
+      "cacheWriteTokens": 32005,
+      "modelTurns": 11,
+      "toolCalls": 12,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-addeee93f2a7afb54.jsonl",
+      "elapsedMs": 90386
+    },
+    "toolCallsByName": {
+      "Bash": 4,
+      "PowerShell": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c5.B.r1": {
+    "transcript": "agent-aee4d6a92566302ae.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.B.r1",
+    "startedAt": "2026-10-18T03:28:48.450Z",
+    "finishedAt": "2026-10-18T03:30:12.713Z",
+    "usage": {
+      "inputTokens": 26,
+      "outputTokens": 106,
+      "cacheReadTokens": 799982,
+      "cacheWriteTokens": 37213,
+      "modelTurns": 13,
+      "toolCalls": 14,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-aee4d6a92566302ae.jsonl",
+      "elapsedMs": 78602
+    },
+    "toolCallsByName": {
+      "Bash": 12,
+      "Read": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c5.B.r2": {
+    "transcript": "agent-acbf8cd9c59213eca.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c5.B.r2",
+    "startedAt": "2026-10-18T03:32:56.788Z",
+    "finishedAt": "2026-10-18T03:34:09.986Z",
+    "usage": {
+      "inputTokens": 20,
+      "outputTokens": 82,
+      "cacheReadTokens": 583391,
+      "cacheWriteTokens": 30236,
+      "modelTurns": 10,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-acbf8cd9c59213eca.jsonl",
+      "elapsedMs": 68163
+    },
+    "toolCallsByName": {
+      "Bash": 9
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c6.A.r1": {
+    "transcript": "agent-ae6fcb1e9db078a28.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.A.r1",
+    "startedAt": "2026-10-18T03:28:48.471Z",
+    "finishedAt": "2026-10-18T03:29:48.484Z",
+    "usage": {
+      "inputTokens": 18,
+      "outputTokens": 77,
+      "cacheReadTokens": 508018,
+      "cacheWriteTokens": 26856,
+      "modelTurns": 9,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-ae6fcb1e9db078a28.jsonl",
+      "elapsedMs": 54196
+    },
+    "toolCallsByName": {
+      "Read": 1,
+      "Bash": 4,
+      "PowerShell": 4
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c6.A.r2": {
+    "transcript": "agent-aac6b577f4f558af7.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.A.r2",
+    "startedAt": "2026-10-18T03:32:56.860Z",
+    "finishedAt": "2026-10-18T03:34:30.477Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 82,
+      "cacheReadTokens": 648953,
+      "cacheWriteTokens": 31893,
+      "modelTurns": 11,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-aac6b577f4f558af7.jsonl",
+      "elapsedMs": 88870
+    },
+    "toolCallsByName": {
+      "Read": 5,
+      "Bash": 4,
+      "PowerShell": 7
+    },
+    "ranWrapper": false,
+    "firstOutputKind": "first tool result (wrapper never run)",
+    "answerFound": true
+  },
+  "c6.B.r1": {
+    "transcript": "agent-a0e6c7fb346d69451.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.B.r1",
+    "startedAt": "2026-10-18T03:28:48.490Z",
+    "finishedAt": "2026-10-18T03:30:16.401Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 648,
+      "cacheReadTokens": 693112,
+      "cacheWriteTokens": 38257,
+      "modelTurns": 11,
+      "toolCalls": 17,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a0e6c7fb346d69451.jsonl",
+      "elapsedMs": 80934
+    },
+    "toolCallsByName": {
+      "Bash": 15,
+      "Grep": 1
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  },
+  "c6.B.r2": {
+    "transcript": "agent-a8458caad9d5176c7.jsonl",
+    "model": "claude-haiku-5-5",
+    "workFolder": "c6.B.r2",
+    "startedAt": "2026-10-18T03:32:56.843Z",
+    "finishedAt": "2026-10-18T03:34:30.394Z",
+    "usage": {
+      "inputTokens": 22,
+      "outputTokens": 76,
+      "cacheReadTokens": 668192,
+      "cacheWriteTokens": 33828,
+      "modelTurns": 11,
+      "toolCalls": 15,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-youthful-pascal-a0d47c\\28835acd-aa34-4d67-99f5-4ad61650ae64\\subagents\\agent-a8458caad9d5176c7.jsonl",
+      "elapsedMs": 87836
+    },
+    "toolCallsByName": {
+      "mcp__ccd_turn__update_plan": 1,
+      "Bash": 13
+    },
+    "ranWrapper": true,
+    "firstOutputKind": "wrapper output",
+    "answerFound": true
+  }
+}

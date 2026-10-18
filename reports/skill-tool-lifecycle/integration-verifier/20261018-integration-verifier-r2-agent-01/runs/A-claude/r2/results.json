@@ -1,0 +1,333 @@
+{
+  "experimentId": "20261018-integration-verifier-r2-agent-01",
+  "arm": "A",
+  "runId": "r2",
+  "startedAt": "2026-10-18T03:30:51.717Z",
+  "finishedAt": "2026-10-18T03:34:31.599Z",
+  "cases": [
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c1",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:30:51.717Z",
+      "finishedAt": "2026-10-18T03:31:50.696Z",
+      "status": "pass",
+      "goldOutcome": {
+        "batch": "PASS",
+        "stories": {
+          "S1": "PASS",
+          "S2": "PASS"
+        }
+      },
+      "observedOutcome": "batch PASS; S1 PASS, S2 PASS",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected PASS, got PASS"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected PASS, got PASS"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "pass",
+          "notes": "expected PASS, got PASS"
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 66,
+        "cacheReadTokens": 441623,
+        "cacheWriteTokens": 27194,
+        "modelTurns": 8,
+        "toolCalls": 8,
+        "elapsedMs": 54012,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c1.A.r2.txt",
+        "../../../evidence/texts/c1.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c2",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:30:51.775Z",
+      "finishedAt": "2026-10-18T03:32:03.520Z",
+      "status": "pass",
+      "goldOutcome": {
+        "batch": "BLOCKED",
+        "stories": {
+          "S1": "BLOCKED",
+          "S2": "PASS"
+        }
+      },
+      "observedOutcome": "batch BLOCKED; S1 BLOCKED, S2 PASS",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected BLOCKED, got BLOCKED"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected BLOCKED, got BLOCKED"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "pass",
+          "notes": "expected PASS, got PASS"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 53,
+        "cacheReadTokens": 579664,
+        "cacheWriteTokens": 29544,
+        "modelTurns": 10,
+        "toolCalls": 11,
+        "elapsedMs": 63773,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c2.A.r2.txt",
+        "../../../evidence/texts/c2.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c3",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:30:51.840Z",
+      "finishedAt": "2026-10-18T03:32:24.927Z",
+      "status": "pass",
+      "goldOutcome": {
+        "batch": "FAIL",
+        "stories": {
+          "S1": "PASS",
+          "S2": "FAIL"
+        }
+      },
+      "observedOutcome": "batch FAIL; S1 PASS, S2 FAIL",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected PASS, got PASS"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 68,
+        "cacheReadTokens": 592594,
+        "cacheWriteTokens": 35060,
+        "modelTurns": 10,
+        "toolCalls": 13,
+        "elapsedMs": 88385,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c3.A.r2.txt",
+        "../../../evidence/texts/c3.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c4",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:32:56.762Z",
+      "finishedAt": "2026-10-18T03:33:58.502Z",
+      "status": "pass",
+      "goldOutcome": {
+        "batch": "FAIL",
+        "stories": {
+          "S1": "FAIL",
+          "S2": "FAIL"
+        }
+      },
+      "observedOutcome": "batch FAIL; S1 FAIL, S2 FAIL",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 58,
+        "cacheReadTokens": 568168,
+        "cacheWriteTokens": 25730,
+        "modelTurns": 10,
+        "toolCalls": 10,
+        "elapsedMs": 57000,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c4.A.r2.txt",
+        "../../../evidence/texts/c4.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c5",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:32:56.820Z",
+      "finishedAt": "2026-10-18T03:34:31.599Z",
+      "status": "pass",
+      "goldOutcome": {
+        "batch": "FAIL",
+        "stories": {
+          "S1": "FAIL",
+          "S2": "FAIL"
+        }
+      },
+      "observedOutcome": "batch FAIL; S1 FAIL, S2 FAIL",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "pass",
+          "notes": "expected FAIL, got FAIL"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 92,
+        "cacheReadTokens": 648105,
+        "cacheWriteTokens": 32005,
+        "modelTurns": 11,
+        "toolCalls": 12,
+        "elapsedMs": 90386,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c5.A.r2.txt",
+        "../../../evidence/texts/c5.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-integration-verifier-r2-agent-01",
+      "caseId": "c6",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:32:56.860Z",
+      "finishedAt": "2026-10-18T03:34:30.477Z",
+      "status": "fail",
+      "goldOutcome": {
+        "batch": "REVIEW_REQUIRED",
+        "stories": {
+          "S1": "REVIEW_REQUIRED",
+          "S2": "PASS"
+        }
+      },
+      "observedOutcome": "batch REVIEW_REQUIRED; S1 REVIEW_REQUIRED, S2 REVIEW_REQUIRED — wrong: story-S2 (expected PASS, got REVIEW_REQUIRED)",
+      "correct": false,
+      "criteriaResults": [
+        {
+          "criterionId": "batch-status",
+          "status": "pass",
+          "notes": "expected REVIEW_REQUIRED, got REVIEW_REQUIRED"
+        },
+        {
+          "criterionId": "story-S1",
+          "status": "pass",
+          "notes": "expected REVIEW_REQUIRED, got REVIEW_REQUIRED"
+        },
+        {
+          "criterionId": "story-S2",
+          "status": "fail",
+          "notes": "expected PASS, got REVIEW_REQUIRED"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 82,
+        "cacheReadTokens": 648953,
+        "cacheWriteTokens": 31893,
+        "modelTurns": 11,
+        "toolCalls": 17,
+        "elapsedMs": 88870,
+        "providerCalls": null,
+        "fallbackCount": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/c6.A.r2.txt",
+        "../../../evidence/texts/c6.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+PICK: none
+The request is a one-line, plain coding task (a for loop that prints even numbers) that Claude can answer directly, and the helper's BM25 shortlist was empty with the Jev decision also returning none, so no installed skill, command or subagent is needed.

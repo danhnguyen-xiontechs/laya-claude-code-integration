@@ -1,0 +1,17 @@
+Where to start: how subagent token counts are summed for the A/B report. The harness is .claude/skills/build-skill-tool-workflow in the repo. Read-only; nothing modified.
+
+Five most relevant files, most relevant first (repo root D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo):
+
+1. D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs - for each case it matches the case's work dir to one subagent transcript (zero or two matches gives null) and returns that transcript's usage, so this is where a case's subagent is tied to its tokens.
+2. D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs - the actual sum: input, output, cache-read and cache-write tokens per API message id, with a message split over several lines counted once; in separate-session mode it also adds every transcript under <session>/subagents/.
+3. D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs - aggregates each arm's case.usage (totalTokens at line 58); the A-vs-B token comparison uses only cases that pass or fail in both arms.
+4. D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/SKILL.md - step 6 (lines 71-100) says which measurement path applies (subagents, separate sessions, or content run) and how the numbers reach results.json case.usage.
+5. D:/cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs - pins the expected behavior: arm token totals (lines 48-50), transcript_usage sums (lines 98-114), subagent_usage matching (lines 181-196).
+
+Caveats found while reading (not fixed):
+- The report's "tokens" include cache read and cache write (build_tool_report.mjs line 58), so totals are not fresh input plus output. The test fixtures set only input and output, so this is not covered by tests.
+- In content runs, SKILL.md line 98 says to put the count_tokens result (size of the text Claude read, baseline subtracted) into usage.inputTokens. That field then mixes a text size with session usage.
+- subagent_usage.mjs always passes --no-subagents, and transcript_usage.mjs reads only one folder level. A child subagent spawned by a case's subagent (same flat folder, per SKILL.md line 84) would not be counted. I did not check whether these runs contain nested subagents.
+- transcript_usage.mjs's header says the output is pasted by hand into results.json case.usage, so nothing links the subagent sums to the report automatically.
+
+Helper: find.mjs ran (codemap 4.6.0, coverage partial, Jev advisory, exit 0). I did not use its #2 research/ab-1697/compare.py: it reads only the top-level result.json usage of each run, not subagent transcripts. Its #9 workflow/step_report.py does sum subagent transcripts per Agent call, matched by meta.json toolUseId (a sturdier link than the work-dir match), but it is a workflow step report rather than the A/B harness, so it is outside the five. Worth a look if the question concerns that report.

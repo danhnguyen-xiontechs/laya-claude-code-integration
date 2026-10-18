@@ -1,0 +1,3 @@
+{"waves": [["Q-4", "Q-9", "Q-10"], ["Q-5", "Q-6", "Q-7"], ["Q-8"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Reasoning: Q-1 and Q-2 form a cycle (Q-1's text says it needs Q-2 merged first, while Q-2 has an explicit depends_on Q-1), so both are held, and Q-3 is held because its only prerequisite, Q-2, has no safe position; Q-11 is held because it has no acceptance criteria and only the description "Small changes." Q-4 creates POST /api/timesheets and Q-7 extends the same TimesheetDto, so Q-7 follows Q-4; Q-5 and Q-6 consume the endpoint and run after Q-4; Q-8 edits the fixture tests/fixtures/timesheets.json that Q-5's tests use, so it runs last. Q-9 and Q-10 touch no shared files and go in wave 1.

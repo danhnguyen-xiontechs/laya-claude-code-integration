@@ -1,0 +1,3 @@
+{"waves": [["P-1", "P-3", "P-5", "P-11"], ["P-2", "P-6", "P-9", "P-10"], ["P-4", "P-12"]], "needs_decision": ["P-7", "P-8"]}
+
+Reasoning: P-1 runs before P-2 (employees schema) and P-9 (both add migrations); P-6 waits for P-5 (explicit link) and P-11 (both touch notify/templates/payslip.html); P-4 and P-12 wait for P-3; P-7 is held for FIN-12 and P-8 has no ACs, so both go to needs_decision; packed to the planner's 4-agent cap, and the planner's own 5-wave output (P-4 and P-12 pushed to wave 5) comes from P-8's artificial incomplete-story edges, so I did not use it. Confirm P-3's totals do not need P-2's withholding before dispatch.

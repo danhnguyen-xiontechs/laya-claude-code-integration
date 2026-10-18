@@ -1,0 +1,140 @@
+[
+ {
+  "id": "D1",
+  "class": "dead",
+  "file": "ordersapi/core.py",
+  "match": "legacy_total"
+ },
+ {
+  "id": "D2",
+  "class": "dead",
+  "file": "ordersapi/core.py",
+  "match": "ROUND_MODE"
+ },
+ {
+  "id": "N1",
+  "class": "neutral",
+  "file": "ordersapi/core.py",
+  "match": "to_xml"
+ },
+ {
+  "id": "N2",
+  "class": "neutral",
+  "file": "ordersapi/cli.py",
+  "match": "Handler().dispatch|sorted(web.ROUTES)"
+ },
+ {
+  "id": "D4",
+  "class": "dead",
+  "file": "ordersapi/core.py",
+  "match": "import json"
+ },
+ {
+  "id": "D5",
+  "class": "dead",
+  "file": "ordersapi/core.py",
+  "match": "_cents"
+ },
+ {
+  "id": "D6",
+  "class": "dead",
+  "file": "ordersapi/web.py",
+  "match": "render_xml"
+ },
+ {
+  "id": "D7",
+  "class": "dead",
+  "file": "ordersapi/tasks.py",
+  "match": "send_digest"
+ },
+ {
+  "id": "D8",
+  "class": "dead",
+  "file": "ordersapi/cli.py",
+  "match": "DEBUG argv"
+ },
+ {
+  "id": "D9",
+  "class": "dead",
+  "file": "ordersapi/cli.py",
+  "match": "total = order.total()|old total"
+ },
+ {
+  "id": "K1",
+  "class": "decoy",
+  "file": "ordersapi/__init__.py",
+  "match": "total_for"
+ },
+ {
+  "id": "K2",
+  "class": "decoy",
+  "file": "ordersapi/core.py",
+  "match": "class Order"
+ },
+ {
+  "id": "K3",
+  "class": "decoy",
+  "file": "ordersapi/web.py",
+  "match": "list_orders"
+ },
+ {
+  "id": "K4",
+  "class": "decoy",
+  "file": "ordersapi/web.py",
+  "match": "health"
+ },
+ {
+  "id": "K5",
+  "class": "decoy",
+  "file": "ordersapi/tasks.py",
+  "match": "nightly_cleanup"
+ },
+ {
+  "id": "K6",
+  "class": "decoy",
+  "file": "ordersapi/tasks.py",
+  "match": "rebuild_index"
+ },
+ {
+  "id": "K7",
+  "class": "decoy",
+  "file": "ordersapi/handlers.py",
+  "match": "on_created"
+ },
+ {
+  "id": "K8",
+  "class": "decoy",
+  "file": "ordersapi/handlers.py",
+  "match": "on_cancelled"
+ },
+ {
+  "id": "K9",
+  "class": "decoy",
+  "file": "ordersapi/exporters.py",
+  "match": "CsvExporter"
+ },
+ {
+  "id": "K10",
+  "class": "decoy",
+  "file": "ordersapi/cli.py",
+  "match": "def main"
+ },
+ {
+  "id": "K11",
+  "class": "decoy",
+  "file": "ordersapi/debug.py",
+  "match": "dump_order"
+ },
+ {
+  "id": "K12",
+  "class": "decoy",
+  "file": "ordersapi/cli.py",
+  "match": "usage: orders"
+ },
+ {
+  "id": "K13",
+  "class": "decoy",
+  "file": "ordersapi/core.py",
+  "match": "to_dict"
+ }
+]

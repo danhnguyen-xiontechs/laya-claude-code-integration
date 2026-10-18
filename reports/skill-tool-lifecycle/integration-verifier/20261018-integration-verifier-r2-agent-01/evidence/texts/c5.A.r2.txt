@@ -1,0 +1,44 @@
+total 18
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 ..
+-rw-r--r-- 1 <user> 197121 294 Oct 18 10:20 batch.json
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 logs
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 repo
+-rwxr-xr-x 1 <user> 197121 124 Oct 18 10:20 verify-batch.mjs
+---
+{
+  "batch_id": "batch-c5",
+  "repo": "repo",
+  "base": "main",
+  "required_checks": [
+    {
+      "name": "test",
+      "cmd": "node run-tests.js"
+    }
+  ],
+  "stories": [
+    {
+      "id": "S1",
+      "branch": "story/S1"
+    },
+    {
+      "id": "S2",
+      "branch": "story/S2"
+    }
+  ]
+}---
+total 6
+drwxr-xr-x 1 <user> 197121  0 Oct 18 10:20 .
+drwxr-xr-x 1 <user> 197121  0 Oct 18 10:20 ..
+-rw-r--r-- 1 <user> 197121 15 Oct 18 10:20 S1-test.log
+-rw-r--r-- 1 <user> 197121 34 Oct 18 10:20 S2-test.log
+total 13
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 .
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 ..
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 .git
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 config
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 fixtures
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 migrations
+-rw-r--r-- 1 <user> 197121 240 Oct 18 10:20 run-tests.js
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 src
+drwxr-xr-x 1 <user> 197121   0 Oct 18 10:20 tests

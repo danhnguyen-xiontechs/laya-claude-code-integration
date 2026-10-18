@@ -1,0 +1,11 @@
+Build done: dist/out.js is produced in the work folder (job-8c2ea845) by the project build, run through `node run.mjs`.
+
+What I ran:
+- `node run.mjs npm run build -- --target es2019` failed with exit 1: "optional chaining is not supported for target es2019 (src/main.js:2)". build.mjs requires a --target flag, and src/main.js uses `?.`.
+- `node run.mjs npm run build -- --target es2020` succeeded: "built dist/out.js for es2020".
+
+Output: dist/out.js starts with the header `// BUILD-OK target=es2020 sha=bd6d4a5a2fc4` and then the verbatim src/main.js (3 lines, an ES module). I checked the file contents by reading them.
+
+Test suite: `node run.mjs npm test` (node --test) ran with 0 tests, 0 pass, 0 fail. The work folder has no test files, so the suite passes only vacuously.
+
+Changes: only dist/ (new, containing out.js). I did not edit build.mjs, src/, or package.json, and I created nothing outside the work folder. Note: the bare `npm run build` script has no target, so it always fails with "missing required option --target"; es2020 is the only target that works with the current source.

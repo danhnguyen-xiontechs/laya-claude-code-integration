@@ -1,0 +1,7 @@
+$ node run.mjs npm run build -- --target es2019
+
+> build
+> node build.mjs --target es2019
+
+build.mjs: error: optional chaining is not supported for target es2019 (src/main.js:2)
+Exit code 1

@@ -1,0 +1,2 @@
+PICK: web-test
+The request asks to test an ESS story on dev with screenshot evidence and an HTML report, which is the web-test skill's stated use ("test story 22070 on dev", "give me evidence"), and the plain ticket-testing case is not an A/B variant request, so the -jev and -laya variants do not apply.

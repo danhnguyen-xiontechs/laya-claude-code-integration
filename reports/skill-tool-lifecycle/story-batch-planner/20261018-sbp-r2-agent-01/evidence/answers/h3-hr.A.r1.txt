@@ -1,0 +1,3 @@
+{"waves": [["R-3", "R-8", "R-10"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7"]}
+
+Reasoning: R-1 is "Misc." with no AC, so it is held, and R-2 is held with it because it depends on R-1; R-6 depends on HR-404, which is outside this batch with unknown status, so R-6 and R-7 (which builds on R-6) are held until HR-404 is confirmed done, then R-6 can join wave 1 and R-7 wave 2; R-3 and R-4 both add schema migrations so they are split across waves, with R-3 first because R-5 reads its department_id column; R-9 waits for the R-8 endpoint; R-10 touches only one template, with its HR approval treated as a review gate rather than a blocker.

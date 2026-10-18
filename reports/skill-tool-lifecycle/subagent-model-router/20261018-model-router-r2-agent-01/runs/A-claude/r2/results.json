@@ -1,0 +1,189 @@
+{
+  "experimentId": "20261018-model-router-r2-agent-01",
+  "arm": "A",
+  "runId": "r2",
+  "startedAt": "2026-10-18T03:35:09.531Z",
+  "finishedAt": "2026-10-18T03:36:59.313Z",
+  "cases": [
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "e1-locate",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:35:09.531Z",
+      "finishedAt": "2026-10-18T03:35:23.244Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.0895",
+      "correct": true,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 209,
+        "cacheReadTokens": 202691,
+        "cacheWriteTokens": 18757,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 13713,
+        "cost": 0.089537,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e1-locate.A.r2.txt",
+        "evidence/answers/e1-locate.A.r2.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "e2-count",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:35:09.580Z",
+      "finishedAt": "2026-10-18T03:35:36.475Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1144",
+      "correct": true,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 383,
+        "cacheReadTokens": 314989,
+        "cacheWriteTokens": 19008,
+        "modelTurns": 6,
+        "toolCalls": 8,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 26895,
+        "cost": 0.114372,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e2-count.A.r2.txt",
+        "evidence/answers/e2-count.A.r2.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "r1-rename",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:35:09.634Z",
+      "finishedAt": "2026-10-18T03:35:25.825Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.0915",
+      "correct": true,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 206,
+        "cacheReadTokens": 203116,
+        "cacheWriteTokens": 19537,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 16191,
+        "cost": 0.091542,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/r1-rename.A.r2.txt",
+        "evidence/answers/r1-rename.A.r2.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "f1-paginate",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:36:01.568Z",
+      "finishedAt": "2026-10-18T03:36:17.094Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.0870",
+      "correct": true,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 207,
+        "cacheReadTokens": 201423,
+        "cacheWriteTokens": 17867,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 15526,
+        "cost": 0.087038,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/f1-paginate.A.r2.txt",
+        "evidence/answers/f1-paginate.A.r2.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "d3-maplimit",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:36:01.603Z",
+      "finishedAt": "2026-10-18T03:36:33.774Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1147",
+      "correct": true,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 228,
+        "cacheReadTokens": 315611,
+        "cacheWriteTokens": 19697,
+        "modelTurns": 6,
+        "toolCalls": 7,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 32171,
+        "cost": 0.114669,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d3-maplimit.A.r2.txt",
+        "evidence/answers/d3-maplimit.A.r2.txt"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "d5-deps",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:36:01.636Z",
+      "finishedAt": "2026-10-18T03:36:59.313Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (default); check passed; list cost $0.1290",
+      "correct": true,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 197,
+        "cacheReadTokens": 316623,
+        "cacheWriteTokens": 25475,
+        "modelTurns": 6,
+        "toolCalls": 7,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "elapsedMs": 57677,
+        "cost": 0.129006,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d5-deps.A.r2.txt",
+        "evidence/answers/d5-deps.A.r2.txt"
+      ]
+    }
+  ]
+}

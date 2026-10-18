@@ -1,0 +1,70 @@
+{
+  "findings": [
+    {
+      "severity": "Minor",
+      "finding": "HELPER_CALL matched mock methods such as assert_called_once_with, so the digest asked to open helpers that do not exist.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "fixed: attribute calls excluded by a lookbehind"
+    },
+    {
+      "severity": "Minor",
+      "finding": "(+k more assertions) undercounts above 15 assertions: discover caps the list at 15 and adds a truncation marker.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "open: not fixed in this round; recorded as a known limit"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Local labels do not show their origin or reason in the digest.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "open: not fixed in this round"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The header said hidden even with --show-skippable.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "fixed: header says shown"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The timeout test checked no label instead of jev-timeout.",
+      "ref": "tests/test_ac_coverage.py",
+      "resolution": "fixed: test asserts jev=none (jev-timeout)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The all-hidden branch had no test.",
+      "ref": "tests/test_ac_coverage.py",
+      "resolution": "fixed: assertion added"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The new tests sat below the __main__ guard.",
+      "ref": "tests/test_ac_coverage.py",
+      "resolution": "fixed: guard moved to the end"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "test_hides_skippable_and_names_them checks that bare names appear anywhere in the text, not on the hidden line.",
+      "ref": "tests/test_ac_coverage.py",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The reworded no-candidates hint reads clearly and avoids the word Missing.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "no change needed"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "digest crashed when results has pairs set to null.",
+      "ref": "jev_skills/ac_coverage/report.py",
+      "resolution": "fixed: null pairs treated as empty"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The SKILL.md digest sentence made the step 6 line about 300 characters.",
+      "ref": ".claude/skills/acceptance-criteria-coverage/SKILL.md",
+      "resolution": "fixed: sentence on its own line"
+    }
+  ]
+}

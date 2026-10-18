@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-dcf-r2-agent-01",
+  "baseline": "../20261018-dcf-agent-01",
+  "tool": {
+    "name": "dead-code-finder",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "e551872 + working tree (JEV worktree, untouched) + round-2 patch tool-change.patch (report only)",
+    "branch": "claude/dead-code-round2 (this repo; the tool code is in the JEV repo, not committed here)"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "MEDIUM",
+  "headline": "Still bad after the short-report change: plain Haiku 5.5 passes 7 of 8 runs and Haiku with the scanner 7 of 8 (A fails dcf-01 r2 on one decoy, B on one unlisted line in the same case), and B costs 84% more tokens (2.36M -> 4.34M, higher in 8 of 8 pairs, 7-10 model turns against 4-6). The short report cut report.md from about 12 KB to 2-4 KB, but not the extra turns: the agents still re-check candidates by hand. Top suggestion: skip the scan below about 2,000 lines and judge the tool only on a large case, where reading every file costs more than reading the report.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (no dead-code-finder)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + dead-code-finder, short report (wrapper runs the skill's real scan, Jev live)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5), forced by the user",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, live"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "design.md (frozen before any round-2 case agent ran)",
+    "datasetVersion": "4 cases (dcf-01..04), same fixtures and answer keys as round 1",
+    "caseCount": 4,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18 (before the runs; see idea-brief.md)",
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript",
+    "deviations": [
+      "Round-2 change: only suggestion 1 of the round-1 improvements.md (short report: Tier C as a count, Tier A without the evidence column). Suggestions 2-5 not applied. The change exists as tool-change.patch and in a scratch copy of the JEV working tree; the JEV repo was not edited and nothing was committed there.",
+      "All case agents ran on Haiku 5.5 with effort xhigh by the user's decision; the reviewers (independent review and step 7b review) ran on opus, read-only.",
+      "Independent review (agent-review.json): one Major (the new test passed without testing Tier A) fixed and re-checked by a mutation test; one Minor (empty Tier C wording) fixed; one Minor (eval writes the short report with no --full) accepted for this run; one Suggestion accepted.",
+      "Arm A: no run used the tool or read a key (forbiddenCalls 0 in all 8 A runs; the check is clean). Arm B forbiddenCalls (0-4 per run) were not inspected by hand: the check protects arm A, and arm B is allowed to use the tool.",
+      "Directional only: 4 cases, 2 repetitions, 8 runs per arm. Token noise between repetitions is large (dcf-03 A: 232k and 366k in one case, dcf-03 B: 449k and 571k).",
+      "dcf-04: both arms miss D3 and D4 in some runs (A r2, B r1, B r2), so that recall gap from round 1 is not a tool effect in this round.",
+      "dcf-01 r2 failures: A lists decoy J14 (a real grader hit); B lists `if amount < 0:` (the empty guard around breakpoint()), which the key does not name, so the grader counts it as an unlisted wrong. Both arms pass dcf-01 in repetition 1.",
+      "The three JEV skills' Jev cost per B run was $0.00013-0.00043 (wrapper logs); not part of the token numbers.",
+      "No final-decision.md: Gate B is the user's. No finalDecision is recorded.",
+      "Harness fix during step 7: the arm B first-output regex matched the wrapper's source text ('tool failed'), so texts/<case>.B.r*.txt first held tool.mjs, not the report. The regex now matches the report heading and collect was re-run on the same transcripts (usage and grades unchanged). dcf-04 B r2's first output is a single tool result that holds the wrapper source and the report, so the text file starts with the source.",
+      "Round-1 folder untouched; linked as the baseline in idea-brief.md."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/answers",
+      "evidence/subagent-usage.json",
+      "evidence/run-index.json",
+      "evidence/_logs",
+      "evidence/grades.json",
+      "evidence/answer-key"
+    ],
+    "executionLogs": [],
+    "improvements": "improvements.md"
+  }
+}

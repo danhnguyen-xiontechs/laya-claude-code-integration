@@ -1,0 +1,326 @@
+{
+  "h1-payroll.A.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 109146,
+    "waves": [
+      [
+        "P-1",
+        "P-3",
+        "P-5",
+        "P-10"
+      ],
+      [
+        "P-2",
+        "P-4",
+        "P-6",
+        "P-9",
+        "P-12"
+      ],
+      [
+        "P-11"
+      ]
+    ],
+    "needs_decision": [
+      "P-7",
+      "P-8"
+    ],
+    "failed": []
+  },
+  "h1-payroll.B.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 227957,
+    "waves": [
+      [
+        "P-1",
+        "P-3",
+        "P-5",
+        "P-10",
+        "P-11"
+      ],
+      [
+        "P-2",
+        "P-4",
+        "P-6",
+        "P-9",
+        "P-12"
+      ]
+    ],
+    "needs_decision": [
+      "P-7",
+      "P-8"
+    ],
+    "failed": []
+  },
+  "h1-payroll.A.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 109101,
+    "waves": [
+      [
+        "P-1",
+        "P-3",
+        "P-5",
+        "P-10"
+      ],
+      [
+        "P-2",
+        "P-4",
+        "P-6",
+        "P-9",
+        "P-12"
+      ],
+      [
+        "P-11"
+      ]
+    ],
+    "needs_decision": [
+      "P-7",
+      "P-8"
+    ],
+    "failed": []
+  },
+  "h1-payroll.B.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 670596,
+    "waves": [
+      [
+        "P-1",
+        "P-3",
+        "P-5",
+        "P-10"
+      ],
+      [
+        "P-2",
+        "P-4",
+        "P-6",
+        "P-9"
+      ],
+      [
+        "P-11",
+        "P-12"
+      ]
+    ],
+    "needs_decision": [
+      "P-7",
+      "P-8"
+    ],
+    "failed": []
+  },
+  "h2-portal.A.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 109063,
+    "waves": [
+      [
+        "Q-4",
+        "Q-9",
+        "Q-10"
+      ],
+      [
+        "Q-5",
+        "Q-6",
+        "Q-7"
+      ],
+      [
+        "Q-8"
+      ]
+    ],
+    "needs_decision": [
+      "Q-1",
+      "Q-2",
+      "Q-3",
+      "Q-11"
+    ],
+    "failed": []
+  },
+  "h2-portal.B.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 112003,
+    "waves": [
+      [
+        "Q-4",
+        "Q-8",
+        "Q-9",
+        "Q-10"
+      ],
+      [
+        "Q-5",
+        "Q-6",
+        "Q-7"
+      ]
+    ],
+    "needs_decision": [
+      "Q-1",
+      "Q-2",
+      "Q-3",
+      "Q-11"
+    ],
+    "failed": []
+  },
+  "h2-portal.A.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 109064,
+    "waves": [
+      [
+        "Q-4",
+        "Q-9",
+        "Q-10"
+      ],
+      [
+        "Q-7"
+      ],
+      [
+        "Q-5",
+        "Q-6"
+      ],
+      [
+        "Q-8"
+      ]
+    ],
+    "needs_decision": [
+      "Q-1",
+      "Q-2",
+      "Q-3",
+      "Q-11"
+    ],
+    "failed": []
+  },
+  "h2-portal.B.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 169908,
+    "waves": [
+      [
+        "Q-4",
+        "Q-8",
+        "Q-9",
+        "Q-10"
+      ],
+      [
+        "Q-5",
+        "Q-6",
+        "Q-7"
+      ]
+    ],
+    "needs_decision": [
+      "Q-1",
+      "Q-2",
+      "Q-3",
+      "Q-11"
+    ],
+    "failed": []
+  },
+  "h3-hr.A.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 108961,
+    "waves": [
+      [
+        "R-3",
+        "R-8",
+        "R-10"
+      ],
+      [
+        "R-4",
+        "R-5",
+        "R-9"
+      ]
+    ],
+    "needs_decision": [
+      "R-1",
+      "R-2",
+      "R-6",
+      "R-7"
+    ],
+    "failed": []
+  },
+  "h3-hr.B.r1": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 237214,
+    "waves": [
+      [
+        "R-3",
+        "R-8",
+        "R-10"
+      ],
+      [
+        "R-4",
+        "R-9"
+      ]
+    ],
+    "needs_decision": [
+      "R-1",
+      "R-2",
+      "R-5",
+      "R-6",
+      "R-7"
+    ],
+    "failed": []
+  },
+  "h3-hr.A.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "tokens": 108768,
+    "waves": [
+      [
+        "R-3",
+        "R-8",
+        "R-10"
+      ],
+      [
+        "R-4",
+        "R-5",
+        "R-9"
+      ]
+    ],
+    "needs_decision": [
+      "R-1",
+      "R-2",
+      "R-6",
+      "R-7"
+    ],
+    "failed": []
+  },
+  "h3-hr.B.r2": {
+    "status": "pass",
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": null,
+    "tokens": 226102,
+    "waves": [
+      [
+        "R-3",
+        "R-8",
+        "R-10"
+      ],
+      [
+        "R-4",
+        "R-5",
+        "R-9"
+      ]
+    ],
+    "needs_decision": [
+      "R-1",
+      "R-2",
+      "R-6",
+      "R-7"
+    ],
+    "failed": []
+  }
+}

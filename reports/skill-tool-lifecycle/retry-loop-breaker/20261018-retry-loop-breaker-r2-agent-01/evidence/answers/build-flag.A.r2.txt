@@ -1,0 +1,14 @@
+Built dist/out.js with the project's build, and the build succeeds.
+
+What I did:
+- `npm run build` needs a `--target` option (es2019 or es2020), and it fails without one. I ran `node run.mjs npm run build -- --target es2020`. The output is "built dist/out.js for es2020".
+- I chose es2020 because src/main.js uses optional chaining (`cfg?.a?.b`, line 2). build.mjs rejects es2019 for any source containing `?.`, so es2020 is the only target that builds this source.
+- dist/out.js is 109 bytes: a `// BUILD-OK target=es2020 sha=bd6d4a5a2fc4` header line followed by the unchanged source.
+
+Changes:
+- Only dist/ was created, by the build. I did not edit build.mjs, run.mjs, package.json, or anything under src/. Nothing was written outside the work folder.
+
+Test suite:
+- `node run.mjs npm test` ran `node --test` and exited 0, but it found no tests (0 tests, 0 pass, 0 fail). No test files exist in the work folder, so this is a pass with no coverage.
+
+No retry guard or helper from the repo was used.

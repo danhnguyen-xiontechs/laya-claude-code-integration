@@ -1,0 +1,22 @@
+Answer: The BLOCKED-vs-FAIL decision lives in the integration-verifier skill. Story statuses are set deterministically in verify.mjs. BLOCKED means evidence is missing or the environment is at fault. FAIL means a check ran and was red. Jev never changes a status.
+
+Rules as implemented:
+- Story level (verifyStory): branch not found, git diff failure, invalid or missing manifest, a required check with no record, no log file or empty log, or no numeric exit code give BLOCKED. A required check with a non-zero exit gives FAIL, with no environment-signature check.
+- Combined run (combined): each required check runs in a temporary merged worktree. Exit 0 is PASS. Otherwise, if deterministicCategory matches (exit 127/9009, or ENV_RX such as ECONNREFUSED, EACCES, permission denied, ETIMEDOUT), the check is BLOCKED. Anything else is FAIL.
+- finalize: an environment cluster BLOCKs the attributed stories and sets every other story to at least BLOCKED. A code cluster FAILs the attributed stories and sets the others to REVIEW_REQUIRED. No combined checks run gives BLOCKED.
+
+Five starting files, most relevant first:
+1. D:\cte3\w\n2-feature-blocked-status-bd52a6\repo\.claude\skills\integration-verifier\scripts\verify.mjs. This is where every status is assigned: verifyStory (lines 89-153), combined (192-222), finalize (276-301), and deterministicCategory/ENV_RX (37-47).
+2. D:\cte3\w\n2-feature-blocked-status-bd52a6\repo\.claude\skills\integration-verifier\SKILL.md. The rule table (lines 35-54) is the written spec for BLOCKED vs FAIL, including "Combined failure matches environment signature ... BLOCKED, not FAIL".
+3. D:\cte3\w\n2-feature-blocked-status-bd52a6\repo\.claude\skills\integration-verifier\references\manifest.md. It defines the required manifest fields and batch checks; a missing or invalid piece is what triggers the story-level BLOCKED.
+4. D:\cte3\w\n2-feature-blocked-status-bd52a6\repo\.claude\skills\integration-verifier\tests\fixtures.test.mjs. Its hand-labelled cases, such as missing-logs and environment-only (lines 95-110), show the expected BLOCKED vs FAIL outcomes.
+5. D:\cte3\w\n2-feature-blocked-status-bd52a6\repo\.claude\skills\integration-verifier\scripts\decision-provider.mjs. It is the Jev shadow path; reading it confirms that Jev only adds a category suggestion and cannot change a status. The helper ranked it second, but it matters less than the rule files.
+
+Helper output: the codebase-task-explorer run returned only 2 of 10 rows, both from integration-verifier (verify.mjs, decision-provider.mjs). The gate hid the rest, and the codemap coverage was partial because of unresolved JS and Python imports. I did not re-run with --no-gate.
+
+Possible inconsistencies, from reading the code and not run:
+- verify.mjs:121 makes a story's own red required check a FAIL with no environment check. verify.mjs:214 makes the same ECONNREFUSED output a BLOCKED in the combined run. So one environment failure can be FAIL in a story worktree and BLOCKED in the combined run.
+- ENV_RX (verify.mjs:38) scans the whole combined log. A real regression that prints a matching word, such as "permission denied" or "ETIMEDOUT", would be downgraded to BLOCKED.
+- verify.mjs:291 BLOCKs every story on an environment cluster, including stories not attributed to it.
+
+Nothing was modified.

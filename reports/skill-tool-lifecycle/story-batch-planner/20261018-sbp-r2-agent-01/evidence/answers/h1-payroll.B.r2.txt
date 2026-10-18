@@ -1,0 +1,10 @@
+{"waves": [["P-1","P-3","P-5","P-10"],["P-2","P-4","P-6","P-9"],["P-11","P-12"]], "needs_decision": ["P-7","P-8"]}
+
+Hard orders: P-1 before P-2 and P-9 (employees schema and migration chain), P-3 before P-4 and P-12 (endpoint contract and "builds on"), and P-5 before P-6 before P-11 (explicit link, then the shared payslip template); P-7 waits on FIN-12 and P-8 is too thin, and the packing fits in 3 waves within maxConcurrency 4.
+
+Notes:
+- `node plan.mjs --summary` returned 4 waves: [P-1,P-3,P-5,P-10], [P-11], [P-2,P-4,P-6,P-9], [P-12]. It satisfies every edge constraint, but it is over-serialized. `layer()` in the story-batch-planner planner.mjs chunks each dependency level by maxConcurrency, so level 0's five stories split 4+1 and push P-11 and P-12 into extra waves. I did not change the planner; this is worth a fix there.
+- I overrode the planner's P-11-before-P-6 tie-break on the shared file notify/templates/payslip.html. P-11's AC ("Vietnamese staff get the vi template") needs the mailer that P-6 builds in PayslipMailer.cs. If P-11 only touches template files, the alternative is [P-1,P-3,P-5,P-11], [P-2,P-4,P-6,P-9], [P-10,P-12], which also runs in 3 waves.
+- P-7 probably also needs P-2 and P-3 (net pay), which its text does not state; confirm when FIN-12 clears.
+- The planner had no repo metadata, so every conflict comes from the story text and nothing was checked against the code. The run used --jev, so titles, descriptions and ACs were sent to OpenRouter as shadow suggestions; they did not change the waves.
+- Wave check script: <scratch>\check-waves.mjs. The planner's plan JSON is in sbp3\_logs\h1-payroll.B.r2.plan.json.

@@ -1,0 +1,9 @@
+[project]
+name = "ordersapi"
+version = "0.3.0"
+
+[project.scripts]
+orders = "ordersapi.cli:main"
+
+[project.entry-points."ordersapi.exporters"]
+csv = "ordersapi.exporters:CsvExporter"

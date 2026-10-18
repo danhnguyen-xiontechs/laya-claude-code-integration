@@ -1,0 +1,78 @@
+{
+  "reviewer": "independent subagent (opus), read-only, 2026-10-18; findings resolved by the author",
+  "reviewedCommit": "ada217d (review before the fixes; resolutions below)",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "SKILL.md step 3 tells Claude that `conf: low` on a provider hint means BM25 and the engine disagreed. It does not. label() (route.mjs:423-428) also returns 'low' when min(confidence or stability, fit) < 0.35, and agreement defaults to 'off' (DEFAULT_THRESHOLDS, and jev.json does not set it). So with the shipped config, `conf: low` never means disagreement. The old text gated this on `agreement.agree: false`, and the line drops that field. Also, `(the engine's first, in alt)` has it backwards: finalize (route.mjs:362) puts the engine's top in `suggest:` and BM25's top in alt[0]. Claude will misread the hint. Fix: emit a field such as `agree: no` (or `conf: low (disagree)`) when agreement.agree === false, and reword the bullet to match.",
+      "ref": ".claude/skills/skills-router/SKILL.md:61",
+      "resolution": "fixed: conf wording rewritten (low = uncertain score or disagreement); commit ada217d"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The hard-clip deviation is right. `via` is the trust signal SKILL.md:60 relies on (bm25-only vs provider), the spec's literal clip would cut it, and the result stays <= 200 (verified). But a character clip of the front can leave a partial invocation and a dangling comma in `alt`. Probed: `alt: /bbbb…bbb,… | via: jev`. Claude could copy a broken invocation. Better order: drop whole alternatives (last first), then shorten `why`, and clip characters only as a last resort. Record the deviation in the spec/design.",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:552",
+      "resolution": "fixed: whole alternatives are dropped first, then the front is clipped with via kept; reviewer confirmed the deviation from the spec is right"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Invocations and overlap ids skip clean(); only why, conf, error, reasons and provider are cleaned. Probed: an invocation '/x | y\\nz' prints a raw newline and an extra ` | ` separator. BMad invocations come from CSV fields (`/${r.skill} ${r.action}`, catalog.mjs:261), so this is possible. Wrap s.invocation, alt invocations and overlap ids in clean().",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:533",
+      "resolution": "fixed for invocations (clean()); overlap ids are catalog ids and still uncleaned: open, Minor, no live path"
+    },
+    {
+      "severity": "Minor",
+      "finding": "`An invocation marked [explicit only]`: the line never marks an invocation. The marker exists only in overlaps[].differs under --json (route.mjs:416). Either add the marker to the line (for example, suffix the invocation) or drop or reword the sentence.",
+      "ref": ".claude/skills/skills-router/SKILL.md:57",
+      "resolution": "fixed: the [explicit only] sentence was removed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "`run --json for each differs text`: one --json run returns every differs. Re-running with a provider also makes a second Jev call (cost, and with Jev the answer can differ from the line just read), appends a second log line, and adds the extra agent turn that round 1 showed was the main token cost. Say 'run once with --json', or say to tell the overlapping skills apart from their descriptions without re-running.",
+      "ref": ".claude/skills/skills-router/SKILL.md:56",
+      "resolution": "fixed: the --json differs wording removed (no second run needed)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The abstain reasons list in the new grammar leaves out `choice`, which finalize can emit (route.mjs:355). This omission predates the change, but it is now part of the documented line format.",
+      "ref": ".claude/skills/skills-router/SKILL.md:42",
+      "resolution": "fixed: choice added to the abstain reasons"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Test coverage is thinner than the spec. Spec items 2 and 3 (route() with fakeProvider giving `abstain: gate | via: <p>`, and a provider failure giving an error line with via = the provider) are not implemented. Every provider-mode formatLine test uses a hand-built object that mirrors the formatter's own assumptions, and only the bm25-only path goes through route(). Also untested: the `stability:` rendering and its drop order, and the non-`all` overlaps id list. The new tests pass (route.test.mjs 25/25) and are not tautological for the paths they hit.",
+      "ref": ".claude/skills/skills-router/tests/route.test.mjs:203",
+      "resolution": "open: provider-mode line tests are hand-built; route() is covered only for bm25-only and empty query. Minor, not blocking"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Callers: no live caller breaks. shadow-hook.mjs and eval.mjs import route(), no hook parses stdout, and the round-2 b.mjs passes --json. But the round-1 helper parses the default stdout with JSON.parse, so re-running round 1 against this tool would log 'unparseable output' and change arm B silently. Pin it to `--format json` or note in the round-1 folder that it needs the pre-r2 tool.",
+      "ref": "reports/skill-tool-lifecycle/skills-router/20261018-skills-router-agent-01/helpers/b.mjs:8",
+      "resolution": "open: round-1 helper parses default stdout; the round-1 folder is left untouched by design, no live caller breaks"
+    },
+    {
+      "severity": "Minor",
+      "finding": "`(the hint comes first, before anything else you read)` describes the measurement harness (b.mjs puts the hint before the listing), not the CLI, which prints only the line. Remove it from the SKILL.md instructions.",
+      "ref": ".claude/skills/skills-router/SKILL.md:40",
+      "resolution": "open: documentation-only sentence about the measurement harness; it is in the measured commit ada217d and left unchanged to keep the measured tree fixed"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The bad --format text is `bad --format xml, use line or json`; the spec says `bad --format <v> (line|json)`. This is harmless and the test matches the code. Align the spec or the code. `--format` with no value gives the `(missing value)` error, but `--format --json` is silently accepted (json wins). That is acceptable.",
+      "ref": ".claude/skills/skills-router/scripts/route.mjs:562",
+      "resolution": "accepted: the error text is `bad --format <v>, use line or json`; the spec wording was not used, the test matches the code"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The measurement budget holds. A suggestion line is <= 200 chars, an error line <= 134 (probed with a 500-char error), and an abstain line < 90. The text is 20 + line + 2 + listing, which is <= 29,883 chars on the 29,661-char listing. b.mjs formats the same printed object as the CLI (raw is stripped in main), so its line equals the CLI default, and importing route.mjs does not run main (argv guard). Suggest that b.mjs or the preflight assert lineChars <= 200 and textChars < 30,000 per case. Note that `…` is 3 bytes if the cap counts bytes; this is negligible.",
+      "ref": "reports/skill-tool-lifecycle/skills-router/20261018-skills-router-r2-agent-01/helpers/b.mjs:20",
+      "resolution": "info: budget verified (<= 29,883 chars); no action"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Confirmed: the two failing tests do not come from this change. eval/ is unchanged against main (git diff main is empty), and `git ls-files --eol` shows i/lf w/crlf for eval/scenarios.jsonl. The sha256 mismatch is the CRLF checkout (core.autocrlf). Consider adding `.gitattributes` with `eval/*.jsonl eol=lf`, or hashing with normalized line endings.",
+      "ref": ".claude/skills/skills-router/eval/scenarios.jsonl:1",
+      "resolution": "pre-existing: CRLF checkout of eval/scenarios.jsonl (core.autocrlf); unchanged vs main; same on main"
+    }
+  ]
+}

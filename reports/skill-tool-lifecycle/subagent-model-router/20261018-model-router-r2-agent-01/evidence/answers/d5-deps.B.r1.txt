@@ -1,0 +1,5 @@
+I wrote `src/resolve.js` (CommonJS, `module.exports = { resolveOrder }`, importable with `import` or `require`) and `test/resolve.test.mjs`; `node --test` passes all 27 tests.
+
+The first DFS pass finds cycles and missing packages. The second picks the alphabetically smallest ready package each round. "Alphabetical" is plain code-unit comparison, so `B` sorts before `a` regardless of locale.
+
+All files are in the work folder.

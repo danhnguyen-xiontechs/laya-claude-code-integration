@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-integration-verifier-r2-agent-01",
+  "tool": {
+    "name": "integration-verifier",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "b7883e5",
+    "branch": "claude/integration-verifier-round2"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "On 6 two-story git batches (2 repetitions, Haiku 5.5 xhigh, Jev live) plain Haiku and Haiku with the round-2 verifier both pass 10 of 12 runs; c6 is wrong in both arms because its gold (S2 PASS) is inherited from the tool's own fixture, whose AC-coverage row cites a test that is on no branch. Tokens 7.54M -> 7.56M (+0.2%; round 1 was +28%), inside the repetition noise, with no case worse; the report still did not replace the agents' own merge and test runs. Top fix: rebuild the cases as harder multi-fault batches with a corrected c6 gold.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (inspects manifests, logs and branches itself; verify-batch.mjs prints \"verifier disabled\")",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5), forced by the user; the router would have said sonnet/opus",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + integration-verifier round 2 (verify-batch.mjs runs verifyBatch with --jev and prints the verdict-first report)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5), forced by the user; the router would have said sonnet/opus",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, shadow only (statuses never change)"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "design.md (frozen before measurement; same cases, gold, prompts and arms as round 1; only the tool changed)",
+    "datasetVersion": "fixtures c1-c6 built by make_tasks.mjs (unchanged from round 1); gold unchanged, written by hand before round 1",
+    "caseCount": 6,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-18 (round 1 success criteria, unchanged)",
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript",
+    "deviations": [
+      "Steps 1-3 (brainstorm, Gate A, implementation) were skipped on the user's instruction: retro round 2 of an existing tool. The two round-1 suggestions were implemented by an Opus subagent on branch claude/integration-verifier-round2 (commit b7883e5), reviewed by a fresh Opus reviewer.",
+      "Independent review of round 2 (opus): 0 Critical, 0 Major new. Four Minor and one Suggestion stay open (agent-review.json): a bad covered row is silently ignored when the AC has other evidence; cat-file accepts a directory; verdict lines join in a Markdown viewer; git stderr can add newlines. Round-1 Majors (self-written evidence, log_path, Windows timeouts, Jev redaction) are carried over and accepted by the user for this run, not fixed.",
+      "c6 gold is inherited and kept for a paired comparison: S2 gold PASS, but the tool and both arms answer REVIEW_REQUIRED because the cited test tests/count.test.js is on no branch. c6 is wrong in both arms in all four runs. The tool's new behaviour agrees with the agents; the gold is the flaw. Not a tool win or loss.",
+      "Contamination: a c2 rep-1 B agent ran git checkout in this worktree instead of the batch repo, moving it to a stray branch for a while. Three B runs that started in that window (c1.B.r1, c2.B.r1, c3.B.r1) ran the pre-round-2 verify.mjs (c1 and c3 confirmed by their old report format); c2.B.r2 never ran the tool to completion. All four were discarded (evidence/contaminated-run1/) and re-run in fresh folders c<n>.B2.r<n> with the same prompt and fixtures; aliases.json maps them. Worktree restored to claude/integration-verifier-round2, stray branch deleted.",
+      "Arm A contamination check: 0 forbidden calls (integration-verifier, verify.mjs, gold, logs, B folders, private folder) in all 12 arm-A transcripts; no A case re-run.",
+      "Measurement collection: collect.mjs was changed to take the first line starting with BATCH: as the B output (round 1 matched the old header, which a source-file read can also contain). A texts are the first tool result of each arm-A agent (usually a folder listing), since arm A never runs the wrapper.",
+      "Jev was live but called only in c5 (1 call per run, 2 in total, label code_regression, 763 and 819 ms); it never changed a status.",
+      "All case agents ran on Haiku 5.5 with effort xhigh by the user's decision; the reviewers ran on opus. At most 6 case agents in flight; A and B of a case launched together (repetition 2: B first).",
+      "Case set is too easy to separate the arms: 5 of 6 cases are the tool's own fixtures, plain Haiku gets all but the flawed c6 right in both arms, and the prompt gives arm A the tool's status rules. Two-story batches; directional only.",
+      "Per-case token gaps (B vs A, mean of 2 reps): c1 +3%, c2 +18%, c3 -33%, c4 -13%, c5 +12%, c6 +18%; repetitions within one case differ by up to 2x (c3 B 565k vs 360k), so no per-case difference is established."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/answers",
+      "evidence/subagent-usage.json",
+      "evidence/run-index.json",
+      "evidence/forbidden.json",
+      "evidence/grades.json",
+      "evidence/gold.json",
+      "evidence/_logs",
+      "evidence/contaminated-run1",
+      "aliases.json",
+      "improvements.md"
+    ],
+    "executionLogs": []
+  }
+}

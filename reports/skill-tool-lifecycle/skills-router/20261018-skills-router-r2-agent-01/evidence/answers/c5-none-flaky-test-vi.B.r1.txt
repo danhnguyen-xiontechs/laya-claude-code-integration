@@ -1,0 +1,2 @@
+PICK: none
+The request asks why a specific test is flaky, which Claude can diagnose directly by reading the test and rerunning it, and no installed skill covers flaky-test diagnosis (codebase-task-explorer is for locating where to start, and the user did not name the test).

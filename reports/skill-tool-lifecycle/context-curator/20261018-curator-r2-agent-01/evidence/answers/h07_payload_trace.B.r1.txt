@@ -1,0 +1,8 @@
+CAUSE: The sanitize() step drops every string value that is all-lowercase and exactly 3 characters, which matches the lowercase currency code "usd", so currency is gone before enrich() runs and enrich() fills in its default "eur". The EUR test passes only because "EUR".islower() is False, so the same filter leaves uppercase codes alone.
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h07_payload_trace.B.r1\svc\chain.py:26
+EVIDENCE:
+  DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}   (log line 437, currency still present)
+  DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}   (log line 851, currency removed by sanitize)
+  DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}   (log line 1265, default eur filled in)
+  E       AssertionError: assert 'eur' == 'usd'   (log line 16)
+RUNS: 1

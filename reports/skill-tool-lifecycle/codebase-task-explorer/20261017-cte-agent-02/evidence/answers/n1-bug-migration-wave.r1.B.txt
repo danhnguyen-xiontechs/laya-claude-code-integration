@@ -1,0 +1,24 @@
+Likely cause: the planner misses migrations written in plural or with "a column" wording, so the pair is never protected and both stories land in wave 1. I reproduced it. Nothing in the repo was modified; probe scripts are in the session scratchpad.
+
+Where to start, most relevant first:
+
+1. D:\cte2\w\n1-bug-migration-wave-5fdc8f\repo\.claude\skills\story-batch-planner\scripts\planner.mjs
+   Line 37's RX.migration only matches the singular "migration", "schema change", or literal "add column"; line 67 sets the migration flag from it, so the protected both-add-migrations edge at line 110 never fires.
+
+2. D:\cte2\w\n1-bug-migration-wave-5fdc8f\repo\.claude\skills\story-batch-planner\test\planner.test.mjs
+   The migration test (lines 48-49) runs only fixture 04, which uses singular wording, so nothing would catch the plural miss; add a regression case here.
+
+3. D:\cte2\w\n1-bug-migration-wave-5fdc8f\repo\.claude\skills\story-batch-planner\fixtures\04-migration.json
+   The only migration fixture, and every story in it says singular "migration" or "add column", so it passes while the plural case is broken.
+
+4. D:\cte2\w\n1-bug-migration-wave-5fdc8f\repo\.claude\skills\story-batch-planner\scripts\plan.mjs
+   The CLI entry point for reproducing the waves (`--in batch.json --summary`); it is not the cause, since plan() serializes every shared_resource and unknown edge regardless of protectedKinds.
+
+5. D:\cte2\w\n1-bug-migration-wave-5fdc8f\repo\.claude\skills\story-batch-planner\SKILL.md
+   Documents the intended rule ("both add migrations" is a protected shared_resource, serialized) at line 35; check it before changing the regex.
+
+Reproduction: two stories that each say "Add EF migrations for ..." and share only one title/description term get waves [["S-1","S-2"]], with no edge and no schema/migration risk note. The singular wording "Add an EF migration for ..." serializes them as a protected shared_resource. If the pair shares two or more terms, it falls to the "unknown" prefilter, which still serializes, so the bug needs low token overlap.
+
+Changes to the helper ranking: I dropped decision-provider.mjs (Jev is shadow-only and cannot change waves), and the unrelated hits in proxy/router_proxy.py, audit/audit.py and the hooks test (matched on tier_of, text_of and a test name). config.json is not the cause: protectedKinds only changes the handling label.
+
+Caveats: the real batch was not provided, so I cannot confirm its two stories use plural or "a column" wording; check their text. `node --test test/` failed with MODULE_NOT_FOUND on Node 24.11.1, so I did not run the existing suite.

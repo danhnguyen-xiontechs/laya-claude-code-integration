@@ -1,0 +1,35 @@
+$ node run.mjs npm test
+
+> test
+> node --test
+
+codegen start-up: 1/5 stages done; log: .logs/codegen.log
+✖ generated orders client exposes createOrder (1531.6932ms)
+✔ add (1.4913ms)
+✔ clamp (0.2713ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1639.8517
+
+✖ failing tests:
+
+test at test\client.test.js:8:1
+✖ generated orders client exposes createOrder (1531.6932ms)
+  AssertionError [ERR_ASSERTION]: generated/orders-client.js was not written yet after 1500ms (codegen runs in the background and may not have finished)
+      at TestContext.<anonymous> (file:///<home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-lucid-bell-e1bc21/516abd83-d573-48b4-8f03-817278fca200/scratchpad/rlb2-pilot2/work/job-8b7804ce/test/client.test.js:25:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+Exit code 1

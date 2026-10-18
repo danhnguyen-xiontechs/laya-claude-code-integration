@@ -1,0 +1,14 @@
+Where to start, for "how does the integration check decide BLOCKED and not FAIL" (read-only, nothing modified).
+
+The helper (find.mjs) finished, but only its #1 is on target. Its #3 to #10 are planner, hook-test, web-test and eval files, so I replaced them with my own grep results. Its coverage was partial (14 of 17 Python imports unresolved).
+
+1. D:/cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/verify.mjs: the decision code itself. runCombined() (lines 208-216) gives a combined check BLOCKED only when deterministicCategory() returns "environment" (exit 127/9009 or ENV_RX match, lines 41-46). finalize() (lines 276-301) maps environment clusters to BLOCKED and everything else to FAIL, and sets other stories to at least REVIEW_REQUIRED.
+2. D:/cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/SKILL.md: the written rule table (lines 36-52). Missing manifest or check log is BLOCKED, a non-zero exit is FAIL, an environment signature in the combined run is BLOCKED, and the worst status wins (FAIL > BLOCKED > REVIEW_REQUIRED > PASS).
+3. D:/cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs: the expected verdict per fixture. missing-logs and environment-only expect BLOCKED, contract-mismatch, duplicate-migration and config-conflict expect FAIL. Lines 129-133 assert that a Jev "environment" suggestion with p=1 still leaves the status FAIL.
+4. D:/cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/references/manifest.md: the story-result manifest contract, which decides when a claim without evidence becomes BLOCKED. It matched my status grep but I did not read it.
+5. D:/cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs: the helper's #2. It is the Jev client called from triage() (verify.mjs lines 259-267). Its output is shadow advice only, so it never sets a status.
+
+Key finding: BLOCKED is decided by evidence and environment, FAIL by code or test results.
+- Per-story checks with a non-zero exit are always FAIL (verify.mjs:121), even if the log shows an environment error. Only the combined run gets the environment-to-BLOCKED mapping.
+- Missing manifest, missing check record, missing log or missing exit code gives BLOCKED (verify.mjs:95-120).
+- The Jev suggestion never changes a status.

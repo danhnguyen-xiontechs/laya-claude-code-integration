@@ -1,0 +1,12 @@
+CAUSE: The session-scoped `item` fixture pins the stale fixture set "v1" (`{sku, name, price}`), but the catalog schema is v2 and `svc/shipping.py` reads `weight_g`, `hazmat` and `currency`, which only v2 has. `catalog.load` only logs a warning on the mismatch and returns the v1 dict anyway, so all six tests in `tests/test_shipping.py` fail with KeyError on the missing keys.
+
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h04_session_fixture.B.r2\tests\conftest.py:9 (`return catalog.load("v1")`). Contributing: `svc\catalog.py:13-14` warns and loads the mismatched set instead of failing, and `svc\catalog.py:9` sets `SCHEMA = "v2"`.
+
+EVIDENCE (from .tool-output/20261018-104832_558d.log):
+- line 32: `WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway`
+- line 28: `E       KeyError: 'weight_g'` with line 30: `svc\shipping.py:10: KeyError`
+- line 1697: `E       KeyError: 'currency'` with line 1699: `svc\shipping.py:15: KeyError`
+- lines 4970-4975: `FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g'`, `...test_quote_is_positive - KeyError: 'weight_g'`, `...test_label_has_currency - KeyError: 'currency'`, `...test_label_has_weight - KeyError: 'currency'`, `...test_hazmat_surcharge_not_applied - KeyError: ...`, `...test_quote_rounds_to_cents - KeyError: 'weight_g'`, then `6 failed in 0.42s`.
+The test expectations (`== 1.2` for weight 120 g, `startswith("A-1 EUR")`, `endswith("120g")`) match the v2 data, which confirms the v1 pin is the stale part. The many `ERROR svc.rpc/storage/cache/search/notify` lines in the captured log come from `../_shared/noise_hard.py` and are not failures or the cause.
+
+RUNS: 2 (the first run with the status line and ranked pointers, then a second run whose output went to .tool-output/run2_stdout.txt; both failed identically with 6 failed).

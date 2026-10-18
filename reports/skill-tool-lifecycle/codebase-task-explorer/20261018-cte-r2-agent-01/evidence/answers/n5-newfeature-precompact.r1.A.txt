@@ -1,0 +1,18 @@
+Read-only search finished. Nothing was modified.
+
+The find.mjs helper produced no output: it ran about 8 minutes, the output file stayed at 0 bytes, and I stopped it (task bwj5hhba3). The list below comes from my own search of the repo at D:/cte3/w/n5-newfeature-precompact-b82d8b/repo.
+
+Top 5 files, most relevant first:
+1. D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/hooks/fast-compact.ts. This is the only plugin here that registers a `session.compact` function hook. It writes files under the home directory with `$.fs.write`, reads env with `$.env.get`, logs without blocking compaction, and falls back via `next(event)`. Copy its structure.
+2. D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/types/claude-code.d.ts. This is the API contract. `session.compact` takes trigger `manual|auto|plugin|precompute` and gives `messages` (the transcript being compacted). `$.session.messages()`, `$.session.id()` and `$.fs.write(path, text)` are defined here. The classic `PreCompactHookInput` (trigger, custom_instructions) and `PostCompactHookInput` (compact_summary) are also here.
+3. D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/hooks/hooks.json. The manifest that lists the hook module (`"modules": ["./fast-compact.ts"]`). A new hook module must be added here or the plugin will not load it.
+4. D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/.claude-plugin/plugin.json. Declares the plugin metadata and `userConfig` options (preserveRecentMessages, minReductionRatio). Any new option, such as a summary directory, would be declared here.
+5. D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/tests/fast-compact.test.ts. The existing `node --test` pattern for the hook's pure functions and `register`, which the new hook's tests should follow.
+
+Design notes for the implementer:
+- Use the function-hook `session.compact` event, not the classic PreCompact command hook. The function hook receives the messages, and PreCompact does not.
+- Skip trigger `precompute`, because it installs nothing. Decide whether `auto` should be included. fast-compact only handles manual and plugin.
+- Write the file from `event.messages`, then always `return next(event)` so the built-in compaction still runs.
+- Function hooks need `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`, as stated in fast-compact/README.md.
+
+Other possible references, lower priority: D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/retry-loop-breaker/hooks/register.ts (a second `on(...)` example using `$.state` and `$.command.register`) and D:/cte3/w/n5-newfeature-precompact-b82d8b/repo/fast-compact/scripts/preview.ts (offline rule runner, useful for testing).

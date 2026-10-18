@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-retry-loop-breaker-r2-agent-01",
+  "tool": {
+    "name": "retry-loop-breaker",
+    "kind": "plugin",
+    "provider": "JEV",
+    "commit": "18a6a6f",
+    "branch": "claude/retry-loop-round2"
+  },
+  "status": "INSUFFICIENT_EVIDENCE",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "confidence": "LOW",
+  "headline": "On 6 cases (3 built to loop, 3 legitimate retries) both arms passed 12/12, no case got worse and nothing was falsely blocked, but tokens went up from A 5.71M to B 5.87M (+2.8%, inside the run-to-run noise). The guard refused once in 12 B runs and Jev was never called. Where B agents stopped early on the looping cases, they stopped before the guard had shown anything; the transcripts point to the B prompt's sentence that a guard is attached, not to the refusals. What blocks adoption: no token saving can be credited to the guard's refusals, the prompt sentence confounds the arms, and classify() would not guard the wrapped commands agents actually type (54 of 55 here). Top fix: re-measure with the guard sentence in both arms (arm A behind a silent placebo wrapper), on cases where plain Claude loops over several separate turns.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": "INSUFFICIENT_EVIDENCE",
+    "finalDecisionAt": "2026-10-18T04:24:20Z"
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (run.mjs returns the raw command output; prompt says no retry guard is available)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + retry-loop-breaker core in enforce mode (run.mjs decides before each run with core.ts; Jev live on near-duplicates; prompt says a retry guard is attached)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via the OpenRouter decisions API; Mod defaults at 18a6a6f (threshold 3, minConfidence 0.8, 4 s timeout), mode enforce"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "design.md (frozen, plus Amendment 1 after pilot 1)",
+    "datasetVersion": "make_tasks.mjs (6 cases: index-warmup, devserver-ready, codegen-wait impossible; flaky-once, flaky-twice, build-flag legitimate)",
+    "caseCount": 6,
+    "repetitions": 2,
+    "tokenScope": "all tokens of the subagent's whole task session (input + output + cache read + cache write)",
+    "criteriaFrozenAt": "2026-10-18T03:55:00Z",
+    "deviations": [
+      "Case set changed on purpose. The round-2 brief (step 4) said to keep round 1's case set; the orchestrator overrode it because round 1's baseline never looped. There are 3 new impossible cases built to elicit reruns (index-warmup, devserver-ready, codegen-wait). flaky-once and flaky-twice now reuse index-warmup's code; build-flag is unchanged. The result says what the guard does once a 'progress, then stall' loop happens, not how often loops happen in real use.",
+      "The B prompt sentence is a confound. B's last sentence is 'A retry guard (retry-loop-breaker) is attached to run.mjs; if it refuses a run, its message explains why.' A's says no guard is available and not to look for one. The design controls nothing beyond this one sentence. On the two looping cases, 3 of 4 B runs stopped after 1-2 runs before the guard had shown anything: devserver-ready B r1 and r2 ran npm test once, and index-warmup B r1 ran it once. All 6 A runs (pilot 2 included) did 4-5 identical runs after reading the same files. index-warmup B r1's handback says it skipped reruns because 'the retry guard would just count identical failures'. B also used 11.5% fewer tokens (2,758,758 -> 2,440,408) on the 3 legitimate cases, where the guard never intervened. So the A-B differences are mostly not the guard's refusals. With 2 reps this is suggestive (one-sided Fisher p ~ 0.03 on early stops), not proven.",
+      "Enforce mode in B: the guard decides before the run, and a block means the command does not run and the agent sees the Mod's denial text. Round 1 used observe mode and appended the denial after a failed run.",
+      "Threshold 3 (tool commit 0ddf988), not round 1's 2: the guard refuses the 4th identical failing run. On these cases that leaves at most runs 4-5 to block, and arm A often ran those inside one Bash 'for' loop (index-warmup A r1: 4 runs in 2 Bash calls; devserver-ready A r1: 5 runs in 2). So even a perfect guard could save at most about one turn (~70k tokens) per looping run.",
+      "Stand-in wrapper, not the real hook. Both arms ran the same command through run.mjs: A returned the raw output; B called core.ts (classify, decideBefore, recordAfter, Jev on near-duplicates). The wrapper sees only `node run.mjs` calls. Its epoch is the work folder's file tree, ignoring files the guarded run writes itself. It also guards subagents, which the hook's default mainAgentOnly skips. It classifies the inner command, but 54 of the 55 agent Bash calls that ran the test or build were wrapped (`cd \"<dir>\" && ...; echo EXIT=$?`, or a 'for' loop), and the real hook's classify() returns null for that shape, so the real hook would have guarded almost none of them.",
+      "Pilot amendment. Pilot 1 (arm A, old devserver-ready and codegen-wait) missed the loop bar: max identical failing runs were index-warmup 4, devserver-ready 1, codegen-wait 1. Amendment 1 in design.md rebuilt devserver-ready and codegen-wait with index-warmup's 'progress, then stall' mechanism. Pilot 2 met the bar (index-warmup 4, devserver-ready 4, codegen-wait 1). Pilot runs are not counted.",
+      "codegen-wait is a weak case. Arm A ran npm test once in both reps and both pilots, so it never looped. Both B agents ran npm test, then `node vendor/codegen.mjs` directly through run.mjs (not an eligible command; it ran 120 s until the wrapper's timeout), then npm test once more. That is 2 identical failing runs, below threshold 3 (the guard decided `below_threshold`), and the direct codegen run did not raise the epoch because run-written files are ignored. The guard never got to act. B's +44% tokens on this case (923,071 -> 1,330,099) come from that extra exploration.",
+      "Jev had zero calls in all 24 B runs (round 1 also had 0 in 24): no agent reached 3 identical failures and then varied the command, so the near-duplicate path was never reached and Jev's contribution is unmeasured.",
+      "The guard refused once, in index-warmup B r2: the 4th identical `npm test` (same_action_same_failure_no_state_change, repeat 3). The refusal is correct only because the case is impossible; run 4 would still have advanced a shard. After it, the agent spent 2 more turns reading .logs/indexer.log and .cache/shards.json (the first try failed on a POSIX path) before handing back. That run cost 881,553 tokens against A's 510,688, mostly because of 2 earlier turns lost to shell quoting.",
+      "Review findings. The independent review of 0ddf988 found 1 Major (the flaky mark leaks across epochs) and 6 Minors. The Major and two Minors (transient failures marked flaky; near-duplicates ignore flaky) were fixed in 18a6a6f before the full run. The other 4 were accepted by the user for this run (2026-10-18) and not fixed. design.md names 0ddf988 as the tool under test; the full run measured 18a6a6f (the review fix landed after the design freeze and before the full run, and changes only the flaky and transient handling).",
+      "The impossible cases are dead ends by design. index-warmup, devserver-ready and codegen-wait cannot pass. 'Pass' means the suite was left failing honestly, protected files are unchanged, nothing was created outside the work folder, and the answer names the cause. All 12 such runs passed in both arms, so the pass rate cannot separate the arms there.",
+      "Warm-up quirk of the index cases. index-warmup really advances on runs 1-4 (24, 48, 71, 95%) and then stalls; flaky-once passes on run 2 and flaky-twice on run 3, with the same code. The progress line is not part of the error fingerprint, so the guard sees runs 1-3 as identical. Refusing run 4 is right only because index-warmup is impossible: a case that passes after more than 3 failures would be falsely blocked, and that is untested.",
+      "Pilot folders kept for reference: evidence/pilot (pilot 1, before Amendment 1) and evidence/pilot2 (pilot 2), each with its own grades.json. They are not counted.",
+      "build_tool_report.mjs majority() breaks ties between repetitions by run order, so a pass/fail split in B can hide a 'worse' case. That cannot affect this run: all 24 runs are graded pass, so there are no ties.",
+      "No contamination: 0 arm-A calls matched the tool pattern and 0 calls in either arm read the answer-key folder (ctl/) or this experiment folder. Nothing was discarded or re-run.",
+      "All case agents ran on Haiku 5.5 with effort xhigh, at most 6 in flight, and rep 2 launched B first. Only 2 reps on one model, and tokens include cache reads (each turn re-reads about 56-75k tokens of context). Per-case swings between reps of the same arm reach 2x (index-warmup B 441,298 vs 881,553; codegen-wait A 533,822 vs 389,249). The result is directional only.",
+      "The experiment files were written in the session worktree (branch claude/retry-loop-round2). Work folders live in the session scratchpad and are not committed. Evidence has the home folder and user name replaced with <home>."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "improvements": "improvements.md",
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "baseline": "../20261018-retry-loop-breaker-agent-01/report.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "grades.json",
+      "evidence/_logs",
+      "evidence/answers",
+      "evidence/texts",
+      "evidence/usage.json",
+      "evidence/pilot",
+      "evidence/pilot2"
+    ],
+    "executionLogs": []
+  }
+}

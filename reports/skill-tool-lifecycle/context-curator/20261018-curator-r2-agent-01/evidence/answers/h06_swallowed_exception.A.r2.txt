@@ -1,0 +1,9 @@
+CAUSE: Ledger.flush() wraps the whole loop over the batch in one try/except, so the entry {"amount": 7} with no "rate" key raises KeyError on the third entry, and the handler only logs it and never skips it or re-raises. The loop aborts there, so the valid fourth entry (amount 3, rate 1) is silently dropped and the balance is 10*1 + 5*2 = 20 instead of the expected 23.
+LOCATION: svc/ledger.py:18-22 (the try/except around the loop in Ledger.flush; the failing access is svc/ledger.py:20, asserted by tests/test_ledger.py:6)
+EVIDENCE:
+  E       AssertionError: assert 20 == 23
+  ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries
+      self.balance += e["amount"] * e["rate"]
+  KeyError: 'rate'
+  FAILED tests/test_ledger.py::test_settle_adds_all_entries - AssertionError: a...
+RUNS: 1

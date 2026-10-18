@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request names Jev for the page wait and screen classification, which is the Jev plan 1 page wait (`web-test-jev-wait`), and the rest of the ticket-testing flow is the same as `web-test`.

@@ -1,0 +1,2 @@
+PICK: review-pr-laya-classify
+The request asks for a PR review plus the local Laya severity check on each finding, which is what review-pr-laya-classify does and what its trigger covers; code-review and review-pr-jev-classify do not run the Laya check, so they fit less well.

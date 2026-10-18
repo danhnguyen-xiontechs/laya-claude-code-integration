@@ -1,0 +1,11 @@
+CAUSE: sanitize() drops every string value that is lowercase and exactly 3 characters long, so the lowercase ISO code "usd" is silently removed from the payload; enrich() then fills in its default "currency": "eur", so the USD request comes back as EUR. test_euro_requests_are_priced passes only because "EUR" is uppercase and fails the islower() check, so the suite never exercises a lowercase currency code.
+LOCATION: <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77/33b520c8-883a-42a5-b200-c8a3c9a7274c/scratchpad/r2run/cur/work/h07_payload_trace.A.r1/svc/chain.py:26 (the sanitize filter; the wrong value surfaces at svc/chain.py:32 in enrich)
+EVIDENCE:
+DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}
+DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}
+E       AssertionError: assert 'eur' == 'usd'
+FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...
+========================= 1 failed, 1 passed in 0.93s =========================
+(The ERROR lines from noise_hard.py, such as "metrics flush failed" and "cache read failed", are unrelated background noise from the captured-log helper and are not the cause.)
+RUNS: 2 (both runs gave the identical failure; the second run's stdout is saved at .tool-output/run2_stdout.txt in the work folder. No code was edited.)

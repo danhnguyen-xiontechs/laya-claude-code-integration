@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - changes getUser(id) to getUser({ id }) in src/api.js, but S2's src/profile.js still calls getUser(id); the combined run of node run-tests.js exits 1 with "FAIL tests/profile.test.js: Cannot read properties of undefined (reading 'name')"
+S2: FAIL - its own run passes (exit 0, log matches a re-run, declared files match the diff), but it depends on the getUser(id) contract that S1 changes, so the combined required check fails in tests/profile.test.js

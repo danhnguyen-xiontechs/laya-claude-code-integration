@@ -1,0 +1,578 @@
+{
+  "e1-locate.A.r1": {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1918444,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 405,
+      "cacheReadTokens": 220722,
+      "cacheWriteTokens": 57452,
+      "modelTurns": 5,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a5717e0d2d09bee05.jsonl",
+      "elapsedMs": 11547
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.024Z",
+    "last": "2026-10-18T03:33:06.269Z"
+  },
+  "e1-locate.B.r1": {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "haiku",
+    "models": [
+      "claude-haiku-5-5"
+    ],
+    "costUsd": 0.004450285,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 38,
+      "cacheReadTokens": 202911,
+      "cacheWriteTokens": 19211,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a63be2f614b079389.jsonl",
+      "elapsedMs": 11056
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.040Z",
+    "last": "2026-10-18T03:33:04.263Z"
+  },
+  "e2-count.A.r1": {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1898707,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 379,
+      "cacheReadTokens": 219416,
+      "cacheWriteTokens": 56871,
+      "modelTurns": 5,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-acf624981e5170ccc.jsonl",
+      "elapsedMs": 15406
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.056Z",
+    "last": "2026-10-18T03:33:10.101Z"
+  },
+  "e2-count.B.r1": {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "haiku",
+    "models": [
+      "claude-haiku-5-5"
+    ],
+    "costUsd": 0.005767375000000001,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 59,
+      "cacheReadTokens": 317305,
+      "cacheWriteTokens": 20509,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a14a34f2128821a97.jsonl",
+      "elapsedMs": 25448
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.074Z",
+    "last": "2026-10-18T03:33:18.880Z"
+  },
+  "r1-rename.A.r1": {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.18086739999999998,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 291,
+      "cacheReadTokens": 164732,
+      "cacheWriteTokens": 57998,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a1e74b86f1bf793ee.jsonl",
+      "elapsedMs": 11489
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.094Z",
+    "last": "2026-10-18T03:33:06.140Z"
+  },
+  "r1-rename.B.r1": {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.19307209999999997,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 248,
+      "cacheReadTokens": 222398,
+      "cacheWriteTokens": 58437,
+      "modelTurns": 5,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a63bb9cf500f85efb.jsonl",
+      "elapsedMs": 14610
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:32:50.113Z",
+    "last": "2026-10-18T03:33:09.624Z"
+  },
+  "f1-paginate.A.r1": {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.08713810000000001,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 208,
+      "cacheReadTokens": 201423,
+      "cacheWriteTokens": 17903,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-ac601a52431ef03aa.jsonl",
+      "elapsedMs": 11836
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.321Z",
+    "last": "2026-10-18T03:34:02.116Z"
+  },
+  "f1-paginate.B.r1": {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1017831,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 378,
+      "cacheReadTokens": 257428,
+      "cacheWriteTokens": 18599,
+      "modelTurns": 5,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-ad49e64b81e8cfd90.jsonl",
+      "elapsedMs": 16678
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.344Z",
+    "last": "2026-10-18T03:34:07.164Z"
+  },
+  "d3-maplimit.A.r1": {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1153958,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 401,
+      "cacheReadTokens": 315834,
+      "cacheWriteTokens": 19278,
+      "modelTurns": 6,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a24afa2fd5b2fac2f.jsonl",
+      "elapsedMs": 33634
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.367Z",
+    "last": "2026-10-18T03:34:24.202Z"
+  },
+  "d3-maplimit.B.r1": {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1048714,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 417,
+      "cacheReadTokens": 258507,
+      "cacheWriteTokens": 19592,
+      "modelTurns": 5,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a0cebb1b10235e079.jsonl",
+      "elapsedMs": 23714
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.398Z",
+    "last": "2026-10-18T03:34:14.331Z"
+  },
+  "d5-deps.A.r1": {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.14020080000000001,
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 361,
+      "cacheReadTokens": 372164,
+      "cacheWriteTokens": 24852,
+      "modelTurns": 7,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-ad032def06e2ce3fb.jsonl",
+      "elapsedMs": 52573
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.436Z",
+    "last": "2026-10-18T03:34:43.933Z"
+  },
+  "d5-deps.B.r1": {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 1,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.16004970000000002,
+    "usage": {
+      "inputTokens": 16,
+      "outputTokens": 367,
+      "cacheReadTokens": 447576,
+      "cacheWriteTokens": 26733,
+      "modelTurns": 8,
+      "toolCalls": 10,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-aa670fc08c9448d53.jsonl",
+      "elapsedMs": 64345
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:33:46.465Z",
+    "last": "2026-10-18T03:34:55.105Z"
+  },
+  "e1-locate.A.r2": {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.0895367,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 209,
+      "cacheReadTokens": 202691,
+      "cacheWriteTokens": 18757,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a2f27e43b854864a3.jsonl",
+      "elapsedMs": 9184
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.531Z",
+    "last": "2026-10-18T03:35:23.244Z"
+  },
+  "e1-locate.B.r2": {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "haiku",
+    "models": [
+      "claude-haiku-5-5"
+    ],
+    "costUsd": 0.005075675,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 46,
+      "cacheReadTokens": 259480,
+      "cacheWriteTokens": 19655,
+      "modelTurns": 5,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a87a72f3f2af09a0a.jsonl",
+      "elapsedMs": 16838
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.504Z",
+    "last": "2026-10-18T03:35:30.049Z"
+  },
+  "e2-count.A.r2": {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.11437180000000002,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 383,
+      "cacheReadTokens": 314989,
+      "cacheWriteTokens": 19008,
+      "modelTurns": 6,
+      "toolCalls": 8,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-abd24303190f31e34.jsonl",
+      "elapsedMs": 20981
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.580Z",
+    "last": "2026-10-18T03:35:36.475Z"
+  },
+  "e2-count.B.r2": {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "haiku",
+    "models": [
+      "claude-haiku-5-5"
+    ],
+    "costUsd": 0.005754225,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 49,
+      "cacheReadTokens": 316890,
+      "cacheWriteTokens": 20477,
+      "modelTurns": 6,
+      "toolCalls": 9,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-ae95d13b4e3b0cc34.jsonl",
+      "elapsedMs": 21854
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.552Z",
+    "last": "2026-10-18T03:35:35.125Z"
+  },
+  "r1-rename.A.r2": {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.09154169999999999,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 206,
+      "cacheReadTokens": 203116,
+      "cacheWriteTokens": 19537,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a277ffaaa668cd0f0.jsonl",
+      "elapsedMs": 10550
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.634Z",
+    "last": "2026-10-18T03:35:25.825Z"
+  },
+  "r1-rename.B.r2": {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.10531270000000001,
+    "usage": {
+      "inputTokens": 10,
+      "outputTokens": 208,
+      "cacheReadTokens": 261126,
+      "cacheWriteTokens": 20395,
+      "modelTurns": 5,
+      "toolCalls": 6,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-ada18f2902b5995b9.jsonl",
+      "elapsedMs": 15850
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:35:09.611Z",
+    "last": "2026-10-18T03:35:29.901Z"
+  },
+  "f1-paginate.A.r2": {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.08703810000000001,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 207,
+      "cacheReadTokens": 201423,
+      "cacheWriteTokens": 17867,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-abcdb120b412091c7.jsonl",
+      "elapsedMs": 11849
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.568Z",
+    "last": "2026-10-18T03:36:17.094Z"
+  },
+  "f1-paginate.B.r2": {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.0872856,
+    "usage": {
+      "inputTokens": 8,
+      "outputTokens": 220,
+      "cacheReadTokens": 201423,
+      "cacheWriteTokens": 17914,
+      "modelTurns": 4,
+      "toolCalls": 5,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a3fdd192aeb97faef.jsonl",
+      "elapsedMs": 11185
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.555Z",
+    "last": "2026-10-18T03:36:16.716Z"
+  },
+  "d3-maplimit.A.r2": {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.11466869999999998,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 228,
+      "cacheReadTokens": 315611,
+      "cacheWriteTokens": 19697,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a7a7471df71fbabc9.jsonl",
+      "elapsedMs": 28161
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.603Z",
+    "last": "2026-10-18T03:36:33.774Z"
+  },
+  "d3-maplimit.B.r2": {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1260212,
+    "usage": {
+      "inputTokens": 14,
+      "outputTokens": 77,
+      "cacheReadTokens": 372991,
+      "cacheWriteTokens": 20250,
+      "modelTurns": 7,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a69eca19f57d6067d.jsonl",
+      "elapsedMs": 36822
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.586Z",
+    "last": "2026-10-18T03:36:41.483Z"
+  },
+  "d5-deps.A.r2": {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.1290061,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 197,
+      "cacheReadTokens": 316623,
+      "cacheWriteTokens": 25475,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-abfa772b424cac0d3.jsonl",
+      "elapsedMs": 53254
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.636Z",
+    "last": "2026-10-18T03:36:59.313Z"
+  },
+  "d5-deps.B.r2": {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 2,
+    "requestedModel": "sonnet",
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "costUsd": 0.13135850000000002,
+    "usage": {
+      "inputTokens": 12,
+      "outputTokens": 216,
+      "cacheReadTokens": 320735,
+      "cacheWriteTokens": 26011,
+      "modelTurns": 6,
+      "toolCalls": 7,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b\\453b3ea2-7ac1-4da5-852c-953de6f164e1\\subagents\\agent-a1952685e3e111dc1.jsonl",
+      "elapsedMs": 55057
+    },
+    "forbiddenCalls": 0,
+    "first": "2026-10-18T03:36:01.622Z",
+    "last": "2026-10-18T03:37:02.595Z"
+  }
+}

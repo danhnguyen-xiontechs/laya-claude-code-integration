@@ -1,0 +1,14 @@
+Top 5 starting points for the precompact session-summary hook, most relevant first (repo: D:/cte2/w/n5-newfeature-precompact-64fb3d/repo):
+
+1. D:/cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/hooks/fast-compact.ts - The only existing hook on `session.compact`, which runs before compaction and receives `event.messages`. Copy its pattern: find `~/.claude/<plugin>` via `$.env.get('USERPROFILE')`, write with `$.fs.write`, log best-effort, and `return next(event)` to pass through.
+2. D:/cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/types/claude-code.d.ts - The API contract. `session.compact` (SessionCompactInput, around line 7225) carries the transcript and triggers manual/auto/plugin/precompute. The classic `PreCompactHookInput` (around line 5561) has only `trigger` and `custom_instructions`, with no messages, so a summary needs `session.compact`.
+3. D:/cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/hooks/hooks.json - Module registration (`{ "modules": ["./fast-compact.ts"] }`). A new hook module has to be listed here, or it goes in its own plugin folder the same way.
+4. D:/cte2/w/n5-newfeature-precompact-64fb3d/repo/smart-context-trimming/hooks/register.ts - Plugin file output done right: a `baseDir` under `~/.claude/<plugin>/`, `$.fs.write` for files, TTL cleanup on `session.start`, and writes wrapped in try/catch so they never block the session.
+5. D:/cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/.claude-plugin/plugin.json - The manifest where `userConfig` options are declared with defaults. A summary on/off switch or length limit would be added here.
+
+Notes:
+- The find.mjs output was unranked and off target (audit/audit.py, proxy/router_proxy.py, the story and skill planners). None of its top 10 is hook or compaction code, so I did not use it as the ranking.
+- A grep for PreCompact finds only type definitions, so no PreCompact hook is wired up in the repo. `.claude/settings.json` holds only a commented-out example hook.
+- Design point: `session.compact` also fires for `precompute`, which may not be a real compaction. The new hook probably should skip that trigger so it does not write a summary when nothing is compacted. fast-compact itself acts only on manual and plugin triggers.
+- The repo shows an untracked `.codemap/` directory that the helper's codemap engine may have created. I did not delete it.
+- I modified nothing in the repo.

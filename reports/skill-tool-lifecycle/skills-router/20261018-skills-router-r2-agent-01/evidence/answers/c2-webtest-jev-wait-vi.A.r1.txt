@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request explicitly asks for Jev to wait for the page to finish loading and classify the screen during an ESS ticket test, which is exactly the Jev page-wait and screen-classification variant of web-test.

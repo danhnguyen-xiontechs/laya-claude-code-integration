@@ -1,0 +1,11 @@
+npm test now passes: 3/3 (search index answers queries, add, clamp). No source files were changed.
+
+Cause: test/index.test.js needs the lazy search index from vendor/indexer.mjs to be ready. Each warmUp() call builds one shard, and vendor/indexer.config.json sets shards: 2, so the index only finalizes on the second call. The NOTES.md file describes this. Run 1 via `node run.mjs npm test` failed the index test at 48% (shard 1/2). Run 2 reached 100% (ready) and all 3 tests passed. The retry guard did not refuse either run.
+
+Changes: none under src/, test/, vendor/, or package.json. I did not hand-write .cache/index.json or .cache/shards.json to skip the warm-up, because that would make the test pass without the index being built.
+
+Generated runtime state in the work folder: .cache/ (shards.json, index.json), .logs/indexer.log, and .passed. These are created by the test run.
+
+Build: package.json has no build script (only "test": "node --test"), so there was no build to run.
+
+Caveat: on a fresh copy, the index suite still fails on the first `npm test` and passes on the second, as the warm-up design requires. A one-run fix would need a change to vendor/indexer.mjs (finish all shards in one call) or to the test, and both were out of scope.

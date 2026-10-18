@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "The ranking puts every always-keep chunk ahead of every JEV-answered chunk, so on noisy logs JEV has no effect on the printed list. On h04 there are 6 failure anchors and 38 pinned noise ERROR chunks ahead of any JEV chunk. Reproduced: even with JEV p=0.95 on the gold chunk (line 32, the 'fixture set v1 does not match schema v2' WARNING, request id c01), that chunk ranks #45 and pointerTop=12 never shows it. Slots 7-12 are noise ERROR chunks with the same 'anchor' label as real failure anchors. So the measured B arm is a rule-based pointer list (parser anchors plus regex pins) with no visible Jev contribution, which the brief did not describe as 'ranked kept chunks'. The plan lists this only as a 'remaining risk'.",
+      "ref": "jev_advisor/curator.py:109-118",
+      "resolution": "fixed"
+    },
+    {
+      "severity": "Major",
+      "finding": "The flag cannot be set from the config file. config.load() returns only root/path/profiles/advisor/storage and drops any 'curator' object from .jev-advisor.json, so cfg.get('curator') is always {} on the CLI path. Setting {\"curator\": {\"view\": \"curated\"}} or pointerTop in the config has no effect, and the rollback to round-1 output works only for callers that build cfg in code (as the tests and smoke_run.py do). The gap already existed for omitMaxP/alwaysKeep, but round 2 makes the new default view depend on it.",
+      "ref": "jev_advisor/config.py:55-61; jev_advisor/curator.py:169",
+      "resolution": "fixed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "New with the config fix: the values under 'curator' in .jev-advisor.json are now live, but config.load() only checks that 'curator' is an object. A wrong 'view' (ValueError in curate), a 'pointerTop' that int() cannot parse (ValueError) or an invalid 'alwaysKeep' regex (re.error in plan) now reach the CLI, which catches only FileNotFoundError, so the user gets a traceback with exit 1 instead of a '[jev-advisor] ...' error with exit 2. A config 'alwaysKeep' also replaces the default patterns instead of adding to them (shallow merge), which can silently drop the Traceback/ERROR pins. That merge behaviour is not new, but it was unreachable before. The repo's own .jev-advisor.json has no 'curator' key, so its behaviour does not change.",
+      "ref": "jev_advisor/config.py:55-57; jev_advisor/__main__.py:61-65",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The footer's Read hint opens only the first pointer, which is the failure anchor (header to anchorEnd). anchorEnd stops just before the failure's own 'Captured ...' sections. On h04 the hint is 'offset 11 limit 20' (lines 11-30), and the root-cause WARNING sits at line 32, two lines past it. An agent that follows the hint literally misses the evidence that sits right next to the anchor.",
+      "ref": "jev_advisor/curator.py:135-138",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The status line is unchanged ('823 of 4976 lines omitted'), but in the pointer view about 4,960 lines are not shown. The count now refers to the curated decisions, not to what the agent sees, so the agent may think only 823 lines are hidden. The wording is literally identical to round 1, but its meaning changes in the new view.",
+      "ref": "jev_advisor/curator.py:94-97",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The footer wording is wrong in some cases. 'N more kept chunks not listed' also counts failure anchors, which are not chunks. With pointerTop=0 or a negative value it prints 'N more kept chunks not listed · nothing to point at' even though N>0 items exist, which contradicts itself. int(top) also accepts strings, so a malformed config fails late or silently.",
+      "ref": "jev_advisor/curator.py:125,134-140",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The tests do not prove the claims they back. (1) test_view_curated_flag_keeps_old_output compares curate() output with render() from the same changed module, so it does not show byte-identity with the round-1 baseline. (2) No test asserts that plan() decisions match the baseline. (3) No tests for the edge cases: empty log, no parser/chunks, no JEV answers in pointer view, pointerTop 0. (4) The preview-cap assertion passes whether or not any preview was ever cut, and the expected footer comes from rank() itself. The reviewer checked these independently: plan() is equal to the baseline (with the new anchors/match keys removed) and the curated view is byte-identical to the baseline module on the fixture and h04 across 5 advice variants each. Pointer ranges and previews were correct, no omitted line appeared in a pointer, and the edge cases ran with exit 0. Those checks are not in the suite.",
+      "ref": "tests/test_curator.py:78-161",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "For failure anchors the preview is the '____ test_name ____' header line. That only repeats the test name and does not show the error. The parser already gives errorLine/message (e.g. \"E KeyError: 'weight_g'\"), and using that as the preview would let the agent triage without a Read.",
+      "ref": "jev_advisor/curator.py:129-133",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The CLI was not updated for the new view. 'curate' still prints 'curated view: <run>.curated.txt' although the file now holds pointers. An unknown view raises ValueError, which the CLI does not catch (only FileNotFoundError is), so the user gets a traceback with exit 1. Today this path is unreachable from the CLI because of the config gap above.",
+      "ref": "jev_advisor/__main__.py:61-70",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "With ANCHOR_SLOTS=4, any failure anchor after the fourth is listed after all JEV chunks above the cut. On h04 (6 failures) with round-1-like advice (7 JEV-kept chunks), the 12 slots are 4 anchors, 7 JEV chunks and 1 more anchor, so test_quote_rounds_to_cents's anchor is not printed. The footer does not say that some failures are unlisted. Consider a footer note such as 'K failures not listed'. Separately, .claude/skills/context-curator/SKILL.md does not yet document 'view'/'pointerTop' or that the default output is now pointers.",
+      "ref": "jev_advisor/curator.py:rank (ANCHOR_SLOTS); .claude/skills/context-curator/SKILL.md:32-36",
+      "resolution": "open"
+    }
+  ]
+}

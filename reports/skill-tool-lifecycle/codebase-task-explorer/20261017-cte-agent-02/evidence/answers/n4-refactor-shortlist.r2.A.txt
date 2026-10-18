@@ -1,0 +1,12 @@
+Starting points for moving the keyword shortlist scoring out of the skill suggestion router (read-only, nothing modified):
+
+1. D:/cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/route.mjs - the stage-1 scoring lives here: stem/tokenize and STOP (lines 31-48), buildIndex (line 72), bm25 with k1 1.2 / b 0.75 (line 88), and shortlist (line 245), which route() calls at line 452.
+2. D:/cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/tests/route.test.mjs - imports bm25, buildIndex, shortlist, stem, tokenize, mentions and explicitAllowed from route.mjs (lines 6-8), so a move needs these re-pointed or re-exported.
+3. D:/cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/tests/variants.test.mjs - imports shortlist, asksForVariant and variantTokens from route.mjs (line 6); shortlist's filter depends on the variant logic, which is the boundary to decide.
+4. D:/cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/catalog.mjs - exports bareName (line 279) and the entry shape (name, description, head, explicitOnly, id) that the scorer reads, so a new module would import from here.
+5. D:/cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/eval.mjs - imports route, finalize, combineRuns and DEFAULT_THRESHOLDS from route.mjs (line 30) and runs the BM25-only mode, so it is the main downstream consumer to keep working.
+
+Notes:
+- The find.mjs helper (node PID 22816) was still running with an empty output file when I reported. I did not wait on it and relied on direct reads of the repo.
+- Scope: the router is skills-router/scripts/route.mjs. review-pr-jev-classify/scripts/finding-questions.mjs has a separate bm25 for PR findings, which is not part of this router.
+- Open decision: mentions, explicitAllowed, asksForVariant and variantTokens sit beside the scoring in route.mjs (lines 107-239). Whether they move with the BM25 code or stay is the main choice for the refactor.

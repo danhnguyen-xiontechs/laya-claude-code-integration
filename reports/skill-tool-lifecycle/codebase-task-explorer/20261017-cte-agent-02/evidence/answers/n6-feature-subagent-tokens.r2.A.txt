@@ -1,0 +1,15 @@
+Where to start: subagent token totals for the A/B report are built by the build-skill-tool-workflow scripts. Nothing was modified.
+
+The 5 most relevant files, most relevant first:
+
+1. D:\cte2\w\n6-feature-subagent-tokens-547f1e\repo\.claude\skills\build-skill-tool-workflow\scripts\transcript_usage.mjs. This is where the sum happens: it adds input, output, cache-read and cache-write tokens over every assistant API message in a session transcript, dedupes by message id, and adds each `<session>/subagents/*.jsonl` file unless `--no-subagents` is passed.
+2. D:\cte2\w\n6-feature-subagent-tokens-547f1e\repo\.claude\skills\build-skill-tool-workflow\scripts\subagent_usage.mjs. This maps each subagent case to its one transcript by matching the work dir in the prompt (zero or two matches gives null), then runs transcript_usage on that transcript with `--no-subagents`. Its output is pasted into `case.usage`.
+3. D:\cte2\w\n6-feature-subagent-tokens-547f1e\repo\.claude\skills\build-skill-tool-workflow\scripts\build_tool_report.mjs. This is the report aggregation: `totalTokens` sums the four token fields, a case's tokens are the mean over its repetitions, and the A-vs-B token comparison uses only paired pass/fail cases. It writes summary.json and report.html.
+4. D:\cte2\w\n6-feature-subagent-tokens-547f1e\repo\.claude\skills\build-skill-tool-workflow\tests\reports.test.mjs. Its `transcript_usage` and `subagent_usage` tests show the intended behaviour: subagent transcripts are added and each API message is counted once, `--no-subagents` excludes them, and an ambiguous work-dir match gives null.
+5. D:\cte2\w\n6-feature-subagent-tokens-547f1e\repo\.claude\skills\build-skill-tool-workflow\SKILL.md (lines 78-97). This is the procedure: the `<session>/subagents` layout, which script to run for subagent versus separate-session runs, and the `count_tokens.mjs` route for content runs.
+
+Caveats from reading the code:
+- `sumOrNull` in build_tool_report.mjs treats a missing value as 0 once any value is present. A repetition with no usage therefore lowers that case's mean silently, and a case with no usage adds 0 to the arm totals. Only the paired-token comparison is guarded by excluding unpaired cases.
+- subagent_usage.mjs does not sum agents spawned by a case agent. It passes `--no-subagents`, and transcript_usage looks for `<file>/subagents`, which does not exist for a flat `agent-<id>.jsonl`. A nested transcript whose prompt names the same work dir makes the case null; otherwise its tokens are left out.
+
+Not chosen from the helper's unranked list: audit/audit.py and workflow/step_report.py report on session or workflow token usage in general, not on the A/B case totals.

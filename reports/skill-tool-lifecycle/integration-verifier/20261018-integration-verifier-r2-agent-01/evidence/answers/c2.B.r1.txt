@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - required check "test" has no log: logs/S1-test.log is missing from this batch's logs folder, so its exit_code 0 is only a claim.
+S2: PASS - check "test" exits 0 with a matching non-empty log, declared files match the diff, it shares no files with S1, and the combined node run-tests.js passes.

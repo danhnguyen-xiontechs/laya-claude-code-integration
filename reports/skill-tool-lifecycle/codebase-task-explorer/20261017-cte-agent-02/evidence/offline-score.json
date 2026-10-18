@@ -1,0 +1,191 @@
+{
+  "root": "wonderful-newton-2cb034",
+  "at": "2026-10-17T16:46:28.522Z",
+  "summary": {
+    "cases": 5,
+    "rules": {
+      "pass": 1,
+      "meanRecall": 0.4666666666666666
+    },
+    "jev": {
+      "pass": 4,
+      "meanRecall": 0.9333333333333332
+    },
+    "codemapOnly": {
+      "pass": 0,
+      "meanRecall": 0.26666666666666666
+    }
+  },
+  "rows": [
+    {
+      "id": "t1-bug-merge-verdict",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 66,
+      "rules": 0.5,
+      "jev": 1,
+      "codemapOnly": 0.5,
+      "jevCalls": 4,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2860,
+      "cost": 0.00033906599999999996,
+      "rulesTop5": [
+        ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+        "workflow/settings_merge.py",
+        ".claude/skills/review-pr-jev-classify/scripts/pr-fetch.mjs",
+        ".claude/skills/review-pr-laya-classify/scripts/pr-fetch.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+        ".claude/skills/review-pr-laya-classify/scripts/assess.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/assess.mjs",
+        ".xt-skills/review-pr-laya-classify/reviews/dev.azure.com__xiontechs__xtp0009_ess_app__ess-be/pr-5240.execution-log.html"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/review-pr-laya-classify/scripts/laya-severity.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/pr-fetch.mjs",
+        ".claude/skills/review-pr-laya-classify/scripts/pr-fetch.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs"
+      ]
+    },
+    {
+      "id": "t2-feature-model-hook",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 74,
+      "rules": 1,
+      "jev": 1,
+      "codemapOnly": 0.5,
+      "jevCalls": 5,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2782,
+      "cost": 0.00035960399999999997,
+      "rulesTop5": [
+        ".claude/skills/subagent-model-router/scripts/router.mjs",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js",
+        ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/log-hook.js",
+        ".claude/skills/subagent-model-router/scripts/govern.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/subagent-model-router/scripts/router.mjs",
+        ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+        ".claude/skills/subagent-model-router/scripts/route.mjs",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/optimize.js"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js",
+        ".claude/skills/subagent-model-router/scripts/router.mjs",
+        ".claude/skills/subagent-model-router/bench/tasks/f2-email/files/src/email.js",
+        ".claude/skills/subagent-model-router/bench/tasks/f2-email/solution/src/email.js",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/log.js"
+      ]
+    },
+    {
+      "id": "t3-refactor-decide",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 71,
+      "rules": 0.3333333333333333,
+      "jev": 0.6666666666666666,
+      "codemapOnly": 0.3333333333333333,
+      "jevCalls": 4,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2177,
+      "cost": 0.000336756,
+      "rulesTop5": [
+        ".claude/skills/skills-router/scripts/decision-provider.mjs",
+        ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+        ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs",
+        ".claude/skills/bmad-help-jev/scripts/decision-provider.mjs",
+        ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/skills-router/scripts/decision-provider.mjs",
+        ".claude/skills/bmad-code-review-jev/scripts/decision-provider.mjs",
+        ".claude/skills/skills-router/scripts/route.mjs",
+        ".claude/skills/skills-router/tests/helpers.mjs",
+        ".claude/skills/skills-router/tests/route.test.mjs"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/subagent-model-router/scripts/decision-provider.mjs",
+        ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+        ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+        ".claude/skills/skills-router/scripts/decision-provider.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/decision-provider.mjs"
+      ]
+    },
+    {
+      "id": "t4-newfeature-gate",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 95,
+      "rules": 0.5,
+      "jev": 1,
+      "codemapOnly": 0,
+      "jevCalls": 5,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2923,
+      "cost": 0.00043482600000000003,
+      "rulesTop5": [
+        "workflow/hooks/laya_step_router.py",
+        ".claude/skills/web-test-jev-gate/scripts/jev-check.mjs",
+        ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+        ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+        ".claude/skills/web-test-jev-oracle/scripts/jev-check.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/web-test-jev-gate/scripts/gate.mjs",
+        ".claude/skills/web-test-laya-gate/scripts/gate.mjs",
+        ".claude/skills/web-test-jev-gate/scripts/jev-lib.mjs",
+        ".claude/skills/web-test-laya-gate/tests/gate-action.test.mjs",
+        ".claude/skills/web-test-laya-gate/scripts/laya-lib.mjs"
+      ],
+      "codemapOnlyTop5": [
+        "benchmark/run_live.py",
+        ".claude/skills/skills-router/scripts/route.mjs",
+        "workflow/hooks/laya_step_router.py",
+        ".claude/skills/review-pr-jev-classify/scripts/providers.mjs",
+        ".claude/skills/review-pr-laya-classify/scripts/providers.mjs"
+      ]
+    },
+    {
+      "id": "t5-bug-grounding",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 43,
+      "rules": 0,
+      "jev": 1,
+      "codemapOnly": 0,
+      "jevCalls": 3,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 1684,
+      "cost": 0.000214494,
+      "rulesTop5": [
+        "audit/audit.py",
+        ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+        ".claude/skills/web-test-jev-ground/scripts/laya/serve.py",
+        ".claude/skills/bmad-help-jev/scripts/suggest.mjs",
+        ".claude/skills/skills-router/scripts/shadow-report.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/web-test-jev-ground/scripts/ground-question.mjs",
+        ".claude/skills/web-test-laya-ground/scripts/find.mjs",
+        ".claude/skills/web-test-jev-ground/scripts/find.mjs",
+        ".claude/skills/web-test-jev-ground/scripts/laya/serve.py",
+        ".claude/skills/web-test-jev-ground/scripts/decision-provider.mjs"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/skills-router/scripts/shadow-report.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/outcome-labels.mjs",
+        "audit/audit.py",
+        ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+        "serve.py"
+      ]
+    }
+  ]
+}

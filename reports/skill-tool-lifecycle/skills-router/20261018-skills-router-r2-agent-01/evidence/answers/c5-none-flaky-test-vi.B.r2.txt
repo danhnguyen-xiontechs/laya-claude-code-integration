@@ -1,0 +1,2 @@
+PICK: none
+The request is a one-off diagnosis of a flaky test that Claude can investigate directly by reading the test and re-running it, and no installed skill, command or agent covers flaky-test analysis (codebase-task-explorer is for locating code in an unfamiliar codebase, which the request does not ask for).

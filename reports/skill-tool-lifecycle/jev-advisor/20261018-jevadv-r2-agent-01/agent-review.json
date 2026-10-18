@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "severity": "Minor",
+      "finding": "When a hint was shown and repeats were dropped, the status line still said none flagged.",
+      "ref": "jev_advisor/render.py",
+      "resolution": "fixed: status line names the repeats"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The phrase 'repeat the failure message above' was inaccurate: the local lines do not print the message.",
+      "ref": "jev_advisor/render.py",
+      "resolution": "fixed: wording now says the first error line"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The repeat test also dropped supersets that add cause detail to the message.",
+      "ref": "jev_advisor/advisor.py _repeats_anchor",
+      "resolution": "fixed: a superset is dropped only when it adds at most 24 characters"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The flag-off claim is not byte-identical to the old output (new status lines and the rank tie-break).",
+      "ref": "jev_advisor/render.py",
+      "resolution": "open: documented deviation"
+    },
+    {
+      "severity": "Minor",
+      "finding": "test_old_behaviour_flags passes either way.",
+      "ref": "tests/test_parser_and_advisor.py",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "test_truncated_summary_is_not_an_anchor is vacuous for the anchor rule.",
+      "ref": "tests/test_parser_and_advisor.py",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Test gaps: the errorLine and exception-prefix anchor texts are not covered by a test.",
+      "ref": "tests/test_parser_and_advisor.py",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "final_block now returns a third value; the spec's advisor section said it still returns two. All call sites are updated.",
+      "ref": "jev_advisor/advisor.py",
+      "resolution": "no change needed: documented deviation"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "The repo's own .jev-advisor.json still sets maxJevHints to 3, which overrides the new default for this repo.",
+      "ref": ".jev-advisor.json",
+      "resolution": "open: the measurement harness sets the B config itself"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "lstrip().removeprefix('E') also runs when errorLine is a fallback line.",
+      "ref": "jev_advisor/advisor.py _repeats_anchor",
+      "resolution": "open"
+    }
+  ]
+}

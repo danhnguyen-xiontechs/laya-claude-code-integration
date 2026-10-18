@@ -1,0 +1,225 @@
+{
+  "root": "wonderful-newton-2cb034",
+  "at": "2026-10-17T16:50:33.201Z",
+  "summary": {
+    "cases": 6,
+    "rules": {
+      "pass": 3,
+      "meanRecall": 0.5
+    },
+    "jev": {
+      "pass": 5,
+      "meanRecall": 0.8333333333333334
+    },
+    "codemapOnly": {
+      "pass": 4,
+      "meanRecall": 0.6666666666666666
+    }
+  },
+  "rows": [
+    {
+      "id": "n1-bug-migration-wave",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 32,
+      "rules": 1,
+      "jev": 1,
+      "codemapOnly": 1,
+      "jevCalls": 3,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 1975,
+      "cost": 0.000180894,
+      "rulesTop5": [
+        ".claude/skills/story-batch-planner/scripts/planner.mjs",
+        ".claude/skills/story-batch-planner/test/planner.test.mjs",
+        ".claude/skills/story-batch-planner/scripts/plan.mjs",
+        "reports/skill-tool-lifecycle/story-batch-planner/20261017-sbp-agent-01/collect.mjs",
+        "reports/skill-tool-lifecycle/story-batch-planner/20261017-sbp-agent-01/finalize.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/story-batch-planner/scripts/planner.mjs",
+        ".claude/skills/story-batch-planner/scripts/plan.mjs",
+        ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+        ".claude/skills/story-batch-planner/test/planner.test.mjs",
+        ".claude/skills/subagent-model-router/scripts/governor.mjs"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/story-batch-planner/scripts/planner.mjs",
+        ".claude/skills/story-batch-planner/test/planner.test.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs",
+        ".claude/skills/story-batch-planner/scripts/plan.mjs",
+        ".claude/skills/story-batch-planner/bench/eval.mjs"
+      ]
+    },
+    {
+      "id": "n2-feature-blocked-status",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 59,
+      "rules": 1,
+      "jev": 1,
+      "codemapOnly": 1,
+      "jevCalls": 4,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2361,
+      "cost": 0.00030181200000000004,
+      "rulesTop5": [
+        ".claude/skills/integration-verifier/scripts/verify.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+        ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+        ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+        ".claude/skills/story-batch-planner/scripts/plan.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/integration-verifier/scripts/verify.mjs",
+        ".claude/skills/integration-verifier/scripts/decision-provider.mjs",
+        ".claude/skills/story-batch-planner/scripts/planner.mjs",
+        ".claude/skills/review-pr-jev-classify/scripts/finding-questions.mjs",
+        "hooks/tests/test_cache_expiry_gate.py"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/integration-verifier/scripts/verify.mjs",
+        ".claude/skills/story-batch-planner/scripts/decision-provider.mjs",
+        "workflow/runs/persist-sessions/laya/test_sessions.py",
+        "workflow/runs/persist-sessions/baseline/test_sessions.py",
+        ".claude/skills/integration-verifier/scripts/decision-provider.mjs"
+      ]
+    },
+    {
+      "id": "n3-bug-worse-case",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 86,
+      "rules": 0,
+      "jev": 1,
+      "codemapOnly": 1,
+      "jevCalls": 5,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2735,
+      "cost": 0.000452508,
+      "rulesTop5": [
+        ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+        ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+        ".claude/skills/web-test-jev-oracle/scripts/build_report.mjs",
+        ".claude/skills/web-test-laya-oracle/scripts/build_report.mjs",
+        ".claude/skills/web-test/scripts/build_report.mjs"
+      ],
+      "jevTop5": [
+        ".claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        ".claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        ".claude/skills/web-test-laya-verdict/scripts/build_report.mjs",
+        ".claude/skills/web-test-jev-verdict/scripts/build_report.mjs",
+        ".claude/skills/web-test-jev-oracle/scripts/build_report.mjs"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        ".claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        ".claude/skills/build-skill-tool-workflow/scripts/report_style.mjs",
+        "workflow/runs/persist-sessions/laya/test_sessions.py",
+        "workflow/runs/persist-sessions/baseline/test_sessions.py"
+      ]
+    },
+    {
+      "id": "n4-refactor-shortlist",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 70,
+      "rules": 1,
+      "jev": 1,
+      "codemapOnly": 1,
+      "jevCalls": 4,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2265,
+      "cost": 0.00032214,
+      "rulesTop5": [
+        ".claude/skills/skills-router/scripts/route.mjs",
+        "workflow/hooks/laya_step_router.py",
+        "proxy/router_proxy.py",
+        ".claude/skills/subagent-model-router/scripts/router.mjs",
+        "proxy/router_log.py"
+      ],
+      "jevTop5": [
+        ".claude/skills/skills-router/scripts/route.mjs",
+        ".claude/skills/bmad-help-jev/scripts/suggest.mjs",
+        ".claude/skills/skills-router/scripts/eval.mjs",
+        "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-02/offline_score.mjs",
+        ".claude/skills/skills-router/tests/catalog.test.mjs"
+      ],
+      "codemapOnlyTop5": [
+        ".claude/skills/skills-router/scripts/route.mjs",
+        "workflow/hooks/laya_step_router.py",
+        ".claude/skills/subagent-model-router/scripts/pricing.mjs",
+        "proxy/router_proxy.py",
+        ".claude/skills/skills-router/scripts/eval.mjs"
+      ]
+    },
+    {
+      "id": "n5-newfeature-precompact",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 33,
+      "rules": 0,
+      "jev": 0,
+      "codemapOnly": 0,
+      "jevCalls": 3,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 1617,
+      "cost": 0.00017808,
+      "rulesTop5": [
+        ".claude/skills/skills-router/scripts/shadow-hook.mjs",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/log-hook.js",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/subagent-hook.js",
+        ".claude/skills/subagent-model-router/scripts/hook-pretooluse.mjs",
+        "hooks/cache_expiry_gate.py"
+      ],
+      "jevTop5": [
+        "hooks/cache_expiry_gate.py",
+        "workflow/runs/persist-sessions/laya/session_store.py",
+        "workflow/step_report.py",
+        "workflow/runs/persist-sessions/baseline/session_store.py",
+        "workflow/runs/persist-sessions/static/session_store.py"
+      ],
+      "codemapOnlyTop5": [
+        "audit/audit.py",
+        "proxy/router_proxy.py",
+        ".claude/skills/story-batch-planner/scripts/planner.mjs",
+        ".claude/skills/skills-router/scripts/shadow-hook.mjs",
+        ".claude/skills/haiku-subagent/tools/prompt-budget/optimize.js"
+      ]
+    },
+    {
+      "id": "n6-feature-subagent-tokens",
+      "engine": "codemap codemap 4.6.0",
+      "pool": 81,
+      "rules": 0,
+      "jev": 1,
+      "codemapOnly": 0,
+      "jevCalls": 5,
+      "jevFallback": false,
+      "jevReason": null,
+      "latencyMs": 2892,
+      "cost": 0.00039123,
+      "rulesTop5": [
+        "audit/audit.py",
+        ".claude/skills/build-skill-tool-workflow/scripts/count_tokens.mjs",
+        ".claude/skills/skills-router/scripts/route.mjs",
+        "proxy/router_proxy.py",
+        "workflow/step_report.py"
+      ],
+      "jevTop5": [
+        ".claude/skills/haiku-subagent/tools/prompt-budget/report.js",
+        "research/ab-1697/compare.py",
+        ".claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        ".claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        ".claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs"
+      ],
+      "codemapOnlyTop5": [
+        "proxy/router_proxy.py",
+        ".claude/skills/skills-router/scripts/shadow-report.mjs",
+        "audit/audit.py",
+        "workflow/step_report.py",
+        ".claude/skills/review-pr-jev-classify/scripts/laya-severity.mjs"
+      ]
+    }
+  ]
+}

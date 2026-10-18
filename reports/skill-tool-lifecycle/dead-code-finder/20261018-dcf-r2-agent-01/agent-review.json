@@ -1,0 +1,37 @@
+{
+  "reviewer": "independent Opus agent, read-only, fresh context (round 2, tool change only)",
+  "reviewedAt": "2026-10-18",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "The new test's Tier A check passed without testing anything: it ran with use_jev=False, where Tier A is always empty.",
+      "ref": "tests/test_dead_code.py (test_report_is_short_by_default)",
+      "resolution": "fixed: the test now runs with the reckless Jev stand-in (Tier A exists), asserts the Tier A header has no evidence column, that Tier B keeps it, and that Tier C is a count. Mutation check: putting the evidence column back into Tier A makes the test fail; the changed code passes (13 passed)."
+    },
+    {
+      "severity": "Minor",
+      "finding": "With zero Tier C items the short report still said 'Not listed here ... run with --full', which suggests hidden items.",
+      "ref": "jev_skills/dead_code/report.py (render, Tier C section)",
+      "resolution": "fixed: the sentence is shown only when Tier C is non-empty; otherwise 'None.'"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The eval command has no --full option, and evaluate.py writes and copies the short report, so the committed demo run/report.md (old layout) no longer matches what the tool writes.",
+      "ref": "jev_skills/dead_code/evaluate.py:120,127",
+      "resolution": "accepted for this run, not fixed: the eval copy is a report of the same run and the tiers are unchanged; the old run/report.md in the JEV repo is not edited (read-only rule). Listed in manifest deviations."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "With MAX_C_LINES removed, --full lists every Tier C item (no 60-line cap and no '... N more' line).",
+      "ref": "jev_skills/dead_code/report.py",
+      "resolution": "accepted: the opt-in --full is explicit and meant to list everything."
+    }
+  ],
+  "checked": [
+    "Diff limited to __main__.py (--full flag), scan.run (full kwarg), report.py (Tier A without evidence column, Tier C as count, header text, MAX_C_LINES removed) and one test.",
+    "Candidates identical between baseline and changed code in no-jev, reckless-Jev and shadow modes (reviewer's own check); report length 87/88/88 -> 58/65/59 lines.",
+    "No code imports MAX_C_LINES or parses the Tier C list or the evidence column.",
+    "Harness wrapper regexes for 'JEV N sent' and 'JEV: N request' still match (funnel and JEV lines unchanged).",
+    "Unit tests: baseline 12 passed, changed 13 passed (pytest 9.1.1 in the JEV venv; the reviewer used unittest)."
+  ]
+}

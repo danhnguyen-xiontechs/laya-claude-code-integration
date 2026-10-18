@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-sbp-r2-agent-01",
+  "tool": {
+    "name": "story-batch-planner",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "a36ee9b",
+    "branch": "claude/sbp-round2"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "Round 2 (incomplete stories held in needs_decision, endpoint fix): both arms pass 6/6 on the same 3 batches, but the planner arm still uses 2.5x the tokens (654k -> 1,644k; was 2.7x). h2 got cheaper (112k/170k vs 248k/399k before), h1 B r2 cost 671k. Plain Haiku solves these batches in 2 turns, so the tool cannot beat A on cost here. Top suggestion: fix layer() so it stops splitting levels into chunks of 4 that push independent stories into extra waves.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (told no planner is available)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + story-batch-planner (plan.mjs --summary, PLAN_JSON line, Jev shadow on)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, shadow only"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "design.md",
+    "datasetVersion": "same 3 batches as 20261017-sbp-agent-02 (cases/)",
+    "caseCount": 3,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "tokenScope": "all tokens of each case agent session, from its subagent transcript",
+    "deviations": [
+      "Baseline: 20261017-sbp-agent-02 (A 656k, B 1,747k). Applied improvements.md suggestions 1 (incomplete stories to needs_decision, flag scheduleIncomplete) and 2 (endpoint trailing punctuation); the Opus diff review found one Major (json/csv endpoints dropped), fixed before measuring.",
+      "Same cases, prompts, wrapper and gold invariants; grade.mjs was reused unchanged except the experiment id. Gold invariants live only in grade.mjs; the batch copies have no answer key.",
+      "Arm A: --forbid \"story-batch-planner|plan.mjs\" found 0 forbidden calls in all 6 A transcripts.",
+      "Two Minor review findings stay open and are accepted for this run (an incomplete story that is also in a cycle/external gets only that entry; incomplete story depending on a cycle gets only an incomplete entry).",
+      "The planner still serialises over-eagerly: layer() chunks every dependency level by maxConcurrency=4 (h1 gets 4 waves where 3 fit); agents corrected it in h1 B r2.",
+      "Case agents Haiku 5.5 xhigh; improvement reasoning and reviews on Opus. Rep 2 launched B first. 3 cases x 2 reps: directional only. Local scratch paths replaced by <scratch>/<home> in evidence."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/answers",
+      "evidence/subagent-usage.json",
+      "evidence/grades.json",
+      "evidence/_logs"
+    ],
+    "executionLogs": []
+  }
+}

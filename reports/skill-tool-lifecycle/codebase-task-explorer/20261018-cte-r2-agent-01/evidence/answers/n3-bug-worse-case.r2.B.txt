@@ -1,0 +1,22 @@
+Where to start: the "worse" flag is computed in build-skill-tool-workflow's build_tool_report.mjs, and the likeliest miss is a tie across repetitions. Nothing in the repo was modified; my scratch fixtures live in the scratchpad.
+
+The 5 most relevant files, most relevant first:
+
+1. D:\cte3\w\n3-bug-worse-case-cc411f\repo\.claude\skills\build-skill-tool-workflow\scripts\build_tool_report.mjs
+   Lines 105-109 (majority) and 121 (change). The per-case status is the majority over repetitions, and a tie goes to whichever status appears first in run order, so a tool-arm fail in one of two reps is hidden when the passing rep comes first. I reproduced this with scratch fixtures: plain A passes both reps, B r1=pass r2=fail gives 0 regressions and no tr.worse row; B r1=fail r2=pass and B fail/fail both flag T1 as worse. Row class is set at line 201.
+
+2. D:\cte3\w\n3-bug-worse-case-cc411f\repo\.claude\skills\build-skill-tool-workflow\tests\reports.test.mjs
+   The fixture (lines 30-33) has one rep per arm, so the tie case is never tested. The regression assertions are at lines 52 and 88. A two-rep test belongs here.
+
+3. D:\cte3\w\n3-bug-worse-case-cc411f\repo\.claude\skills\build-skill-tool-workflow\SKILL.md
+   Line 114 requires a pass-in-A, fail-in-B case to be in the headline. Line 108 says the headline is typed into manifest.json by hand, not computed, so the headline can omit a worse case even when the table flags it.
+
+4. D:\cte3\w\n3-bug-worse-case-cc411f\repo\.claude\skills\build-skill-tool-workflow\scripts\build_main_report.mjs
+   Lines 52 and 66 print "N worse" from summary.json regressions. The index only inherits what the per-tool build computed, so it needs no separate fix.
+
+5. D:\cte3\w\n3-bug-worse-case-cc411f\repo\.claude\skills\build-skill-tool-workflow\schemas\case-result.schema.json
+   Line 12 defines the status enum (pass, fail, blocked, skipped, not-run, error). build_tool_report.mjs line 120 excludes blocked, skipped and error from the worse check by design. If the runner records a tool-arm failure as error or blocked, it will never be flagged, so check which status the runner writes.
+
+Notes:
+- The helper (gated, Jev top-1 p=0.82) returned only 3 of 10 rows: build_tool_report.mjs, reports.test.mjs, and web-test-jev-verdict\scripts\build_report.mjs. The third is the web-test report, not this experiment report, so ignore it. I did not rerun with --no-gate; the other four paths come from my own reads.
+- The experiment data (runs/*/results.json and the per-tool report.html) is not in the repo, so I could not check the actual experiment. Confirm whether the user's case has two reps (tie) or an error/blocked status.

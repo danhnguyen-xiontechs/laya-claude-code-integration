@@ -1,0 +1,2 @@
+PICK: none
+A plain one-off coding request (write a for loop that prints even numbers) is answered directly, and no installed skill, command or subagent is needed for it.

@@ -1,0 +1,22 @@
+## Candidate starting points — refactor
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 61 → considered 61
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/skills-router/scripts/route.mjs` | 3 queries: baseOf, shortlist | 4 |
+| 2 | `.claude/skills/bmad-help-jev/scripts/suggest.mjs` | 2 queries: skillExcerpt, scoreEval | 1 |
+| 3 | `.claude/skills/skills-router/tests/route.test.mjs` | 2 queries:  | 0 |
+| 4 | `.claude/skills/skills-router/scripts/shadow-report.mjs` | 1 query: score | 2 |
+| 5 | `.claude/skills/skills-router/scripts/eval.mjs` | 1 query: splitOf, answerOf | 3 |
+| 6 | `.claude/skills/skills-router/tests/helpers.mjs` | 1 query:  | 5 |
+| 7 | `.claude/skills/skills-router/scripts/mine-history.mjs` | 1 query: invokedSkill | 5 hub |
+| 8 | `routing/run_multisignal.py` | 1 query: score | 0 |
+| 9 | `.claude/skills/subagent-model-router/scripts/route.mjs` | 1 query:  | 0 |
+| 10 | `.claude/skills/skills-router/tests/variants.test.mjs` | 1 query:  | 0 |
+
+Jev: 4 call(s), 3 batch(es), survivors 12. Advisory ranking only — verify by reading source.

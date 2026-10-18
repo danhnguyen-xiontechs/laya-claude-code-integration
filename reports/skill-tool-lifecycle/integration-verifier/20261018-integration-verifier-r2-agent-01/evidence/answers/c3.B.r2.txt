@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - required check "test" recorded exit 0 with a non-empty log, AC1 is backed by that check, declared files match the diff, no overlap with S2, and the combined run exits 0.
+S2: FAIL - required check "test" recorded exit 1 (log "FAIL tests/count.test.js: 3 == 2") against its "tests pass" claim; re-running the branch passes, but that does not replace the recorded failure.

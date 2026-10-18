@@ -1,0 +1,279 @@
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/ac_coverage/report.py b/src/jev_skills/ac_coverage/report.py
+index 1f4f02a..150cf80 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/ac_coverage/report.py
++++ b/src/jev_skills/ac_coverage/report.py
+@@ -1,5 +1,6 @@
+ """Markdown coverage matrix. Coverage comes only from Claude's verdicts; JEV labels are shown as suggestions."""
+ 
++import re
+ from datetime import datetime, timezone
+ 
+ COVERAGE = ("Covered", "Partial", "Missing", "Unclear")
+@@ -122,3 +123,77 @@ def render(pack: dict, results: dict | None, verdicts: dict | None) -> str:
+               "criteria without a verdict are shown as Unverified.",
+               "- Execution statuses come only from the JUnit file listed above; without it they are Unknown.", ""]
+     return "\n".join(lines)
++
++
++HELPER_CALL = re.compile(r"(?<![\w.])((?:assert|check|expect|verify)_\w+)\s*\(")
++ASSERT_CHARS = 160
++
++
++def _bare(nodeid: str) -> str:
++    return nodeid.split("::")[-1].split("[")[0]
++
++
++def _cut(s: str, n: int = ASSERT_CHARS) -> str:
++    s = " ".join(s.split())
++    return s if len(s) <= n else s[: n - 1] + "…"
++
++
++def digest(pack: dict, results: dict | None, *, max_asserts: int = 4, show_skippable: bool = False) -> str:
++    """Reading list for Claude: per criterion, its candidate tests with their assertion lines and helper calls.
++    Skippable pairs are hidden (listed by name) unless show_skippable. Never prints a coverage word."""
++    pairs = {(p["criterion"], p["tid"]): p for p in (results or {}).get("pairs") or []}
++    tests = pack["tests"]
++    if results is None:
++        jev = "JEV not run"
++    else:
++        status = results.get("status") or "not run"
++        if results.get("error"):
++            status += f" ({results['error']})"
++        all_pairs = results.get("pairs") or []
++        labelled = sum(p["label"] is not None for p in all_pairs)
++        jev = f"JEV {status}: {labelled}/{len(all_pairs)} labelled, {results.get('skippableCount', 0)} skippable {'shown' if show_skippable else 'hidden'}"
++    lines = [
++        f"{pack.get('testsDiscovered')} tests under {pack.get('testsDir')}; top {pack.get('topK')} candidates per criterion; {jev}",
++        "Open every test listed below before deciding. Labels are suggestions, never coverage.",
++    ]
++    shown_under: dict[str, str] = {}
++    for c in pack["criteria"]:
++        lines += ["", f"{c['id']}: {c['text']}"]
++        if c.get("no_candidates"):
++            lines.append("  no test shares a meaningful word with this criterion: grep for other names before concluding there is no test")
++            continue
++        visible, hidden = [], []
++        for cand in c["candidates"]:
++            p = pairs.get((c["id"], cand["tid"]), {})
++            (hidden if p.get("skippable") and not show_skippable else visible).append((cand, p))
++        if hidden and not visible:
++            names = ", ".join(_bare(tests[cand["tid"]]["nodeid"]) for cand, _ in hidden)
++            lines.append(f"  all {len(hidden)} candidates hidden as skippable: {names}; grep for other names before concluding there is no test")
++            continue
++        for cand, p in visible:
++            t = tests[cand["tid"]]
++            if results is None:
++                jev_part = "jev=not run"
++            elif p.get("label") is None:
++                jev_part = f"jev=none ({p.get('reason') or 'no label'})"
++            else:
++                jev_part = f"jev={SHORT[p['label']]}" + (f" p={p['p']:.2f}" if p.get("p") is not None else "")
++            extra = (f" exec={t['execution']}" if t.get("execution") not in (None, "Unknown") else "") + (" code truncated" if t.get("truncated") else "")
++            lines.append(f"  {cand['tid']} {t['nodeid']} ({t['file']}:{t['line']}) {jev_part}{extra}")
++            if cand["tid"] in shown_under:
++                lines.append(f"      (assertions shown under {shown_under[cand['tid']]})")
++                continue
++            shown_under[cand["tid"]] = c["id"]
++            asserts = t.get("assertions") or []
++            for a in asserts[:max_asserts]:
++                lines.append(f"      {_cut(a)}")
++            if len(asserts) > max_asserts:
++                lines.append(f"      (+{len(asserts) - max_asserts} more assertions)")
++            if not asserts:
++                lines.append("      (no assert statements in the test body)")
++            helpers = sorted(set(HELPER_CALL.findall(t.get("code") or "")))
++            if helpers:
++                lines.append(f"      helpers: {', '.join(helpers)} (their assertions are not shown: open them)")
++        if hidden:
++            lines.append("  hidden as skippable: " + ", ".join(_bare(tests[cand["tid"]]["nodeid"]) for cand, _ in hidden))
++    return "\n".join(lines)
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/ac_coverage/__main__.py b/src/jev_skills/ac_coverage/__main__.py
+index 8981e24..f47586f 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/jev_skills/ac_coverage/__main__.py
++++ b/src/jev_skills/ac_coverage/__main__.py
+@@ -5,6 +5,7 @@
+   python -m jev_skills.ac_coverage classify --pack pack.json -o results.json [--dry-run]
+   python -m jev_skills.ac_coverage report --pack pack.json [--results results.json] [--verdicts V.json] -o report.md
+   python -m jev_skills.ac_coverage bench --pack pack.json --results results.json --gold gold.json [--verdicts V.json] [-o bench.txt]
++  python -m jev_skills.ac_coverage digest --pack pack.json [--results results.json] [--max-asserts 4] [--show-skippable] [-o out.txt]
+ """
+ 
+ import argparse
+@@ -50,6 +51,12 @@ def main(argv: list[str]) -> int:
+     b.add_argument("--gold", required=True)
+     b.add_argument("--verdicts")
+     b.add_argument("-o")
++    g = sub.add_parser("digest")
++    g.add_argument("--pack", required=True)
++    g.add_argument("--results")
++    g.add_argument("--max-asserts", type=int, default=4)
++    g.add_argument("--show-skippable", action="store_true")
++    g.add_argument("-o")
+     a = ap.parse_args(argv)
+ 
+     if a.cmd == "candidates":
+@@ -83,6 +90,15 @@ def main(argv: list[str]) -> int:
+               f"{res['skippableCount']} skippable, {u['requests']} request(s), {u['latencyMs']} ms, ${u['cost']:.6f}")
+         return 0
+ 
++    if a.cmd == "digest":
++        from .report import digest
++
++        text = digest(_load(a.pack), _load(a.results), max_asserts=a.max_asserts, show_skippable=a.show_skippable)
++        print(text)
++        if a.o:
++            _save(a.o, text + "\n")
++        return 0
++
+     if a.cmd == "report":
+         from .report import render
+ 
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/tests/test_ac_coverage.py b/src/tests/test_ac_coverage.py
+index 02340aa..e129dad 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/tests/test_ac_coverage.py
++++ b/src/tests/test_ac_coverage.py
+@@ -202,5 +202,130 @@ class ReportBenchTest(Fixture):
+         self.assertIn("skippable but actually relevant: 1", bench.render(s))
+ 
+ 
++
++MORE_SRC = '''
++def test_duplicate_email_full(svc):
++    r = svc.register("a@x.com")
++    assert r.status == 409
++    assert r.error == "email taken"
++    assert svc.users == 1
++    assert_status(r, 409)
++'''
++
++HIDDEN = {"tests/test_app.py::TestPasswords::test_short_password_rejected", "tests/test_app.py::test_mail_sent"}
++
++
++class DigestTest(Fixture):
++    def setUp(self):
++        super().setUp()
++        (self.root / "tests" / "test_more.py").write_text(MORE_SRC, encoding="utf-8")
++
++    def results(self, pack, label_for, status="ok", error=None):
++        _, pairs = classify.build_request(pack)
++        for p in pairs:
++            label, prob, skip = label_for(p)
++            p.update(label=label, p=prob, skippable=skip)
++        return {"status": status, "error": error, "pairs": pairs, "usage": {},
++                "skippableCount": sum(p["skippable"] for p in pairs)}
++
++    def hide_some(self, p):
++        if p["nodeid"] in HIDDEN:
++            return ("unrelated", 0.95, True)
++        return ("direct_coverage", 0.8, False)
++
++    def test_hides_skippable_and_names_them(self):
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        text = report.digest(pack, res)
++        self.assertIn(f"{res['skippableCount']} skippable hidden", text.splitlines()[0])
++        candidates = {cand["nodeid"] for c in pack["criteria"] for cand in c["candidates"]}
++        hidden_candidates = sorted(HIDDEN & candidates)
++        self.assertTrue(hidden_candidates)
++        self.assertIn("all 1 candidates hidden as skippable: test_short_password_rejected", text)
++        for nodeid in hidden_candidates:
++            self.assertNotIn(nodeid + " (", text)
++            self.assertIn(nodeid.split("::")[-1], text)
++
++    def test_show_skippable_prints_all(self):
++        pack = self.pack()
++        text = report.digest(pack, self.results(pack, self.hide_some), show_skippable=True)
++        for c in pack["criteria"]:
++            for cand in c["candidates"]:
++                self.assertIn(cand["nodeid"] + " (", text)
++        self.assertNotIn("hidden as skippable", text)
++
++    def test_assertions_capped_and_helpers_listed(self):
++        pack = self.pack()
++        text = report.digest(pack, None, max_asserts=1)
++        self.assertIn("assert r.status == 409", text)
++        self.assertIn("(+2 more assertions)", text)
++        self.assertIn("helpers: assert_status (their assertions are not shown: open them)", text)
++
++    def test_no_results_and_unavailable_never_hide(self):
++        pack = self.pack()
++        text = report.digest(pack, None)
++        self.assertIn("JEV not run", text.splitlines()[0])
++        self.assertIn("jev=not run", text)
++        self.assertNotIn("hidden as skippable", text)
++        timeout = self.results(pack, lambda p: (None, None, False), status="timeout", error="jev-timeout")
++        for p in timeout["pairs"]:
++            p["reason"] = "jev-timeout"
++        text = report.digest(pack, timeout)
++        self.assertIn("jev=none (jev-timeout)", text)
++        self.assertNotIn("hidden as skippable", text)
++
++    def test_no_candidates_hint(self):
++        pack = self.pack()
++        text = report.digest(pack, None)
++        section = text.split("AC-03:")[1]
++        self.assertIn("no test shares a meaningful word with this criterion", section)
++
++    def test_repeat_test_printed_once(self):
++        crit = {"source": "story", "criteria": [
++            {"id": "AC-01", "text": "A duplicate email returns HTTP 409 conflict."},
++            {"id": "AC-04", "text": "Duplicate email registrations are refused."}]}
++        pack = discover.build_pack(crit, self.root / "tests", self.root, None, top=5)
++        text = report.digest(pack, None)
++        self.assertEqual(text.count('assert svc.register("a@x.com").status == 409'), 1)
++        self.assertIn("(assertions shown under AC-01)", text)
++
++    def test_deterministic_and_no_coverage_words(self):
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        text = report.digest(pack, res)
++        self.assertEqual(text, report.digest(pack, res))
++        for word in ("Covered", "Partial", "Missing", "Unclear"):
++            self.assertNotIn(word, text)
++
++    def test_cli_digest_writes_file(self):
++        import contextlib
++        import io
++        import json
++        from jev_skills.ac_coverage.__main__ import main
++
++        pack = self.pack()
++        res = self.results(pack, self.hide_some)
++        (self.root / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
++        (self.root / "results.json").write_text(json.dumps(res), encoding="utf-8")
++        out = self.root / "digest.txt"
++        buf = io.StringIO()
++        with contextlib.redirect_stdout(buf):
++            code = main(["digest", "--pack", str(self.root / "pack.json"), "--results", str(self.root / "results.json"), "-o", str(out)])
++        self.assertEqual(code, 0)
++        self.assertEqual(out.read_text(encoding="utf-8"), buf.getvalue())
++
++    def test_candidates_top_default_is_5(self):
++        import contextlib
++        import io
++        import json
++        from jev_skills.ac_coverage.__main__ import main
++
++        (self.root / "criteria.json").write_text(json.dumps(CRITERIA), encoding="utf-8")
++        out = self.root / "pack.json"
++        with contextlib.redirect_stdout(io.StringIO()):
++            code = main(["candidates", "--criteria", str(self.root / "criteria.json"), "--tests", str(self.root / "tests"), "-o", str(out)])
++        self.assertEqual(code, 0)
++        self.assertEqual(json.loads(out.read_text(encoding="utf-8"))["topK"], 5)
++
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/.claude/skills/acceptance-criteria-coverage/SKILL.md b/src/.claude/skills/acceptance-criteria-coverage/SKILL.md
+index a0bc40e..9788b1e 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/.claude/skills/acceptance-criteria-coverage/SKILL.md
++++ b/src/.claude/skills/acceptance-criteria-coverage/SKILL.md
+@@ -44,7 +44,8 @@ directory such as `.tool-output/ac/` (gitignored).
+    redacted first; a test with an unremovable secret is not sent and gets a local
+    `insufficient_evidence`. If JEV is unavailable, pairs have `label: null`: continue Claude-only.
+ 
+-6. **Read the tests and verify.** For every pair that is not `skippable`, open the test (file and
++6. **Read the tests and verify.**
++   Print the reading list with `.venv/Scripts/python.exe -m jev_skills.ac_coverage digest --pack .tool-output/ac/pack.json --results .tool-output/ac/results.json`. It shows each candidate's assertions and helper calls, with skippable pairs hidden. For every pair that is not `skippable`, open the test (file and
+    line are in the pack) and check: the scenario is the criterion's scenario; assertions check the
+    required behavior, not just that code ran; every condition is asserted (status *and* side
+    effects such as persistence, messages, calls); negative cases where required. Pairs marked

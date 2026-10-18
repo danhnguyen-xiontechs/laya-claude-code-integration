@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - Open High review finding "SQL built by string concat" in review_findings.json; the check (exit 0, log), declared file src/fmt.js and the combined run are otherwise clean.
+S2: REVIEW_REQUIRED - AC1 has no evidence (manifest evidence is empty), and the ac_coverage.json row cites tests/count.test.js, which does not exist on story/S2, so it does not count.

@@ -1,0 +1,7 @@
+BATCH: BLOCKED
+S1: BLOCKED - required check "test" (exit 0) is only claimed in its manifest: logs/S1-test.log is missing from the batch logs and from story/S1, and AC1 rests on that check alone.
+S2: PASS - test check exit 0 with non-empty logs/S2-test.log backs AC1, declared files match the diff, no conflict with S1, and the combined run (S1+S2 merged on main) exits 0.
+
+Side effect that needs your action: I ran `git checkout -q -b combined origin/main` without first changing into the batch repo, so it ran in the primary Laya worktree (D:\XionTechs\Laya\.claude\worktrees\youthful-pascal-a0d47c). That created a branch `combined` (at origin/main 2120327) and moved that worktree's HEAD onto it. Before that it was on claude/integration-verifier-round2 (tip b7883e5). My attempt to restore it with `git checkout claude/integration-verifier-round2` was denied by the permission classifier, so I stopped there and did not try another route. To undo it, run in that worktree: `git checkout claude/integration-verifier-round2`, then `git branch -D combined` (combined has no commits of its own). No batch repo branch was changed; all merges and test runs were done in a temp clone under scratchpad\r2-scratch\tmp-c2B-verify.
+
+Other notes: node verify-batch.mjs wrote _verifier-out\ in the batch folder and appended one line to scratchpad\r2-private\_logs\c2.B.r1.jsonl (outside the batch folder, by the wrapper's design). Jev was not called because there were no failure clusters.

@@ -1,0 +1,149 @@
+{
+  "experimentId": "20261017-sct-agent-02",
+  "arm": "B",
+  "runId": "r1",
+  "startedAt": "2026-10-18T03:42:42.429Z",
+  "finishedAt": "2026-10-18T03:42:54.527Z",
+  "cases": [
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-one-bug",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green · 2/2 runs trimmed, rules only",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 27,
+        "cacheReadTokens": 264944,
+        "cacheWriteTokens": 22116,
+        "modelTurns": 5,
+        "toolCalls": 7,
+        "elapsedMs": 22742,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-one-bug.B.txt",
+        "../../../evidence/filter-logs/js-one-bug.B.r1.jsonl"
+      ],
+      "startedAt": "2026-10-18T03:42:42.429Z",
+      "finishedAt": "2026-10-18T03:42:42.429Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-three-bugs",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green · 2/2 runs trimmed, rules only",
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 250,
+        "cacheReadTokens": 383778,
+        "cacheWriteTokens": 42227,
+        "modelTurns": 6,
+        "toolCalls": 12,
+        "elapsedMs": 37202,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-three-bugs.B.txt",
+        "../../../evidence/filter-logs/js-three-bugs.B.r1.jsonl"
+      ],
+      "startedAt": "2026-10-18T03:42:44.706Z",
+      "finishedAt": "2026-10-18T03:42:44.706Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-root-exception",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green · 2/2 runs trimmed, rules only",
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 55,
+        "cacheReadTokens": 411890,
+        "cacheWriteTokens": 31299,
+        "modelTurns": 7,
+        "toolCalls": 9,
+        "elapsedMs": 37797,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-root-exception.B.txt",
+        "../../../evidence/filter-logs/js-root-exception.B.r1.jsonl"
+      ],
+      "startedAt": "2026-10-18T03:42:45.941Z",
+      "finishedAt": "2026-10-18T03:42:45.941Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "js-feature",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "test passes; test/ unchanged",
+      "observedOutcome": "suite green · 2/2 runs trimmed, rules only",
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 227,
+        "cacheReadTokens": 275542,
+        "cacheWriteTokens": 25991,
+        "modelTurns": 5,
+        "toolCalls": 8,
+        "elapsedMs": 28038,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/js-feature.B.txt",
+        "../../../evidence/filter-logs/js-feature.B.r1.jsonl"
+      ],
+      "startedAt": "2026-10-18T03:42:46.986Z",
+      "finishedAt": "2026-10-18T03:42:46.986Z"
+    },
+    {
+      "experimentId": "20261017-sct-agent-02",
+      "caseId": "dotnet-build",
+      "arm": "B",
+      "runId": "r1",
+      "status": "pass",
+      "goldOutcome": "build passes; Legacy.cs unchanged",
+      "observedOutcome": "suite green · 2/2 runs trimmed, jev: errors_only/errors_and_warnings",
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 40,
+        "cacheReadTokens": 340381,
+        "cacheWriteTokens": 32812,
+        "modelTurns": 6,
+        "toolCalls": 8,
+        "elapsedMs": 67791,
+        "providerCalls": 2,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1136.5,
+        "source": "subagent transcript (haiku, effort xhigh)"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/dotnet-build.B.txt",
+        "../../../evidence/filter-logs/dotnet-build.B.r1.jsonl"
+      ],
+      "startedAt": "2026-10-18T03:42:54.527Z",
+      "finishedAt": "2026-10-18T03:42:54.527Z"
+    }
+  ]
+}

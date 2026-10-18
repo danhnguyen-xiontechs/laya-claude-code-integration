@@ -1,0 +1,103 @@
+{
+ "tasks": [
+  {
+   "id": "n1-bug-migration-wave",
+   "mode": "bug",
+   "task": "The batch planner put two stories in the same wave even though both of them add a database migration",
+   "queries": [
+    "migration conflict",
+    "schema migration",
+    "wave assignment",
+    "batch planner waves"
+   ],
+   "relevant": [
+    [
+     "story-batch-planner/scripts/planner.mjs"
+    ]
+   ]
+  },
+  {
+   "id": "n2-feature-blocked-status",
+   "mode": "feature",
+   "task": "How does the integration check after parallel story agents decide that a story is BLOCKED and not FAIL",
+   "queries": [
+    "blocked status",
+    "integration verifier",
+    "verdict classify",
+    "story status fail"
+   ],
+   "relevant": [
+    [
+     "integration-verifier/scripts/verify.mjs"
+    ]
+   ]
+  },
+  {
+   "id": "n3-bug-worse-case",
+   "mode": "bug",
+   "task": "The per-tool experiment report does not highlight a case as worse when the tool arm fails and plain Claude passes",
+   "queries": [
+    "worse case report",
+    "experiment report html",
+    "ab comparison verdict",
+    "tool arm baseline"
+   ],
+   "relevant": [
+    [
+     "build-skill-tool-workflow/scripts/build_tool_report.mjs"
+    ]
+   ]
+  },
+  {
+   "id": "n4-refactor-shortlist",
+   "mode": "refactor",
+   "task": "Move the keyword shortlist scoring of the skill suggestion router into its own module",
+   "queries": [
+    "keyword shortlist",
+    "router scoring",
+    "skills router score",
+    "shortlist module"
+   ],
+   "relevant": [
+    [
+     "skills-router/scripts/route.mjs"
+    ]
+   ]
+  },
+  {
+   "id": "n5-newfeature-precompact",
+   "mode": "new-feature",
+   "task": "Add a plugin hook that saves a short summary file of the session right before compaction",
+   "queries": [
+    "precompact hook",
+    "session summary file",
+    "compaction hook",
+    "plugin hooks"
+   ],
+   "relevant": [
+    [
+     "fast-compact/hooks/fast-compact.ts",
+     "fast-compact/hooks/hooks.json"
+    ]
+   ]
+  },
+  {
+   "id": "n6-feature-subagent-tokens",
+   "mode": "feature",
+   "task": "How are the token counts of each subagent session added up for the A/B experiment report",
+   "queries": [
+    "subagent tokens",
+    "token usage totals",
+    "ab report tokens",
+    "session token sum"
+   ],
+   "relevant": [
+    [
+     "build-skill-tool-workflow/scripts/subagent_usage.mjs",
+     "build-skill-tool-workflow/scripts/transcript_usage.mjs"
+    ]
+   ]
+  }
+ ],
+ "notes": "Queries written blind by a Haiku agent from the task text only (no repo access). Gold groups set by the orchestrator after reading the code, before any case agent ran."
+}

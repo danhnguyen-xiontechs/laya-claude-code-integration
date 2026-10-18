@@ -1,0 +1,2 @@
+PICK: none
+The request asks for the root cause of a flaky test, which Claude can answer directly by reading the test and its code and re-running it; codebase-task-explorer is discovery only (where to start looking), and no installed skill is dedicated to flaky-test diagnosis.

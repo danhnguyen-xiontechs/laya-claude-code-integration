@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-cte-r2-agent-01",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "92aa80d",
+    "branch": "claude/cte-round2"
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "confidence": "LOW",
+  "headline": "With the Jev confidence gate, Haiku agents passed A 11/12 vs B 12/12 on 6 blind-query tasks x 2 reps, but B cost 43% more tokens (8.84M -> 12.68M, 120 -> 173 model turns); no case worse. The extra turns were mostly agents waiting on a helper that took 100-300 s on a loaded machine (18 of 24 calls hit the 120 s Bash timeout), the gate fired on n5 r1/r2 and n6 r2 but saved nothing, and Jev never changed the useful #1. Top suggestion: make --provider none (codemap order) the default and keep Jev behind a flag.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude + unranked candidate list (same codemap pool, raw order, top 10)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + codebase-task-explorer with Jev confidence gate (top-1 p < 0.5 -> warning + 3 rows)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (claude-haiku-5-5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev via OpenRouter decisions API, advisory ranking"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "agent-retro-v2-r2",
+    "datasetVersion": "tasks-new.json (6 tasks, blind queries); repo copy of 92aa80d with answer-key files removed",
+    "caseCount": 6,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "tokenScope": "all tokens of each case agent's session (input + output + cache read + cache write), from its subagent transcript",
+    "deviations": [
+      "Machine under heavy load: about 15 sessions ran at the same time, so helper calls took 100-300 s (15 s alone) in both arms. Checked in the transcripts (evidence/helper-seen.json): the helper output reached 11/12 B agents and only 9/12 A agents (n4 r1, n5 r1, n6 r1 A did not get it). n6 r1 B's helper timed out at 300 s (exit null, no output) and that agent searched on its own. Waiting on the helper adds turns and tokens in both arms, unevenly.",
+      "The pass-rate gap is partly noise: n3 r1 A failed with the gold file at its #1 (agent did not read it), and the helper output reached only 9/12 A agents. A scoring-format fix (backslash separators in the answer header) was applied after seeing one such answer (n6 r1 A: Windows-style paths under the skill folder); it applies to both arms and moved A from 10/12 to 11/12.",
+      "The gate constants (0.5 / 0.9 / 5 rows / 3 rows) were chosen from the 12 runs of the previous experiment on the same 6 tasks; this run cannot calibrate them (in-sample). Marked PROVISIONAL in code and SKILL.md.",
+      "A stray agent was started with the prompt 'PLACEHOLDER' by mistake (it did nothing and touched no file); the real n4 r1 A ran afterwards in its own work folder.",
+      "n4 r2 B ran the helper twice (the second time with --no-gate, by the agent's own choice); both runs are in the logs.",
+      "The gate result is not part of the helper logs (the helper logs the jev block); the gate decision is derived from jev.global.order[0].p (low on n5 r1/r2 and n6 r2, high on the other cases; n6 r1 B no output).",
+      "Arm A contamination check: subagent_usage.mjs --forbid found 0 forbidden calls in all 12 A runs.",
+      "Scoring rule from the baseline (relative path counts when the answer names the gold's top folder) applies to both arms.",
+      "Independent review (Opus) of the gate diff: 2 Major (thresholds are in-sample; gate not in runs.jsonl) — the second fixed in 92aa80d, the first accepted for this run and marked provisional; Minor findings partly fixed, rest open.",
+      "Repo copies and work folders were under D:/cte3 (short path), outside the repo; the helper's .codemap/ cache was written into each copy.",
+      "Staleness note: summary.json/report.html were rebuilt after the score fix; helper logs do not contain the rules order or gate field."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts",
+      "evidence/answers",
+      "evidence/logs",
+      "evidence/usage.scrubbed.json",
+      "evidence/scores.json",
+      "evidence/helper-seen.json"
+    ],
+    "executionLogs": []
+  }
+}

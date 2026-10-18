@@ -1,0 +1,3 @@
+{"waves": [["R-3", "R-8", "R-10"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7"]}
+
+R-1 has a vague "Misc." description and no AC, and R-6 depends on HR-404, which is not in this batch, so R-2 (depends on R-1) and R-7 (builds on R-6) are blocked with them. R-3 and R-8 run first because R-5 reads department_id from R-3 and R-9 calls the endpoint R-8 introduces. R-4 waits for wave 2 because both R-3 and R-4 add migrations, so they are serialized. R-10 is independent: its "approved by HR" AC is a review gate, not a scheduling dependency.

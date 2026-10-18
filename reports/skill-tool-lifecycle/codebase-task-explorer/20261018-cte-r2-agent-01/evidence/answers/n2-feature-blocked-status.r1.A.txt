@@ -1,0 +1,16 @@
+BLOCKED vs FAIL is decided by one rule. A failing combined check is BLOCKED when its output or exit code matches an environment signature (ECONNREFUSED, EACCES, "command not found", exit 127/9009, and similar). Any other non-zero exit is FAIL. A missing check record, missing or empty log, or missing exit code is also BLOCKED. Jev only adds a shadow suggestion and never changes the category, so it cannot move a status.
+
+Five starting points, most relevant first (read-only, nothing modified; I read the code and did not run the tests):
+
+1. D:/cte3/w/n2-feature-blocked-status-ddc7e5/repo/.claude/skills/integration-verifier/scripts/verify.mjs: the decision code. deterministicCategory (lines 41-47) matches ENV_RX (line 38) and exit 127/9009. combined() (lines 213-215) maps environment to BLOCKED and other failures to FAIL. finalize() (lines 285-295) applies that per cluster. verifyStory() (lines 117-121) gives BLOCKED for missing record, log or exit code.
+2. D:/cte3/w/n2-feature-blocked-status-ddc7e5/repo/.claude/skills/integration-verifier/SKILL.md: the normative status table (lines 35-54). It states the environment signature gives BLOCKED, not FAIL, and sets the order FAIL > BLOCKED > REVIEW_REQUIRED > PASS.
+3. D:/cte3/w/n2-feature-blocked-status-ddc7e5/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs: hand-labelled expectations. missing-logs (line 95) and environment-only (line 104) expect BLOCKED. Lines 132-133 check that an "environment" Jev suggestion cannot lift FAIL.
+4. D:/cte3/w/n2-feature-blocked-status-ddc7e5/repo/.claude/skills/integration-verifier/references/manifest.md: defines the per-check record (exit_code, log_path) that verifyStory requires before any PASS (line 31). Claims alone never count (line 32).
+5. D:/cte3/w/n2-feature-blocked-status-ddc7e5/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs: the Jev shadow module. I did not open it. verify.mjs triage (lines 250-273) only sets cl.jev and leaves the category as unknown, so the suggestion never reaches the environment check in finalize.
+
+Things noticed from reading the code (not run):
+- Story-reported checks are never classified. verifyStory line 121 gives FAIL for any non-zero exit, even if the log shows ECONNREFUSED. The BLOCKED rule applies only to the combined run, which matches SKILL.md but may not be the intent.
+- The environment regex runs over the whole output, so a genuine test failure whose log contains "permission denied" or "connection refused" becomes BLOCKED. That is a false BLOCKED, not a false PASS.
+- On timeout, sh() appends the spawn error text, which contains ETIMEDOUT (in ENV_RX). A timed-out combined check is therefore probably BLOCKED, not FAIL. Inferred from the code, untested.
+
+The find.mjs helper's codemap list was unranked and mostly unrelated (story-batch-planner, persist-sessions, hooks tests). Its only useful hit was verify.mjs, which I ranked first from my own reading.

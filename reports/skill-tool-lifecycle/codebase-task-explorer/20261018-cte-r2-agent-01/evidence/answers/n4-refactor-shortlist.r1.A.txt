@@ -1,0 +1,11 @@
+Keyword shortlist scoring of the skill suggestion router lives in the skills-router skill. Read-only, nothing modified. Five starting files, most relevant first (all under D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/):
+
+1. D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/scripts/route.mjs: this is the code to move. Stage 1 is here: STOP/stem/tokenize (lines 31-50), buildIndex and bm25 (71-102), mentions and explicitAllowed (107-135), the variant helpers GENERIC/baseOf/variantTokens/asksForVariant (137-239), and shortlist() (245-253).
+2. D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/tests/route.test.mjs: imports bm25, buildIndex, explicitAllowed, mentions, shortlist, stem, tokenize from route.mjs (line 7) and holds the shortlist tests (about lines 30-70). Keep those exports or re-point the imports.
+3. D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/tests/variants.test.mjs: imports asksForVariant, shortlist, variantTokens from route.mjs (line 6). It covers the variant gating that shortlist depends on.
+4. D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/scripts/catalog.mjs: defines the entry shape the shortlist reads (id, name, kind, description, head, explicitOnly; about lines 234-274) and bareName() (line 279), which the moved code needs to import.
+5. D:/cte3/w/n4-refactor-shortlist-27deb4/repo/.claude/skills/skills-router/README.md: documents Stage 1 (BM25 shortlist, bm25Min, variants) in the Variants and Routing sections (about lines 58 and 91), so it needs updating if the module moves.
+
+Notes for the refactor: eval.mjs and shadow-hook.mjs import from route.mjs but not the shortlist functions, so they are unaffected if route.mjs keeps its exports. The variant caches (WeakMap keyed on the catalog array) make the variant code the trickiest part to move. The route.mjs header comment (line 8) also describes Stage 1 and will need updating.
+
+Side notes: the helper find.mjs had produced no output by the time I finished (its output file was still empty, and the process was still running in the background). It has left an untracked .codemap/ directory in the repo (created 10:36, contains config.json). I did not delete it, since I was asked not to modify anything. You may want to remove it.

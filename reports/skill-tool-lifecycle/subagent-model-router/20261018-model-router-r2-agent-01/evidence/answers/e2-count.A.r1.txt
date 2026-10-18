@@ -1,0 +1,11 @@
+I read the three .js files and counted 5 `//` comments whose text starts with `TODO`. I wrote `5` to answer.txt and changed no other file.
+
+- one.js: 2 (line 1 and the trailing `// TODO later`).
+- b/c/three.js: 2.
+- b/two.js: 1 (`//TODO tighten`).
+
+I did not count the TODO inside a string, `// todo lowercase`, the `/* TODO block comment */`, or `// NOTE: TODO inside text`.
+
+I counted the trailing `// TODO later` on line 2 of one.js because it is a `//` comment whose text starts with TODO. If you meant trailing comments to be an excluded "other comment position", the count would be 4.
+
+The file is at <work-root>/r2/e2-count.A.r1/answer.txt.

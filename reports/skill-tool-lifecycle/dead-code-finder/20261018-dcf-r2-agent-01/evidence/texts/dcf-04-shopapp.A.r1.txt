@@ -1,0 +1,16 @@
+1	class Order:
+2	    objects = []
+3	
+4	    def __init__(self, name):
+5	        self.name = name
+6	
+7	    @classmethod
+8	    def get(cls, id):
+9	        return cls.objects[int(id)]
+10	
+11	    def __str__(self):
+12	        return self.name
+13	
+14	    def recalculate_legacy(self):
+15	        return 0
+16	

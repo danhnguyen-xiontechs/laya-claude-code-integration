@@ -1,0 +1,2 @@
+PICK: code-review
+The built-in code-review skill reviews a branch's diff for correctness bugs, which is exactly a pre-merge bug check, while security-review covers security and simplify covers cleanup rather than bugs.

@@ -1,0 +1,21 @@
+Where to start: the "worse" highlight logic in the build-skill-tool-workflow per-tool report. Nothing was modified.
+
+The 5 most relevant files, most relevant first:
+
+1. D:/cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs. Line 121 sets change = 'worse' only when plain (arm A) is pass and the tool arm (B) is fail, so a tool-arm error or blocked result is never flagged (the comment on line 120 says so). majority() at lines 105-109 breaks ties by insertion order: with two reps, tool fail then pass gives "worse", but pass then fail gives no flag (I reproduced this in isolation). The run loop at lines 23-29 and 40-46 also silently drops runs whose results.json fails to parse or whose folder does not start with A or B.
+
+2. D:/cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs. Lines 85-88 assert that T5 pass in plain to error in the tool arm is "not worse", so the gap is locked in by a test. Any fix has to change that assertion. Lines 58 and 69 are the only checks that "worse" appears.
+
+3. D:/cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/SKILL.md. Section 6 (around line 73) limits the comparison to pass/fail in both arms, which is the documented reason error is excluded. Line 114 says a case that passes in A and fails in B is highlighted as worse and must appear in the headline. The spec and the code disagree on what "fails" means for the tool arm. The headline (line 108) is hand-typed and nothing checks it.
+
+4. D:/cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs. Lines 52 and 66 show "worse on ..." only from summary.regressions, so the main index inherits whatever build_tool_report.mjs misses.
+
+5. D:/cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json. Line 12 allows error, blocked, skipped and not-run as recorded outcomes, so a tool-arm error is a legitimate result that the report drops from "worse".
+
+Likely cause of the symptom: the tool arm's failing case is recorded as error or blocked, or two reps tie and the first-listed rep passes. Either way the case never reaches change = 'worse', and the "N worse" KPI stays at 0.
+
+Not confirmed: the repo has no build-skill-tool-workflow experiment directory with runs/*/results.json, so I could not check which status the failing case actually has.
+
+Ruled out: scripts/report_style.mjs. tr.worse CSS (line 16) and --badbg are defined, so styling is not the cause.
+
+Helper output: it ran in the background and exited 0. Its #1 (build_tool_report.mjs) and #2 (reports.test.mjs) were right. Its #3-#5 (web-test build_report.mjs files, the ess-test-runs report) and #9 (eval/analyze.mjs) are unrelated to the per-tool report, so I did not use them.

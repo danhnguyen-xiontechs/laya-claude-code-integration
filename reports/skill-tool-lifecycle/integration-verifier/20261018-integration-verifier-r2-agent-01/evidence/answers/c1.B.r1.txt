@@ -1,0 +1,3 @@
+BATCH: PASS
+S1: PASS - declared src/fmt.js and tests/fmt.test.js match its diff, the test check exited 0 with a non-empty log, and it shares no files with S2; the combined run passes.
+S2: PASS - declared src/count.js and tests/count.test.js match its diff, the test check exited 0 with a non-empty log, and it shares no files with S1; the combined run passes.

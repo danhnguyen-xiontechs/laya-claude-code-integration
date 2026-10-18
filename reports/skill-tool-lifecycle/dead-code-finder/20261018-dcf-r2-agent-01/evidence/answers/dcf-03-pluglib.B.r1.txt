@@ -1,0 +1,10 @@
+{"delete": [{"file": "pluglib/compat.py", "what": "pluglib.compat"}, {"file": "pluglib/compat.py", "what": "text_type"}, {"file": "pluglib/compat.py", "what": "PY2"}, {"file": "pluglib/text.py", "what": "MAX_LEN"}, {"file": "pluglib/text.py", "what": "strip_accents"}, {"file": "pluglib/text.py", "what": "unicodedata"}, {"file": "pluglib/builtin.py", "what": "Experimental"}]}
+
+Notes:
+- pluglib/compat.py is an orphan module. Nothing imports it, it is not in __all__, not a pyproject entry point, and not in pluglib.yaml. text_type and PY2 go with it.
+- pluglib/text.py: the unicodedata import is used only by strip_accents, so it becomes dead once strip_accents is removed.
+- Experimental (builtin.py) has name = None, so Plugin.__init_subclass__ never registers it. Nothing references it.
+- Verified in a scratch copy (no project files changed): applied these deletions, then ran python -m pytest. Result: 3 passed before and after. Smoke test of available(), get_plugin("reverse"), truncate and normalize also works.
+- Scanner Tier A (compat module, text_type, MAX_LEN, strip_accents) was confirmed. Tier B items I did NOT delete: Upper and Reverse are registered by name via Plugin.__init_subclass__ and referenced by name (config DEFAULTS "upper", pluglib.yaml "plugin: reverse", tests/test_plugins.py). The scanner's static check missed those name references. unregister is imported and called by tests/test_plugins.py, so it stays.
+- No commented-out code or debug prints found in the project.
+- The scanner wrote its output to .dead-code/run/ inside the work folder (report.md, candidates.jsonl). That folder is not a project file, but delete it if unwanted.

@@ -1,0 +1,9 @@
+npm test now passes: 3 of 3 tests, exit 0, run through `node run.mjs npm test` in the work folder. Confirmed on a further run after the warm-up finished.
+
+Why it failed: the only failure was "search index answers queries". The vendored indexer (vendor/indexer.mjs) builds the index lazily, one shard per warmUp() call, and it needs 3 shards (vendor/indexer.config.json). The index is only marked ready after shard 3 and the finalize step. Each `npm test` run advances the warm-up by one shard and keeps its progress in .cache/shards.json, as NOTES.md says. So the suite fails on runs 1 and 2 and passes on run 3. The math tests (add, clamp) passed on every run.
+
+What I changed: nothing. I did not edit src/, test/, vendor/, package.json, or any file outside the work folder. I did not hand-write .cache/shards.json or .cache/index.json. The index was built by the vendor's own warm-up.
+
+Left in the work folder by the runs: .cache/ (shards.json, index.json), .logs/indexer.log (shard 1-3 built, then "finalize: index ready"), and .passed (timestamp written by the index test). Keep .cache/ if you want the suite to stay ready. A fresh copy without .cache/ needs three `npm test` runs again before the index test passes.
+
+Build: package.json has no build script, only "test", so there is no build to run.

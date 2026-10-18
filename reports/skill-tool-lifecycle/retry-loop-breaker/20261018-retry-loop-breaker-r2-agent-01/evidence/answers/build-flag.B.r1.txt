@@ -1,0 +1,9 @@
+Build done: dist/out.js is produced in the work folder.
+
+What I ran (all through `node run.mjs`):
+- `node run.mjs npm run build -- --target es2020`. Plain `npm run build` fails because build.mjs requires `--target` (es2019|es2020). I chose es2020 because src/main.js uses `?.`, which build.mjs rejects for es2019. Build output: "built dist/out.js for es2020".
+- `node run.mjs npm test`. The result is 0 tests, 0 failures, exit 0. The project has no test files, so the suite passes only vacuously.
+
+Changes: none to source. build.mjs and src/ are untouched. The only new file is dist/out.js. It contains a header line `// BUILD-OK target=es2020 sha=bd6d4a5a2fc4` followed by a verbatim copy of src/main.js (`const cfg = { a: { b: 1 } }; export const value = cfg?.a?.b ?? 0;`). The build does not transpile, so the es2020 target is only a label and the output keeps `?.` and `??`.
+
+Note: `npm run build` with no arguments will keep failing until someone adds a default target to package.json or build.mjs. I did not change either, per the rules.

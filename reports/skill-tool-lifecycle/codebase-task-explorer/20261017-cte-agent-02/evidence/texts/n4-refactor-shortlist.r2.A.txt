@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — refactor
+
+Engine: codemap codemap 4.6.0 · pool 61. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/skills-router/scripts/route.mjs` |
+| 2 | `workflow/hooks/laya_step_router.py` |
+| 3 | `.claude/skills/subagent-model-router/scripts/pricing.mjs` |
+| 4 | `proxy/router_proxy.py` |
+| 5 | `.claude/skills/skills-router/scripts/eval.mjs` |
+| 6 | `ado-classify/eval_history.py` |
+| 7 | `triage/v2/extract_transcripts.py` |
+| 8 | `.claude/skills/review-pr-jev-classify/scripts/lib/xt-config.mjs` |
+| 9 | `.claude/skills/review-pr-laya-classify/scripts/lib/xt-config.mjs` |
+| 10 | `.claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs` |

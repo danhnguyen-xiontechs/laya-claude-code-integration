@@ -1,0 +1,3 @@
+BATCH: BLOCKED
+S1: BLOCKED - required check "test" has no log: logs/S1-test.log does not exist anywhere, so the claimed exit 0 is unevidenced (its AC1 is also claim-only)
+S2: PASS - test check exit 0 with a non-empty log that matches a fresh run; AC1 is backed by that check, no conflicts, and the S1+S2 combined run exits 0

@@ -1,0 +1,19 @@
+1	#!/usr/bin/env node
+2	// Neutral wrapper, arm B: real story-batch-planner on this folder's batch (Jev shadow on); logs one line per call.
+3	import { spawnSync } from 'node:child_process';
+4	import fs from 'node:fs';
+5	import path from 'node:path';
+6	const KEY = "h1-payroll.B.r2";
+7	const PLANNER = "D:\\XionTechs\\Laya\\.claude\\worktrees\\brave-wu-480bf0\\.claude\\skills\\story-batch-planner\\scripts\\plan.mjs";
+8	const LOGS = "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp3\\_logs";
+9	const HOME = "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-brave-wu-480bf0\\9897f4f7-585e-4cb4-8aa9-17e15c246bb5\\scratchpad\\sbp3\\_home\\h1-payroll.B.r2";
+10	const here = import.meta.dirname;
+11	fs.mkdirSync(LOGS, { recursive: true }); fs.mkdirSync(HOME, { recursive: true });
+12	const planJson = path.join(LOGS, KEY + '.plan.json');
+13	const r = spawnSync(process.execPath, [PLANNER, '--in', path.join(here, 'batch.json'), '--out', planJson, '--jev', '--summary'], { encoding: 'utf8', env: { ...process.env, HOME, USERPROFILE: HOME } });
+14	if (r.status !== 0) { process.stderr.write(r.stderr || 'planner failed\n'); process.exit(r.status ?? 1); }
+15	process.stdout.write(r.stdout);
+16	const plan = JSON.parse(fs.readFileSync(planJson, 'utf8'));
+17	const jev = plan.edges.filter((e) => e.jev_suggestion).map((e) => ({ pair: e.pair, deterministic: e.relation, jev: e.jev_suggestion.label, p: e.jev_suggestion.p ?? null, valid: e.jev_suggestion.valid, error: e.jev_suggestion.error ?? null }));
+18	fs.appendFileSync(path.join(LOGS, KEY + '.jsonl'), JSON.stringify({ t: new Date().toISOString(), key: KEY, waves: plan.waves.map((w) => w.stories), jev_shadow: plan.jev_shadow ?? null, jev }) + '\n');
+19	

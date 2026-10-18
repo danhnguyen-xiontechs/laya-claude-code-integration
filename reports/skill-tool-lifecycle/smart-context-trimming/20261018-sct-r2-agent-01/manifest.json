@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-sct-r2-agent-01",
+  "baseline": "20261017-sct-agent-02",
+  "tool": {
+    "name": "smart-context-trimming round 2 (agent run)",
+    "kind": "hook",
+    "provider": "JEV",
+    "commit": "cac9aec",
+    "branch": "claude/sct-round2",
+    "changes": [
+      "extractCandidates: node failure block continues across the whitespace-only gap line; node-internal frames do not count toward FAILED_DETAIL_MAX (now 30)",
+      "testDigest: one [smart-trim] line per node --test run naming each test group with its count (failing groups first), only when the output has node's ℹ tests N summary"
+    ]
+  },
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "PILOT",
+  "confidence": "LOW",
+  "headline": "Round 2 (gap-line fix, node-only test digest): 10/10 pass in both arms again, session tokens -24% (4.29M -> 3.26M, 2 reps). Per case: js-root-exception -51% (was +8% in round 1), js-three-bugs -23%, js-one-bug -17%, dotnet-build -4% (was -35%), js-feature +12% (was +24%; B now 5 turns per rep, A 4 and 5). Not clearly better: the round-2 change does not touch dotnet-build output, yet its gain moved from -35% to -4% between rounds, so 2-rep noise is large. Top next suggestion: prove the live hook path (improvements.md suggestion 3).",
+  "approvals": {
+    "ideaApprovedAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Plain Claude (raw test/build output)",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh"
+    },
+    {
+      "id": "B",
+      "name": "Claude + trim-core (round 2 code; Jev live on dotnet-build only, rules fallback)",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "haiku (Haiku 5.5)",
+      "effort": "xhigh",
+      "engineVersion": "typesafe/jev-1.13 via OpenRouter decisions API, minJevConfidence 0.6"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "agent-v2 (round 2, same make_tasks.mjs as round 1)",
+    "datasetVersion": "make_tasks.mjs (5 tasks)",
+    "caseCount": 5,
+    "repetitions": 2,
+    "tokenScope": "all tokens of the subagent's whole task session (input + output + cache read + cache write)",
+    "deviations": [
+      "Same harness as 20261017-sct-agent-02: both arms run tests through run.mjs (A raw, B through trim-core.ts decideAndBuild). Not the real PostToolUse hook.",
+      "Prompts: the same text in both arms; the case prompt puts the work folder mid-line, unlike round 1. import_runs.mjs matched a transcript only when the folder ended a line, so every case showed 'no transcript found'. The round-2 copy of the importer matches the folder followed by a non-path character; the skill's copy is unchanged. Results were re-graded after this change.",
+      "Arm A forbid check: subagent_usage.mjs --forbid \"smart-context-trimming|trim-core\" found 0 forbidden calls in all 10 arm-A runs.",
+      "Jev was asked only on dotnet-build (errors_only / errors_and_warnings); all 8 JS runs of arm B are rules-only.",
+      "Noise: arm A alone moved between rounds (round 1 4.96M, round 2 4.29M for the same cases), and within round 2 js-three-bugs A ranged 408k-535k and js-root-exception A 669k-757k. Absolute totals are not comparable across rounds; only the paired A/B inside a round is used.",
+      "Two reps: the per-case paired difference is noisy. js-feature B r2 had one trimmed run (the agent ran the test command once).",
+      "Round-2 fixes were applied to the tool after the first Opus review: 2 Major findings fixed and measured (see agent-review.json). Minor and Suggestion findings stay open and are not fixed in this run. The round-2 review was not repeated after the fixes.",
+      "The per-case agents fixed the project differently (e.g. js-root-exception: a null-safe normalize in one run, the readKey default in another). Grading is by the suite and the protected-file hash, not by the fix."
+    ],
+    "criteriaFrozenAt": null
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "perToolReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/r1",
+      "runs/A-claude/r2",
+      "runs/B-claude-jev/r1",
+      "runs/B-claude-jev/r2"
+    ],
+    "rawResults": [
+      "evidence/texts"
+    ],
+    "executionLogs": []
+  }
+}

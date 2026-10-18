@@ -1,0 +1,60 @@
+diff --git a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/tests/test_git_risk.py b/src/tests/test_git_risk.py
+index 6e5ce92..20d6a9f 100644
+--- a/D:/XionTechs/JEV/.claude/worktrees/review-5-plans-idea-folder-ce4d36/tests/test_git_risk.py
++++ b/src/tests/test_git_risk.py
+@@ -1,4 +1,5 @@
+ import copy
++import re
+ import io
+ import json
+ import shutil
+@@ -155,6 +156,49 @@ class JevTest(RepoCase):
+         self.assertIsNone(by["README.md"]["guidance"])
+ 
+ 
++class GuidanceTest(RepoCase):
++    def test_guidance_v2_default(self):
++        with mock.patch("jev_skills.common.jev.decide", side_effect=fake_decide(0.9)):
++            by, _ = self.scan(use_jev=True)
++        g = by["src/billing.py"]["guidance"]
++        self.assertTrue(g.startswith("Defensive mode for src/billing.py"))
++        self.assertIn("git log -S '", g)
++        self.assertIn("-- src/billing.py", g)
++        self.assertIn("Add a characterization test only for behaviour you change", g)
++        self.assertNotIn("if none exist", g)
++        self.assertEqual(len(re.findall(r"^\d\. ", g, flags=re.M)), 5)
++        self.assertIn("commits are fixes", g)  # the evidence line of test_guidance_block still holds
++
++    def test_guidance_v1_restorable(self):
++        cfg = copy.deepcopy(self.cfg)
++        cfg["guidanceVersion"] = 1
++        with mock.patch("jev_skills.common.jev.decide", side_effect=fake_decide(0.9)):
++            res = risk.score_files(self.repo, "HEAD", ["."], cfg, use_jev=True)
++        g = {r["file"]: r for r in res["results"]}["src/billing.py"]["guidance"]
++        self.assertIn("1. Read the recent fixes first: `git log -n 5 -p -- src/billing.py`", g)
++        self.assertIn("if none exist, add a small characterization test", g)
++        self.assertNotIn("git log -S", g)
++
++    def test_guidance_version_config(self):
++        tmp = tempfile.mkdtemp(prefix="git-risk-cfg-")
++        try:
++            self.assertEqual(risk.load_config(tmp)["guidanceVersion"], 2)
++            Path(tmp, ".git-risk.json").write_text(json.dumps({"guidanceVersion": 1}), encoding="utf-8")
++            self.assertEqual(risk.load_config(tmp)["guidanceVersion"], 1)
++        finally:
++            shutil.rmtree(tmp, ignore_errors=True)
++        r = {"file": "src/billing.py", "metrics": {"last_revert": None, "last_fix": None}, "risk": 6.0, "formula": 5.0,
++             "reasons": ["x"], "jev": {"status": "off"}}
++        self.assertEqual(risk.guidance(r, 7), risk.guidance(r, 2))
++
++    def test_hook_uses_v2(self):
++        payload = {"session_id": "sess-guidance-v2", "cwd": str(self.repo), "tool_name": "Edit",
++                   "tool_input": {"file_path": str(self.repo / "src/billing.py")}}
++        with mock.patch("jev_skills.common.jev.decide", side_effect=fake_decide(0.9)):
++            out = hook.handle(payload)
++        self.assertIn("git log -S", json.loads(out)["hookSpecificOutput"]["additionalContext"])
++
++
+ class HookTest(RepoCase):
+     def payload(self, rel, sid):
+         return {"session_id": sid, "cwd": str(self.repo), "tool_name": "Edit", "tool_input": {"file_path": str(self.repo / rel)}}

@@ -1,0 +1,14 @@
+[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1) · 832 of 2300 lines omitted · full log: .tool-output/20261018-105019_951a.log
+#1 lines 11-31 · failure · anchor · __________________________ test_order_records_region __________________________
+#2 lines 230-241 · captured log call · JEV p=0.36 · raise make()
+#3 lines 566-577 · captured log call · JEV p=0.36 · DEBUG    svc.notify:noise_hard.py:71 digest built users=4906
+#4 lines 1562-1573 · captured log call · JEV p=0.31 · INFO     svc.db:noise_hard.py:71 tx 9856 committed (31 statements)
+#5 lines 1898-1909 · captured log call · JEV p=0.31 · DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+#6 lines 33-36 · captured log setup · JEV p=0.30 · DEBUG    svc.migrate:migrate.py:28 migration 0040_create_orders already applied
+#7 lines 1058-1069 · captured log call · JEV p=0.30 · DEBUG    svc.queue:noise_hard.py:71 ack msg 5565
+#8 lines 1082-1093 · captured log call · JEV p=0.30 · INFO     svc.metrics:noise_hard.py:71 flush 2736 points to sink
+#9 lines 350-361 · captured log call · JEV p=0.25 · DEBUG    svc.queue:noise_hard.py:71 ack msg 4848
+#10 lines 890-901 · captured log call · JEV p=0.22 · INFO     svc.notify:noise_hard.py:71 digest built users=4003
+#11 lines 38-49 · captured log call · pinned (JEV p=0.14) · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#12 lines 50-61 · captured log call · pinned · Traceback (most recent call last):
+[curator] 109 more kept chunks not listed · open the first pointer: Read .tool-output/20261018-105019_951a.log offset 11 limit 21

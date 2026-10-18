@@ -1,0 +1,6 @@
+$ node run.mjs npm run build -- --target es2020
+
+> build
+> node build.mjs --target es2020
+
+built dist/out.js for es2020

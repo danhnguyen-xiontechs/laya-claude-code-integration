@@ -1,0 +1,15 @@
+Starting points for "two stories with migrations landed in the same wave". Nothing was modified.
+
+The helper (find.mjs, codebase-task-explorer) returned one row under its confidence gate: planner.mjs, Jev top-1 p=0.97, coverage partial. I verified the cause myself with read-only runs.
+
+Top 5, most relevant first:
+
+1. D:\cte3\w\n1-bug-migration-wave-d71d00\repo\.claude\skills\story-batch-planner\scripts\planner.mjs. Root cause: the migration flag comes only from the regex at line 37 (`\b(?:migration|schema change|alter table|add column|drop column|new column|index on)\b`) or from explicit `migrations[]`/`migration` metadata. classifyPair (step 4, lines 108-111) only applies the protected "both add migrations" rule when that flag is set. Verified: "Add a column ..." , "Create table ...", "Ship migrations 0042 ..." (plural) and "New table ..." all return false, so those stories get no migration risk and no protected edge.
+2. D:\cte3\w\n1-bug-migration-wave-d71d00\repo\.claude\skills\story-batch-planner\test\planner.test.mjs (test at line 48). The migration test passes only because the fixture text contains the literal word "migration", so it does not cover the phrasing gap. Add a case with "add a column" / "migrations" / "create table" wording.
+3. D:\cte3\w\n1-bug-migration-wave-d71d00\repo\.claude\skills\story-batch-planner\fixtures\04-migration.json. This is the fixture the test uses; its descriptions say "migration" explicitly, which is why it is green. It is the natural place to add a fixture with column-add phrasing.
+4. D:\cte3\w\n1-bug-migration-wave-d71d00\repo\.claude\skills\story-batch-planner\SKILL.md. The policy table says "both add migrations" is a protected shared_resource that Jev can never parallelize, so this is the intended behavior the code is not meeting for these phrasings.
+5. D:\cte3\w\n1-bug-migration-wave-d71d00\repo\.claude\skills\story-batch-planner\config.json. protectedKinds is ["schema","migration"], which is correct, so the config is not the bug, but it confirms the protection depends entirely on detection in planner.mjs.
+
+Reproduction (in-memory plan() call, Jev disabled): S-1 "Add a column nickname to the employees table", S-2 "Add a column archived to the departments table", S-3 "Create table holidays ...", S-4 "Ship migrations 0042 and 0043 ..." produced wave 1 = [S-1, S-3, S-4] and wave 2 = [S-2], with no migration risk_notes on any story. S-1 and S-2 were separated only by a generic "unknown" prefilter edge (2 shared tokens: "column", "tabl"), not by the protected migration rule. Two column-add stories that share fewer than 2 tokens would land in the same wave.
+
+Caveats: the helper's coverage was partial (unresolved imports reported), so it may have missed other relevant files. The SKILL.md usage section names scripts/plan.mjs, but the file is planner.mjs; that doc mismatch is minor.

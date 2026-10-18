@@ -1,0 +1,1060 @@
+[
+  {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\e1-locate.A.r1",
+    "promptFile": "<work-root>\\r2\\e1-locate.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\e1-locate.B.r1",
+    "promptFile": "<work-root>\\r2\\e1-locate.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 702,
+      "taskHash": "81401490e155",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 702
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.35,
+            "mechanical": 0.87,
+            "costly_failure": 0.28
+          },
+          "latencyMs": 912
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.34,
+            "mechanical": 0.87,
+            "costly_failure": 0.29
+          },
+          "latencyMs": 725
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.36,
+            "mechanical": 0.87,
+            "costly_failure": 0.28
+          },
+          "latencyMs": 726
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 917
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\e2-count.A.r1",
+    "promptFile": "<work-root>\\r2\\e2-count.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\e2-count.B.r1",
+    "promptFile": "<work-root>\\r2\\e2-count.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 806,
+      "taskHash": "04da4fbf577b",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 806
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.49,
+            "mechanical": 0.96,
+            "costly_failure": 0.3
+          },
+          "latencyMs": 761
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.49,
+            "mechanical": 0.96,
+            "costly_failure": 0.32
+          },
+          "latencyMs": 720
+        },
+        {
+          "tier": "haiku",
+          "p": 0.98,
+          "nouls": {
+            "multi_file_design": 0.47,
+            "mechanical": 0.96,
+            "costly_failure": 0.3
+          },
+          "latencyMs": 715
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 767
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\r1-rename.A.r1",
+    "promptFile": "<work-root>\\r2\\r1-rename.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\r1-rename.B.r1",
+    "promptFile": "<work-root>\\r2\\r1-rename.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 829,
+      "taskHash": "45fd5f5abd1c",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 829
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.57,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.93,
+            "costly_failure": 0.38
+          },
+          "latencyMs": 711
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.54,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.94,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 700
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.71,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.93,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 674
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 741
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\f1-paginate.A.r1",
+    "promptFile": "<work-root>\\r2\\f1-paginate.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\f1-paginate.B.r1",
+    "promptFile": "<work-root>\\r2\\f1-paginate.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 906,
+      "taskHash": "8ba803bbe97f",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 906
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.7,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.65,
+            "costly_failure": 0.34
+          },
+          "latencyMs": 754
+        },
+        {
+          "tier": "haiku",
+          "p": 0.63,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.68,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 660
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.68,
+          "nouls": {
+            "multi_file_design": 0.37,
+            "mechanical": 0.68,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 668
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": false,
+        "votes": {
+          "sonnet": 2,
+          "haiku": 1
+        },
+        "n": 3
+      },
+      "latencyMs": 757
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\d3-maplimit.A.r1",
+    "promptFile": "<work-root>\\r2\\d3-maplimit.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\d3-maplimit.B.r1",
+    "promptFile": "<work-root>\\r2\\d3-maplimit.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1094,
+      "taskHash": "ae6836e7c9ac",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1094
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.7,
+          "nouls": {
+            "multi_file_design": 0.88,
+            "mechanical": 0.12,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 721
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.57,
+          "nouls": {
+            "multi_file_design": 0.89,
+            "mechanical": 0.13,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 688
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.65,
+          "nouls": {
+            "multi_file_design": 0.89,
+            "mechanical": 0.13,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 687
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 733
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\d5-deps.A.r1",
+    "promptFile": "<work-root>\\r2\\d5-deps.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<work-root>\\r2\\d5-deps.B.r1",
+    "promptFile": "<work-root>\\r2\\d5-deps.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1506,
+      "taskHash": "09a6ecc0e1d8",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1506
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.78,
+            "costly_failure": 0.66
+          },
+          "latencyMs": 748
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.77,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 709
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.81,
+            "costly_failure": 0.63
+          },
+          "latencyMs": 729
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 780
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\e1-locate.A.r2",
+    "promptFile": "<work-root>\\r2\\e1-locate.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\e1-locate.B.r2",
+    "promptFile": "<work-root>\\r2\\e1-locate.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 702,
+      "taskHash": "270ab116024e",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 702
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.87,
+            "costly_failure": 0.27
+          },
+          "latencyMs": 799
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.88,
+            "costly_failure": 0.27
+          },
+          "latencyMs": 1730
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.35,
+            "mechanical": 0.85,
+            "costly_failure": 0.29
+          },
+          "latencyMs": 757
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 1777
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\e2-count.A.r2",
+    "promptFile": "<work-root>\\r2\\e2-count.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\e2-count.B.r2",
+    "promptFile": "<work-root>\\r2\\e2-count.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 806,
+      "taskHash": "b4ec038f79a3",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 806
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 0.99,
+          "nouls": {
+            "multi_file_design": 0.46,
+            "mechanical": 0.95,
+            "costly_failure": 0.32
+          },
+          "latencyMs": 753
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.46,
+            "mechanical": 0.95,
+            "costly_failure": 0.31
+          },
+          "latencyMs": 715
+        },
+        {
+          "tier": "haiku",
+          "p": 0.98,
+          "nouls": {
+            "multi_file_design": 0.46,
+            "mechanical": 0.95,
+            "costly_failure": 0.3
+          },
+          "latencyMs": 695
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 758
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\r1-rename.A.r2",
+    "promptFile": "<work-root>\\r2\\r1-rename.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\r1-rename.B.r2",
+    "promptFile": "<work-root>\\r2\\r1-rename.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 829,
+      "taskHash": "aa3f95ed9b18",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 829
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.56,
+          "nouls": {
+            "multi_file_design": 0.8,
+            "mechanical": 0.93,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 716
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.54,
+          "nouls": {
+            "multi_file_design": 0.8,
+            "mechanical": 0.94,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 704
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.71,
+          "nouls": {
+            "multi_file_design": 0.8,
+            "mechanical": 0.93,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 755
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 812
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\f1-paginate.A.r2",
+    "promptFile": "<work-root>\\r2\\f1-paginate.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\f1-paginate.B.r2",
+    "promptFile": "<work-root>\\r2\\f1-paginate.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 906,
+      "taskHash": "ca89a0b38150",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 906
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.68,
+          "nouls": {
+            "multi_file_design": 0.34,
+            "mechanical": 0.7,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 733
+        },
+        {
+          "tier": "haiku",
+          "p": 0.57,
+          "nouls": {
+            "multi_file_design": 0.34,
+            "mechanical": 0.67,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 731
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.68,
+          "nouls": {
+            "multi_file_design": 0.36,
+            "mechanical": 0.7,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 727
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": false,
+        "votes": {
+          "sonnet": 2,
+          "haiku": 1
+        },
+        "n": 3
+      },
+      "latencyMs": 763
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\d3-maplimit.A.r2",
+    "promptFile": "<work-root>\\r2\\d3-maplimit.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\d3-maplimit.B.r2",
+    "promptFile": "<work-root>\\r2\\d3-maplimit.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1094,
+      "taskHash": "e919ef29a3b8",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1094
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.62,
+          "nouls": {
+            "multi_file_design": 0.87,
+            "mechanical": 0.12,
+            "costly_failure": 0.76
+          },
+          "latencyMs": 732
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.58,
+          "nouls": {
+            "multi_file_design": 0.87,
+            "mechanical": 0.14,
+            "costly_failure": 0.72
+          },
+          "latencyMs": 682
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.58,
+          "nouls": {
+            "multi_file_design": 0.88,
+            "mechanical": 0.13,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 651
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 736
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\d5-deps.A.r2",
+    "promptFile": "<work-root>\\r2\\d5-deps.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<work-root>\\r2\\d5-deps.B.r2",
+    "promptFile": "<work-root>\\r2\\d5-deps.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1506,
+      "taskHash": "715e48fce534",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1506
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.84,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 764
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.82,
+            "mechanical": 0.81,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 720
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.82,
+            "costly_failure": 0.66
+          },
+          "latencyMs": 773
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 817
+    },
+    "model": "sonnet"
+  }
+]

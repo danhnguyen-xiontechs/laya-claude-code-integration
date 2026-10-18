@@ -1,0 +1,5 @@
+{"waves": [["Q-4", "Q-9", "Q-10"], ["Q-5", "Q-6", "Q-7"], ["Q-8"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Q-1 and Q-2 form a cycle (Q-2 links depends_on Q-1, while Q-1 says it needs Q-2 first), Q-3 waits on Q-2, and Q-11 has no spec, so these four are held; Q-5 and Q-6 call the POST /api/timesheets that Q-4 adds, Q-7 changes the TimesheetDto that Q-4 accepts, and Q-8 edits the fixture Q-5 uses, so they follow in later waves, and Q-10 is independent and fits in wave 1 under the planner's concurrency cap of 4.
+
+Note: I departed from the planner's raw output (waves: [Q-4,Q-5,Q-6,Q-9], [Q-10], [Q-7,Q-8], [Q-11]). Its deterministic checks missed the Q-4 to Q-5/Q-6 endpoint dependency, though its Jev shadow rated Q-4 before them (0.76 and 0.82) without applying it. Raw plan: <scratch>\_logs\h2-portal.B.r2.plan.json

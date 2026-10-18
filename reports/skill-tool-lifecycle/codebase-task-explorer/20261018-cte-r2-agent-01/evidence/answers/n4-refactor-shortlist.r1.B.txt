@@ -1,0 +1,19 @@
+Starting points for moving the keyword shortlist scoring of the skills-router into its own module. Read-only; nothing was modified.
+
+The find.mjs helper returned only 2 of its 10 rows (Jev top-1 p=0.7, confidence gate). Its coverage was partial: 14 of 17 Python imports and 2 of 255 JS imports did not resolve, so importer counts can be incomplete. I checked the top candidates by reading the code and filled the rest myself.
+
+Most relevant first:
+
+1. D:/cte3/w/n4-refactor-shortlist-3a5078/repo/.claude/skills/skills-router/scripts/route.mjs: the shortlist stage is here. Tokenize/stem (lines 29-67), buildIndex (72-83), bm25 (88-102), mentions/explicitAllowed (107-135), variant logic (137-239) and shortlist() (245-253). Helper ranked it first (3 queries, 4 importers).
+
+2. D:/cte3/w/n4-refactor-shortlist-3a5078/repo/.claude/skills/skills-router/tests/route.test.mjs: the "BM25 shortlist" describe block (line 32+) imports bm25, buildIndex, shortlist, stem, tokenize, mentions and explicitAllowed directly from route.mjs, so any move must keep those exports or update these imports.
+
+3. D:/cte3/w/n4-refactor-shortlist-3a5078/repo/.claude/skills/skills-router/tests/variants.test.mjs: imports shortlist, asksForVariant and variantTokens from route.mjs (about 10 references). It decides whether the variant-filtering code moves with the shortlist.
+
+4. D:/cte3/w/n4-refactor-shortlist-3a5078/repo/.claude/skills/skills-router/scripts/catalog.mjs: defines the input contract the shortlist consumes: entry name, description, head (bodyHead, 700 chars) and explicitOnly (set by isExplicitOnly). The new module should take these fields as given, not reach into catalog internals.
+
+5. D:/cte3/w/n4-refactor-shortlist-3a5078/repo/.claude/skills/skills-router/README.md: the file table (line 20) names route.mjs as the "Stage 1 BM25 shortlist" and section "1. Shortlist (stage 1)" (line 97) states the BM25 parameters (k1 1.2, b 0.75; name x3, description x2, head x1). Both need updating after the move.
+
+Rejected helper row: .claude/skills/bmad-help-jev/scripts/suggest.mjs. It matched only on skillExcerpt and scoreEval. It has no BM25 or shortlist code; its candidates come from an LLM "wide" request over its own catalog, so it is not the router's keyword scoring.
+
+Not in the top 5 but checked: .claude/skills/skills-router/scripts/eval.mjs imports only combineRuns, DEFAULT_THRESHOLDS, finalize and route (not shortlist), so it should not break if shortlist is imported internally.

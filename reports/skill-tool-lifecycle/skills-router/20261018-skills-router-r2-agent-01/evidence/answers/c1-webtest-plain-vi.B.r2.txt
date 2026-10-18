@@ -1,0 +1,2 @@
+PICK: web-test
+The request is to test an ESS story on dev and produce an HTML report with screenshots, which is the plain web-test skill's stated purpose; the -jev and -laya variants are A/B experiments that should only run on explicit request, so they are not picked.

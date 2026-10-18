@@ -1,0 +1,12 @@
+Five starting points, most relevant first. All paths are under D:\cte3\w\n6-feature-subagent-tokens-16e207\repo\.claude\skills\build-skill-tool-workflow\ (the skill folder). Nothing was modified.
+
+1. scripts\transcript_usage.mjs: this is where the addition happens. It reads one session jsonl plus every file in `<session>\subagents\`, counts each API message once by `message.id`, and sums input, output, cache-read and cache-write tokens. It also counts modelTurns and subagentTurns, and applies the --from/--to window to all files.
+2. scripts\subagent_usage.mjs: this maps each case to its subagent. It finds the transcript whose first user message contains the case's work dir, returns null on zero or multiple matches, and calls transcript_usage with --no-subagents so each subagent transcript is counted once.
+3. scripts\build_tool_report.mjs: this is the A/B report. `totalTokens` sums the four usage fields (cache reads included). `aggregate()` gives arm totals, `tok()` averages a case over its repetitions, and the headline "Tokens Claude reads" uses `pairedTokens`, the sum over cases that are pass/fail in both arms.
+4. SKILL.md (section 6, around lines 77-90): the procedure. Per-case usage is pasted by hand from transcript_usage or subagent_usage output into `case.usage` in each arm's `runs/<arm>/<runId>/results.json`. Nothing writes that field automatically.
+5. tests\reports.test.mjs (around lines 99-112 and 181-215): the expected behaviour of transcript_usage (subagent lines added, each message counted once, --no-subagents, --from) and subagent_usage (one match per work dir, null otherwise).
+
+Caveats found while reading (checked with a read-only inline script that copies the functions):
+- In build_tool_report.mjs, `sumOrNull` treats a missing usage as 0 whenever any other value is present. A repetition with no usage therefore halves a case's token mean (50k plus missing gives 25k), and a missing case is silently dropped from arm totals. This conflicts with the SKILL.md rule "missing number = null".
+- `totalTokens(c.usage)` throws if a case writes `"usage": null`, because the default parameter does not apply to null. Only an absent key is handled.
+- The helper find.mjs did not return output within its window, so I stopped it (TaskStop bia1xhpu3). These five paths come from my own search.

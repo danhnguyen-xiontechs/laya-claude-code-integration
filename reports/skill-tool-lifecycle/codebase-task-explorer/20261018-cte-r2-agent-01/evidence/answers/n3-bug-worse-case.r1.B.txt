@@ -1,0 +1,17 @@
+Where to start: the "worse" flag in the per-tool report. The helper (rules + Jev, advisory; Jev top-1 p=0.76, coverage partial) ranked build_tool_report.mjs first, reports.test.mjs second, and web-test-laya-verdict/scripts/build_report.mjs third. The third has no "worse" concept, so I dropped it. Nothing was modified.
+
+Top 5, most relevant first:
+
+1. D:/cte3/w/n3-bug-worse-case-152799/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs. Lines 105-109 `majority()` pick a per-case status over repetitions, and on a tie they return whichever status was inserted first (stable sort), so the result depends on rep folder order (r1 vs r2). Lines 110-121 derive `paired` and `change: 'worse'` only from that majority, so a 1-1 split (B fails once, A passes) or a B result of blocked in one rep can drop the case from "worse" entirely. Line 131 (`regressions`) and the row highlight at lines 199-203 inherit this.
+
+2. D:/cte3/w/n3-bug-worse-case-152799/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs. The fixture gives each arm a single run (r1) with one result per case, so the tie and blocked-in-one-rep paths are never exercised. The only worse assertion is `regressions == ['T1']` on single-rep data, so the bug passes the suite.
+
+3. D:/cte3/w/n3-bug-worse-case-152799/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs. Lines 52 and 66 print "worse on …" and the count from `summary.json` `regressions`, so the main index misses the same cases.
+
+4. D:/cte3/w/n3-bug-worse-case-152799/repo/.claude/skills/build-skill-tool-workflow/SKILL.md. Section 7 (line 114) states the contract that a case passing in A and failing in B "is highlighted as worse and must be in the headline". Line 27 says to repeat nondeterministic cases 2-3 times, so the tie case is the expected one with 2 reps. Line 73 defines the status rules (blocked is never pass or fail).
+
+5. D:/cte3/w/n3-bug-worse-case-152799/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json. Its status enum (pass, fail, blocked, skipped, not-run, error) is what `majority()` and `decided()` consume, and it confirms that blocked and error are never decided.
+
+Checked and ruled out: scripts/report_style.mjs defines `tr.worse` and `--badbg` in both themes, so the CSS is fine. The cause is in the classification, not the rendering.
+
+Suggested check (not run, since the work folder has no experiment data): build a two-rep fixture with A [pass, pass] and B [fail, pass] (and a variant with the rep order swapped). Expect `regressions` to change with rep order, which would confirm the tie-break issue.

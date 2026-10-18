@@ -1,0 +1,13 @@
+{ "name": "hr-org",
+  "stories": [
+    { "id": "R-1", "title": "Org chart fixes", "description": "Misc." },
+    { "id": "R-2", "title": "Org chart PNG export", "description": "Depends on R-1. Export the org chart as a PNG from portal/org/Export.tsx with manager names under each box.", "ac": ["PNG downloads with names"] },
+    { "id": "R-3", "title": "Department on positions", "description": "Add column department_id to the positions table with a migration.", "ac": ["Column exists with a foreign key"] },
+    { "id": "R-4", "title": "Rename employee grade", "description": "Migration: rename column grade to pay_grade on the employees table.", "ac": ["Old column gone, data kept"] },
+    { "id": "R-5", "title": "Department per position", "description": "Show the department of each position in portal/org/Positions.tsx, read from department_id on the positions table.", "ac": ["Department shown in the list"] },
+    { "id": "R-6", "title": "SSO groups to roles", "description": "Map identity-provider groups to portal roles in auth/RoleMapper.cs.", "links": [{ "type": "depends_on", "id": "HR-404" }], "ac": ["Group admins get the admin role"] },
+    { "id": "R-7", "title": "Role-based menu", "description": "Builds on R-6: hide admin menu items in portal/nav/Menu.tsx for users without the admin role.", "ac": ["Non-admins see no admin items"] },
+    { "id": "R-8", "title": "Employee search API", "description": "Introduces EmployeeSearchRequest and GET /api/employees/search in hr/api/SearchController.cs.", "ac": ["Search by name and email"] },
+    { "id": "R-9", "title": "Directory page", "description": "The directory page portal/directory/Directory.tsx calls GET /api/employees/search as the user types.", "ac": ["Results update while typing"] },
+    { "id": "R-10", "title": "Password reset email copy", "description": "Rewrite the password reset email text in notify/templates/reset.html.", "ac": ["New copy approved by HR"] }
+  ] }

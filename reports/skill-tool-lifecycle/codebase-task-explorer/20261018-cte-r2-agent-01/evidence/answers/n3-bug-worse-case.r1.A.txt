@@ -1,0 +1,13 @@
+Starting points for: "The per-tool experiment report does not highlight a case as worse when the tool arm fails and plain Claude passes." Read-only; nothing was modified.
+
+Top 5, most relevant first:
+
+1. D:/cte3/w/n3-bug-worse-case-c99cd4/repo/research/ab-1697/compare.py - The only report generator for this A/B. main() builds the per-run table and per-config medians and PASS counts, but never pairs a tool-arm run against a plain run, so no "worse" flag is ever computed.
+2. D:/cte3/w/n3-bug-worse-case-c99cd4/repo/research/ab-1697/COMPARE.md - The generated report where the gap is visible but unmarked: mcp-1..5 and launcher-gate-1..5 are "fail", plain-2 and plain-3 are "PASS", and the config table shows mcp 0/5 vs plain 2/5 with no highlight.
+3. D:/cte3/w/n3-bug-worse-case-c99cd4/repo/research/ab-1697/semantic_check.py - Produces the single pass boolean (C1 and C2) that the report uses as "hanh vi". Any worse-case logic keys off it, and it is a regex check on router-card text, so its verdicts should be verified before flagging.
+4. D:/cte3/w/n3-bug-worse-case-c99cd4/repo/research/ab-test-plan.md - Defines the criterion the report should enforce per case ("chat luong khong kem", i.e. quality not worse). Section 5.3 names workflow/ab_compare.py, which does not exist in the repo; the real generator is research/ab-1697/compare.py.
+5. D:/cte3/w/n3-bug-worse-case-c99cd4/repo/research/ab-1697/RESULTS.md - The narrative conclusions (findings 4-5: MCP-only and gate arms at 0/5, "con kem plain") describe the gap only in aggregate and never name the runs where plain passed and the tool arm failed.
+
+Caveat, not in the top 5 because I did not read it: the helper's (unranked) output pointed to .claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs, build_main_report.mjs and report_style.mjs (plus tests/reports.test.mjs). That skill generates the per-tool report.html with plain-vs-tool comparisons, so it may be where this highlight actually lives. Per your instruction I did not open those files or run any script. My own repo-wide grep for "worse" also matched build_tool_report.mjs, so check that file first if the report you mean is the skill-generated one.
+
+Relevant data, if you need it: research/ab-1697/run_ab.py writes runs/<config>-<run>/meta.json (config, run index, semantic.pass), which is what a run-index pairing would read.

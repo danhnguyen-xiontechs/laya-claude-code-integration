@@ -1,0 +1,22 @@
+## Candidate starting points — bug
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 27 → considered 27
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/story-batch-planner/scripts/planner.mjs` | 2 queries: planner.mjs, textOf | 3 |
+| 2 | `.claude/skills/story-batch-planner/scripts/plan.mjs` | 2 queries:  | 0 |
+| 3 | `.claude/skills/story-batch-planner/scripts/decision-provider.mjs` | 2 queries:  | 1 |
+| 4 | `.claude/skills/story-batch-planner/test/planner.test.mjs` | 2 queries: planner.test.mjs | 0 |
+| 5 | `proxy/router_proxy.py` | 1 query: tier_of | 0 |
+| 6 | `audit/audit.py` | 1 query: text_of | 0 |
+| 7 | `hooks/tests/test_cache_expiry_gate.py` | 1 query: test_B_retry_same_prompt_allows | 0 |
+| 8 | `.claude/skills/story-batch-planner/bench/eval.mjs` | 2 queries:  | 0 |
+| 9 | `.claude/skills/codebase-task-explorer/scripts/explore.mjs` | 2 queries: batchRequest, readBatch | 0 |
+| 10 | `.claude/skills/subagent-model-router/scripts/governor.mjs` | 2 queries: createBatch | 2 |
+
+Jev: 3 call(s), 2 batch(es), survivors 7. Advisory ranking only — verify by reading source.

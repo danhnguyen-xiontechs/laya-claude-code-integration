@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — bug
+
+Engine: codemap codemap 4.6.0 · pool 69. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs` |
+| 2 | `.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs` |
+| 3 | `.claude/skills/build-skill-tool-workflow/scripts/report_style.mjs` |
+| 4 | `audit/audit.py` |
+| 5 | `workflow/runs/persist-sessions/laya/test_sessions.py` |
+| 6 | `.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs` |
+| 7 | `workflow/runs/persist-sessions/baseline/test_sessions.py` |
+| 8 | `.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs` |
+| 9 | `.claude/skills/build-skill-tool-workflow/scripts/count_tokens.mjs` |
+| 10 | `.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs` |

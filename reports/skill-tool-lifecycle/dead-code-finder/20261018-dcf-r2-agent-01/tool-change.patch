@@ -1,0 +1,146 @@
+diff -ru jev-base/jev_skills/dead_code/__main__.py jev-src/jev_skills/dead_code/__main__.py
+--- jev-base/jev_skills/dead_code/__main__.py	2026-10-18 10:22:26.348285000 +0700
++++ jev-src/jev_skills/dead_code/__main__.py	2026-10-18 10:23:04.225610700 +0700
+@@ -24,6 +24,7 @@
+     s.add_argument("--no-jev", action="store_true")
+     s.add_argument("--shadow", action="store_true", help="ask JEV and record labels, but tier as if JEV were off")
+     s.add_argument("-o", "--out")
++    s.add_argument("--full", action="store_true", help="list every tier C (kept) item in report.md, not only the count")
+     e = sub.add_parser("eval")
+     e.add_argument("--fixture", required=True)
+     e.add_argument("--no-jev", action="store_true")
+@@ -42,7 +43,7 @@
+     root = scan.project_root(target)  # evidence (entry points, config, callers) can live above the target
+     out = Path(a.out) if a.out else Path(".dead-code") / time.strftime("%Y%m%d-%H%M%S")
+     res = scan.run(root, cfg=config.load(a.config, root), use_jev=not a.no_jev, shadow=a.shadow, out_dir=out,
+-                   only=None if target == root else target)
++                   only=None if target == root else target, full=a.full)
+     if target != root:
+         print(f"[dead-code] scanning {target.relative_to(root).as_posix()}/ with evidence from project root {root}")
+     f, u = res["funnel"], res["jev"]["usage"]
+diff -ru jev-base/jev_skills/dead_code/report.py jev-src/jev_skills/dead_code/report.py
+--- jev-base/jev_skills/dead_code/report.py	2026-10-18 10:22:26.350286400 +0700
++++ jev-src/jev_skills/dead_code/report.py	2026-10-18 10:27:05.285327000 +0700
+@@ -3,9 +3,6 @@
+ import json
+ from pathlib import Path
+ 
+-MAX_C_LINES = 60  # tier C is listed for transparency only; keep the report short
+-
+-
+ def _loc(c: dict) -> str:
+     a, b = c["lines"]
+     return f"`{c['file']}:{a}`" if a == b else f"`{c['file']}:{a}-{b}`"
+@@ -46,23 +43,29 @@
+     return f"`{t}`".replace("|", "\\|")
+ 
+ 
+-def _table(rows: list[dict]) -> list[str]:
++def _table(rows: list[dict], evidence: bool = True) -> list[str]:
++    # Tier A rows carry no evidence column: the evidence is in candidates.jsonl (keeps the report short)
++    if not evidence:
++        out = ["| ID | Tier | Kind | Location | What | JEV | Action |", "|---|---|---|---|---|---|---|"]
++        for c in rows:
++            out.append(f"| {c['id']} | {c['tier']} | {c['kind']} | {_loc(c)} | {_target(c)} | {_jev(c)} | {c['action']} |")
++        return out
+     out = ["| ID | Tier | Kind | Location | What | Key evidence | JEV | Action |", "|---|---|---|---|---|---|---|---|"]
+     for c in rows:
+         out.append(f"| {c['id']} | {c['tier']} | {c['kind']} | {_loc(c)} | {_target(c)} | {_evidence(c)} | {_jev(c)} | {c['action']} |")
+     return out
+ 
+ 
+-def write(out_dir: Path, result: dict) -> None:
++def write(out_dir: Path, result: dict, full: bool = False) -> None:
+     out_dir.mkdir(parents=True, exist_ok=True)
+     cands = result["candidates"]
+     with (out_dir / "candidates.jsonl").open("w", encoding="utf-8") as f:
+         for c in cands:
+             f.write(json.dumps(c, ensure_ascii=False) + "\n")
+-    (out_dir / "report.md").write_text(render(result), encoding="utf-8")
++    (out_dir / "report.md").write_text(render(result, full=full), encoding="utf-8")
+ 
+ 
+-def render(result: dict) -> str:
++def render(result: dict, full: bool = False) -> str:
+     cands, fun, meta = result["candidates"], result["funnel"], result["meta"]
+     tiers = {t: [c for c in cands if c["tier"] == t] for t in "ABC"}
+     u = result["jev"]["usage"]
+@@ -70,7 +73,7 @@
+         f"# Dead code report: `{meta['root']}`",
+         "",
+         f"Run `{meta['runId']}`, mode **{meta['mode']}**, Tier A threshold p >= {meta['tierAThreshold']}. "
+-        "Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), listed for transparency.",
++        "Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), counted here and listed with --full.",
+         "",
+         "## Funnel",
+         "",
+@@ -98,12 +101,13 @@
+     ]
+     for t, title in (("A", "Tier A: safe to delete (in batches)"), ("B", "Tier B: review")):
+         lines += [f"## {title} ({len(tiers[t])})", ""]
+-        lines += _table(tiers[t]) if tiers[t] else ["None."]
++        lines += _table(tiers[t], evidence=t != "A") if tiers[t] else ["None."]
+         lines.append("")
++    # Tier C is kept code: a count by default, the list only with full=True (scan --full)
+     lines += [f"## Tier C: keep ({len(tiers['C'])})", ""]
+-    shown = tiers["C"][:MAX_C_LINES]
+-    lines += [f"- {c['id']} {c['kind']} {_loc(c)} {_target(c)}: {_evidence(c) if c['id'].startswith('C') else _jev(c) + '; rule ' + c['rule_label']}" for c in shown] or ["None."]
+-    if len(tiers["C"]) > len(shown):
+-        lines.append(f"- … {len(tiers['C']) - len(shown)} more kept items in `candidates.jsonl` (tier C).")
++    if not full:
++        lines.append("Not listed here (kept code). `candidates.jsonl` has them, or run the scan with `--full`." if tiers["C"] else "None.")
++    else:
++        lines += [f"- {c['id']} {c['kind']} {_loc(c)} {_target(c)}: {_evidence(c) if c['id'].startswith('C') else _jev(c) + '; rule ' + c['rule_label']}" for c in tiers["C"]] or ["None."]
+     lines += ["", "Full evidence and snippets: `candidates.jsonl` (one JSON object per ID)."]
+     return "\n".join(lines) + "\n"
+diff -ru jev-base/jev_skills/dead_code/scan.py jev-src/jev_skills/dead_code/scan.py
+--- jev-base/jev_skills/dead_code/scan.py	2026-10-18 10:22:26.323176400 +0700
++++ jev-src/jev_skills/dead_code/scan.py	2026-10-18 10:23:01.997712900 +0700
+@@ -42,7 +42,7 @@
+ 
+ 
+ def run(root: str | Path = ".", *, cfg: dict | None = None, use_jev: bool = True, shadow: bool = False,
+-        out_dir: Path | None = None, only: str | Path | None = None) -> dict:
++        out_dir: Path | None = None, only: str | Path | None = None, full: bool = False) -> dict:
+     """Index everything under `root`; when `only` (a path under root) is given, report candidates
+     from that path only, but still use the whole root as evidence."""
+     root = Path(root).resolve()
+@@ -90,6 +90,6 @@
+         "candidates": cands,
+     }
+     if out_dir is not None:
+-        report.write(Path(out_dir), result)
++        report.write(Path(out_dir), result, full=full)
+         result["outDir"] = str(out_dir)
+     return result
+diff -ru jev-base/tests/test_dead_code.py jev-src/tests/test_dead_code.py
+--- jev-base/tests/test_dead_code.py	2026-10-18 10:22:26.939840700 +0700
++++ jev-src/tests/test_dead_code.py	2026-10-18 10:27:03.997922800 +0700
+@@ -120,6 +120,27 @@
+         self.assertIn("## Funnel", md)
+         self.assertIn("Tier B", md)
+ 
++    def test_report_is_short_by_default(self):
++        # round 2: tier C is a count unless --full; tier A rows carry no evidence column
++        out = Path(tempfile.mkdtemp())
++        # Tier A exists only with Jev (a reckless stand-in here), so the Tier A layout is checked on that run
++        with mock.patch("jev_skills.common.jev.decide", side_effect=reckless_decide):
++            res = scan.run(FIXTURE, cfg=config.load(None, FIXTURE), use_jev=True, out_dir=out)
++        md = (out / "report.md").read_text(encoding="utf-8")
++        self.assertTrue([c for c in res["candidates"] if c["tier"] == "A"])
++        self.assertIn("| ID | Tier | Kind | Location | What | JEV | Action |", md)
++        self.assertNotIn("Key evidence", md.split("## Tier B")[0])   # the tier A section has no evidence column
++        self.assertIn("Key evidence", md.split("## Tier B")[1].split("## Tier C")[0])   # tier B keeps it
++        tier_c = [c for c in res["candidates"] if c["tier"] == "C"]
++        self.assertTrue(tier_c)
++        self.assertIn(f"## Tier C: keep ({len(tier_c)})", md)
++        self.assertNotIn(f"- {tier_c[0]['id']} ", md)
++        full_out = Path(tempfile.mkdtemp())
++        scan.run(FIXTURE, cfg=config.load(None, FIXTURE), use_jev=False, out_dir=full_out, full=True)
++        full_md = (full_out / "report.md").read_text(encoding="utf-8")
++        self.assertIn(f"- {tier_c[0]['id']} ", full_md)
++        self.assertLess(len(md), len(full_md))
++
+ 
+ class JunkTest(unittest.TestCase):
+     SRC = """\

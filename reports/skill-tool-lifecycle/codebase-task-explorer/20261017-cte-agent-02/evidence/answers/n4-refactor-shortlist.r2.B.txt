@@ -1,0 +1,11 @@
+Starting points for moving the keyword shortlist scoring out of the skill suggestion router (repo: D:/cte2/w/n4-refactor-shortlist-f1efea/repo). Nothing was modified.
+
+The find helper ran the codebase-task-explorer ranking (rules + Jev). Its coverage was partial, because some project imports did not resolve. I checked the top candidates against the source.
+
+1. D:/cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/route.mjs: the code to extract. Stage 1 (buildIndex, baseOf, bm25() at line 88, mentions, and shortlist() at line 245) sits in the same file as stage 2 decision and threshold logic.
+2. D:/cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/variants.test.mjs: imports shortlist and variantTokens directly from route.mjs, so its shortlist tests must keep passing after the move.
+3. D:/cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/route.test.mjs: imports from ../scripts/route.mjs and covers the BM25 ranking and abstain behavior that would move with the shortlist code.
+4. D:/cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/eval.mjs: imports route, combineRuns, finalize and DEFAULT_THRESHOLDS from route.mjs, and its BM25-only eval path depends on the shortlist. It is the main consumer to keep green.
+5. D:/cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/README.md: documents Stage 1 (BM25 over name x3, description x2, head x1) and the scripts table that lists route.mjs. It needs a row for the new module.
+
+Excluded from the helper's list: bmad-help-jev/scripts/suggest.mjs (a BMad router, not the skill suggestion router) and subagent-model-router/scripts/route.mjs (a model-tier router). The helper's ranking is advisory only.

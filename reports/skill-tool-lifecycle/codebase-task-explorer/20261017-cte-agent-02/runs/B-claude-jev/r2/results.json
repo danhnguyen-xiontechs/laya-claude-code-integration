@@ -1,0 +1,232 @@
+{
+  "experimentId": "20261017-cte-agent-02",
+  "arm": "B",
+  "runId": "r2",
+  "startedAt": "2026-10-17T17:00:59.266Z",
+  "finishedAt": "2026-10-17T17:06:16.437Z",
+  "note": "Subagent (Agent tool) runs, one per case, repetition 2 of 2. Recall@5 scored by score.mjs.",
+  "cases": [
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n1-bug-migration-wave",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: scripts/planner.mjs, scripts/plan.mjs, test/planner.test.mjs, fixtures/04-migration.json, skill.md",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n1-bug-migration-wave.r2.B.txt",
+          "notes": "hit by scripts/planner.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 32,
+        "outputTokens": 503,
+        "cacheReadTokens": 1206433,
+        "cacheWriteTokens": 61483,
+        "modelTurns": 16,
+        "toolCalls": 19,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 247742,
+        "providerLatencyMs": 1913,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n1-bug-migration-wave.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:00:59.266Z",
+      "finishedAt": "2026-10-17T17:05:12.336Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n2-feature-blocked-status",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/verify.mjs, cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/skill.md, cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs, cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/references/manifest.md, cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n2-feature-blocked-status.r2.B.txt",
+          "notes": "hit by cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/verify.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 26,
+        "outputTokens": 1508,
+        "cacheReadTokens": 884687,
+        "cacheWriteTokens": 51998,
+        "modelTurns": 12,
+        "toolCalls": 12,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 233258,
+        "providerLatencyMs": 3113,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n2-feature-blocked-status.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:00:59.318Z",
+      "finishedAt": "2026-10-17T17:05:00.636Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n3-bug-worse-case",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs, cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs, cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/skill.md, cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs, cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n3-bug-worse-case.r2.B.txt",
+          "notes": "hit by cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 36,
+        "outputTokens": 762,
+        "cacheReadTokens": 1395774,
+        "cacheWriteTokens": 64128,
+        "modelTurns": 18,
+        "toolCalls": 20,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 228786,
+        "providerLatencyMs": 3589,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n3-bug-worse-case.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:00:59.378Z",
+      "finishedAt": "2026-10-17T17:04:59.177Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n4-refactor-shortlist",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/route.mjs, cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/variants.test.mjs, cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/route.test.mjs, cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/eval.mjs, cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/readme.md",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n4-refactor-shortlist.r2.B.txt",
+          "notes": "hit by cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/route.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 1563,
+        "cacheReadTokens": 578943,
+        "cacheWriteTokens": 43115,
+        "modelTurns": 9,
+        "toolCalls": 10,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 236719,
+        "providerLatencyMs": 2658,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n4-refactor-shortlist.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:00:59.460Z",
+      "finishedAt": "2026-10-17T17:05:03.882Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n5-newfeature-precompact",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/fast-compact.ts, cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/types/claude-code.d.ts, cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/hooks.json, cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/.claude-plugin/plugin.json, cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/scripts/preview.ts",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n5-newfeature-precompact.r2.B.txt",
+          "notes": "hit by cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/fast-compact.ts"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 27,
+        "cacheReadTokens": 357812,
+        "cacheWriteTokens": 47463,
+        "modelTurns": 6,
+        "toolCalls": 11,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 117705,
+        "providerLatencyMs": 1810,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n5-newfeature-precompact.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:04:09.517Z",
+      "finishedAt": "2026-10-17T17:06:16.437Z"
+    },
+    {
+      "experimentId": "20261017-cte-agent-02",
+      "caseId": "n6-feature-subagent-tokens",
+      "arm": "B",
+      "runId": "r2",
+      "status": "pass",
+      "goldOutcome": "all 1 gold groups hit in top 5",
+      "observedOutcome": "recall 1/1 groups in top 5: cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs, cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs, cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs, cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/skill.md, cte2/w/n6-feature-subagent-tokens-737d01/repo/workflow/step_report.py",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "group-1",
+          "status": "pass",
+          "evidenceRef": "answers/n6-feature-subagent-tokens.r2.B.txt",
+          "notes": "hit by cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 34,
+        "cacheReadTokens": 513854,
+        "cacheWriteTokens": 44136,
+        "modelTurns": 8,
+        "toolCalls": 12,
+        "providerCalls": 5,
+        "fallbackCount": 0,
+        "elapsedMs": 105275,
+        "providerLatencyMs": 3571,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "errors": [],
+      "evidenceRefs": [
+        "../../../evidence/texts/n6-feature-subagent-tokens.r2.B.txt"
+      ],
+      "startedAt": "2026-10-17T17:04:18.856Z",
+      "finishedAt": "2026-10-17T17:06:10.958Z"
+    }
+  ]
+}

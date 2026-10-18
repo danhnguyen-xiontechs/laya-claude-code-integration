@@ -1,0 +1,14 @@
+CAUSE: The session-scoped `item` fixture pins fixture set "v1" (which has no weight_g, hazmat or currency keys), but svc/shipping.py and the tests expect the v2 schema (catalog.SCHEMA = "v2"), so quote() and label() raise KeyError on the missing v2 fields. catalog.load() only logs a warning on a version mismatch and returns the v1 dict anyway, so the mismatch surfaces as a KeyError inside the tests instead of at fixture setup.
+
+LOCATION: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-festive-villani-98fe77\33b520c8-883a-42a5-b200-c8a3c9a7274c\scratchpad\r2run\cur\work\h04_session_fixture.A.r2\tests\conftest.py:9 (the `return catalog.load("v1")` call; the mismatch is let through at ...\h04_session_fixture.A.r2\svc\catalog.py:13-15)
+
+EVIDENCE:
+"WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway"
+"E       KeyError: 'weight_g'"
+"svc\shipping.py:10: KeyError"
+"E       KeyError: 'currency'"
+"svc\shipping.py:15: KeyError"
+"FAILED tests/test_shipping.py::test_quote_standard_item - KeyError: 'weight_g'"
+"6 failed in 0.36s"
+
+RUNS: 1

@@ -1,0 +1,17 @@
+Where to start: how subagent token counts are added up for the A/B report. Read-only, nothing modified.
+
+Helper status: find.mjs (codebase-task-explorer ranking) was still running after about 10 minutes with no output (task bscfm5ccp, output file empty). The list below comes from my own grep and read of the repo, not from the helper.
+
+Top 5, most relevant first:
+1. D:/cte3/w/n6-feature-subagent-tokens-b15c0d/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs. For each case work dir it finds the one subagent transcript whose first user prompt names that dir (zero or two matches gives null, never a guess), then calls transcript_usage.mjs on it with --no-subagents.
+2. D:/cte3/w/n6-feature-subagent-tokens-b15c0d/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs. This is where the sum happens: input, output, cache-read and cache-write tokens are added per API message id, with one global seen-set across main and subagent files, so a message is counted once.
+3. D:/cte3/w/n6-feature-subagent-tokens-b15c0d/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs. This aggregates per arm: totalTokens (line 58) is the sum of the four fields, sumOrNull (line 53) adds the cases, and pairedTokens (line 130) gives the paired total.
+4. D:/cte3/w/n6-feature-subagent-tokens-b15c0d/repo/.claude/skills/build-skill-tool-workflow/SKILL.md. Lines 77-86 are the procedure: subagent runs feed case.usage through subagent_usage.mjs, the subagents folder layout, and the --forbid check.
+5. D:/cte3/w/n6-feature-subagent-tokens-b15c0d/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs. It is the spec: lines 98-114 cover transcript_usage dedupe and --no-subagents, lines 181-215 cover subagent_usage matching (r1 never matches r10) and --forbid.
+
+Findings to check before trusting the report:
+- The "tokens" total includes cacheRead and cacheWrite (build_tool_report.mjs:58), so it is dominated by cache reads. inputTokens and outputTokens are reported separately.
+- A case with no usage key is silently counted as 0 in the arm total. I checked this inline: cases with usage 115 and missing gives 115, not null. An explicit usage: null crashes the builder at line 58 (TypeError), so the two failure modes differ.
+- Outside the five: audit/audit.py (around lines 380-440) is a separate pipeline for whole session transcripts. Its message-id dedupe is per file and it checks only main-vs-subagent overlap, unlike transcript_usage.mjs, so the two can disagree if the A/B numbers come from session-level data.
+
+The helper is still running in the background and will notify on completion. Its output may differ from the list above.

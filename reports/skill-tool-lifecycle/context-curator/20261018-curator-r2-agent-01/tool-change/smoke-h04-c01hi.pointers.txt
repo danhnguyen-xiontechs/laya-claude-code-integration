@@ -1,0 +1,14 @@
+[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1) · 822 of 4976 lines omitted · full log: .tool-output/smoke-hi.log
+#1 lines 11-30 · failure · anchor · __________________________ test_quote_standard_item ___________________________
+#2 lines 839-858 · failure · anchor · ___________________________ test_quote_is_positive ____________________________
+#3 lines 1680-1699 · failure · anchor · ___________________________ test_label_has_currency ___________________________
+#4 lines 2506-2525 · failure · anchor · ____________________________ test_label_has_weight ____________________________
+#5 lines 32-32 · captured log setup · JEV p=0.95 · WARNING  svc.catalog:catalog.py:14 fixture set v1 does not match schema v2, loading it anyway
+#6 lines 3327-3346 · failure · anchor · ______________________ test_hazmat_surcharge_not_applied ______________________
+#7 lines 4153-4172 · failure · anchor · _________________________ test_quote_rounds_to_cents __________________________
+#8 lines 34-45 · captured log call · pinned · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+#9 lines 214-225 · captured log call · pinned (JEV p=0.05) · ERROR    svc.storage:noise_hard.py:80 optional thumbnail missing, ignored
+#10 lines 322-333 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#11 lines 454-465 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+#12 lines 562-573 · captured log call · pinned · ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+[curator] 329 more kept chunks not listed · open the first pointer: Read .tool-output/smoke-hi.log offset 11 limit 20

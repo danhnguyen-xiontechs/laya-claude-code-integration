@@ -1,0 +1,195 @@
+{
+  "experimentId": "20261018-model-router-r2-agent-01",
+  "arm": "B",
+  "runId": "r1",
+  "startedAt": "2026-10-18T03:32:50.040Z",
+  "finishedAt": "2026-10-18T03:34:55.105Z",
+  "cases": [
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "e1-locate",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:32:50.040Z",
+      "finishedAt": "2026-10-18T03:33:04.263Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-haiku-5-5 (router: rule haiku, Jev haiku/haiku/haiku -> haiku); check passed; list cost $0.0045",
+      "correct": true,
+      "usage": {
+        "inputTokens": 8,
+        "outputTokens": 38,
+        "cacheReadTokens": 202911,
+        "cacheWriteTokens": 19211,
+        "modelTurns": 4,
+        "toolCalls": 5,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 917,
+        "elapsedMs": 14223,
+        "cost": 0.00445,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e1-locate.B.r1.txt",
+        "evidence/answers/e1-locate.B.r1.txt",
+        "evidence/routes/e1-locate.B.r1.json"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "e2-count",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:32:50.074Z",
+      "finishedAt": "2026-10-18T03:33:18.880Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-haiku-5-5 (router: rule haiku, Jev haiku/haiku/haiku -> haiku); check passed; list cost $0.0058",
+      "correct": true,
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 59,
+        "cacheReadTokens": 317305,
+        "cacheWriteTokens": 20509,
+        "modelTurns": 6,
+        "toolCalls": 7,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 767,
+        "elapsedMs": 28806,
+        "cost": 0.005767,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/e2-count.B.r1.txt",
+        "evidence/answers/e2-count.B.r1.txt",
+        "evidence/routes/e2-count.B.r1.json"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "r1-rename",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:32:50.113Z",
+      "finishedAt": "2026-10-18T03:33:09.624Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (router: rule haiku, Jev sonnet/sonnet/sonnet -> sonnet); check passed; list cost $0.1931",
+      "correct": true,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 248,
+        "cacheReadTokens": 222398,
+        "cacheWriteTokens": 58437,
+        "modelTurns": 5,
+        "toolCalls": 7,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 741,
+        "elapsedMs": 19511,
+        "cost": 0.193072,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/r1-rename.B.r1.txt",
+        "evidence/answers/r1-rename.B.r1.txt",
+        "evidence/routes/r1-rename.B.r1.json"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "f1-paginate",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:33:46.344Z",
+      "finishedAt": "2026-10-18T03:34:07.164Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (router: rule haiku, Jev sonnet/haiku/sonnet -> sonnet); check passed; list cost $0.1018",
+      "correct": true,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 378,
+        "cacheReadTokens": 257428,
+        "cacheWriteTokens": 18599,
+        "modelTurns": 5,
+        "toolCalls": 7,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 757,
+        "elapsedMs": 20820,
+        "cost": 0.101783,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/f1-paginate.B.r1.txt",
+        "evidence/answers/f1-paginate.B.r1.txt",
+        "evidence/routes/f1-paginate.B.r1.json"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "d3-maplimit",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:33:46.398Z",
+      "finishedAt": "2026-10-18T03:34:14.331Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (router: rule haiku, Jev sonnet/sonnet/sonnet -> sonnet); check passed; list cost $0.1049",
+      "correct": true,
+      "usage": {
+        "inputTokens": 10,
+        "outputTokens": 417,
+        "cacheReadTokens": 258507,
+        "cacheWriteTokens": 19592,
+        "modelTurns": 5,
+        "toolCalls": 5,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 733,
+        "elapsedMs": 27933,
+        "cost": 0.104871,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d3-maplimit.B.r1.txt",
+        "evidence/answers/d3-maplimit.B.r1.txt",
+        "evidence/routes/d3-maplimit.B.r1.json"
+      ]
+    },
+    {
+      "experimentId": "20261018-model-router-r2-agent-01",
+      "caseId": "d5-deps",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:33:46.465Z",
+      "finishedAt": "2026-10-18T03:34:55.105Z",
+      "status": "pass",
+      "observedOutcome": "ran on claude-sonnet-5-5 (router: rule haiku, Jev sonnet/sonnet/sonnet -> sonnet); check passed; list cost $0.1600",
+      "correct": true,
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 367,
+        "cacheReadTokens": 447576,
+        "cacheWriteTokens": 26733,
+        "modelTurns": 8,
+        "toolCalls": 10,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "providerLatencyMs": 780,
+        "elapsedMs": 68640,
+        "cost": 0.16005,
+        "costKind": "estimated",
+        "source": "subagent transcript, list-price weighted (scripts/pricing.mjs)"
+      },
+      "evidenceRefs": [
+        "evidence/texts/d5-deps.B.r1.txt",
+        "evidence/answers/d5-deps.B.r1.txt",
+        "evidence/routes/d5-deps.B.r1.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - manifest records "node run-tests.js" with exit_code 0 and a non-empty log, changed files match the diff, its files are disjoint from S2, and the merged S1+S2 build passes all tests (exit 0).
+S2: FAIL - its own recorded required check has exit_code 1 with log "FAIL tests/count.test.js: 3 == 2", while its manifest says "tests pass"; a rerun of story/S2 passes, but the recorded failure stands until a passing check is recorded.

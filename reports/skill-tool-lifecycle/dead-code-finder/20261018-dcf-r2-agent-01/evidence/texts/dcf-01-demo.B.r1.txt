@@ -1,0 +1,60 @@
+[dead-code] jev: unused A/B/C 10/5/25, junk A/B/C 5/4/7; JEV 30 sent, $0.000430, 1856 ms
+[dead-code] report: report.md  details: candidates.jsonl
+
+# Dead code report: `dcf-01-demo.B.r1`
+
+Run `20261018-102901`, mode **jev**, Tier A threshold p >= 0.9. Tier A = safe to delete in small batches; B = needs a human look; C = kept (rule or JEV), counted here and listed with --full.
+
+## Funnel
+
+| Step | Unused code | Junk |
+|---|---|---|
+| Discovered | 40 | 16 |
+| After keep rules | 16 | 16 |
+| Sent to JEV | 16 | 14 |
+| JEV answered | 16 | 14 |
+| Tier A / B / C | 10/5/25 | 5/4/7 |
+
+JEV: 2 request(s), 10246 input tokens, $0.000430, 1856 ms total (status ok).
+
+Scanned 13 Python files and 3 text files. Excluded: none.
+
+## Tier A: safe to delete (in batches) (15)
+
+| ID | Tier | Kind | Location | What | JEV | Action |
+|---|---|---|---|---|---|---|
+| C003 | A | orphan_module | `demo_pkg/legacy_report.py:1-11` | `demo_pkg.legacy_report` | likely_dead 1.00 | Delete |
+| C006 | A | unused_constant | `demo_pkg/core.py:12` | `LEGACY_TAX_RATE` | likely_dead 1.00 | Delete |
+| C011 | A | unused_function | `demo_pkg/core.py:49-53` | `legacy_total` | likely_dead 1.00 | Delete |
+| C012 | A | unused_function | `demo_pkg/core.py:56-57` | `_round_cents` | likely_dead 1.00 | Delete |
+| C013 | A | unused_class | `demo_pkg/core.py:67-72` | `OldOrderAdapter` | likely_dead 0.99 | Delete |
+| C015 | A | unused_method | `demo_pkg/core.py:71-72` | `OldOrderAdapter.adapt` | likely_dead 0.99 | Delete |
+| C026 | A | unused_function | `demo_pkg/jobs.py:24-25` | `rebuild_search_index` | likely_dead 0.99 | Delete |
+| C027 | A | unused_function | `demo_pkg/legacy_report.py:6-7` | `monthly_report` | likely_dead 1.00 | Delete |
+| C028 | A | unused_function | `demo_pkg/legacy_report.py:10-11` | `_format_row` | likely_dead 1.00 | Delete |
+| C039 | A | unused_import | `demo_pkg/core.py:3` | `csv` | likely_dead 1.00 | Remove import |
+| J004 | A | debug_print | `demo_pkg/cli.py:28` | `print('got here', order.items)` | debug_leftover 0.99 | Remove call |
+| J008 | A | debug_breakpoint | `demo_pkg/formatting.py:20` | `breakpoint()` | debug_leftover 1.00 | Remove call |
+| J013 | A | debug_print | `demo_pkg/handlers.py:23` | `print('DEBUG cancel', order)` | debug_leftover 1.00 | Remove call |
+| J014 | A | debug_log | `demo_pkg/jobs.py:11` | `logger.debug('here 2')` | debug_leftover 0.93 | Remove call |
+| J016 | A | commented_code | `demo_pkg/web.py:46-47` | `print(_ROUTES)` | dead_code_comment 0.97 | Delete comment |
+
+## Tier B: review (9)
+
+| ID | Tier | Kind | Location | What | Key evidence | JEV | Action |
+|---|---|---|---|---|---|---|---|
+| C009 | B | unused_method | `demo_pkg/core.py:26-27` | `Order.to_legacy_xml` | 0 refs, method of public class | likely_dead 0.99 | Review |
+| C016 | B | unused_function | `demo_pkg/debug_tools.py:4-5` | `dump_order` | 0 refs, test refs 2 | test_only 0.99 | Review |
+| C023 | B | unused_function | `demo_pkg/hooks.py:4-5` | `notify_warehouse` | 0 refs, reflection in importer | dynamic_use_possible 0.59 | Review |
+| C038 | B | unused_function | `tests/test_core.py:13-14` | `_make_legacy_order` | 0 refs | test_only 0.71 | Review |
+| C040 | B | unused_import | `demo_pkg/web.py:4` | `os` | 0 refs, reflection in file | likely_dead 0.91 | Review |
+| J001 | B | debug_print | `demo_pkg/cli.py:17` | `print('DEBUG args:', args)` | in `main`; rule: intentional_output | debug_leftover 0.99 | Review |
+| J005 | B | commented_code | `demo_pkg/core.py:33-35` | `subtotal = 0` | 3 commented lines parse as code; prose: “old implementation, replaced by Order.subtotal()”; rule: dead_code_comment | dead_code_comment 0.84 | Review |
+| J009 | B | dead_branch | `demo_pkg/formatting.py:21-22` | `DEBUG_OLD_FLOW` | flag `DEBUG_OLD_FLOW` is set once to a falsy value (demo_pkg/formatting.py:3) and never changed; rule: dead_branch | (not sent) | Review: remove branch or flag |
+| J010 | B | dead_branch | `demo_pkg/formatting.py:23-24` | `False` | constant condition `False`; rule: dead_branch | (not sent) | Review: remove branch or flag |
+
+## Tier C: keep (32)
+
+Not listed here (kept code). `candidates.jsonl` has them, or run the scan with `--full`.
+
+Full evidence and snippets: `candidates.jsonl` (one JSON object per ID).

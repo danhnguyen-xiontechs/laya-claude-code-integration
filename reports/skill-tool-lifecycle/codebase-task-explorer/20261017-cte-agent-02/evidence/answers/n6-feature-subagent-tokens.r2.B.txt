@@ -1,0 +1,12 @@
+Where to start, most relevant first (read-only; I ran the helper, then verified its ranking by reading the code):
+
+1. D:/cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs - this is where the sum happens: it adds the API usage of every assistant message in a session transcript plus its subagents/*.jsonl (on by default, --no-subagents turns it off), dedupes by message.id, and keeps cache read/write as separate fields.
+2. D:/cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs - for Agent-tool subagent A/B cases it maps each case work dir to exactly one subagent transcript (null on zero or two-plus matches) and sums only that transcript, with --no-subagents.
+3. D:/cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs - builds the A/B report: a case's total is input + output + cacheRead + cacheWrite (line 58), and the arm totals use only the cases that pass or fail in both arms (lines 126-130).
+4. D:/cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/SKILL.md - section 6 (lines 71-89) defines where each case's usage comes from for the subagent path versus the separate-session path, so read it before the scripts.
+5. D:/cte2/w/n6-feature-subagent-tokens-737d01/repo/workflow/step_report.py - sum_assistant (line 38) is a second per-session sum that dedupes by message id and skips "<synthetic>" messages, unlike transcript_usage.mjs, so compare the two if the numbers disagree.
+
+Notes:
+- The helper's top picks (haiku-subagent prompt-budget report.js, research/ab-1697/compare.py) were weaker matches. compare.py reads only the top-level usage of result.json and does not sum subagents.
+- Possible gap, from reading subagent_usage.mjs and SKILL.md, not run: agents spawned by a subagent land in the same flat folder, but subagent_usage.mjs counts only the one matched transcript. A nested child whose prompt does not contain the case work dir would not be counted.
+- Nothing was modified.

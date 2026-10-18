@@ -1,0 +1,75 @@
+{
+  "experimentId": "20261018-sct-r2-agent-01",
+  "tool": {
+    "name": "smart-context-trimming round 2 (agent run)",
+    "kind": "hook",
+    "provider": "JEV",
+    "commit": "cac9aec",
+    "branch": "claude/sct-round2",
+    "changes": [
+      "extractCandidates: node failure block continues across the whitespace-only gap line; node-internal frames do not count toward FAILED_DETAIL_MAX (now 30)",
+      "testDigest: one [smart-trim] line per node --test run naming each test group with its count (failing groups first), only when the output has node's ℹ tests N summary"
+    ]
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "PILOT",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "Round 2 (gap-line fix, node-only test digest): 10/10 pass in both arms again, session tokens -24% (4.29M -> 3.26M, 2 reps). Per case: js-root-exception -51% (was +8% in round 1), js-three-bugs -23%, js-one-bug -17%, dotnet-build -4% (was -35%), js-feature +12% (was +24%; B now 5 turns per rep, A 4 and 5). Not clearly better: the round-2 change does not touch dotnet-build output, yet its gain moved from -35% to -4% between rounds, so 2-rep noise is large. Top next suggestion: prove the live hook path (improvements.md suggestion 3).",
+  "arms": {
+    "A": {
+      "cases": 10,
+      "pass": 10,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 4285696,
+      "inputTokens": 130,
+      "outputTokens": 479,
+      "toolCalls": 102,
+      "modelTurns": 65,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 30989,
+      "pairedTokens": 2142848
+    },
+    "B": {
+      "cases": 10,
+      "pass": 10,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3262595,
+      "inputTokens": 106,
+      "outputTokens": 964,
+      "toolCalls": 88,
+      "modelTurns": 53,
+      "providerCalls": 4,
+      "fallbacks": 0,
+      "providerLatencyMs": 907.5,
+      "elapsedMs": 26951,
+      "pairedTokens": 1631297.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 5,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:43:11.360Z",
+  "generatedAt": "2026-10-18T06:51:49.202Z",
+  "report": "report.html"
+}

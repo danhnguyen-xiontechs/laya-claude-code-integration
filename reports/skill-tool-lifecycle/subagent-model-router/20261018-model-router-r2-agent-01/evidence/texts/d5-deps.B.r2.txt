@@ -1,0 +1,7 @@
+Work only inside the directory <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-musing-goldstine-02082b/453b3ea2-7ac1-4da5-852c-953de6f164e1/scratchpad/r2/d5-deps.B.r2 (it is the project root; do not read or write outside it). Use Node.js (`node`), no npm installs.
+
+Implement src/resolve.js exporting `resolveOrder(packages, targets)`. `packages` maps a name to `{ deps: string[] }`; `targets` is an array of names to install. Return the install order: every needed package (targets and their transitive deps, each once) such that each package comes after all of its deps. Among packages whose deps are all already placed, always pick the alphabetically smallest next (so the order is deterministic). A dependency that is not in `packages` throws Error `missing package: <name> (required by <parent>)` (for a missing target: `missing package: <name> (required by <root>)`). A cycle throws Error `cycle: a -> b -> a` naming the cycle as found by a depth-first search that visits targets in the given order and deps in their listed order, starting the path at the first package of the cycle. Packages not needed by the targets must not appear. Write your own tests in test/ and run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).
+
+When done, reply with one short line saying what you did.
+
+Only use files inside that directory; other folders of the machine hold unrelated material and must not be read.

@@ -1,0 +1,272 @@
+{
+  "experimentId": "20261018-sbp-r2-agent-01",
+  "arm": "A",
+  "runId": "r2",
+  "startedAt": "2026-10-18T03:26:33.042Z",
+  "finishedAt": "2026-10-18T03:27:16.936Z",
+  "cases": [
+    {
+      "experimentId": "20261018-sbp-r2-agent-01",
+      "caseId": "h1-payroll",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:26:33.042Z",
+      "finishedAt": "2026-10-18T03:27:07.605Z",
+      "status": "pass",
+      "observedOutcome": "3 waves: P-1,P-3,P-5,P-10 | P-2,P-4,P-6,P-9,P-12 | P-11; needs_decision P-7,P-8",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "P-1 before P-2 (P-2 reads the column P-1 adds)"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "P-1 and P-9 not in the same wave (two migrations)"
+        },
+        {
+          "criterionId": "inv-3",
+          "status": "pass",
+          "notes": "P-3 before P-4 (endpoint producer → consumer)"
+        },
+        {
+          "criterionId": "inv-4",
+          "status": "pass",
+          "notes": "P-3 before P-12 (text reference)"
+        },
+        {
+          "criterionId": "inv-5",
+          "status": "pass",
+          "notes": "P-5 before P-6 (explicit link)"
+        },
+        {
+          "criterionId": "inv-6",
+          "status": "pass",
+          "notes": "P-6 and P-11 not in the same wave (same template file)"
+        },
+        {
+          "criterionId": "inv-7",
+          "status": "pass",
+          "notes": "P-7 (depends on FIN-12 outside the batch) in needs_decision"
+        },
+        {
+          "criterionId": "inv-8",
+          "status": "pass",
+          "notes": "P-7 not scheduled"
+        },
+        {
+          "criterionId": "inv-9",
+          "status": "pass",
+          "notes": "P-8 (incomplete) in needs_decision"
+        },
+        {
+          "criterionId": "inv-10",
+          "status": "pass",
+          "notes": "P-10 (independent) scheduled"
+        }
+      ],
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 9,
+        "cacheReadTokens": 91041,
+        "cacheWriteTokens": 18047,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "elapsedMs": 28921,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/h1-payroll.A.r2.txt",
+        "../../../evidence/answers/h1-payroll.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-sbp-r2-agent-01",
+      "caseId": "h2-portal",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:26:33.076Z",
+      "finishedAt": "2026-10-18T03:27:15.425Z",
+      "status": "pass",
+      "observedOutcome": "4 waves: Q-4,Q-9,Q-10 | Q-7 | Q-5,Q-6 | Q-8; needs_decision Q-1,Q-2,Q-3,Q-11",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "Q-1 and Q-2 (mutual: link one way, text the other) not scheduled"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "Q-1 and Q-2 in needs_decision"
+        },
+        {
+          "criterionId": "inv-3",
+          "status": "pass",
+          "notes": "Q-3 (builds on the cycle) not scheduled"
+        },
+        {
+          "criterionId": "inv-4",
+          "status": "pass",
+          "notes": "Q-4 before Q-5 (endpoint producer → consumer)"
+        },
+        {
+          "criterionId": "inv-5",
+          "status": "pass",
+          "notes": "Q-4 before Q-6 (endpoint producer → consumer)"
+        },
+        {
+          "criterionId": "inv-6",
+          "status": "pass",
+          "notes": "Q-4 and Q-7 not in the same wave (both change TimesheetDto)"
+        },
+        {
+          "criterionId": "inv-7",
+          "status": "pass",
+          "notes": "Q-5 and Q-8 not in the same wave (same fixture)"
+        },
+        {
+          "criterionId": "inv-8",
+          "status": "pass",
+          "notes": "Q-11 (incomplete) in needs_decision"
+        },
+        {
+          "criterionId": "inv-9",
+          "status": "pass",
+          "notes": "Q-9 (independent) scheduled"
+        }
+      ],
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 6,
+        "cacheReadTokens": 91039,
+        "cacheWriteTokens": 18015,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "elapsedMs": 37213,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/h2-portal.A.r2.txt",
+        "../../../evidence/answers/h2-portal.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-sbp-r2-agent-01",
+      "caseId": "h3-hr",
+      "arm": "A",
+      "runId": "r2",
+      "startedAt": "2026-10-18T03:26:39.065Z",
+      "finishedAt": "2026-10-18T03:27:16.936Z",
+      "status": "pass",
+      "observedOutcome": "2 waves: R-3,R-8,R-10 | R-4,R-5,R-9; needs_decision R-1,R-2,R-6,R-7",
+      "correct": true,
+      "criteriaResults": [
+        {
+          "criterionId": "each-id-once-in-waves",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "every-story-placed",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "inv-1",
+          "status": "pass",
+          "notes": "R-1 (incomplete) in needs_decision"
+        },
+        {
+          "criterionId": "inv-2",
+          "status": "pass",
+          "notes": "R-1 before R-2 (R-2 depends on the incomplete R-1)"
+        },
+        {
+          "criterionId": "inv-3",
+          "status": "pass",
+          "notes": "R-3 and R-4 not in the same wave (two migrations)"
+        },
+        {
+          "criterionId": "inv-4",
+          "status": "pass",
+          "notes": "R-3 before R-5 (R-5 reads the column R-3 adds)"
+        },
+        {
+          "criterionId": "inv-5",
+          "status": "pass",
+          "notes": "R-6 (depends on HR-404 outside the batch) in needs_decision"
+        },
+        {
+          "criterionId": "inv-6",
+          "status": "pass",
+          "notes": "R-6 not scheduled"
+        },
+        {
+          "criterionId": "inv-7",
+          "status": "pass",
+          "notes": "R-6 before R-7 (text reference)"
+        },
+        {
+          "criterionId": "inv-8",
+          "status": "pass",
+          "notes": "R-8 before R-9 (endpoint producer → consumer)"
+        },
+        {
+          "criterionId": "inv-9",
+          "status": "pass",
+          "notes": "R-10 (independent) scheduled"
+        }
+      ],
+      "usage": {
+        "inputTokens": 4,
+        "outputTokens": 8,
+        "cacheReadTokens": 91039,
+        "cacheWriteTokens": 17717,
+        "modelTurns": 2,
+        "toolCalls": 2,
+        "elapsedMs": 33493,
+        "providerCalls": null,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (subagent_usage.mjs), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/texts/h3-hr.A.r2.txt",
+        "../../../evidence/answers/h3-hr.A.r2.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

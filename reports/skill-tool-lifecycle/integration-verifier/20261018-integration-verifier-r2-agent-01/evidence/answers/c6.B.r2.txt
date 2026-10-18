@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - open High review finding "SQL built by string concat", which does not match S1's diff (it only adds src/fmt.js), so a human must check it
+S2: REVIEW_REQUIRED - AC1 has no evidence: the manifest's evidence list is empty and the AC-coverage row cites tests/count.test.js, which does not exist on story/S2

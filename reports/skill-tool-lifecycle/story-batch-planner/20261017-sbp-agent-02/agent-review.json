@@ -1,0 +1,37 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context), reviewed commit 5a40fb3 (diff, tests, probes)",
+  "reviewedAt": "2026-10-17",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "Found by the measurement, not the reviewer: endpoint names keep trailing punctuation (\"calls POST /api/timesheets.\" gives \"/api/timesheets.\"), so a producer and its consumers do not match. In h2-portal the planner put Q-4 (producer) in one wave with Q-5 and Q-6 (consumers). Every arm-B agent caught it and moved them, partly from the Jev shadow suggestion. A path like portal/api/TimesheetController.cs. is also read as an endpoint.",
+      "ref": "scripts/planner.mjs RX.endpoint",
+      "resolution": "open: tool bug, present before this rework; not fixed in the measured commit aff05cf. Needs a fix + test before adoption."
+    },
+    {
+      "severity": "Major",
+      "finding": "Any WORD-digits token after a ref verb (needs CVE-2024, after UTF-8) was treated as an out-of-batch story, holding the story and its dependents back.",
+      "ref": "scripts/planner.mjs plan() external filter",
+      "resolution": "fixed in aff05cf: a text ref is external only when its prefix is one the batch ids use; explicit links stay external; test added"
+    },
+    {
+      "severity": "Major",
+      "finding": "Text refs were not upper-cased, so 'depends on s-2' with S-2 in the batch became an external dependency and no edge.",
+      "ref": "scripts/planner.mjs extract() textRefs",
+      "resolution": "fixed in aff05cf: refs are upper-cased; test added"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Bare numeric refs to ids outside the batch ('after 1234') are silently ignored while 'after AB-1' blocks.",
+      "ref": "plan() external filter",
+      "resolution": "open: by design (bare numbers are too noisy); not documented in SKILL.md yet"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Suspected: 'blocks'-type links count as prerequisites.",
+      "ref": "extract() refs filter",
+      "resolution": "no change needed: the filter /depend|predecessor|blocked/ does not match 'blocks' (the reviewer had not run it)"
+    }
+  ],
+  "notes": "Checked with no issue: no prerequisite-before-dependent on probes; layer() did not throw on valid input; batch policy cannot reach jev/laya; duplicate ids throw; mixed-kind mutual dependencies become cycles. Trade-off kept on purpose: fixture 08 hidden dependency S-1|S-3 (only shared words) is now parallel (bench false-parallel now 1/13; the old unit test asserted it was serialized), as asked in the brief."
+}

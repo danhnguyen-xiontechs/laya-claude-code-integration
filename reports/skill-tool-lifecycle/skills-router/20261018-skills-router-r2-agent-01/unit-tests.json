@@ -1,0 +1,13 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"tests/*.test.mjs\" (cwd .claude/skills/skills-router; Node 24.11.1, Windows)",
+      "passed": 73,
+      "failed": 2,
+      "skipped": 0,
+      "notRun": 0,
+      "notes": "75 tests at commit ada217d (route.test.mjs 26/26, incl. 8 new line-output tests). The 2 failures are the scenario-file sha256 tests in scenarios.test.mjs, which fail the same way on untouched main (Windows core.autocrlf turns eval/scenarios.jsonl into CRLF, so its sha256 differs from the manifest). Not caused by this change; not fixed in this run."
+    }
+  ]
+}

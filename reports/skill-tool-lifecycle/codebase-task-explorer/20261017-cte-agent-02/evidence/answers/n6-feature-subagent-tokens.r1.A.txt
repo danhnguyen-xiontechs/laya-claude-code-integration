@@ -1,0 +1,20 @@
+Answer: the per-subagent token sums for the A/B report are built in .claude/skills/build-skill-tool-workflow (not in eval/ or the other skills). Nothing was modified.
+
+The 5 most relevant files, most relevant first, all under D:/cte2/w/n6-feature-subagent-tokens-c95123/repo/.claude/skills/build-skill-tool-workflow/:
+
+1. scripts/build_tool_report.mjs: builds the A/B totals. totalTokens (line 58) sums input, output, cacheRead and cacheWrite; the per-case mean and paired totals are at about lines 110-130; the report reads only results.json case.usage, never the subagent output.
+2. scripts/subagent_usage.mjs: maps each case's subagent to its transcript by the work dir in the prompt (null on zero or two matches), then calls transcript_usage.mjs on that one file. Its output is the per-case usage that must be copied into results.json.
+3. scripts/transcript_usage.mjs: sums the API usage of every assistant message in the session, plus the <session>/subagents/*.jsonl files, counting each message.id once.
+4. SKILL.md: step 6 gives the procedure: subagent_usage (with --forbid for arm A), paste usage into case.usage, then build_tool_report. Step 7 covers the report.
+5. tests/reports.test.mjs: pins the expected behaviour of transcript_usage dedup, subagent_usage matching (r1 vs r10), and pairedTokens.
+
+How the sum runs: transcript_usage gives one usage object per subagent file. subagent_usage gives { transcript, usage } per work dir. You paste usage into results.json case.usage by hand. build_tool_report then takes the sum per case (mean over repetitions), and the arm total is the sum over paired cases only (pass or fail in both arms).
+
+Caveats I found:
+- Bug, not covered by tests: in build_tool_report.mjs, the per-case mean (tok, about line 114) divides by all repetitions, but sumOrNull counts a repetition with no usage as 0. One missing repetition therefore understates that arm's tokens, which can make the change look better.
+- The totals include cacheRead and cacheWrite, so "Tokens Claude reads" is mostly cache reads and scales with turn count. Readers may expect plain input tokens.
+- The "All numbers" table shows tokens summed over all repetitions, while the headline uses pairedTokens (mean per case, summed). With 2 or 3 repetitions these differ.
+- subagent_usage counts only the one transcript for the work dir. A subagent spawned by a case sits in the same flat folder and is not added. The parent session's own orchestration tokens are excluded from every case.
+- If "the A/B report" means eval/ (the web-test Laya/Jev runs), its token numbers are typed by hand from the harness usage line (eval/AGENT-RUNS.md), not summed by a script.
+
+The helper (find.mjs) returned 10 unranked keyword hits, led by proxy/router_proxy.py, and none of them is on this path. Its list was not useful; the paths above come from my own grep and reads.

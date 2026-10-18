@@ -1,0 +1,22 @@
+## Candidate starting points — feature
+
+Engine: codemap codemap 4.6.0 · coverage: **partial** · pool 82 → considered 82
+
+Coverage notes (a missing edge is NOT proof of no dependency):
+- javascript-unresolved-imports: mixed — JavaScript: 2 of 255 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/subagent-model-router/bench/tasks/t1-slugify-te
+- python-unresolved-imports: mixed — Python: 14 of 17 project-relative imports did not resolve to a file; those edges are missing (.claude/skills/web-test-jev-ground/scripts/laya/serve.py -> .route
+
+| # | path | why it matched | importers |
+|---|---|---|---|
+| 1 | `.claude/skills/haiku-subagent/tools/prompt-budget/report.js` | 2 queries: report.js, buildReport | 0 |
+| 2 | `research/ab-1697/compare.py` | 1 query:  | 0 |
+| 3 | `.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs` | 1 query: build_main_report.mjs | 0 |
+| 4 | `.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs` | 1 query: build_tool_report.mjs | 0 |
+| 5 | `.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs` | 2 queries: subagent_usage.mjs | 0 |
+| 6 | `audit/audit.py` | 4 queries: text_of, classify_session, report, est_tokens | 0 |
+| 7 | `workflow/step_report.py` | 2 queries: step_report.py, tier_of, sum_assistant | 0 |
+| 8 | `research/ab-1697/run_ab.py` | 1 query: run_ab.py | 0 |
+| 9 | `.claude/skills/web-test-jev-ground/scripts/build_report.mjs` | 1 query: build_report.mjs | 0 |
+| 10 | `eval/run-ab.mjs` | 1 query: run-ab.mjs | 0 |
+
+Jev: 5 call(s), 4 batch(es), survivors 16. Advisory ranking only — verify by reading source.

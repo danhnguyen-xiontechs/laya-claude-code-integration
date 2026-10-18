@@ -1,0 +1,64 @@
+{
+  "findings": [
+    {
+      "severity": "Minor",
+      "finding": "Item 1 is fixed. decide() now returns ok:false when the body is not JSON, when reading the body times out, or when the body has no answers object. jevRank also treats a missing answers.best as a failure in both the batch pass and the global pass. A best value that is present but malformed still goes straight into readBatch with no shape check.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs:63-72; scripts/explore.mjs:229-230,244-245",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Item 2 is fixed. When a guard trips on the first call (payload or budget), the markdown now prints 'not called, FELL BACK to rules (<reason>)'. When no reason is set it prints 'unknown' instead of 'undefined'.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:297-298",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Item 3 is fixed. Any failure, including a failed global rerank, now returns the full rules order. One edge case remains: if ranked is empty, batches is empty and jev.global stays null, so the code still sends a global call with an empty pool instead of skipping it. Check that explore() always skips Jev when the pool is empty.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:238-252",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Item 4 is mostly fixed. rg now runs with --hidden, --glob '!.git', '--' and an explicit '.' path. Ties are sorted by path. A leading './' is stripped after backslashes are turned into slashes, so Windows '.\\\\' prefixes are handled. packages/, bin/ and out/ are no longer in JUNK. Exit 1 (no matches) is correctly treated as no problem. However, exit 2 is reported only when stdout is empty, so a partial failure (some files unreadable) is silently hidden because --no-messages also suppresses stderr. The '!.git' glob only excludes a top-level or nested directory named .git, which is fine, but .git worktree files are still listed.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:87-89",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Because packages/, bin/ and out/ are no longer filtered, real build output in out/ or bin/ (for example .NET bin/Debug) can now rank in the results. Only obj/ is still excluded, and the .dll/.exe/.pdb extension filter only partly limits this.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:108",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Item 5 is fixed. Numeric CLI options must now be positive integers or the script exits with code 2. There is no upper bound, so values like --max-calls 100000 or a very large --batch are still accepted.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:310-315",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The decision-provider.mjs hardening is a local copy. There are 13 decision-provider.mjs files under .claude/skills/*/scripts, and the other 12 still have the old behavior: ok:true on a non-JSON or answer-less HTTP 200 body.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/decision-provider.mjs:63",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "All 15 tests pass. The new tests use injected decideImpl and runImpl stubs written for exactly the failure modes being fixed, so they are in-sample regression checks. Nothing runs real rg/git output on Windows, for example '.\\\\' prefixes or exit 2 with partial output. Add one fixture-based test that runs the real rg.",
+      "ref": ".claude/skills/codebase-task-explorer/tests/explore.test.mjs",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "No secrets and no unsafe writes in this diff. The only write is the existing appendJsonl log, which records the task text and paths, not keys.",
+      "ref": ".claude/skills/codebase-task-explorer/scripts/explore.mjs:287",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Earlier Minor findings were not rechecked against agent-01/agent-review.json because this was a quick pass. The commit does not touch any other area, so treat all earlier Minor findings outside items 1-5 as still open.",
+      "ref": "reports/skill-tool-lifecycle/codebase-task-explorer/20261017-cte-agent-01/agent-review.json",
+      "resolution": "open"
+    }
+  ]
+}

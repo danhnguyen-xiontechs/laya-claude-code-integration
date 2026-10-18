@@ -1,0 +1,177 @@
+{
+  "experimentId": "20261018-curator-r2-agent-01",
+  "arm": "B",
+  "runId": "r1",
+  "startedAt": "2026-10-18T03:47:05.743Z",
+  "finishedAt": "2026-10-18T03:49:00.569Z",
+  "cases": [
+    {
+      "experimentId": "20261018-curator-r2-agent-01",
+      "caseId": "h02_stale_migration",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:47:05.743Z",
+      "finishedAt": "2026-10-18T03:48:14.094Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 2x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 39,
+        "cacheReadTokens": 370292,
+        "cacheWriteTokens": 75230,
+        "modelTurns": 7,
+        "toolCalls": 10,
+        "elapsedMs": 61032,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1297,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h02_stale_migration.B.r1.txt",
+        "../../../evidence/texts/h02_stale_migration.B.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-curator-r2-agent-01",
+      "caseId": "h04_session_fixture",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:47:05.788Z",
+      "finishedAt": "2026-10-18T03:47:55.679Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 1x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 23,
+        "cacheReadTokens": 290029,
+        "cacheWriteTokens": 66255,
+        "modelTurns": 6,
+        "toolCalls": 11,
+        "elapsedMs": 42031,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1223,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h04_session_fixture.B.r1.txt",
+        "../../../evidence/texts/h04_session_fixture.B.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-curator-r2-agent-01",
+      "caseId": "h06_swallowed_exception",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:47:05.824Z",
+      "finishedAt": "2026-10-18T03:47:58.559Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 1x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 40,
+        "cacheReadTokens": 299245,
+        "cacheWriteTokens": 71228,
+        "modelTurns": 6,
+        "toolCalls": 10,
+        "elapsedMs": 44296,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1318,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h06_swallowed_exception.B.r1.txt",
+        "../../../evidence/texts/h06_swallowed_exception.B.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    },
+    {
+      "experimentId": "20261018-curator-r2-agent-01",
+      "caseId": "h07_payload_trace",
+      "arm": "B",
+      "runId": "r1",
+      "startedAt": "2026-10-18T03:48:06.021Z",
+      "finishedAt": "2026-10-18T03:49:00.569Z",
+      "status": "pass",
+      "correct": true,
+      "observedOutcome": "cause terms ok; gold evidence line quoted; agent ran the test command 2x",
+      "criteriaResults": [
+        {
+          "criterionId": "cause-terms",
+          "status": "pass",
+          "notes": ""
+        },
+        {
+          "criterionId": "gold-evidence-line-quoted",
+          "status": "pass",
+          "notes": ""
+        }
+      ],
+      "usage": {
+        "inputTokens": 14,
+        "outputTokens": 45,
+        "cacheReadTokens": 397280,
+        "cacheWriteTokens": 30695,
+        "modelTurns": 7,
+        "toolCalls": 9,
+        "elapsedMs": 47832,
+        "providerCalls": 1,
+        "fallbackCount": 0,
+        "providerLatencyMs": 1056,
+        "source": "subagent transcript (subagent_usage.mjs --no-subagents), all tokens of the case agent session"
+      },
+      "evidenceRefs": [
+        "../../../evidence/answers/h07_payload_trace.B.r1.txt",
+        "../../../evidence/texts/h07_payload_trace.B.txt"
+      ],
+      "errors": [],
+      "deviations": []
+    }
+  ]
+}

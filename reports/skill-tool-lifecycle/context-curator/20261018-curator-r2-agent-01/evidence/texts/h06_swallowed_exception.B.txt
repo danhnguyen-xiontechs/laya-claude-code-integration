@@ -1,0 +1,14 @@
+[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1) · 881 of 3329 lines omitted · full log: .tool-output/20261018-105029_adff.log
+#1 lines 11-20 · failure · anchor · ________________________ test_settle_adds_all_entries _________________________
+#2 lines 1546-1557 · captured log call · JEV p=0.27 · WARNING  svc.db:noise_hard.py:74 slow query 831ms on orders_by_customer (threshold 300ms)
+#3 lines 1510-1521 · captured log call · JEV p=0.25 · DEBUG    svc.config:noise_hard.py:71 checksum ok for 9687 keys
+#4 lines 1750-1761 · captured log call · JEV p=0.22 · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+#5 lines 454-465 · captured log call · JEV p=0.21 · DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2339 took=165ms
+#6 lines 2242-2253 · captured log call · JEV p=0.21 · DEBUG    svc.db:noise_hard.py:71 tx 1183 committed (32 statements)
+#7 lines 34-45 · captured log call · pinned · ERROR    svc.http:noise_hard.py:80 request failed, retrying (attempt 1/3)
+#8 lines 82-93 · captured log call · pinned (JEV p=0.16) · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+#9 lines 94-105 · captured log call · pinned · Traceback (most recent call last):
+#10 lines 118-129 · captured log call · pinned · ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+#11 lines 178-189 · captured log call · pinned · ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+#12 lines 610-621 · captured log call · pinned · ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+[curator] 191 more kept chunks not listed · open the first pointer: Read .tool-output/20261018-105029_adff.log offset 11 limit 10

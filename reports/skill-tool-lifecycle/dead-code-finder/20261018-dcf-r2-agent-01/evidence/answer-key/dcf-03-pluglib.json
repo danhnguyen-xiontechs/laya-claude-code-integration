@@ -1,0 +1,116 @@
+[
+ {
+  "id": "D1",
+  "class": "dead",
+  "file": "pluglib/text.py",
+  "match": "strip_accents"
+ },
+ {
+  "id": "D2",
+  "class": "dead",
+  "file": "pluglib/text.py",
+  "match": "MAX_LEN"
+ },
+ {
+  "id": "D3",
+  "class": "dead",
+  "file": "pluglib/compat.py",
+  "match": "text_type"
+ },
+ {
+  "id": "N1",
+  "class": "neutral",
+  "file": "pluglib/compat.py",
+  "match": "PY2"
+ },
+ {
+  "id": "N2",
+  "class": "neutral",
+  "file": "pluglib/text.py",
+  "match": "unicodedata"
+ },
+ {
+  "id": "N3",
+  "class": "neutral",
+  "file": "tests/test_plugins.py",
+  "match": "pluglib.builtin"
+ },
+ {
+  "id": "N4",
+  "class": "neutral",
+  "file": "pluglib/compat.py",
+  "match": "compat"
+ },
+ {
+  "id": "D5",
+  "class": "dead",
+  "file": "pluglib/builtin.py",
+  "match": "Experimental"
+ },
+ {
+  "id": "K1",
+  "class": "decoy",
+  "file": "pluglib/__init__.py",
+  "match": "get_plugin"
+ },
+ {
+  "id": "K2",
+  "class": "decoy",
+  "file": "pluglib/__init__.py",
+  "match": "normalize"
+ },
+ {
+  "id": "K3",
+  "class": "decoy",
+  "file": "pluglib/builtin.py",
+  "match": "Upper"
+ },
+ {
+  "id": "K4",
+  "class": "decoy",
+  "file": "pluglib/builtin.py",
+  "match": "Reverse"
+ },
+ {
+  "id": "K5",
+  "class": "decoy",
+  "file": "pluglib/text.py",
+  "match": "truncate"
+ },
+ {
+  "id": "K6",
+  "class": "decoy",
+  "file": "pluglib/pytest_plugin.py",
+  "match": "plugin_names"
+ },
+ {
+  "id": "K7",
+  "class": "decoy",
+  "file": "pluglib/pytest_plugin.py",
+  "match": "pytest_configure"
+ },
+ {
+  "id": "K8",
+  "class": "decoy",
+  "file": "pluglib/registry.py",
+  "match": "__init_subclass__"
+ },
+ {
+  "id": "K9",
+  "class": "decoy",
+  "file": "pluglib/registry.py",
+  "match": "unregister"
+ },
+ {
+  "id": "K10",
+  "class": "decoy",
+  "file": "pluglib/config.py",
+  "match": "def load"
+ },
+ {
+  "id": "K11",
+  "class": "decoy",
+  "file": "pluglib/registry.py",
+  "match": "available"
+ }
+]

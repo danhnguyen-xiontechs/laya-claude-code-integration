@@ -1,0 +1,55 @@
+{
+  "reviewer": "independent read-only review subagent (fresh context) of tool commit 0ddf988; findings taken from its handback and re-checked against the code at 0ddf988 and 18a6a6f",
+  "reviewedAt": "2026-10-18",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "The flaky mark leaks across epochs: `flaky` stores bare keys and decideBefore exempts any key in it (`state.flaky.includes(key)`), so after one flaky observation, an edit and any number of identical failures, the command is never blocked again in the session.",
+      "ref": "retry-loop-breaker/hooks/core.ts:186 (@0ddf988)",
+      "area": "tool",
+      "resolution": "fixed in 18a6a6f: `flaky` stores { key, epoch } and isFlakyNow() exempts a key only while that epoch is current; legacy bare-string entries never exempt (unit tests 13, 21; engine test 'flaky (fail, pass) is exempt until a real Edit; then 5 identical failures deny the 4th and 5th')"
+    },
+    {
+      "severity": "Minor",
+      "finding": "A transient failure (isTransient) can mark a key flaky, in both the pass-after-fail and the fail-after-pass rules, so a network blip exempts a deterministic failure from blocking.",
+      "ref": "retry-loop-breaker/hooks/core.ts:216,225 (@0ddf988)",
+      "area": "tool",
+      "resolution": "fixed in 18a6a6f: a transient failure never marks a key flaky (unit test 19)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The near-duplicate path ignores the flaky mark without saying so: a near-duplicate of a flaky key still goes to Jev and can be refused, and nothing documents or tests whether that is intended.",
+      "ref": "retry-loop-breaker/hooks/core.ts:190-197 (@0ddf988)",
+      "area": "tool",
+      "resolution": "fixed in 18a6a6f: the flaky exemption is exact-key only by design, stated in core.ts and tool-change.md and covered by unit test 20"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Unit test 4 (same command, changed failure signature) has no threshold-boundary coverage at the new default 3: it does not show that the count restarts and a block needs 3 new identical failures.",
+      "ref": "retry-loop-breaker/tests/cases.unit.ts:70",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Behaviour changes not documented: `passed` order changed (a new pass moves the key to the end), and the plugin version stays 0.1.0 although the default threshold changed from 2 to 3.",
+      "ref": "retry-loop-breaker/.claude-plugin/plugin.json; retry-loop-breaker/hooks/core.ts:217 (@0ddf988)",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The epoch is read at record time, not at the call's start: recordAfter uses the state's current epoch, so a concurrent edit during a long run is attributed to the run. Eligible build commands that change files (codegen inside `npm run build`) never raise the epoch, so their own writes do not count as a state change.",
+      "ref": "retry-loop-breaker/hooks/register.ts:95-110; retry-loop-breaker/hooks/core.ts:recordAfter (@0ddf988)",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Engine-level test gap: the epoch-aware `passed` and flaky logic and the Jev path (askJev, timeout race, no_key/http/invalid fallbacks) are covered by unit tests only; the engine tests at 0ddf988 add only one default-threshold case.",
+      "ref": "retry-loop-breaker/tests/engine.test.ts",
+      "area": "tool",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed"
+    }
+  ]
+}

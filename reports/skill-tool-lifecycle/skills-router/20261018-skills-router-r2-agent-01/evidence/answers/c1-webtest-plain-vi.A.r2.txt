@@ -1,0 +1,2 @@
+PICK: web-test
+The request asks to test an Azure DevOps story on the dev environment with an HTML report and screenshots, which is exactly what web-test does; its -laya and -jev variants are A/B experiments that trigger only on explicit request.

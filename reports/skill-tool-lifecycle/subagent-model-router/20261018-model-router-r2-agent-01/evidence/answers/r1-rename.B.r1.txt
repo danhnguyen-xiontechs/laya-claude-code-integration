@@ -1,0 +1,1 @@
+Renamed `getUserName` to `fetchUserName` in 5 files (names.js definition and internal call, users/index.js re-export, orders/label.js import and call, orders/greet.js namespace call, test/users.test.mjs). `getUserNameLength` is unchanged, and `node --test` passes 2/2.

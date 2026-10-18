@@ -1,0 +1,16 @@
+BLOCKED vs FAIL in the integration check is decided by the integration-verifier skill. The helper's unranked list agreed on verify.mjs; I ranked the five files myself. I did not run the fixture tests.
+
+The 5 most relevant files, most relevant first:
+
+1. D:/cte3/w/n2-feature-blocked-status-c134ec/repo/.claude/skills/integration-verifier/scripts/verify.mjs - Holds all the status logic. Per-story rules are at lines 94-124 (branch missing, manifest invalid, required check with no record, no log, or no exit code gives BLOCKED; non-zero exit gives FAIL). Combined run at lines 213-214: exit 0 is PASS, an environment match or exit 127/9009 is BLOCKED, anything else is FAIL. finalize() at lines 284-298 spreads that to stories. Line 343 gives BLOCKED when no required checks are defined.
+2. D:/cte3/w/n2-feature-blocked-status-c134ec/repo/.claude/skills/integration-verifier/SKILL.md - The rule table (lines 35-54) states the intended BLOCKED vs FAIL contract and the severity order (FAIL > BLOCKED > REVIEW_REQUIRED > PASS). Read this first to compare against the code.
+3. D:/cte3/w/n2-feature-blocked-status-c134ec/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs - Hand-labelled fixtures that pin the expected behaviour: "missing-logs" and "environment-only" expect BLOCKED (lines 95-110), and line 125 asserts ECONNREFUSED maps to environment.
+4. D:/cte3/w/n2-feature-blocked-status-c134ec/repo/.claude/skills/integration-verifier/references/manifest.md - Defines the per-story result manifest (check exit_code and log_path). Whether a check counts as "recorded with evidence" (and so avoids BLOCKED) is decided by these fields.
+5. D:/cte3/w/n2-feature-blocked-status-c134ec/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs - Jev shadow provider. It is imported by verify.mjs, but finalize() uses only rule categories, so it cannot change a status. Included to confirm that boundary.
+
+Observations from reading the code (not verified by running it):
+- Asymmetry: a story's own required check that exits non-zero is always FAIL (line 121), with no environment check. The same ECONNREFUSED or exit 127 in the combined run becomes BLOCKED (line 214). The SKILL table only states the environment rule for combined failures, so this may be intended.
+- Possible false BLOCKED: deterministicCategory() (line 213) matches ENV_RX against the whole combined output, not the first error line. Real test failures that print text like "permission denied", "connection refused" or "service unavailable" would be downgraded from FAIL to BLOCKED.
+- Unattributed stories: when a combined failure is not environment-related, stories it does not name get REVIEW_REQUIRED, not FAIL (line 291).
+
+The other BLOCKED hits in the repo (web-test skills, ess-test-runs, eval reports) belong to a different system and are not the integration check.

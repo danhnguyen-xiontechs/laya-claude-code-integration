@@ -1,0 +1,11 @@
+CAUSE: The test fails because `Ledger.flush()` wraps the whole batch loop in one try/except. The fourth entry's lookup `e["rate"]` (line 20) raises KeyError on the rate-less entry `{"amount": 7}`, and the broad `except` only logs it and exits the loop, so the last entry `{"amount": 3, "rate": 1}` is never applied and the balance comes out 20 instead of the expected 23. The error is swallowed per batch rather than handled per entry, which is why the failure shows up only as a wrong total.
+
+LOCATION: svc/ledger.py:18-22 (the try/except around the batch loop in `flush`; the KeyError is raised at line 20 and swallowed at line 21-22)
+
+EVIDENCE:
+ERROR    svc.ledger:ledger.py:22 flush failed for batch of 4 entries
+    self.balance += e["amount"] * e["rate"]
+KeyError: 'rate'
+E       AssertionError: assert 20 == 23
+
+RUNS: 1

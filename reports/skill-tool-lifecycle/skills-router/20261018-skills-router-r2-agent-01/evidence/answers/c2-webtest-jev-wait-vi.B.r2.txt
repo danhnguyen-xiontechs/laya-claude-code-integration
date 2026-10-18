@@ -1,0 +1,2 @@
+PICK: web-test-jev-wait
+The request explicitly asks for Jev to handle page-load waiting and screen classification while testing ticket 12983, which is exactly what web-test-jev-wait is defined for, whereas the other Jev variants cover verdict, gate or oracle and plain web-test does not use Jev.

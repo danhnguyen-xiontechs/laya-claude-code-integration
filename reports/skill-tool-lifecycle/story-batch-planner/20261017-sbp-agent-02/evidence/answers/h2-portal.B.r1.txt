@@ -1,0 +1,5 @@
+{"waves": [["Q-4", "Q-9", "Q-10"], ["Q-5", "Q-6", "Q-7"], ["Q-8"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Reasoning: Q-1 and Q-2 contradict each other (Q-1 needs Q-2 merged first, while Q-2 is linked depends_on Q-1), Q-3 waits on Q-2, and Q-11 has no acceptance criteria and only "Small changes.", so these four need a decision; Q-5 and Q-6 call the POST /api/timesheets endpoint that Q-4 creates and Q-7 extends the TimesheetDto that Q-4 uses, so they go after Q-4 (the planner's wave 1 put Q-5 and Q-6 alongside Q-4 because it missed this producer-consumer link, though its Jev shadow read Q-4 as upstream for both); Q-8 edits the same fixture as Q-5, so it goes last; Q-9 and Q-10 touch disjoint files and are independent.
+
+Planner run: `node plan.mjs --summary` in the work folder returned waves [Q-4,Q-5,Q-6,Q-9], [Q-10], [Q-7,Q-8], [Q-11] with Q-1/Q-2 as a cycle and Q-3 blocked. I differ from it on Q-5/Q-6 (moved after Q-4), Q-10 (moved into wave 1, since nothing blocks it and wave 1 has room under maxConcurrency 4), and Q-11 (moved from wave 4 to needs_decision because it has no acceptance criteria).

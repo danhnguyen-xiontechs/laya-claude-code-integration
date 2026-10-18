@@ -1,0 +1,44 @@
+{
+  "c1": {
+    "batch": "PASS",
+    "stories": {
+      "S1": "PASS",
+      "S2": "PASS"
+    }
+  },
+  "c2": {
+    "batch": "BLOCKED",
+    "stories": {
+      "S1": "BLOCKED",
+      "S2": "PASS"
+    }
+  },
+  "c3": {
+    "batch": "FAIL",
+    "stories": {
+      "S1": "PASS",
+      "S2": "FAIL"
+    }
+  },
+  "c4": {
+    "batch": "FAIL",
+    "stories": {
+      "S1": "FAIL",
+      "S2": "FAIL"
+    }
+  },
+  "c5": {
+    "batch": "FAIL",
+    "stories": {
+      "S1": "FAIL",
+      "S2": "FAIL"
+    }
+  },
+  "c6": {
+    "batch": "REVIEW_REQUIRED",
+    "stories": {
+      "S1": "REVIEW_REQUIRED",
+      "S2": "PASS"
+    }
+  }
+}

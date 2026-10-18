@@ -1,0 +1,8 @@
+{ "reviewer": "independent read-only subagent (Explore type, fresh context), model opus", "reviewedAt": "2026-10-18",
+  "findings": [
+    { "severity": "Major", "finding": "Endpoints whose last segment looks like a file extension were dropped as contracts (/api/reports/summary.json, .csv), losing producer/consumer order.", "ref": "planner.mjs FILE_EXT", "resolution": "fixed: FILE_EXT now lists code-file extensions only; test added" },
+    { "severity": "Minor", "finding": "Trailing '/' left on endpoint names ('/api/users/' vs '/api/users').", "ref": "planner.mjs endpoint strip", "resolution": "fixed: '/' stripped; test added" },
+    { "severity": "Minor", "finding": "Dependents of an incomplete story were reported as 'blocked' with a cycle/external reason.", "ref": "planner.mjs review reasons", "resolution": "fixed: reason text now names incomplete" },
+    { "severity": "Minor", "finding": "An incomplete story that is also in a cycle or has an external prerequisite gets only the cycle/external entry; the thin description is not flagged until that is fixed.", "ref": "planner.mjs heldIncomplete", "resolution": "open: accepted for this run, listed in deviations" },
+    { "severity": "Minor", "finding": "Incomplete story depending on a cycle member gets only an 'incomplete' entry, no 'blocked' note.", "ref": "planner.mjs", "resolution": "open: accepted for this run, listed in deviations" } ],
+  "notes": "Probed: no scheduled story at or before a prerequisite's wave; every story is in a wave or in review; scheduleIncomplete:true matches the previous behaviour." }

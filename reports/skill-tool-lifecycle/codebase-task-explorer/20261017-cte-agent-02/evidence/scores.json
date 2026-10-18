@@ -1,0 +1,948 @@
+{
+  "scores": [
+    {
+      "caseId": "n1-bug-migration-wave",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/story-batch-planner/scripts/planner.mjs",
+        "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/story-batch-planner/test/planner.test.mjs",
+        "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/story-batch-planner/fixtures/04-migration.json",
+        "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/integration-verifier/scripts/verify.mjs",
+        "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/story-batch-planner/skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "story-batch-planner/scripts/planner.mjs"
+          ],
+          "hitBy": "cte2/w/n1-bug-migration-wave-d3c79a/repo/.claude/skills/story-batch-planner/scripts/planner.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 1335,
+        "cacheReadTokens": 797319,
+        "cacheWriteTokens": 107048,
+        "modelTurns": 11,
+        "toolCalls": 18,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 255896,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n1-bug-migration-wave",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/scripts/planner.mjs",
+        "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/test/planner.test.mjs",
+        "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/fixtures/04-migration.json",
+        "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/scripts/plan.mjs",
+        "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "story-batch-planner/scripts/planner.mjs"
+          ],
+          "hitBy": "cte2/w/n1-bug-migration-wave-5fdc8f/repo/.claude/skills/story-batch-planner/scripts/planner.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 26,
+        "outputTokens": 429,
+        "cacheReadTokens": 922966,
+        "cacheWriteTokens": 93198,
+        "modelTurns": 13,
+        "toolCalls": 14,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 245591,
+        "providerLatencyMs": 2340,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n2-feature-blocked-status",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/scripts/verify.mjs",
+        "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/skill.md",
+        "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs",
+        "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/references/manifest.md",
+        "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "integration-verifier/scripts/verify.mjs"
+          ],
+          "hitBy": "cte2/w/n2-feature-blocked-status-0e1563/repo/.claude/skills/integration-verifier/scripts/verify.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 3211,
+        "cacheReadTokens": 628592,
+        "cacheWriteTokens": 94239,
+        "modelTurns": 9,
+        "toolCalls": 17,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 302043,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n2-feature-blocked-status",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/scripts/verify.mjs",
+        "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/skill.md",
+        "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs",
+        "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/references/manifest.md",
+        "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "integration-verifier/scripts/verify.mjs"
+          ],
+          "hitBy": "cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/scripts/verify.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 24,
+        "outputTokens": 4319,
+        "cacheReadTokens": 922222,
+        "cacheWriteTokens": 104213,
+        "modelTurns": 12,
+        "toolCalls": 20,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 214379,
+        "providerLatencyMs": 2551,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n3-bug-worse-case",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/build_tool_report.mjs"
+          ],
+          "hitBy": "cte2/w/n3-bug-worse-case-7de852/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 32,
+        "outputTokens": 1239,
+        "cacheReadTokens": 1178527,
+        "cacheWriteTokens": 106045,
+        "modelTurns": 16,
+        "toolCalls": 20,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 245069,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n3-bug-worse-case",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/build_tool_report.mjs"
+          ],
+          "hitBy": "cte2/w/n3-bug-worse-case-010de2/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 34,
+        "outputTokens": 4017,
+        "cacheReadTokens": 1235590,
+        "cacheWriteTokens": 104637,
+        "modelTurns": 17,
+        "toolCalls": 20,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 244162,
+        "providerLatencyMs": 2318,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n4-refactor-shortlist",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/route.mjs",
+        "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/tests/route.test.mjs",
+        "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/tests/variants.test.mjs",
+        "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/eval.mjs",
+        "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/catalog.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "cte2/w/n4-refactor-shortlist-643abf/repo/.claude/skills/skills-router/scripts/route.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 18,
+        "outputTokens": 602,
+        "cacheReadTokens": 574150,
+        "cacheWriteTokens": 93376,
+        "modelTurns": 9,
+        "toolCalls": 16,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 208079,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n4-refactor-shortlist",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/scripts/route.mjs",
+        "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/tests/route.test.mjs",
+        "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/tests/variants.test.mjs",
+        "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/scripts/catalog.mjs",
+        "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/readme.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/scripts/route.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 1933,
+        "cacheReadTokens": 855274,
+        "cacheWriteTokens": 110736,
+        "modelTurns": 11,
+        "toolCalls": 18,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 210059,
+        "providerLatencyMs": 2478,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n5-newfeature-precompact",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/hooks/fast-compact.ts",
+        "cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/types/claude-code.d.ts",
+        "cte2/w/n5-newfeature-precompact-a3549f/repo/smart-context-trimming/hooks/register.ts",
+        "cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/hooks/hooks.json",
+        "cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/tests/fast-compact.test.ts"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "fast-compact/hooks/fast-compact.ts",
+            "fast-compact/hooks/hooks.json"
+          ],
+          "hitBy": "cte2/w/n5-newfeature-precompact-a3549f/repo/fast-compact/hooks/fast-compact.ts"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 1583,
+        "cacheReadTokens": 853831,
+        "cacheWriteTokens": 107473,
+        "modelTurns": 11,
+        "toolCalls": 20,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 214316,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n5-newfeature-precompact",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/hooks/fast-compact.ts",
+        "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/hooks/hooks.json",
+        "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/types/claude-code.d.ts",
+        "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/.claude-plugin/plugin.json",
+        "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/tests/fast-compact.test.ts"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "fast-compact/hooks/fast-compact.ts",
+            "fast-compact/hooks/hooks.json"
+          ],
+          "hitBy": "cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/hooks/fast-compact.ts"
+        }
+      ],
+      "usage": {
+        "inputTokens": 22,
+        "outputTokens": 1526,
+        "cacheReadTokens": 725863,
+        "cacheWriteTokens": 87785,
+        "modelTurns": 11,
+        "toolCalls": 12,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 212069,
+        "providerLatencyMs": 1807,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n6-feature-subagent-tokens",
+      "rep": 1,
+      "arm": "A",
+      "top5": [
+        "scripts/build_tool_report.mjs",
+        "scripts/subagent_usage.mjs",
+        "scripts/transcript_usage.mjs",
+        "skill.md",
+        "tests/reports.test.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/subagent_usage.mjs",
+            "build-skill-tool-workflow/scripts/transcript_usage.mjs"
+          ],
+          "hitBy": "scripts/subagent_usage.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 30,
+        "outputTokens": 115,
+        "cacheReadTokens": 1214116,
+        "cacheWriteTokens": 75755,
+        "modelTurns": 15,
+        "toolCalls": 20,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 247108,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n6-feature-subagent-tokens",
+      "rep": 1,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/subagent_usage.mjs",
+            "build-skill-tool-workflow/scripts/transcript_usage.mjs"
+          ],
+          "hitBy": "cte2/w/n6-feature-subagent-tokens-9de57e/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 34,
+        "outputTokens": 477,
+        "cacheReadTokens": 1392449,
+        "cacheWriteTokens": 75975,
+        "modelTurns": 17,
+        "toolCalls": 23,
+        "providerCalls": 5,
+        "fallbackCount": 0,
+        "elapsedMs": 274700,
+        "providerLatencyMs": 3046,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n1-bug-migration-wave",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/scripts/planner.mjs",
+        "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/test/planner.test.mjs",
+        "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/fixtures/04-migration.json",
+        "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/scripts/plan.mjs",
+        "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "story-batch-planner/scripts/planner.mjs"
+          ],
+          "hitBy": "cte2/w/n1-bug-migration-wave-4ef898/repo/.claude/skills/story-batch-planner/scripts/planner.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 24,
+        "outputTokens": 4470,
+        "cacheReadTokens": 1058740,
+        "cacheWriteTokens": 82360,
+        "modelTurns": 12,
+        "toolCalls": 19,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 281604,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n1-bug-migration-wave",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "scripts/planner.mjs",
+        "scripts/plan.mjs",
+        "test/planner.test.mjs",
+        "fixtures/04-migration.json",
+        "skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "story-batch-planner/scripts/planner.mjs"
+          ],
+          "hitBy": "scripts/planner.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 32,
+        "outputTokens": 503,
+        "cacheReadTokens": 1206433,
+        "cacheWriteTokens": 61483,
+        "modelTurns": 16,
+        "toolCalls": 19,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 247742,
+        "providerLatencyMs": 1913,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n2-feature-blocked-status",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        ".claude/skills/integration-verifier/scripts/verify.mjs",
+        ".claude/skills/integration-verifier/skill.md",
+        ".claude/skills/integration-verifier/tests/fixtures.test.mjs",
+        ".claude/skills/integration-verifier/references/manifest.md",
+        ".claude/skills/integration-verifier/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "integration-verifier/scripts/verify.mjs"
+          ],
+          "hitBy": ".claude/skills/integration-verifier/scripts/verify.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 797,
+        "cacheReadTokens": 675350,
+        "cacheWriteTokens": 63955,
+        "modelTurns": 9,
+        "toolCalls": 14,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 219468,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n2-feature-blocked-status",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/verify.mjs",
+        "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/skill.md",
+        "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs",
+        "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/references/manifest.md",
+        "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "integration-verifier/scripts/verify.mjs"
+          ],
+          "hitBy": "cte2/w/n2-feature-blocked-status-6f8427/repo/.claude/skills/integration-verifier/scripts/verify.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 26,
+        "outputTokens": 1508,
+        "cacheReadTokens": 884687,
+        "cacheWriteTokens": 51998,
+        "modelTurns": 12,
+        "toolCalls": 12,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 233258,
+        "providerLatencyMs": 3113,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n3-bug-worse-case",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/build_tool_report.mjs"
+          ],
+          "hitBy": "cte2/w/n3-bug-worse-case-05aa54/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 30,
+        "outputTokens": 962,
+        "cacheReadTokens": 1213899,
+        "cacheWriteTokens": 73425,
+        "modelTurns": 15,
+        "toolCalls": 20,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 236056,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n3-bug-worse-case",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_main_report.mjs",
+        "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/schemas/case-result.schema.json"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/build_tool_report.mjs"
+          ],
+          "hitBy": "cte2/w/n3-bug-worse-case-0699de/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 36,
+        "outputTokens": 762,
+        "cacheReadTokens": 1395774,
+        "cacheWriteTokens": 64128,
+        "modelTurns": 18,
+        "toolCalls": 20,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 228786,
+        "providerLatencyMs": 3589,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n4-refactor-shortlist",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/route.mjs",
+        "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/tests/route.test.mjs",
+        "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/tests/variants.test.mjs",
+        "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/catalog.mjs",
+        "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/eval.mjs"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "cte2/w/n4-refactor-shortlist-a0b4b0/repo/.claude/skills/skills-router/scripts/route.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 24,
+        "outputTokens": 53,
+        "cacheReadTokens": 844180,
+        "cacheWriteTokens": 64308,
+        "modelTurns": 11,
+        "toolCalls": 14,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 215816,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n4-refactor-shortlist",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/route.mjs",
+        "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/variants.test.mjs",
+        "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/tests/route.test.mjs",
+        "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/eval.mjs",
+        "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/readme.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "skills-router/scripts/route.mjs"
+          ],
+          "hitBy": "cte2/w/n4-refactor-shortlist-f1efea/repo/.claude/skills/skills-router/scripts/route.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 20,
+        "outputTokens": 1563,
+        "cacheReadTokens": 578943,
+        "cacheWriteTokens": 43115,
+        "modelTurns": 9,
+        "toolCalls": 10,
+        "providerCalls": 4,
+        "fallbackCount": 0,
+        "elapsedMs": 236719,
+        "providerLatencyMs": 2658,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n5-newfeature-precompact",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/hooks/fast-compact.ts",
+        "cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/types/claude-code.d.ts",
+        "cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/hooks/hooks.json",
+        "cte2/w/n5-newfeature-precompact-64fb3d/repo/smart-context-trimming/hooks/register.ts",
+        "cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/.claude-plugin/plugin.json"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "fast-compact/hooks/fast-compact.ts",
+            "fast-compact/hooks/hooks.json"
+          ],
+          "hitBy": "cte2/w/n5-newfeature-precompact-64fb3d/repo/fast-compact/hooks/fast-compact.ts"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 26,
+        "cacheReadTokens": 368435,
+        "cacheWriteTokens": 46168,
+        "modelTurns": 6,
+        "toolCalls": 11,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 114658,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n5-newfeature-precompact",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/fast-compact.ts",
+        "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/types/claude-code.d.ts",
+        "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/hooks.json",
+        "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/.claude-plugin/plugin.json",
+        "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/scripts/preview.ts"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "fast-compact/hooks/fast-compact.ts",
+            "fast-compact/hooks/hooks.json"
+          ],
+          "hitBy": "cte2/w/n5-newfeature-precompact-5370ba/repo/fast-compact/hooks/fast-compact.ts"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 27,
+        "cacheReadTokens": 357812,
+        "cacheWriteTokens": 47463,
+        "modelTurns": 6,
+        "toolCalls": 11,
+        "providerCalls": 3,
+        "fallbackCount": 0,
+        "elapsedMs": 117705,
+        "providerLatencyMs": 1810,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    },
+    {
+      "caseId": "n6-feature-subagent-tokens",
+      "rep": 2,
+      "arm": "A",
+      "top5": [
+        "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs",
+        "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/skill.md"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/subagent_usage.mjs",
+            "build-skill-tool-workflow/scripts/transcript_usage.mjs"
+          ],
+          "hitBy": "cte2/w/n6-feature-subagent-tokens-547f1e/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 12,
+        "outputTokens": 39,
+        "cacheReadTokens": 374538,
+        "cacheWriteTokens": 48575,
+        "modelTurns": 6,
+        "toolCalls": 12,
+        "providerCalls": 0,
+        "fallbackCount": 0,
+        "elapsedMs": 101639,
+        "providerLatencyMs": null,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": null,
+      "jevReason": null
+    },
+    {
+      "caseId": "n6-feature-subagent-tokens",
+      "rep": 2,
+      "arm": "B",
+      "top5": [
+        "cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs",
+        "cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs",
+        "cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/skill.md",
+        "cte2/w/n6-feature-subagent-tokens-737d01/repo/workflow/step_report.py"
+      ],
+      "recall": 1,
+      "fractionalGroups": "1/1",
+      "pass": true,
+      "usable": true,
+      "groups": [
+        {
+          "group": [
+            "build-skill-tool-workflow/scripts/subagent_usage.mjs",
+            "build-skill-tool-workflow/scripts/transcript_usage.mjs"
+          ],
+          "hitBy": "cte2/w/n6-feature-subagent-tokens-737d01/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs"
+        }
+      ],
+      "usage": {
+        "inputTokens": 16,
+        "outputTokens": 34,
+        "cacheReadTokens": 513854,
+        "cacheWriteTokens": 44136,
+        "modelTurns": 8,
+        "toolCalls": 12,
+        "providerCalls": 5,
+        "fallbackCount": 0,
+        "elapsedMs": 105275,
+        "providerLatencyMs": 3571,
+        "source": "subagent transcript (claude-haiku-5-5, effort xhigh)"
+      },
+      "jevFallback": false,
+      "jevReason": null
+    }
+  ]
+}

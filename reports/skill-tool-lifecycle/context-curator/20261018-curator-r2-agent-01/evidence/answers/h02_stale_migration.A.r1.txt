@@ -1,0 +1,11 @@
+CAUSE: svc/migrate.py's apply_all treats a checksum mismatch on an already-recorded migration as "applied": it logs a warning and `continue`s, so the ALTER TABLE for 0042_orders_region never runs and the orders table never gets the `region` column. The fixture in tests/conftest.py seeds schema_migrations with a stale row for 0042 (checksum 9f3a77c1 vs the file's 3f5429e3) while the orders table has no region column, so the runner skips it and create_order's INSERT fails. The ERROR lines from svc.cache, svc.storage and svc.metrics in the log are unrelated noise from the chatter() helper.
+
+LOCATION: svc/migrate.py:25-26 (checksum-mismatch branch that skips the migration without verifying the schema); the stale seed that triggers it is tests/conftest.py:17.
+
+EVIDENCE:
+WARNING  svc.migrate:migrate.py:26 migration 0042_orders_region checksum differs (stored=9f3a77c1 file=3f5429e3), assuming applied
+INFO     svc.migrate:migrate.py:30 applying migration 0043_customers_email
+E       sqlite3.OperationalError: table orders has no column named region
+(also: svc\orders.py:10: OperationalError; and "FAILED tests/test_orders.py::test_order_records_region - sqlite3.OperationalE..." / "1 failed in 0.33s")
+
+RUNS: 1

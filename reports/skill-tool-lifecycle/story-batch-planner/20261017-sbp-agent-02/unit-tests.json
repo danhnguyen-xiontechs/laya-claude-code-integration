@@ -1,0 +1,1 @@
+{ "commit": "aff05cf", "suites": [ { "level": "unit", "command": "node --test \".claude/skills/story-batch-planner/test/*.test.mjs\"", "passed": 22, "failed": 0, "skipped": 0, "notRun": 0 } ] }

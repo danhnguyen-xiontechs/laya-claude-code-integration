@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-jevadv-r2-agent-01",
+  "tool": {
+    "name": "jev_advisor",
+    "kind": "helper",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "claude/jevadv-round2"
+  },
+  "status": "IMPLEMENTED",
+  "headline": "Round 2 built and unit-tested (one [jev] hint, anchor repeats dropped, 200-character excerpt; 4 log-only cases); not measured. The user stopped the run before the case agents: the gold chunk is never sent to Jev on the new cases, so a run would measure chunk selection.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "evaluation": {
+    "caseCount": 4,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "deviations": [
+      "Not measured: the run was stopped by the user before the case agents (cost and the chunk-selection finding).",
+      "No JEV branch was created (read-only); the tool change is a scratch git repo, carried as diff/jevadv-change.diff.",
+      "Carry-over: h01 and h05 from the baseline; h03 and h07 dropped (unchanged output).",
+      "The flagged count excludes anchor repeats; the flag-off setting is not byte-identical to the old output.",
+      "The generator and the answer key are kept outside the repo until grading."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "toolChange": "diff",
+    "baseline": "../20261018-jevadv-agent-01/"
+  }
+}

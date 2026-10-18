@@ -1,0 +1,73 @@
+{
+  "experimentId": "20261018-cte-r2-agent-01",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "92aa80d",
+    "branch": "claude/cte-round2"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "With the Jev confidence gate, Haiku agents passed A 11/12 vs B 12/12 on 6 blind-query tasks x 2 reps, but B cost 43% more tokens (8.84M -> 12.68M, 120 -> 173 model turns); no case worse. The extra turns were mostly agents waiting on a helper that took 100-300 s on a loaded machine (18 of 24 calls hit the 120 s Bash timeout), the gate fired on n5 r1/r2 and n6 r2 but saved nothing, and Jev never changed the useful #1. Top suggestion: make --provider none (codemap order) the default and keep Jev behind a flag.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 11,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.9166666666666666,
+      "tokens": 8844771,
+      "inputTokens": 242,
+      "outputTokens": 975,
+      "toolCalls": 189,
+      "modelTurns": 120,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 193191,
+      "pairedTokens": 4422385.5
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 12684310,
+      "inputTokens": 356,
+      "outputTokens": 3688,
+      "toolCalls": 212,
+      "modelTurns": 173,
+      "providerCalls": 41,
+      "fallbacks": 0,
+      "providerLatencyMs": 2420,
+      "elapsedMs": 212574,
+      "pairedTokens": 6342155
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [
+    "n3-bug-worse-case"
+  ],
+  "unitTotals": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:48:14.212Z",
+  "generatedAt": "2026-10-18T06:51:47.567Z",
+  "report": "report.html"
+}

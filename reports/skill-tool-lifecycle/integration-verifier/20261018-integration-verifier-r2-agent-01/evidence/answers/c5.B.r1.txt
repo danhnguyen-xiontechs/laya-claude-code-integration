@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: FAIL - changes getUser to take ({ id }) while S2's profile.js still calls getUser(id) with a number, so the combined test run exits 1 (profile.test.js: Cannot read properties of undefined)
+S2: FAIL - its profile.test.js fails in the combined run because it calls getUser(5) against S1's new destructured signature

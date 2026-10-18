@@ -1,0 +1,12 @@
+Where to start: the keyword shortlist is stage 1 of the skills router in `.claude/skills/skills-router/scripts/route.mjs`. Five paths, most relevant first (all under D:/cte3/w/n4-refactor-shortlist-18427b/repo):
+
+1. `.claude/skills/skills-router/scripts/route.mjs`: holds the whole shortlist. Text helpers (STOP, stem, tokenize, ~l.29-67), BM25 scoring (buildIndex, bm25, mentions, ~l.69-115), variant-name gating (explicitAllowed, variantTokens, asksForVariant, ~l.117-239) and shortlist() itself (~l.245-253). Stage 2 and finalize (~l.255-383) stay here and would import from the new module.
+2. `.claude/skills/skills-router/tests/route.test.mjs`: imports bm25, buildIndex, explicitAllowed, mentions, shortlist, stem, tokenize from route.mjs (l.6-8), so its import source must change or the tests must be split. Run with `node --test .claude/skills/skills-router/tests/route.test.mjs`.
+3. `.claude/skills/skills-router/tests/variants.test.mjs`: imports asksForVariant, shortlist, variantTokens from route.mjs (l.6). It covers the explicit-only variant rules that the shortlist filter depends on.
+4. `.claude/skills/skills-router/scripts/eval.mjs`: imports combineRuns, DEFAULT_THRESHOLDS, finalize, route from route.mjs (l.30). It re-runs routing across k and thresholds, so the public surface it uses must keep resolving.
+5. `.claude/skills/skills-router/scripts/catalog.mjs`: defines the catalog entry shape the shortlist reads (name, description, head, explicitOnly) and bareName(), which route.mjs imports (l.16). The new module would import bareName from here.
+
+Notes:
+- The find.mjs output was an unranked list. Its other hits (`.claude/skills/subagent-model-router/scripts/pricing.mjs`, `proxy/router_proxy.py`, `workflow/hooks/laya_step_router.py`) match only the word "router", so I set them aside.
+- Coupling to watch: tokenize and stem are also used by stage 2 (whyPhrase, overlaps, descSet, variantIndex), so they must be exported from the new module. shortlist() depends on asksForVariant, which depends on variantTokens and baseOf, so moving only bm25() would leave the shortlist logic behind.
+- Nothing was modified. I did not use any skill or script beyond the provided find.mjs.

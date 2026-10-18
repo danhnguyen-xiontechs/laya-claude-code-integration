@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-grs-r2-agent-01",
+  "tool": {
+    "name": "git-risk-scanner",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "claude/grs-round2"
+  },
+  "status": "IMPLEMENTED",
+  "headline": "Round 2 built and unit-tested (guidance v2 with a guidanceVersion switch; 4 history-only cases); not measured. The user stopped the run before the case agents.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "evaluation": {
+    "caseCount": 4,
+    "repetitions": 2,
+    "criteriaFrozenAt": null,
+    "deviations": [
+      "Not measured: the run was stopped by the user before the case agents (cost).",
+      "No real long-history file was available; all four cases are generated.",
+      "The tool code is the JEV review worktree copy, not a commit on claude/grs-round2; JEV is read-only for this session. The change is carried as diff/*.patch.",
+      "The v2 step 1 text differs from the decision spec (quote-free fragment instead of double quotes), after the Opus review found the quoting bug.",
+      "Generators and the answer key are kept outside the repo until grading."
+    ]
+  },
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "toolChange": "diff",
+    "baseline": "../20261018-grs-agent-01/"
+  }
+}

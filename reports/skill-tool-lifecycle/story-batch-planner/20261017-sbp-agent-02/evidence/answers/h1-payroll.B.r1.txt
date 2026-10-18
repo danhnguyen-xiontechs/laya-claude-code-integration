@@ -1,0 +1,5 @@
+```json
+{"waves": [["P-1","P-3","P-5","P-10"],["P-2","P-4","P-6","P-9","P-12"],["P-11"]], "needs_decision": ["P-7","P-8"]}
+```
+
+Roots go first (P-1 adds tax_code, P-3 the run endpoint, P-5 PayslipDto, P-10 is isolated), then their dependents in wave 2 (P-2 after P-1, P-4 and P-12 after P-3, P-6 after P-5, P-9 after P-1 because both add migrations); P-11 goes last because it and P-6 both edit notify/templates/payslip.html and the Vietnamese template choice belongs in the mailer that P-6 writes; P-7 waits on FIN-12, which is outside the batch, and P-8 has no ACs or scope, so both are held out rather than sequenced.

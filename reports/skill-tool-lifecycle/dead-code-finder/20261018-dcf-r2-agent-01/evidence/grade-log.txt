@@ -1,0 +1,16 @@
+dcf-01-demo.A.r1: pass | 19/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed D05,D11
+dcf-01-demo.B.r1: pass | 18/21 dead found, 0 decoy(s) listed, 0 unlisted wrong, 2 neutral; missed D05,D06,D11
+dcf-02-ordersapi.A.r1: pass | 8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -
+dcf-02-ordersapi.B.r1: pass | 8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -
+dcf-03-pluglib.A.r1: pass | 4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -
+dcf-03-pluglib.B.r1: pass | 4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -
+dcf-04-shopapp.A.r1: pass | 8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -
+dcf-04-shopapp.B.r1: pass | 6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D3,D4
+dcf-01-demo.B.r2: fail | 20/21 dead found, 0 decoy(s) listed, 1 unlisted wrong (demo_pkg/formatting.py:if amount < 0:), 2 neutral; missed D06
+dcf-01-demo.A.r2: fail | 19/21 dead found, 1 decoy(s) listed (J14), 0 unlisted wrong, 5 neutral; missed D05,D11
+dcf-02-ordersapi.B.r2: pass | 8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed -
+dcf-02-ordersapi.A.r2: pass | 8/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed -
+dcf-03-pluglib.B.r2: pass | 4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -
+dcf-03-pluglib.A.r2: pass | 4/4 dead found, 0 decoy(s) listed, 0 unlisted wrong, 3 neutral; missed -
+dcf-04-shopapp.B.r2: pass | 6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 1 neutral; missed D3,D4
+dcf-04-shopapp.A.r2: pass | 6/8 dead found, 0 decoy(s) listed, 0 unlisted wrong, 0 neutral; missed D3,D4

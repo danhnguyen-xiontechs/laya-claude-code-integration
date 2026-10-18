@@ -1,0 +1,3 @@
+BATCH: FAIL
+S1: PASS - test check exited 0 with a non-empty log, AC1 is backed by it, declared files match the diff, no conflict with S2, and the combined run exits 0.
+S2: FAIL - its own test check recorded exit 1 (log: "FAIL tests/count.test.js: 3 == 2") while the story claims tests pass; a re-run of the branch alone exits 0, so the story must re-run and re-record its check.

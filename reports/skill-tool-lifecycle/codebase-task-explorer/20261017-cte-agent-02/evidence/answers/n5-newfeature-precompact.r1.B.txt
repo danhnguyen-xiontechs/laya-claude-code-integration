@@ -1,0 +1,15 @@
+Read-only search, nothing modified.
+
+Helper result: the find.mjs / codebase-task-explorer ranking (codemap 4.6.0, coverage partial, Jev 3 calls) is not useful for this task. Its top 10 matched on generic words ("hook", "session", "summary") and are unrelated: haiku-subagent prompt-budget/log-hook.js, workflow/runs/persist-sessions/*/session_store.py, workflow/step_report.py, hooks/tests/fixtures/build.py, and similar. None touches compaction. The paths below come from my own grep for PreCompact|compaction and from reading the plugin manifests and types.
+
+The 5 most relevant starting points (repo root: D:/cte2/w/n5-newfeature-precompact-6f1568/repo):
+
+1. D:/cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/hooks/fast-compact.ts - the only existing plugin hook on `session.compact`, the in-process compaction event. `register` shows the pattern: `$.env`/`$.fs` for file I/O under `~/.claude/fast-compact/`, and returning `next(event)` to chain to the built-in path. A summary-file hook would be a sibling of this one.
+2. D:/cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/hooks/hooks.json - the manifest `{ "modules": ["./fast-compact.ts"] }`. A new hook module has to be listed here to load.
+3. D:/cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/types/claude-code.d.ts - the contract. `SessionCompactInput` (~line 7225: trigger, messages, instructions, agentId) and `SessionCompactTrigger` (~line 7285: 'manual' | 'auto' | 'plugin' | 'precompute') decide which compactions to summarize. The classic `PreCompactHookInput` (~line 5561) is the alternative if a settings-style hook is preferred. Per the doc at ~line 7265, `precompute` is a veto/no-op case, so the summary hook should skip it.
+4. D:/cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/.claude-plugin/plugin.json - plugin identity and `userConfig` (preserveRecentMessages, minReductionRatio). Any new option, such as summary path or length, would be declared here.
+5. D:/cte2/w/n5-newfeature-precompact-6f1568/repo/fast-compact/tests/fast-compact.test.ts - the test pattern to copy. It uses node:test and imports `register` and pure helpers from ../hooks/fast-compact.ts, so the summary builder can be unit-tested without the host.
+
+Other candidates I checked and ranked lower: retry-loop-breaker/hooks/register.ts and smart-context-trimming/hooks/register.ts (both use `on('session.start')` only, no compaction handling).
+
+Key finding: the hook can attach to `session.compact` (has `messages`, runs before the summarizer) or to classic `PreCompact` (stdin JSON with trigger and custom_instructions, no messages). `session.compact` is the better fit for building a summary from the transcript. fast-compact already listens on the same event, so the new hook must return `next(event)` unchanged and not break fast-compact's `{messages}` return.

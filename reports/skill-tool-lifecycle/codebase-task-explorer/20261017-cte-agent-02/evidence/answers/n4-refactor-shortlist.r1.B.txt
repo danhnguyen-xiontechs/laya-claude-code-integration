@@ -1,0 +1,13 @@
+Where to start: moving the keyword shortlist scoring of the skill suggestion router (skills-router) into its own module. Read-only; nothing was modified.
+
+The helper (codebase-task-explorer ranking, rules + Jev, coverage "partial") ranked: 1 skills-router/scripts/route.mjs, 2 bmad-help-jev/scripts/suggest.mjs, 3 skills-router/scripts/eval.mjs, 4 skills-router/tests/route.test.mjs, 5 ado-classify/common.py. I checked the source and overrode #2 and #5: suggest.mjs has no keyword/BM25 scoring (it sends a wide request to a provider), and ado-classify/common.py is unrelated. I promoted variants.test.mjs (helper #10) and catalog.mjs (not in the helper list).
+
+The 5 most relevant paths, most relevant first:
+
+1. D:/cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/scripts/route.mjs: the code to move. Stage 1 is here: stem/tokenize (lines 36-48), buildIndex (72), bm25 (88), mentions and explicitAllowed (107-135), variant gating baseOf/variantTokens/asksForVariant (137-239), and shortlist (245-253). route() calls shortlist at line 452.
+2. D:/cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/tests/route.test.mjs: imports bm25, buildIndex, explicitAllowed, mentions, shortlist, stem, tokenize from route.mjs (lines 6-8). Its stage-1 tests (about lines 20-70) must still pass or be re-pointed to the new module.
+3. D:/cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/tests/variants.test.mjs: imports shortlist, asksForVariant, variantTokens from route.mjs (line 6). It covers the variant gating that is part of the shortlist scoring.
+4. D:/cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/scripts/catalog.mjs: supplies the entry fields the scorer reads (name, description, head, explicitOnly) and bareName (line 279), which the new module will need to import.
+5. D:/cte2/w/n4-refactor-shortlist-65f7ce/repo/.claude/skills/skills-router/README.md: documents stage 1 (name x3, description x2, head x1, k1 1.2, b 0.75, deprecated halved). Update it after the move.
+
+Refactor notes: tokenize and stem are also used outside stage 1 (whyPhrase at route.mjs:59, overlaps and sameJob at lines 387-411), so the new module must export them and route.mjs must re-export them, or the imports in the tests change. eval.mjs (helper #3) imports only route(), finalize and DEFAULT_THRESHOLDS, not the shortlist pieces, so it is a consumer to check, not a file to move. The helper's coverage is partial (a few JS and Python imports unresolved), so the list above is from reading the source as well.

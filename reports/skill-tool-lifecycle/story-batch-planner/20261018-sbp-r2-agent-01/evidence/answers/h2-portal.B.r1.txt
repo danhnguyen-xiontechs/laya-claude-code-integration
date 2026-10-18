@@ -1,0 +1,3 @@
+{"waves": [["Q-4", "Q-8", "Q-9", "Q-10"], ["Q-5", "Q-6", "Q-7"]], "needs_decision": ["Q-1", "Q-2", "Q-3", "Q-11"]}
+
+Wave 1 has no shared files or contracts: Q-4 adds the POST /api/timesheets contract, Q-8 touches only the approval fixture, and Q-9 and Q-10 are isolated. Wave 2 waits for Q-4, which Q-5 and Q-6 call and Q-7 extends through TimesheetDto. Q-5 also waits for Q-8 because both use tests/fixtures/timesheets.json. Q-1 and Q-2 form a contradictory cycle (Q-1 says it needs Q-2 first, and Q-2 has depends_on Q-1), so Q-3, which builds on Q-2, is blocked. Q-11 has no real description. This is based on story text only, since no repository metadata was available, so real file overlaps could still change the waves. `node plan.mjs --summary` produced the same waves.

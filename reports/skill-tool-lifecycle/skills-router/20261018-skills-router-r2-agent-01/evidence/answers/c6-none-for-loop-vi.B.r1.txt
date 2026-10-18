@@ -1,0 +1,2 @@
+PICK: none
+A plain code-writing request (a for loop that prints even numbers) is a simple coding task Claude can answer directly, and no installed skill, command or subagent is specific to it; the router hint also said "none".

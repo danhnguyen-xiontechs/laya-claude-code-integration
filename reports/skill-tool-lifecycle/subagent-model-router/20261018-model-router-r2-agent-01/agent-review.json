@@ -1,0 +1,49 @@
+{
+  "reviewer": "independent agent, model opus, read-only, fresh context (round 2, reviewed commit 3ee2749)",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "GLOB_RE treated markdown emphasis on bare file names as globs: 'Change **paginate.js**, **cursor.js** and **api.js**' gave files=0 and haiku via the checked rule. Introduced by this round's change.",
+      "ref": ".claude/skills/subagent-model-router/scripts/router.mjs (GLOB_RE)",
+      "resolution": "fixed in 8974a9e: a '*' run is a glob only after start, whitespace, punctuation or '/' and before '.' or '/'; tests added in test/router.test.mjs for bold and italic file names."
+    },
+    {
+      "severity": "Minor",
+      "finding": "route-jev.json was re-fetched live: all 54 Jev answers carry new p, nouls, latency and cost values; only the tiers match the old file. The fix-notes wording 'Jev answers unchanged' is true only at tier level.",
+      "ref": "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/fix-notes.md",
+      "resolution": "open, not blocking: the tier claim is what the tests pin; wording to be corrected in the next rework."
+    },
+    {
+      "severity": "Minor",
+      "finding": "README latency figures (549 ms p50, max 1.3 s) are stale after the Jev re-run (566 ms p50, max 1692 ms).",
+      "ref": ".claude/skills/subagent-model-router/README.md:150,178-181",
+      "resolution": "open, not blocking: documentation only, not used by this measurement."
+    },
+    {
+      "severity": "Minor",
+      "finding": "The pin test checks only route-none.json. bench score defaults to route-jev.json, whose rule field is not pinned; the test also ignores the why field.",
+      "ref": ".claude/skills/subagent-model-router/test/bench.test.mjs:42-51",
+      "resolution": "open, not blocking: both files agree today on all 18 tasks."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Hidden coupling: route() is shared by route.mjs, hook-pretooluse (apply), govern.mjs (proposedTier) and mine-history. Prompts with test globs now get a lower rule tier on all these paths.",
+      "ref": ".claude/skills/subagent-model-router/scripts/router.mjs (route)",
+      "resolution": "open, not blocking: intended behaviour of the fix; to be stated in SKILL.md at the next rework."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Running route.mjs appends to the user's router log (DEFAULT_LOG). Pre-existing, not part of the diff. The bench override log:'' is a no-op because loadConfig drops empty strings (harmless: routeAll never calls route()).",
+      "ref": ".claude/skills/subagent-model-router/scripts/router.mjs",
+      "resolution": "open, not blocking. Side effect of this round: the route runs made about 6 log entries in the user's router log."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "README says about $0.00005 per Jev call; committed per-call costs are $0.000027 to $0.000037 (about $0.00003).",
+      "ref": ".claude/skills/subagent-model-router/README.md:150",
+      "resolution": "open, not blocking: pre-existing wording."
+    }
+  ],
+  "counts": { "Critical": 0, "Major": 1, "Minor": 4, "Suggestion": 2 },
+  "openBlocking": 0
+}

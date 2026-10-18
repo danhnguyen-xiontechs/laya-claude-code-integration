@@ -1,0 +1,96 @@
+1	{
+2	  "name": "portal-timesheets",
+3	  "stories": [
+4	    {
+5	      "id": "Q-1",
+6	      "title": "Profile API",
+7	      "description": "Adds GET /api/profile returning ProfileDto from portal/api/ProfileController.cs. Needs Q-2 merged first because it reuses the avatar store that Q-2 introduces.",
+8	      "ac": [
+9	        "Profile returns name and avatar"
+10	      ]
+11	    },
+12	    {
+13	      "id": "Q-2",
+14	      "title": "Avatar store",
+15	      "description": "Introduce the avatar blob store in portal/storage/AvatarStore.cs and show the avatar in the profile header.",
+16	      "links": [
+17	        {
+18	          "type": "depends_on",
+19	          "id": "Q-1"
+20	        }
+21	      ],
+22	      "ac": [
+23	        "Avatar uploaded and shown"
+24	      ]
+25	    },
+26	    {
+27	      "id": "Q-3",
+28	      "title": "Avatar cropping",
+29	      "description": "Builds on Q-2: let employees crop the avatar before saving, in portal/profile/Crop.tsx.",
+30	      "ac": [
+31	        "Cropped image saved"
+32	      ]
+33	    },
+34	    {
+35	      "id": "Q-4",
+36	      "title": "Timesheet submit API",
+37	      "description": "Adds POST /api/timesheets accepting TimesheetDto in portal/api/TimesheetController.cs.",
+38	      "ac": [
+39	        "201 on valid week"
+40	      ]
+41	    },
+42	    {
+43	      "id": "Q-5",
+44	      "title": "Timesheet entry page",
+45	      "description": "The weekly entry page portal/timesheets/Entry.tsx calls POST /api/timesheets. Tests use the fixture tests/fixtures/timesheets.json.",
+46	      "ac": [
+47	        "Week submitted from the page"
+48	      ]
+49	    },
+50	    {
+51	      "id": "Q-6",
+52	      "title": "Mobile timesheet submit",
+53	      "description": "The mobile app screen mobile/timesheets/Submit.tsx calls POST /api/timesheets.",
+54	      "ac": [
+55	        "Week submitted from the phone"
+56	      ]
+57	    },
+58	    {
+59	      "id": "Q-7",
+60	      "title": "Overtime field on timesheets",
+61	      "description": "Extends TimesheetDto with an overtimeHours field in portal/api/dto/TimesheetDto.cs.",
+62	      "ac": [
+63	        "Overtime hours stored"
+64	      ]
+65	    },
+66	    {
+67	      "id": "Q-8",
+68	      "title": "Timesheet approval tests",
+69	      "description": "Add approval scenarios to the fixture tests/fixtures/timesheets.json and to tests/approval/ApprovalTests.cs.",
+70	      "ac": [
+71	        "Approval tests green"
+72	      ]
+73	    },
+74	    {
+75	      "id": "Q-9",
+76	      "title": "Dark mode",
+77	      "description": "Add a dark theme in portal/theme/dark.css with a toggle in the settings menu.",
+78	      "ac": [
+79	        "Theme persists after reload"
+80	      ]
+81	    },
+82	    {
+83	      "id": "Q-10",
+84	      "title": "Help page",
+85	      "description": "Static help page portal/help/Help.tsx with links to the HR policies.",
+86	      "ac": [
+87	        "Help reachable from the footer"
+88	      ]
+89	    },
+90	    {
+91	      "id": "Q-11",
+92	      "title": "Timesheet tweaks",
+93	      "description": "Small changes."
+94	    }
+95	  ]
+96	}

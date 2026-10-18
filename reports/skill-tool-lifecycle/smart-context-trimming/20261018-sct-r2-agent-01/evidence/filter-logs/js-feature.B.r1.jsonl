@@ -1,0 +1,2 @@
+{"ts":"2026-10-18T03:39:41.853Z","command":"node --test","action":"trim","reason":"rule","bytesIn":16882,"bytesOut":6279,"jev":{"called":false},"ms":10}
+{"ts":"2026-10-18T03:40:01.837Z","command":"node --test","action":"trim","reason":"rule","bytesIn":11382,"bytesOut":1269,"jev":{"called":false},"ms":12}

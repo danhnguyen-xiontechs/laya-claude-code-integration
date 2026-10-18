@@ -1,0 +1,2106 @@
+[test] full log: .tool-output/last.log
+============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0
+rootdir: <scratch>\cur\evidence_work\h07_payload_trace.A
+configfile: pytest.ini
+testpaths: tests
+collected 2 items
+
+tests\test_chain.py .F                                                   [100%]
+
+================================== FAILURES ===================================
+_______________________ test_usd_request_keeps_currency _______________________
+
+    def test_usd_request_keeps_currency():
+        out = handle({"customer": "Initech", "qty": 2, "currency": "usd"})
+>       assert out["currency"] == "usd"
+E       AssertionError: assert 'eur' == 'usd'
+E         
+E         - usd
+E         + eur
+
+tests\test_chain.py:12: AssertionError
+------------------------------ Captured log call ------------------------------
+DEBUG    svc.chain:chain.py:10 stage=parse payload={"currency": "usd", "customer": "Initech", "qty": 2}
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=19 queue=4838
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 117ms
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 8556 keys
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3932 reason=lru
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=2563 -> ok 185ms
+INFO     svc.search:noise_hard.py:71 query terms=18 hits=5585 took=203ms
+DEBUG    svc.rpc:noise_hard.py:71 stream 9268 opened peer=p0
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=53ms
+INFO     svc.flags:noise_hard.py:71 flag f32 rollout=191%
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=140ms
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (4086 flags)
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5457 keys
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=39
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.config:noise_hard.py:71 watch fd=4 events=3588
+WARNING  svc.cache:noise_hard.py:74 cache miss ratio 0.38 above target 0.30
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:6290 hit=True
+DEBUG    svc.flags:noise_hard.py:71 flag f34 rollout=237%
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9258 -> 200 in 228ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 22 -> 1
+INFO     svc.search:noise_hard.py:71 merge segments 6 -> 1
+DEBUG    svc.audit:noise_hard.py:71 event 3930 recorded actor=u19
+DEBUG    svc.audit:noise_hard.py:71 event 4499 recorded actor=u7
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w12
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:1191 hit=False
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=2704
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 5424 template=t16
+DEBUG    svc.rpc:noise_hard.py:71 stream 9162 opened peer=p37
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=8931
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 38ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 17 -> 1
+DEBUG    svc.audit:noise_hard.py:71 event 7723 recorded actor=u21
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=6603
+INFO     svc.http:noise_hard.py:71 conn pool: 2541 idle, 32 in use
+DEBUG    svc.search:noise_hard.py:71 query terms=18 hits=1862 took=35ms
+INFO     svc.search:noise_hard.py:71 query terms=34 hits=3703 took=226ms
+INFO     svc.auth:noise_hard.py:71 session 1106 refreshed for user u14
+DEBUG    svc.flags:noise_hard.py:71 flag f12 evaluated for u4938 -> False
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w19
+DEBUG    svc.http:noise_hard.py:71 conn pool: 7083 idle, 36 in use
+DEBUG    svc.queue:noise_hard.py:71 depth q36=2789
+DEBUG    svc.billing:noise_hard.py:71 invoice 3842 line items=20
+DEBUG    svc.billing:noise_hard.py:71 invoice 7384 line items=37
+DEBUG    svc.storage:noise_hard.py:71 get blob 9087 etag=e38
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-2 next in 110s
+WARNING  svc.queue:noise_hard.py:74 queue depth 81 exceeds soft limit 50
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2213 hit=True
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=4307
+DEBUG    svc.storage:noise_hard.py:71 put blob 1101 size=119KB
+DEBUG    svc.flags:noise_hard.py:71 flag f21 evaluated for u1006 -> True
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 228us
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=6524 took=156ms
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 11us
+DEBUG    svc.audit:noise_hard.py:71 event 3059 recorded actor=u40
+INFO     svc.cache:noise_hard.py:71 evict key=session:8046 reason=lru
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=1 queue=6475
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 9711 template=t29
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w16
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k38
+INFO     svc.audit:noise_hard.py:71 event 2712 recorded actor=u13
+INFO     svc.notify:noise_hard.py:71 rate window 11/60
+DEBUG    svc.storage:noise_hard.py:71 get blob 2095 etag=e12
+DEBUG    svc.billing:noise_hard.py:71 tax table v33 applied to invoice 6992
+DEBUG    svc.audit:noise_hard.py:71 batch 2865 shipped
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9237 -> ok 112ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 226ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=9971
+INFO     svc.storage:noise_hard.py:71 get blob 4522 etag=e28
+DEBUG    svc.search:noise_hard.py:71 index shard=35 docs=7835
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 8ms
+DEBUG    svc.flags:noise_hard.py:71 flag f17 evaluated for u6789 -> False
+DEBUG    svc.storage:noise_hard.py:71 put blob 4573 size=105KB
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 92 from q21
+DEBUG    svc.search:noise_hard.py:71 index shard=6 docs=3294
+INFO     svc.search:noise_hard.py:71 query terms=12 hits=2015 took=32ms
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w15
+WARNING  svc.search:noise_hard.py:74 segment 58 not compacted, 549 deleted docs
+DEBUG    svc.flags:noise_hard.py:71 flag f18 rollout=110%
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-3 next in 59s
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 6450 from q30
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3678
+DEBUG    svc.config:noise_hard.py:71 watch fd=29 events=3513
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=1995 took=150ms
+DEBUG    svc.db:noise_hard.py:71 tx 5492 committed (27 statements)
+INFO     svc.db:noise_hard.py:71 tx 3894 committed (11 statements)
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9285 -> ok 185ms
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 229ms
+INFO     svc.db:noise_hard.py:71 tx 6033 committed (2 statements)
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=6865
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:971 reason=lru
+ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+OSError: sink unreachable
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w29
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=19ms
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=11 queue=9178
+INFO     svc.clock:noise_hard.py:71 tz table v17 loaded
+DEBUG    svc.config:noise_hard.py:71 watch fd=27 events=5852
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.rpc:noise_hard.py:71 stream 2274 opened peer=p13
+INFO     svc.storage:noise_hard.py:71 put blob 7086 size=63KB
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=16 queue=6491
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=3164 took=129ms
+INFO     svc.db:noise_hard.py:71 tx 9614 committed (2 statements)
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 150ms
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1171
+DEBUG    svc.scheduler:noise_hard.py:71 tick 5287 due=17
+DEBUG    svc.search:noise_hard.py:71 query terms=8 hits=5495 took=79ms
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=9232
+WARNING  svc.config:noise_hard.py:74 deprecated config key 'timeout_ms' is ignored, use 'timeout'
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-30 next in 12s
+DEBUG    svc.notify:noise_hard.py:71 rate window 33/60
+DEBUG    svc.clock:noise_hard.py:71 tz table v27 loaded
+INFO     svc.db:noise_hard.py:71 tx 3190 committed (2 statements)
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7797 hit=False
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2039 hit=False
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=935 took=5ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-34 next in 220s
+DEBUG    svc.rpc:noise_hard.py:71 stream 5882 opened peer=p0
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 200ms
+INFO     svc.db:noise_hard.py:71 pool checkout wait=65ms
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:297 hit=False
+DEBUG    svc.cache:noise_hard.py:71 warm shard=4 keys=932
+DEBUG    svc.queue:noise_hard.py:71 depth q7=6800
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6761 keys
+INFO     svc.billing:noise_hard.py:71 invoice 3041 line items=30
+INFO     svc.metrics:noise_hard.py:71 flush 5869 points to sink
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 168us
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=114ms
+DEBUG    svc.billing:noise_hard.py:71 invoice 7946 line items=29
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (4796 flags)
+DEBUG    svc.clock:noise_hard.py:71 tz table v30 loaded
+DEBUG    svc.queue:noise_hard.py:71 depth q7=1935
+INFO     svc.search:noise_hard.py:71 index shard=14 docs=6740
+INFO     svc.auth:noise_hard.py:71 rbac check role=r29 allowed=False
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (704 flags)
+INFO     svc.auth:noise_hard.py:71 session 3838 refreshed for user u13
+DEBUG    svc.db:noise_hard.py:71 tx 7822 committed (32 statements)
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6898 -> ok 68ms
+DEBUG    svc.audit:noise_hard.py:71 batch 2291 shipped
+WARNING  svc.flags:noise_hard.py:74 flag f58 has no owner annotation
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (2796 flags)
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w13
+DEBUG    svc.queue:noise_hard.py:71 ack msg 2318
+INFO     svc.cache:noise_hard.py:71 lookup key=item:8338 hit=True
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/6694 -> 200 in 150ms
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1173 due=26
+DEBUG    svc.billing:noise_hard.py:71 tax table v11 applied to invoice 7496
+DEBUG    svc.storage:noise_hard.py:71 get blob 5390 etag=e28
+DEBUG    svc.notify:noise_hard.py:71 digest built users=3888
+DEBUG    svc.flags:noise_hard.py:71 flag f21 rollout=110%
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=6486 account=a25
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 40ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 80ms
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 3690 template=t10
+DEBUG    svc.audit:noise_hard.py:71 batch 8190 shipped
+ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+ValueError: unbalanced quote
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 1833 from q21
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r39 allowed=False
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=37ms
+DEBUG    svc.flags:noise_hard.py:71 flag f24 evaluated for u4458 -> True
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9715 due=3
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=11 queue=2563
+INFO     svc.notify:noise_hard.py:71 rate window 14/60
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1713
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3620 reason=lru
+DEBUG    svc.cache:noise_hard.py:71 warm shard=3 keys=7100
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (1488 flags)
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k0
+INFO     svc.search:noise_hard.py:71 index shard=4 docs=71
+INFO     svc.search:noise_hard.py:71 query terms=24 hits=8481 took=147ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 14ms
+WARNING  svc.db:noise_hard.py:74 slow query 702ms on orders_by_customer (threshold 300ms)
+DEBUG    svc.billing:noise_hard.py:71 invoice 7542 line items=21
+INFO     svc.billing:noise_hard.py:71 invoice 1339 line items=26
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7517 hit=True
+INFO     svc.http:noise_hard.py:71 conn pool: 4805 idle, 8 in use
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/116 -> 200 in 157ms
+INFO     svc.auth:noise_hard.py:71 rbac check role=r3 allowed=True
+DEBUG    svc.db:noise_hard.py:71 tx 7577 committed (15 statements)
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 5836 from q30
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=2 queue=2578
+INFO     svc.audit:noise_hard.py:71 event 5240 recorded actor=u11
+DEBUG    svc.db:noise_hard.py:71 tx 9429 committed (24 statements)
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=4021
+DEBUG    svc.queue:noise_hard.py:71 depth q2=327
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 3534 keys
+DEBUG    svc.audit:noise_hard.py:71 event 6402 recorded actor=u40
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=3607 account=a12
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6926 -> ok 68ms
+INFO     svc.db:noise_hard.py:71 pool checkout wait=180ms
+INFO     svc.billing:noise_hard.py:71 tax table v24 applied to invoice 931
+DEBUG    svc.audit:noise_hard.py:71 batch 566 shipped
+INFO     svc.queue:noise_hard.py:71 ack msg 4864
+DEBUG    svc.flags:noise_hard.py:71 flag f26 rollout=109%
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 125ms
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w23
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+INFO     svc.config:noise_hard.py:71 checksum ok for 1356 keys
+DEBUG    svc.queue:noise_hard.py:71 ack msg 3139
+DEBUG    svc.db:noise_hard.py:71 tx 6896 committed (32 statements)
+INFO     svc.metrics:noise_hard.py:71 flush 5221 points to sink
+WARNING  svc.billing:noise_hard.py:74 rounding adjustment of 0.01 applied to invoice 4772
+INFO     svc.audit:noise_hard.py:71 event 639 recorded actor=u16
+INFO     svc.metrics:noise_hard.py:71 flush 3066 points to sink
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 240ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-14 next in 182s
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w36
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k14
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3366 reason=lru
+DEBUG    svc.notify:noise_hard.py:71 rate window 31/60
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 4861 template=t23
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 73us
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r24 allowed=True
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k16
+DEBUG    svc.config:noise_hard.py:71 watch fd=37 events=6505
+INFO     svc.auth:noise_hard.py:71 session 5640 refreshed for user u28
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=35 queue=9774
+INFO     svc.db:noise_hard.py:71 pool checkout wait=234ms
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=1739 -> ok 31ms
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r31 allowed=False
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 7768 keys
+INFO     svc.flags:noise_hard.py:71 flag f17 evaluated for u7111 -> False
+INFO     svc.billing:noise_hard.py:71 tax table v24 applied to invoice 4699
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2465 took=178ms
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=3259
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8302 template=t4
+DEBUG    svc.clock:noise_hard.py:71 tz table v27 loaded
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.search:noise_hard.py:71 merge segments 36 -> 1
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:127 hit=True
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 15ms
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w17
+WARNING  svc.http:noise_hard.py:74 upstream returned 503 for /v1/items/4494, falling back to replica
+DEBUG    svc.flags:noise_hard.py:71 flag f38 evaluated for u9885 -> True
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=40 queue=5973
+DEBUG    svc.flags:noise_hard.py:71 flag f32 rollout=163%
+DEBUG    svc.search:noise_hard.py:71 query terms=34 hits=7205 took=18ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 37 -> 1
+INFO     svc.notify:noise_hard.py:71 rate window 13/60
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=10
+DEBUG    svc.metrics:noise_hard.py:71 flush 5800 points to sink
+INFO     svc.clock:noise_hard.py:71 ntp offset 21us
+INFO     svc.http:noise_hard.py:71 conn pool: 6926 idle, 1 in use
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.notify:noise_hard.py:71 digest built users=8324
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k33
+DEBUG    svc.cache:noise_hard.py:71 warm shard=6 keys=3533
+INFO     svc.flags:noise_hard.py:71 flag f9 rollout=51%
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=7720 took=206ms
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=64ms
+DEBUG    svc.clock:noise_hard.py:71 tz table v33 loaded
+INFO     svc.audit:noise_hard.py:71 event 6438 recorded actor=u31
+INFO     svc.notify:noise_hard.py:71 rate window 10/60
+INFO     svc.flags:noise_hard.py:71 flag f11 evaluated for u3209 -> True
+DEBUG    svc.search:noise_hard.py:71 index shard=0 docs=3199
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9819 -> 200 in 87ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 93ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=7
+DEBUG    svc.queue:noise_hard.py:71 ack msg 4050
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (8639 flags)
+DEBUG    svc.db:noise_hard.py:71 tx 2532 committed (21 statements)
+INFO     svc.notify:noise_hard.py:71 rate window 24/60
+DEBUG    svc.clock:noise_hard.py:71 tz table v4 loaded
+WARNING  svc.search:noise_hard.py:74 segment 79 not compacted, 7550 deleted docs
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3960 reason=lru
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=5079 -> ok 174ms
+INFO     svc.scheduler:noise_hard.py:71 tick 5991 due=40
+DEBUG    svc.billing:noise_hard.py:71 tax table v5 applied to invoice 3139
+INFO     svc.queue:noise_hard.py:71 dequeued msg 9094 from q29
+DEBUG    svc.config:noise_hard.py:71 reload requested by w7
+INFO     svc.storage:noise_hard.py:71 get blob 7088 etag=e38
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r12 allowed=True
+INFO     svc.queue:noise_hard.py:71 ack msg 5682
+DEBUG    svc.queue:noise_hard.py:71 depth q36=6877
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k19
+INFO     svc.db:noise_hard.py:71 pool checkout wait=95ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-21 next in 187s
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=34 queue=3273
+INFO     svc.notify:noise_hard.py:71 enqueue email 2369 template=t28
+INFO     svc.scheduler:noise_hard.py:71 job nightly-6 next in 6s
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=28 queue=5021
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (461 flags)
+INFO     svc.billing:noise_hard.py:71 tax table v23 applied to invoice 6107
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 94ms
+DEBUG    svc.http:noise_hard.py:71 conn pool: 9927 idle, 33 in use
+DEBUG    svc.rpc:noise_hard.py:71 stream 5197 opened peer=p21
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=22
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=388 account=a27
+DEBUG    svc.clock:noise_hard.py:71 tz table v10 loaded
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=131ms
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=2 queue=1692
+DEBUG    svc.flags:noise_hard.py:71 flag f40 rollout=73%
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/8306 -> 200 in 223ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=23
+WARNING  svc.rpc:noise_hard.py:74 peer p48 slow to ack (754ms)
+DEBUG    svc.billing:noise_hard.py:71 invoice 8852 line items=30
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w9
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1960 due=3
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8154
+DEBUG    svc.search:noise_hard.py:71 merge segments 4 -> 1
+INFO     svc.notify:noise_hard.py:71 rate window 22/60
+DEBUG    svc.storage:noise_hard.py:71 get blob 745 etag=e30
+INFO     svc.notify:noise_hard.py:71 enqueue email 883 template=t11
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=2282 -> ok 118ms
+DEBUG    svc.flags:noise_hard.py:71 flag f27 rollout=78%
+DEBUG    svc.cache:noise_hard.py:71 warm shard=18 keys=9285
+DEBUG    svc.metrics:noise_hard.py:71 flush 377 points to sink
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=22 queue=2384
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=8736 took=77ms
+DEBUG    svc.audit:noise_hard.py:71 batch 3863 shipped
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=25 queue=8168
+INFO     svc.scheduler:noise_hard.py:71 job nightly-35 next in 131s
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 221us
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 4129 keys
+DEBUG    svc.config:noise_hard.py:71 reload requested by w25
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=209ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 82ms
+DEBUG    svc.queue:noise_hard.py:71 depth q29=5487
+DEBUG    svc.storage:noise_hard.py:71 get blob 9542 etag=e8
+DEBUG    svc.notify:noise_hard.py:71 rate window 39/60
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 41ms
+INFO     svc.billing:noise_hard.py:71 ledger append entry=1414 account=a39
+INFO     svc.queue:noise_hard.py:71 ack msg 7826
+INFO     svc.search:noise_hard.py:71 query terms=12 hits=5020 took=133ms
+INFO     svc.clock:noise_hard.py:71 tz table v12 loaded
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-56 started 624ms late
+INFO     svc.scheduler:noise_hard.py:71 tick 216 due=0
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 19us
+DEBUG    svc.search:noise_hard.py:71 query terms=2 hits=430 took=111ms
+DEBUG    svc.db:noise_hard.py:71 tx 5066 committed (37 statements)
+INFO     svc.notify:noise_hard.py:71 enqueue email 9188 template=t10
+INFO     svc.storage:noise_hard.py:71 get blob 8760 etag=e37
+INFO     svc.config:noise_hard.py:71 checksum ok for 474 keys
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1092
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 33us
+INFO     svc.billing:noise_hard.py:71 invoice 4150 line items=27
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=6199
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=28 queue=7259
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.audit:noise_hard.py:71 batch 330 shipped
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 218ms
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3833
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 9358 template=t18
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 31us
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=4
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k40
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=3740
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 606 from q33
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (9831 flags)
+DEBUG    svc.auth:noise_hard.py:71 session 2256 refreshed for user u20
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=4626
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=4112
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 205ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=5652
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 4624 from q32
+DEBUG    svc.cache:noise_hard.py:71 warm shard=10 keys=1676
+WARNING  svc.search:noise_hard.py:74 segment 85 not compacted, 8825 deleted docs
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:4816 reason=lru
+INFO     svc.queue:noise_hard.py:71 ack msg 4125
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=7981 took=4ms
+DEBUG    svc.config:noise_hard.py:71 watch fd=15 events=9829
+INFO     svc.http:noise_hard.py:71 GET /v1/items/4393 -> 200 in 117ms
+DEBUG    svc.audit:noise_hard.py:71 event 5212 recorded actor=u6
+DEBUG    svc.http:noise_hard.py:71 conn pool: 641 idle, 8 in use
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=27 queue=4490
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r28 allowed=True
+DEBUG    svc.notify:noise_hard.py:71 digest built users=8410
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=9070 account=a18
+DEBUG    svc.flags:noise_hard.py:71 flag f2 rollout=194%
+DEBUG    svc.scheduler:noise_hard.py:71 tick 610 due=36
+INFO     svc.cache:noise_hard.py:71 warm shard=26 keys=3480
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=8239 account=a40
+DEBUG    svc.metrics:noise_hard.py:71 flush 5488 points to sink
+DEBUG    svc.billing:noise_hard.py:71 tax table v34 applied to invoice 4463
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w12
+INFO     svc.scheduler:noise_hard.py:71 tick 9665 due=36
+DEBUG    svc.flags:noise_hard.py:71 flag f12 rollout=135%
+DEBUG    svc.metrics:noise_hard.py:71 flush 585 points to sink
+DEBUG    svc.db:noise_hard.py:71 tx 5096 committed (34 statements)
+DEBUG    svc.flags:noise_hard.py:71 flag f19 rollout=98%
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=260
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.notify:noise_hard.py:71 digest built users=6606
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 22ms
+INFO     svc.rpc:noise_hard.py:71 stream 5679 opened peer=p37
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=2074
+INFO     svc.audit:noise_hard.py:71 event 952 recorded actor=u36
+WARNING  svc.cache:noise_hard.py:74 cache miss ratio 0.39 above target 0.30
+INFO     svc.db:noise_hard.py:71 pool checkout wait=68ms
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=8078 -> ok 207ms
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=23 queue=3076
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w13
+DEBUG    svc.cache:noise_hard.py:71 warm shard=19 keys=8425
+INFO     svc.queue:noise_hard.py:71 ack msg 940
+DEBUG    svc.flags:noise_hard.py:71 flag f23 evaluated for u833 -> True
+INFO     svc.queue:noise_hard.py:71 ack msg 3127
+DEBUG    svc.audit:noise_hard.py:71 event 8632 recorded actor=u36
+DEBUG    svc.search:noise_hard.py:71 query terms=10 hits=1377 took=234ms
+DEBUG    svc.flags:noise_hard.py:71 flag f0 evaluated for u9466 -> True
+DEBUG    svc.cache:noise_hard.py:71 warm shard=30 keys=9650
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+DEBUG    svc.storage:noise_hard.py:71 get blob 1637 etag=e26
+DEBUG    svc.chain:chain.py:10 stage=normalize payload={"currency": "usd", "customer": "initech", "qty": 2}
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=6 queue=4058
+INFO     svc.clock:noise_hard.py:71 tz table v34 loaded
+DEBUG    svc.cache:noise_hard.py:71 warm shard=5 keys=5823
+INFO     svc.storage:noise_hard.py:71 gc pass freed=3631
+DEBUG    svc.auth:noise_hard.py:71 session 3077 refreshed for user u19
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=28 queue=1267
+DEBUG    svc.db:noise_hard.py:71 tx 9116 committed (1 statements)
+INFO     svc.billing:noise_hard.py:71 tax table v31 applied to invoice 8139
+INFO     svc.search:noise_hard.py:71 query terms=19 hits=2270 took=32ms
+DEBUG    svc.cache:noise_hard.py:71 warm shard=13 keys=4329
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2414 took=67ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-28 next in 74s
+DEBUG    svc.config:noise_hard.py:71 reload requested by w34
+INFO     svc.search:noise_hard.py:71 index shard=14 docs=834
+DEBUG    svc.notify:noise_hard.py:71 digest built users=5081
+DEBUG    svc.scheduler:noise_hard.py:71 tick 5207 due=38
+WARNING  svc.audit:noise_hard.py:74 audit sink lagging by 18 batches
+DEBUG    svc.config:noise_hard.py:71 watch fd=4 events=5516
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w21
+ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+TimeoutError: redis timeout
+DEBUG    svc.metrics:noise_hard.py:71 flush 7762 points to sink
+INFO     svc.search:noise_hard.py:71 index shard=33 docs=4305
+DEBUG    svc.clock:noise_hard.py:71 tz table v31 loaded
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-37 next in 163s
+DEBUG    svc.http:noise_hard.py:71 conn pool: 9520 idle, 39 in use
+INFO     svc.auth:noise_hard.py:71 session 2956 refreshed for user u29
+DEBUG    svc.scheduler:noise_hard.py:71 tick 2526 due=32
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/5479 -> 200 in 150ms
+DEBUG    svc.flags:noise_hard.py:71 flag f36 rollout=29%
+DEBUG    svc.search:noise_hard.py:71 query terms=23 hits=8804 took=111ms
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 1015 template=t22
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1433 due=33
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=17 account=a15
+DEBUG    svc.storage:noise_hard.py:71 get blob 4440 etag=e36
+DEBUG    svc.auth:noise_hard.py:71 session 6471 refreshed for user u25
+DEBUG    svc.billing:noise_hard.py:71 invoice 3456 line items=22
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:624 reason=lru
+INFO     svc.config:noise_hard.py:71 reload requested by w5
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9526 -> 200 in 192ms
+INFO     svc.billing:noise_hard.py:71 ledger append entry=8743 account=a27
+INFO     svc.clock:noise_hard.py:71 ntp offset 168us
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=26
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7066 hit=True
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8706 flags)
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.config:noise_hard.py:71 reload requested by w14
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=40
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2379 idle, 12 in use
+WARNING  svc.search:noise_hard.py:74 segment 67 not compacted, 7290 deleted docs
+INFO     svc.search:noise_hard.py:71 merge segments 20 -> 1
+DEBUG    svc.billing:noise_hard.py:71 invoice 615 line items=17
+DEBUG    svc.billing:noise_hard.py:71 invoice 1256 line items=4
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w6
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.search:noise_hard.py:71 query terms=33 hits=3443 took=166ms
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=541 account=a17
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2446 hit=True
+DEBUG    svc.queue:noise_hard.py:71 depth q12=2070
+DEBUG    svc.db:noise_hard.py:71 tx 1514 committed (25 statements)
+DEBUG    svc.search:noise_hard.py:71 index shard=6 docs=5954
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (8731 flags)
+DEBUG    svc.storage:noise_hard.py:71 get blob 1056 etag=e22
+DEBUG    svc.cache:noise_hard.py:71 warm shard=38 keys=4514
+DEBUG    svc.flags:noise_hard.py:71 flag f34 evaluated for u1070 -> True
+INFO     svc.clock:noise_hard.py:71 tz table v33 loaded
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w19
+INFO     svc.flags:noise_hard.py:71 flag f14 rollout=151%
+DEBUG    svc.flags:noise_hard.py:71 flag f2 rollout=93%
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=57ms
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r10 allowed=True
+INFO     svc.auth:noise_hard.py:71 rbac check role=r0 allowed=False
+DEBUG    svc.billing:noise_hard.py:71 tax table v29 applied to invoice 8136
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=5 queue=4196
+INFO     svc.metrics:noise_hard.py:71 flush 1787 points to sink
+DEBUG    svc.storage:noise_hard.py:71 put blob 503 size=136KB
+DEBUG    svc.notify:noise_hard.py:71 digest built users=4683
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w26
+DEBUG    svc.clock:noise_hard.py:71 tz table v22 loaded
+WARNING  svc.audit:noise_hard.py:74 audit sink lagging by 43 batches
+INFO     svc.cache:noise_hard.py:71 lookup key=item:2862 hit=True
+DEBUG    svc.search:noise_hard.py:71 merge segments 39 -> 1
+DEBUG    svc.search:noise_hard.py:71 index shard=32 docs=7770
+INFO     svc.queue:noise_hard.py:71 ack msg 8688
+DEBUG    svc.notify:noise_hard.py:71 rate window 38/60
+DEBUG    svc.cache:noise_hard.py:71 warm shard=3 keys=4170
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w18
+DEBUG    svc.notify:noise_hard.py:71 rate window 15/60
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 43ms
+DEBUG    svc.queue:noise_hard.py:71 depth q15=8211
+INFO     svc.config:noise_hard.py:71 watch fd=19 events=7842
+DEBUG    svc.scheduler:noise_hard.py:71 tick 3018 due=35
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 161ms
+DEBUG    svc.config:noise_hard.py:71 watch fd=15 events=5956
+DEBUG    svc.search:noise_hard.py:71 merge segments 2 -> 1
+DEBUG    svc.metrics:noise_hard.py:71 flush 1063 points to sink
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=8630
+DEBUG    svc.queue:noise_hard.py:71 depth q1=8078
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 53ms
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=31 queue=1998
+INFO     svc.search:noise_hard.py:71 index shard=17 docs=3005
+INFO     svc.rpc:noise_hard.py:71 call inventory.reserve id=8857 -> ok 214ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 9718 points to sink
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:4033 hit=True
+INFO     svc.cache:noise_hard.py:71 evict key=session:4755 reason=lru
+DEBUG    svc.billing:noise_hard.py:71 tax table v20 applied to invoice 6198
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=10 queue=7683
+DEBUG    svc.http:noise_hard.py:71 conn pool: 7202 idle, 0 in use
+DEBUG    svc.config:noise_hard.py:71 watch fd=3 events=6316
+WARNING  svc.storage:noise_hard.py:74 blob 8517 etag mismatch, refetched
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r2 allowed=True
+DEBUG    svc.clock:noise_hard.py:71 tz table v7 loaded
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 158us
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k17
+INFO     svc.metrics:noise_hard.py:71 flush 118 points to sink
+INFO     svc.clock:noise_hard.py:71 ntp offset 67us
+DEBUG    svc.notify:noise_hard.py:71 rate window 11/60
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=25
+DEBUG    svc.queue:noise_hard.py:71 ack msg 8742
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6643 keys
+INFO     svc.cache:noise_hard.py:71 evict key=session:1870 reason=lru
+DEBUG    svc.storage:noise_hard.py:71 get blob 4055 etag=e28
+DEBUG    svc.auth:noise_hard.py:71 session 8897 refreshed for user u14
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 1490 keys
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (1025 flags)
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 134ms
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7202 hit=True
+DEBUG    svc.config:noise_hard.py:71 reload requested by w0
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.billing:noise_hard.py:71 invoice 2892 line items=18
+DEBUG    svc.queue:noise_hard.py:71 depth q17=2550
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=1116 took=78ms
+DEBUG    svc.storage:noise_hard.py:71 put blob 2330 size=24KB
+DEBUG    svc.clock:noise_hard.py:71 tz table v31 loaded
+DEBUG    svc.audit:noise_hard.py:71 event 4421 recorded actor=u9
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=8
+DEBUG    svc.search:noise_hard.py:71 query terms=20 hits=8291 took=89ms
+INFO     svc.auth:noise_hard.py:71 rbac check role=r32 allowed=True
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=5466 took=51ms
+DEBUG    svc.audit:noise_hard.py:71 event 1036 recorded actor=u13
+WARNING  svc.storage:noise_hard.py:74 blob 4444 etag mismatch, refetched
+ERROR    svc.http:noise_hard.py:80 request failed, retrying (attempt 1/3)
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+ConnectionResetError: peer reset
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=6025 took=205ms
+INFO     svc.cache:noise_hard.py:71 warm shard=27 keys=5047
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 190ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 25 -> 1
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=308 -> ok 224ms
+DEBUG    svc.search:noise_hard.py:71 index shard=10 docs=3775
+DEBUG    svc.search:noise_hard.py:71 index shard=14 docs=8145
+DEBUG    svc.storage:noise_hard.py:71 put blob 1856 size=54KB
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=3
+INFO     svc.flags:noise_hard.py:71 flag f39 rollout=28%
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:6611 reason=lru
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/1962 -> 200 in 205ms
+INFO     svc.db:noise_hard.py:71 tx 8772 committed (11 statements)
+DEBUG    svc.queue:noise_hard.py:71 ack msg 6817
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9947 -> 200 in 12ms
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k4
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6308 keys
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 71us
+INFO     svc.flags:noise_hard.py:71 flag f40 rollout=101%
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=7752
+INFO     svc.notify:noise_hard.py:71 rate window 40/60
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=7611
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 4858 template=t34
+INFO     svc.cache:noise_hard.py:71 evict key=session:2426 reason=lru
+INFO     svc.queue:noise_hard.py:71 ack msg 1752
+DEBUG    svc.storage:noise_hard.py:71 put blob 9507 size=47KB
+DEBUG    svc.notify:noise_hard.py:71 rate window 35/60
+DEBUG    svc.metrics:noise_hard.py:71 flush 8192 points to sink
+DEBUG    svc.storage:noise_hard.py:71 get blob 1134 etag=e7
+WARNING  svc.billing:noise_hard.py:74 rounding adjustment of 0.01 applied to invoice 2357
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9931 -> ok 28ms
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.billing:noise_hard.py:71 invoice 2688 line items=16
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=4
+DEBUG    svc.flags:noise_hard.py:71 flag f25 evaluated for u2635 -> False
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2362 idle, 19 in use
+DEBUG    svc.audit:noise_hard.py:71 batch 1103 shipped
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 2012 from q17
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 235 template=t3
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=5
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=15 queue=2909
+DEBUG    svc.db:noise_hard.py:71 tx 1882 committed (5 statements)
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 64ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-38 next in 128s
+DEBUG    svc.storage:noise_hard.py:71 get blob 3530 etag=e4
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=1918 took=51ms
+INFO     svc.search:noise_hard.py:71 merge segments 1 -> 1
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=171ms
+INFO     svc.audit:noise_hard.py:71 event 732 recorded actor=u23
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=6834
+INFO     svc.notify:noise_hard.py:71 rate window 32/60
+DEBUG    svc.search:noise_hard.py:71 query terms=37 hits=2259 took=10ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 32 -> 1
+INFO     svc.scheduler:noise_hard.py:71 tick 3651 due=32
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=4211 -> ok 166ms
+INFO     svc.queue:noise_hard.py:71 dequeued msg 6541 from q10
+DEBUG    svc.flags:noise_hard.py:71 flag f18 rollout=135%
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=3582 took=107ms
+DEBUG    svc.notify:noise_hard.py:71 rate window 35/60
+WARNING  svc.storage:noise_hard.py:74 blob 6763 etag mismatch, refetched
+DEBUG    svc.storage:noise_hard.py:71 get blob 611 etag=e27
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=1793 -> ok 239ms
+DEBUG    svc.cache:noise_hard.py:71 warm shard=39 keys=1318
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-28 next in 122s
+DEBUG    svc.config:noise_hard.py:71 reload requested by w25
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 205ms
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6776 -> ok 126ms
+INFO     svc.audit:noise_hard.py:71 retention sweep removed=8
+INFO     svc.config:noise_hard.py:71 watch fd=4 events=9221
+DEBUG    svc.flags:noise_hard.py:71 flag f9 rollout=179%
+INFO     svc.config:noise_hard.py:71 checksum ok for 1393 keys
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=9249 took=188ms
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r0 allowed=True
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 237ms
+DEBUG    svc.search:noise_hard.py:71 index shard=30 docs=3755
+INFO     svc.auth:noise_hard.py:71 session 5077 refreshed for user u34
+DEBUG    svc.search:noise_hard.py:71 query terms=38 hits=7154 took=47ms
+INFO     svc.clock:noise_hard.py:71 ntp offset 19us
+DEBUG    svc.db:noise_hard.py:71 tx 1021 committed (20 statements)
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r34 allowed=False
+DEBUG    svc.flags:noise_hard.py:71 flag f1 evaluated for u2813 -> True
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (5174 flags)
+INFO     svc.http:noise_hard.py:71 GET /v1/items/1946 -> 200 in 10ms
+INFO     svc.scheduler:noise_hard.py:71 tick 3249 due=24
+DEBUG    svc.rpc:noise_hard.py:71 stream 421 opened peer=p24
+DEBUG    svc.rpc:noise_hard.py:71 stream 3768 opened peer=p2
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 134ms
+INFO     svc.flags:noise_hard.py:71 flag f1 rollout=170%
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 33ms
+DEBUG    svc.billing:noise_hard.py:71 tax table v34 applied to invoice 184
+WARNING  svc.config:noise_hard.py:74 deprecated config key 'timeout_ms' is ignored, use 'timeout'
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/6069 -> 200 in 63ms
+DEBUG    svc.storage:noise_hard.py:71 get blob 5400 etag=e33
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 7ms
+INFO     svc.storage:noise_hard.py:71 put blob 705 size=33KB
+INFO     svc.rpc:noise_hard.py:71 call inventory.reserve id=3829 -> ok 139ms
+DEBUG    svc.audit:noise_hard.py:71 event 3192 recorded actor=u7
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=4674
+INFO     svc.search:noise_hard.py:71 merge segments 9 -> 1
+INFO     svc.search:noise_hard.py:71 query terms=23 hits=5169 took=100ms
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (4101 flags)
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (3451 flags)
+DEBUG    svc.notify:noise_hard.py:71 digest built users=7782
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 3372 from q9
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r16 allowed=False
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=4502
+DEBUG    svc.clock:noise_hard.py:71 tz table v16 loaded
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=9432
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 7521 keys
+DEBUG    svc.cache:noise_hard.py:71 warm shard=6 keys=9436
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=9947 took=186ms
+INFO     svc.flags:noise_hard.py:71 flag f21 evaluated for u6490 -> True
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:6121 hit=True
+DEBUG    svc.notify:noise_hard.py:71 digest built users=1287
+DEBUG    svc.db:noise_hard.py:71 tx 8922 committed (30 statements)
+DEBUG    svc.metrics:noise_hard.py:71 flush 4454 points to sink
+INFO     svc.scheduler:noise_hard.py:71 tick 220 due=17
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=26
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 209ms
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 8454 from q10
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w10
+WARNING  svc.config:noise_hard.py:74 deprecated config key 'timeout_ms' is ignored, use 'timeout'
+INFO     svc.auth:noise_hard.py:71 rbac check role=r35 allowed=False
+INFO     svc.config:noise_hard.py:71 checksum ok for 5552 keys
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k4
+DEBUG    svc.scheduler:noise_hard.py:71 tick 7740 due=39
+DEBUG    svc.search:noise_hard.py:71 index shard=21 docs=2562
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/581 -> 200 in 38ms
+DEBUG    svc.search:noise_hard.py:71 query terms=0 hits=9084 took=136ms
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:5502 hit=True
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8127
+INFO     svc.http:noise_hard.py:71 conn pool: 9513 idle, 7 in use
+INFO     svc.billing:noise_hard.py:71 ledger append entry=2862 account=a33
+DEBUG    svc.billing:noise_hard.py:71 tax table v8 applied to invoice 8542
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-20 next in 140s
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=1526 -> ok 102ms
+DEBUG    svc.billing:noise_hard.py:71 invoice 6068 line items=33
+INFO     svc.auth:noise_hard.py:71 rbac check role=r4 allowed=True
+DEBUG    svc.audit:noise_hard.py:71 batch 7715 shipped
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8216
+DEBUG    svc.storage:noise_hard.py:71 put blob 3201 size=134KB
+DEBUG    svc.db:noise_hard.py:71 tx 8594 committed (36 statements)
+DEBUG    svc.billing:noise_hard.py:71 tax table v18 applied to invoice 4551
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=1446 account=a18
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5893 keys
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w34
+DEBUG    svc.scheduler:noise_hard.py:71 tick 4917 due=34
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r39 allowed=False
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=7345
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=7486 -> ok 36ms
+DEBUG    svc.audit:noise_hard.py:71 batch 1863 shipped
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9035 -> ok 42ms
+WARNING  svc.notify:noise_hard.py:74 template t43 missing locale 'de', using 'en'
+DEBUG    svc.clock:noise_hard.py:71 tz table v17 loaded
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=58
+DEBUG    svc.auth:noise_hard.py:71 session 1479 refreshed for user u2
+DEBUG    svc.audit:noise_hard.py:71 event 4349 recorded actor=u37
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 7346 from q2
+INFO     svc.billing:noise_hard.py:71 tax table v25 applied to invoice 468
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/352 -> 200 in 41ms
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w24
+DEBUG    svc.billing:noise_hard.py:71 tax table v15 applied to invoice 5571
+DEBUG    svc.billing:noise_hard.py:71 tax table v1 applied to invoice 947
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=8 queue=7460
+DEBUG    svc.cache:noise_hard.py:71 warm shard=0 keys=275
+INFO     svc.scheduler:noise_hard.py:71 job nightly-24 next in 112s
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2868 hit=True
+DEBUG    svc.db:noise_hard.py:71 tx 4101 committed (17 statements)
+DEBUG    svc.notify:noise_hard.py:71 rate window 28/60
+DEBUG    svc.billing:noise_hard.py:71 tax table v17 applied to invoice 2237
+DEBUG    svc.clock:noise_hard.py:71 tz table v40 loaded
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=10
+INFO     svc.cache:noise_hard.py:71 warm shard=20 keys=4713
+DEBUG    svc.notify:noise_hard.py:71 digest built users=2322
+DEBUG    svc.search:noise_hard.py:71 merge segments 38 -> 1
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2702 took=151ms
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=9 queue=5587
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 121us
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (4205 flags)
+DEBUG    svc.billing:noise_hard.py:71 tax table v8 applied to invoice 9968
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=33ms
+INFO     svc.flags:noise_hard.py:71 flag f11 rollout=11%
+INFO     svc.notify:noise_hard.py:71 enqueue email 3636 template=t20
+WARNING  svc.billing:noise_hard.py:74 rounding adjustment of 0.01 applied to invoice 98
+DEBUG    svc.queue:noise_hard.py:71 ack msg 7313
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/6180 -> 200 in 155ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=5636
+DEBUG    svc.db:noise_hard.py:71 tx 1986 committed (23 statements)
+INFO     svc.search:noise_hard.py:71 query terms=36 hits=2678 took=187ms
+INFO     svc.search:noise_hard.py:71 query terms=37 hits=5153 took=219ms
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2304 idle, 20 in use
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k7
+DEBUG    svc.notify:noise_hard.py:71 rate window 35/60
+DEBUG    svc.metrics:noise_hard.py:71 flush 2361 points to sink
+DEBUG    svc.audit:noise_hard.py:71 event 3602 recorded actor=u2
+DEBUG    svc.storage:noise_hard.py:71 put blob 3969 size=134KB
+DEBUG    svc.cache:noise_hard.py:71 warm shard=40 keys=2905
+INFO     svc.notify:noise_hard.py:71 rate window 14/60
+DEBUG    svc.audit:noise_hard.py:71 event 673 recorded actor=u32
+INFO     svc.audit:noise_hard.py:71 event 2314 recorded actor=u36
+DEBUG    svc.queue:noise_hard.py:71 ack msg 4554
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=3138
+DEBUG    svc.notify:noise_hard.py:71 digest built users=7774
+DEBUG    svc.audit:noise_hard.py:71 batch 8127 shipped
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=11ms
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=225 account=a0
+INFO     svc.db:noise_hard.py:71 tx 3516 committed (37 statements)
+DEBUG    svc.queue:noise_hard.py:71 ack msg 6385
+DEBUG    svc.queue:noise_hard.py:71 depth q11=7944
+DEBUG    svc.queue:noise_hard.py:71 depth q8=8375
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w36
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=1425 took=217ms
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=162ms
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-64 started 587ms late
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 8946 from q40
+DEBUG    svc.billing:noise_hard.py:71 tax table v40 applied to invoice 6784
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=15
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.flags:noise_hard.py:71 flag f30 rollout=16%
+DEBUG    svc.storage:noise_hard.py:71 put blob 6280 size=105KB
+INFO     svc.storage:noise_hard.py:71 put blob 8229 size=102KB
+DEBUG    svc.audit:noise_hard.py:71 event 8843 recorded actor=u32
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9645 -> 200 in 12ms
+INFO     svc.rpc:noise_hard.py:71 stream 2087 opened peer=p12
+DEBUG    svc.storage:noise_hard.py:71 get blob 2884 etag=e5
+DEBUG    svc.audit:noise_hard.py:71 batch 1603 shipped
+DEBUG    svc.storage:noise_hard.py:71 put blob 3031 size=163KB
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=4565 -> ok 39ms
+DEBUG    svc.http:noise_hard.py:71 conn pool: 3860 idle, 25 in use
+DEBUG    svc.auth:noise_hard.py:71 session 2933 refreshed for user u1
+INFO     svc.queue:noise_hard.py:71 ack msg 8856
+DEBUG    svc.search:noise_hard.py:71 merge segments 37 -> 1
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 3946 keys
+INFO     svc.search:noise_hard.py:71 index shard=29 docs=2682
+DEBUG    svc.config:noise_hard.py:71 watch fd=23 events=757
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=17 queue=6833
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 77ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=2
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k33
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w36
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/4850 -> 200 in 3ms
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (968 flags)
+DEBUG    svc.storage:noise_hard.py:71 get blob 7372 etag=e25
+DEBUG    svc.storage:noise_hard.py:71 put blob 9139 size=146KB
+WARNING  svc.flags:noise_hard.py:74 flag f89 has no owner annotation
+DEBUG    svc.audit:noise_hard.py:71 event 6252 recorded actor=u14
+DEBUG    svc.billing:noise_hard.py:71 tax table v4 applied to invoice 4313
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=2806
+INFO     svc.search:noise_hard.py:71 merge segments 28 -> 1
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=2145
+DEBUG    svc.rpc:noise_hard.py:71 stream 7268 opened peer=p19
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w38
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k11
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=8483 account=a22
+DEBUG    svc.auth:noise_hard.py:71 session 9915 refreshed for user u22
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=30 queue=5178
+DEBUG    svc.rpc:noise_hard.py:71 stream 2638 opened peer=p30
+DEBUG    svc.flags:noise_hard.py:71 flag f5 evaluated for u4230 -> True
+DEBUG    svc.chain:chain.py:10 stage=sanitize payload={"customer": "initech", "qty": 2}
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r18 allowed=True
+INFO     svc.config:noise_hard.py:71 reload requested by w20
+INFO     svc.queue:noise_hard.py:71 ack msg 4710
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (7037 flags)
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-1 next in 38s
+DEBUG    svc.cache:noise_hard.py:71 warm shard=36 keys=1434
+INFO     svc.config:noise_hard.py:71 checksum ok for 2637 keys
+DEBUG    svc.flags:noise_hard.py:71 flag f37 rollout=30%
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 3046 keys
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6581 -> ok 92ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=23
+DEBUG    svc.auth:noise_hard.py:71 session 8834 refreshed for user u13
+DEBUG    svc.search:noise_hard.py:71 merge segments 5 -> 1
+DEBUG    svc.notify:noise_hard.py:71 digest built users=7806
+DEBUG    svc.queue:noise_hard.py:71 ack msg 4317
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=84ms
+WARNING  svc.config:noise_hard.py:74 deprecated config key 'timeout_ms' is ignored, use 'timeout'
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 8ms
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/832 -> 200 in 76ms
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/6213 -> 200 in 212ms
+DEBUG    svc.rpc:noise_hard.py:71 stream 9360 opened peer=p33
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:266 hit=True
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 3846 from q39
+INFO     svc.cache:noise_hard.py:71 evict key=session:328 reason=lru
+DEBUG    svc.search:noise_hard.py:71 query terms=23 hits=1042 took=31ms
+DEBUG    svc.queue:noise_hard.py:71 ack msg 569
+INFO     svc.flags:noise_hard.py:71 flag f23 evaluated for u1767 -> True
+DEBUG    svc.config:noise_hard.py:71 watch fd=22 events=7673
+INFO     svc.auth:noise_hard.py:71 session 7543 refreshed for user u30
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 83ms
+DEBUG    svc.notify:noise_hard.py:71 rate window 20/60
+INFO     svc.clock:noise_hard.py:71 ntp offset 197us
+INFO     svc.scheduler:noise_hard.py:71 job nightly-20 next in 100s
+INFO     svc.auth:noise_hard.py:71 rbac check role=r6 allowed=True
+DEBUG    svc.search:noise_hard.py:71 query terms=34 hits=8826 took=69ms
+INFO     svc.notify:noise_hard.py:71 enqueue email 3131 template=t27
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=39
+INFO     svc.config:noise_hard.py:71 watch fd=30 events=269
+DEBUG    svc.http:noise_hard.py:71 conn pool: 3970 idle, 0 in use
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 195 keys
+DEBUG    svc.queue:noise_hard.py:71 depth q28=2448
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-7 next in 237s
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 62ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=16
+DEBUG    svc.search:noise_hard.py:71 query terms=5 hits=2357 took=136ms
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8294 flags)
+WARNING  svc.notify:noise_hard.py:74 template t20 missing locale 'de', using 'en'
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 107ms
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 1580 from q6
+DEBUG    svc.audit:noise_hard.py:71 event 587 recorded actor=u32
+DEBUG    svc.cache:noise_hard.py:71 warm shard=4 keys=26
+DEBUG    svc.config:noise_hard.py:71 watch fd=20 events=3984
+DEBUG    svc.audit:noise_hard.py:71 batch 1548 shipped
+DEBUG    svc.notify:noise_hard.py:71 digest built users=2169
+DEBUG    svc.config:noise_hard.py:71 watch fd=40 events=8540
+DEBUG    svc.notify:noise_hard.py:71 digest built users=2177
+INFO     svc.audit:noise_hard.py:71 batch 2773 shipped
+DEBUG    svc.search:noise_hard.py:71 merge segments 16 -> 1
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/3444 -> 200 in 151ms
+DEBUG    svc.flags:noise_hard.py:71 flag f14 rollout=104%
+INFO     svc.storage:noise_hard.py:71 gc pass freed=4806
+INFO     svc.queue:noise_hard.py:71 depth q0=432
+DEBUG    svc.config:noise_hard.py:71 watch fd=5 events=2224
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 19ms
+DEBUG    svc.db:noise_hard.py:71 tx 2880 committed (31 statements)
+INFO     svc.notify:noise_hard.py:71 rate window 35/60
+INFO     svc.search:noise_hard.py:71 merge segments 27 -> 1
+DEBUG    svc.search:noise_hard.py:71 query terms=16 hits=9540 took=187ms
+DEBUG    svc.db:noise_hard.py:71 tx 1943 committed (33 statements)
+INFO     svc.scheduler:noise_hard.py:71 tick 846 due=26
+INFO     svc.queue:noise_hard.py:71 ack msg 2184
+DEBUG    svc.scheduler:noise_hard.py:71 tick 2562 due=28
+INFO     svc.notify:noise_hard.py:71 digest built users=5955
+DEBUG    svc.queue:noise_hard.py:71 depth q26=618
+DEBUG    svc.billing:noise_hard.py:71 tax table v15 applied to invoice 3220
+DEBUG    svc.billing:noise_hard.py:71 invoice 691 line items=14
+DEBUG    svc.audit:noise_hard.py:71 batch 3584 shipped
+WARNING  svc.storage:noise_hard.py:74 blob 382 etag mismatch, refetched
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 1297 from q19
+DEBUG    svc.flags:noise_hard.py:71 flag f14 evaluated for u7834 -> True
+INFO     svc.billing:noise_hard.py:71 invoice 6706 line items=18
+INFO     svc.audit:noise_hard.py:71 event 310 recorded actor=u27
+INFO     svc.auth:noise_hard.py:71 session 329 refreshed for user u12
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r11 allowed=True
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r0 allowed=False
+INFO     svc.db:noise_hard.py:71 pool checkout wait=165ms
+DEBUG    svc.audit:noise_hard.py:71 batch 9254 shipped
+INFO     svc.billing:noise_hard.py:71 tax table v38 applied to invoice 7853
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 144ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 3044 points to sink
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=97ms
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k13
+INFO     svc.flags:noise_hard.py:71 flag f35 rollout=28%
+DEBUG    svc.db:noise_hard.py:71 tx 9104 committed (24 statements)
+DEBUG    svc.flags:noise_hard.py:71 flag f18 rollout=187%
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 93ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 187ms
+INFO     svc.http:noise_hard.py:71 conn pool: 337 idle, 1 in use
+INFO     svc.audit:noise_hard.py:71 event 998 recorded actor=u34
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (6534 flags)
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 236ms
+DEBUG    svc.flags:noise_hard.py:71 flag f9 rollout=165%
+INFO     svc.db:noise_hard.py:71 pool checkout wait=65ms
+DEBUG    svc.config:noise_hard.py:71 reload requested by w9
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=38
+DEBUG    svc.flags:noise_hard.py:71 flag f1 evaluated for u9608 -> True
+DEBUG    svc.clock:noise_hard.py:71 tz table v32 loaded
+DEBUG    svc.queue:noise_hard.py:71 ack msg 7032
+WARNING  svc.http:noise_hard.py:74 upstream returned 503 for /v1/items/5811, falling back to replica
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w1
+DEBUG    svc.scheduler:noise_hard.py:71 tick 3990 due=30
+DEBUG    svc.auth:noise_hard.py:71 session 2550 refreshed for user u11
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:619 hit=True
+INFO     svc.queue:noise_hard.py:71 dequeued msg 1132 from q22
+DEBUG    svc.billing:noise_hard.py:71 tax table v20 applied to invoice 3470
+INFO     svc.storage:noise_hard.py:71 get blob 1191 etag=e14
+DEBUG    svc.db:noise_hard.py:71 tx 8685 committed (19 statements)
+DEBUG    svc.search:noise_hard.py:71 index shard=18 docs=5673
+INFO     svc.notify:noise_hard.py:71 digest built users=5649
+DEBUG    svc.cache:noise_hard.py:71 warm shard=9 keys=6985
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=4342 took=23ms
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3945
+INFO     svc.config:noise_hard.py:71 reload requested by w13
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=1286 took=99ms
+DEBUG    svc.storage:noise_hard.py:71 get blob 2305 etag=e28
+DEBUG    svc.search:noise_hard.py:71 merge segments 36 -> 1
+DEBUG    svc.config:noise_hard.py:71 reload requested by w21
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=34 queue=2957
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 3196 keys
+DEBUG    svc.queue:noise_hard.py:71 ack msg 3125
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.db:noise_hard.py:71 pool checkout wait=44ms
+INFO     svc.notify:noise_hard.py:71 enqueue email 5393 template=t7
+DEBUG    svc.notify:noise_hard.py:71 digest built users=923
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 130ms
+INFO     svc.audit:noise_hard.py:71 retention sweep removed=20
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 44ms
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.auth:noise_hard.py:71 session 1197 refreshed for user u33
+WARNING  svc.search:noise_hard.py:74 segment 46 not compacted, 813 deleted docs
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w2
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=11
+DEBUG    svc.storage:noise_hard.py:71 get blob 3523 etag=e17
+INFO     svc.auth:noise_hard.py:71 rbac check role=r0 allowed=True
+DEBUG    svc.clock:noise_hard.py:71 tz table v35 loaded
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 5903 from q0
+DEBUG    svc.http:noise_hard.py:71 conn pool: 9398 idle, 24 in use
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8839 flags)
+DEBUG    svc.audit:noise_hard.py:71 event 3912 recorded actor=u17
+DEBUG    svc.search:noise_hard.py:71 merge segments 26 -> 1
+DEBUG    svc.cache:noise_hard.py:71 warm shard=27 keys=5402
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/7492 -> 200 in 27ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=8982
+DEBUG    svc.scheduler:noise_hard.py:71 tick 6886 due=17
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1822
+DEBUG    svc.flags:noise_hard.py:71 flag f22 rollout=98%
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 162ms
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r0 allowed=True
+DEBUG    svc.audit:noise_hard.py:71 event 5436 recorded actor=u23
+DEBUG    svc.config:noise_hard.py:71 reload requested by w35
+DEBUG    svc.queue:noise_hard.py:71 depth q13=8210
+DEBUG    svc.auth:noise_hard.py:71 session 7969 refreshed for user u20
+INFO     svc.config:noise_hard.py:71 watch fd=26 events=5064
+INFO     svc.search:noise_hard.py:71 query terms=14 hits=8539 took=184ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=11
+DEBUG    svc.search:noise_hard.py:71 merge segments 9 -> 1
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 4098 template=t21
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3649 reason=lru
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=8939 -> ok 126ms
+DEBUG    svc.clock:noise_hard.py:71 tz table v27 loaded
+WARNING  svc.search:noise_hard.py:74 segment 49 not compacted, 6441 deleted docs
+INFO     svc.config:noise_hard.py:71 reload requested by w39
+DEBUG    svc.rpc:noise_hard.py:71 stream 8870 opened peer=p3
+DEBUG    svc.queue:noise_hard.py:71 depth q22=8339
+DEBUG    svc.search:noise_hard.py:71 index shard=5 docs=7237
+INFO     svc.search:noise_hard.py:71 index shard=12 docs=2569
+DEBUG    svc.flags:noise_hard.py:71 flag f38 evaluated for u71 -> True
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2192 took=6ms
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 186us
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=1979 took=140ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 216ms
+DEBUG    svc.storage:noise_hard.py:71 get blob 8096 etag=e34
+INFO     svc.search:noise_hard.py:71 query terms=35 hits=1349 took=9ms
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=3699
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=453 -> ok 142ms
+INFO     svc.billing:noise_hard.py:71 tax table v32 applied to invoice 2832
+DEBUG    svc.flags:noise_hard.py:71 flag f4 rollout=19%
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=7448
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 6223 template=t32
+DEBUG    svc.config:noise_hard.py:71 watch fd=1 events=73
+DEBUG    svc.storage:noise_hard.py:71 get blob 9031 etag=e24
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 18 keys
+INFO     svc.rpc:noise_hard.py:71 call inventory.reserve id=6885 -> ok 22ms
+INFO     svc.config:noise_hard.py:71 checksum ok for 3640 keys
+DEBUG    svc.metrics:noise_hard.py:71 flush 8439 points to sink
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 3055 template=t10
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=5
+DEBUG    svc.search:noise_hard.py:71 query terms=25 hits=1967 took=188ms
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=6023 account=a28
+DEBUG    svc.notify:noise_hard.py:71 rate window 22/60
+DEBUG    svc.flags:noise_hard.py:71 flag f11 rollout=195%
+WARNING  svc.storage:noise_hard.py:74 blob 2840 etag mismatch, refetched
+DEBUG    svc.flags:noise_hard.py:71 flag f1 rollout=201%
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w18
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=178 took=70ms
+INFO     svc.storage:noise_hard.py:71 put blob 1200 size=52KB
+DEBUG    svc.billing:noise_hard.py:71 tax table v38 applied to invoice 4246
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=4920
+DEBUG    svc.flags:noise_hard.py:71 flag f2 rollout=110%
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:6291 reason=lru
+INFO     svc.search:noise_hard.py:71 query terms=32 hits=7632 took=223ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 8ms
+INFO     svc.queue:noise_hard.py:71 dequeued msg 5829 from q11
+DEBUG    svc.queue:noise_hard.py:71 ack msg 918
+DEBUG    svc.rpc:noise_hard.py:71 stream 2656 opened peer=p13
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-6 next in 111s
+INFO     svc.flags:noise_hard.py:71 flag f3 rollout=153%
+DEBUG    svc.notify:noise_hard.py:71 digest built users=395
+DEBUG    svc.audit:noise_hard.py:71 batch 7604 shipped
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 144ms
+INFO     svc.notify:noise_hard.py:71 rate window 8/60
+DEBUG    svc.storage:noise_hard.py:71 put blob 7158 size=169KB
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 4238 from q18
+DEBUG    svc.search:noise_hard.py:71 index shard=20 docs=2875
+INFO     svc.audit:noise_hard.py:71 event 6122 recorded actor=u25
+INFO     svc.scheduler:noise_hard.py:71 job nightly-15 next in 72s
+DEBUG    svc.config:noise_hard.py:71 watch fd=12 events=5142
+INFO     svc.flags:noise_hard.py:71 flag f39 evaluated for u1217 -> True
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2223 idle, 29 in use
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k10
+INFO     svc.http:noise_hard.py:71 conn pool: 1623 idle, 5 in use
+WARNING  svc.notify:noise_hard.py:74 template t75 missing locale 'de', using 'en'
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=175ms
+DEBUG    svc.flags:noise_hard.py:71 flag f31 rollout=99%
+DEBUG    svc.cache:noise_hard.py:71 warm shard=12 keys=1471
+INFO     svc.auth:noise_hard.py:71 session 6002 refreshed for user u18
+DEBUG    svc.config:noise_hard.py:71 watch fd=37 events=8928
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8618
+INFO     svc.flags:noise_hard.py:71 flag f1 rollout=42%
+DEBUG    svc.flags:noise_hard.py:71 flag f24 evaluated for u7350 -> False
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=34 queue=626
+ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+ValueError: unbalanced quote
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=8238 -> ok 199ms
+DEBUG    svc.billing:noise_hard.py:71 tax table v19 applied to invoice 9000
+DEBUG    svc.auth:noise_hard.py:71 session 8506 refreshed for user u8
+DEBUG    svc.config:noise_hard.py:71 watch fd=12 events=4798
+DEBUG    svc.flags:noise_hard.py:71 flag f26 evaluated for u7348 -> True
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=9179
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 5061 from q36
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1461
+DEBUG    svc.search:noise_hard.py:71 merge segments 1 -> 1
+INFO     svc.billing:noise_hard.py:71 tax table v24 applied to invoice 2612
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:7752 reason=lru
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 6799 template=t38
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8386 template=t4
+INFO     svc.config:noise_hard.py:71 watch fd=37 events=1831
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9451 -> ok 56ms
+DEBUG    svc.rpc:noise_hard.py:71 stream 6937 opened peer=p22
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=6561
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 235ms
+INFO     svc.notify:noise_hard.py:71 rate window 39/60
+DEBUG    svc.notify:noise_hard.py:71 digest built users=2492
+DEBUG    svc.audit:noise_hard.py:71 batch 4269 shipped
+WARNING  svc.notify:noise_hard.py:74 template t9 missing locale 'de', using 'en'
+INFO     svc.flags:noise_hard.py:71 flag f9 rollout=175%
+INFO     svc.notify:noise_hard.py:71 enqueue email 6252 template=t15
+DEBUG    svc.db:noise_hard.py:71 tx 2599 committed (22 statements)
+INFO     svc.cache:noise_hard.py:71 evict key=session:1395 reason=lru
+DEBUG    svc.notify:noise_hard.py:71 rate window 19/60
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=3348
+INFO     svc.queue:noise_hard.py:71 depth q29=3288
+DEBUG    svc.clock:noise_hard.py:71 tz table v17 loaded
+DEBUG    svc.search:noise_hard.py:71 query terms=6 hits=9176 took=208ms
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.flags:noise_hard.py:71 flag f9 rollout=100%
+DEBUG    svc.config:noise_hard.py:71 reload requested by w36
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w38
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=8264
+DEBUG    svc.audit:noise_hard.py:71 batch 6954 shipped
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-30 next in 144s
+DEBUG    svc.search:noise_hard.py:71 merge segments 10 -> 1
+INFO     svc.search:noise_hard.py:71 index shard=29 docs=4866
+DEBUG    svc.queue:noise_hard.py:71 depth q7=1622
+DEBUG    svc.search:noise_hard.py:71 merge segments 20 -> 1
+DEBUG    svc.config:noise_hard.py:71 reload requested by w16
+DEBUG    svc.billing:noise_hard.py:71 invoice 1695 line items=29
+DEBUG    svc.flags:noise_hard.py:71 flag f6 rollout=177%
+DEBUG    svc.flags:noise_hard.py:71 flag f29 rollout=18%
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=3960 account=a35
+DEBUG    svc.db:noise_hard.py:71 tx 8150 committed (16 statements)
+INFO     svc.audit:noise_hard.py:71 event 6172 recorded actor=u35
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 7707 template=t8
+DEBUG    svc.auth:noise_hard.py:71 session 672 refreshed for user u11
+DEBUG    svc.metrics:noise_hard.py:71 flush 360 points to sink
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-43 started 467ms late
+DEBUG    svc.metrics:noise_hard.py:71 flush 3942 points to sink
+DEBUG    svc.queue:noise_hard.py:71 depth q4=7872
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w14
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 52ms
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=216ms
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 6643 template=t31
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 196ms
+ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+OSError: sink unreachable
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 5622 from q16
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=104 -> ok 218ms
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9783 -> 200 in 175ms
+INFO     svc.billing:noise_hard.py:71 tax table v9 applied to invoice 6139
+DEBUG    svc.queue:noise_hard.py:71 depth q8=3700
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 9679 keys
+INFO     svc.clock:noise_hard.py:71 ntp offset 237us
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 4545 from q30
+DEBUG    svc.http:noise_hard.py:71 conn pool: 8407 idle, 21 in use
+INFO     svc.clock:noise_hard.py:71 tz table v3 loaded
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 143us
+DEBUG    svc.audit:noise_hard.py:71 event 4326 recorded actor=u14
+DEBUG    svc.billing:noise_hard.py:71 invoice 1377 line items=9
+DEBUG    svc.search:noise_hard.py:71 merge segments 6 -> 1
+INFO     svc.scheduler:noise_hard.py:71 job nightly-38 next in 86s
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=3290 took=120ms
+DEBUG    svc.notify:noise_hard.py:71 rate window 30/60
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-40 next in 23s
+DEBUG    svc.notify:noise_hard.py:71 digest built users=5655
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2680 idle, 0 in use
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 148us
+WARNING  svc.rpc:noise_hard.py:74 peer p82 slow to ack (503ms)
+DEBUG    svc.cache:noise_hard.py:71 warm shard=37 keys=6353
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 4109 template=t20
+INFO     svc.storage:noise_hard.py:71 gc pass freed=2447
+DEBUG    svc.auth:noise_hard.py:71 session 4165 refreshed for user u1
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:1843 reason=lru
+DEBUG    svc.http:noise_hard.py:71 conn pool: 5301 idle, 35 in use
+DEBUG    svc.rpc:noise_hard.py:71 stream 1785 opened peer=p34
+INFO     svc.billing:noise_hard.py:71 invoice 3247 line items=2
+DEBUG    svc.config:noise_hard.py:71 watch fd=28 events=7411
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k31
+INFO     svc.notify:noise_hard.py:71 digest built users=9593
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 201ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 8678 points to sink
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:384 reason=lru
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=217ms
+DEBUG    svc.clock:noise_hard.py:71 tz table v5 loaded
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=8758 took=207ms
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=6 queue=8042
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.queue:noise_hard.py:71 depth q17=6485
+INFO     svc.scheduler:noise_hard.py:71 job nightly-9 next in 169s
+DEBUG    svc.clock:noise_hard.py:71 tz table v40 loaded
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 7530 from q33
+DEBUG    svc.http:noise_hard.py:71 conn pool: 8241 idle, 5 in use
+INFO     svc.config:noise_hard.py:71 watch fd=17 events=6192
+INFO     svc.config:noise_hard.py:71 reload requested by w16
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=7176 took=66ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 3870 points to sink
+WARNING  svc.rpc:noise_hard.py:74 peer p75 slow to ack (774ms)
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 127us
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=175ms
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=7560
+DEBUG    svc.db:noise_hard.py:71 tx 8913 committed (17 statements)
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5442 keys
+INFO     svc.config:noise_hard.py:71 reload requested by w18
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (9471 flags)
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6806 keys
+DEBUG    svc.config:noise_hard.py:71 reload requested by w32
+INFO     svc.auth:noise_hard.py:71 session 6264 refreshed for user u32
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 2692 template=t21
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-1 next in 222s
+DEBUG    svc.storage:noise_hard.py:71 get blob 1883 etag=e26
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=3926
+DEBUG    svc.billing:noise_hard.py:71 tax table v30 applied to invoice 5953
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8151 template=t39
+DEBUG    svc.db:noise_hard.py:71 tx 3348 committed (27 statements)
+DEBUG    svc.audit:noise_hard.py:71 batch 4194 shipped
+INFO     svc.notify:noise_hard.py:71 digest built users=6945
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w12
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3702
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w2
+DEBUG    svc.search:noise_hard.py:71 query terms=13 hits=4537 took=45ms
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/2389 -> 200 in 3ms
+DEBUG    svc.audit:noise_hard.py:71 batch 4394 shipped
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w1
+INFO     svc.rpc:noise_hard.py:71 stream 2936 opened peer=p33
+DEBUG    svc.auth:noise_hard.py:71 session 1262 refreshed for user u39
+DEBUG    svc.db:noise_hard.py:71 tx 874 committed (33 statements)
+INFO     svc.billing:noise_hard.py:71 tax table v30 applied to invoice 8726
+WARNING  svc.notify:noise_hard.py:74 template t89 missing locale 'de', using 'en'
+DEBUG    svc.search:noise_hard.py:71 index shard=10 docs=5263
+DEBUG    svc.billing:noise_hard.py:71 tax table v30 applied to invoice 9079
+INFO     svc.clock:noise_hard.py:71 tz table v22 loaded
+DEBUG    svc.http:noise_hard.py:71 conn pool: 6760 idle, 37 in use
+INFO     svc.cache:noise_hard.py:71 warm shard=29 keys=5425
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=18 queue=5270
+INFO     svc.http:noise_hard.py:71 GET /v1/items/5602 -> 200 in 236ms
+DEBUG    svc.scheduler:noise_hard.py:71 tick 3083 due=3
+DEBUG    svc.auth:noise_hard.py:71 session 77 refreshed for user u36
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-30 next in 149s
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r4 allowed=True
+DEBUG    svc.search:noise_hard.py:71 index shard=2 docs=7571
+DEBUG    svc.billing:noise_hard.py:71 tax table v22 applied to invoice 7726
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9797 -> 200 in 82ms
+DEBUG    svc.chain:chain.py:10 stage=enrich payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea"}
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=8225
+DEBUG    svc.db:noise_hard.py:71 tx 6077 committed (20 statements)
+INFO     svc.metrics:noise_hard.py:71 flush 219 points to sink
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9500 -> ok 40ms
+DEBUG    svc.auth:noise_hard.py:71 session 1671 refreshed for user u33
+DEBUG    svc.audit:noise_hard.py:71 event 4472 recorded actor=u26
+DEBUG    svc.queue:noise_hard.py:71 ack msg 544
+DEBUG    svc.billing:noise_hard.py:71 tax table v35 applied to invoice 4497
+INFO     svc.queue:noise_hard.py:71 dequeued msg 2915 from q29
+DEBUG    svc.billing:noise_hard.py:71 tax table v30 applied to invoice 1108
+DEBUG    svc.audit:noise_hard.py:71 event 2023 recorded actor=u25
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-21 next in 185s
+DEBUG    svc.notify:noise_hard.py:71 rate window 23/60
+INFO     svc.clock:noise_hard.py:71 ntp offset 81us
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=3249
+DEBUG    svc.search:noise_hard.py:71 query terms=36 hits=8796 took=105ms
+WARNING  svc.rpc:noise_hard.py:74 peer p74 slow to ack (754ms)
+DEBUG    svc.clock:noise_hard.py:71 tz table v9 loaded
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-1 next in 39s
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 72us
+DEBUG    svc.storage:noise_hard.py:71 put blob 1256 size=122KB
+DEBUG    svc.db:noise_hard.py:71 tx 9817 committed (38 statements)
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 137us
+INFO     svc.billing:noise_hard.py:71 ledger append entry=7724 account=a21
+INFO     svc.http:noise_hard.py:71 conn pool: 3324 idle, 18 in use
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=10 queue=3417
+INFO     svc.metrics:noise_hard.py:71 flush 4825 points to sink
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7364 hit=True
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r35 allowed=True
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6085 -> ok 145ms
+DEBUG    svc.db:noise_hard.py:71 tx 739 committed (40 statements)
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=3993 account=a10
+DEBUG    svc.metrics:noise_hard.py:71 flush 3572 points to sink
+INFO     svc.config:noise_hard.py:71 watch fd=36 events=4124
+DEBUG    svc.config:noise_hard.py:71 watch fd=22 events=7846
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=5733 account=a27
+INFO     svc.config:noise_hard.py:71 reload requested by w32
+DEBUG    svc.search:noise_hard.py:71 merge segments 26 -> 1
+DEBUG    svc.storage:noise_hard.py:71 get blob 2616 etag=e2
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:8153 reason=lru
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k24
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=4079 -> ok 188ms
+DEBUG    svc.billing:noise_hard.py:71 invoice 6371 line items=30
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (4155 flags)
+DEBUG    svc.db:noise_hard.py:71 tx 3037 committed (7 statements)
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9591 -> 200 in 86ms
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k6
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-14 started 414ms late
+DEBUG    svc.queue:noise_hard.py:71 depth q15=8956
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8858 flags)
+INFO     svc.storage:noise_hard.py:71 put blob 8167 size=75KB
+INFO     svc.rpc:noise_hard.py:71 stream 2010 opened peer=p14
+INFO     svc.billing:noise_hard.py:71 invoice 2904 line items=10
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 5176 template=t4
+DEBUG    svc.metrics:noise_hard.py:71 flush 8406 points to sink
+DEBUG    svc.queue:noise_hard.py:71 depth q18=1236
+DEBUG    svc.billing:noise_hard.py:71 invoice 9251 line items=25
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 114ms
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k30
+INFO     svc.scheduler:noise_hard.py:71 job nightly-38 next in 190s
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k37
+DEBUG    svc.db:noise_hard.py:71 tx 7178 committed (25 statements)
+DEBUG    svc.notify:noise_hard.py:71 rate window 10/60
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 221ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=3104
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 183ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-7 next in 80s
+INFO     svc.config:noise_hard.py:71 checksum ok for 892 keys
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:3986 hit=False
+DEBUG    svc.notify:noise_hard.py:71 digest built users=9858
+DEBUG    svc.queue:noise_hard.py:71 ack msg 9555
+DEBUG    svc.audit:noise_hard.py:71 batch 2742 shipped
+DEBUG    svc.config:noise_hard.py:71 watch fd=20 events=5206
+INFO     svc.rpc:noise_hard.py:71 call inventory.reserve id=5834 -> ok 65ms
+ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+TimeoutError: redis timeout
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 8626 keys
+INFO     svc.audit:noise_hard.py:71 batch 4663 shipped
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 163ms
+DEBUG    svc.billing:noise_hard.py:71 invoice 3463 line items=28
+WARNING  svc.storage:noise_hard.py:74 blob 4391 etag mismatch, refetched
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (5118 flags)
+DEBUG    svc.http:noise_hard.py:71 conn pool: 8715 idle, 6 in use
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w16
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 8332 from q19
+DEBUG    svc.queue:noise_hard.py:71 ack msg 6855
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=23 queue=8832
+DEBUG    svc.search:noise_hard.py:71 query terms=32 hits=2483 took=122ms
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 1414 template=t8
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-8 next in 99s
+INFO     svc.config:noise_hard.py:71 checksum ok for 7071 keys
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9215 due=28
+DEBUG    svc.metrics:noise_hard.py:71 flush 6647 points to sink
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 182ms
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=4288 took=222ms
+DEBUG    svc.flags:noise_hard.py:71 flag f23 evaluated for u8603 -> True
+INFO     svc.notify:noise_hard.py:71 rate window 5/60
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 7916 keys
+DEBUG    svc.audit:noise_hard.py:71 batch 5774 shipped
+DEBUG    svc.audit:noise_hard.py:71 batch 7123 shipped
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=535 took=111ms
+INFO     svc.audit:noise_hard.py:71 retention sweep removed=23
+DEBUG    svc.metrics:noise_hard.py:71 flush 1362 points to sink
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=9705 account=a8
+DEBUG    svc.metrics:noise_hard.py:71 flush 4432 points to sink
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 6486 template=t22
+DEBUG    svc.config:noise_hard.py:71 watch fd=39 events=5367
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 9584 keys
+DEBUG    svc.queue:noise_hard.py:71 depth q7=1258
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=7966
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-82 started 673ms late
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+DEBUG    svc.notify:noise_hard.py:71 digest built users=1313
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1177 due=6
+DEBUG    svc.flags:noise_hard.py:71 flag f32 evaluated for u9924 -> True
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=366 took=171ms
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (3817 flags)
+DEBUG    svc.http:noise_hard.py:71 conn pool: 2635 idle, 39 in use
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (8464 flags)
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=8647 took=103ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 60ms
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9462 due=30
+DEBUG    svc.metrics:noise_hard.py:71 flush 5159 points to sink
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3140 reason=lru
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (4131 flags)
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.billing:noise_hard.py:71 ledger append entry=604 account=a0
+INFO     svc.billing:noise_hard.py:71 ledger append entry=9449 account=a14
+INFO     svc.queue:noise_hard.py:71 ack msg 2447
+INFO     svc.search:noise_hard.py:71 merge segments 32 -> 1
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (6627 flags)
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r38 allowed=True
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=112ms
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=202ms
+DEBUG    svc.config:noise_hard.py:71 watch fd=24 events=745
+INFO     svc.rpc:noise_hard.py:71 stream 1283 opened peer=p6
+DEBUG    svc.billing:noise_hard.py:71 invoice 376 line items=30
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8003 template=t29
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 8133 keys
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 72us
+DEBUG    svc.clock:noise_hard.py:71 tz table v28 loaded
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-12 started 787ms late
+ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+BrokenPipeError: stream closed
+DEBUG    svc.storage:noise_hard.py:71 get blob 8827 etag=e14
+DEBUG    svc.config:noise_hard.py:71 reload requested by w8
+INFO     svc.billing:noise_hard.py:71 tax table v21 applied to invoice 5030
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r24 allowed=True
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k39
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 124us
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:723 hit=False
+DEBUG    svc.auth:noise_hard.py:71 session 1051 refreshed for user u6
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=107ms
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 9163 from q8
+DEBUG    svc.scheduler:noise_hard.py:71 tick 4359 due=20
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=6
+DEBUG    svc.billing:noise_hard.py:71 invoice 2835 line items=28
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=2462
+DEBUG    svc.clock:noise_hard.py:71 tz table v17 loaded
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k27
+DEBUG    svc.notify:noise_hard.py:71 rate window 35/60
+INFO     svc.audit:noise_hard.py:71 event 8999 recorded actor=u40
+DEBUG    svc.http:noise_hard.py:71 conn pool: 5705 idle, 34 in use
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r15 allowed=True
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9621 due=32
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5537 keys
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=131ms
+INFO     svc.queue:noise_hard.py:71 ack msg 4919
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/1820 -> 200 in 75ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 993 points to sink
+INFO     svc.search:noise_hard.py:71 query terms=10 hits=6409 took=4ms
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=6078
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=5163 took=78ms
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/1760 -> 200 in 117ms
+WARNING  svc.audit:noise_hard.py:74 audit sink lagging by 70 batches
+DEBUG    svc.search:noise_hard.py:71 query terms=18 hits=9997 took=134ms
+DEBUG    svc.rpc:noise_hard.py:71 stream 7225 opened peer=p37
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=16
+DEBUG    svc.http:noise_hard.py:71 conn pool: 4983 idle, 35 in use
+DEBUG    svc.http:noise_hard.py:71 conn pool: 5325 idle, 32 in use
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=26 queue=2217
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=4582
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 63us
+DEBUG    svc.auth:noise_hard.py:71 session 1966 refreshed for user u1
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8726 flags)
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=26 queue=3661
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=6763 account=a22
+INFO     svc.auth:noise_hard.py:71 rbac check role=r20 allowed=True
+DEBUG    svc.search:noise_hard.py:71 query terms=32 hits=1725 took=7ms
+DEBUG    svc.http:noise_hard.py:71 conn pool: 5703 idle, 14 in use
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=7256 took=28ms
+INFO     svc.notify:noise_hard.py:71 digest built users=9160
+DEBUG    svc.queue:noise_hard.py:71 ack msg 2779
+DEBUG    svc.rpc:noise_hard.py:71 stream 4060 opened peer=p31
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 223us
+DEBUG    svc.queue:noise_hard.py:71 depth q14=790
+INFO     svc.db:noise_hard.py:71 pool checkout wait=66ms
+INFO     svc.storage:noise_hard.py:71 put blob 7609 size=37KB
+INFO     svc.notify:noise_hard.py:71 enqueue email 7132 template=t9
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=238ms
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=44ms
+DEBUG    svc.flags:noise_hard.py:71 flag f23 rollout=220%
+DEBUG    svc.storage:noise_hard.py:71 put blob 6713 size=219KB
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 659 keys
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 4563 from q3
+WARNING  svc.search:noise_hard.py:74 segment 11 not compacted, 2078 deleted docs
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k40
+DEBUG    svc.audit:noise_hard.py:71 batch 4299 shipped
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w13
+INFO     svc.config:noise_hard.py:71 checksum ok for 3302 keys
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-29 next in 149s
+DEBUG    svc.queue:noise_hard.py:71 depth q3=699
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=29
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 8512 keys
+DEBUG    svc.metrics:noise_hard.py:71 flush 3156 points to sink
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=40ms
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 201us
+DEBUG    svc.clock:noise_hard.py:71 tz table v38 loaded
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 210ms
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k23
+INFO     svc.billing:noise_hard.py:71 tax table v1 applied to invoice 7912
+DEBUG    svc.config:noise_hard.py:71 watch fd=15 events=6684
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=19
+DEBUG    svc.flags:noise_hard.py:71 flag f31 evaluated for u5069 -> True
+DEBUG    svc.search:noise_hard.py:71 index shard=9 docs=2535
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k22
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=4425 account=a5
+INFO     svc.metrics:noise_hard.py:71 flush 1713 points to sink
+DEBUG    svc.flags:noise_hard.py:71 flag f37 evaluated for u9402 -> False
+DEBUG    svc.notify:noise_hard.py:71 rate window 0/60
+DEBUG    svc.audit:noise_hard.py:71 batch 3017 shipped
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=4401
+INFO     svc.cache:noise_hard.py:71 warm shard=40 keys=176
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=12 queue=8561
+INFO     svc.db:noise_hard.py:71 pool checkout wait=137ms
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 108ms
+WARNING  svc.http:noise_hard.py:74 upstream returned 503 for /v1/items/1703, falling back to replica
+DEBUG    svc.db:noise_hard.py:71 tx 5375 committed (30 statements)
+DEBUG    svc.rpc:noise_hard.py:71 stream 5467 opened peer=p26
+DEBUG    svc.storage:noise_hard.py:71 get blob 2659 etag=e14
+INFO     svc.notify:noise_hard.py:71 enqueue email 5864 template=t32
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=13
+DEBUG    svc.billing:noise_hard.py:71 tax table v34 applied to invoice 2515
+INFO     svc.billing:noise_hard.py:71 tax table v16 applied to invoice 4253
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=28
+DEBUG    svc.flags:noise_hard.py:71 flag f4 evaluated for u98 -> False
+DEBUG    svc.storage:noise_hard.py:71 put blob 748 size=21KB
+INFO     svc.db:noise_hard.py:71 tx 3283 committed (36 statements)
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=5686
+INFO     svc.cache:noise_hard.py:71 warm shard=26 keys=2628
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8216
+DEBUG    svc.search:noise_hard.py:71 query terms=28 hits=4542 took=52ms
+INFO     svc.notify:noise_hard.py:71 digest built users=2311
+DEBUG    svc.storage:noise_hard.py:71 put blob 4763 size=132KB
+INFO     svc.clock:noise_hard.py:71 ntp offset 18us
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:896 hit=True
+DEBUG    svc.audit:noise_hard.py:71 batch 2777 shipped
+DEBUG    svc.storage:noise_hard.py:71 get blob 722 etag=e13
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 2764 template=t11
+DEBUG    svc.http:noise_hard.py:71 conn pool: 6688 idle, 18 in use
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=7449 account=a5
+INFO     svc.http:noise_hard.py:71 conn pool: 6704 idle, 36 in use
+INFO     svc.db:noise_hard.py:71 pool checkout wait=160ms
+DEBUG    svc.queue:noise_hard.py:71 depth q14=9259
+INFO     svc.billing:noise_hard.py:71 invoice 9284 line items=14
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8321 template=t5
+WARNING  svc.notify:noise_hard.py:74 template t27 missing locale 'de', using 'en'
+DEBUG    svc.queue:noise_hard.py:71 depth q13=9474
+DEBUG    svc.flags:noise_hard.py:71 flag f12 rollout=166%
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 1852 keys
+INFO     svc.search:noise_hard.py:71 query terms=30 hits=9920 took=201ms
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:5605 hit=True
+INFO     svc.storage:noise_hard.py:71 gc pass freed=9296
+INFO     svc.cache:noise_hard.py:71 evict key=session:4794 reason=lru
+DEBUG    svc.audit:noise_hard.py:71 batch 7296 shipped
+ERROR    svc.cache:noise_hard.py:80 cache read failed, treating as miss
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+TimeoutError: redis timeout
+DEBUG    svc.billing:noise_hard.py:71 tax table v7 applied to invoice 199
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:4952 hit=True
+DEBUG    svc.audit:noise_hard.py:71 event 3475 recorded actor=u9
+DEBUG    svc.audit:noise_hard.py:71 event 647 recorded actor=u9
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:2898 reason=lru
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=183ms
+DEBUG    svc.auth:noise_hard.py:71 session 9779 refreshed for user u1
+DEBUG    svc.queue:noise_hard.py:71 depth q35=2299
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 134ms
+INFO     svc.queue:noise_hard.py:71 depth q1=7639
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6254 keys
+DEBUG    svc.config:noise_hard.py:71 reload requested by w24
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (3273 flags)
+DEBUG    svc.http:noise_hard.py:71 conn pool: 9839 idle, 31 in use
+DEBUG    svc.audit:noise_hard.py:71 event 6496 recorded actor=u0
+DEBUG    svc.billing:noise_hard.py:71 invoice 6507 line items=1
+DEBUG    svc.clock:noise_hard.py:71 tz table v10 loaded
+DEBUG    svc.storage:noise_hard.py:71 get blob 3285 etag=e30
+DEBUG    svc.metrics:noise_hard.py:71 flush 3885 points to sink
+INFO     svc.search:noise_hard.py:71 query terms=18 hits=7842 took=85ms
+INFO     svc.clock:noise_hard.py:71 tz table v14 loaded
+WARNING  svc.search:noise_hard.py:74 segment 54 not compacted, 9048 deleted docs
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6587 keys
+DEBUG    svc.search:noise_hard.py:71 query terms=22 hits=5551 took=3ms
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9330 due=19
+INFO     svc.cache:noise_hard.py:71 warm shard=27 keys=1543
+DEBUG    svc.storage:noise_hard.py:71 get blob 3325 etag=e24
+INFO     svc.queue:noise_hard.py:71 dequeued msg 4848 from q24
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-18 next in 34s
+DEBUG    svc.auth:noise_hard.py:71 session 4665 refreshed for user u32
+DEBUG    svc.storage:noise_hard.py:71 get blob 4971 etag=e30
+INFO     svc.audit:noise_hard.py:71 retention sweep removed=38
+INFO     svc.billing:noise_hard.py:71 tax table v13 applied to invoice 3146
+DEBUG    svc.config:noise_hard.py:71 watch fd=0 events=9667
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (521 flags)
+INFO     svc.http:noise_hard.py:71 conn pool: 8088 idle, 4 in use
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5342 keys
+DEBUG    svc.rpc:noise_hard.py:71 stream 6674 opened peer=p6
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.cache:noise_hard.py:71 warm shard=26 keys=1677
+DEBUG    svc.search:noise_hard.py:71 query terms=18 hits=8899 took=133ms
+DEBUG    svc.metrics:noise_hard.py:71 flush 7931 points to sink
+INFO     svc.search:noise_hard.py:71 merge segments 36 -> 1
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 232us
+DEBUG    svc.audit:noise_hard.py:71 batch 6095 shipped
+DEBUG    svc.queue:noise_hard.py:71 ack msg 5135
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=2261 -> ok 74ms
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (6534 flags)
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8631
+DEBUG    svc.search:noise_hard.py:71 index shard=11 docs=1288
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/7888 -> 200 in 85ms
+INFO     svc.audit:noise_hard.py:71 event 8765 recorded actor=u0
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-3 started 323ms late
+INFO     svc.rpc:noise_hard.py:71 call inventory.reserve id=9671 -> ok 189ms
+DEBUG    svc.audit:noise_hard.py:71 batch 4809 shipped
+DEBUG    svc.config:noise_hard.py:71 reload requested by w20
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 47ms
+DEBUG    svc.config:noise_hard.py:71 watch fd=2 events=8385
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=7854 took=105ms
+INFO     svc.scheduler:noise_hard.py:71 tick 9045 due=39
+INFO     svc.billing:noise_hard.py:71 tax table v23 applied to invoice 3007
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=7 queue=2895
+DEBUG    svc.queue:noise_hard.py:71 depth q2=6006
+DEBUG    svc.flags:noise_hard.py:71 flag f2 evaluated for u3175 -> True
+INFO     svc.audit:noise_hard.py:71 batch 8933 shipped
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/1680 -> 200 in 220ms
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3161
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/3521 -> 200 in 9ms
+INFO     svc.metrics:noise_hard.py:71 flush 1866 points to sink
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=8584 took=236ms
+INFO     svc.search:noise_hard.py:71 index shard=33 docs=5473
+INFO     svc.config:noise_hard.py:71 checksum ok for 1942 keys
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+INFO     svc.queue:noise_hard.py:71 ack msg 992
+DEBUG    svc.flags:noise_hard.py:71 flag f7 evaluated for u1861 -> True
+INFO     svc.db:noise_hard.py:71 pool checkout wait=218ms
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 1017 from q21
+DEBUG    svc.config:noise_hard.py:71 reload requested by w8
+DEBUG    svc.storage:noise_hard.py:71 put blob 906 size=71KB
+DEBUG    svc.clock:noise_hard.py:71 tz table v4 loaded
+DEBUG    svc.billing:noise_hard.py:71 invoice 4832 line items=16
+DEBUG    svc.notify:noise_hard.py:71 rate window 21/60
+DEBUG    svc.flags:noise_hard.py:71 flag f26 evaluated for u7077 -> True
+WARNING  svc.db:noise_hard.py:74 slow query 401ms on orders_by_customer (threshold 300ms)
+DEBUG    svc.storage:noise_hard.py:71 get blob 7906 etag=e2
+INFO     svc.auth:noise_hard.py:71 rbac check role=r7 allowed=False
+DEBUG    svc.billing:noise_hard.py:71 invoice 5136 line items=14
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:297 reason=lru
+DEBUG    svc.storage:noise_hard.py:71 get blob 5401 etag=e3
+INFO     svc.clock:noise_hard.py:71 ntp offset 156us
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=4574
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (8495 flags)
+INFO     svc.config:noise_hard.py:71 watch fd=23 events=3607
+DEBUG    svc.flags:noise_hard.py:71 flag f17 rollout=186%
+DEBUG    svc.search:noise_hard.py:71 merge segments 6 -> 1
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (8947 flags)
+INFO     svc.cache:noise_hard.py:71 evict key=session:6122 reason=lru
+INFO     svc.auth:noise_hard.py:71 rbac check role=r19 allowed=True
+INFO     svc.billing:noise_hard.py:71 tax table v11 applied to invoice 5905
+DEBUG    svc.rpc:noise_hard.py:71 stream 5071 opened peer=p3
+DEBUG    svc.notify:noise_hard.py:71 rate window 28/60
+DEBUG    svc.config:noise_hard.py:71 watch fd=38 events=2424
+DEBUG    svc.storage:noise_hard.py:71 get blob 5453 etag=e29
+DEBUG    svc.storage:noise_hard.py:71 get blob 8401 etag=e13
+DEBUG    svc.config:noise_hard.py:71 reload requested by w9
+INFO     svc.search:noise_hard.py:71 merge segments 11 -> 1
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=18
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=6 queue=4242
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=7437 account=a20
+ERROR    svc.rpc:noise_hard.py:80 stream closed by peer, reopening
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+BrokenPipeError: stream closed
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-30 next in 14s
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:8386 hit=True
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k22
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 189ms
+DEBUG    svc.clock:noise_hard.py:71 tz table v28 loaded
+WARNING  svc.storage:noise_hard.py:74 blob 8393 etag mismatch, refetched
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=2730
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w8
+INFO     svc.cache:noise_hard.py:71 lookup key=item:2058 hit=False
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 72ms
+DEBUG    svc.audit:noise_hard.py:71 batch 4656 shipped
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/5653 -> 200 in 231ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-23 next in 218s
+INFO     svc.auth:noise_hard.py:71 rbac check role=r12 allowed=True
+DEBUG    svc.clock:noise_hard.py:71 tz table v5 loaded
+DEBUG    svc.scheduler:noise_hard.py:71 tick 5028 due=22
+DEBUG    svc.notify:noise_hard.py:71 rate window 22/60
+INFO     svc.config:noise_hard.py:71 watch fd=18 events=4666
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:4367 hit=False
+INFO     svc.cache:noise_hard.py:71 evict key=session:5926 reason=lru
+DEBUG    svc.chain:chain.py:10 stage=price payload={"currency": "eur", "customer": "initech", "qty": 2, "region": "emea", "total": 8.0}
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=19 queue=4838
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 117ms
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 8556 keys
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3932 reason=lru
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=2563 -> ok 185ms
+INFO     svc.search:noise_hard.py:71 query terms=18 hits=5585 took=203ms
+DEBUG    svc.rpc:noise_hard.py:71 stream 9268 opened peer=p0
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=53ms
+INFO     svc.flags:noise_hard.py:71 flag f32 rollout=191%
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=140ms
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (4086 flags)
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 5457 keys
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=39
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.config:noise_hard.py:71 watch fd=4 events=3588
+WARNING  svc.cache:noise_hard.py:74 cache miss ratio 0.38 above target 0.30
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:6290 hit=True
+DEBUG    svc.flags:noise_hard.py:71 flag f34 rollout=237%
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9258 -> 200 in 228ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 22 -> 1
+INFO     svc.search:noise_hard.py:71 merge segments 6 -> 1
+DEBUG    svc.audit:noise_hard.py:71 event 3930 recorded actor=u19
+DEBUG    svc.audit:noise_hard.py:71 event 4499 recorded actor=u7
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w12
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:1191 hit=False
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=2704
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 5424 template=t16
+DEBUG    svc.rpc:noise_hard.py:71 stream 9162 opened peer=p37
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=8931
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 38ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 17 -> 1
+DEBUG    svc.audit:noise_hard.py:71 event 7723 recorded actor=u21
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=6603
+INFO     svc.http:noise_hard.py:71 conn pool: 2541 idle, 32 in use
+DEBUG    svc.search:noise_hard.py:71 query terms=18 hits=1862 took=35ms
+INFO     svc.search:noise_hard.py:71 query terms=34 hits=3703 took=226ms
+INFO     svc.auth:noise_hard.py:71 session 1106 refreshed for user u14
+DEBUG    svc.flags:noise_hard.py:71 flag f12 evaluated for u4938 -> False
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w19
+DEBUG    svc.http:noise_hard.py:71 conn pool: 7083 idle, 36 in use
+DEBUG    svc.queue:noise_hard.py:71 depth q36=2789
+DEBUG    svc.billing:noise_hard.py:71 invoice 3842 line items=20
+DEBUG    svc.billing:noise_hard.py:71 invoice 7384 line items=37
+DEBUG    svc.storage:noise_hard.py:71 get blob 9087 etag=e38
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-2 next in 110s
+WARNING  svc.queue:noise_hard.py:74 queue depth 81 exceeds soft limit 50
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2213 hit=True
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=4307
+DEBUG    svc.storage:noise_hard.py:71 put blob 1101 size=119KB
+DEBUG    svc.flags:noise_hard.py:71 flag f21 evaluated for u1006 -> True
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 228us
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=6524 took=156ms
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 11us
+DEBUG    svc.audit:noise_hard.py:71 event 3059 recorded actor=u40
+INFO     svc.cache:noise_hard.py:71 evict key=session:8046 reason=lru
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=1 queue=6475
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 9711 template=t29
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w16
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k38
+INFO     svc.audit:noise_hard.py:71 event 2712 recorded actor=u13
+INFO     svc.notify:noise_hard.py:71 rate window 11/60
+DEBUG    svc.storage:noise_hard.py:71 get blob 2095 etag=e12
+DEBUG    svc.billing:noise_hard.py:71 tax table v33 applied to invoice 6992
+DEBUG    svc.audit:noise_hard.py:71 batch 2865 shipped
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9237 -> ok 112ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 226ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=9971
+INFO     svc.storage:noise_hard.py:71 get blob 4522 etag=e28
+DEBUG    svc.search:noise_hard.py:71 index shard=35 docs=7835
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 8ms
+DEBUG    svc.flags:noise_hard.py:71 flag f17 evaluated for u6789 -> False
+DEBUG    svc.storage:noise_hard.py:71 put blob 4573 size=105KB
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 92 from q21
+DEBUG    svc.search:noise_hard.py:71 index shard=6 docs=3294
+INFO     svc.search:noise_hard.py:71 query terms=12 hits=2015 took=32ms
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w15
+WARNING  svc.search:noise_hard.py:74 segment 58 not compacted, 549 deleted docs
+DEBUG    svc.flags:noise_hard.py:71 flag f18 rollout=110%
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-3 next in 59s
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 6450 from q30
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3678
+DEBUG    svc.config:noise_hard.py:71 watch fd=29 events=3513
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=1995 took=150ms
+DEBUG    svc.db:noise_hard.py:71 tx 5492 committed (27 statements)
+INFO     svc.db:noise_hard.py:71 tx 3894 committed (11 statements)
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=9285 -> ok 185ms
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 229ms
+INFO     svc.db:noise_hard.py:71 tx 6033 committed (2 statements)
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=6865
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:971 reason=lru
+ERROR    svc.metrics:noise_hard.py:80 metrics flush failed, will retry next tick
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+OSError: sink unreachable
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w29
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=19ms
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=11 queue=9178
+INFO     svc.clock:noise_hard.py:71 tz table v17 loaded
+DEBUG    svc.config:noise_hard.py:71 watch fd=27 events=5852
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.rpc:noise_hard.py:71 stream 2274 opened peer=p13
+INFO     svc.storage:noise_hard.py:71 put blob 7086 size=63KB
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=16 queue=6491
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=3164 took=129ms
+INFO     svc.db:noise_hard.py:71 tx 9614 committed (2 statements)
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 150ms
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1171
+DEBUG    svc.scheduler:noise_hard.py:71 tick 5287 due=17
+DEBUG    svc.search:noise_hard.py:71 query terms=8 hits=5495 took=79ms
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=9232
+WARNING  svc.config:noise_hard.py:74 deprecated config key 'timeout_ms' is ignored, use 'timeout'
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-30 next in 12s
+DEBUG    svc.notify:noise_hard.py:71 rate window 33/60
+DEBUG    svc.clock:noise_hard.py:71 tz table v27 loaded
+INFO     svc.db:noise_hard.py:71 tx 3190 committed (2 statements)
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7797 hit=False
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:2039 hit=False
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=935 took=5ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-34 next in 220s
+DEBUG    svc.rpc:noise_hard.py:71 stream 5882 opened peer=p0
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 200ms
+INFO     svc.db:noise_hard.py:71 pool checkout wait=65ms
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:297 hit=False
+DEBUG    svc.cache:noise_hard.py:71 warm shard=4 keys=932
+DEBUG    svc.queue:noise_hard.py:71 depth q7=6800
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 6761 keys
+INFO     svc.billing:noise_hard.py:71 invoice 3041 line items=30
+INFO     svc.metrics:noise_hard.py:71 flush 5869 points to sink
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 168us
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=114ms
+DEBUG    svc.billing:noise_hard.py:71 invoice 7946 line items=29
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (4796 flags)
+DEBUG    svc.clock:noise_hard.py:71 tz table v30 loaded
+DEBUG    svc.queue:noise_hard.py:71 depth q7=1935
+INFO     svc.search:noise_hard.py:71 index shard=14 docs=6740
+INFO     svc.auth:noise_hard.py:71 rbac check role=r29 allowed=False
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (704 flags)
+INFO     svc.auth:noise_hard.py:71 session 3838 refreshed for user u13
+DEBUG    svc.db:noise_hard.py:71 tx 7822 committed (32 statements)
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6898 -> ok 68ms
+DEBUG    svc.audit:noise_hard.py:71 batch 2291 shipped
+WARNING  svc.flags:noise_hard.py:74 flag f58 has no owner annotation
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (2796 flags)
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w13
+DEBUG    svc.queue:noise_hard.py:71 ack msg 2318
+INFO     svc.cache:noise_hard.py:71 lookup key=item:8338 hit=True
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/6694 -> 200 in 150ms
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1173 due=26
+DEBUG    svc.billing:noise_hard.py:71 tax table v11 applied to invoice 7496
+DEBUG    svc.storage:noise_hard.py:71 get blob 5390 etag=e28
+DEBUG    svc.notify:noise_hard.py:71 digest built users=3888
+DEBUG    svc.flags:noise_hard.py:71 flag f21 rollout=110%
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=6486 account=a25
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 40ms
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 80ms
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 3690 template=t10
+DEBUG    svc.audit:noise_hard.py:71 batch 8190 shipped
+ERROR    svc.search:noise_hard.py:80 ignoring malformed query term
+Traceback (most recent call last):
+  File "<scratch>\cur\evidence_work\h07_payload_trace.A\..\_shared\noise_hard.py", line 78, in chatter
+    raise make()
+ValueError: unbalanced quote
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 1833 from q21
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r39 allowed=False
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=37ms
+DEBUG    svc.flags:noise_hard.py:71 flag f24 evaluated for u4458 -> True
+DEBUG    svc.scheduler:noise_hard.py:71 tick 9715 due=3
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=11 queue=2563
+INFO     svc.notify:noise_hard.py:71 rate window 14/60
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1713
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3620 reason=lru
+DEBUG    svc.cache:noise_hard.py:71 warm shard=3 keys=7100
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (1488 flags)
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k0
+INFO     svc.search:noise_hard.py:71 index shard=4 docs=71
+INFO     svc.search:noise_hard.py:71 query terms=24 hits=8481 took=147ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 14ms
+WARNING  svc.db:noise_hard.py:74 slow query 702ms on orders_by_customer (threshold 300ms)
+DEBUG    svc.billing:noise_hard.py:71 invoice 7542 line items=21
+INFO     svc.billing:noise_hard.py:71 invoice 1339 line items=26
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:7517 hit=True
+INFO     svc.http:noise_hard.py:71 conn pool: 4805 idle, 8 in use
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/116 -> 200 in 157ms
+INFO     svc.auth:noise_hard.py:71 rbac check role=r3 allowed=True
+DEBUG    svc.db:noise_hard.py:71 tx 7577 committed (15 statements)
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 5836 from q30
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=2 queue=2578
+INFO     svc.audit:noise_hard.py:71 event 5240 recorded actor=u11
+DEBUG    svc.db:noise_hard.py:71 tx 9429 committed (24 statements)
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=4021
+DEBUG    svc.queue:noise_hard.py:71 depth q2=327
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 3534 keys
+DEBUG    svc.audit:noise_hard.py:71 event 6402 recorded actor=u40
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=3607 account=a12
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=6926 -> ok 68ms
+INFO     svc.db:noise_hard.py:71 pool checkout wait=180ms
+INFO     svc.billing:noise_hard.py:71 tax table v24 applied to invoice 931
+DEBUG    svc.audit:noise_hard.py:71 batch 566 shipped
+INFO     svc.queue:noise_hard.py:71 ack msg 4864
+DEBUG    svc.flags:noise_hard.py:71 flag f26 rollout=109%
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 125ms
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w23
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+INFO     svc.config:noise_hard.py:71 checksum ok for 1356 keys
+DEBUG    svc.queue:noise_hard.py:71 ack msg 3139
+DEBUG    svc.db:noise_hard.py:71 tx 6896 committed (32 statements)
+INFO     svc.metrics:noise_hard.py:71 flush 5221 points to sink
+WARNING  svc.billing:noise_hard.py:74 rounding adjustment of 0.01 applied to invoice 4772
+INFO     svc.audit:noise_hard.py:71 event 639 recorded actor=u16
+INFO     svc.metrics:noise_hard.py:71 flush 3066 points to sink
+DEBUG    svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 240ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-14 next in 182s
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w36
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k14
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3366 reason=lru
+DEBUG    svc.notify:noise_hard.py:71 rate window 31/60
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 4861 template=t23
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 73us
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r24 allowed=True
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k16
+DEBUG    svc.config:noise_hard.py:71 watch fd=37 events=6505
+INFO     svc.auth:noise_hard.py:71 session 5640 refreshed for user u28
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=35 queue=9774
+INFO     svc.db:noise_hard.py:71 pool checkout wait=234ms
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=1739 -> ok 31ms
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r31 allowed=False
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 7768 keys
+INFO     svc.flags:noise_hard.py:71 flag f17 evaluated for u7111 -> False
+INFO     svc.billing:noise_hard.py:71 tax table v24 applied to invoice 4699
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=2465 took=178ms
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=3259
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 8302 template=t4
+DEBUG    svc.clock:noise_hard.py:71 tz table v27 loaded
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.search:noise_hard.py:71 merge segments 36 -> 1
+DEBUG    svc.cache:noise_hard.py:71 lookup key=item:127 hit=True
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 15ms
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w17
+WARNING  svc.http:noise_hard.py:74 upstream returned 503 for /v1/items/4494, falling back to replica
+DEBUG    svc.flags:noise_hard.py:71 flag f38 evaluated for u9885 -> True
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=40 queue=5973
+DEBUG    svc.flags:noise_hard.py:71 flag f32 rollout=163%
+DEBUG    svc.search:noise_hard.py:71 query terms=34 hits=7205 took=18ms
+DEBUG    svc.search:noise_hard.py:71 merge segments 37 -> 1
+INFO     svc.notify:noise_hard.py:71 rate window 13/60
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=10
+DEBUG    svc.metrics:noise_hard.py:71 flush 5800 points to sink
+INFO     svc.clock:noise_hard.py:71 ntp offset 21us
+INFO     svc.http:noise_hard.py:71 conn pool: 6926 idle, 1 in use
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.notify:noise_hard.py:71 digest built users=8324
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k33
+DEBUG    svc.cache:noise_hard.py:71 warm shard=6 keys=3533
+INFO     svc.flags:noise_hard.py:71 flag f9 rollout=51%
+INFO     svc.db:noise_hard.py:71 query orders_by_customer rows=7720 took=206ms
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=64ms
+DEBUG    svc.clock:noise_hard.py:71 tz table v33 loaded
+INFO     svc.audit:noise_hard.py:71 event 6438 recorded actor=u31
+INFO     svc.notify:noise_hard.py:71 rate window 10/60
+INFO     svc.flags:noise_hard.py:71 flag f11 evaluated for u3209 -> True
+DEBUG    svc.search:noise_hard.py:71 index shard=0 docs=3199
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/9819 -> 200 in 87ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 93ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=7
+DEBUG    svc.queue:noise_hard.py:71 ack msg 4050
+INFO     svc.flags:noise_hard.py:71 flag cache refreshed (8639 flags)
+DEBUG    svc.db:noise_hard.py:71 tx 2532 committed (21 statements)
+INFO     svc.notify:noise_hard.py:71 rate window 24/60
+DEBUG    svc.clock:noise_hard.py:71 tz table v4 loaded
+WARNING  svc.search:noise_hard.py:74 segment 79 not compacted, 7550 deleted docs
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:3960 reason=lru
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=5079 -> ok 174ms
+INFO     svc.scheduler:noise_hard.py:71 tick 5991 due=40
+DEBUG    svc.billing:noise_hard.py:71 tax table v5 applied to invoice 3139
+INFO     svc.queue:noise_hard.py:71 dequeued msg 9094 from q29
+DEBUG    svc.config:noise_hard.py:71 reload requested by w7
+INFO     svc.storage:noise_hard.py:71 get blob 7088 etag=e38
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r12 allowed=True
+INFO     svc.queue:noise_hard.py:71 ack msg 5682
+DEBUG    svc.queue:noise_hard.py:71 depth q36=6877
+DEBUG    svc.auth:noise_hard.py:71 jwt verified kid=k19
+INFO     svc.db:noise_hard.py:71 pool checkout wait=95ms
+DEBUG    svc.scheduler:noise_hard.py:71 job nightly-21 next in 187s
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=34 queue=3273
+INFO     svc.notify:noise_hard.py:71 enqueue email 2369 template=t28
+INFO     svc.scheduler:noise_hard.py:71 job nightly-6 next in 6s
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=28 queue=5021
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (461 flags)
+INFO     svc.billing:noise_hard.py:71 tax table v23 applied to invoice 6107
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 94ms
+DEBUG    svc.http:noise_hard.py:71 conn pool: 9927 idle, 33 in use
+DEBUG    svc.rpc:noise_hard.py:71 stream 5197 opened peer=p21
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=22
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=388 account=a27
+DEBUG    svc.clock:noise_hard.py:71 tz table v10 loaded
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=131ms
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=2 queue=1692
+DEBUG    svc.flags:noise_hard.py:71 flag f40 rollout=73%
+DEBUG    svc.http:noise_hard.py:71 GET /v1/items/8306 -> 200 in 223ms
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=23
+WARNING  svc.rpc:noise_hard.py:74 peer p48 slow to ack (754ms)
+DEBUG    svc.billing:noise_hard.py:71 invoice 8852 line items=30
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w9
+DEBUG    svc.scheduler:noise_hard.py:71 tick 1960 due=3
+DEBUG    svc.storage:noise_hard.py:71 gc pass freed=8154
+DEBUG    svc.search:noise_hard.py:71 merge segments 4 -> 1
+INFO     svc.notify:noise_hard.py:71 rate window 22/60
+DEBUG    svc.storage:noise_hard.py:71 get blob 745 etag=e30
+INFO     svc.notify:noise_hard.py:71 enqueue email 883 template=t11
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=2282 -> ok 118ms
+DEBUG    svc.flags:noise_hard.py:71 flag f27 rollout=78%
+DEBUG    svc.cache:noise_hard.py:71 warm shard=18 keys=9285
+DEBUG    svc.metrics:noise_hard.py:71 flush 377 points to sink
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=22 queue=2384
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=8736 took=77ms
+DEBUG    svc.audit:noise_hard.py:71 batch 3863 shipped
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=25 queue=8168
+INFO     svc.scheduler:noise_hard.py:71 job nightly-35 next in 131s
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 221us
+DEBUG    svc.config:noise_hard.py:71 checksum ok for 4129 keys
+DEBUG    svc.config:noise_hard.py:71 reload requested by w25
+DEBUG    svc.db:noise_hard.py:71 pool checkout wait=209ms
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 82ms
+DEBUG    svc.queue:noise_hard.py:71 depth q29=5487
+DEBUG    svc.storage:noise_hard.py:71 get blob 9542 etag=e8
+DEBUG    svc.notify:noise_hard.py:71 rate window 39/60
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 41ms
+INFO     svc.billing:noise_hard.py:71 ledger append entry=1414 account=a39
+INFO     svc.queue:noise_hard.py:71 ack msg 7826
+INFO     svc.search:noise_hard.py:71 query terms=12 hits=5020 took=133ms
+INFO     svc.clock:noise_hard.py:71 tz table v12 loaded
+WARNING  svc.scheduler:noise_hard.py:74 job nightly-56 started 624ms late
+INFO     svc.scheduler:noise_hard.py:71 tick 216 due=0
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 19us
+DEBUG    svc.search:noise_hard.py:71 query terms=2 hits=430 took=111ms
+DEBUG    svc.db:noise_hard.py:71 tx 5066 committed (37 statements)
+INFO     svc.notify:noise_hard.py:71 enqueue email 9188 template=t10
+INFO     svc.storage:noise_hard.py:71 get blob 8760 etag=e37
+INFO     svc.config:noise_hard.py:71 checksum ok for 474 keys
+DEBUG    svc.queue:noise_hard.py:71 ack msg 1092
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 33us
+INFO     svc.billing:noise_hard.py:71 invoice 4150 line items=27
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=6199
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=28 queue=7259
+DEBUG    svc.clock:noise_hard.py:71 monotonic check ok
+INFO     svc.audit:noise_hard.py:71 batch 330 shipped
+INFO     svc.http:noise_hard.py:71 POST /v1/orders -> 201 in 218ms
+INFO     svc.metrics:noise_hard.py:71 gauge mem_mb=3833
+DEBUG    svc.notify:noise_hard.py:71 enqueue email 9358 template=t18
+DEBUG    svc.clock:noise_hard.py:71 ntp offset 31us
+DEBUG    svc.audit:noise_hard.py:71 retention sweep removed=4
+INFO     svc.auth:noise_hard.py:71 jwt verified kid=k40
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=3740
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 606 from q33
+DEBUG    svc.flags:noise_hard.py:71 flag cache refreshed (9831 flags)
+DEBUG    svc.auth:noise_hard.py:71 session 2256 refreshed for user u20
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=36 queue=4626
+DEBUG    svc.cache:noise_hard.py:71 warm shard=7 keys=4112
+INFO     svc.rpc:noise_hard.py:71 deadline propagated 205ms
+DEBUG    svc.notify:noise_hard.py:71 digest built users=5652
+DEBUG    svc.queue:noise_hard.py:71 dequeued msg 4624 from q32
+DEBUG    svc.cache:noise_hard.py:71 warm shard=10 keys=1676
+WARNING  svc.search:noise_hard.py:74 segment 85 not compacted, 8825 deleted docs
+DEBUG    svc.cache:noise_hard.py:71 evict key=session:4816 reason=lru
+INFO     svc.queue:noise_hard.py:71 ack msg 4125
+DEBUG    svc.db:noise_hard.py:71 query orders_by_customer rows=7981 took=4ms
+DEBUG    svc.config:noise_hard.py:71 watch fd=15 events=9829
+INFO     svc.http:noise_hard.py:71 GET /v1/items/4393 -> 200 in 117ms
+DEBUG    svc.audit:noise_hard.py:71 event 5212 recorded actor=u6
+DEBUG    svc.http:noise_hard.py:71 conn pool: 641 idle, 8 in use
+DEBUG    svc.metrics:noise_hard.py:71 heartbeat worker=27 queue=4490
+DEBUG    svc.auth:noise_hard.py:71 rbac check role=r28 allowed=True
+DEBUG    svc.notify:noise_hard.py:71 digest built users=8410
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=9070 account=a18
+DEBUG    svc.flags:noise_hard.py:71 flag f2 rollout=194%
+DEBUG    svc.scheduler:noise_hard.py:71 tick 610 due=36
+INFO     svc.cache:noise_hard.py:71 warm shard=26 keys=3480
+DEBUG    svc.billing:noise_hard.py:71 ledger append entry=8239 account=a40
+DEBUG    svc.metrics:noise_hard.py:71 flush 5488 points to sink
+DEBUG    svc.billing:noise_hard.py:71 tax table v34 applied to invoice 4463
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w12
+INFO     svc.scheduler:noise_hard.py:71 tick 9665 due=36
+DEBUG    svc.flags:noise_hard.py:71 flag f12 rollout=135%
+DEBUG    svc.metrics:noise_hard.py:71 flush 585 points to sink
+DEBUG    svc.db:noise_hard.py:71 tx 5096 committed (34 statements)
+DEBUG    svc.flags:noise_hard.py:71 flag f19 rollout=98%
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=260
+INFO     svc.clock:noise_hard.py:71 monotonic check ok
+DEBUG    svc.notify:noise_hard.py:71 digest built users=6606
+DEBUG    svc.rpc:noise_hard.py:71 deadline propagated 22ms
+INFO     svc.rpc:noise_hard.py:71 stream 5679 opened peer=p37
+DEBUG    svc.metrics:noise_hard.py:71 gauge mem_mb=2074
+INFO     svc.audit:noise_hard.py:71 event 952 recorded actor=u36
+WARNING  svc.cache:noise_hard.py:74 cache miss ratio 0.39 above target 0.30
+INFO     svc.db:noise_hard.py:71 pool checkout wait=68ms
+DEBUG    svc.rpc:noise_hard.py:71 call inventory.reserve id=8078 -> ok 207ms
+INFO     svc.metrics:noise_hard.py:71 heartbeat worker=23 queue=3076
+INFO     svc.scheduler:noise_hard.py:71 lease renewed holder=w13
+DEBUG    svc.cache:noise_hard.py:71 warm shard=19 keys=8425
+INFO     svc.queue:noise_hard.py:71 ack msg 940
+DEBUG    svc.flags:noise_hard.py:71 flag f23 evaluated for u833 -> True
+INFO     svc.queue:noise_hard.py:71 ack msg 3127
+DEBUG    svc.audit:noise_hard.py:71 event 8632 recorded actor=u36
+DEBUG    svc.search:noise_hard.py:71 query terms=10 hits=1377 took=234ms
+DEBUG    svc.flags:noise_hard.py:71 flag f0 evaluated for u9466 -> True
+DEBUG    svc.cache:noise_hard.py:71 warm shard=30 keys=9650
+DEBUG    svc.scheduler:noise_hard.py:71 lease renewed holder=w3
+DEBUG    svc.storage:noise_hard.py:71 get blob 1637 etag=e26
+=========================== short test summary info ===========================
+FAILED tests/test_chain.py::test_usd_request_keeps_currency - AssertionError:...
+========================= 1 failed, 1 passed in 0.79s =========================

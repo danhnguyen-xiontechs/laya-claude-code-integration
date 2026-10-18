@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261018-model-router-r2-agent-01",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "8974a9e",
+    "branch": "claude/model-router-round2"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "MEDIUM",
+  "headline": "Round 2 (top round-1 fixes applied: ruleTier pinned by a test, checked rule ignores test globs; one Major from review fixed before measuring): both arms passed 12/12 on the first attempt, with no escalation. B cost $1.03 against $1.53 for all-Sonnet (-33%, price-weighted; round 1: -35%), and raw tokens went 3,407,036 -> 3,729,008 (+9.5% paired; within the run-to-run noise, mostly Sonnet-vs-Sonnet pairs). The saving is again the two lookup tasks on Haiku; the rule fix does not change any routed tier, because gate+sc takes the maximum with Jev, which still votes Sonnet for f1, d3, d5 and r1. Top fix: add an opt-in rules-plus-cascade policy that skips the Jev call when the prompt carries an automatic check, the only change that moves f1, d3, d5 and r1 to Haiku in the routed tier (estimated -70% to -95% against all-Sonnet, to be measured with harder cases).",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3407036,
+      "inputTokens": 122,
+      "outputTokens": 3475,
+      "toolCalls": 74,
+      "modelTurns": 61,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 16245,
+      "pairedTokens": 1703518
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3729008,
+      "inputTokens": 132,
+      "outputTokens": 2323,
+      "toolCalls": 80,
+      "modelTurns": 66,
+      "providerCalls": 36,
+      "fallbacks": 0,
+      "providerLatencyMs": 763,
+      "elapsedMs": 20820,
+      "pairedTokens": 1864504
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 32,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-18T03:37:02.595Z",
+  "generatedAt": "2026-10-18T06:51:49.707Z",
+  "report": "report.html"
+}

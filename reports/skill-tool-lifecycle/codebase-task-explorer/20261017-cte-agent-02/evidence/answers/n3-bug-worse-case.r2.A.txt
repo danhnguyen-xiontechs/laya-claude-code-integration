@@ -1,0 +1,24 @@
+Where to start: the per-tool report does not flag a case as "worse" when the tool arm (B) fails and plain Claude (A) passes.
+
+Five most relevant files, most relevant first:
+
+1. D:\cte2\w\n3-bug-worse-case-05aa54\repo\.claude\skills\build-skill-tool-workflow\scripts\build_tool_report.mjs
+   Lines 105-121: `majority()` collapses repeated runs to one status, and on a tie it returns whichever status was seen first (sort is stable over insertion order). The "worse" flag is `a === 'pass' && b === 'fail'` on those collapsed values, so a tie that leaves B on "pass" hides a failing repetition. Lines 25-27 and 45-46 also silently drop any results.json that fails to parse, so that repetition vanishes without a warning.
+
+2. D:\cte2\w\n3-bug-worse-case-05aa54\repo\.claude\skills\build-skill-tool-workflow\tests\reports.test.mjs
+   The "worse" test (lines 32-33, 52) uses one repetition per arm only, so the multi-repetition tie path is never exercised. That is why the bug passes the suite.
+
+3. D:\cte2\w\n3-bug-worse-case-05aa54\repo\.claude\skills\build-skill-tool-workflow\SKILL.md
+   Section 6 says each arm has "one case per case id", yet the builder accepts several repetitions and never says how to combine them. Section 7 requires a worse case to appear in the headline, but `headline` is typed by hand in manifest.json and nothing checks it.
+
+4. D:\cte2\w\n3-bug-worse-case-05aa54\repo\.claude\skills\build-skill-tool-workflow\scripts\build_main_report.mjs
+   Index "worse" badges (lines 52, 66) come only from `regressions` in summary.json, so a miss in the per-tool summary propagates here. The "Cases passed" card (build_tool_report.mjs line 183) counts raw repetitions while the case row uses the majority value, so the two can disagree.
+
+5. D:\cte2\w\n3-bug-worse-case-05aa54\repo\.claude\skills\build-skill-tool-workflow\schemas\case-result.schema.json
+   Defines the per-case status enum and an optional runId, but has no repetition index, so the majority rule the builder applies is undocumented at the input contract.
+
+Reproduction (scratch files only, repo untouched): two experiments with identical data, arm A repetitions [pass, pass], arm B repetitions [pass, fail] versus [fail, pass]. build_tool_report.mjs reports 0 worse for the first and 1 worse (T1) for the second, so run order decides the outcome.
+
+Helper output: it returned an unranked candidate list. Its top three (build_tool_report.mjs, build_main_report.mjs, report_style.mjs) match the first and fourth entries above; report_style.mjs already styles tr.worse, so I left it out. Entries 4 to 10 of the helper list (audit/audit.py, persist-sessions tests, transcript_usage, count_tokens, subagent_usage) are not relevant.
+
+Likely fix direction: for repeated runs, treat any fail in B as not a pass, or show per-repetition statuses and compare on those, and add a two-repetition test.

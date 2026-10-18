@@ -1,0 +1,34 @@
+{
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "Step 1 told the agent to put a code line in double quotes for git log -S. Guard lines that contain double quotes break the needle; git then finds no commit and exits 0.",
+      "ref": "jev_skills/git_risk/risk.py guidance() step 1",
+      "resolution": "fixed: single quotes and a fragment without quote characters"
+    },
+    {
+      "severity": "Minor",
+      "finding": "The hook score cache key leaves out guidanceVersion, so a cached entry can carry the other version's text.",
+      "ref": "jev_skills/git_risk/hook.py:59",
+      "resolution": "open: not fixed in this round"
+    },
+    {
+      "severity": "Minor",
+      "finding": "An empty needle makes git abort with a BUG message.",
+      "ref": "jev_skills/git_risk/risk.py guidance() step 1",
+      "resolution": "open: not fixed in this round"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "test_guidance_v2_default checks '-- src/billing.py' on its own, and that substring also appears in step 2.",
+      "ref": "tests/test_git_risk.py",
+      "resolution": "open"
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "guidanceVersion compares == 1, so a string '1' in .git-risk.json silently gives v2.",
+      "ref": "jev_skills/git_risk/risk.py",
+      "resolution": "open"
+    }
+  ]
+}

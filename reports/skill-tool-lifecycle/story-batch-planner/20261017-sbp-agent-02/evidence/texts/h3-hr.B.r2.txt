@@ -1,0 +1,55 @@
+total 12
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 23:48 .
+drwxr-xr-x 1 ADMIN 197121    0 Oct 17 23:48 ..
+-rw-r--r-- 1 ADMIN 197121 2418 Oct 17 23:48 batch.json
+-rwxr-xr-x 1 ADMIN 197121 1785 Oct 17 23:48 plan.mjs
+# Story batch plan (10 stories, 4 waves, Jev shadow)
+
+PLAN_JSON {"waves":[["R-3","R-8","R-10"],["R-4","R-5","R-9"],["R-1"],["R-2"]],"needs_decision":[{"kind":"external_dependency","stories":["R-6"]},{"kind":"blocked","stories":["R-7"]},{"kind":"incomplete","stories":["R-1"]}]}
+
+- Wave 1: R-3, R-8, R-10
+- Wave 2: R-4, R-5, R-9
+- Wave 3: R-1
+- Wave 4: R-2
+- Not scheduled: R-6, R-7
+
+## Dependencies and conflicts
+- R-2 depends on R-1 [text_reference, high]: R-2 text references R-1
+- R-1 ↔ R-3 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-4 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-5 unknown → R-5 then R-1 [prefilter, low]: incomplete story; shared terms: org · Jev(shadow): unknown 0.63
+- R-1 ↔ R-6 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-7 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-8 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-9 likely_independent [deterministic, low]: no shared resource found
+- R-1 ↔ R-10 likely_independent [deterministic, low]: no shared resource found
+- R-2 ↔ R-5 unknown → R-5 then R-2 [prefilter, low]: same module: portal/org; shared terms: org, port, tsx, each · Jev(shadow): shared_module_or_contract 0.78
+- R-2 ↔ R-7 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- R-2 ↔ R-9 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 0.98
+- R-3 ↔ R-4 shared_resource → R-3 then R-4 [deterministic, high]: migration: migration chain (both add migrations)
+- R-3 ↔ R-5 shared_resource → R-3 then R-5 [deterministic, high]: schema: positions (one changes a table the other uses)
+- R-5 ↔ R-7 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- R-5 ↔ R-9 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 0.99
+- R-7 depends on R-6 [text_reference, high]: R-7 text references R-6
+- R-7 ↔ R-9 likely_independent [deterministic, low]: no shared resource; shared terms only: port, tsx · Jev(shadow): independent 1
+- R-9 depends on R-8 [contract_role, medium]: R-8 produces /api/employees/search, R-9 consumes it
+
+## Needs a decision
+- [external_dependency] R-6: depends on HR-404, which is not in this batch; confirm it is done before scheduling
+- [blocked] R-7: depends on a story in a cycle or outside the batch
+- [incomplete] R-1: description too thin to infer relationships; scheduled alone in its own wave after its prerequisites
+- [pair] R-1, R-5: incomplete description
+- [pair] R-2, R-5: same module, no file/contract evidence
+
+## Assumptions
+- R-1: no repository metadata; modules/files inferred from text only
+- R-2: no repository metadata; modules/files inferred from text only
+- R-3: no repository metadata; modules/files inferred from text only
+- R-4: no repository metadata; modules/files inferred from text only
+- R-5: no repository metadata; modules/files inferred from text only
+- R-6 depends on HR-404, not in this batch: held back until confirmed done
+- R-6: no repository metadata; modules/files inferred from text only
+- R-7: no repository metadata; modules/files inferred from text only
+- R-8: no repository metadata; modules/files inferred from text only
+- R-9: no repository metadata; modules/files inferred from text only
+- R-10: no repository metadata; modules/files inferred from text only

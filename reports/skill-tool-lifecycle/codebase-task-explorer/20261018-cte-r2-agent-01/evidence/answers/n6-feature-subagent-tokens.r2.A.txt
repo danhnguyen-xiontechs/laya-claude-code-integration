@@ -1,0 +1,11 @@
+Answer: the subagent token totals for the A/B report are added up in the build-skill-tool-workflow skill. Nothing was modified.
+
+Five starting points, most relevant first:
+
+1. D:/cte3/w/n6-feature-subagent-tokens-a2abc0/repo/.claude/skills/build-skill-tool-workflow/scripts/transcript_usage.mjs: the actual summing. It adds input, output, cache-read and cache-write tokens over every assistant API message, counts each message id once, folds in the session's <session>/subagents/*.jsonl transcripts (unless --no-subagents), and filters by --from/--to.
+2. D:/cte3/w/n6-feature-subagent-tokens-a2abc0/repo/.claude/skills/build-skill-tool-workflow/scripts/subagent_usage.mjs: the per-subagent step. It maps each case's work dir to exactly one agent-<id>.jsonl by matching the path in the prompt (zero or two matches gives null, never a guess), then runs transcript_usage on that transcript with --no-subagents. Per-case lookup avoids summing all subagents of a session together.
+3. D:/cte3/w/n6-feature-subagent-tokens-a2abc0/repo/.claude/skills/build-skill-tool-workflow/scripts/build_tool_report.mjs: the report-level add-up. Per case, "All tokens" = input + output + cacheRead + cacheWrite (sumOrNull). Arm totals sum over all runs, and the per-case figure is the mean over repetitions. "Input tokens" is the input column only, so the two columns differ a lot.
+4. D:/cte3/w/n6-feature-subagent-tokens-a2abc0/repo/.claude/skills/build-skill-tool-workflow/SKILL.md: step 6 gives the procedure, including which command to use for subagent runs versus separate sessions, and the <project>/<session>/subagents folder convention.
+5. D:/cte3/w/n6-feature-subagent-tokens-a2abc0/repo/.claude/skills/build-skill-tool-workflow/tests/reports.test.mjs: pins the expected behaviour (1150 input with subagents, 150 with --no-subagents, 1050 with --from, exact work-dir matching, null on no match).
+
+Note: the find.mjs helper's candidates (for example proxy/router_proxy.py, audit/audit.py, ado-classify/eval_history.py) were unranked and unrelated to this question, so I did not use them. Its ordering was not helpful here.

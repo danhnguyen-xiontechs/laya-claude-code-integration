@@ -1,0 +1,21 @@
+Answer: the BLOCKED vs FAIL decision is made in one script, the integration-verifier skill's verify.mjs. Only 4 files in the repo mention the skill, and all are inside its folder. I read the code and docs but did not run verify.mjs, the tests, or the Jev path (read-only).
+
+How the status is decided (verify.mjs line numbers):
+- Per story (verifyStory, 89-124): a missing branch, an invalid or missing manifest, or a required check with no record, no non-empty log, or no numeric exit code gives BLOCKED. A required check recorded with a non-zero exit gives FAIL (line 121). The story's own log is never scanned for environment errors.
+- Combined run (combined(), 208-215): each required check runs in a fresh integration worktree. Exit 0 is PASS. Otherwise deterministicCategory (41-47) returns "environment" if the exit is 127 or 9009, or if the whole output matches ENV_RX (ECONNREFUSED, EACCES, permission denied, command not found, and similar). Environment gives BLOCKED; anything else gives FAIL.
+- finalize (285-298): an environment cluster sets BLOCKED on every story, attributed or not. A code cluster sets FAIL on stories whose file names appear in the output and REVIEW_REQUIRED on the rest. A worktree error or zero combined checks sets BLOCKED on all stories.
+- Batch status is the worst story status. Exit codes: 0 PASS, 1 FAIL, 3 BLOCKED or REVIEW_REQUIRED.
+- Jev (--jev) never sets a status; triage (250-273) only stores a suggestion. SKILL.md 56-66 says the same.
+
+Points to check:
+- The environment-to-BLOCKED mapping applies only to the combined run. The same ECONNREFUSED in a story's own required check is FAIL. The SKILL.md table matches this, but it may not be intended.
+- The environment regex runs over the full combined output, and the first match wins. A real test failure that prints a matched phrase, such as "permission denied" in an assertion message, would be BLOCKED rather than FAIL. I read the fixture expectations (tests/fixtures.test.mjs 95-110) but did not check whether any fixture covers this.
+
+Starting points, most relevant first:
+1. .claude/skills/integration-verifier/scripts/verify.mjs - the only code that assigns these statuses: per-story rules (89-124), combined check status (213-214), deterministicCategory (41-47), finalize (285-298).
+2. .claude/skills/integration-verifier/SKILL.md - the rule table (35-54) and precedence (FAIL > BLOCKED > REVIEW_REQUIRED > PASS) that the code should match, and the statement that Jev never changes a status.
+3. .claude/skills/integration-verifier/tests/fixtures.test.mjs - hand-labelled expectations: "environment-only" (104) expects BLOCKED for every story from ECONNREFUSED in the combined run, "missing-logs" (95) expects BLOCKED, and "claim-only-and-story-fail" (100) expects FAIL for a story's own failing check.
+4. .claude/skills/integration-verifier/references/manifest.md - defines the manifest and batch fields (exit_code, log_path, required_checks) that verifyStory reads; a missing or empty field is what produces BLOCKED. I grepped it but did not read it in full.
+5. .claude/skills/integration-verifier/scripts/decision-provider.mjs - the Jev call path; included only to confirm it cannot change a status, since its output is stored as a suggestion, not used in finalize.
+
+Note: I started the find.mjs helper as instructed. It moved to the background after the 120s timeout (task ba5akt1cn), and its output file was still empty when I finished. Nothing above depends on it.

@@ -1,0 +1,3 @@
+BATCH: REVIEW_REQUIRED
+S1: REVIEW_REQUIRED - open High review finding "SQL built by string concat" has no status and no SQL concat exists in src, tests or migrations on any branch, so a human must close or confirm it
+S2: REVIEW_REQUIRED - AC1 has no evidence: manifest evidence is empty and the ac_coverage row cites tests/count.test.js, which does not exist on story/S2

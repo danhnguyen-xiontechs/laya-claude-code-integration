@@ -1,0 +1,302 @@
+{
+  "c1.A.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "PASS",
+      "stories": {
+        "S1": "PASS",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c1.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c1.A.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "PASS",
+      "stories": {
+        "S1": "PASS",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c1.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c1.B.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "PASS",
+      "stories": {
+        "S1": "PASS",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c1.B2.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c1.B.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "PASS",
+      "stories": {
+        "S1": "PASS",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c1.B.r2",
+    "model": "claude-haiku-5-5"
+  },
+  "c2.A.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "BLOCKED",
+      "stories": {
+        "S1": "BLOCKED",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c2.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c2.A.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "BLOCKED",
+      "stories": {
+        "S1": "BLOCKED",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c2.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c2.B.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "BLOCKED",
+      "stories": {
+        "S1": "BLOCKED",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c2.B2.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c2.B.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "BLOCKED",
+      "stories": {
+        "S1": "BLOCKED",
+        "S2": "PASS"
+      }
+    },
+    "workFolder": "c2.B2.r2",
+    "model": "claude-haiku-5-5"
+  },
+  "c3.A.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "PASS",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c3.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c3.A.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "PASS",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c3.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c3.B.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "PASS",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c3.B2.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c3.B.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "PASS",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c3.B.r2",
+    "model": "claude-haiku-5-5"
+  },
+  "c4.A.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c4.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c4.A.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c4.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c4.B.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c4.B.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c4.B.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c4.B.r2",
+    "model": "claude-haiku-5-5"
+  },
+  "c5.A.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c5.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c5.A.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c5.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c5.B.r1": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c5.B.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c5.B.r2": {
+    "status": "pass",
+    "got": {
+      "batch": "FAIL",
+      "stories": {
+        "S1": "FAIL",
+        "S2": "FAIL"
+      }
+    },
+    "workFolder": "c5.B.r2",
+    "model": "claude-haiku-5-5"
+  },
+  "c6.A.r1": {
+    "status": "fail",
+    "got": {
+      "batch": "REVIEW_REQUIRED",
+      "stories": {
+        "S1": "REVIEW_REQUIRED",
+        "S2": "REVIEW_REQUIRED"
+      }
+    },
+    "workFolder": "c6.A.r1",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c6.A.r2": {
+    "status": "fail",
+    "got": {
+      "batch": "REVIEW_REQUIRED",
+      "stories": {
+        "S1": "REVIEW_REQUIRED",
+        "S2": "REVIEW_REQUIRED"
+      }
+    },
+    "workFolder": "c6.A.r2",
+    "forbiddenCalls": 0,
+    "model": "claude-haiku-5-5"
+  },
+  "c6.B.r1": {
+    "status": "fail",
+    "got": {
+      "batch": "REVIEW_REQUIRED",
+      "stories": {
+        "S1": "REVIEW_REQUIRED",
+        "S2": "REVIEW_REQUIRED"
+      }
+    },
+    "workFolder": "c6.B.r1",
+    "model": "claude-haiku-5-5"
+  },
+  "c6.B.r2": {
+    "status": "fail",
+    "got": {
+      "batch": "REVIEW_REQUIRED",
+      "stories": {
+        "S1": "REVIEW_REQUIRED",
+        "S2": "REVIEW_REQUIRED"
+      }
+    },
+    "workFolder": "c6.B.r2",
+    "model": "claude-haiku-5-5"
+  }
+}

@@ -1,0 +1,340 @@
+diff -ruN a/jev_advisor/config.py b/jev_advisor/config.py
+--- a/jev_advisor/config.py	2026-10-18 10:27:49.312135300 +0700
++++ b/jev_advisor/config.py	2026-10-18 10:42:54.095047300 +0700
+@@ -52,12 +52,16 @@
+             raise ConfigError(f"profile {name!r}: 'argv' must be a non-empty list of strings")
+         for rx in p.get("allowedArgs", []):
+             re.compile(rx)
++    curator = raw.get("curator", {})  # curator.py merges this over its own DEFAULTS
++    if not isinstance(curator, dict):
++        raise ConfigError(f"{path}: 'curator' must be an object")
+     return {
+         "root": path.parent,
+         "path": path,
+         "profiles": profiles,
+         "advisor": {**DEFAULT_ADVISOR, **raw.get("advisor", {})},
+         "storage": {**DEFAULT_STORAGE, **raw.get("storage", {})},
++        "curator": curator,
+     }
+ 
+ 
+diff -ruN a/jev_advisor/curator.py b/jev_advisor/curator.py
+--- a/jev_advisor/curator.py	2026-10-18 10:27:49.308135700 +0700
++++ b/jev_advisor/curator.py	2026-10-18 10:42:54.066061300 +0700
+@@ -11,6 +11,11 @@
+ - a chunk is omitted only when JEV answered for it and p(helps explain failure) <= omitMaxP (default 0.2);
+ - a chunk matching an alwaysKeep pattern is kept; chunks JEV never saw are kept;
+ - no JEV answers (unavailable, pending, not eligible) -> nothing is omitted.
++
++Views (`curator.view`): "pointers" (default) writes the status line, the top `pointerTop` kept
++items as one-line pointers (up to 4 failure anchors, then JEV p descending, then regex-pinned
++chunks, then unanswered; see `rank`) and a Read hint; the full log stays on disk. "curated"
++writes the round-1 view. Both keys can be set in .jev-advisor.json under "curator".
+ """
+ 
+ import json
+@@ -22,7 +27,14 @@
+ DEFAULTS = {
+     "omitMaxP": 0.2,  # 0 gold patterns lost on 19 scenarios at 0.2, 1 lost at 0.3 (docs/runs/curator)
+     "alwaysKeep": [r"Traceback \(most recent call last\)", r"^(ERROR|CRITICAL)\b", r"\b(ERROR|CRITICAL)\s+\S+:\S+:\d+"],
++    # view written to <run>.curated.txt: "pointers" (status + ranked pointer list, full log stays on
++    # disk) or "curated" (the round-1 view: kept lines verbatim, omitted runs replaced by recovery lines)
++    "view": "pointers",
++    "pointerTop": 12,
+ }
++VIEWS = ("pointers", "curated")
++PREVIEW_CHARS = 120
++ANCHOR_SLOTS = 4  # failure anchors listed ahead of JEV-ranked chunks; the rest follow them
+ EVAL_THRESHOLDS = (0.02, 0.05, 0.1, 0.2, 0.3)
+ 
+ 
+@@ -45,7 +57,11 @@
+     run, lines = data["run"], data["lines"]
+     profile = cfg["profiles"].get(run.get("profile"), {})
+     parse = parsers.get(profile.get("parser", ""))
+-    chunks = parse(lines, cfg["advisor"])["chunks"] if parse else []
++    parsed = parse(lines, cfg["advisor"]) if parse else {"chunks": [], "failures": []}
++    chunks = parsed["chunks"]
++    # failure anchors are never candidates (always kept); listed here only so the pointer view can point at them
++    anchors = [{"start": f["anchorStart"], "end": f["anchorEnd"], "kind": f.get("kind", "failure"), "test": f.get("test")}
++               for f in parsed.get("failures", [])]
+     ids = {(m["start"], m["end"]): m.get("id") for m in data["request"].get("chunks", [])}
+     advice = data["advice"]
+     answers = advice.get("answers", {}) if advice.get("status") == "ok" else {}
+@@ -54,8 +70,9 @@
+     for c in chunks:
+         cid = ids.get((c["start"], c["end"]))
+         p = answers.get(cid) if cid else None
+-        text = "\n".join(lines[c["start"] - 1 : c["end"]])
+-        if any(rx.search(l) for rx in keep_rx for l in text.splitlines()):
++        body = lines[c["start"] - 1 : c["end"]]
++        hit = next((c["start"] + k for k, l in enumerate(body) if any(rx.search(l) for rx in keep_rx)), None)
++        if hit is not None:
+             decision, why = "keep", "always-keep pattern"
+         elif p is None:
+             decision, why = "keep", "no JEV answer"
+@@ -64,23 +81,75 @@
+         else:
+             decision, why = "keep", f"p={p:.2f}"
+         blocks.append({"id": cid or f"x{c['start']}", "start": c["start"], "end": c["end"], "kind": c["kind"],
+-                       "p": p, "decision": decision, "why": why})
++                       "p": p, "decision": decision, "why": why, **({"match": hit} if hit is not None else {})})
+     omitted = {n for b in blocks if b["decision"] == "omit" for n in range(b["start"], b["end"] + 1)}
+     total_chars = sum(len(l) + 1 for l in lines)
+     kept_chars = sum(len(l) + 1 for n, l in enumerate(lines, 1) if n not in omitted)
+     return {
+         "runId": run["runId"], "exitCode": run.get("exitCode"), "omitMaxP": cut,
+-        "jev": advice.get("status") or "none", "blocks": blocks, "omittedLines": sorted(omitted),
++        "jev": advice.get("status") or "none", "blocks": blocks, "anchors": anchors, "omittedLines": sorted(omitted),
+         "totalLines": len(lines), "totalChars": total_chars, "keptChars": kept_chars,
+         "reduction": round(1 - kept_chars / total_chars, 3) if total_chars else 0.0,
+     }
+ 
+ 
++def _status_line(cur: dict, log_rel: str) -> str:
++    status = "PASS" if cur["exitCode"] == 0 else "FAIL"
++    return (f"[curator] UNDERLYING COMMAND STATUS: {status} (exit {cur['exitCode']}) · "
++            f"{len(cur['omittedLines'])} of {cur['totalLines']} lines omitted · full log: {log_rel}")
++
++
++def rank(cur: dict) -> list[dict]:
++    """Kept items in pointer order, so that JEV's scores reach the printed list:
++    (a) parser failure anchors, line order, at most ANCHOR_SLOTS;
++    (b) chunks JEV scored above omitMaxP, by p descending (a regex-pinned chunk with such a p counts here);
++    (c) failure anchors beyond ANCHOR_SLOTS, then the other always-keep (regex-pinned) chunks, line order;
++    (d) kept chunks JEV never answered, line order.
++    Ties keep line order; omitted chunks are never listed."""
++    cut = cur.get("omitMaxP", DEFAULTS["omitMaxP"])
++    anchors = sorted(({**a, "label": "anchor"} for a in cur.get("anchors", [])), key=lambda b: b["start"])
++    pinned, answered, unanswered = [], [], []
++    for b in cur["blocks"]:
++        if b["decision"] != "keep":
++            continue
++        if b["p"] is not None and b["p"] > cut:
++            answered.append({**b, "label": f"JEV p={b['p']:.2f}"})
++        elif b["why"] == "always-keep pattern":
++            pinned.append({**b, "label": "pinned" + (f" (JEV p={b['p']:.2f})" if b["p"] is not None else "")})
++        else:
++            unanswered.append({**b, "label": "no JEV answer"})
++    pinned.sort(key=lambda b: b["start"])
++    answered.sort(key=lambda b: (-b["p"], b["start"]))
++    unanswered.sort(key=lambda b: b["start"])
++    return anchors[:ANCHOR_SLOTS] + answered + anchors[ANCHOR_SLOTS:] + pinned + unanswered
++
++
++def pointers(data: dict, cur: dict, log_rel: str, top: int) -> list[str]:
++    """The pointer view: status line, up to `top` ranked one-line pointers into the full log, and a
++    footer with how many kept items were not listed and how to open the first one."""
++    items = rank(cur)
++    shown = items[: max(0, int(top))]
++    out = [_status_line(cur, log_rel)]
++    for k, b in enumerate(shown, 1):
++        # preview: the always-keep line that pinned the chunk, else its first non-blank line
++        body = data["lines"][b["match"] - 1 : b["end"]] if b.get("match") else data["lines"][b["start"] - 1 : b["end"]]
++        first = next((l.strip() for l in body if l.strip()), "")
++        if len(first) > PREVIEW_CHARS:
++            first = first[: PREVIEW_CHARS - 3] + "..."
++        out.append(f"#{k} lines {b['start']}-{b['end']} · {b['kind']} · {b['label']} · {first}")
++    rest = len(items) - len(shown)
++    if shown:
++        a, n = shown[0]["start"], shown[0]["end"] - shown[0]["start"] + 1
++        out.append(f"[curator] {rest} more kept chunks not listed · open the first pointer: "
++                   f"Read {log_rel} offset {a} limit {n}")
++    else:
++        out.append(f"[curator] {rest} more kept chunks not listed · nothing to point at; full log: Read {log_rel}")
++    return out
++
++
+ def render(data: dict, cur: dict, log_rel: str) -> list[str]:
+     """The curated view: kept lines verbatim, each omitted run replaced by one recovery line."""
+-    status = "PASS" if cur["exitCode"] == 0 else "FAIL"
+-    out = [f"[curator] UNDERLYING COMMAND STATUS: {status} (exit {cur['exitCode']}) · "
+-           f"{len(cur['omittedLines'])} of {cur['totalLines']} lines omitted · full log: {log_rel}"]
++    out = [_status_line(cur, log_rel)]
+     by_start = {b["start"]: b for b in cur["blocks"] if b["decision"] == "omit"}
+     omitted = set(cur["omittedLines"])
+     n = 1
+@@ -103,7 +172,12 @@
+     cur = plan(data, cfg, omit_max_p)
+     log_rel = storage.rel(cfg, data["paths"]["log"])
+     base = data["paths"]["log"].with_suffix("")
+-    Path(f"{base}.curated.txt").write_text("\n".join(render(data, cur, log_rel)) + "\n", encoding="utf-8")
++    opts = {**DEFAULTS, **cfg.get("curator", {})}
++    view = opts["view"]
++    if view not in VIEWS:
++        raise ValueError(f"curator.view must be one of {VIEWS}, got {view!r}")
++    lines = render(data, cur, log_rel) if view == "curated" else pointers(data, cur, log_rel, opts["pointerTop"])
++    Path(f"{base}.curated.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+     storage.write_json(Path(f"{base}.curate.json"), cur)
+     return cur
+ 
+diff -ruN a/tests/test_curator.py b/tests/test_curator.py
+--- a/tests/test_curator.py	2026-10-18 10:27:49.458172000 +0700
++++ b/tests/test_curator.py	2026-10-18 10:43:05.227910000 +0700
+@@ -1,4 +1,5 @@
+ import json
++import re
+ import tempfile
+ import unittest
+ from pathlib import Path
+@@ -59,10 +60,14 @@
+         cur = curator.plan(curator.load_run(cfg, "r1"), cfg)
+         self.assertEqual(cur["omittedLines"], [])
+ 
++    def view_text(self) -> str:
++        return Path(str(self.paths["log"].with_suffix("")) + ".curated.txt").read_text(encoding="utf-8")
++
+     def test_curated_view_states_status_and_recovery(self):
+         self.advise({i: 0.0 for i in self.ids})
+-        cur = curator.curate(self.cfg, "r1")
+-        text = Path(str(self.paths["log"].with_suffix("")) + ".curated.txt").read_text(encoding="utf-8")
++        cfg = {**self.cfg, "curator": {"view": "curated"}}
++        cur = curator.curate(cfg, "r1")
++        text = self.view_text()
+         self.assertIn("UNDERLYING COMMAND STATUS: FAIL (exit 1)", text)
+         if cur["omittedLines"]:
+             self.assertIn("offset", text)
+@@ -70,6 +75,143 @@
+         kept = [l for l in text.splitlines()[1:] if not l.startswith("[curator")]
+         self.assertEqual(len(kept), cur["totalLines"] - len(cur["omittedLines"]))
+ 
++    def test_pointer_view_is_default_short_and_has_read_hint(self):
++        self.advise({i: 0.0 for i in self.ids})
++        cur = curator.curate(self.cfg, "r1")
++        text = self.view_text()
++        out = text.splitlines()
++        log_rel = storage.rel(self.cfg, self.paths["log"])
++        self.assertTrue(out[0].startswith("[curator] UNDERLYING COMMAND STATUS: FAIL (exit 1)"))
++        self.assertIn(f"full log: {log_rel}", out[0])
++        ptrs = [l for l in out if l.startswith("#")]
++        self.assertTrue(ptrs)
++        self.assertLessEqual(len(ptrs), curator.DEFAULTS["pointerTop"])
++        self.assertEqual(len(out), 1 + len(ptrs) + 1)  # status, pointers, footer
++        first = curator.rank(cur)[0]
++        self.assertRegex(out[-1], rf"Read {re.escape(log_rel)} offset {first['start']} limit {first['end'] - first['start'] + 1}$")
++        self.assertNotIn("[curator: omitted lines", text)
++        for l in ptrs:  # one line each, preview cut
++            self.assertRegex(l, r"^#\d+ lines \d+-\d+ · [^·]+ · (anchor|pinned( \(JEV p=\d\.\d\d\))?|JEV p=\d\.\d\d|no JEV answer) · ")
++            self.assertLessEqual(len(l.split(" · ", 3)[3]), curator.PREVIEW_CHARS)
++        self.assertLess(len(text), 0.2 * cur["totalChars"])
++
++    def test_pointer_top_limits_and_footer_counts_rest(self):
++        self.advise({i: 0.5 for i in self.ids})
++        cfg = {**self.cfg, "curator": {"pointerTop": 3}}
++        cur = curator.curate(cfg, "r1")
++        out = self.view_text().splitlines()
++        items = curator.rank(cur)
++        self.assertGreater(len(items), 3)
++        self.assertEqual(len([l for l in out if l.startswith("#")]), 3)
++        self.assertIn(f"[curator] {len(items) - 3} more kept chunks not listed", out[-1])
++
++    def test_pointer_ranking_anchors_then_p_then_pinned_then_unanswered(self):
++        # every other chunk answered with p rising in request order, every fourth scored low, the rest unanswered;
++        # WARNING lines pinned by config so some pinned chunks are scored low and some never answered
++        answers = {i: min(0.99, 0.25 + 0.01 * k) for k, i in enumerate(self.ids[::2])}
++        answers.update({i: 0.05 for i in self.ids[1::4]})
++        self.advise(answers)
++        cfg = {**self.cfg, "curator": {"alwaysKeep": [*curator.DEFAULTS["alwaysKeep"], r"^WARNING\b"]}}
++        cur = curator.plan(curator.load_run(cfg, "r1"), cfg)
++        items = curator.rank(cur)
++        nf = len(self.parsed["failures"])
++        self.assertTrue(0 < nf <= curator.ANCHOR_SLOTS)
++        # failure anchors come first in line order
++        self.assertEqual([b["start"] for b in items[:nf]], [f["anchorStart"] for f in self.parsed["failures"]])
++        self.assertEqual({b["label"] for b in items[:nf]}, {"anchor"})
++        groups = [0 if l == "anchor" else 1 if l.startswith("JEV") else 2 if l.startswith("pinned") else 3
++                  for l in (b["label"] for b in items)]
++        self.assertEqual(groups, sorted(groups))
++        self.assertIn(1, groups)
++        self.assertIn(3, groups)
++        pinned = [b["start"] for b in items if b["label"].startswith("pinned")]
++        self.assertEqual(pinned, sorted(pinned))
++        self.assertTrue(pinned)
++        self.assertTrue(all(b["why"] == "always-keep pattern" and (b["p"] is None or b["p"] <= cur["omitMaxP"])
++                            for b in items if b["label"].startswith("pinned")))
++        self.assertTrue(all(b["p"] > cur["omitMaxP"] for b in items if b["label"].startswith("JEV")))
++        ps = [b["p"] for b in items if b["label"].startswith("JEV")]
++        self.assertEqual(ps, sorted(ps, reverse=True))
++        unanswered = [b["start"] for b in items if b["label"] == "no JEV answer"]
++        self.assertEqual(unanswered, sorted(unanswered))
++        self.assertTrue(all(b.get("decision", "keep") == "keep" for b in items))
++        out = curator.pointers(curator.load_run(self.cfg, "r1"), cur, "x.log", 12)
++        self.assertIn(f"#1 lines {items[0]['start']}-{items[0]['end']} · ", out[1])
++
++    def test_jev_top_chunk_reaches_printed_list_despite_pins(self):
++        # one chunk scored high, the rest low; regex pins must not push it out of the top
++        top_id = self.ids[-1]
++        self.advise({i: (0.95 if i == top_id else 0.05) for i in self.ids})
++        cfg = {**self.cfg, "curator": {"alwaysKeep": [*curator.DEFAULTS["alwaysKeep"], r"pool exhausted", r"flush latency"]}}
++        cur = curator.plan(curator.load_run(cfg, "r1"), cfg)
++        m = next(m for m in self.request["chunks"] if m.get("id") == top_id)
++        out = curator.pointers(curator.load_run(cfg, "r1"), cur, "x.log", curator.DEFAULTS["pointerTop"])
++        nf = min(len(self.parsed["failures"]), curator.ANCHOR_SLOTS)
++        self.assertTrue(out[nf + 1].startswith(f"#{nf + 1} lines {m['start']}-{m['end']} · "))
++        self.assertIn("JEV p=0.95", out[nf + 1])
++
++    def test_rank_order_with_anchor_overflow(self):
++        anchors = [{"start": s, "end": s + 1, "kind": "failure", "test": f"t{s}"} for s in (10, 20, 30, 40, 50, 60)]
++        blk = lambda s, p, why, d="keep": {"id": f"x{s}", "start": s, "end": s, "kind": "captured log call",
++                                           "p": p, "decision": d, "why": why}
++        blocks = [blk(11, None, "always-keep pattern"), blk(12, 0.4, "p=0.40"), blk(13, None, "no JEV answer"),
++                  blk(14, 0.9, "always-keep pattern"), blk(15, 0.4, "p=0.40"), blk(16, 0.1, "p=0.10 <= 0.2", "omit"),
++                  blk(17, 0.7, "p=0.70"), blk(18, 0.05, "always-keep pattern")]
++        order = [(b["start"], b["label"]) for b in curator.rank({"anchors": anchors, "blocks": blocks})]
++        self.assertEqual(order, [
++            (10, "anchor"), (20, "anchor"), (30, "anchor"), (40, "anchor"),
++            (14, "JEV p=0.90"), (17, "JEV p=0.70"), (12, "JEV p=0.40"), (15, "JEV p=0.40"),
++            (50, "anchor"), (60, "anchor"), (11, "pinned"), (18, "pinned (JEV p=0.05)"), (13, "no JEV answer")])
++
++    def test_pointer_ties_keep_line_order(self):
++        self.advise({i: 0.5 for i in self.ids})
++        cur = curator.plan(curator.load_run(self.cfg, "r1"), self.cfg)
++        jev = [b["start"] for b in curator.rank(cur) if b["label"].startswith("JEV")]
++        self.assertTrue(jev)
++        self.assertEqual(jev, sorted(jev))
++
++    def test_view_curated_flag_keeps_old_output(self):
++        self.advise({i: 0.0 for i in self.ids})
++        cfg = {**self.cfg, "curator": {"view": "curated"}}
++        cur = curator.curate(cfg, "r1")
++        data = curator.load_run(cfg, "r1")
++        log_rel = storage.rel(cfg, self.paths["log"])
++        self.assertEqual(self.view_text(), "\n".join(curator.render(data, cur, log_rel)) + "\n")
++        with self.assertRaises(ValueError):
++            curator.curate({**self.cfg, "curator": {"view": "bogus"}}, "r1")
++
++    def test_view_and_top_from_config_file_are_honoured(self):
++        self.advise({i: 0.5 for i in self.ids})
++        root = Path(self.tmp.name)
++
++        def load(curator_cfg):
++            (root / config.CONFIG_NAME).write_text(json.dumps(
++                {"profiles": {"demo": {"argv": ["x"], "parser": "pytest"}}, "curator": curator_cfg}), encoding="utf-8")
++            return config.load(root)
++
++        cfg = load({"view": "curated"})
++        self.assertEqual(cfg["curator"], {"view": "curated"})
++        cur = curator.curate(cfg, "r1")
++        log_rel = storage.rel(cfg, self.paths["log"])
++        self.assertEqual(self.view_text(), "\n".join(curator.render(curator.load_run(cfg, "r1"), cur, log_rel)) + "\n")
++        curator.curate(load({"pointerTop": 2}), "r1")
++        self.assertEqual(len([l for l in self.view_text().splitlines() if l.startswith("#")]), 2)
++        (root / config.CONFIG_NAME).write_text(json.dumps(
++            {"profiles": {"demo": {"argv": ["x"]}}, "curator": ["bad"]}), encoding="utf-8")
++        with self.assertRaises(config.ConfigError):
++            config.load(root)
++
++    def test_pinned_chunk_preview_is_pinning_line(self):
++        self.advise({i: 0.0 for i in self.ids})
++        cfg = {**self.cfg, "curator": {"alwaysKeep": [r"pool exhausted"]}}
++        cur = curator.plan(curator.load_run(cfg, "r1"), cfg)
++        pinned = [b for b in cur["blocks"] if b["why"] == "always-keep pattern"]
++        self.assertTrue(pinned)
++        out = curator.pointers(curator.load_run(cfg, "r1"), cur, "x.log", 50)
++        b = pinned[0]
++        line = next(l for l in out if l.startswith("#") and f" lines {b['start']}-{b['end']} · " in l)
++        self.assertIn("pool exhausted", line.split(" · ", 3)[3])
++
+     def test_eval_counts_lost_patterns(self):
+         self.advise({i: 0.0 for i in self.ids})
+         cur = curator.plan(curator.load_run(self.cfg, "r1"), self.cfg)

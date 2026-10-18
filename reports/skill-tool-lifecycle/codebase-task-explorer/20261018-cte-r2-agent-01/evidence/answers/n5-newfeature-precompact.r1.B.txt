@@ -1,0 +1,17 @@
+Where to start: adding a plugin hook that saves a short session summary file right before compaction. Read-only; nothing was modified.
+
+Helper result: find.mjs ran the codebase-task-explorer ranking (rules + Jev) and returned LOW CONFIDENCE (Jev top-1 p=0.36). Its three rows were off-target: prompt-budget/log-hook.js (subagent token logging), and two session_store.py copies under workflow/runs/persist-sessions (router session persistence). I checked those and did not use them. The list below comes from reading the source.
+
+The 5 most relevant files, most relevant first:
+
+1. D:\cte3\w\n5-newfeature-precompact-d5724e\repo\fast-compact\hooks\fast-compact.ts - the only existing plugin hook on `session.compact`. It writes files under ~/.claude/<plugin>/ via $.fs.write, uses $.session.id(), and always calls next(event). It is the closest template for the new hook. Caveat: it returns early unless trigger is manual or plugin, so a pre-compaction summary would also need to handle auto.
+
+2. D:\cte3\w\n5-newfeature-precompact-d5724e\repo\fast-compact\types\claude-code.d.ts - the API contract. `session.compact` input is { trigger: manual|auto|plugin|precompute, messages, agentId?, instructions? } (around lines 7183-7290). The settings-level PreCompactHookInput (around line 5561) has trigger and custom_instructions but no messages, so the function hook is the better fit for reading the transcript.
+
+3. D:\cte3\w\n5-newfeature-precompact-d5724e\repo\fast-compact\hooks\hooks.json - the module registration, `{ "modules": ["./fast-compact.ts"] }`. A new hook module has to be listed here to load.
+
+4. D:\cte3\w\n5-newfeature-precompact-d5724e\repo\fast-compact\.claude-plugin\plugin.json - the plugin manifest. Its userConfig block (preserveRecentMessages, minReductionRatio) is where any new option, such as an enable flag or summary length, would be declared.
+
+5. D:\cte3\w\n5-newfeature-precompact-d5724e\repo\smart-context-trimming\hooks\register.ts - a second plugin showing the per-plugin directory pattern (baseDir from USERPROFILE/HOME, then ~/.claude/<plugin>), a session.start hook, and command registration. It is a reference for where the summary file goes and for cleaning up old files.
+
+Suggested placement: a new module next to fast-compact.ts (or a new plugin folder), registered in hooks.json, hooked on session.compact for every trigger, which writes the file and then returns next(event) unchanged.

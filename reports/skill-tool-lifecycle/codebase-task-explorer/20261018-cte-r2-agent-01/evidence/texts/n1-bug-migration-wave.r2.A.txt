@@ -1,0 +1,16 @@
+## Candidate starting points (unranked) — bug
+
+Engine: codemap codemap 4.6.0 · pool 27. Matches for the task words, in the search engine's own order (no ranking).
+
+| # | path |
+|---|---|
+| 1 | `.claude/skills/story-batch-planner/scripts/planner.mjs` |
+| 2 | `.claude/skills/story-batch-planner/test/planner.test.mjs` |
+| 3 | `.claude/skills/story-batch-planner/scripts/plan.mjs` |
+| 4 | `.claude/skills/story-batch-planner/bench/eval.mjs` |
+| 5 | `.claude/skills/review-pr-jev-classify/scripts/build_execution_log.mjs` |
+| 6 | `.claude/skills/story-batch-planner/scripts/decision-provider.mjs` |
+| 7 | `.claude/skills/review-pr-jev-classify/tests/jev.test.mjs` |
+| 8 | `.claude/skills/skills-router/scripts/route.mjs` |
+| 9 | `ado-classify/eval_history.py` |
+| 10 | `triage/v2/extract_transcripts.py` |

@@ -1,0 +1,674 @@
+[
+  {
+    "key": "c1-webtest-plain-vi.A.r1",
+    "caseId": "c1-webtest-plain-vi",
+    "arm": "A",
+    "rep": 1,
+    "pick": "web-test",
+    "gold": [
+      "web-test"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 56681,
+      "cacheWriteTokens": 69511,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a58bbb917be2d3238.jsonl",
+      "elapsedMs": 5506
+    },
+    "error": null
+  },
+  {
+    "key": "c1-webtest-plain-vi.B.r1",
+    "caseId": "c1-webtest-plain-vi",
+    "arm": "B",
+    "rep": 1,
+    "pick": "web-test",
+    "gold": [
+      "web-test"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "web-test",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 56686,
+      "cacheWriteTokens": 69558,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a946ba326d38790e1.jsonl",
+      "elapsedMs": 8166
+    },
+    "error": null
+  },
+  {
+    "key": "c2-webtest-jev-wait-vi.A.r1",
+    "caseId": "c2-webtest-jev-wait-vi",
+    "arm": "A",
+    "rep": 1,
+    "pick": "web-test-jev-wait",
+    "gold": [
+      "web-test-jev-wait"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 6,
+      "cacheReadTokens": 56678,
+      "cacheWriteTokens": 69618,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-ad6acc5dcbb7e27d6.jsonl",
+      "elapsedMs": 8220
+    },
+    "error": null
+  },
+  {
+    "key": "c2-webtest-jev-wait-vi.B.r1",
+    "caseId": "c2-webtest-jev-wait-vi",
+    "arm": "B",
+    "rep": 1,
+    "pick": "web-test-jev-wait",
+    "gold": [
+      "web-test-jev-wait"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "web-test-jev-wait",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 56677,
+      "cacheWriteTokens": 69589,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a835a93089836e493.jsonl",
+      "elapsedMs": 9185
+    },
+    "error": null
+  },
+  {
+    "key": "c3-review-laya-severity-en.A.r1",
+    "caseId": "c3-review-laya-severity-en",
+    "arm": "A",
+    "rep": 1,
+    "pick": "review-pr-laya-classify",
+    "gold": [
+      "review-pr-laya-classify"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 4,
+      "cacheReadTokens": 56660,
+      "cacheWriteTokens": 69759,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a8ef5b0c8e93160e3.jsonl",
+      "elapsedMs": 4233
+    },
+    "error": null
+  },
+  {
+    "key": "c3-review-laya-severity-en.B.r1",
+    "caseId": "c3-review-laya-severity-en",
+    "arm": "B",
+    "rep": 1,
+    "pick": "review-pr-laya-classify",
+    "gold": [
+      "review-pr-laya-classify"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "review-pr-laya-classify",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 56659,
+      "cacheWriteTokens": 69346,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a17af32e6899a1ddd.jsonl",
+      "elapsedMs": 8686
+    },
+    "error": null
+  },
+  {
+    "key": "c4-code-review-vi.A.r1",
+    "caseId": "c4-code-review-vi",
+    "arm": "A",
+    "rep": 1,
+    "pick": "code-review",
+    "gold": [
+      "code-review"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 99046,
+      "cacheWriteTokens": 27167,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-ac445f00ebfbfcc63.jsonl",
+      "elapsedMs": 5053
+    },
+    "error": null
+  },
+  {
+    "key": "c4-code-review-vi.B.r1",
+    "caseId": "c4-code-review-vi",
+    "arm": "B",
+    "rep": 1,
+    "pick": "code-review",
+    "gold": [
+      "code-review"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "code-review",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 99042,
+      "cacheWriteTokens": 27210,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a41843c43ef64bedc.jsonl",
+      "elapsedMs": 7890
+    },
+    "error": null
+  },
+  {
+    "key": "c5-none-flaky-test-vi.A.r1",
+    "caseId": "c5-none-flaky-test-vi",
+    "arm": "A",
+    "rep": 1,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 5,
+      "cacheReadTokens": 99039,
+      "cacheWriteTokens": 27276,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a9ac1d88047e4b63d.jsonl",
+      "elapsedMs": 11164
+    },
+    "error": null
+  },
+  {
+    "key": "c5-none-flaky-test-vi.B.r1",
+    "caseId": "c5-none-flaky-test-vi",
+    "arm": "B",
+    "rep": 1,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 99044,
+      "cacheWriteTokens": 26929,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-aca16b9e1e29a6287.jsonl",
+      "elapsedMs": 10213
+    },
+    "error": null
+  },
+  {
+    "key": "c6-none-for-loop-vi.A.r1",
+    "caseId": "c6-none-for-loop-vi",
+    "arm": "A",
+    "rep": 1,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 5,
+      "cacheReadTokens": 99038,
+      "cacheWriteTokens": 27003,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a496d485d888c6c26.jsonl",
+      "elapsedMs": 4571
+    },
+    "error": null
+  },
+  {
+    "key": "c6-none-for-loop-vi.B.r1",
+    "caseId": "c6-none-for-loop-vi",
+    "arm": "B",
+    "rep": 1,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 99037,
+      "cacheWriteTokens": 27009,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a1ec37876b66eb0cd.jsonl",
+      "elapsedMs": 5524
+    },
+    "error": null
+  },
+  {
+    "key": "c1-webtest-plain-vi.A.r2",
+    "caseId": "c1-webtest-plain-vi",
+    "arm": "A",
+    "rep": 2,
+    "pick": "web-test",
+    "gold": [
+      "web-test"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 99062,
+      "cacheWriteTokens": 27113,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a01d68b0e901d5571.jsonl",
+      "elapsedMs": 8232
+    },
+    "error": null
+  },
+  {
+    "key": "c1-webtest-plain-vi.B.r2",
+    "caseId": "c1-webtest-plain-vi",
+    "arm": "B",
+    "rep": 2,
+    "pick": "web-test",
+    "gold": [
+      "web-test"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "web-test",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 6,
+      "outputTokens": 12,
+      "cacheReadTokens": 168433,
+      "cacheWriteTokens": 28021,
+      "modelTurns": 3,
+      "toolCalls": 3,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a17f6fa14e476be15.jsonl",
+      "elapsedMs": 14811
+    },
+    "error": null
+  },
+  {
+    "key": "c2-webtest-jev-wait-vi.A.r2",
+    "caseId": "c2-webtest-jev-wait-vi",
+    "arm": "A",
+    "rep": 2,
+    "pick": "web-test-jev-wait",
+    "gold": [
+      "web-test-jev-wait"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 5,
+      "cacheReadTokens": 99050,
+      "cacheWriteTokens": 26933,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a277440ff8606449a.jsonl",
+      "elapsedMs": 7061
+    },
+    "error": null
+  },
+  {
+    "key": "c2-webtest-jev-wait-vi.B.r2",
+    "caseId": "c2-webtest-jev-wait-vi",
+    "arm": "B",
+    "rep": 2,
+    "pick": "web-test-jev-wait",
+    "gold": [
+      "web-test-jev-wait"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "web-test-jev-wait",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 10,
+      "cacheReadTokens": 99049,
+      "cacheWriteTokens": 27045,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a16a5b57abe25b2a8.jsonl",
+      "elapsedMs": 11353
+    },
+    "error": null
+  },
+  {
+    "key": "c3-review-laya-severity-en.A.r2",
+    "caseId": "c3-review-laya-severity-en",
+    "arm": "A",
+    "rep": 2,
+    "pick": "review-pr-laya-classify",
+    "gold": [
+      "review-pr-laya-classify"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 99038,
+      "cacheWriteTokens": 27082,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a6dc96cd26ea9ecbd.jsonl",
+      "elapsedMs": 6391
+    },
+    "error": null
+  },
+  {
+    "key": "c3-review-laya-severity-en.B.r2",
+    "caseId": "c3-review-laya-severity-en",
+    "arm": "B",
+    "rep": 2,
+    "pick": "review-pr-laya-classify",
+    "gold": [
+      "review-pr-laya-classify"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "review-pr-laya-classify",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 7,
+      "cacheReadTokens": 99043,
+      "cacheWriteTokens": 26965,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-ae898c922e651c779.jsonl",
+      "elapsedMs": 10292
+    },
+    "error": null
+  },
+  {
+    "key": "c4-code-review-vi.A.r2",
+    "caseId": "c4-code-review-vi",
+    "arm": "A",
+    "rep": 2,
+    "pick": "code-review",
+    "gold": [
+      "code-review"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 5,
+      "cacheReadTokens": 99043,
+      "cacheWriteTokens": 27270,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a5c2e387d1a816852.jsonl",
+      "elapsedMs": 6265
+    },
+    "error": null
+  },
+  {
+    "key": "c4-code-review-vi.B.r2",
+    "caseId": "c4-code-review-vi",
+    "arm": "B",
+    "rep": 2,
+    "pick": "code-review",
+    "gold": [
+      "code-review"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": "code-review",
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 8,
+      "cacheReadTokens": 99045,
+      "cacheWriteTokens": 27265,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a0dd36f4e9ef8d0ee.jsonl",
+      "elapsedMs": 8212
+    },
+    "error": null
+  },
+  {
+    "key": "c5-none-flaky-test-vi.A.r2",
+    "caseId": "c5-none-flaky-test-vi",
+    "arm": "A",
+    "rep": 2,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 6,
+      "cacheReadTokens": 99042,
+      "cacheWriteTokens": 27453,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a1d7a744fe4d6a055.jsonl",
+      "elapsedMs": 6297
+    },
+    "error": null
+  },
+  {
+    "key": "c5-none-flaky-test-vi.B.r2",
+    "caseId": "c5-none-flaky-test-vi",
+    "arm": "B",
+    "rep": 2,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 10,
+      "cacheReadTokens": 99044,
+      "cacheWriteTokens": 27105,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-aaeb338e9fe4d248c.jsonl",
+      "elapsedMs": 9007
+    },
+    "error": null
+  },
+  {
+    "key": "c6-none-for-loop-vi.A.r2",
+    "caseId": "c6-none-for-loop-vi",
+    "arm": "A",
+    "rep": 2,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 4,
+      "outputTokens": 11,
+      "cacheReadTokens": 99035,
+      "cacheWriteTokens": 27059,
+      "modelTurns": 2,
+      "toolCalls": 2,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-aaa3d9e45a651a9a9.jsonl",
+      "elapsedMs": 4527
+    },
+    "error": null
+  },
+  {
+    "key": "c6-none-for-loop-vi.B.r2",
+    "caseId": "c6-none-for-loop-vi",
+    "arm": "B",
+    "rep": 2,
+    "pick": "none",
+    "gold": [
+      "none"
+    ],
+    "pass": true,
+    "model": "claude-haiku-5-5",
+    "forbiddenCalls": 0,
+    "helperCalls": 1,
+    "routeSuggestion": null,
+    "routeError": null,
+    "usage": {
+      "inputTokens": 6,
+      "outputTokens": 16,
+      "cacheReadTokens": 168415,
+      "cacheWriteTokens": 27472,
+      "modelTurns": 3,
+      "toolCalls": 3,
+      "subagentTurns": 0,
+      "source": "<home>\\.claude\\projects\\D--XionTechs-Laya--claude-worktrees-jovial-elbakyan-b638e9\\7c1ba3b9-bbfa-4c60-ad2c-36005bbfc48a\\subagents\\agent-a627380ffc160f267.jsonl",
+      "elapsedMs": 6679
+    },
+    "error": null
+  }
+]

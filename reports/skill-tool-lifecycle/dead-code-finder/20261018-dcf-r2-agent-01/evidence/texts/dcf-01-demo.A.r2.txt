@@ -1,0 +1,29 @@
+"""Exporters, discovered through the `demo_pkg.exporters` entry point group (see pyproject.toml)."""
+
+
+class BaseExporter:
+    def export(self, order):
+        raise NotImplementedError
+
+
+class CsvExporter(BaseExporter):
+    def export(self, order):
+        return "\n".join(f"{n},{p}" for n, p in order.items)
+----
+"""Order hooks. Which ones run is decided at deploy time (ORDER_HOOKS env var)."""
+
+
+def notify_warehouse(order):
+    return f"warehouse notified about {len(order.items)} items"
+----
+"""Monthly report from the old reporting pipeline. Replaced by the dashboard."""
+
+from .core import compute_total
+
+
+def monthly_report(orders):
+    return sum(compute_total(o) for o in orders)
+
+
+def _format_row(order):
+    return f"{order!r}"

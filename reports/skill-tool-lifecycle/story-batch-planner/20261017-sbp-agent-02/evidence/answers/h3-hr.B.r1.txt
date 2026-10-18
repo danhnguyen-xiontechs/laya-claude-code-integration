@@ -1,0 +1,5 @@
+{"waves": [["R-3", "R-8", "R-10"], ["R-4", "R-5", "R-9"]], "needs_decision": ["R-1", "R-2", "R-6", "R-7"]}
+
+Reasoning: R-3, R-8 and R-10 touch disjoint files and can run in parallel; R-4 and R-5 wait for R-3 (migration chain and the positions.department_id column), R-9 waits for the R-8 search endpoint; R-1 has no description or AC so R-2, which depends on it, is held; R-6 depends on HR-404, which is outside the batch, and R-7 depends on R-6.
+
+Notes on differences from the planner output (node plan.mjs --summary, saved as the plan JSON in _logs): the planner schedules R-1 alone in wave 3 and R-2 in wave 4, and it lists R-1 in both waves and needs_decision. I hold both out of the waves because an agent cannot implement "Misc." without an AC. R-10's AC "New copy approved by HR" is a human sign-off that no agent can satisfy, though drafting the copy is still parallel-safe.

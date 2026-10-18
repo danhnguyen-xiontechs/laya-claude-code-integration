@@ -1,0 +1,11 @@
+Build done: dist/out.js exists in the work folder (job-41dd8587), built with the project's own build script.
+
+What I ran, all through `node run.mjs`:
+- `node run.mjs npm run build -- --target es2020` exited 0 and printed "built dist/out.js for es2020".
+- `node run.mjs npm test` exited 0. The suite has no test files, so it reports 0 tests, 0 failures.
+
+Why es2020: `npm run build` on its own fails with "missing required option --target". The es2019 target also refuses this source, because src/main.js uses optional chaining (`?.`) and the build's check rejects that on es2019. So es2020 is the only target that builds this source.
+
+dist/out.js contents: a header line `// BUILD-OK target=es2020 sha=bd6d4a5a2fc4`, followed by the verbatim src/main.js (`const cfg = { a: { b: 1 } }; export const value = cfg?.a?.b ?? 0;`).
+
+I did not edit build.mjs, run.mjs, package.json or anything under src/. I created no files outside dist/out.js in the work folder. The retry guard did not refuse either run.

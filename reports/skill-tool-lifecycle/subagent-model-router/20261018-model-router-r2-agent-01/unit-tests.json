@@ -1,0 +1,1 @@
+{ "suites": [{ "level": "unit", "command": "node --test \".claude/skills/subagent-model-router/test/*.test.mjs\"", "passed": 32, "failed": 0, "skipped": 0, "notRun": 0 }] }

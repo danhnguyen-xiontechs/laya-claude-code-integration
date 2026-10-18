@@ -1,0 +1,71 @@
+{
+  "experimentId": "20261017-cte-agent-02",
+  "tool": {
+    "name": "codebase-task-explorer",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": "6a338b4",
+    "branch": "claude/cte-rework"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "REWORK",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "After the rework (8 Major findings fixed, 15/15 tests), Jev clearly beats the tool's own rules offline (Recall@5 pass 4/5 vs 1/5 on eval/tasks.json, 5/6 vs 3/6 on new blind-query tasks), but Haiku agents found the right file in every case either way: 12/12 vs 12/12 over 6 new tasks x 2 reps, and B used 11% more tokens (10.76M -> 11.90M). No case worse. The ranking is better, but on these tasks it does not change the agent's answer.",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 10759100,
+      "inputTokens": 264,
+      "outputTokens": 14432,
+      "toolCalls": 201,
+      "modelTurns": 130,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 219468,
+      "pairedTokens": 5379550
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 11898136,
+      "inputTokens": 304,
+      "outputTokens": 17098,
+      "toolCalls": 191,
+      "modelTurns": 150,
+      "providerCalls": 46,
+      "fallbacks": 0,
+      "providerLatencyMs": 2478,
+      "elapsedMs": 228786,
+      "pairedTokens": 5949068
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T17:06:21.726Z",
+  "generatedAt": "2026-10-18T06:51:47.470Z",
+  "report": "report.html"
+}

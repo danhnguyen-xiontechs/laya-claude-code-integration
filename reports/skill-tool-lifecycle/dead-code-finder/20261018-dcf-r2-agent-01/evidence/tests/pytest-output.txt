@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0 -- D:\XionTechs\JEV\.venv\Scripts\python.exe
+rootdir: <home>\AppData\Local\Temp\claude\D--XionTechs-Laya--claude-worktrees-gracious-ardinghelli-cf8206\b4ad4a01-0dce-45af-ad3a-983bf75323ed\scratchpad\jev-src
+configfile: pytest.ini
+collecting ... collected 13 items
+
+tests/test_dead_code.py::DiscoveryTest::test_each_decoy_is_kept_by_a_rule_or_blocked_from_tier_a PASSED [  7%]
+tests/test_dead_code.py::DiscoveryTest::test_keep_rule_kinds PASSED      [ 15%]
+tests/test_dead_code.py::DiscoveryTest::test_no_tier_a_without_jev PASSED [ 23%]
+tests/test_dead_code.py::DiscoveryTest::test_reckless_jev_cannot_push_a_code_decoy_into_tier_a PASSED [ 30%]
+tests/test_dead_code.py::DiscoveryTest::test_report_files PASSED         [ 38%]
+tests/test_dead_code.py::DiscoveryTest::test_report_is_short_by_default PASSED [ 46%]
+tests/test_dead_code.py::DiscoveryTest::test_seeded_dead_items_are_found_for_review PASSED [ 53%]
+tests/test_dead_code.py::DiscoveryTest::test_shadow_mode_records_labels_but_keeps_no_jev_tiers PASSED [ 61%]
+tests/test_dead_code.py::DiscoveryTest::test_subdir_scan_uses_project_root_evidence PASSED [ 69%]
+tests/test_dead_code.py::JunkTest::test_commented_code_vs_prose PASSED   [ 76%]
+tests/test_dead_code.py::JunkTest::test_dead_branch_and_flag PASSED      [ 84%]
+tests/test_dead_code.py::JunkTest::test_debug_print_vs_cli_output PASSED [ 92%]
+tests/test_dead_code.py::RedactionTest::test_unsafe_snippet_is_not_sent PASSED [100%]
+
+============================= 13 passed in 0.71s ==============================

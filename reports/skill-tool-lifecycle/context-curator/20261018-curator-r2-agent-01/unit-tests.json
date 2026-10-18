@@ -1,0 +1,28 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "cd <scratch>/r2/test-tree (JEV review tree + engine-src/jev_advisor, changed) && PYTHONDONTWRITEBYTECODE=1 D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q tests/test_curator.py",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    {
+      "level": "unit",
+      "command": "cd <scratch>/r2/test-tree (changed engine) && PYTHONDONTWRITEBYTECODE=1 D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q tests/test_parser_and_advisor.py tests/test_redact_and_client.py tests/test_runner.py",
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    },
+    {
+      "level": "unit",
+      "command": "cd <scratch>/r2/test-tree (changed engine) && PYTHONDONTWRITEBYTECODE=1 D:\\XionTechs\\JEV\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q tests",
+      "passed": 93,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+Where to start, most relevant first (read-only; I did not modify anything or run the test suite):
+
+1. D:/cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/scripts/verify.mjs: this is the whole decision. verifyStory (~L89-151) gives BLOCKED for a missing manifest, missing log, or missing exit code, and FAIL for a non-zero exit. deterministicCategory (L41-47) and the combined-check loop (L208-216) give BLOCKED only for environment signatures. finalize (L276-301) applies the per-cluster status and takes the worst status for the batch.
+2. D:/cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/SKILL.md: the written verdict table (~L35-52) and the PASS-only-when rule. Use it to check the code's intent; it matches verify.mjs, including "environment signature -> BLOCKED, not FAIL" for combined failures.
+3. D:/cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/tests/fixtures.test.mjs: the expected statuses per fixture (environment-only -> BLOCKED via ECONNREFUSED, missing-logs -> BLOCKED, contract-mismatch and duplicate-migration -> FAIL) and the unit asserts at L125-127. It is the fastest executable spec.
+4. D:/cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/references/manifest.md: the artifact contract (exit_code, log_path, AC evidence). A claim without a log is what makes a story BLOCKED rather than PASS or FAIL.
+5. D:/cte2/w/n2-feature-blocked-status-795558/repo/.claude/skills/integration-verifier/scripts/decision-provider.mjs: the Jev call path, used only for shadow category suggestions in triage(). Jev never changes status (verify.mjs L265-269 and fixture L129-134), so read it to rule Jev out, not as the decision point.
+
+Key findings for the caller:
+- Story-level and combined-level differ. A required story check that exits non-zero is FAIL (verify.mjs L121) even if its log shows ECONNREFUSED. Only the combined integration run is reclassified as BLOCKED by the environment regex (L213-214, L286).
+- ENV_RX (L38) is broad (EACCES, "permission denied", ETIMEDOUT, command not found) and is tested against the whole combined output. A real code failure whose output contains one of those strings would be reported as BLOCKED instead of FAIL. The fixtures do not cover this case.
+- Batch status is the worst of all items; a single FAIL anywhere makes the batch FAIL.
+
+Helper note: the find.mjs ranking matched verify.mjs and decision-provider.mjs, but ranks 3, 4 and 5 (story-batch-planner plan.mjs and planner.mjs, and hooks/tests/test_cache_expiry_gate.py) are noise. I chose the list above by reading the code.

@@ -1,0 +1,22 @@
+Where to start: the story-batch-planner skill. The bug is that migration stories are only serialized when the planner detects both as migrations, and its detection is literal keyword matching.
+
+The 5 most relevant files, most relevant first:
+
+1. D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.claude/skills/story-batch-planner/scripts/planner.mjs. Root cause. RX.migration (line 37) matches only the literal words "migration", "schema change", "alter table", "add column", "drop column", "new column", "index on". extract() (line 67) sets the flag only from that or from the explicit migrations[] field. classifyPair step 4 (lines 109-111) serializes only when both stories carry the flag, so if one story misses it there is no edge and layer() (line 145) puts both in wave 1.
+2. D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.claude/skills/story-batch-planner/test/planner.test.mjs. The migration test (lines 48-54) covers only the literal "via a migration" phrasing. All 14 tests pass (run as `node --test test/planner.test.mjs`), so the gap is untested.
+3. D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.claude/skills/story-batch-planner/fixtures/04-migration.json. The only migration fixture, and it uses the exact keyword. Add phrasing variants and a both-missed case here.
+4. D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.claude/skills/story-batch-planner/SKILL.md. Its decision table (line 35) states the intended rule: both add migrations means shared_resource, protected, serialize, and Jev can never parallelize. The code does not meet that rule for unflagged stories.
+5. D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.claude/skills/story-batch-planner/config.json. protectedKinds ["schema","migration"] (line 3) is correct, but it only applies after detection fires, so it is not the cause.
+
+Reproduction (in-memory node probes, no files written):
+- Both stories say "migration": serialized into waves 1 and 2. This works.
+- Story A says "migration", story B says "add a column deleted_at to the departments table" with no keyword: both land in wave 1 with zero edges. This is the reported symptom.
+- Both stories say "add a column ... table" with no keyword: serialized only by accident, as an unknown edge from two shared topical terms (ambiguousTokenOverlap=2). Those edges are not protected.
+- Both say "migrations" (plural): not matched by the regex. Serialized only as an unknown edge, so it is not protected and Jev shadow could label it independent.
+- A .sql file under db/migrations/ in files[], with no keyword: no migration flag. Serialized only by the same-module prefilter.
+- "create table audit_log" yields a bogus table named "create" and no migration flag.
+
+Notes:
+- Helper output (find.mjs) was an unranked codemap list. Its top entries overlap with mine, but the ranking above is my own. I did not use any skill or other script.
+- plan.mjs (scripts/plan.mjs) passes the batch through unchanged, so it is ruled out as the cause.
+- The helper appears to have created an untracked directory D:/cte3/w/n1-bug-migration-wave-2d24fa/repo/.codemap/ (timestamp 10:41, same time the helper ran). I did not delete it because this was read-only. Remove it if it was not there before.
