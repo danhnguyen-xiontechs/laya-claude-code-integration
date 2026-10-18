@@ -1,0 +1,5 @@
+{ "suites": [
+  { "level": "unit", "command": "cd retry-loop-breaker && node --test \"tests/*.unit.ts\" (JEV_LIVE=1, @ 9f2db58)", "passed": 14, "failed": 0, "skipped": 0, "notRun": 0 },
+  { "level": "unit", "command": "cd retry-loop-breaker && node --test \"tests/*.unit.ts\" (no JEV_LIVE: live test skipped)", "passed": 13, "failed": 0, "skipped": 1, "notRun": 0 },
+  { "level": "integration", "command": "claude plugin validate retry-loop-breaker && claude plugin test retry-loop-breaker (validate passed with a README install-line warning)", "passed": 8, "failed": 0, "skipped": 0, "notRun": 0 }
+] }

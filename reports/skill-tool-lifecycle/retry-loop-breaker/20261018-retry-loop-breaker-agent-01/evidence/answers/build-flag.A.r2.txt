@@ -1,0 +1,9 @@
+Task done: dist/out.js is produced by the project's own build.
+
+What I did:
+- Ran `node run.mjs npm run build -- --target es2020` in the work folder. Output: "built dist/out.js for es2020", exit 0.
+- Checked dist/out.js. It starts with `// BUILD-OK target=es2020 sha=bd6d4a5a2fc4` and then the source of src/main.js (`export const value = cfg?.a?.b ?? 0;`).
+
+Why the target is es2020: `npm run build` with no arguments fails, because build.mjs requires `--target` (es2019|es2020). Passing `es2019` is refused by build.mjs itself, since src/main.js uses `?.` and `??`. So es2020 is the only target this source can build for. The task did not name a target, so this choice is mine. If you want a different target, the source has to change first.
+
+Not done or not checked: I did not run `npm test`. The work folder has no test files, so there was nothing meaningful to run. I did not edit build.mjs, run.mjs, package.json or src/. Note that run.mjs imports a filter and writes log/state files at paths outside the work folder. That is the wrapper's own behaviour; I did not read or modify those files.

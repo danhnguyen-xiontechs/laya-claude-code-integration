@@ -1,0 +1,3 @@
+{"ts":"2026-10-17T17:27:06.953Z","command":"npm run build","exit":1,"out":"\n> build\n> node build.mjs\n\nbuild.mjs: error: missing required option --target (es2019|es2020)\nExit code 1\n"}
+{"ts":"2026-10-17T17:27:11.313Z","command":"npm run build -- --target es2019","exit":1,"out":"\n> build\n> node build.mjs --target es2019\n\nbuild.mjs: error: optional chaining is not supported for target es2019 (src/main.js:2)\nExit code 1\n"}
+{"ts":"2026-10-17T17:27:12.193Z","command":"npm run build -- --target es2020","exit":0,"out":"\n> build\n> node build.mjs --target es2020\n\nbuilt dist/out.js for es2020\n"}

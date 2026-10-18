@@ -1,0 +1,73 @@
+{
+  "experimentId": "20261018-retry-loop-breaker-agent-01",
+  "tool": {
+    "name": "retry-loop-breaker",
+    "kind": "plugin",
+    "provider": "JEV",
+    "commit": "9f2db58",
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "WAITING_FOR_USER_FINAL_REVIEW",
+  "recommendation": "INSUFFICIENT_EVIDENCE",
+  "finalDecision": null,
+  "confidence": "LOW",
+  "headline": "On 6 small cases (3 impossible, 3 legitimate retries) Haiku 5.5 never looped: it stopped after 1-2 runs on all impossible cases in both arms, so tokens barely moved (A 4.55M -> B 4.44M, -2.4%, inside the run-to-run noise) and pass is 11/12 vs 12/12 (the A miss is the agent declining to rerun). The Mod showed the agent nothing (0 notes, 0 Jev calls) and would have blocked the passing third run of flaky-twice in both repetitions (silent false block); no case is worse in B. The cases were too easy to show value. Top fix: re-measure on cases where the baseline really loops (and fix the fail-fail-pass false block in core.ts).",
+  "arms": {
+    "A": {
+      "cases": 12,
+      "pass": 11,
+      "fail": 1,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 0.9166666666666666,
+      "tokens": 4552655,
+      "inputTokens": 152,
+      "outputTokens": 631,
+      "toolCalls": 132,
+      "modelTurns": 76,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 41497,
+      "pairedTokens": 2276327.5
+    },
+    "B": {
+      "cases": 12,
+      "pass": 12,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 4441697,
+      "inputTokens": 150,
+      "outputTokens": 801,
+      "toolCalls": 120,
+      "modelTurns": 75,
+      "providerCalls": 0,
+      "fallbacks": 0,
+      "providerLatencyMs": null,
+      "elapsedMs": 30969,
+      "pairedTokens": 2220848.5
+    }
+  },
+  "regressions": [],
+  "pairedCases": 6,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [
+    "flaky-once"
+  ],
+  "unitTotals": {
+    "passed": 35,
+    "failed": 0,
+    "skipped": 1,
+    "notRun": 0
+  },
+  "openBlockingFindings": 0,
+  "lastRun": "2026-10-17T17:30:10.220Z",
+  "generatedAt": "2026-10-17T17:31:31.681Z",
+  "report": "report.html"
+}
