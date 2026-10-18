@@ -1,0 +1,1 @@
+Wrote answer.txt in the project root containing `src/core/parse/duration-impl.js`. That file is the only definition of `parseDuration` (`export function parseDuration(text)` at line 2). `src/core/duration.js` and `src/api/index.js` only re-export it, and `src/util/time.js` only imports and uses it. No other files were changed.

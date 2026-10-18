@@ -1,0 +1,1048 @@
+[
+  {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 702,
+      "taskHash": "90e65d770566",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 702
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.31,
+            "mechanical": 0.86,
+            "costly_failure": 0.29
+          },
+          "latencyMs": 779
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.34,
+            "mechanical": 0.85,
+            "costly_failure": 0.28
+          },
+          "latencyMs": 799
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.87,
+            "costly_failure": 0.3
+          },
+          "latencyMs": 733
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 843
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 806,
+      "taskHash": "11d0504868cd",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 806
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 0.99,
+          "nouls": {
+            "multi_file_design": 0.47,
+            "mechanical": 0.95,
+            "costly_failure": 0.32
+          },
+          "latencyMs": 729
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.51,
+            "mechanical": 0.95,
+            "costly_failure": 0.31
+          },
+          "latencyMs": 701
+        },
+        {
+          "tier": "haiku",
+          "p": 0.98,
+          "nouls": {
+            "multi_file_design": 0.47,
+            "mechanical": 0.95,
+            "costly_failure": 0.31
+          },
+          "latencyMs": 707
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 741
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 829,
+      "taskHash": "8fbe508119a5",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 829
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.63,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.94,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 818
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.55,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.93,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 738
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.73,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.93,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 706
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 824
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 906,
+      "taskHash": "1b48b65d0278",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 906
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.65,
+          "nouls": {
+            "multi_file_design": 0.32,
+            "mechanical": 0.67,
+            "costly_failure": 0.33
+          },
+          "latencyMs": 832
+        },
+        {
+          "tier": "haiku",
+          "p": 0.56,
+          "nouls": {
+            "multi_file_design": 0.32,
+            "mechanical": 0.7,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 822
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.66,
+          "nouls": {
+            "multi_file_design": 0.34,
+            "mechanical": 0.67,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 711
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": false,
+        "votes": {
+          "sonnet": 2,
+          "haiku": 1
+        },
+        "n": 3
+      },
+      "latencyMs": 885
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1094,
+      "taskHash": "8faa4f6381f0",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1094
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.68,
+          "nouls": {
+            "multi_file_design": 0.89,
+            "mechanical": 0.12,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 1434
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.56,
+          "nouls": {
+            "multi_file_design": 0.89,
+            "mechanical": 0.13,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 690
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.59,
+          "nouls": {
+            "multi_file_design": 0.89,
+            "mechanical": 0.12,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 942
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 1438
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.A.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.A.r1.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 1,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.B.r1",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.B.r1.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1506,
+      "taskHash": "6d8f7bf29b16",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1506
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.79,
+            "costly_failure": 0.63
+          },
+          "latencyMs": 807
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.78,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 689
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.81,
+            "mechanical": 0.81,
+            "costly_failure": 0.64
+          },
+          "latencyMs": 699
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 810
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e1-locate",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e1-locate.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 702,
+      "taskHash": "8c5352fb025f",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 702
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.37,
+            "mechanical": 0.85,
+            "costly_failure": 0.27
+          },
+          "latencyMs": 707
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.35,
+            "mechanical": 0.85,
+            "costly_failure": 0.29
+          },
+          "latencyMs": 735
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.35,
+            "mechanical": 0.87,
+            "costly_failure": 0.31
+          },
+          "latencyMs": 655
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 772
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "e2-count",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "e2-count",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\e2-count.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "Explore",
+      "chars": 806,
+      "taskHash": "ea3ba67a03c4",
+      "tier": "haiku",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "cheap-type"
+        ]
+      },
+      "features": {
+        "type": "Explore",
+        "cheapType": true,
+        "designType": false,
+        "hard": 0,
+        "medium": 1,
+        "light": 1,
+        "files": 1,
+        "acs": 0,
+        "hasCheck": false,
+        "readOnly": false,
+        "chars": 806
+      },
+      "answers": [
+        {
+          "tier": "haiku",
+          "p": 0.99,
+          "nouls": {
+            "multi_file_design": 0.46,
+            "mechanical": 0.95,
+            "costly_failure": 0.29
+          },
+          "latencyMs": 758
+        },
+        {
+          "tier": "haiku",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.48,
+            "mechanical": 0.95,
+            "costly_failure": 0.3
+          },
+          "latencyMs": 755
+        },
+        {
+          "tier": "haiku",
+          "p": 0.99,
+          "nouls": {
+            "multi_file_design": 0.48,
+            "mechanical": 0.95,
+            "costly_failure": 0.31
+          },
+          "latencyMs": 787
+        }
+      ],
+      "consistency": {
+        "tier": "haiku",
+        "stable": true,
+        "votes": {
+          "haiku": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 823
+    },
+    "model": "haiku"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "r1-rename",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\r1-rename.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 829,
+      "taskHash": "f83c2c98b32f",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "haiku",
+        "score": 0,
+        "why": [
+          "checked"
+        ]
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 2,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 829
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.64,
+          "nouls": {
+            "multi_file_design": 0.85,
+            "mechanical": 0.93,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 806
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.56,
+          "nouls": {
+            "multi_file_design": 0.84,
+            "mechanical": 0.94,
+            "costly_failure": 0.34
+          },
+          "latencyMs": 691
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.73,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.93,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 783
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 823
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "f1-paginate",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\f1-paginate.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 906,
+      "taskHash": "3c35bbc95560",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 906
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.58,
+          "nouls": {
+            "multi_file_design": 0.3,
+            "mechanical": 0.69,
+            "costly_failure": 0.37
+          },
+          "latencyMs": 765
+        },
+        {
+          "tier": "haiku",
+          "p": 0.62,
+          "nouls": {
+            "multi_file_design": 0.36,
+            "mechanical": 0.66,
+            "costly_failure": 0.35
+          },
+          "latencyMs": 710
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.71,
+          "nouls": {
+            "multi_file_design": 0.33,
+            "mechanical": 0.69,
+            "costly_failure": 0.36
+          },
+          "latencyMs": 663
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": false,
+        "votes": {
+          "sonnet": 2,
+          "haiku": 1
+        },
+        "n": 3
+      },
+      "latencyMs": 775
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d3-maplimit",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d3-maplimit.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1094,
+      "taskHash": "bcf928a2e263",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1094
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 0.65,
+          "nouls": {
+            "multi_file_design": 0.88,
+            "mechanical": 0.12,
+            "costly_failure": 0.73
+          },
+          "latencyMs": 721
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.53,
+          "nouls": {
+            "multi_file_design": 0.88,
+            "mechanical": 0.12,
+            "costly_failure": 0.75
+          },
+          "latencyMs": 673
+        },
+        {
+          "tier": "sonnet",
+          "p": 0.61,
+          "nouls": {
+            "multi_file_design": 0.88,
+            "mechanical": 0.12,
+            "costly_failure": 0.77
+          },
+          "latencyMs": 730
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 764
+    },
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "A",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.A.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.A.r2.prompt.txt",
+    "model": "sonnet"
+  },
+  {
+    "case": "d5-deps",
+    "arm": "B",
+    "rep": 2,
+    "dir": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.B.r2",
+    "promptFile": "<home>\\AppData\\Local\\Temp\\claude\\D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c\\84bbcb88-6b01-4116-a98d-cc9f7d4901ec\\scratchpad\\work\\d5-deps.B.r2.prompt.txt",
+    "route": {
+      "source": "cli",
+      "mode": "apply",
+      "provider": "jev",
+      "policy": "gate+sc",
+      "k": 3,
+      "type": "general-purpose",
+      "chars": 1506,
+      "taskHash": "31de933ea6a4",
+      "tier": "sonnet",
+      "rule": {
+        "tier": "sonnet",
+        "score": 1,
+        "why": []
+      },
+      "features": {
+        "type": "general-purpose",
+        "cheapType": false,
+        "designType": false,
+        "hard": 0,
+        "medium": 2,
+        "light": 1,
+        "files": 3,
+        "acs": 0,
+        "hasCheck": true,
+        "readOnly": false,
+        "chars": 1506
+      },
+      "answers": [
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.8,
+            "mechanical": 0.79,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 743
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.8,
+            "costly_failure": 0.63
+          },
+          "latencyMs": 702
+        },
+        {
+          "tier": "sonnet",
+          "p": 1,
+          "nouls": {
+            "multi_file_design": 0.83,
+            "mechanical": 0.79,
+            "costly_failure": 0.65
+          },
+          "latencyMs": 711
+        }
+      ],
+      "consistency": {
+        "tier": "sonnet",
+        "stable": true,
+        "votes": {
+          "sonnet": 3
+        },
+        "n": 3
+      },
+      "latencyMs": 759
+    },
+    "model": "sonnet"
+  }
+]

@@ -1,0 +1,1 @@
+Renamed getUserName to fetchUserName in the definition, its use inside getUserNameLength, the re-export, both importers (label.js, greet.js via users.fetchUserName) and the test; getUserNameLength is unchanged; no old name remains and node --test passes (2/2).

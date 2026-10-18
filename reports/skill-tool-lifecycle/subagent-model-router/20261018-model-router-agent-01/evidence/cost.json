@@ -1,0 +1,285 @@
+{
+  "perCase": [
+    {
+      "case": "e1-locate",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.17850379999999996,
+      "tokens": 222886,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e2-count",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.188202,
+      "tokens": 278586,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "r1-rename",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1995915,
+      "tokens": 290113,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "f1-paginate",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.0741623,
+      "tokens": 164323,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d3-maplimit",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.11341680000000001,
+      "tokens": 336973,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d5-deps",
+      "arm": "A",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1567232,
+      "tokens": 431990,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e1-locate",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-haiku-5-5",
+      "pass": true,
+      "costUsd": 0.008922349999999999,
+      "tokens": 224653,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e2-count",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-haiku-5-5",
+      "pass": true,
+      "costUsd": 0.009665815,
+      "tokens": 282682,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "r1-rename",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1817192,
+      "tokens": 227009,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "f1-paginate",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.0736523,
+      "tokens": 164095,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d3-maplimit",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.11465120000000001,
+      "tokens": 339671,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": 1,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1663945,
+      "tokens": 485525,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e1-locate",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.0762442,
+      "tokens": 165154,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e2-count",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.08598080000000001,
+      "tokens": 219796,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "r1-rename",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1107828,
+      "tokens": 287250,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "f1-paginate",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.07507520000000001,
+      "tokens": 164345,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d3-maplimit",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1152928,
+      "tokens": 340394,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d5-deps",
+      "arm": "A",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1314561,
+      "tokens": 354087,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e1-locate",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-haiku-5-5",
+      "pass": true,
+      "costUsd": 0.00461925,
+      "tokens": 226302,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "e2-count",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-haiku-5-5",
+      "pass": true,
+      "costUsd": 0.0050805,
+      "tokens": 280430,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "r1-rename",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1110437,
+      "tokens": 287253,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "f1-paginate",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.07402020000000001,
+      "tokens": 164244,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d3-maplimit",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1008768,
+      "tokens": 279934,
+      "escalated": false,
+      "forbiddenCalls": 0
+    },
+    {
+      "case": "d5-deps",
+      "arm": "B",
+      "rep": 2,
+      "model": "claude-sonnet-5-5",
+      "pass": true,
+      "costUsd": 0.1212453,
+      "tokens": 292711,
+      "escalated": false,
+      "forbiddenCalls": 0
+    }
+  ],
+  "totals": {
+    "A": {
+      "costUsd": 1.5054315000000003,
+      "tokens": 3255897,
+      "passed": 12,
+      "n": 12,
+      "escalations": 0
+    },
+    "B": {
+      "costUsd": 0.9718911149999999,
+      "tokens": 3254509,
+      "passed": 12,
+      "n": 12,
+      "escalations": 0
+    },
+    "relCostBvsA": 0.6455897295891575
+  }
+}

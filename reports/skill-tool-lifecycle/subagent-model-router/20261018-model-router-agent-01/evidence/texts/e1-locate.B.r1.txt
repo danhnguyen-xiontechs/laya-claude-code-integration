@@ -1,0 +1,7 @@
+Work only inside the directory <home>/AppData/Local/Temp/claude/D--XionTechs-Laya--claude-worktrees-festive-yonath-a0624c/84bbcb88-6b01-4116-a98d-cc9f7d4901ec/scratchpad/work/e1-locate.B.r1 (it is the project root; do not read or write outside it). Use Node.js (`node`), no npm installs.
+
+In this project, which file defines (not just uses) the function `parseDuration`? Write only its path relative to the project root, using forward slashes, to a file named answer.txt in the project root. Do not change any other file.
+
+When done, reply with one short line saying what you did.
+
+Only use files inside that directory; other folders of the machine hold unrelated material and must not be read.

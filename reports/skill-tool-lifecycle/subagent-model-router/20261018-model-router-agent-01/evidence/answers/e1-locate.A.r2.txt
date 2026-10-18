@@ -1,0 +1,1 @@
+Wrote `src/core/parse/duration-impl.js` to answer.txt in the project root. That file has the `export function parseDuration(text)` declaration. The other matches (`src/core/duration.js`, `src/api/index.js`, `src/util/time.js`) only re-export or import it. No other file was changed.

@@ -1,0 +1,1 @@
+Implemented `resolveOrder` in src/resolve.js (CommonJS, so it works with both import and require) and wrote 30 tests in test/resolve.test.mjs; `node --test` passes all 30.

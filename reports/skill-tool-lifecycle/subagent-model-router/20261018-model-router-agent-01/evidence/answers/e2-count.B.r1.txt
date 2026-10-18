@@ -1,0 +1,3 @@
+Counted the TODO line comments in the project's .js files and wrote the result to answer.txt in the project root (content: "5"). The count is 5.
+
+The project has three .js files: a/one.js, b/two.js and b/c/three.js. Counted: one.js lines 1 and 2, three.js lines 1 and 2, two.js line 1 (`//TODO tighten`). Not counted: the TODO inside a string in one.js, the lowercase `// todo`, the `/* TODO ... */` block comment in two.js, and `// NOTE: TODO inside text`. Only answer.txt was written; no other files were changed.

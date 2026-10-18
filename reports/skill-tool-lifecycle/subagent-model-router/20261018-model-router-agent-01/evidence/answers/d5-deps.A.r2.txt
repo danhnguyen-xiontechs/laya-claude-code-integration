@@ -1,0 +1,8 @@
+Implemented `resolveOrder` in src/resolve.js and added 24 tests in test/resolve.test.mjs; `node --test` passes all 24.
+
+It's a CommonJS module, so both `import` and `require` work.
+
+Where the spec was open, I chose:
+- **Missing package vs. cycle:** whichever the DFS meets first is reported.
+- **Missing target:** the message ends with the literal text `required by <root>`.
+- **"Alphabetical":** plain string comparison, not locale-aware.

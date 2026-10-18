@@ -1,0 +1,83 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context), model opus",
+  "reviewedAt": "2026-10-18",
+  "findings": [
+    {
+      "severity": "Critical",
+      "finding": "The README's headline numbers are out of date: bench/results/route-none.json and route-jev.json were written in c83ddf5, six minutes before 2b90d97 reworded 14 task prompts with '(it finds test/*.test.mjs; ...)'. FILE_RE now counts '.test.mjs' as a file, so 11 tasks reach files=3, the 'checked' rule (files<=2) no longer fires and they route to sonnet. Current ruleTier gives 5 haiku / 13 sonnet, the cached file 16 / 2. Re-scored, rules-only is 45% of opus cost, not 10-14%.",
+      "ref": "README.md:141,223,232-234; SKILL.md; scripts/router.mjs:87,133; bench/results/route-none.json",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Tool bug, not fixed. Confirmed independently by the orchestrator (current rules route 11/18 bench prompts to sonnet)."
+    },
+    {
+      "severity": "Critical",
+      "finding": "In 8 of 12 arm-B runs, arm B is the same setup as arm A (sonnet for r1-rename, f1-paginate, d3-maplimit, d5-deps, both repetitions). Only e1-locate and e2-count (Explore lookups) differ, so the success criterion is decided by two trivial lookup tasks; coding-task decisions are not tested. The 4 identical pairs measure run-to-run noise only.",
+      "ref": "design.md; evidence/run-index.json",
+      "kind": "measurement-design",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed. Property of what the router returns for these prompts, not a setup error; stated in the headline and deviations. A harder case set would be a new experiment."
+    },
+    {
+      "severity": "Major",
+      "finding": "The arms do not get the same number of attempts: B retries a failed check at the next tier, A keeps its failure.",
+      "ref": "design.md; idea-brief.md",
+      "kind": "measurement-design",
+      "resolution": "fixed in design.md (amendment): no escalation happened (24/24 first-attempt passes), so first-attempt and cascade pass rates are equal."
+    },
+    {
+      "severity": "Major",
+      "finding": "The leak check (subagent_usage --forbid) reads only tool inputs; a Grep/Glob over the repo would show hidden/ and solution/ in its OUTPUT without any forbidden word in the input.",
+      "ref": "build-skill-tool-workflow/scripts/subagent_usage.mjs:25-36; design.md",
+      "kind": "measurement-design",
+      "resolution": "fixed: scan_results.mjs also scans tool results and inputs for bench/tasks, hidden/, solution/, check.mjs, mutants and the skill path: 0 hits in 24 agents (evidence/leak-scan.json). The answer keys still sit in the repo the agents could read."
+    },
+    {
+      "severity": "Major",
+      "finding": "Rules and benchmark were tuned on each other and no test pins them together: nothing runs ruleTier over the 18 bench prompts against route-*.json, so the drift in finding 1 passed 29/29 tests. 23 of 54 score cells are imputed and 12 of 18 tasks ran on Haiku only.",
+      "ref": "test/router.test.mjs:28-41; bench/bench.mjs:168-184; README.md:214-217",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed."
+    },
+    {
+      "severity": "Major",
+      "finding": "Self-consistency falls back to a single vote when provider calls fail: consistency() drops failed answers and calls one survivor 'stable'; with k=3, two timeouts and one 'haiku' gives haiku (a test asserts it).",
+      "ref": "scripts/router.mjs:186-193,206-212; test/router.test.mjs:55",
+      "resolution": "accepted by the user for this run (2026-10-18), not fixed."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Opus cacheRead price 0.2 USD/MTok is 0.05x its input price; Sonnet and Haiku use 0.1x. Every 'cost vs opus' ratio and this run's weighting use that table. Sonnet-vs-Haiku weights (what decides this run) are unaffected.",
+      "ref": "scripts/pricing.mjs:6",
+      "resolution": "not fixed; no Opus agent ran, so only the Sonnet/Haiku prices enter this run."
+    },
+    {
+      "severity": "Minor",
+      "finding": "A baseline may be a strawman for the Explore cases: e1/e2 are routed as type Explore but run as general-purpose on sonnet in A; a real Explore subagent may already default to a cheaper model.",
+      "ref": "design.md",
+      "kind": "measurement-design",
+      "resolution": "not fixed; noted in deviations. The tool README pilot also ran everything as general-purpose."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Cost metric omits the orchestrator's own tokens and the routing calls (3 Jev calls and one Bash round-trip per B case), all of which favour B.",
+      "ref": "design.md; README.md:191-196",
+      "kind": "measurement-design",
+      "resolution": "not fixed; stated in design.md and deviations. Jev latency per route 0.7-1.5 s, about $0.00005 per call."
+    },
+    {
+      "severity": "Minor",
+      "finding": "FILE_RE counts glob fragments and dotted names as files, so a parenthetical about how to run tests changes the tier; size and 'checked' rules depend on wording.",
+      "ref": "scripts/router.mjs:87,101,133",
+      "resolution": "not fixed (same root as the Critical drift finding)."
+    },
+    {
+      "severity": "Minor",
+      "finding": "Shadow mode with provider jev still sends k=3 OpenRouter calls with up to 6000 chars of every Agent prompt although nothing is applied; Jev labels are compared case-sensitively; route failure leaves model null and design.md did not say what B runs then.",
+      "ref": "scripts/hook-pretooluse.mjs:49-50; scripts/router.mjs:164,180",
+      "resolution": "not fixed (route never failed in this run; all 12 B routes returned a tier)."
+    },
+    {
+      "severity": "Suggestion",
+      "finding": "Re-run `bench.mjs route` (none and jev) on the current prompts, re-score, correct the README ('18 tests' is now 29) and add a test that ruleTier for every bench prompt matches the cached file.",
+      "ref": "README.md:8,137-147",
+      "resolution": "open (suggestion; see improvements.md)"
+    }
+  ]
+}

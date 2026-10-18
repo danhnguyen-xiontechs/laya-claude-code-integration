@@ -1,0 +1,1 @@
+Fixed src/paginate.js: it now uses a 1-based start of (page-1)*size and slices size items, and it returns [] for out-of-range or invalid pages; `node --test` passes (1/1).

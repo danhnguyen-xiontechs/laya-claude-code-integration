@@ -1,0 +1,1 @@
+Implemented `src/resolve.js` (`resolveOrder`, CommonJS export) and wrote `test/resolve.test.mjs`; `node --test` passes 26/26. The spec was ambiguous on one point: I read `<root>` in the missing-target message as literal text, so it throws `missing package: x (required by <root>)`.
