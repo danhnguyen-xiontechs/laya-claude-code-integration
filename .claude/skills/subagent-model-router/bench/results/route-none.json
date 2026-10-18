@@ -48,7 +48,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -58,7 +57,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -68,7 +66,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -78,7 +75,6 @@
     "kind": "explore",
     "rule": "haiku",
     "why": [
-      "lookup",
       "cheap-type"
     ],
     "answers": [],
@@ -145,19 +141,15 @@
   },
   "t1-slugify-tests": {
     "kind": "tests",
-    "rule": "haiku",
-    "why": [
-      "lookup"
-    ],
+    "rule": "sonnet",
+    "why": [],
     "answers": [],
     "wallMs": 0
   },
   "t2-csv-tests": {
     "kind": "tests",
-    "rule": "haiku",
-    "why": [
-      "lookup"
-    ],
+    "rule": "sonnet",
+    "why": [],
     "answers": [],
     "wallMs": 0
   }

@@ -40,6 +40,12 @@ test('rule features: subagent type, files, ACs, checks', () => {
   assert.equal(f.hasCheck, true);
 });
 
+test('rule features: test globs are not files, so one file plus a test command is "checked"', () => {
+  const p = 'Fix `paginate` in src/paginate.js. Run `node --test` (it finds test/*.test.mjs; also **/*.spec.js). Only change **src/paginate.js**.';
+  assert.equal(ruleFeatures(p).files, 1);
+  assert.deepEqual(ruleTier(ruleFeatures(p)), { tier: 'haiku', score: 0, why: ['checked'] });
+});
+
 test('orderings rotate the tiers so each tier is first once in k=3', () => {
   const o = orderings(3);
   assert.deepEqual(o.map((x) => x[0]).sort(), [...TIERS].sort());
