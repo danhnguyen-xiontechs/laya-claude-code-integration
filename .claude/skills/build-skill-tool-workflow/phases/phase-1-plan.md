@@ -1,0 +1,23 @@
+# Phase 1: Plan (Opus, Track N only)
+
+Who: a `haiku-case` agent gathers context; **one Opus call** with a closed pack writes the brief and the design. Track E skips this phase (see SKILL.md).
+
+## Gather the context pack (Haiku)
+
+One `haiku-case` agent reads the existing implementation and its neighbours and writes `<expDir>/context-pack.md` (under ~2k words): what exists, file paths, contracts, prior experiments and their headlines, fixtures that can be reused. Opus gets this file's text pasted into its prompt, never the repo.
+
+## 0. Intake
+
+Classify: `skill | hook | plugin | mcp | helper | provider`. Read the existing implementation and its neighbours first (in this repo: `.claude/skills/*`, `hooks/`, `routing/`, `eval/`, `report/`, HANDOFF/REPORT files, the `web-test-laya-*` / `web-test-jev-*` pattern). Reuse the existing provider wrapper and fixtures. Create the experiment id and folder.
+
+## 1. Brainstorm → idea brief (no code)
+
+Fill `templates/idea-brief.md`: problem, what plain Claude does today, hypothesis, smallest useful intervention, **what Jev/Laya decides** and what happens when it is wrong, slow, down or malformed, alternatives (rules only, plain Claude, Jev, Laya), risks, non-goals, and **success criteria fixed before any data** (usually: tokens or turns saved, and no case gets worse). Offer 2–3 options with a recommendation; if a model call does not plausibly beat rules, say so.
+
+**Gate A** — show the brief and ask the user (AskUserQuestion): approve / revise / hold / reject. Record the decision and date; set `status: APPROVED_FOR_IMPLEMENTATION`.
+
+## 2. Design
+
+Short `design.md` (`templates/experiment-plan.md` as checklist): contracts (hook I/O, CLI/JSON, MCP schema), what Claude decides vs what the tool decides, the flag that turns it off, timeout/malformed/unavailable fallback, redaction, the case set with what "pass" means per case, and how tokens will be measured. Freeze it (`evaluation.criteriaFrozenAt`) before running step 6.
+
+The brief and the design are written by the single Opus call from the context pack; the control session shows the brief to the user for Gate A.

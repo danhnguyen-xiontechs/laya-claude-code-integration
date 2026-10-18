@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261018-context-governor-01",
+  "tool": {
+    "name": "context-governor",
+    "kind": "plugin",
+    "provider": "none",
+    "commit": null,
+    "branch": "claude/context-governor"
+  },
+  "status": "APPROVED_FOR_IMPLEMENTATION",
+  "recommendation": null,
+  "confidence": null,
+  "headline": null,
+  "approvals": {
+    "ideaApprovedAt": "2026-10-18T12:57:54.651Z",
+    "finalDecision": null,
+    "finalDecisionAt": null
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Workflow session without the plugin",
+      "candidateEnabled": false,
+      "engineEnabled": false
+    },
+    {
+      "id": "B",
+      "name": "Same, with context-governor loaded (warn only)",
+      "candidateEnabled": true,
+      "engineEnabled": false
+    }
+  ],
+  "evaluation": {
+    "caseCount": null,
+    "repetitions": null,
+    "criteriaFrozenAt": null,
+    "deviations": []
+  },
+  "phases": [
+    {
+      "phase": "P1",
+      "sessionId": null,
+      "model": "haiku context pack + opus design (subagents of the control session)",
+      "smartTrimMode": "n/a"
+    }
+  ],
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md"
+  }
+}

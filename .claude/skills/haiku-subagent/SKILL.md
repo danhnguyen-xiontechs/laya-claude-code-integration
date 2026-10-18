@@ -17,6 +17,7 @@ $ARGUMENTS
 
 Every subagent you spawn for this task MUST be launched with the Agent tool using:
 
+- `subagent_type`: `"haiku-case"` (`.claude/agents/haiku-case.md`: Haiku 5.5 with `autoCompactWindow: 100000`, so the subagent compacts its own context at 100k tokens instead of the ~967k default of a 1M-context model). If that agent type is not available in this session, use `general-purpose` and say once that auto-compact at 100k is not active.
 - `model`: `"haiku"` (resolves to the latest Haiku, 5.5)
 - `effort`: `"xhigh"` — this is the "extra" effort level the user asked for by invoking this skill, which counts as their explicit request to set effort
 - no other model or effort, even if you think a bigger one would be better
