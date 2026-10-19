@@ -5,7 +5,7 @@ so that a fan-out of ~20 parallel subagents (one per story) runs each on the che
 model. Signals: local rules + TypeSafe Jev (or Laya). Combined by **agreement gating** and
 **self-consistency** rather than probability thresholds; backed by an **escalate-once cascade**.
 
-Node 18+ stdlib only. Tests: `node --test "test/*.test.mjs"` (32 tests, fake provider; quote the glob on Node 24).
+Node 18+ stdlib only. Tests: `node --test "test/*.test.mjs"` (51 tests across the router, bench and governor files, fake provider; quote the glob on Node 24).
 
 ## 1. Mechanism (verified 2026-10-15, Claude Code 2.1.300)
 
@@ -46,16 +46,28 @@ decision yet: on probes they sat near 0.4–0.75 regardless of the task).
 | `rules` | rule tier |
 | `jev` | Jev top label (1 call) |
 | `gate` | max(rule, Jev): cheaper only when both agree |
-| `sc` | Jev k times with the option order rotated (each tier shown first once for k=3); all equal → that tier, otherwise the highest answer |
+| `sc` | Jev k times with the option order rotated (each tier shown first once for k=3); all equal → that tier, otherwise the rule tier with `unstable: true` in the log (policy v1: a split vote keeps the rule tier) |
 | `gate+sc` | max(rule, sc) |
 
 **Cascade policy.** Start at the routed tier. If the subagent's result fails its check (tests,
-acceptance, expected output), retry **once** at the next tier (`route.mjs --escalate-from <tier>`).
-No check → do not route a code-changing task below sonnet.
+acceptance, expected output), retry **once** at the next tier (`route.mjs --escalate-from <tier> --task … --session …`).
+The limit is counted from the log: a second escalation for the same task hash and session is refused
+(logged with `tier: null`). `opus` has no next tier. **No check → no floor.** The code adds no minimum
+tier for a code-changing task without a check, so the rules and the provider decide there. Use Jev
+gate+sc for such tasks, and review their results yourself.
+
+**Spend caps.** `maxUsdPerSession` (default 2) and `maxCallsPerSession` (default 60), per session id
+in `~/.subagent-model-router/spend.json`. When a cap is reached the router returns the rule tier with
+`fallback_reason` and makes no provider call. The ledger has no lock, so parallel routes can overshoot a
+cap slightly.
 
 **Modes / providers.** `off` / `shadow` (default: log only) / `apply`; `none` (default: rules only,
 nothing leaves the machine) / `jev` / `laya`. Log: `~/.subagent-model-router/log.jsonl`, one line per
-decision, with a 12-char prompt hash instead of the prompt.
+decision: features, rule, votes, `cost_usd`, `unstable`, `fallback_reason`, `cascade_step` / `retry_of`,
+and a 12-char prompt hash (`taskHash`) instead of the prompt.
+
+**Rollback.** See SKILL.md §Rollback: set `"mode": "off"` in `config.json` (no provider call), and
+remove the `PreToolUse` entry with matcher `Agent` if the hook is registered.
 
 ## 3. Enabling it
 
@@ -266,7 +278,8 @@ SKILL.md, README.md, config.json
 scripts/router.mjs          features, rules, Jev request, self-consistency, gating, route()
 scripts/route.mjs           CLI for orchestrators (+ --escalate-from for the cascade)
 scripts/hook-pretooluse.mjs PreToolUse hook (matcher Agent)
-scripts/decision-provider.mjs  Jev/Laya client (copy of review-pr-jev-classify's)
+scripts/spend-ledger.mjs    per-session USD and call ledger for the caps
+scripts/decision-provider.mjs  Jev/Laya client (duplicates review-pr-jev-classify's; not merged in v1)
 scripts/pricing.mjs         list prices, usage → USD
 scripts/mine-history.mjs    transcript miner → ~/.subagent-model-router/history/
 bench/bench.mjs, bench/lib/ harness: validate / prepare / check / route / score
