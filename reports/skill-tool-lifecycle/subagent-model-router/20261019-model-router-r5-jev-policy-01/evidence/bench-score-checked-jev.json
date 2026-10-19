@@ -1,0 +1,126 @@
+{
+  "tasks": [
+    "e2-count",
+    "f1-paginate",
+    "f3-days",
+    "r3-promisify",
+    "t2-csv-tests",
+    "d3-maplimit"
+  ],
+  "labels": {
+    "e2-count": "haiku",
+    "f1-paginate": "haiku",
+    "f3-days": "haiku",
+    "r3-promisify": "haiku",
+    "t2-csv-tests": "haiku",
+    "d3-maplimit": "haiku"
+  },
+  "rows": [
+    {
+      "router": "always-opus",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 1,
+      "exact": 0,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 1,
+      "escalationRate": 0,
+      "latencyP50Ms": 0
+    },
+    {
+      "router": "always-sonnet",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.6092752012273978,
+      "exact": 0,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.6092752012273978,
+      "escalationRate": 0,
+      "latencyP50Ms": 0
+    },
+    {
+      "router": "rules-only",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.13362234785444874,
+      "exact": 5,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.13362234785444874,
+      "escalationRate": 0,
+      "latencyP50Ms": 0
+    },
+    {
+      "router": "jev-only",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.5175868846515648,
+      "exact": 1,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.5175868846515648,
+      "escalationRate": 0,
+      "latencyP50Ms": 584
+    },
+    {
+      "router": "jev+gate",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.5175868846515648,
+      "exact": 1,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.5175868846515648,
+      "escalationRate": 0,
+      "latencyP50Ms": 584
+    },
+    {
+      "router": "jev+sc(k)",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.6055009568137532,
+      "exact": 1,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.6055009568137532,
+      "escalationRate": 0,
+      "latencyP50Ms": 584
+    },
+    {
+      "router": "jev+gate+sc",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.6055009568137532,
+      "exact": 1,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.6055009568137532,
+      "escalationRate": 0,
+      "latencyP50Ms": 584
+    },
+    {
+      "router": "checked+jev",
+      "n": 6,
+      "pass": 6,
+      "passRate": 1,
+      "costVsOpus": 0.13362234785444874,
+      "exact": 5,
+      "under": 0,
+      "cascadePass": 1,
+      "cascadeCostVsOpus": 0.13362234785444874,
+      "escalationRate": 0,
+      "latencyP50Ms": 0
+    }
+  ],
+  "imputedCells": 0,
+  "meanCostPerTier": null
+}

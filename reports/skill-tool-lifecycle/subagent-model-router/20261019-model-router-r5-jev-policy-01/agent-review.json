@@ -1,0 +1,57 @@
+{
+  "reviewer": "independent read-only subagent (Explore type, fresh context), model opus; given the diff and the claim, not the conclusion",
+  "reviewedAt": "2026-10-19",
+  "scope": "scripts/router.mjs loadConfig default policy, test/router.test.mjs, bench/bench.mjs checked+jev row, bench/results/route-jev.json",
+  "findings": [
+    {
+      "severity": "Major",
+      "finding": "The PreToolUse hook now uses the 'checked' default too. hook-pretooluse.mjs calls loadConfig() with no policy, so with provider jev and mode apply a checked task gets the rule tier (usually haiku) with no Jev call and no cascade. Before this change the hook used gate+sc. The header comment at router.mjs:13 ('The PreToolUse hook never uses it') is now false. Design.md said the hook was unchanged.",
+      "ref": "scripts/router.mjs:57, :13; scripts/hook-pretooluse.mjs:34, :50",
+      "evidence": "code (verified by orchestrator)",
+      "resolution": "fixed 2026-10-19: loadConfig takes defaultPolicy (default 'checked'); the hook's handle() passes 'gate+sc'. Test 'hook default with provider jev is gate+sc' pins it."
+    },
+    {
+      "severity": "Major",
+      "finding": "The unchecked-path test sets policy 'checked' explicitly. No test goes from the default config (provider jev, no policy) through route() and checks that an unchecked task still makes provider calls. The hook test uses 'find x', which has no check, so the hook behaviour change is untested.",
+      "ref": "test/router.test.mjs:132, :155, :204",
+      "evidence": "test code",
+      "resolution": "fixed 2026-10-19: test 'default path: provider jev with no policy routes checked; an unchecked task still asks Jev k times' and the hook default test."
+    },
+    {
+      "severity": "Major",
+      "finding": "The bench 'checked+jev' row does not model the shipped policy. It skips Jev on tags 'checked' or 'cheap-type'; the router skips Jev on hasCheck && !hard. route-jev.json stores no features, so the row cannot call combine() as the router does. In the regenerated file 16 of 18 tasks are tagged checked or cheap-type, so checked+jev gives the same tiers as rules-only and the unchecked path is never exercised offline.",
+      "ref": "bench/bench.mjs:119; scripts/router.mjs:234-236, :250-254; bench/results/route-jev.json",
+      "evidence": "code and data (verified by orchestrator for bench.mjs:119)",
+      "resolution": "fixed 2026-10-19 in code: the row calls combine('checked') with features stored in route-jev.json (18 tasks regenerated). Residual: all 6 offline tasks are checked, so the offline gate still does not exercise the unchecked Jev path."
+    },
+    {
+      "severity": "Major",
+      "finding": "The 8/8 vs 8/8 result is after escalation. Haiku passed first try on 6 of 8 runs. d5-deps failed on Haiku in both repetitions and was escalated each time. Four tasks x 2 repetitions is too small to show parity with all-Sonnet.",
+      "ref": "runs-r5B1esc.jsonl, runs-r5B2esc.jsonl; final-decision.md",
+      "evidence": "data",
+      "resolution": "already stated in final-decision.md caveats 1-2; the wording 'the same as arm A' in the headline should be read with this"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Stale docs: SKILL.md:57 still gives the default as 'gate+sc (rules when provider none)'.",
+      "ref": "SKILL.md:57",
+      "evidence": "file",
+      "resolution": "fixed 2026-10-19: SKILL.md:57 now says checked in the CLI, gate+sc in the PreToolUse hook (rules when provider none)"
+    },
+    {
+      "severity": "Minor",
+      "finding": "Regenerated route-jev.json also changes rule tiers for d1-d5 (sonnet to haiku) through rule changes outside this diff. It contradicts README.md:147 for t1 and t2.",
+      "ref": "bench/results/route-jev.json; README.md:147",
+      "evidence": "data",
+      "resolution": "open"
+    },
+    {
+      "severity": "Minor",
+      "finding": "'0 Jev calls' on the live arms holds by construction (the orchestrator picked the tiers and those run records are not router output). The router code agrees for checked tasks.",
+      "ref": "runs/B-claude-jev/*",
+      "evidence": "code",
+      "resolution": "noted"
+    }
+  ],
+  "verdict": "The default is correct for the 'jev' provider and explicit policies are kept. Checked tasks make zero provider calls. Two Major issues are open: the hook behaviour change and the untested default path. The bench row does not model the shipped policy, so the offline numbers do not cover the Jev path."
+}

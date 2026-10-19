@@ -1,0 +1,638 @@
+{
+  "profiles": [
+    {
+      "story_id": "W-19279",
+      "model_tier": "balanced",
+      "model": "sonnet",
+      "max_turns": 40,
+      "timeout_ms": 1200000,
+      "retry_limit": 1,
+      "story_cap": 3,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": false,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "run",
+      "status": "spawn"
+    },
+    {
+      "story_id": "W-19358",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "run",
+      "status": "spawn"
+    },
+    {
+      "story_id": "W-19424",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "run",
+      "status": "spawn"
+    },
+    {
+      "story_id": "W-19427",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 1
+    },
+    {
+      "story_id": "W-20301",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 2
+    },
+    {
+      "story_id": "W-20925",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 3
+    },
+    {
+      "story_id": "W-20926",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 4
+    },
+    {
+      "story_id": "W-20927",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 5
+    },
+    {
+      "story_id": "W-20932",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_SECURITY",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 6
+    },
+    {
+      "story_id": "W-20933",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_SECURITY",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 7
+    },
+    {
+      "story_id": "W-20934",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_SECURITY",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 8
+    },
+    {
+      "story_id": "W-21635",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 9
+    },
+    {
+      "story_id": "W-21639",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_SECURITY",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 10
+    },
+    {
+      "story_id": "W-21681",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 11
+    },
+    {
+      "story_id": "W-21732",
+      "model_tier": "balanced",
+      "model": "sonnet",
+      "max_turns": 40,
+      "timeout_ms": 1200000,
+      "retry_limit": 1,
+      "story_cap": 3,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": false,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 12
+    },
+    {
+      "story_id": "W-21984",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 13
+    },
+    {
+      "story_id": "W-21996",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": false,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 14
+    },
+    {
+      "story_id": "W-21998",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": false,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 15
+    },
+    {
+      "story_id": "W-22016",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 16
+    },
+    {
+      "story_id": "W-22063",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 17
+    },
+    {
+      "story_id": "W-22080",
+      "model_tier": "strong",
+      "model": "opus",
+      "max_turns": 60,
+      "timeout_ms": 1800000,
+      "retry_limit": 1,
+      "story_cap": 6,
+      "tools": "standard",
+      "escalation": {
+        "at": "checkpoint_after_bounded_failure",
+        "over_budget": "stop"
+      },
+      "review_required": true,
+      "fallback_mode": "none",
+      "reason_codes": [
+        "PROPOSED_BALANCED",
+        "RISK_PUBLIC_CONTRACT",
+        "RISK_BROAD_SCOPE",
+        "CONCURRENCY_LIMIT_QUEUED"
+      ],
+      "jev_shadow": {
+        "jev_tier": null,
+        "applied": false
+      },
+      "priority": 0,
+      "slot": "queued",
+      "status": "wait",
+      "queue_position": 18
+    }
+  ],
+  "batch": {
+    "total": 30,
+    "reserved_for_verification": 6,
+    "spent_actual": 0,
+    "spent_estimated": 0,
+    "overhead_actual": 0,
+    "overhead_estimated": 0,
+    "worker_headroom": 9,
+    "active": 3,
+    "queued": 18,
+    "measured": true
+  }
+}

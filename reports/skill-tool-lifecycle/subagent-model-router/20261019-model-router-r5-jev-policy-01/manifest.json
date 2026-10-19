@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "20261019-model-router-r5-jev-policy-01",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "main"
+  },
+  "status": "ADOPTED",
+  "recommendation": "ADOPT",
+  "confidence": "LOW",
+  "headline": "Candidate: making checked the default policy for the Jev provider. On 4 checked cases x 2 repetitions, arm B (Haiku first, one Sonnet retry on a failed check) passed 8/8, the same as arm A (all Sonnet) at 8/8. Price-weighted cost was $0.244 against $0.869 (-72%). Jev was called 0 times on these checked tasks. Haiku failed d5-deps on its first try in both repetitions; the cascade caught both. Sample size is small, so Gate B should decide.",
+  "approvals": {
+    "ideaApprovedAt": null,
+    "finalDecision": "ADOPTED",
+    "finalDecisionAt": "2026-10-19T03:07:01Z"
+  },
+  "arms": [
+    {
+      "id": "A",
+      "name": "Every case agent on Sonnet 5.5, no router, no cascade",
+      "candidateEnabled": false,
+      "engineEnabled": false,
+      "model": "sonnet (claude-sonnet-5-5)",
+      "effort": "xhigh",
+      "configRef": "design.md"
+    },
+    {
+      "id": "B",
+      "name": "route.mjs default (policy checked, provider jev) per exact prompt, with one cascade retry (--escalate-from) on a failed check",
+      "candidateEnabled": true,
+      "engineEnabled": true,
+      "model": "router output: haiku (all 4 cases), sonnet on cascade retry (d5-deps only)",
+      "effort": "xhigh",
+      "engineVersion": "router.mjs loadConfig default policy checked for provider jev",
+      "configRef": "scripts/router.mjs loadConfig"
+    }
+  ],
+  "evaluation": {
+    "planVersion": "design.md (frozen before any agent run)",
+    "datasetVersion": "bench/tasks d5-deps, f1-paginate, d3-maplimit, r1-rename (agents get files/ only; check.mjs run by us)",
+    "caseCount": 4,
+    "repetitions": 2,
+    "criteriaFrozenAt": "2026-10-19",
+    "tokenScope": "cost is price-weighted from each case agent's subagent transcript (pricing.mjs; input, output, cache read and cache write). Per-case tokens are summed from each agent's transcript (input = input + cache read + cache write; output = output), deduplicated by message id. B's cascade retry tokens are in its case total. Cost and tokens use the same transcripts.",
+    "deviations": [
+      "Track E: P1 is N/A (existing tool). Phases P2 and P3 were run in this control session, not in fresh phase sessions with capsules (no phases[] rows). The router change (P2) is small and was made and tested here; the live arms were run by the control session with the case-agent pattern from design.md.",
+      "Arm A was not checked with subagent_usage.mjs --forbid in this round, so the claim that arm A never used the tool rests on the arm definition only (no router call).",
+      "Offline gate passed before spend: recorded replay gives checked+jev 6/6 pass, cost 0.134 of opus (jev+gate+sc: 6/6, 0.606). The idea brief's 0.235 was from before route-jev.json was refreshed with live Jev; the current figure is 0.134 (evidence/offline-score.json).",
+      "Frozen rule applied as written: B's pass rate counts after the cascade (8/8 vs 8/8). B's first-try pass rate was 6/8 (d5-deps failed twice on Haiku) against A's 8/8 first try. The cascade is part of B by design, but a Gate B reader should weigh the first-try number.",
+      "Two cascade retries (d5-deps, rep1 and rep2) are included in B's cost and tokens: $0.1026 and $0.1052 at Sonnet price. Without them B's cost would be $0.0361 for the first tries alone, but that would not be a valid pass rate.",
+      "Routing calls: 8 route.mjs calls for arm B, 0 Jev provider calls (checked tasks use the rule tier). The orchestrator's own tokens are not in either arm's cost; they do not change the sign.",
+      "Four checked cases only, with a check and no hard verb. Unchecked tasks (where Jev still runs under checked) were not tested live, so the Jev path itself has no live evidence in this round.",
+      "Not in scope and not changed: the consistency() rule (unstable votes go to the highest tier) and the rule tier for design-kind bench tasks (checked gives them haiku)."
+    ]
+  },
+  "phases": [
+    {
+      "phase": "Control + case agents (one session, not split)",
+      "transcript": "C:/Users/LENOVO2/.claude/projects/D--Laya/978cd82f-f35d-4af0-b8f0-9af1c07d4a13.jsonl",
+      "model": "claude-haiku-5-5"
+    }
+  ],
+  "artifacts": {
+    "ideaBrief": "idea-brief.md",
+    "design": "design.md",
+    "experimentPlan": null,
+    "unitTestReport": "unit-tests.json",
+    "agentReview": "agent-review.json",
+    "perToolReport": "report.html",
+    "perToolHtmlReport": "report.html",
+    "mainReport": "../../index.html",
+    "runDirectories": [
+      "runs/A-claude/rep1",
+      "runs/A-claude/rep2",
+      "runs/B-claude-jev/rep1",
+      "runs/B-claude-jev/rep2"
+    ],
+    "rawResults": [
+      "evidence/cost.json",
+      "evidence/offline-score.json"
+    ],
+    "executionLogs": []
+  }
+}

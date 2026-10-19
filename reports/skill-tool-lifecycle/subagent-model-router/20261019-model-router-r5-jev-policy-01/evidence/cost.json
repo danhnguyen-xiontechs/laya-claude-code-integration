@@ -1,0 +1,214 @@
+{
+  "unit": "price-weighted USD (pricing.mjs), agent transcripts",
+  "arms": {
+    "A": 0.8693592000000001,
+    "B": 0.24393901
+  },
+  "ratioBvsA": 0.280596340384964,
+  "rows": [
+    {
+      "rep": "1",
+      "task": "d5-deps",
+      "A": {
+        "pass": true,
+        "cost": 0.1422088,
+        "turns": 7,
+        "output": 242,
+        "agent": "abf5a0ba24e2b7486"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": false,
+        "cost": 0.108832875,
+        "escalated": true,
+        "turns": 13,
+        "output": 204,
+        "tiers": [
+          "haiku",
+          "sonnet"
+        ],
+        "agents": [
+          "a874819d611c06ffd",
+          "ad362474b17da18f6"
+        ]
+      }
+    },
+    {
+      "rep": "1",
+      "task": "f1-paginate",
+      "A": {
+        "pass": true,
+        "cost": 0.1137774,
+        "turns": 6,
+        "output": 171,
+        "agent": "ad1041170f2937a86"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.003702195,
+        "escalated": false,
+        "turns": 5,
+        "output": 118,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "a7964eff8d7a12c06"
+        ]
+      }
+    },
+    {
+      "rep": "1",
+      "task": "d3-maplimit",
+      "A": {
+        "pass": true,
+        "cost": 0.10216549999999999,
+        "turns": 4,
+        "output": 42,
+        "agent": "af3d126e320058445"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.00561017,
+        "escalated": false,
+        "turns": 9,
+        "output": 56,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "a429ce380955887c8"
+        ]
+      }
+    },
+    {
+      "rep": "1",
+      "task": "r1-rename",
+      "A": {
+        "pass": true,
+        "cost": 0.11377519999999999,
+        "turns": 5,
+        "output": 54,
+        "agent": "a932ae4e63568e11e"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.0043297,
+        "escalated": false,
+        "turns": 6,
+        "output": 55,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "aac5710dc9b65e6af"
+        ]
+      }
+    },
+    {
+      "rep": "2",
+      "task": "d5-deps",
+      "A": {
+        "pass": true,
+        "cost": 0.1192199,
+        "turns": 7,
+        "output": 279,
+        "agent": "aa1ecabd98e2c7594"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": false,
+        "cost": 0.11051309,
+        "escalated": true,
+        "turns": 11,
+        "output": 259,
+        "tiers": [
+          "haiku",
+          "sonnet"
+        ],
+        "agents": [
+          "aca4c9a2beadd6502",
+          "a22a3ec745c0e529d"
+        ]
+      }
+    },
+    {
+      "rep": "2",
+      "task": "f1-paginate",
+      "A": {
+        "pass": true,
+        "cost": 0.0818699,
+        "turns": 5,
+        "output": 314,
+        "agent": "a7f870dab4fc03fac"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.0030540100000000002,
+        "escalated": false,
+        "turns": 4,
+        "output": 889,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "a665d1408e4f13536"
+        ]
+      }
+    },
+    {
+      "rep": "2",
+      "task": "d3-maplimit",
+      "A": {
+        "pass": true,
+        "cost": 0.10913060000000002,
+        "turns": 8,
+        "output": 92,
+        "agent": "adf447a696acee0af"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.004750140000000001,
+        "escalated": false,
+        "turns": 8,
+        "output": 59,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "aa82f145d8656474b"
+        ]
+      }
+    },
+    {
+      "rep": "2",
+      "task": "r1-rename",
+      "A": {
+        "pass": true,
+        "cost": 0.0872119,
+        "turns": 5,
+        "output": 81,
+        "agent": "a1ae79c46c39e9516"
+      },
+      "B": {
+        "pass": true,
+        "firstPass": true,
+        "cost": 0.0031468299999999998,
+        "escalated": false,
+        "turns": 4,
+        "output": 540,
+        "tiers": [
+          "haiku"
+        ],
+        "agents": [
+          "a0317a952b06581c4"
+        ]
+      }
+    }
+  ]
+}

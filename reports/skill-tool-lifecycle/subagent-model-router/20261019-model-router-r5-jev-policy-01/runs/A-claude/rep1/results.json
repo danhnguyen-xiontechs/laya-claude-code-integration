@@ -1,0 +1,89 @@
+{
+  "experimentId": "20261019-model-router-r5-jev-policy-01",
+  "arm": "A",
+  "runId": "rep1",
+  "startedAt": "2026-10-19T03:05:04.378Z",
+  "finishedAt": "2026-10-19T03:05:04.378Z",
+  "cases": [
+    {
+      "caseId": "d5-deps",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 242,
+        "modelTurns": 7,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 243280,
+        "cacheReadTokens": 203654,
+        "cacheWriteTokens": 39612,
+        "rawInputTokens": 14
+      },
+      "evidenceRefs": [],
+      "note": "Every case agent on Sonnet 5.5, no router",
+      "costUsd": 0.142209,
+      "agents": [
+        "abf5a0ba24e2b7486"
+      ]
+    },
+    {
+      "caseId": "f1-paginate",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 171,
+        "modelTurns": 6,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 187284,
+        "cacheReadTokens": 154842,
+        "cacheWriteTokens": 32430,
+        "rawInputTokens": 12
+      },
+      "evidenceRefs": [],
+      "note": "Every case agent on Sonnet 5.5, no router",
+      "costUsd": 0.113777,
+      "agents": [
+        "ad1041170f2937a86"
+      ]
+    },
+    {
+      "caseId": "d3-maplimit",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 42,
+        "modelTurns": 4,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 125441,
+        "cacheReadTokens": 92110,
+        "cacheWriteTokens": 33323,
+        "rawInputTokens": 8
+      },
+      "evidenceRefs": [],
+      "note": "Every case agent on Sonnet 5.5, no router",
+      "costUsd": 0.102165,
+      "agents": [
+        "af3d126e320058445"
+      ]
+    },
+    {
+      "caseId": "r1-rename",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 54,
+        "modelTurns": 5,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 162689,
+        "cacheReadTokens": 127601,
+        "cacheWriteTokens": 35078,
+        "rawInputTokens": 10
+      },
+      "evidenceRefs": [],
+      "note": "Every case agent on Sonnet 5.5, no router",
+      "costUsd": 0.113775,
+      "agents": [
+        "a932ae4e63568e11e"
+      ]
+    }
+  ]
+}

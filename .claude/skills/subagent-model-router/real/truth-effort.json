@@ -1,0 +1,212 @@
+[
+ {
+  "id": "W-19279",
+  "type": "Bug",
+  "prs": 1,
+  "files": 7,
+  "lines": 437,
+  "contract": false,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-19358",
+  "type": "Bug",
+  "prs": 1,
+  "files": 14,
+  "lines": 1480,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-19424",
+  "type": "Task",
+  "prs": 1,
+  "files": 13,
+  "lines": 1297,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-19427",
+  "type": "Task",
+  "prs": 2,
+  "files": 29,
+  "lines": 2152,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-20301",
+  "type": "Bug",
+  "prs": 1,
+  "files": 13,
+  "lines": 1008,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-20925",
+  "type": "Bug",
+  "prs": 1,
+  "files": 22,
+  "lines": 591,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-20926",
+  "type": "Bug",
+  "prs": 1,
+  "files": 22,
+  "lines": 591,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-20927",
+  "type": "Bug",
+  "prs": 2,
+  "files": 22,
+  "lines": 686,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-20932",
+  "type": "Bug",
+  "prs": 1,
+  "files": 21,
+  "lines": 1943,
+  "contract": true,
+  "migration": false,
+  "security": true
+ },
+ {
+  "id": "W-20933",
+  "type": "Bug",
+  "prs": 2,
+  "files": 45,
+  "lines": 3390,
+  "contract": true,
+  "migration": false,
+  "security": true
+ },
+ {
+  "id": "W-20934",
+  "type": "Bug",
+  "prs": 3,
+  "files": 37,
+  "lines": 2260,
+  "contract": true,
+  "migration": false,
+  "security": true
+ },
+ {
+  "id": "W-21635",
+  "type": "Bug",
+  "prs": 1,
+  "files": 15,
+  "lines": 896,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-21639",
+  "type": "Task",
+  "prs": 1,
+  "files": 35,
+  "lines": 2677,
+  "contract": true,
+  "migration": false,
+  "security": true
+ },
+ {
+  "id": "W-21681",
+  "type": "Bug",
+  "prs": 2,
+  "files": 14,
+  "lines": 1406,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-21732",
+  "type": "Bug",
+  "prs": 1,
+  "files": 6,
+  "lines": 356,
+  "contract": false,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-21984",
+  "type": "Bug",
+  "prs": 1,
+  "files": 12,
+  "lines": 1065,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-21996",
+  "type": "Bug",
+  "prs": 1,
+  "files": 14,
+  "lines": 705,
+  "contract": false,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-21998",
+  "type": "Bug",
+  "prs": 1,
+  "files": 11,
+  "lines": 553,
+  "contract": false,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-22016",
+  "type": "Bug",
+  "prs": 1,
+  "files": 21,
+  "lines": 808,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-22063",
+  "type": "Bug",
+  "prs": 1,
+  "files": 12,
+  "lines": 1141,
+  "contract": true,
+  "migration": false,
+  "security": false
+ },
+ {
+  "id": "W-22080",
+  "type": "Bug",
+  "prs": 1,
+  "files": 17,
+  "lines": 2211,
+  "contract": true,
+  "migration": false,
+  "security": false
+ }
+]

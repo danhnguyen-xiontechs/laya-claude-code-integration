@@ -1,0 +1,80 @@
+{
+  "experimentId": "20261019-model-router-r5-jev-policy-01",
+  "tool": {
+    "name": "subagent-model-router",
+    "kind": "skill",
+    "provider": "JEV",
+    "commit": null,
+    "branch": "main"
+  },
+  "engine": "JEV",
+  "status": "ADOPTED",
+  "recommendation": "ADOPT",
+  "finalDecision": "ADOPTED",
+  "confidence": "LOW",
+  "headline": "Candidate: making checked the default policy for the Jev provider. On 4 checked cases x 2 repetitions, arm B (Haiku first, one Sonnet retry on a failed check) passed 8/8, the same as arm A (all Sonnet) at 8/8. Price-weighted cost was $0.244 against $0.869 (-72%). Jev was called 0 times on these checked tasks. Haiku failed d5-deps on its first try in both repetitions; the cascade caught both. Sample size is small, so Gate B should decide.",
+  "arms": {
+    "A": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3103863,
+      "inputTokens": 1551341,
+      "outputTokens": 1275,
+      "toolCalls": null,
+      "modelTurns": 47,
+      "providerCalls": 0,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": null,
+      "pairedTokens": 1551931.5
+    },
+    "B": {
+      "cases": 8,
+      "pass": 8,
+      "fail": 0,
+      "blocked": 0,
+      "error": 0,
+      "skipped": 0,
+      "passRate": 1,
+      "tokens": 3143628,
+      "inputTokens": 1570784,
+      "outputTokens": 2180,
+      "toolCalls": null,
+      "modelTurns": 60,
+      "providerCalls": 0,
+      "fallbacks": null,
+      "providerLatencyMs": null,
+      "elapsedMs": null,
+      "pairedTokens": 1571814
+    }
+  },
+  "regressions": [],
+  "pairedCases": 4,
+  "unpairedCases": [],
+  "evidenceGaps": [],
+  "improvements": [],
+  "unitTotals": {
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "notRun": 0
+  },
+  "openBlockingFindings": 1,
+  "workflowCost": {
+    "modelTurns": 173,
+    "peakContext": 91579,
+    "cacheRead": 7185828,
+    "cacheWrite": 689643,
+    "input": 346,
+    "output": 62046,
+    "allTokens": 7937863
+  },
+  "lastRun": "2026-10-19T03:05:04.378Z",
+  "generatedAt": "2026-10-19T03:35:21.205Z",
+  "report": "report.html"
+}

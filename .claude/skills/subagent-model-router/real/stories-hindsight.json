@@ -1,0 +1,233 @@
+[
+ {
+  "id": "W-19279",
+  "summary": "WebESS - Time and Attendance � Employees Without Overtime Records Are Displayed",
+  "task": "WebESS - Time and Attendance � Employees Without Overtime Records Are Displayed\nIn the WebESS **Overtime** tab, employees with **Overtime Eligible = Yes** are displayed even when they have no overtime records within the selected date range. **Example:** For **24 Aug � 28 Aug**, only Danh has overtime records in F&O. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/7792ea47-e858-49ac-841f-25dfacac07f9?fileName=image.png) However, WebESS also displays Hammad, Long, and Ruchika with 0 overtime. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/71ca798f-db86-47b5-9261-fa1d88c35361?fileName=image.png) **Expected Behavior:** Only employees who have **overtime records within the selected date range** should be displayed in the Overtime tab.",
+  "risk": {
+   "publicContract": false,
+   "migration": false,
+   "security": false,
+   "files": 7
+  }
+ },
+ {
+  "id": "W-19358",
+  "summary": "WebESS - Time and Attendance � Cancelled Leave Is Still Displayed as Approved Leave",
+  "task": "WebESS - Time and Attendance � Cancelled Leave Is Still Displayed as Approved Leave\nAn employee originally submitted a leave request for **03/09/2026** on **27/07/2026**. The leave was subsequently cancelled on **30/07/2026**. After the cancellation, there is no longer an effective approved leave for **03/09/2026** in F&O. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/09b1923f-69bd-4e88-a653-2357767a934c?fileName=image.png) However, when checking **WebESS > Time and Attendance**, the date is still displayed as **Approved Leave**. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/2fa3ef36-6bfa-4b70-be57-30968223deee?fileName=image.png) Further investigation in the **Leave Request Detail** shows that there are multiple transactions for the same employee and leave date: * The original leave transaction created on **27/07/2026** has **Amount = 1** and **St",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 14
+  }
+ },
+ {
+  "id": "W-19424",
+  "summary": "Performance Management  Enhancement  Save Performance Review Progress",
+  "task": "Performance Management  Enhancement  Save Performance Review Progress\nEnhance the Performance Review process on **WebESS** to allow users to save their progress without submitting the review. ### Required Changes Add a **Save** option in addition to the existing **Submit** action for the applicable Performance Review stages: * Goal Setting * Mid-Year Review * End-of-Year Review When the user selects **Save**: * The information entered on the review should be saved. * The Performance Review should remain at the current stage. * The review should not be submitted or progressed to the next stage. * The user should be able to return later and continue updating the saved review. The existing **Submit** behaviour should remain unchanged.",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 13
+  }
+ },
+ {
+  "id": "W-19427",
+  "summary": "Performance Management � Enhancement � Goal Review Supporting Attachments",
+  "task": "Performance Management � Enhancement � Goal Review Supporting Attachments\nEnhance the **Performance Management � Goal Review** process on WebESS to support attachments for supporting evidence. Users should be able to provide supporting documents, such as **certificates, emails, or other relevant evidence**, as part of the Goal Review process. The detailed WebESS behaviour and implementation approach will be confirmed separately.",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 29
+  }
+ },
+ {
+  "id": "W-20301",
+  "summary": "Leave balance didn't update after leave getting approved",
+  "task": "Leave balance didn't update after leave getting approved\n9/18/2026 12:06 PM Bug filed on &quot;Employee - Fields validation - Verify display of information for applicable leave types&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed Leave balance to reflect correctly. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 13
+  }
+ },
+ {
+  "id": "W-20925",
+  "summary": "No field available to enter contact number during leave",
+  "task": "No field available to enter contact number during leave\n9/21/2026 4:26 PM Bug filed on &quot;Employee - Fields validation - Phone Number Verify mandatory/optional behavior&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to allow numeric entry.Comment No field available to enter Phone number 3. None System to block alphabets entry and special characters. 4. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 22
+  }
+ },
+ {
+  "id": "W-20926",
+  "summary": "No field available to enter address during leave",
+  "task": "No field available to enter address during leave\n9/21/2026 4:27 PM Bug filed on &quot;Employee - Fields validation - Address verify mandatory/optional behavior&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to allow alpha numeric entry. 3. None Block special characters. 4. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 22
+  }
+ },
+ {
+  "id": "W-20927",
+  "summary": "No field to enter Handover details mandatorily",
+  "task": "No field to enter Handover details mandatorily\n9/21/2026 4:28 PM Bug filed on &quot;Employee - Fields validation - Handover Details & Remarks&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None System to save entered data. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 22
+  }
+ },
+ {
+  "id": "W-20932",
+  "summary": "Remarks entered by line manager on leave rejection are not visible to staff in their ESS.",
+  "task": "Remarks entered by line manager on leave rejection are not visible to staff in their ESS.\n9/21/2026 6:46 PM Bug filed on &quot;Manager should be able to reject leave with relevant comments&quot; Step no. Result Title 1. None Log in as a Manager, navigate to pending leave requests, and open a request submitted by a team member.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Select Reject, enter a relevant rejection comment, and verify that the comment field accepts valid text and enforces any mandatory validation. 3. None Confirm the rejection and verify that a success message appears and the leave request status changes to Rejected/Declined. 4. None Reopen the request and verify that the manager�s comment is saved, visible to the appropriate user, and included in the request history or notification. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": true,
+   "files": 21
+  }
+ },
+ {
+  "id": "W-20933",
+  "summary": "The leave details - leave type description, attachments, remarks etc. are not available to manager in the ESS while approving any leave.",
+  "task": "The leave details - leave type description, attachments, remarks etc. are not available to manager in the ESS while approving any leave.\n9/21/2026 7:05 PM Bug filed on &quot;Manager should receive relevent leave request which the staff has applied&quot; Step no. Result Title 1. None Log in as an employee reporting to the manager, submit a leave request, and verify that it is routed to the correct manager.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Log in as the Manager, open the leave approval list or notification, and verify that the submitted request is displayed. 3. Failed Open the request and verify the employee name, leave type, start and end dates, duration, reason, attachments, leave balance, and current status.Comment These details are not showing up for line manager in ESS. 4. None Verify that the manager can view only authorized staff requests and that the request remains available with the correct status for further approval action. Test Configuration:",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": true,
+   "files": 45
+  }
+ },
+ {
+  "id": "W-20934",
+  "summary": "No different color codes are seen.",
+  "task": "No different color codes are seen.\n9/21/2026 7:54 PM Bug filed on &quot;Employee - Calendar - Verify correct highlighting of: Selected leave period Weekends&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to display weekends, approved leaves, public holidays in different color codes for selected period on the calendar. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": true,
+   "files": 37
+  }
+ },
+ {
+  "id": "W-21635",
+  "summary": "in Web ESS - goals related details and Measure of success field not available for staff to add details against the goal.",
+  "task": "in Web ESS - goals related details and Measure of success field not available for staff to add details against the goal.\n9/23/2026 11:44 AM Bug filed on &quot;PM-GS-014 - Goal Setting - Submit Goal Plan for Approval&quot; Step no. Result Title 1. None Log in as Employee.Expected Result Goal plan is submitted successfully and routed for manager review. 2. Failed Complete all goal-related sections.Comment in Web ESS - goals related details and Measure of success field not available for staff to add details against the goal. 3. Passed Verify mandatory information is completed. 4. Passed Submit the goal plan. 5. Passed Verify submission confirmation message. 6. Passed Verify plan status changes to Submitted. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 15
+  }
+ },
+ {
+  "id": "W-21639",
+  "summary": "Leave & Absence - Display Additional Request and Workflow Details in Pending Leave Work Items",
+  "task": "Leave & Absence - Display Additional Request and Workflow Details in Pending Leave Work Items\nEnhance the Leave Request details so that both the submitter and approver can view the information required to track and process the request. The information should be displayed in: * The **Pending Work Item details** for the approver. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/5f50d930-94fb-449e-8dfb-dfec86ca2d05?fileName=image.png) * The **submitted Leave Request details** for the employee or person who submitted the request. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/c7327991-8d0e-4301-8b64-fa9ac8563ba9?fileName=image.png) ### Required Information #### Attachment * Display the attachment submitted with the original Leave Request. * The approver must be able to review the supporting document before taking action. * Allow both the submitter and approver to do",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": true,
+   "files": 35
+  }
+ },
+ {
+  "id": "W-21681",
+  "summary": "Midyear Review - Cancel/ Edit goals option is not available",
+  "task": "Midyear Review - Cancel/ Edit goals option is not available\n9/24/2026 9:27 AM Bug filed on &quot;PM-MYR-005 - Mid-Year Review - Cancel Goal /Edit Due to Business Change&quot; Step no. Result Title 1. Passed Log in as Employee.Expected Result Goal can be formally cancelled with supporting justification and review history retains the update. Note: Incase a goal is cancelled, the alloted weighing percentage should be either reassigned or there should be an option to add another goal and submit for line manager approval. 2. Passed Open Mid-Year Review. 3. Passed Select an active goal. 4. Failed Update goal status to &quot;Cancelled&quot; /Edit GoalComment Cancel/ Edit goals option is not available 5. Failed Enter cancellation justification.Comment Cancel/ Edit goals option is not available 6. Passed Save the review. 7. Failed Verify cancellation reason is displayed.Comment Cancel/ Edit goals option is not available Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 14
+  }
+ },
+ {
+  "id": "W-21732",
+  "summary": "Added new holiday on maternity leave day and then removed the same, now 2 leave entries are available for that day in ESS",
+  "task": "Added new holiday on maternity leave day and then removed the same, now 2 leave entries are available for that day in ESS\n9/25/2026 5:35 PM Bug filed on &quot;Leave Application - Verify UAE maternity leave entitlement of 60 calendar days&quot; Step no. Result Title 1. None Apply for UAE maternity leave and verify that the system allows and calculates an entitlement of 60 calendar days, including weekends and excluding public holidays.Expected Result Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": false,
+   "migration": false,
+   "security": false,
+   "files": 6
+  }
+ },
+ {
+  "id": "W-21984",
+  "summary": "Midyear - Goal change option not available/ When goal is cancelled no option to change the goals % against the remaining goals",
+  "task": "Midyear - Goal change option not available/ When goal is cancelled no option to change the goals % against the remaining goals\n9/28/2026 12:18 PM Bug filed on &quot;Mid-Year Review - Update Goal Progress Against Existing Goals&quot; Step no. Result Title 1. Passed Log in as Employee.Expected Result Goal progress updates are successfully saved and reflected against the selected goal. 2. Passed Open an active Mid-Year Review. 3. Passed Select an existing goal. 4. Failed Update achievement progress and completion percentage.Comment Goal change option not available/ When goal is cancelled no option to change the goals % against the remaining goals 5. Passed Add supporting notes against the goal. 6. None Save the review. 7. Passed Re-open the record and verify changes. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 12
+  }
+ },
+ {
+  "id": "W-21996",
+  "summary": "Navigation for requesting the attendance regularization request",
+  "task": "Navigation for requesting the attendance regularization request\n9/28/2026 3:51 PM Bug filed on &quot;Workflow - Attendance regularization - Staff should be able to regularize missing check- in by submitting the request&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Staff to be able to request for regularizing their attendance from ESS. Data to be updated on attendance master once approved by authorized approver. Attendance report is viewed on navigation Home > Attendance For Creating the regularization request the staff has to come back to Home and submit the request out searching under &quot;Submit request&quot; 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": false,
+   "migration": false,
+   "security": false,
+   "files": 14
+  }
+ },
+ {
+  "id": "W-21998",
+  "summary": "Employee submitted for 3 hours shortage, but HR is viewing as 7 hours in HR Login (D365)",
+  "task": "Employee submitted for 3 hours shortage, but HR is viewing as 7 hours in HR Login (D365)\n9/28/2026 4:05 PM Bug filed on &quot;Workflow - Attendance regularization - HR should be able to receive request and approve/reject the request once approved by Attendance administrator&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed Once the workflow is approved by Attendance administrator, final workflow approval rights should be with HR after which the attendance changes will sync to the attendance master.Comment Employee submitted for 3 hours shortage, but HR is viewing as 7 hours in HR Login (D365) Employee submitted screenshot HR view from D365 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": false,
+   "migration": false,
+   "security": false,
+   "files": 11
+  }
+ },
+ {
+  "id": "W-22016",
+  "summary": "Employee cannot attach doc at EOY review stage.",
+  "task": "Employee cannot attach doc at EOY review stage.\n9/29/2026 11:26 AM Bug filed on &quot;Year-End Review - Complete Self-Rating and goals status /achievement details Against each Goal&quot; Step no. Result Title 1. Passed Log in as Employee. Expected Result Employee self-assessment is successfully recorded against all goals. 2. Passed Open Year-End Review. 3. Passed Review each approved goal. 4. Failed Enter self Rating / status/ achievement details against each goal. Comment EOY self rating not available to employee against each goal 5. Failed Add supporting comments explaining accomplishments. Comment Employee cannot attach doc at EOY review stage. 6. Passed Save the review. 7. Passed Verify entries are retained. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 21
+  }
+ },
+ {
+  "id": "W-22063",
+  "summary": "Holidays are not reflecting in ESS My attendance or Team attendance",
+  "task": "Holidays are not reflecting in ESS My attendance or Team attendance\n9/30/2026 12:34 PM Bug filed on &quot;Employee - Attendance Reports - Staff should be able to view the attendance data&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Employee to see self attendance data on StaffXP. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 12
+  }
+ },
+ {
+  "id": "W-22080",
+  "summary": "Bulk approve/ reject option to be available for overtime submission by attendance approver in ESS. Th escreen keeps giving confirmation pop up on each checkbox click.",
+  "task": "Bulk approve/ reject option to be available for overtime submission by attendance approver in ESS. Th escreen keeps giving confirmation pop up on each checkbox click.\n10/1/2026 1:03 AM Bug filed on &quot;Workflow - Overtime process - Attendance administrator should be able to view all overtime entries calcuated by system. must have an option to &quot;select all&quot; and approve (or) not approve a particular entry for overtime&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Access must be granted to AMSF and MSO to view and approve individual overtime entry for staff. consodilated report should also be made available to OPS team and HR. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+  "risk": {
+   "publicContract": true,
+   "migration": false,
+   "security": false,
+   "files": 17
+  }
+ }
+]

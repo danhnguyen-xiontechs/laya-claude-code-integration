@@ -1,0 +1,16 @@
+{
+  "suites": [
+    {
+      "level": "unit",
+      "command": "node --test \"test/*.test.mjs\" (in .claude/skills/subagent-model-router, node v24.19.0)",
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "notRun": 0,
+      "evidence": "unit-tests.json"
+    }
+  ],
+  "commit": "uncommitted (working tree on main; change = scripts/router.mjs, test/router.test.mjs, bench/bench.mjs, bench/results/route-jev.json)",
+  "measuredAt": "2026-10-19",
+  "note": "Backfilled after the run (Gate B had already been decided). 36 tests as r4 at first; the default-with-provider assertion now expects 'checked'. After the agent review fix (hook default back to gate+sc, loadConfig defaultPolicy option): 38 tests, 2 added (CLI default path with jev, hook default gate+sc). Offline gate not re-run here: it is in evidence/offline-score.json."
+}

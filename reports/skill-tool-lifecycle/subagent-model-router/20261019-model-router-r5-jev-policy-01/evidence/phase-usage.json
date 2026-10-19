@@ -1,0 +1,41 @@
+{
+  "experimentId": "20261019-model-router-r5-jev-policy-01",
+  "phases": [
+    {
+      "phase": "Control + case agents (one session, not split)",
+      "sessionId": null,
+      "model": "claude-haiku-5-5",
+      "smartTrimMode": null,
+      "transcript": "C:/Users/LENOVO2/.claude/projects/D--Laya/978cd82f-f35d-4af0-b8f0-9af1c07d4a13.jsonl",
+      "cwd": null,
+      "from": null,
+      "to": null,
+      "measured": true,
+      "files": 1,
+      "modelsSeen": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "modelTurns": 173,
+      "subagentTurns": 107,
+      "peakContext": 91579,
+      "cacheRead": 7185828,
+      "cacheWrite": 689643,
+      "input": 346,
+      "output": 62046,
+      "source": "C:\\Users\\LENOVO2\\.claude\\projects\\D--Laya\\978cd82f-f35d-4af0-b8f0-9af1c07d4a13.jsonl + 18 subagent transcript(s)"
+    }
+  ],
+  "measuredPhases": 1,
+  "missingPhases": [],
+  "totals": {
+    "modelTurns": 173,
+    "peakContext": 91579,
+    "cacheRead": 7185828,
+    "cacheWrite": 689643,
+    "input": 346,
+    "output": 62046,
+    "allTokens": 7937863
+  },
+  "generatedAt": "2026-10-19T03:35:21.108Z"
+}

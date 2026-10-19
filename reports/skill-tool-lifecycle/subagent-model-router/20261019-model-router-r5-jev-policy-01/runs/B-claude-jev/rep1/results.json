@@ -1,0 +1,90 @@
+{
+  "experimentId": "20261019-model-router-r5-jev-policy-01",
+  "arm": "B",
+  "runId": "rep1",
+  "startedAt": "2026-10-19T03:05:04.378Z",
+  "finishedAt": "2026-10-19T03:05:04.378Z",
+  "cases": [
+    {
+      "caseId": "d5-deps",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 204,
+        "modelTurns": 13,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 401378,
+        "cacheReadTokens": 338312,
+        "cacheWriteTokens": 63040,
+        "rawInputTokens": 26
+      },
+      "evidenceRefs": [],
+      "note": "tiers haiku>sonnet; first try haiku failed check, cascade to sonnet",
+      "costUsd": 0.108833,
+      "agents": [
+        "a874819d611c06ffd",
+        "ad362474b17da18f6"
+      ]
+    },
+    {
+      "caseId": "f1-paginate",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 118,
+        "modelTurns": 5,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 103674,
+        "cacheReadTokens": 81007,
+        "cacheWriteTokens": 22657,
+        "rawInputTokens": 10
+      },
+      "evidenceRefs": [],
+      "note": "tiers haiku",
+      "costUsd": 0.003702,
+      "agents": [
+        "a7964eff8d7a12c06"
+      ]
+    },
+    {
+      "caseId": "d3-maplimit",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 56,
+        "modelTurns": 9,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 224187,
+        "cacheReadTokens": 195137,
+        "cacheWriteTokens": 29032,
+        "rawInputTokens": 18
+      },
+      "evidenceRefs": [],
+      "note": "tiers haiku",
+      "costUsd": 0.00561,
+      "agents": [
+        "a429ce380955887c8"
+      ]
+    },
+    {
+      "caseId": "r1-rename",
+      "status": "pass",
+      "usage": {
+        "outputTokens": 55,
+        "modelTurns": 6,
+        "providerCalls": 0,
+        "toolCalls": null,
+        "inputTokens": 136678,
+        "cacheReadTokens": 111150,
+        "cacheWriteTokens": 25516,
+        "rawInputTokens": 12
+      },
+      "evidenceRefs": [],
+      "note": "tiers haiku",
+      "costUsd": 0.00433,
+      "agents": [
+        "aac5710dc9b65e6af"
+      ]
+    }
+  ]
+}
