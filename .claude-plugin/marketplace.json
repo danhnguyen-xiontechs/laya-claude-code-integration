@@ -1,12 +1,19 @@
 {
   "name": "danhnguyen-xiontechs",
-  "owner": { "name": "Danh Nguyen" },
-  "description": "Claude Code plugins from danhnguyen-xiontechs: Haiku cost tools (every Haiku request under the 100k-token price step) and the haiku-build workflow on top of them.",
+  "owner": {
+    "name": "Danh Nguyen"
+  },
+  "description": "Claude Code plugins from danhnguyen-xiontechs: Haiku cost tools (haiku-100k, haiku-build) and agent-reliability (retry-loop guard with Opus escalation).",
   "plugins": [
     {
       "name": "haiku-100k",
       "source": "./haiku-100k",
       "description": "Keeps every Haiku request under the 100k-token price step (agent, setup command, guard hook), and ships the haiku-build workflow skill that runs on top of it."
+    },
+    {
+      "name": "agent-reliability",
+      "source": "./agent-reliability",
+      "description": "Stops unproductive test/build retry loops (observe by default), escalates to an Opus recovery agent after two failed attempts, then asks the user. Successor of retry-loop-breaker."
     }
   ]
 }
