@@ -64,11 +64,12 @@ test('orderings rotate the tiers so each tier is first once in k=3', () => {
   assert.deepEqual(Object.keys(buildRequest('t', '', o[1]).questions.tier.criteria), o[1]);
 });
 
-test('consistency: stable → shared label, unstable → highest', () => {
-  assert.deepEqual(consistency([{ tier: 'haiku' }, { tier: 'haiku' }, { tier: 'haiku' }]).tier, 'haiku');
+test('consistency: all the same → that label (stable); any disagreement → no label (unstable)', () => {
+  assert.equal(consistency([{ tier: 'haiku' }, { tier: 'haiku' }, { tier: 'haiku' }]).tier, 'haiku');
   const u = consistency([{ tier: 'haiku' }, { tier: 'sonnet' }, { tier: 'haiku' }]);
-  assert.equal(u.tier, 'sonnet');
+  assert.equal(u.tier, null);
   assert.equal(u.stable, false);
+  assert.equal(u.unstable, true);
   assert.equal(consistency([{ error: 'x' }, { tier: 'haiku' }]).tier, 'haiku');
 });
 
@@ -79,8 +80,18 @@ test('combine: gating picks the cheaper tier only when rule and provider agree',
   assert.equal(combine('gate', 'opus', a('haiku')), 'opus');
   assert.equal(combine('jev', 'opus', a('haiku')), 'haiku');
   assert.equal(combine('rules', 'sonnet', []), 'sonnet');
-  assert.equal(combine('gate+sc', 'haiku', [{ tier: 'haiku' }, { tier: 'sonnet' }, { tier: 'haiku' }]), 'sonnet');
   assert.equal(combine('gate', 'haiku', [{ error: 'x' }]), null);
+});
+
+test('combine: a split vote keeps the rule tier and never raises it (sc, gate+sc)', () => {
+  const split = [{ tier: 'haiku' }, { tier: 'sonnet' }, { tier: 'haiku' }];
+  assert.equal(combine('sc', 'sonnet', split), 'sonnet');
+  assert.equal(combine('gate+sc', 'haiku', split), 'haiku');
+  const opusSplit = [{ tier: 'opus' }, { tier: 'opus' }, { tier: 'sonnet' }];
+  assert.equal(combine('gate+sc', 'haiku', opusSplit), 'haiku');
+  assert.equal(combine('sc', 'haiku', opusSplit), 'haiku');
+  // a stable vote still applies: agreement on opus raises the tier
+  assert.equal(combine('gate+sc', 'haiku', [{ tier: 'opus' }, { tier: 'opus' }, { tier: 'opus' }]), 'opus');
 });
 
 test('maxTier / nextTier (cascade)', () => {
@@ -90,12 +101,14 @@ test('maxTier / nextTier (cascade)', () => {
   assert.equal(nextTier('opus'), null);
 });
 
-test('route: k calls, option order shuffled, position-biased provider → unstable → higher tier', async () => {
+test('route: k calls, option order shuffled, position-biased provider → unstable → rule tier', async () => {
   const fake = fakeDecide((order) => order[0]); // always answers the first option shown
   const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', k: 3 }), decideImpl: fake, log: false });
   assert.equal(fake.calls(), 3);
   assert.equal(r.consistency.stable, false);
-  assert.equal(r.tier, 'opus');
+  assert.equal(r.unstable, true);
+  assert.equal(r.rule.tier, 'haiku');
+  assert.equal(r.tier, 'haiku'); // not opus: the provider disagreed with itself
 });
 
 test('route: stable cheap answer + cheap rule → haiku; k configurable', async () => {

@@ -6,8 +6,9 @@
 //   jev   — a typed decision (one choice over the tiers + three nouls) from TypeSafe Jev or Laya.
 // Combined by two policies instead of probability thresholds (Jev is over-confident, Laya is flat):
 //   agreement gating  — the final tier is max(rule, provider): a cheaper tier only when both agree;
-//   self-consistency  — ask k times with the option order rotated; if the k top labels are not all
-//                       the same, take the highest of them.
+//   self-consistency  — ask k times with the option order rotated; if the k top labels are all the
+//                       same, take that label; if they disagree, the rule tier is kept and the
+//                       record is flagged `unstable`.
 // Policies (pick with `policy`): rules | jev | gate | sc | gate+sc (default when a provider is set) | checked.
 // checked: a task with an automatic check (tests, acceptance) and no hard verb gets the rule tier with no
 // provider call; any other task gets gate+sc. The orchestrator must run the check and escalate once on
@@ -193,26 +194,29 @@ export async function askOnce({ task, type, order, cfg, decideImpl = decide, env
   return { tier: t.label, p: t.p, probabilities: probs, nouls, latencyMs: r.meta?.latencyMs ?? null, cost: r.meta?.cost ?? null };
 }
 
-/** Self-consistency over k answers: stable → the shared label; unstable → the highest label. */
+/**
+ * Self-consistency over k answers: all the same label → that label (stable). Any disagreement →
+ * unstable and tier null; the caller then uses the rule tier. A split vote never raises the tier.
+ */
 export function consistency(answers) {
   const ok = answers.filter((a) => a && !a.error);
-  if (!ok.length) return { tier: null, stable: false, votes: {} };
+  if (!ok.length) return { tier: null, stable: false, unstable: false, votes: {}, n: 0 };
   const votes = {};
   for (const a of ok) votes[a.tier] = (votes[a.tier] || 0) + 1;
   const stable = Object.keys(votes).length === 1;
-  return { tier: stable ? ok[0].tier : maxTier(...ok.map((a) => a.tier)), stable, votes, n: ok.length };
+  return { tier: stable ? ok[0].tier : null, stable, unstable: !stable, votes, n: ok.length };
 }
 
 /**
  * Combine rule and provider answers under a policy. Pure (used by route() and by offline scoring).
  *   rules   → rule tier
  *   jev     → first provider answer
- *   sc      → self-consistency tier
+ *   sc      → self-consistency tier (rule tier when the k answers disagree)
  *   gate    → max(rule, first provider answer)
- *   gate+sc → max(rule, self-consistency tier)
+ *   gate+sc → max(rule, self-consistency tier), again the rule tier when they disagree
  *   checked → rule tier when the task has a check and no hard verb (no provider call, see
  *             checkedSkipsProvider); otherwise gate+sc
- * Provider unavailable → null (the caller keeps its default model).
+ * Provider unavailable → null (route() falls back to the rule tier and records why).
  */
 export function combine(policy, ruleT, answers = [], features = null) {
   if (policy === 'rules') return ruleT;
@@ -224,9 +228,9 @@ export function combine(policy, ruleT, answers = [], features = null) {
   if (!first) return null;
   if (policy === 'jev') return first.tier;
   if (policy === 'gate') return maxTier(ruleT, first.tier);
-  const sc = consistency(answers).tier;
-  if (policy === 'sc') return sc;
-  return maxTier(ruleT, sc);
+  const scTier = consistency(answers).tier ?? ruleT; // disagreement → rule tier
+  if (policy === 'sc') return scTier;
+  return maxTier(ruleT, scTier);
 }
 
 /** The checked policy's no-provider case: an automatic check exists and no hard verb asks for a design. */
@@ -254,6 +258,7 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
     answers = await Promise.all(orderings(n).map((order) => askOnce({ task, type, order, cfg, decideImpl, env })));
   }
   const tier = combine(policy, rule.tier, answers);
+  const cons = answers.length ? consistency(answers) : null;
   const out = {
     ...rec,
     applied: policy,
@@ -263,7 +268,8 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
     rule: { tier: rule.tier, score: rule.score, why: rule.why },
     features,
     answers: answers.map((a) => (a.error ? { error: a.error } : { tier: a.tier, p: a.p, nouls: a.nouls, latencyMs: a.latencyMs })),
-    consistency: answers.length ? consistency(answers) : undefined,
+    consistency: cons ?? undefined,
+    unstable: Boolean(cons?.unstable),
     latencyMs: Date.now() - t0,
     ...extra,
   };
