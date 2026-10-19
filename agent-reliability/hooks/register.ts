@@ -138,18 +138,27 @@ async function dump($: EngineInterface, o: Options, ran: { isError?: true; text?
   } catch { /* diagnostics are best effort */ }
 }
 
-export const register: Register = (on, options) => {
-  const o = readOptions(options);
+/** session.start work: the commands and the recovery agent. A host plugin with its own session.start calls this from it. */
+export async function startSession($: EngineInterface): Promise<void> {
+  await $.command.register({ name: 'reliability', description: 'agent-reliability: status | observe | enforce | off | auto | reset' });
+  await $.command.register({ name: 'retry-guard', description: 'Alias of /reliability (status | reset), kept from retry-loop-breaker' });
+  await $.agent.register({
+    name: RECOVERY_AGENT, model: 'opus', prompt: RECOVERY_PROMPT,
+    description: 'Recovery engineer (Opus) for a verification that keeps failing after two recovery attempts. Only when agent-reliability asks for it.',
+  }).catch(() => undefined);
+}
 
+export const register: Register = (on, options) => {
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'reliability', description: 'agent-reliability: status | observe | enforce | off | auto | reset' });
-    await $.command.register({ name: 'retry-guard', description: 'Alias of /reliability (status | reset), kept from retry-loop-breaker' });
-    await $.agent.register({
-      name: RECOVERY_AGENT, model: 'opus', prompt: RECOVERY_PROMPT,
-      description: 'Recovery engineer (Opus) for a verification that keeps failing after two recovery attempts. Only when agent-reliability asks for it.',
-    }).catch(() => undefined);
+    await startSession($);
     return next(e);
   }).catch(($, e, next) => next(e));
+  registerHooks(on, options);
+};
+
+/** Every hook except session.start (see startSession), so a host plugin can add them to its own. */
+export function registerHooks(on: Parameters<Register>[0], options: Parameters<Register>[1]): void {
+  const o = readOptions(options);
 
   on('command.run', { command: 'reliability' }, async ($, e) => command($, o, e.args, false));
   on('command.run', { command: 'retry-guard' }, async ($, e) => command($, o, e.args, true));
@@ -329,4 +338,4 @@ export const register: Register = (on, options) => {
     return ran;
   }).catch(($, e, next) => next(e)); // any guard failure: the call runs as if the mod were absent
 
-};
+}

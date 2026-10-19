@@ -246,7 +246,7 @@ test('telemetry goes to telemetry/ inside the plugin folder by default', { optio
   await bash($, 'npm test');
   const r = await $.command.run({ command: 'reliability', args: '' } as never) as { text?: string };
   const dir = /^telemetry (.+)$/m.exec(r.text ?? '')?.[1] ?? '';
-  expect(dir.endsWith('/agent-reliability/telemetry')).toBe(true);
+  expect(/^[A-Za-z]:\/|^\//.test(dir) && dir.endsWith('/telemetry')).toBe(true);
   expect(paths.map((p) => p.replace(/\\/g, '/'))).toEqual([`${dir}/sess1.jsonl`]);
 });
 

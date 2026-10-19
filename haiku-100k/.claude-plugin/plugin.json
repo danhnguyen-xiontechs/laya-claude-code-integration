@@ -4,5 +4,109 @@
   "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, and the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests).",
   "author": {
     "name": "Danh Nguyen"
+  },
+  "types": "./hooks/reliability/types.d.ts",
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Reliability: Mode",
+      "description": "observe (log only), enforce (deny), or off. Env AGENT_RELIABILITY and /reliability override it.",
+      "default": "observe",
+      "options": [
+        "observe",
+        "enforce",
+        "off"
+      ]
+    },
+    "ruleB": {
+      "type": "boolean",
+      "title": "Reliability: Rule B: block identical repeats",
+      "description": "In enforce mode, deny a repeat of a verification that failed the same way with nothing changed.",
+      "default": true
+    },
+    "ruleA": {
+      "type": "boolean",
+      "title": "Reliability: Rule A: recovery budget + Opus escalation",
+      "description": "In enforce mode, deny the next verification after maxRecoveryStrategies failed attempts and ask for the Opus recovery agent; then NEEDS_USER. Off: logged only.",
+      "default": false
+    },
+    "maxRecoveryStrategies": {
+      "type": "number",
+      "title": "Reliability: Recovery strategies before escalation",
+      "description": "Failed reruns that followed a change (edit, mutating command) on one incident.",
+      "default": 2
+    },
+    "maxIdenticalFailuresBeforeBlock": {
+      "type": "number",
+      "title": "Reliability: Identical failures before block",
+      "description": "Same action + same error + no change, this many times, then the next repeat is blocked.",
+      "default": 2
+    },
+    "failureRecordTtlMinutes": {
+      "type": "number",
+      "title": "Reliability: Record TTL (minutes)",
+      "description": "Older failures and incidents never block.",
+      "default": 30
+    },
+    "maxRecordsPerSession": {
+      "type": "number",
+      "title": "Reliability: Max records",
+      "description": "Bound on failure records kept per session.",
+      "default": 50
+    },
+    "gitTimeoutMs": {
+      "type": "number",
+      "title": "Reliability: Git state budget (ms)",
+      "description": "Total time for the git content token; over budget = unknown = allow.",
+      "default": 1500
+    },
+    "telemetry": {
+      "type": "boolean",
+      "title": "Reliability: Telemetry",
+      "description": "JSONL decisions to <telemetry folder>/<session>.jsonl (no tool output).",
+      "default": true
+    },
+    "telemetryDir": {
+      "type": "string",
+      "title": "Reliability: Telemetry folder",
+      "description": "Absolute folder for the JSONL files. Empty = telemetry/ inside this plugin's own folder.",
+      "default": ""
+    },
+    "dumpRaw": {
+      "type": "boolean",
+      "title": "Reliability: Diagnostics dump",
+      "description": "Phase 0 only: filtered result fields to diag-<session>.jsonl. Leave off.",
+      "default": false
+    },
+    "jevEnabled": {
+      "type": "boolean",
+      "title": "Reliability: Ask JEV on near-duplicates",
+      "description": "Needs OPENROUTER_API_KEY; errors and timeouts allow.",
+      "default": false
+    },
+    "jevTimeoutMs": {
+      "type": "number",
+      "title": "Reliability: JEV timeout (ms)",
+      "description": "Decision budget; on timeout the call is allowed.",
+      "default": 4000
+    },
+    "jevMinConfidence": {
+      "type": "number",
+      "title": "Reliability: JEV min confidence",
+      "description": "block_redundant_retry must reach this probability to block.",
+      "default": 0.8
+    },
+    "mainAgentOnly": {
+      "type": "boolean",
+      "title": "Reliability: Main agent only",
+      "description": "Leave subagent verification calls alone (subagents are tracked separately when off).",
+      "default": true
+    },
+    "extraEligible": {
+      "type": "string",
+      "title": "Reliability: Extra eligible commands",
+      "description": "Comma-separated command prefixes treated as tests.",
+      "default": ""
+    }
   }
 }

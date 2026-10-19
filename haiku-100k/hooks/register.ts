@@ -1,4 +1,6 @@
 import type { Register } from 'claude-code'
+// agent-reliability (retry-loop guard, observe by default): a shipped copy, see ./reliability.
+import { registerHooks, startSession } from './reliability/register.ts'
 
 // Keeps every Haiku model request under the 100k-token price step (input ≤ 100k is the cheap tier).
 // The engine's own auto-compact (window 100000 for Haiku, set in settings and in haiku-case.md) does the
@@ -40,7 +42,7 @@ export const shouldDefer = (tool: string, isDeferred?: boolean) =>
 
 type Loop = { model?: string; context?: number }
 
-export const register: Register = on => {
+export const register: Register = (on, options) => {
   const loops = new Map<string, Loop>()
   let over = 0
   const loopOf = (agentId?: string) => {
@@ -52,6 +54,7 @@ export const register: Register = on => {
   // /haiku-100k:base — what the fixed start of every request is made of (as /context counts it), saved as JSON.
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'base', description: 'haiku-100k: save the context breakdown (what every request starts with) to ~/.claude/haiku-100k-base.json' })
+    await startSession($).catch(() => undefined) // /reliability, /retry-guard, the opus-recovery agent
     return next(e)
   })
   on('command.run', { command: 'base' }, async $ => {
@@ -88,4 +91,6 @@ export const register: Register = on => {
     if (keep === null) return ran
     return { deny: cut(ran.text, keep) }
   }).catch(($, e, next) => next(e)) // fail open: a broken guard never blocks a tool
+
+  registerHooks(on, options) // agent-reliability's other hooks (userConfig mode/ruleA/telemetryDir…)
 }
