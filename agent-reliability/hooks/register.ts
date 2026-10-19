@@ -17,7 +17,7 @@ import {
   markEscalationDenied, needsUserText, onEscalationIgnored, onFail, onMutation, onPass,
   onRecoveryDone, onRecoveryStarted, onUserPrompt, pruneIncidents, RECOVERY_AGENT, RECOVERY_PROMPT,
 } from './incident.ts';
-import { appendJsonl, gitToken, logPath } from './io.ts';
+import { appendJsonl, gitToken, logDir, logPath } from './io.ts';
 
 const PLUGIN = 'agent-reliability';
 const GUARD = { plugin: 'agent-reliability', key: 'guard' } as const;
@@ -53,7 +53,7 @@ async function effectiveMode($: EngineInterface, o: Options, s?: GuardState): Pr
 async function emit($: EngineInterface, o: Options, ev: Record<string, unknown>): Promise<void> {
   if (!o.telemetry) return;
   try {
-    const path = await logPath($, 'events');
+    const path = await logPath($, 'events', o.telemetryDir);
     if (path) await appendJsonl($, path, { ts: new Date().toISOString(), v: 2, ...ev });
   } catch { /* telemetry is best effort */ }
 }
@@ -101,6 +101,7 @@ async function command($: EngineInterface, o: Options, args: string, alias: bool
   return { text: [
     `agent-reliability: mode ${m.mode} (${m.source}); rule B ${o.ruleB ? 'on' : 'log only'}, rule A ${o.ruleA ? 'on' : 'log only'}; epoch ${s.epoch}`,
     `stats ${JSON.stringify(s.stats)}`,
+    `telemetry ${o.telemetry ? logDir($, o.telemetryDir) : 'off'}`,
     'incidents:', ...(inc.length ? inc : ['- none']),
     'records:', ...(recs.length ? recs : ['- none']),
     'recent:', ...(log.length ? log : ['- none']),
@@ -120,9 +121,9 @@ async function recoveryDone($: EngineInterface, o: Options, agentId: string): Pr
 
 
 /** Phase 0 diagnostics (dumpRaw, off by default): filtered fields only. */
-async function dump($: EngineInterface, ran: { isError?: true; text?: string; result?: unknown }, cls: Classification): Promise<void> {
+async function dump($: EngineInterface, o: Options, ran: { isError?: true; text?: string; result?: unknown }, cls: Classification): Promise<void> {
   try {
-    const path = await logPath($, 'diag');
+    const path = await logPath($, 'diag', o.telemetryDir);
     if (!path) return;
     const r = ran.result as Record<string, unknown> | string | undefined;
     const text = String(ran.text ?? (typeof r === 'string' ? r : '')).replace(/[A-Za-z]:[\\/]Users[\\/][^\\/\s]+/g, '~').replace(SECRETISH, '<redacted>').slice(0, 200);
@@ -298,7 +299,7 @@ export const register: Register = (on, options) => {
     try {
       const { cls, reason: why } = classifyRun(ran);
       const text = ran.text ?? (typeof (ran as { result?: unknown }).result === 'string' ? (ran as { result: string }).result : '');
-      if (o.dumpRaw) await dump($, ran, cls);
+      if (o.dumpRaw) await dump($, o, ran, cls);
       const at = await $.clock.now();
       let tr: Transition | null = null;
       let after: string | null = null;

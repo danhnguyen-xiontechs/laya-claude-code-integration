@@ -46,3 +46,6 @@ research/ab-1697/runs/*/*.xml
 research/ab-1697/runs/*/stderr.txt
 research/ab-1697/laya-serve*.log
 research/ab-1697/__pycache__/
+
+# agent-reliability: real-session telemetry (command keys, paths) - keep local
+agent-reliability/telemetry/

@@ -20,15 +20,17 @@ A Claude Code mod (function hooks) that stops unproductive retry loops on test a
 
 ## Install
 
-From this repo's marketplace:
+From a local checkout, through the folder marketplace in `agent-reliability/.claude-plugin/marketplace.json`. Claude Code then reads the plugin straight from that folder, so the telemetry lands in that checkout too:
 
 ```bash
-claude plugin marketplace add D:/XionTechs/Laya
+claude plugin marketplace add <checkout>/agent-reliability
 ```
 
 ```bash
-claude plugin install agent-reliability@danhnguyen-xiontechs
+claude plugin install agent-reliability@agent-reliability
 ```
+
+Once the plugin is on `main`, it can also come from the repo marketplace (`agent-reliability@danhnguyen-xiontechs`). In that case the plugin folder is Claude Code's plugin cache, so set `telemetryDir` if you want the logs elsewhere.
 
 To try it in one session without installing:
 
@@ -66,7 +68,7 @@ Any false-positive block means going back to `/reliability observe` and opening 
 
 ## Telemetry
 
-One JSONL line per decision goes to `~/.claude/agent-reliability/<session-id>.jsonl`. The file is trimmed to about 1 MB.
+One JSONL line per decision goes to `<plugin folder>/telemetry/<session-id>.jsonl`. With a folder install that is `agent-reliability/telemetry/` in the checkout, which is git-ignored because the repo is public. The userConfig `telemetryDir` (an absolute path) moves it, and `/reliability` prints the folder in use. Each file is trimmed to about 1 MB. Versions before this change wrote to `~/.claude/agent-reliability/`.
 
 - **Fields:** `ts`, `agentId`, `toolUseId`, `tool`, `commandKey`, `mode`, `modeSource`, `event`, `classification`, `reason`, `action` (`allow`, `would_block`, `deny_repeat`, `would_escalate`, `deny_escalate`, `would_deny_needs_user`, `deny_needs_user`), `preReason`, `errorKey`, `incidentId`, `incidentState`, `stateToken` (12-character prefix), `hookMs`.
 - **Events:** `incident_opened`, `repeat_failed`, `strategy_failed`, `escalation_due`, `escalation_requested`, `escalation_started`, `recovery_in_progress`, `recovery_done`, `needs_user`, `incident_closed`, `repeat_blocked`.

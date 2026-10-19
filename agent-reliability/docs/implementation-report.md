@@ -1,6 +1,6 @@
 # agent-reliability 0.2 — implementation report
 
-Date: 2026-10-20. Branch `agent-reliability-v0.2`. Spec: `C:\Users\ADMIN\.claude\plans\t-i-ngh-l-n-n-woolly-haven.md` (it is based on the user's "Agent Reliability Mod — Implementation Plan" v2).
+Date: 2026-10-20. Branch `agent-reliability`. Spec: `C:\Users\ADMIN\.claude\plans\t-i-ngh-l-n-n-woolly-haven.md` (it is based on the user's "Agent Reliability Mod — Implementation Plan" v2).
 
 ## What was built
 
@@ -70,3 +70,11 @@ What the tests cover (the plan's 14 essential cases):
 2. Build artefacts that are untracked and not ignored change the token on every run. Rule B then never blocks in that repo (safe, but no protection there).
 3. The model may ignore the escalation request. Rule A then goes to NEEDS_USER, which is only as strong as the next deny.
 4. No real-use data yet. Nothing here claims effectiveness. Next step: run in observe mode for real work, then review `would_*` lines.
+
+## Rollout step 1: observe install (2026-10-20)
+
+- **Telemetry folder moved.** Logs now go to `<plugin folder>/telemetry/` instead of `~/.claude/agent-reliability/`. A new userConfig `telemetryDir` overrides the folder, and `/reliability` prints the folder in use. The folder `agent-reliability/telemetry/` is git-ignored (public repo). Two engine tests were added: the default folder and the override.
+- **Install.** A folder marketplace `agent-reliability/.claude-plugin/marketplace.json` was added. It is installed at user scope as `agent-reliability@agent-reliability`, read from this worktree's `agent-reliability/` folder, in mode observe (the default; no userConfig set).
+- **Tests run:** `npm test` gave 32 pass and 1 skipped. `claude plugin test` gave 20 pass. `claude plugin validate` passed, with one warning: the marketplace has no description.
+- **Real check:** a headless Haiku session in a scratch repo ran a failing `npm test` three times with nothing changed. All 3 runs executed (observe). The log appeared under `agent-reliability/telemetry/` with `incident_opened`, `repeat_failed`, `repeat_blocked/would_block` (`hookMs` 62) and `repeat_failed`. That probe file was deleted afterwards, so the folder holds only real work.
+- **Next:** use Claude Code normally, then review the `would_block` and `would_escalate` lines for false positives.

@@ -230,3 +230,29 @@ test('Rule A lifecycle: ESCALATED only on spawn; no NEEDS_USER while recovery ru
   expect(last.deny ?? last.text ?? '').toContain('needs the user');
   expect(runs.length).toBe(6);
 });
+
+/** Captures telemetry writes (path only) under a fixed session id; reads answer nothing. */
+function captureWrites(on: On): string[] {
+  const paths: string[] = [];
+  on('session.id', () => ({ value: 'sess1' }) as never);
+  on('fs.read', () => ({ value: '' }) as never);
+  on('fs.write', (_$, e) => { paths.push((e as { path: string }).path); return { value: undefined } as never; });
+  return paths;
+}
+
+test('telemetry goes to telemetry/ inside the plugin folder by default', { options: { jevEnabled: false } }, async ($, on) => {
+  fakeTools(on);
+  const paths = captureWrites(on);
+  await bash($, 'npm test');
+  const r = await $.command.run({ command: 'reliability', args: '' } as never) as { text?: string };
+  const dir = /^telemetry (.+)$/m.exec(r.text ?? '')?.[1] ?? '';
+  expect(dir.endsWith('/agent-reliability/telemetry')).toBe(true);
+  expect(paths.map((p) => p.replace(/\\/g, '/'))).toEqual([`${dir}/sess1.jsonl`]);
+});
+
+test('telemetryDir overrides the folder', { options: { jevEnabled: false, telemetryDir: 'D:\\logs\\ar\\' } }, async ($, on) => {
+  fakeTools(on);
+  const paths = captureWrites(on);
+  await bash($, 'npm test');
+  expect(paths.map((p) => p.replace(/\\/g, '/'))).toEqual(['D:/logs/ar/sess1.jsonl']);
+});

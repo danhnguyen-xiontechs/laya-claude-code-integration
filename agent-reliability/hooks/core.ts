@@ -28,6 +28,8 @@ export type Options = {
   maxRecoveryStrategies: number;
   gitTimeoutMs: number;
   telemetry: boolean;
+  /** Telemetry folder; '' = `telemetry/` inside the plugin's own folder. */
+  telemetryDir: string;
   /** Phase 0 diagnostics: filtered result fields to diag-<sid>.jsonl. Off unless set. */
   dumpRaw: boolean;
 };
@@ -48,6 +50,7 @@ export const DEFAULTS: Options = {
   maxRecoveryStrategies: 2,
   gitTimeoutMs: 1500,
   telemetry: true,
+  telemetryDir: '',
   dumpRaw: false,
 };
 
@@ -321,6 +324,7 @@ export function readOptions(raw: Readonly<Record<string, unknown>> = {}): Option
     maxRecoveryStrategies: Math.max(1, Math.round(num('maxRecoveryStrategies', DEFAULTS.maxRecoveryStrategies))),
     gitTimeoutMs: Math.max(100, num('gitTimeoutMs', DEFAULTS.gitTimeoutMs)),
     telemetry: raw.telemetry !== false,
+    telemetryDir: typeof raw.telemetryDir === 'string' ? raw.telemetryDir.trim() : '',
     dumpRaw: raw.dumpRaw === true,
   };
 }

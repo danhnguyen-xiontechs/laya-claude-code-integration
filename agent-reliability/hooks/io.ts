@@ -13,11 +13,6 @@ export async function sha256(text: string): Promise<string> {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** Home directory from the environment (Windows USERPROFILE first, then HOME). */
-export async function homeDir($: EngineInterface): Promise<string> {
-  return (await $.env.get('USERPROFILE')) || (await $.env.get('HOME')) || '.';
-}
-
 export async function sessionId($: EngineInterface): Promise<string> {
   try { return (await $.session.id()) || 'unknown'; } catch { return 'unknown'; }
 }
@@ -31,11 +26,15 @@ export async function appendJsonl($: EngineInterface, path: string, line: object
   await $.fs.write(path, prev + JSON.stringify(line) + '\n');
 }
 
-export async function logPath($: EngineInterface, kind: 'events' | 'diag'): Promise<string | null> {
+/** The telemetry folder: `dir` when set, else `telemetry/` in the plugin's own folder. */
+export function logDir($: EngineInterface, dir: string): string {
+  return (dir || `${$.plugin.root}/telemetry`).replace(/\\/g, '/').replace(/\/+$/, '');
+}
+
+export async function logPath($: EngineInterface, kind: 'events' | 'diag', dir = ''): Promise<string | null> {
   const sid = await sessionId($);
   if (sid === 'unknown') return null;
-  const home = (await homeDir($)).replace(/\\/g, '/');
-  return `${home}/.claude/agent-reliability/${kind === 'diag' ? 'diag-' : ''}${sid}.jsonl`;
+  return `${logDir($, dir)}/${kind === 'diag' ? 'diag-' : ''}${sid}.jsonl`;
 }
 
 /**

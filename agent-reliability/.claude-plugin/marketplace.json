@@ -1,0 +1,11 @@
+{
+  "name": "agent-reliability",
+  "owner": { "name": "Danh Nguyen" },
+  "plugins": [
+    {
+      "name": "agent-reliability",
+      "source": "./",
+      "description": "Stops unproductive retry loops on test/build commands (Rule B), with a recovery budget and Opus escalation (Rule A). Observe mode by default."
+    }
+  ]
+}
