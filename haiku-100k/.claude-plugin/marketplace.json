@@ -1,11 +1,14 @@
 {
   "name": "haiku-100k",
-  "owner": { "name": "Danh Nguyen" },
+  "owner": {
+    "name": "Danh Nguyen"
+  },
+  "description": "Haiku cost tools: keep every Haiku request under the 100k-token price step, and the haiku-build workflow on top of it.",
   "plugins": [
     {
       "name": "haiku-100k",
       "source": "./",
-      "description": "Keeps every Haiku request under the 100k-token price step: cuts a tool result that would push the next request past it, and counts any request above 100k."
+      "description": "Keeps every Haiku request under the 100k-token price step (agent, setup command, guard hook), and ships the haiku-build workflow skill that runs on top of it."
     }
   ]
 }

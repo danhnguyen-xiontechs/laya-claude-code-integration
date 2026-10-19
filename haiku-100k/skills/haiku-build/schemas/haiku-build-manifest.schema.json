@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "haiku-build run manifest",
+  "type": "object",
+  "required": ["schemaVersion", "runId", "tool", "status", "task", "opusCalls", "phases", "haiku"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "runId": { "type": "string" },
+    "tool": { "const": "haiku-build" },
+    "status": {
+      "enum": ["INTAKE", "PLANNED", "BUILT", "TESTS_PASS", "TESTS_FAIL", "REVIEWED", "PLAN_FAILED", "REVIEW_SKIPPED", "FIXED", "REPORTED", "INCOMPLETE"]
+    },
+    "task": { "type": "string" },
+    "decision": { "enum": ["fix_and_report", "not_approved_report", "re_verify_only", null] },
+    "planAnswers": {
+      "type": "array",
+      "description": "answers to the spec's blocking questions (section 3); authoritative for Build, Review and the report",
+      "items": {
+        "type": "object",
+        "required": ["question", "answer", "section"],
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "section": { "type": "string", "description": "spec section number the answer changes, e.g. \"6\"" }
+        }
+      }
+    },
+    "planFailed": { "type": "boolean" },
+    "planFailure": { "type": ["string", "null"] },
+    "transcript": { "type": ["string", "null"], "description": "main session .jsonl; subagents read from <session>/subagents/" },
+    "opusCalls": {
+      "type": "array",
+      "description": "every Opus call, retries included",
+      "items": {
+        "type": "object",
+        "required": ["step", "attempt", "words", "ok"],
+        "properties": {
+          "step": { "enum": ["02-plan", "04-review"] },
+          "attempt": { "type": "integer", "minimum": 1 },
+          "words": { "type": ["integer", "null"] },
+          "ok": { "type": "boolean" },
+          "sha256": { "type": ["string", "null"], "description": "hash of the saved spec text (plan) or review JSON; null when the call failed" },
+          "reason": { "type": ["string", "null"], "description": "why the output failed the check; null when ok" },
+          "retryApprovedBy": { "type": ["string", "null"] },
+          "retryAt": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "from", "to"],
+        "properties": {
+          "phase": { "enum": ["01-intake", "02-plan", "03-build-test", "04-review", "05-decide-report"] },
+          "from": { "type": "string", "format": "date-time" },
+          "to": { "type": "string", "format": "date-time" },
+          "model": { "type": "string" }
+        }
+      }
+    },
+    "tests": {
+      "type": "object",
+      "properties": {
+        "command": { "type": "string" },
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" }
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "status": { "enum": ["done", "skipped", "not_run"] },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["severity", "lens", "finding", "ref", "resolution"],
+            "properties": {
+              "severity": { "enum": ["Major", "Minor"] },
+              "lens": { "enum": ["blind-hunter", "edge-case-hunter", "verification-gap"] },
+              "finding": { "type": "string" },
+              "ref": { "type": "string" },
+              "resolution": { "enum": ["open", "fixed", "rejected"] },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "haiku": {
+      "type": "object",
+      "description": "computed by build_report.mjs from the transcript, never typed by hand",
+      "required": ["haiku_request_count", "haiku_requests_over_100k", "max_haiku_input_tokens", "input_limit_verification"],
+      "properties": {
+        "haiku_request_count": { "type": ["integer", "null"] },
+        "haiku_requests_over_100k": { "type": ["integer", "null"] },
+        "max_haiku_input_tokens": { "type": ["integer", "null"] },
+        "input_limit_verification": { "enum": ["pass", "fail", "not_measured"] },
+        "reason": {
+          "description": "why the verdict is not_measured or fail context: no_transcript, open_window, overlap, no_windows, no_haiku_usage; null when pass or fail",
+          "enum": ["no_transcript", "open_window", "overlap", "no_windows", "no_haiku_usage", null]
+        }
+      }
+    }
+  }
+}

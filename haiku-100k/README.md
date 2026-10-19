@@ -8,6 +8,7 @@ Haiku input above 100k tokens per request is billed at the higher rate ($0.50 vs
 | `/haiku-100k:setup` (`commands/setup.md`, `scripts/setup.mjs`) | Run once per machine. With your OK it writes `modelSettings` → `autoCompactWindow: 125000` for `claude-haiku-5-5` and `haiku` in `~/.claude/settings.json`, so **main** Haiku sessions compact near 92k (see "Window 100k vs 125k" below). A plugin cannot change settings by itself. `--remove` undoes it. |
 | `hooks/register.ts` (slim start) | In a Haiku session, tools a Haiku session rarely needs go behind ToolSearch once, at session start: every MCP tool except the app's `ccd_turn`/`ccd_session`, and every built-in except Agent, Bash, Edit, Glob, Grep, Read, Write, Skill, ToolSearch, AskUserQuestion. The model loads one by name when it needs it. Measured: the first request of a headless Haiku session went 42,499 -> 22,058 tokens. `HAIKU_100K_SLIM=0` turns it off. `/context` still counts the deferred built-ins at full size; the real request is smaller. |
 | `hooks/register.ts` (guard) | On a Haiku loop (main or subagent), cuts a tool result that would push the next request past 92k to head + tail, with a note on how to get the rest. Toasts every Haiku request over 100k, so a leak is visible. |
+| `skills/haiku-build/` → skill `haiku-100k:haiku-build` | The bmad-build flow on Haiku: Opus writes the spec and reviews the diff (2 closed calls), the Haiku main session builds and runs the unit tests, you pick `[1] Fix and report` or `[2] Not approved, report`. Every run is measured per request against the 100k step. See `skills/haiku-build/README.md`. |
 
 ## Window 100k vs 125k: what the number means
 
@@ -29,7 +30,7 @@ claude plugin marketplace add <path-to>/haiku-100k
 claude plugin install haiku-100k@haiku-100k
 ```
 
-Then run `/haiku-100k:setup` once. Function hooks need `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`.
+Then run `/haiku-100k:setup` once. The `haiku-build` skill comes with the plugin; it needs Node.js 22+ for its scripts. Function hooks need `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`.
 
 ## Tested (2026-10-19)
 A `haiku-100k:haiku-case` subagent read a 20-chunk file of about 240k tokens in full: 21 requests, max 64,369 tokens, 4 auto-compactions (at 66-70k), 0 requests over 100k, all 20 answers right. `claude plugin test ./haiku-100k`: 6/6.
