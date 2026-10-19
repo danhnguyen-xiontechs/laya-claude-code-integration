@@ -262,6 +262,8 @@ export function budgetStop(cfg, session, n) {
   return null;
 }
 
+const taskHash = (task) => crypto.createHash('sha1').update(String(task ?? '')).digest('hex').slice(0, 12);
+
 /**
  * Route one subagent. Returns the decision record (also logged unless log === false):
  *   { tier, applied, providerCalls, cost_usd, cost_unreported, fallback_reason?, ledger_error?, ... }
@@ -271,7 +273,7 @@ export function budgetStop(cfg, session, n) {
  */
 export async function route({ task, type = '', cfg = loadConfig(), decideImpl, env = process.env, log = true, source = 'cli', session = 'cli', extra = {} } = {}) {
   const t0 = Date.now();
-  const rec = { source, session, mode: cfg.mode, provider: cfg.provider, policy: cfg.policy, k: cfg.k, type, chars: String(task ?? '').length, taskHash: crypto.createHash('sha1').update(String(task ?? '')).digest('hex').slice(0, 12) };
+  const rec = { source, session, mode: cfg.mode, provider: cfg.provider, policy: cfg.policy, k: cfg.k, type, chars: String(task ?? '').length, taskHash: taskHash(task) };
   if (cfg.mode === 'off') return { ...rec, tier: null, reason: 'mode off' };
   const features = ruleFeatures(task, type);
   const rule = ruleTier(features);
@@ -316,6 +318,43 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
     ...(ledgerError ? { ledger_error: ledgerError } : {}),
     latencyMs: Date.now() - t0,
     ...extra,
+  };
+  if (log && cfg.log) appendJsonl(cfg.log, out);
+  return out;
+}
+
+/** Cascade records that moved a task up a tier, for one task and session (refusals have tier null). */
+function cascadeCount(file, session, hash) {
+  if (!fs.existsSync(file)) return 0;
+  return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).reduce((n, line) => {
+    let r;
+    try { r = JSON.parse(line); } catch { return n; }
+    return n + (r.source === 'cascade' && r.session === session && r.taskHash === hash && TIERS.includes(r.tier) ? 1 : 0);
+  }, 0);
+}
+
+/**
+ * Cascade step after the orchestrator's automatic check failed: one tier up, at most one retry per task
+ * and session. The count is read from the log, so it holds across processes; without a log file the step
+ * is refused (fail closed). A refusal is logged too, with tier null, and never counts as a retry.
+ * Returns { tier, cascade_step, retry_of, reason, ... }. mode off → { tier: null } and nothing is logged.
+ */
+export function escalate({ task, from, cfg = loadConfig(), session = 'cli', log = true } = {}) {
+  if (!TIERS.includes(from)) throw new Error(`from must be one of ${TIERS.join(', ')} (got "${from}")`);
+  if (cfg.mode === 'off') return { tier: null, reason: 'mode off' };
+  const hash = taskHash(task);
+  let prior = 0;
+  let blocked = null;
+  if (!cfg.log) blocked = 'cascade needs a log file for its retry counter';
+  else {
+    try { prior = cascadeCount(cfg.log, session, hash); } catch (e) { blocked = `retry counter unreadable: ${e.message}`; }
+  }
+  if (!blocked && prior >= 1) blocked = 'retry limit reached (1 per task)';
+  const to = blocked ? null : nextTier(from);
+  if (!blocked && !to) blocked = `no tier above ${from}`;
+  const out = {
+    source: 'cascade', session, mode: cfg.mode, taskHash: hash, retry_of: hash, from,
+    cascade_step: prior + 1, tier: to, reason: blocked ?? `${from} → ${to} after a failed check`,
   };
   if (log && cfg.log) appendJsonl(cfg.log, out);
   return out;

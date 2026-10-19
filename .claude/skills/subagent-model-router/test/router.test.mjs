@@ -3,8 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import {
-  ruleFeatures, ruleTier, combine, consistency, orderings, buildRequest, route, loadConfig, maxTier, nextTier, TIERS,
+  ruleFeatures, ruleTier, combine, consistency, orderings, buildRequest, route, escalate, loadConfig, maxTier, nextTier, TIERS,
 } from '../scripts/router.mjs';
 import { handle, definitionModel } from '../scripts/hook-pretooluse.mjs';
 import { sessionSpend } from '../scripts/spend-ledger.mjs';
@@ -104,6 +106,64 @@ test('maxTier / nextTier (cascade)', () => {
   assert.equal(nextTier('haiku'), 'sonnet');
   assert.equal(nextTier('sonnet'), 'opus');
   assert.equal(nextTier('opus'), null);
+});
+
+test('escalate: one step up, then refused for the same task and session; each task and session gets its own retry', () => {
+  const cfg = cfgOf({ mode: 'apply', log: path.join(tmp, 'cascade-a.jsonl') });
+  const first = escalate({ task: 'Fix the parser bug', from: 'haiku', cfg, session: 's1' });
+  assert.equal(first.tier, 'sonnet');
+  assert.equal(first.cascade_step, 1);
+  const second = escalate({ task: 'Fix the parser bug', from: 'sonnet', cfg, session: 's1' });
+  assert.equal(second.tier, null);
+  assert.equal(second.cascade_step, 2);
+  assert.match(second.reason, /retry limit reached/);
+  assert.equal(escalate({ task: 'Other task', from: 'haiku', cfg, session: 's1' }).tier, 'sonnet');
+  assert.equal(escalate({ task: 'Fix the parser bug', from: 'haiku', cfg, session: 's2' }).tier, 'sonnet');
+  const recs = fs.readFileSync(cfg.log, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.equal(recs.length, 4);
+  assert.equal(recs[0].retry_of, recs[0].taskHash);
+  assert.equal(recs[1].cascade_step, 2);
+  assert.equal(recs[1].tier, null);
+});
+
+test('escalate: opus has no tier above; no log file means refused', () => {
+  const cfg = cfgOf({ mode: 'apply', log: path.join(tmp, 'cascade-b.jsonl') });
+  assert.equal(escalate({ task: 'Design x', from: 'opus', cfg, session: 's' }).tier, null);
+  assert.match(escalate({ task: 'Design x', from: 'opus', cfg, session: 's' }).reason, /no tier above opus/);
+  // no log file → refused (fail closed), since the counter cannot see earlier attempts.
+  // log: null is passed directly: loadConfig drops empty overrides and would fall back to the home log.
+  const noLog = escalate({ task: 'Fix it', from: 'haiku', cfg: { ...cfg, log: null }, session: 's' });
+  assert.equal(noLog.tier, null);
+  assert.match(noLog.reason, /needs a log file/);
+  assert.throws(() => escalate({ task: 'x', from: 'gpt', cfg }), /from must be one of/);
+});
+
+test('escalate: mode off returns nothing and logs nothing; the log has no prompt text', () => {
+  const log = path.join(tmp, 'cascade-c.jsonl');
+  assert.equal(escalate({ task: 'SECRET-TASK-TEXT', from: 'haiku', cfg: cfgOf({ mode: 'off', log }) }).tier, null);
+  assert.equal(fs.existsSync(log), false);
+  escalate({ task: 'SECRET-TASK-TEXT', from: 'haiku', cfg: cfgOf({ mode: 'apply', log }) });
+  const text = fs.readFileSync(log, 'utf8');
+  assert.ok(!text.includes('SECRET-TASK-TEXT'));
+  assert.match(text, /"cascade_step":1/);
+});
+
+test('route.mjs --escalate-from: prints the next tier once for a task, then nothing; logs cascade_step and retry_of', () => {
+  const cli = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'scripts', 'route.mjs');
+  const log = path.join(tmp, 'cascade-cli.jsonl');
+  const run = () => spawnSync(process.execPath, [cli, '--escalate-from', 'haiku', '--task', 'Fix the CLI bug', '--session', 'cli-s'], {
+    encoding: 'utf8',
+    env: { ...process.env, SUBAGENT_ROUTER_MODE: 'apply', SUBAGENT_ROUTER_PROVIDER: 'none', SUBAGENT_ROUTER_LOG: log },
+  });
+  const first = run();
+  assert.equal(first.status, 0);
+  assert.equal(first.stdout.trim(), 'sonnet');
+  const second = run();
+  assert.equal(second.status, 0);
+  assert.equal(second.stdout.trim(), '');
+  const recs = fs.readFileSync(log, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.deepEqual(recs.map((r) => [r.source, r.cascade_step, r.tier]), [['cascade', 1, 'sonnet'], ['cascade', 2, null]]);
+  assert.equal(recs[1].retry_of, recs[0].taskHash);
 });
 
 test('route: k calls, option order shuffled, position-biased provider → unstable → rule tier', async () => {
