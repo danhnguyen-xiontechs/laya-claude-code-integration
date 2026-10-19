@@ -16,10 +16,18 @@ Each run writes a folder with `spec.md`, the diff, test logs, the review, `manif
 
 ## Install
 
-The skill ships inside the **haiku-100k** plugin, which also provides the parts that keep every Haiku request under 100k input tokens. Install the plugin once:
+The skill ships inside the **haiku-100k** plugin, which also provides the parts that keep every Haiku request under 100k input tokens. Install the plugin once, either from a clone you already have or from GitHub with a sparse clone; both ways are in the plugin's `README.md` (`haiku-100k/README.md`, section Install). In short:
 
 ```bash
-claude plugin marketplace add <path-to>/haiku-100k
+# 1. from an existing clone
+claude plugin marketplace add <path-to-clone>/haiku-100k
+claude plugin install haiku-100k@haiku-100k
+
+# 2. from GitHub (fetches only the plugin folder)
+git clone --depth 1 --filter=blob:none --sparse https://github.com/danhnguyen-xiontechs/laya-claude-code-integration.git
+cd laya-claude-code-integration
+git sparse-checkout set haiku-100k
+claude plugin marketplace add ./haiku-100k
 claude plugin install haiku-100k@haiku-100k
 ```
 
