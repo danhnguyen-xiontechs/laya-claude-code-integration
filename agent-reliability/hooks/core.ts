@@ -1,10 +1,11 @@
-// retry-loop-breaker core: pure, deterministic rules. No engine, no Node, no clock:
+// agent-reliability core (Case B, from retry-loop-breaker 0.1): pure, deterministic rules. No engine, no Node, no clock:
 // the hook passes `now` and the session state in and stores what comes back, so
 // tests run the same functions under plain `node --test`.
 //
 // Only erasable TypeScript here (Node type stripping imports this file in tests).
 
-export type Mode = 'observe' | 'enforce';
+import type { Mode } from '../types/index.d.ts';
+export type { Mode };
 
 export type Options = {
   mode: Mode;
@@ -20,6 +21,15 @@ export type Options = {
   mainAgentOnly: boolean;
   /** Extra eligible command prefixes, comma separated (e.g. "make check,./gradlew test"). */
   extraEligible: string;
+  /** Rule B (identical failure) may deny in enforce mode. */
+  ruleB: boolean;
+  /** Rule A (recovery budget, escalation, NEEDS_USER) may deny in enforce mode. */
+  ruleA: boolean;
+  maxRecoveryStrategies: number;
+  gitTimeoutMs: number;
+  telemetry: boolean;
+  /** Phase 0 diagnostics: filtered result fields to diag-<sid>.jsonl. Off unless set. */
+  dumpRaw: boolean;
 };
 
 export const DEFAULTS: Options = {
@@ -27,20 +37,26 @@ export const DEFAULTS: Options = {
   maxIdenticalFailuresBeforeBlock: 2,
   failureRecordTtlMinutes: 30,
   maxRecordsPerSession: 50,
-  jevEnabled: true,
+  jevEnabled: false,
   jevTimeoutMs: 4000,
   jevMinConfidence: 0.8,
   onJevError: 'allow',
   mainAgentOnly: true,
   extraEligible: '',
+  ruleB: true,
+  ruleA: false,
+  maxRecoveryStrategies: 2,
+  gitTimeoutMs: 1500,
+  telemetry: true,
+  dumpRaw: false,
 };
 
 import type { AuditEntry, Category, FailureRecord, GuardState } from '../types/index.d.ts';
 export type { AuditEntry, Category, FailureRecord, GuardState };
 
 export const emptyState = (): GuardState => ({
-  epoch: 0, records: [], flaky: [], passed: [],
-  stats: { eligible: 0, wouldBlock: 0, blocked: 0, jevCalls: 0, jevErrors: 0 },
+  schema: 2, epoch: 0, records: [], flaky: [], passed: [], incidents: [], nextIncident: 1,
+  stats: { eligible: 0, wouldBlock: 0, blocked: 0, jevCalls: 0, jevErrors: 0, escalations: 0, failOpen: 0 },
   audit: [],
 });
 
@@ -225,11 +241,11 @@ export function recordAfter(state: GuardState, workspace: string, command: strin
 }
 
 export function denialText(r: FailureRecord, viaJev = false): string {
-  return `Retry blocked (retry-loop-breaker): \`${r.normalized_action}\` already failed ${r.repeat_count}× with the same error `
+  return `Retry blocked (agent-reliability): \`${r.normalized_action}\` already failed ${r.repeat_count}× with the same error `
     + `(${r.error_fingerprint}: "${r.error_summary}") and no file edit or other state change was detected since`
     + `${viaJev ? ' (a near-duplicate of that command, judged redundant)' : ''}. `
     + 'Inspect the failure, change the implementation, or run a different diagnostic before repeating it. '
-    + 'If you are sure a rerun will tell something new, say why, or the user can run /retry-guard reset.';
+    + 'If you are sure a rerun will tell something new, say why, or the user can run /reliability reset.';
 }
 
 // ---------------------------------------------------------------- JEV contract
@@ -290,15 +306,40 @@ export const jevBlocks = (v: JevVerdict, o: Options): boolean =>
 export function readOptions(raw: Readonly<Record<string, unknown>> = {}): Options {
   const num = (k: keyof Options, d: number) => (typeof raw[k] === 'number' && Number.isFinite(raw[k]) ? (raw[k] as number) : d);
   return {
-    mode: raw.mode === 'enforce' ? 'enforce' : 'observe',
+    mode: raw.mode === 'enforce' ? 'enforce' : raw.mode === 'off' ? 'off' : 'observe',
     maxIdenticalFailuresBeforeBlock: Math.max(1, Math.round(num('maxIdenticalFailuresBeforeBlock', DEFAULTS.maxIdenticalFailuresBeforeBlock))),
     failureRecordTtlMinutes: num('failureRecordTtlMinutes', DEFAULTS.failureRecordTtlMinutes),
     maxRecordsPerSession: num('maxRecordsPerSession', DEFAULTS.maxRecordsPerSession),
-    jevEnabled: raw.jevEnabled === undefined ? DEFAULTS.jevEnabled : raw.jevEnabled === true,
+    jevEnabled: raw.jevEnabled === true,
     jevTimeoutMs: num('jevTimeoutMs', DEFAULTS.jevTimeoutMs),
     jevMinConfidence: num('jevMinConfidence', DEFAULTS.jevMinConfidence),
     onJevError: 'allow',
     mainAgentOnly: raw.mainAgentOnly === undefined ? true : raw.mainAgentOnly === true,
     extraEligible: typeof raw.extraEligible === 'string' ? raw.extraEligible : '',
+    ruleB: raw.ruleB !== false,
+    ruleA: raw.ruleA === true,
+    maxRecoveryStrategies: Math.max(1, Math.round(num('maxRecoveryStrategies', DEFAULTS.maxRecoveryStrategies))),
+    gitTimeoutMs: Math.max(100, num('gitTimeoutMs', DEFAULTS.gitTimeoutMs)),
+    telemetry: raw.telemetry !== false,
+    dumpRaw: raw.dumpRaw === true,
   };
+}
+
+/**
+ * Effective mode (plan rule 4): env AGENT_RELIABILITY=off always wins; then the
+ * session's /reliability setting; then env observe|enforce; then userConfig; then observe.
+ */
+export function resolveMode(env: string | undefined, session: Mode | undefined, config: Mode): { mode: Mode; source: string } {
+  const e = (env ?? '').trim().toLowerCase();
+  if (e === 'off') return { mode: 'off', source: 'env AGENT_RELIABILITY=off (kill switch)' };
+  if (session) return { mode: session, source: '/reliability (this session)' };
+  if (e === 'observe' || e === 'enforce') return { mode: e, source: `env AGENT_RELIABILITY=${e}` };
+  return { mode: config, source: 'userConfig mode' };
+}
+
+/** State read from $.state: anything not schema 2 is dropped (no stale import). */
+export function upgradeState(v: unknown): GuardState {
+  const s = v as Partial<GuardState> | undefined;
+  if (!s || s.schema !== 2 || !Array.isArray(s.records) || typeof s.epoch !== 'number' || !Array.isArray(s.incidents)) return emptyState();
+  return s as GuardState;
 }

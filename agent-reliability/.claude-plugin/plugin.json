@@ -1,0 +1,24 @@
+{
+  "name": "agent-reliability",
+  "version": "0.2.0",
+  "description": "Stops unproductive retry loops: blocks a test/build that already failed the same way with nothing changed (Rule B), and after two failed recovery attempts asks for an Opus recovery agent, then the user (Rule A). Observe mode by default; AGENT_RELIABILITY=off is the kill switch.",
+  "author": { "name": "Danh Nguyen" },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "mode": { "type": "string", "title": "Mode", "description": "observe (log only), enforce (deny), or off. Env AGENT_RELIABILITY and /reliability override it.", "default": "observe", "options": ["observe", "enforce", "off"] },
+    "ruleB": { "type": "boolean", "title": "Rule B: block identical repeats", "description": "In enforce mode, deny a repeat of a verification that failed the same way with nothing changed.", "default": true },
+    "ruleA": { "type": "boolean", "title": "Rule A: recovery budget + Opus escalation", "description": "In enforce mode, deny the next verification after maxRecoveryStrategies failed attempts and ask for the Opus recovery agent; then NEEDS_USER. Off: logged only.", "default": false },
+    "maxRecoveryStrategies": { "type": "number", "title": "Recovery strategies before escalation", "description": "Failed reruns that followed a change (edit, mutating command) on one incident.", "default": 2 },
+    "maxIdenticalFailuresBeforeBlock": { "type": "number", "title": "Identical failures before block", "description": "Same action + same error + no change, this many times, then the next repeat is blocked.", "default": 2 },
+    "failureRecordTtlMinutes": { "type": "number", "title": "Record TTL (minutes)", "description": "Older failures and incidents never block.", "default": 30 },
+    "maxRecordsPerSession": { "type": "number", "title": "Max records", "description": "Bound on failure records kept per session.", "default": 50 },
+    "gitTimeoutMs": { "type": "number", "title": "Git state budget (ms)", "description": "Total time for the git content token; over budget = unknown = allow.", "default": 1500 },
+    "telemetry": { "type": "boolean", "title": "Telemetry", "description": "JSONL decisions to ~/.claude/agent-reliability/<session>.jsonl (no tool output).", "default": true },
+    "dumpRaw": { "type": "boolean", "title": "Diagnostics dump", "description": "Phase 0 only: filtered result fields to diag-<session>.jsonl. Leave off.", "default": false },
+    "jevEnabled": { "type": "boolean", "title": "Ask JEV on near-duplicates", "description": "Needs OPENROUTER_API_KEY; errors and timeouts allow.", "default": false },
+    "jevTimeoutMs": { "type": "number", "title": "JEV timeout (ms)", "description": "Decision budget; on timeout the call is allowed.", "default": 4000 },
+    "jevMinConfidence": { "type": "number", "title": "JEV min confidence", "description": "block_redundant_retry must reach this probability to block.", "default": 0.8 },
+    "mainAgentOnly": { "type": "boolean", "title": "Main agent only", "description": "Leave subagent verification calls alone (subagents are tracked separately when off).", "default": true },
+    "extraEligible": { "type": "string", "title": "Extra eligible commands", "description": "Comma-separated command prefixes treated as tests.", "default": "" }
+  }
+}
