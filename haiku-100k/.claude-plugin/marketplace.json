@@ -8,7 +8,7 @@
     {
       "name": "haiku-100k",
       "source": "./",
-      "description": "Keeps every Haiku request under the 100k-token price step (agent, setup command, guard hook), and ships the haiku-build workflow skill that runs on top of it."
+      "description": "Keeps every Haiku request under the 100k-token price step (agent, setup command, guard hook), ships the haiku-build workflow skill that runs on top of it, and the subagent-model-router skill (off by default)."
     }
   ]
 }
