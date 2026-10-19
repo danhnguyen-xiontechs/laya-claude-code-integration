@@ -6,8 +6,9 @@
 //   jev   — a typed decision (one choice over the tiers + three nouls) from TypeSafe Jev or Laya.
 // Combined by two policies instead of probability thresholds (Jev is over-confident, Laya is flat):
 //   agreement gating  — the final tier is max(rule, provider): a cheaper tier only when both agree;
-//   self-consistency  — ask k times with the option order rotated; if the k top labels are not all
-//                       the same, take the highest of them.
+//   self-consistency  — ask k times with the option order rotated; if the k top labels are all the
+//                       same, take that label; if they disagree, the rule tier is kept and the
+//                       record is flagged `unstable`.
 // Policies (pick with `policy`): rules | jev | gate | sc | gate+sc (default when a provider is set) | checked.
 // checked: a task with an automatic check (tests, acceptance) and no hard verb gets the rule tier with no
 // provider call; any other task gets gate+sc. The orchestrator must run the check and escalate once on
@@ -18,6 +19,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { decide, top, appendJsonl } from './decision-provider.mjs';
+import { DEFAULT_LEDGER, sessionSpend, addSpend, round } from './spend-ledger.mjs';
 
 export const TIERS = ['haiku', 'sonnet', 'opus'];
 export const MODES = ['off', 'shadow', 'apply'];
@@ -34,7 +36,11 @@ export const nextTier = (t) => TIERS[rank(t) + 1] ?? null;
 // Config: defaults ← config.json next to SKILL.md ← env ← explicit options
 // ---------------------------------------------------------------------------
 
-export const DEFAULTS = { mode: 'shadow', provider: 'none', policy: null, k: 3, timeoutMs: 8000, log: DEFAULT_LOG, laya: {}, jev: {} };
+// maxUsdPerSession / maxCallsPerSession cap provider spend per session id (see spend-ledger.mjs).
+export const DEFAULTS = {
+  mode: 'shadow', provider: 'none', policy: null, k: 3, timeoutMs: 8000, log: DEFAULT_LOG,
+  ledger: DEFAULT_LEDGER, maxUsdPerSession: 2, maxCallsPerSession: 60, laya: {}, jev: {},
+};
 
 export function loadConfig({ env = process.env, file, overrides = {} } = {}) {
   let cfg = {};
@@ -57,6 +63,10 @@ export function loadConfig({ env = process.env, file, overrides = {} } = {}) {
   if (!POLICIES.includes(out.policy)) throw new Error(`policy must be one of ${POLICIES.join(', ')} (got "${out.policy}")`);
   if (out.provider === 'none' && out.policy !== 'rules') out.policy = 'rules';
   out.k = Math.max(1, Math.min(9, Math.floor(Number(out.k) || 1)));
+  out.maxUsdPerSession = Number(out.maxUsdPerSession);
+  out.maxCallsPerSession = Math.floor(Number(out.maxCallsPerSession));
+  if (!(out.maxUsdPerSession >= 0)) throw new Error(`maxUsdPerSession must be a number >= 0 (got "${out.maxUsdPerSession}")`);
+  if (!(out.maxCallsPerSession >= 0)) throw new Error(`maxCallsPerSession must be a number >= 0 (got "${out.maxCallsPerSession}")`);
   return out;
 }
 
@@ -193,26 +203,29 @@ export async function askOnce({ task, type, order, cfg, decideImpl = decide, env
   return { tier: t.label, p: t.p, probabilities: probs, nouls, latencyMs: r.meta?.latencyMs ?? null, cost: r.meta?.cost ?? null };
 }
 
-/** Self-consistency over k answers: stable → the shared label; unstable → the highest label. */
+/**
+ * Self-consistency over k answers: all the same label → that label (stable). Any disagreement →
+ * unstable and tier null; the caller then uses the rule tier. A split vote never raises the tier.
+ */
 export function consistency(answers) {
   const ok = answers.filter((a) => a && !a.error);
-  if (!ok.length) return { tier: null, stable: false, votes: {} };
+  if (!ok.length) return { tier: null, stable: false, unstable: false, votes: {}, n: 0 };
   const votes = {};
   for (const a of ok) votes[a.tier] = (votes[a.tier] || 0) + 1;
   const stable = Object.keys(votes).length === 1;
-  return { tier: stable ? ok[0].tier : maxTier(...ok.map((a) => a.tier)), stable, votes, n: ok.length };
+  return { tier: stable ? ok[0].tier : null, stable, unstable: !stable, votes, n: ok.length };
 }
 
 /**
  * Combine rule and provider answers under a policy. Pure (used by route() and by offline scoring).
  *   rules   → rule tier
  *   jev     → first provider answer
- *   sc      → self-consistency tier
+ *   sc      → self-consistency tier (rule tier when the k answers disagree)
  *   gate    → max(rule, first provider answer)
- *   gate+sc → max(rule, self-consistency tier)
+ *   gate+sc → max(rule, self-consistency tier), again the rule tier when they disagree
  *   checked → rule tier when the task has a check and no hard verb (no provider call, see
  *             checkedSkipsProvider); otherwise gate+sc
- * Provider unavailable → null (the caller keeps its default model).
+ * Provider unavailable → null (route() falls back to the rule tier and records why).
  */
 export function combine(policy, ruleT, answers = [], features = null) {
   if (policy === 'rules') return ruleT;
@@ -224,9 +237,9 @@ export function combine(policy, ruleT, answers = [], features = null) {
   if (!first) return null;
   if (policy === 'jev') return first.tier;
   if (policy === 'gate') return maxTier(ruleT, first.tier);
-  const sc = consistency(answers).tier;
-  if (policy === 'sc') return sc;
-  return maxTier(ruleT, sc);
+  const scTier = consistency(answers).tier ?? ruleT; // disagreement → rule tier
+  if (policy === 'sc') return scTier;
+  return maxTier(ruleT, scTier);
 }
 
 /** The checked policy's no-provider case: an automatic check exists and no hard verb asks for a design. */
@@ -234,38 +247,114 @@ export function checkedSkipsProvider(features) {
   return Boolean(features.hasCheck && !features.hard);
 }
 
+/** A provider answer whose tier is outside TIERS is an error, not a vote. */
+const validAnswer = (a) => (!a.error && !TIERS.includes(a.tier) ? { error: 'invalid output', latencyMs: a.latencyMs } : a);
+
+/**
+ * Why the provider must not be called for this session, or null. `n` is the number of calls planned.
+ * An unreadable ledger returns a stop too (fail closed), so a corrupt file never resets the cap.
+ */
+export function budgetStop(cfg, session, n) {
+  let spent;
+  try { spent = sessionSpend(cfg.ledger, session); } catch (e) { return { reason: `ledger error: ${e.message}`, ledger_error: e.message }; }
+  if (spent.usd >= cfg.maxUsdPerSession) return { reason: `usd cap reached (${round(spent.usd)} of ${cfg.maxUsdPerSession})` };
+  if (spent.calls + n > cfg.maxCallsPerSession) return { reason: `call cap reached (${spent.calls} + ${n} of ${cfg.maxCallsPerSession})` };
+  return null;
+}
+
+const taskHash = (task) => crypto.createHash('sha1').update(String(task ?? '')).digest('hex').slice(0, 12);
+
 /**
  * Route one subagent. Returns the decision record (also logged unless log === false):
- *   { tier | null, policy, mode, provider, rule, answers, consistency, latencyMs, ... }
+ *   { tier, applied, providerCalls, cost_usd, cost_unreported, fallback_reason?, ledger_error?, ... }
  * mode off → { tier: null } without any provider call.
+ * Provider failure, timeout, invalid output or a spend/call cap → the rule tier, applied "rules_only",
+ * with fallback_reason. Provider spend is added to the session's ledger entry (see spend-ledger.mjs).
  */
-export async function route({ task, type = '', cfg = loadConfig(), decideImpl, env = process.env, log = true, source = 'cli', extra = {} } = {}) {
+export async function route({ task, type = '', cfg = loadConfig(), decideImpl, env = process.env, log = true, source = 'cli', session = 'cli', extra = {} } = {}) {
   const t0 = Date.now();
-  const rec = { source, mode: cfg.mode, provider: cfg.provider, policy: cfg.policy, k: cfg.k, type, chars: String(task ?? '').length, taskHash: crypto.createHash('sha1').update(String(task ?? '')).digest('hex').slice(0, 12) };
+  const rec = { source, session, mode: cfg.mode, provider: cfg.provider, policy: cfg.policy, k: cfg.k, type, chars: String(task ?? '').length, taskHash: taskHash(task) };
   if (cfg.mode === 'off') return { ...rec, tier: null, reason: 'mode off' };
   const features = ruleFeatures(task, type);
   const rule = ruleTier(features);
   // checked skips the provider for a task with a check; otherwise it is gate+sc
   const skipProvider = cfg.policy === 'checked' && checkedSkipsProvider(features);
   const policy = cfg.policy === 'checked' ? (skipProvider ? 'rules' : 'gate+sc') : cfg.policy;
+  const n = policy === 'jev' || policy === 'gate' ? 1 : cfg.k;
   let answers = [];
+  let fallback = null;
+  let ledgerError = null;
   if (cfg.provider !== 'none' && !skipProvider) {
-    const n = policy === 'jev' || policy === 'gate' ? 1 : cfg.k;
-    answers = await Promise.all(orderings(n).map((order) => askOnce({ task, type, order, cfg, decideImpl, env })));
+    const stop = budgetStop(cfg, session, n);
+    if (stop) {
+      fallback = stop.reason;
+      ledgerError = stop.ledger_error ?? null;
+    } else {
+      answers = (await Promise.all(orderings(n).map((order) => askOnce({ task, type, order, cfg, decideImpl, env })))).map(validAnswer);
+    }
   }
-  const tier = combine(policy, rule.tier, answers);
+  const failed = answers.find((a) => a.error);
+  if (answers.length && answers.every((a) => a.error)) fallback = `provider ${failed.error}`;
+  const tier = combine(policy, rule.tier, answers) ?? rule.tier;
+  const cons = answers.some((a) => !a.error) ? consistency(answers) : null;
+  const usd = answers.reduce((s, a) => s + (typeof a.cost === 'number' ? a.cost : 0), 0);
+  const unreported = answers.filter((a) => typeof a.cost !== 'number').length;
+  if (answers.length) {
+    try { addSpend(cfg.ledger, session, { usd, calls: answers.length, unreported }); } catch (e) { ledgerError = e.message; }
+  }
   const out = {
     ...rec,
-    applied: policy,
+    applied: fallback ? 'rules_only' : policy,
     providerCalls: answers.length,
     tier,
-    reason: tier ? undefined : 'provider unavailable: keep the default model',
     rule: { tier: rule.tier, score: rule.score, why: rule.why },
     features,
     answers: answers.map((a) => (a.error ? { error: a.error } : { tier: a.tier, p: a.p, nouls: a.nouls, latencyMs: a.latencyMs })),
-    consistency: answers.length ? consistency(answers) : undefined,
+    consistency: cons ?? undefined,
+    unstable: Boolean(cons?.unstable),
+    cost_usd: round(usd),
+    cost_unreported: unreported,
+    ...(fallback ? { fallback_reason: fallback } : {}),
+    ...(ledgerError ? { ledger_error: ledgerError } : {}),
     latencyMs: Date.now() - t0,
     ...extra,
+  };
+  if (log && cfg.log) appendJsonl(cfg.log, out);
+  return out;
+}
+
+/** Cascade records that moved a task up a tier, for one task and session (refusals have tier null). */
+function cascadeCount(file, session, hash) {
+  if (!fs.existsSync(file)) return 0;
+  return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).reduce((n, line) => {
+    let r;
+    try { r = JSON.parse(line); } catch { return n; }
+    return n + (r.source === 'cascade' && r.session === session && r.taskHash === hash && TIERS.includes(r.tier) ? 1 : 0);
+  }, 0);
+}
+
+/**
+ * Cascade step after the orchestrator's automatic check failed: one tier up, at most one retry per task
+ * and session. The count is read from the log, so it holds across processes; without a log file the step
+ * is refused (fail closed). A refusal is logged too, with tier null, and never counts as a retry.
+ * Returns { tier, cascade_step, retry_of, reason, ... }. mode off → { tier: null } and nothing is logged.
+ */
+export function escalate({ task, from, cfg = loadConfig(), session = 'cli', log = true } = {}) {
+  if (!TIERS.includes(from)) throw new Error(`from must be one of ${TIERS.join(', ')} (got "${from}")`);
+  if (cfg.mode === 'off') return { tier: null, reason: 'mode off' };
+  const hash = taskHash(task);
+  let prior = 0;
+  let blocked = null;
+  if (!cfg.log) blocked = 'cascade needs a log file for its retry counter';
+  else {
+    try { prior = cascadeCount(cfg.log, session, hash); } catch (e) { blocked = `retry counter unreadable: ${e.message}`; }
+  }
+  if (!blocked && prior >= 1) blocked = 'retry limit reached (1 per task)';
+  const to = blocked ? null : nextTier(from);
+  if (!blocked && !to) blocked = `no tier above ${from}`;
+  const out = {
+    source: 'cascade', session, mode: cfg.mode, taskHash: hash, retry_of: hash, from,
+    cascade_step: prior + 1, tier: to, reason: blocked ?? `${from} → ${to} after a failed check`,
   };
   if (log && cfg.log) appendJsonl(cfg.log, out);
   return out;
