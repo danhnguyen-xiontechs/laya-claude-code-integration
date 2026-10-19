@@ -1,0 +1,18 @@
+{
+  "_comment": "agent-budget-governor policy. Budgets are in 'units' = whatever the caller records (platform-reported cost, or an estimate labelled as such). No prices live here.",
+  "tierToModel": { "fast": "haiku", "balanced": "sonnet", "strong": "opus", "review_required": "opus" },
+  "profiles": {
+    "fast":            { "maxTurns": 15, "timeoutMs": 600000,  "retryLimit": 1, "storyCap": 1, "tools": "read-mostly" },
+    "balanced":        { "maxTurns": 40, "timeoutMs": 1200000, "retryLimit": 1, "storyCap": 3, "tools": "standard" },
+    "strong":          { "maxTurns": 60, "timeoutMs": 1800000, "retryLimit": 1, "storyCap": 6, "tools": "standard" },
+    "review_required": { "maxTurns": 60, "timeoutMs": 1800000, "retryLimit": 0, "storyCap": 6, "tools": "standard" }
+  },
+  "safeDefault": "balanced",
+  "batchBudget": 30,
+  "verificationReserve": 0.2,
+  "maxConcurrent": 3,
+  "overBudget": "stop",
+  "broadScopeFiles": 8,
+  "highDependencyCount": 4,
+  "jevMode": "shadow"
+}
