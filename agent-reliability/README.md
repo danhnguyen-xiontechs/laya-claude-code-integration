@@ -20,7 +20,15 @@ A Claude Code mod (function hooks) that stops unproductive retry loops on test a
 
 ## Install
 
-From a local checkout, through the folder marketplace in `agent-reliability/.claude-plugin/marketplace.json`. Claude Code then reads the plugin straight from that folder, so the telemetry lands in that checkout too:
+**Normal install: inside haiku-100k.** haiku-100k 0.6.0 and later ship a copy of this mod in `haiku-100k/hooks/reliability/`, made by `node agent-reliability/scripts/ship-haiku-100k.mjs`. Run that script after every change here; `--check` reports a stale copy. In the copy, the agent is `haiku-100k:opus-recovery` and the options are haiku-100k's userConfig (titled "Reliability: …"):
+
+```bash
+claude plugin install haiku-100k@danhnguyen-xiontechs
+```
+
+The plugin folder is then Claude Code's plugin cache, which is replaced on every update. So set `telemetryDir` to a folder in your checkout, for example with `claude plugin configure haiku-100k@danhnguyen-xiontechs --values-stdin`. Put a `.gitignore` containing `*` in that folder, so no branch can commit the logs.
+
+**Development install: this folder on its own.** Use it only while haiku-100k is disabled, because two copies would both hook Bash. It goes through the folder marketplace in `.claude-plugin/marketplace.json`. Claude Code reads the plugin live from that folder, and the telemetry defaults to `agent-reliability/telemetry/`:
 
 ```bash
 claude plugin marketplace add <checkout>/agent-reliability
@@ -29,8 +37,6 @@ claude plugin marketplace add <checkout>/agent-reliability
 ```bash
 claude plugin install agent-reliability@agent-reliability
 ```
-
-Once the plugin is on `main`, it can also come from the repo marketplace (`agent-reliability@danhnguyen-xiontechs`). In that case the plugin folder is Claude Code's plugin cache, so set `telemetryDir` if you want the logs elsewhere.
 
 To try it in one session without installing:
 
