@@ -1,0 +1,46 @@
+{
+ "grader": "claude-sonnet-5-5",
+ "error": null,
+ "parseError": null,
+ "parsed": {
+  "C1": {
+   "result": "pass",
+   "quote": "Change it to build the list from the overtime records in the date range, and keep the eligibility check as a filter.",
+   "note": "The code also drops employees with no records via `.Where(x => x.Records.Any())  // drop employees with no records in range`."
+  },
+  "C2": {
+   "result": "pass",
+   "quote": "The date range is inclusive at both ends.",
+   "note": "Boundary choice is stated; the filter `o.Date >= from && o.Date <= to` keeps in-range records."
+  },
+  "C3": {
+   "result": "pass",
+   "quote": "The Overtime Eligible flag should still apply, so ineligible employees with records are not shown. This is not stated in the ticket.",
+   "note": "The change is confined to the Overtime tab list query and does not alter the eligible value or other tabs."
+  },
+  "C4": {
+   "result": "pass",
+   "quote": "Test a range with no records at all. The tab should show an empty state without errors.",
+   "note": "Empty range is expected to show an empty state."
+  },
+  "E1": {
+   "result": "absent",
+   "quote": "`.Where(x => x.Records.Any())          // drop employees with no records in range`"
+  },
+  "E2": {
+   "result": "absent",
+   "quote": "`o.Date >= from && o.Date <= to`"
+  },
+  "E3": {
+   "result": "absent",
+   "quote": "Component/file: unknown. I can't see the WebESS code."
+  },
+  "E4": {
+   "result": "absent",
+   "quote": "Change it to build the list from the overtime records in the date range, and keep the eligibility check as a filter."
+  },
+  "overall": "pass"
+ },
+ "costUsd": 0.027501,
+ "chargedUsd": 0.027501
+}

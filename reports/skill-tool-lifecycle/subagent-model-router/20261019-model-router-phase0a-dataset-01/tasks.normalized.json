@@ -1,0 +1,4022 @@
+{
+  "version": "0A-v1",
+  "count": 45,
+  "tasks": [
+    {
+      "taskId": "d1-lru",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/d1-lru/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json"
+      ],
+      "kindVerbatim": "design",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "planning/spec",
+      "description": "Implement src/lru.js exporting class `LruCache` with constructor `new LruCache({ max, ttlMs = Infinity, now = Date.now })`. Methods: `get(key)` returns the value or undefined (an expired entry counts as missing and is removed; a hit makes the key most recently used), `set(key, value, { ttlMs } = {})` inserts/updates (updating makes it most recently used; a per-entry ttlMs overrides the default; when over `max`, evict least recently used entries, preferring to evict expired entries first), `has(key)` (like get but does not change recency), `delete(key)` returns boolean, `size` getter counting only non-expired entries, and `keys()` returning non-expired keys from least to most recently used. get, set, has and delete must be O(1) amortised: with no expiring entries the cache must handle 60k get/set calls at max 20000 in well under a second (scanning for expired entries is only acceptable when some entry has a finite TTL). `now` is injectable for tests. Write your own tests in test/ and run them with `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 3,
+            "pass": 3,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 3
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "d2-ratelimit",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/d2-ratelimit/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "design",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "planning/spec",
+      "description": "Implement src/limiter.js exporting `createLimiter({ capacity, refillPerSec, now = Date.now })`, a per-key token-bucket rate limiter. It returns `{ take(key, cost = 1), peek(key) }`. Each key starts with a full bucket of `capacity` tokens and refills continuously at `refillPerSec` tokens per second (fractional refill allowed, never above capacity). `take` returns `{ ok: true, remaining }` and consumes `cost` tokens when enough are available, otherwise `{ ok: false, remaining, retryAfterMs }` without consuming anything, where retryAfterMs is the whole number of milliseconds (rounded up) until enough tokens will be available. `cost` greater than capacity always fails with `retryAfterMs: Infinity`. `remaining` is the number of tokens left, rounded down to an integer. `peek(key)` returns the current token count (rounded down) without consuming. Time comes only from `now()` (milliseconds). Write your own tests in test/ and run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "d3-maplimit",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/d3-maplimit/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep2/results.json"
+      ],
+      "kindVerbatim": "debug",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "bugfix",
+      "description": "`mapLimit(items, limit, fn)` in src/map-limit.js should run the async `fn(item, index)` over items with at most `limit` calls in flight at any time, resolve to the results in input order, and reject with the first error as soon as any call rejects (starting no new calls after that). The test in test/ is flaky and users report results in the wrong order, more than `limit` calls running at once, and the promise never settling for empty input. Find the root causes and fix them. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted) several times.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 5
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 13
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "opus",
+        "sonnet"
+      ],
+      "jevTierPrediction": "opus",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "d4-expr",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/d4-expr/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json"
+      ],
+      "kindVerbatim": "design",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "planning/spec",
+      "description": "Implement src/expr.js exporting `evaluate(source, vars = {})` for a small arithmetic language, without using eval or Function. Numbers (integers and decimals like 2.5 or .5), variables (identifiers [A-Za-z_][A-Za-z0-9_]*, looked up in vars; an unknown variable throws Error `unknown variable: <name>`), binary + - * / % and ^ (power, right-associative, binds tighter than unary minus so -2^2 is -4), unary minus and plus, parentheses, and whitespace anywhere. Usual precedence: ^ above unary minus above * / % above + -; * / % + - are left-associative. Division by zero throws Error `division by zero`. Any syntax error throws an Error whose message starts with `syntax error`. Write your own tests in test/ and run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 3,
+            "pass": 3,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 3
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "d5-deps",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/d5-deps/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B1esc.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B2esc.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep2/results.json"
+      ],
+      "kindVerbatim": "design",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "planning/spec",
+      "description": "Implement src/resolve.js exporting `resolveOrder(packages, targets)`. `packages` maps a name to `{ deps: string[] }`; `targets` is an array of names to install. Return the install order: every needed package (targets and their transitive deps, each once) such that each package comes after all of its deps. Among packages whose deps are all already placed, always pick the alphabetically smallest next (so the order is deterministic). A dependency that is not in `packages` throws Error `missing package: <name> (required by <parent>)` (for a missing target: `missing package: <name> (required by <root>)`). A cycle throws Error `cycle: a -> b -> a` naming the cycle as found by a depth-first search that visits targets in the given order and deps in their listed order, starting the path at the first package of the cycle. Packages not needed by the targets must not appear. Write your own tests in test/ and run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 0,
+            "fail": 5,
+            "unscored": 0,
+            "costRecorded": 5
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 13
+          },
+          "conditional": {
+            "runs": 4,
+            "pass": 4,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 4
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "sonnet",
+      "countRuleMet": true,
+      "cheaperTiers": [
+        {
+          "tier": "haiku",
+          "runs": 5,
+          "fail": 5
+        }
+      ],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "e1-locate",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/e1-locate/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json"
+      ],
+      "kindVerbatim": "explore",
+      "typeVerbatim": "Explore",
+      "typeIsPostHoc": false,
+      "taskType": "explore (read-only)",
+      "description": "In this project, which file defines (not just uses) the function `parseDuration`? Write only its path relative to the project root, using forward slashes, to a file named answer.txt in the project root. Do not change any other file.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 7
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 6,
+            "pass": 6,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 6
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "haiku",
+        "haiku",
+        "haiku"
+      ],
+      "jevTierPrediction": "haiku",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "e2-count",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/e2-count/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json"
+      ],
+      "kindVerbatim": "explore",
+      "typeVerbatim": "Explore",
+      "typeIsPostHoc": false,
+      "taskType": "explore (read-only)",
+      "description": "Count the TODO comments in all .js files of this project. A TODO comment is a `//` comment whose text starts with `TODO` (case-sensitive), e.g. `// TODO: x` or `//TODO x`. Occurrences of TODO inside strings or in other comment positions do not count. Write only the number to answer.txt in the project root. Do not change any other file.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 7
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 7
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "haiku",
+        "haiku",
+        "haiku"
+      ],
+      "jevTierPrediction": "haiku",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "e3-importers",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/e3-importers/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "explore",
+      "typeVerbatim": "Explore",
+      "typeIsPostHoc": false,
+      "taskType": "explore (read-only)",
+      "description": "List every .js file in this project that imports from the module `legacy-db` (static `import ... from 'legacy-db'` or dynamic `import('legacy-db')`; a different module whose name merely contains legacy-db does not count). Write the paths relative to the project root, forward slashes, sorted alphabetically, one per line, to answer.txt in the project root. Do not change any other file.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "haiku",
+        "haiku",
+        "haiku"
+      ],
+      "jevTierPrediction": "haiku",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "e4-config",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/e4-config/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "explore",
+      "typeVerbatim": "Explore",
+      "typeIsPostHoc": false,
+      "taskType": "explore (read-only)",
+      "description": "Without running anything, work out which port the server in this project listens on when started with NODE_ENV=production and no other environment variables set. Read the code to find out. Write only the number to answer.txt in the project root. Do not change any other file.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "haiku",
+        "haiku",
+        "haiku"
+      ],
+      "jevTierPrediction": "haiku",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "f1-paginate",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/f1-paginate/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep2/results.json"
+      ],
+      "kindVerbatim": "fix",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "bugfix",
+      "description": "`paginate(items, page, size)` in src/paginate.js returns the wrong slice: pages are 1-based but the last item of each page is dropped and page 1 is wrong. Fix it so `paginate([1..10], 2, 3)` returns [4, 5, 6] and an out-of-range page returns []. Run the tests with `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted) until they pass. Only change src/paginate.js.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 5
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 13
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "haiku",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "f2-email",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/f2-email/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "fix",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "bugfix",
+      "description": "`isValidEmail` in src/email.js rejects valid addresses such as `first.last+tag@sub.example.co.uk` and accepts invalid ones such as `a@b` and `a@@b.com`. Make it accept: a local part of letters, digits and . _ % + - (not starting or ending with a dot, no two dots in a row), one @, and a domain of two or more dot-separated labels (letters, digits, hyphens; a label does not start or end with a hyphen) whose last label is at least 2 letters. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted). Only change src/email.js.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "f3-days",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/f3-days/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "fix",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "bugfix",
+      "description": "`daysBetween(a, b)` in src/dates.js takes two calendar dates as 'YYYY-MM-DD' strings and should return the whole number of calendar days from a to b (negative when b is before a). Users report it is sometimes off by one around daylight-saving changes and with some inputs. Fix it so it is correct for any valid dates regardless of the machine's time zone. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted). Only change src/dates.js.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [
+        "multi-timezone run"
+      ],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "f4-await",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/f4-await/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "fix",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "bugfix",
+      "description": "`fetchAll(ids, fetchOne)` in src/batch.js should call the async `fetchOne(id)` for every id and resolve to the results in the same order as ids, skipping ids whose fetch rejects (and reporting them in `errors`). It currently resolves too early with missing results. Fix it. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted). Only change src/batch.js.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "r1-rename",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/r1-rename/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5A2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B1.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/runs-r5B2.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep2/results.json"
+      ],
+      "kindVerbatim": "refactor",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "refactor",
+      "description": "Rename the function `getUserName` to `fetchUserName` everywhere in this project (definition, imports, calls, re-exports and tests). Behaviour must not change. A different function `getUserNameLength` must keep its name. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted) afterwards.",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [
+        "grep for leftover identifier"
+      ],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 5
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 12,
+            "pass": 12,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 12
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "r2-extract",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/r2-extract/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "refactor",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "refactor",
+      "description": "src/signup.js and src/profile.js each contain their own copy of the same username validation logic. Extract it into a new module src/validate-username.js that exports `validateUsername(name)` returning an array of error strings (empty when valid), with exactly the current rules and messages, and make both files use it so no copy of the rules remains in them. Behaviour of `signup` and `updateProfile` must not change. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [
+        "source-text regex check"
+      ],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "sonnet",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "r3-promisify",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/r3-promisify/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "refactor",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "refactor",
+      "description": "Convert the callback-style API in this project to promises/async functions: `readRecord(id, cb)` in src/store.js, `loadUser(id, cb)` in src/users.js and `loadTeam(ids, cb)` in src/team.js must become `readRecord(id)`, `loadUser(id)` and `loadTeam(ids)` returning promises (no callback parameter). Errors must become rejections with the same Error messages; results must be the same values. loadTeam must still load users in parallel and keep the order of ids. Update the tests in test/ to the new API and run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "sonnet",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "t1-slugify-tests",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/t1-slugify-tests/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "tests",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": null,
+      "description": "Write a thorough test file test/slugify.test.mjs (node:test + node:assert) for `slugify` in src/slugify.js. Read the implementation and pin down its exact behaviour: lower-casing, accent removal, how runs of separators and punctuation collapse, trimming of leading/trailing dashes, and the maxLength option and its default (including not ending on a dash after truncation). The tests must pass on the current implementation. Do not change src/. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: mutation check (mutationCheck)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "t2-csv-tests",
+      "suite": "bench",
+      "sources": [
+        ".claude/skills/subagent-model-router/bench/tasks/t2-csv-tests/task.json",
+        ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl",
+        ".claude/skills/subagent-model-router/bench/results/route-jev.json",
+        ".claude/skills/subagent-model-router/bench/results/route-none.json"
+      ],
+      "kindVerbatim": "tests",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": null,
+      "description": "Write a thorough test file test/csv.test.mjs (node:test + node:assert) for `parseCsvLine` in src/csv.js. Read the implementation and pin down its exact behaviour, including edge cases: quoted fields, escaped double quotes, separators and spaces inside quotes, empty fields (also at the start and end), a custom separator, and the error thrown for an unterminated quote (check its message). The tests must pass on the current implementation. Do not change src/. Run `node --test` (it finds test/*.test.mjs; on Node 24 `node --test test/` fails because a directory argument is not accepted).",
+      "acceptanceCriteria": null,
+      "checkClass": "automatic: mutation check (mutationCheck)",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 1
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": "haiku",
+      "voteTiers": [
+        "sonnet",
+        "sonnet",
+        "sonnet"
+      ],
+      "jevTierPrediction": "sonnet",
+      "governorTierText": null,
+      "priorLabelR5": "haiku",
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "c1-money",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/c1-money/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "control",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 control)",
+      "description": "Create src/money.js exporting `parseAmount(text)`. It turns a decimal amount string into an integer number of cents, without floating-point error.\r\n\r\n- Accepted form: an optional leading `+` or `-`, one or more digits, then optionally `.` followed by one or two digits. Examples: `12` gives 1200, `12.5` gives 1250, `0.29` gives 29, `1.15` gives 115, `-0.07` gives -7, `+3.10` gives 310.\r\n- Anything else throws a RangeError with message `bad amount: ` followed by the input as given, e.g. `bad amount: 1.234`. This includes more than two decimals, `1.`, `.5`, empty text, letters, scientific notation, thousands separators, and leading or trailing spaces.\r\n- Non-string input is converted with String() before the check.\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "Accepted form: an optional leading `+` or `-`, one or more digits, then optionally `.` followed by one or two digits. Examples: `12` gives 1200, `12.5` gives 1250, `0.29` gives 29, `1.15` gives 115, `-0.07` gives -7, `+3.10` gives 310.",
+        "Anything else throws a RangeError with message `bad amount: ` followed by the input as given, e.g. `bad amount: 1.234`. This includes more than two decimals, `1.`, `.5`, empty text, letters, scientific notation, thousands separators, and leading or trailing spaces.",
+        "Non-string input is converted with String() before the check."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "w1-ranges",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w1-ranges/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "weak",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 weak-check)",
+      "description": "Create src/ranges.js exporting `mergeRanges(ranges)`.\r\n\r\n`ranges` is an array of [start, end] pairs of integers, both ends inclusive. Return a new array of merged [start, end] pairs sorted by start.\r\n- Two ranges merge when they overlap OR when they touch, i.e. the next start is at most the current end + 1. Example: [[1,3],[4,6]] becomes [[1,6]].\r\n- A range fully inside another is absorbed. The merged end is the larger of the two ends.\r\n- The input must not be mutated, and every returned pair must be a fresh array.\r\n- An empty input returns [].\r\n- If any pair has start > end, throw a RangeError whose message is `bad range: ` followed by JSON.stringify of that pair, e.g. `bad range: [5,2]`.\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "Two ranges merge when they overlap OR when they touch, i.e. the next start is at most the current end + 1. Example: [[1,3],[4,6]] becomes [[1,6]].",
+        "A range fully inside another is absorbed. The merged end is the larger of the two ends.",
+        "The input must not be mutated, and every returned pair must be a fresh array.",
+        "An empty input returns [].",
+        "If any pair has start > end, throw a RangeError whose message is `bad range: ` followed by JSON.stringify of that pair, e.g. `bad range: [5,2]`."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "w2-limiter",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w2-limiter/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "weak",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 weak-check)",
+      "description": "Create src/limiter.js exporting `createLimiter(max)`. It returns a function `run(fn)`.\r\n\r\n- `createLimiter(max)` throws a RangeError with message `max must be a positive integer` unless max is an integer >= 1.\r\n- `run(fn)` returns a Promise that resolves to fn's return value (awaiting it if fn returns a promise), or rejects with the error fn throws or rejects with.\r\n- At most `max` jobs are running at any moment. Other jobs wait in a first-in first-out queue and start in the order they were submitted.\r\n- fn is called with no arguments, and never synchronously inside the `run(fn)` call: it starts on a later tick.\r\n- A job that throws synchronously, or whose promise rejects, still frees its slot so the queue keeps moving.\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "`createLimiter(max)` throws a RangeError with message `max must be a positive integer` unless max is an integer >= 1.",
+        "`run(fn)` returns a Promise that resolves to fn's return value (awaiting it if fn returns a promise), or rejects with the error fn throws or rejects with.",
+        "At most `max` jobs are running at any moment. Other jobs wait in a first-in first-out queue and start in the order they were submitted.",
+        "fn is called with no arguments, and never synchronously inside the `run(fn)` call: it starts on a later tick.",
+        "A job that throws synchronously, or whose promise rejects, still frees its slot so the queue keeps moving."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "w3-template",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w3-template/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "weak",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 weak-check)",
+      "description": "Create src/template.js exporting `render(template, vars)`, a small placeholder renderer.\r\n\r\n- A placeholder is `{{name}}`, where name is an identifier (letters, digits, underscore, not starting with a digit). Spaces just inside the braces are allowed: `{{ name }}` is the same placeholder.\r\n- Each placeholder is replaced with String(vars[name]). A value is inserted exactly as it is: `$&`, `$1` and similar text in a value stay as literal text, and values are never scanned for placeholders again.\r\n- A value that is 0, '', false or null is rendered as its String form (\"0\", \"\", \"false\", \"null\"). Only a name that is missing from vars (not an own property) counts as missing.\r\n- If a placeholder names a missing variable, throw an Error with message `missing variable: ` followed by the name. If several are missing, report the first one in template order.\r\n- Anything that is not a placeholder, including single braces like `{x}`, is copied unchanged.\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "A placeholder is `{{name}}`, where name is an identifier (letters, digits, underscore, not starting with a digit). Spaces just inside the braces are allowed: `{{ name }}` is the same placeholder.",
+        "Each placeholder is replaced with String(vars[name]). A value is inserted exactly as it is: `$&`, `$1` and similar text in a value stay as literal text, and values are never scanned for placeholders again.",
+        "A value that is 0, '', false or null is rendered as its String form (\"0\", \"\", \"false\", \"null\"). Only a name that is missing from vars (not an own property) counts as missing.",
+        "If a placeholder names a missing variable, throw an Error with message `missing variable: ` followed by the name. If several are missing, report the first one in template order.",
+        "Anything that is not a placeholder, including single braces like `{x}`, is copied unchanged."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "w4-csv",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w4-csv/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "weak",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 weak-check)",
+      "description": "Create src/csv.js exporting `parseCsv(text)`, which returns an array of rows, each row an array of string fields.\r\n\r\n- Fields are separated by commas. Records end at LF or CRLF.\r\n- A field wrapped in double quotes may contain commas, LF and CR characters, and a doubled quote (two double-quote characters in a row) that stands for one literal quote. Quotes inside an unquoted field are literal characters.\r\n- A single LF or CRLF at the very end of the input does not start an extra record. An empty line in the middle is a record with one empty field: the input \"a\", LF, LF, \"b\" gives [[\"a\"],[\"\"],[\"b\"]].\r\n- An empty input string returns []. The input of two double quotes alone (a quoted empty field) returns [[\"\"]].\r\n- If the input ends inside a quoted field, throw an Error with message `unterminated quoted field`.\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "Fields are separated by commas. Records end at LF or CRLF.",
+        "A field wrapped in double quotes may contain commas, LF and CR characters, and a doubled quote (two double-quote characters in a row) that stands for one literal quote. Quotes inside an unquoted field are literal characters.",
+        "A single LF or CRLF at the very end of the input does not start an extra record. An empty line in the middle is a record with one empty field: the input \"a\", LF, LF, \"b\" gives [[\"a\"],[\"\"],[\"b\"]].",
+        "An empty input string returns []. The input of two double quotes alone (a quoted empty field) returns [[\"\"]].",
+        "If the input ends inside a quoted field, throw an Error with message `unterminated quoted field`."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "w5-pages",
+      "suite": "r4",
+      "sources": [
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w5-pages/case.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json",
+        "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json"
+      ],
+      "kindVerbatim": "weak",
+      "typeVerbatim": "general-purpose",
+      "typeIsPostHoc": false,
+      "taskType": "coding (r4 weak-check)",
+      "description": "Create src/pages.js exporting `pageWindow(total, page, perPage, span)`. It returns the page numbers a pager should show.\r\n\r\n- `total` is a non-negative integer item count, `perPage` an integer >= 1, `span` an integer >= 1 (the most page links to show).\r\n- totalPages = max(1, ceil(total / perPage)). `page` must be an integer from 1 to totalPages; otherwise throw a RangeError with message `page out of range: ` followed by the page value, e.g. `page out of range: 11`.\r\n- Let len = min(span, totalPages). The window is len consecutive page numbers that contain `page`, centred so that floor(span / 2) pages come before `page` when there is room (for an even span the extra link goes after the current page).\r\n- Clamp the window to the pages that exist: it never starts below 1 and never ends above totalPages.\r\n- Return the page numbers as an array of integers in ascending order.\r\n\r\nExamples: pageWindow(100, 5, 10, 5) gives [3,4,5,6,7]; pageWindow(100, 1, 10, 4) gives [1,2,3,4].\r\n\r\nBefore you finish, run `node check.mjs` in the work folder; it must pass. Reply with one short line saying what you did.",
+      "acceptanceCriteria": [
+        "`total` is a non-negative integer item count, `perPage` an integer >= 1, `span` an integer >= 1 (the most page links to show).",
+        "totalPages = max(1, ceil(total / perPage)). `page` must be an integer from 1 to totalPages; otherwise throw a RangeError with message `page out of range: ` followed by the page value, e.g. `page out of range: 11`.",
+        "Let len = min(span, totalPages). The window is len consecutive page numbers that contain `page`, centred so that floor(span / 2) pages come before `page` when there is room (for an even span the extra link goes after the current page).",
+        "Clamp the window to the pages that exist: it never starts below 1 and never ends above totalPages.",
+        "Return the page numbers as an array of integers in ascending order."
+      ],
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 2
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": true,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": null,
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": false
+    },
+    {
+      "taskId": "W-19279",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "WebESS - Time and Attendance � Employees Without Overtime Records Are Displayed\nIn the WebESS **Overtime** tab, employees with **Overtime Eligible = Yes** are displayed even when they have no overtime records within the selected date range. **Example:** For **24 Aug � 28 Aug**, only Danh has overtime records in F&O. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/7792ea47-e858-49ac-841f-25dfacac07f9?fileName=image.png) However, WebESS also displays Hammad, Long, and Ruchika with 0 overtime. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/71ca798f-db86-47b5-9261-fa1d88c35361?fileName=image.png) **Expected Behavior:** Only employees who have **overtime records within the selected date range** should be displayed in the Overtime tab.",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-19358",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "WebESS - Time and Attendance � Cancelled Leave Is Still Displayed as Approved Leave\nAn employee originally submitted a leave request for **03/09/2026** on **27/07/2026**. The leave was subsequently cancelled on **30/07/2026**. After the cancellation, there is no longer an effective approved leave for **03/09/2026** in F&O. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/09b1923f-69bd-4e88-a653-2357767a934c?fileName=image.png) However, when checking **WebESS > Time and Attendance**, the date is still displayed as **Approved Leave**. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/2fa3ef36-6bfa-4b70-be57-30968223deee?fileName=image.png) Further investigation in the **Leave Request Detail** shows that there are multiple transactions for the same employee and leave date: * The original leave transaction created on **27/07/2026** has **Amount = 1** and **St",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-19424",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Task",
+      "typeIsPostHoc": true,
+      "taskType": "coding (post-hoc)",
+      "description": "Performance Management  Enhancement  Save Performance Review Progress\nEnhance the Performance Review process on **WebESS** to allow users to save their progress without submitting the review. ### Required Changes Add a **Save** option in addition to the existing **Submit** action for the applicable Performance Review stages: * Goal Setting * Mid-Year Review * End-of-Year Review When the user selects **Save**: * The information entered on the review should be saved. * The Performance Review should remain at the current stage. * The review should not be submitted or progressed to the next stage. * The user should be able to return later and continue updating the saved review. The existing **Submit** behaviour should remain unchanged.",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-19427",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Task",
+      "typeIsPostHoc": true,
+      "taskType": "coding (post-hoc)",
+      "description": "Performance Management � Enhancement � Goal Review Supporting Attachments\nEnhance the **Performance Management � Goal Review** process on WebESS to support attachments for supporting evidence. Users should be able to provide supporting documents, such as **certificates, emails, or other relevant evidence**, as part of the Goal Review process. The detailed WebESS behaviour and implementation approach will be confirmed separately.",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20301",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Leave balance didn't update after leave getting approved\n9/18/2026 12:06 PM Bug filed on &quot;Employee - Fields validation - Verify display of information for applicable leave types&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed Leave balance to reflect correctly. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20925",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "No field available to enter contact number during leave\n9/21/2026 4:26 PM Bug filed on &quot;Employee - Fields validation - Phone Number Verify mandatory/optional behavior&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to allow numeric entry.Comment No field available to enter Phone number 3. None System to block alphabets entry and special characters. 4. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20926",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "No field available to enter address during leave\n9/21/2026 4:27 PM Bug filed on &quot;Employee - Fields validation - Address verify mandatory/optional behavior&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to allow alpha numeric entry. 3. None Block special characters. 4. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20927",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "No field to enter Handover details mandatorily\n9/21/2026 4:28 PM Bug filed on &quot;Employee - Fields validation - Handover Details & Remarks&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None System to save entered data. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20932",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Remarks entered by line manager on leave rejection are not visible to staff in their ESS.\n9/21/2026 6:46 PM Bug filed on &quot;Manager should be able to reject leave with relevant comments&quot; Step no. Result Title 1. None Log in as a Manager, navigate to pending leave requests, and open a request submitted by a team member.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Select Reject, enter a relevant rejection comment, and verify that the comment field accepts valid text and enforces any mandatory validation. 3. None Confirm the rejection and verify that a success message appears and the leave request status changes to Rejected/Declined. 4. None Reopen the request and verify that the manager�s comment is saved, visible to the appropriate user, and included in the request history or notification. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20933",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "The leave details - leave type description, attachments, remarks etc. are not available to manager in the ESS while approving any leave.\n9/21/2026 7:05 PM Bug filed on &quot;Manager should receive relevent leave request which the staff has applied&quot; Step no. Result Title 1. None Log in as an employee reporting to the manager, submit a leave request, and verify that it is routed to the correct manager.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Log in as the Manager, open the leave approval list or notification, and verify that the submitted request is displayed. 3. Failed Open the request and verify the employee name, leave type, start and end dates, duration, reason, attachments, leave balance, and current status.Comment These details are not showing up for line manager in ESS. 4. None Verify that the manager can view only authorized staff requests and that the request remains available with the correct status for further approval action. Test Configuration:",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-20934",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "No different color codes are seen.\n9/21/2026 7:54 PM Bug filed on &quot;Employee - Calendar - Verify correct highlighting of: Selected leave period Weekends&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed System to display weekends, approved leaves, public holidays in different color codes for selected period on the calendar. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21635",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "in Web ESS - goals related details and Measure of success field not available for staff to add details against the goal.\n9/23/2026 11:44 AM Bug filed on &quot;PM-GS-014 - Goal Setting - Submit Goal Plan for Approval&quot; Step no. Result Title 1. None Log in as Employee.Expected Result Goal plan is submitted successfully and routed for manager review. 2. Failed Complete all goal-related sections.Comment in Web ESS - goals related details and Measure of success field not available for staff to add details against the goal. 3. Passed Verify mandatory information is completed. 4. Passed Submit the goal plan. 5. Passed Verify submission confirmation message. 6. Passed Verify plan status changes to Submitted. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21639",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Task",
+      "typeIsPostHoc": true,
+      "taskType": "coding (post-hoc)",
+      "description": "Leave & Absence - Display Additional Request and Workflow Details in Pending Leave Work Items\nEnhance the Leave Request details so that both the submitter and approver can view the information required to track and process the request. The information should be displayed in: * The **Pending Work Item details** for the approver. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/5f50d930-94fb-449e-8dfb-dfec86ca2d05?fileName=image.png) * The **submitted Leave Request details** for the employee or person who submitted the request. ![image.png](https://dev.azure.com/gemseducation/c153c9a8-3abc-4dd1-b615-03f718b00c76/_apis/wit/attachments/c7327991-8d0e-4301-8b64-fa9ac8563ba9?fileName=image.png) ### Required Information #### Attachment * Display the attachment submitted with the original Leave Request. * The approver must be able to review the supporting document before taking action. * Allow both the submitter and approver to do",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21681",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Midyear Review - Cancel/ Edit goals option is not available\n9/24/2026 9:27 AM Bug filed on &quot;PM-MYR-005 - Mid-Year Review - Cancel Goal /Edit Due to Business Change&quot; Step no. Result Title 1. Passed Log in as Employee.Expected Result Goal can be formally cancelled with supporting justification and review history retains the update. Note: Incase a goal is cancelled, the alloted weighing percentage should be either reassigned or there should be an option to add another goal and submit for line manager approval. 2. Passed Open Mid-Year Review. 3. Passed Select an active goal. 4. Failed Update goal status to &quot;Cancelled&quot; /Edit GoalComment Cancel/ Edit goals option is not available 5. Failed Enter cancellation justification.Comment Cancel/ Edit goals option is not available 6. Passed Save the review. 7. Failed Verify cancellation reason is displayed.Comment Cancel/ Edit goals option is not available Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21732",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Added new holiday on maternity leave day and then removed the same, now 2 leave entries are available for that day in ESS\n9/25/2026 5:35 PM Bug filed on &quot;Leave Application - Verify UAE maternity leave entitlement of 60 calendar days&quot; Step no. Result Title 1. None Apply for UAE maternity leave and verify that the system allows and calculates an entitlement of 60 calendar days, including weekends and excluding public holidays.Expected Result Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21984",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Midyear - Goal change option not available/ When goal is cancelled no option to change the goals % against the remaining goals\n9/28/2026 12:18 PM Bug filed on &quot;Mid-Year Review - Update Goal Progress Against Existing Goals&quot; Step no. Result Title 1. Passed Log in as Employee.Expected Result Goal progress updates are successfully saved and reflected against the selected goal. 2. Passed Open an active Mid-Year Review. 3. Passed Select an existing goal. 4. Failed Update achievement progress and completion percentage.Comment Goal change option not available/ When goal is cancelled no option to change the goals % against the remaining goals 5. Passed Add supporting notes against the goal. 6. None Save the review. 7. Passed Re-open the record and verify changes. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21996",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Navigation for requesting the attendance regularization request\n9/28/2026 3:51 PM Bug filed on &quot;Workflow - Attendance regularization - Staff should be able to regularize missing check- in by submitting the request&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Staff to be able to request for regularizing their attendance from ESS. Data to be updated on attendance master once approved by authorized approver. Attendance report is viewed on navigation Home > Attendance For Creating the regularization request the staff has to come back to Home and submit the request out searching under &quot;Submit request&quot; 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-21998",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Employee submitted for 3 hours shortage, but HR is viewing as 7 hours in HR Login (D365)\n9/28/2026 4:05 PM Bug filed on &quot;Workflow - Attendance regularization - HR should be able to receive request and approve/reject the request once approved by Attendance administrator&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. Failed Once the workflow is approved by Attendance administrator, final workflow approval rights should be with HR after which the attendance changes will sync to the attendance master.Comment Employee submitted for 3 hours shortage, but HR is viewing as 7 hours in HR Login (D365) Employee submitted screenshot HR view from D365 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-22016",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Employee cannot attach doc at EOY review stage.\n9/29/2026 11:26 AM Bug filed on &quot;Year-End Review - Complete Self-Rating and goals status /achievement details Against each Goal&quot; Step no. Result Title 1. Passed Log in as Employee. Expected Result Employee self-assessment is successfully recorded against all goals. 2. Passed Open Year-End Review. 3. Passed Review each approved goal. 4. Failed Enter self Rating / status/ achievement details against each goal. Comment EOY self rating not available to employee against each goal 5. Failed Add supporting comments explaining accomplishments. Comment Employee cannot attach doc at EOY review stage. 6. Passed Save the review. 7. Passed Verify entries are retained. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-22063",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Holidays are not reflecting in ESS My attendance or Team attendance\n9/30/2026 12:34 PM Bug filed on &quot;Employee - Attendance Reports - Staff should be able to view the attendance data&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Employee to see self attendance data on StaffXP. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    },
+    {
+      "taskId": "W-22080",
+      "suite": "real",
+      "sources": [
+        ".claude/skills/subagent-model-router/real/stories-text.json",
+        ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        ".claude/skills/subagent-model-router/real/truth-effort.json",
+        ".claude/skills/subagent-model-router/real/gov-text.json",
+        ".claude/skills/subagent-model-router/real/gov-hindsight.json"
+      ],
+      "kindVerbatim": null,
+      "typeVerbatim": "Bug",
+      "typeIsPostHoc": true,
+      "taskType": "bugfix (post-hoc)",
+      "description": "Bulk approve/ reject option to be available for overtime submission by attendance approver in ESS. Th escreen keeps giving confirmation pop up on each checkbox click.\n10/1/2026 1:03 AM Bug filed on &quot;Workflow - Overtime process - Attendance administrator should be able to view all overtime entries calcuated by system. must have an option to &quot;select all&quot; and approve (or) not approve a particular entry for overtime&quot; Step no. Result Title 1. None Log in with the appropriate user role and navigate to the relevant page.Expected Result Verify that the system behavior matches the expected outcome for the test case. 2. None Access must be granted to AMSF and MSO to view and approve individual overtime entry for staff. consodilated report should also be made available to OPS team and HR. 3. None Verify that the system behavior matches the expected outcome for the test case. Test Configuration: Windows 10",
+      "acceptanceCriteria": null,
+      "checkClass": "none",
+      "checkExtras": [],
+      "criteriaCoverage": "unknown",
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0,
+            "unscored": 0,
+            "costRecorded": 0
+          }
+        }
+      },
+      "costRecorded": false,
+      "ruleTier": null,
+      "voteTiers": null,
+      "jevTierPrediction": null,
+      "governorTierText": "balanced",
+      "priorLabelR5": null,
+      "priorLabelUsedAsMinimumSufficient": false,
+      "minimumSufficientTier": "unknown",
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "cheaperTiers": [],
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ],
+      "heldOutEligible": true
+    }
+  ]
+}

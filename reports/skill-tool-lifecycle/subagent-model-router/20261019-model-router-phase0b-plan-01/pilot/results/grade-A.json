@@ -1,0 +1,42 @@
+{
+ "grader": "claude-sonnet-5-5",
+ "error": null,
+ "parseError": null,
+ "parsed": {
+  "C1": {
+   "result": "pass",
+   "quote": "Only include an employee if they have at least one overtime record inside the selected date range."
+  },
+  "C2": {
+   "result": "pass",
+   "quote": "a record exactly on the start or end date should be included;"
+  },
+  "C3": {
+   "result": "pass",
+   "quote": "check the other Time and Attendance tabs still list employees as before"
+  },
+  "C4": {
+   "result": "pass",
+   "quote": "a range with no records should show an empty grid with an empty-state message;"
+  },
+  "E1": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E2": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E3": {
+   "result": "absent",
+   "quote": "Component: unknown. It is probably the WebESS Time and Attendance service or API that builds the Overtime tab list."
+  },
+  "E4": {
+   "result": "absent",
+   "quote": "Fix: Only include an employee if they have at least one overtime record inside the selected date range."
+  },
+  "overall": "pass"
+ },
+ "costUsd": 0.026845,
+ "chargedUsd": 0.026845
+}

@@ -1,0 +1,126 @@
+{
+  "version": "0B-v1",
+  "purpose": "Phase 0B split over the 21 real stories (no outcomes exist for them). Written before any 0B model run.",
+  "unit": "story id; no repo or change id is present in stories-text.json, so change-level grouping cannot be verified",
+  "method": "held-out if first 8 hex of sha256(\"0B-v1|<id>\") < 0x55555555 (about 1/3); otherwise calibration. Assignment reads only ids.",
+  "inputs": {
+    "real/stories-text.json": "a7202787dc570df8b1f2fcfa832e8b9c3e6fd72f4fe5cad5a4f247de56da6203"
+  },
+  "counts": {
+    "calibration": 15,
+    "held-out": 6
+  },
+  "assignmentsSha256": "b157d7be96f1c516065a0bbb06fbb34e462d6fb1f181c6ac2b3f551f1a917fa2",
+  "assignments": {
+    "W-19279": {
+      "split": "calibration",
+      "group": "W-19279",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-19358": {
+      "split": "calibration",
+      "group": "W-19358",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-19424": {
+      "split": "held-out",
+      "group": "W-19424",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-19427": {
+      "split": "calibration",
+      "group": "W-19427",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20301": {
+      "split": "held-out",
+      "group": "W-20301",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20925": {
+      "split": "calibration",
+      "group": "W-20925",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20926": {
+      "split": "calibration",
+      "group": "W-20926",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20927": {
+      "split": "calibration",
+      "group": "W-20927",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20932": {
+      "split": "calibration",
+      "group": "W-20932",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20933": {
+      "split": "held-out",
+      "group": "W-20933",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-20934": {
+      "split": "calibration",
+      "group": "W-20934",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21635": {
+      "split": "calibration",
+      "group": "W-21635",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21639": {
+      "split": "held-out",
+      "group": "W-21639",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21681": {
+      "split": "calibration",
+      "group": "W-21681",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21732": {
+      "split": "held-out",
+      "group": "W-21732",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21984": {
+      "split": "held-out",
+      "group": "W-21984",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21996": {
+      "split": "calibration",
+      "group": "W-21996",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-21998": {
+      "split": "calibration",
+      "group": "W-21998",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-22016": {
+      "split": "calibration",
+      "group": "W-22016",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-22063": {
+      "split": "calibration",
+      "group": "W-22063",
+      "groupBasis": "story id (no repo-change id in source)"
+    },
+    "W-22080": {
+      "split": "calibration",
+      "group": "W-22080",
+      "groupBasis": "story id (no repo-change id in source)"
+    }
+  },
+  "rules": [
+    "Held-out is not used in JEV prompt examples, retrieval, calibration, threshold selection or policy tuning until final evaluation.",
+    "Any change to this file is a new version (0B-v2), and each run records the version and hash it used.",
+    "Fields from hindsight, truth-effort or gov files are not used for assignment."
+  ]
+}

@@ -1,0 +1,2733 @@
+{
+  "version": "0A-v1",
+  "tasks": {
+    "total": 45,
+    "bySuite": {
+      "bench": 18,
+      "r4": 6,
+      "real": 21
+    }
+  },
+  "taskTypeVerbatim": {
+    "benchKind": {
+      "design": 4,
+      "debug": 1,
+      "explore": 4,
+      "fix": 4,
+      "refactor": 3,
+      "tests": 2
+    },
+    "benchTypeVerbatim": {
+      "general-purpose": 14,
+      "Explore": 4
+    },
+    "r4Kind": {
+      "control": 1,
+      "weak": 5
+    },
+    "realTypePostHoc": {
+      "Bug": 18,
+      "Task": 3
+    }
+  },
+  "taskTypeMapped": {
+    "planning/spec": 4,
+    "bugfix": 5,
+    "explore (read-only)": 4,
+    "refactor": 3,
+    "null": 2,
+    "coding (r4 control)": 1,
+    "coding (r4 weak-check)": 5,
+    "bugfix (post-hoc)": 18,
+    "coding (post-hoc)": 3
+  },
+  "checkClass": {
+    "bench: automatic: tests (nodeTest + hiddenTests)": 12,
+    "bench: automatic: answer-only (readAnswer)": 4,
+    "bench: automatic: mutation check (mutationCheck)": 2,
+    "r4: automatic: visible check + hidden strict tests": 6,
+    "real: none": 21
+  },
+  "hasAutomaticCheck": 24,
+  "checkExtras": [
+    {
+      "taskId": "f3-days",
+      "extras": [
+        "multi-timezone run"
+      ]
+    },
+    {
+      "taskId": "r1-rename",
+      "extras": [
+        "grep for leftover identifier"
+      ]
+    },
+    {
+      "taskId": "r2-extract",
+      "extras": [
+        "source-text regex check"
+      ]
+    }
+  ],
+  "criteriaOnlyNoCheck": 0,
+  "neither": 21,
+  "criteriaCoverageMapped": 0,
+  "perTier": {
+    "haiku": {
+      "independent": {
+        "runs": 62,
+        "pass": 57,
+        "fail": 5,
+        "unscored": 0,
+        "costRecorded": 62
+      },
+      "conditional": {
+        "runs": 0,
+        "pass": 0,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 0
+      },
+      "tasksWithIndependentRuns": 24
+    },
+    "sonnet": {
+      "independent": {
+        "runs": 83,
+        "pass": 83,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 83
+      },
+      "conditional": {
+        "runs": 4,
+        "pass": 4,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 4
+      },
+      "tasksWithIndependentRuns": 17
+    },
+    "opus": {
+      "independent": {
+        "runs": 6,
+        "pass": 6,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 6
+      },
+      "conditional": {
+        "runs": 0,
+        "pass": 0,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 0
+      },
+      "tasksWithIndependentRuns": 6
+    }
+  },
+  "tasksWithIndependentRuns": {
+    "haiku": 24,
+    "sonnet": 17,
+    "opus": 6
+  },
+  "costRecordedTasks": 24,
+  "tierTotals": {
+    "haiku": {
+      "independent": {
+        "runs": 62,
+        "pass": 57,
+        "fail": 5,
+        "unscored": 0,
+        "costRecorded": 62
+      },
+      "conditional": {
+        "runs": 0,
+        "pass": 0,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 0
+      }
+    },
+    "sonnet": {
+      "independent": {
+        "runs": 83,
+        "pass": 83,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 83
+      },
+      "conditional": {
+        "runs": 4,
+        "pass": 4,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 4
+      }
+    },
+    "opus": {
+      "independent": {
+        "runs": 6,
+        "pass": 6,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 6
+      },
+      "conditional": {
+        "runs": 0,
+        "pass": 0,
+        "fail": 0,
+        "unscored": 0,
+        "costRecorded": 0
+      }
+    }
+  },
+  "jev": {
+    "tasksWithRouteJev": 18,
+    "jevEqualsRule": 6,
+    "jevTierCounts": {
+      "sonnet": 13,
+      "opus": 1,
+      "haiku": 4
+    },
+    "ruleTierCounts": {
+      "haiku": 16,
+      "sonnet": 2
+    }
+  },
+  "minimumSufficientTier": {
+    "concludable": 0,
+    "notConcludable": 45,
+    "countRuleMetTasks": [
+      {
+        "taskId": "d1-lru",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "d3-maplimit",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "d4-expr",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "d5-deps",
+        "candidate": "sonnet",
+        "cheaperTiers": [
+          {
+            "tier": "haiku",
+            "runs": 5,
+            "fail": 5
+          }
+        ]
+      },
+      {
+        "taskId": "e1-locate",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "e2-count",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "f1-paginate",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      },
+      {
+        "taskId": "r1-rename",
+        "candidate": "haiku",
+        "cheaperTiers": []
+      }
+    ],
+    "blockedByCriteriaCoverage": 45
+  },
+  "heldOut": {
+    "tasks": 0
+  },
+  "reserveUnlabelled": {
+    "tasks": 21
+  },
+  "priorRounds": {
+    "tasks": 24
+  },
+  "perTask": [
+    {
+      "taskId": "d1-lru",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 3,
+            "pass": 3,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "d2-ratelimit",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "d3-maplimit",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "d4-expr",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 3,
+            "pass": 3,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "d5-deps",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 0,
+            "fail": 5
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 4,
+            "pass": 4,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "sonnet",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "e1-locate",
+      "suite": "bench",
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 6,
+            "pass": 6,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "e2-count",
+      "suite": "bench",
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 7,
+            "pass": 7,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "e3-importers",
+      "suite": "bench",
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "e4-config",
+      "suite": "bench",
+      "checkClass": "automatic: answer-only (readAnswer)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "f1-paginate",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 13,
+            "pass": 13,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "f2-email",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "f3-days",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "f4-await",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "r1-rename",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 5,
+            "pass": 5,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 12,
+            "pass": 12,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": "haiku",
+      "countRuleMet": true,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown"
+      ]
+    },
+    {
+      "taskId": "r2-extract",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "r3-promisify",
+      "suite": "bench",
+      "checkClass": "automatic: tests (nodeTest + hiddenTests)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "t1-slugify-tests",
+      "suite": "bench",
+      "checkClass": "automatic: mutation check (mutationCheck)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "t2-csv-tests",
+      "suite": "bench",
+      "checkClass": "automatic: mutation check (mutationCheck)",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 1,
+            "pass": 1,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "c1-money",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "w1-ranges",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "w2-limiter",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "w3-template",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "w4-csv",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "w5-pages",
+      "suite": "r4",
+      "checkClass": "automatic: visible check + hidden strict tests",
+      "criteriaCoverage": "unknown",
+      "costRecorded": true,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 2,
+            "pass": 2,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-19279",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-19358",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-19424",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-19427",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20301",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20925",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20926",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20927",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20932",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20933",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-20934",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21635",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21639",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21681",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21732",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21984",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21996",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-21998",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-22016",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-22063",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    },
+    {
+      "taskId": "W-22080",
+      "suite": "real",
+      "checkClass": "none",
+      "criteriaCoverage": "unknown",
+      "costRecorded": false,
+      "outcomes": {
+        "haiku": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "sonnet": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        },
+        "opus": {
+          "independent": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          },
+          "conditional": {
+            "runs": 0,
+            "pass": 0,
+            "fail": 0
+          }
+        }
+      },
+      "countRuleCandidate": null,
+      "countRuleMet": false,
+      "minimumSufficientTier": "unknown",
+      "reasonsNotConcludable": [
+        "criteria-coverage-unknown",
+        "count-rule-not-met"
+      ]
+    }
+  ],
+  "dedupe": {
+    "r5WorkflowAggregates": {
+      "rows": 16,
+      "matchedToBench": 16,
+      "detail": [
+        {
+          "id": "R0321",
+          "taskId": "d5-deps",
+          "arm": "A-claude",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0322",
+          "taskId": "f1-paginate",
+          "arm": "A-claude",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0323",
+          "taskId": "d3-maplimit",
+          "arm": "A-claude",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0324",
+          "taskId": "r1-rename",
+          "arm": "A-claude",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0325",
+          "taskId": "d5-deps",
+          "arm": "A-claude",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0326",
+          "taskId": "f1-paginate",
+          "arm": "A-claude",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0327",
+          "taskId": "d3-maplimit",
+          "arm": "A-claude",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0328",
+          "taskId": "r1-rename",
+          "arm": "A-claude",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0329",
+          "taskId": "d5-deps",
+          "arm": "B-claude-jev",
+          "rep": "rep1",
+          "benchRows": 2,
+          "matched": true
+        },
+        {
+          "id": "R0330",
+          "taskId": "f1-paginate",
+          "arm": "B-claude-jev",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0331",
+          "taskId": "d3-maplimit",
+          "arm": "B-claude-jev",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0332",
+          "taskId": "r1-rename",
+          "arm": "B-claude-jev",
+          "rep": "rep1",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0333",
+          "taskId": "d5-deps",
+          "arm": "B-claude-jev",
+          "rep": "rep2",
+          "benchRows": 2,
+          "matched": true
+        },
+        {
+          "id": "R0334",
+          "taskId": "f1-paginate",
+          "arm": "B-claude-jev",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0335",
+          "taskId": "d3-maplimit",
+          "arm": "B-claude-jev",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        },
+        {
+          "id": "R0336",
+          "taskId": "r1-rename",
+          "arm": "B-claude-jev",
+          "rep": "rep2",
+          "benchRows": 1,
+          "matched": true
+        }
+      ]
+    },
+    "realHindsightIdentical": 21,
+    "r5LabelSetsIdentical": true,
+    "crossSourceCostDuplicates": []
+  },
+  "anomalies": []
+}

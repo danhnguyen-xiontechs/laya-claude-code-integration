@@ -1,0 +1,79 @@
+{
+ "prediction": {
+  "tier": "sonnet",
+  "stable": true,
+  "votes": {
+   "sonnet": 3
+  },
+  "n": 3
+ },
+ "calls": [
+  {
+   "order": [
+    "haiku",
+    "sonnet",
+    "opus"
+   ],
+   "tier": "sonnet",
+   "p": 0.76,
+   "probabilities": {
+    "haiku": 0.24,
+    "sonnet": 0.76,
+    "opus": 0
+   },
+   "nouls": {
+    "multi_file_design": 0.5,
+    "mechanical": 0.15,
+    "costly_failure": 0.55
+   },
+   "latencyMs": 1343,
+   "cost": 0.000036078,
+   "chargedUsd": 0.000036078
+  },
+  {
+   "order": [
+    "sonnet",
+    "opus",
+    "haiku"
+   ],
+   "tier": "sonnet",
+   "p": 0.62,
+   "probabilities": {
+    "sonnet": 0.62,
+    "opus": 0.01,
+    "haiku": 0.37
+   },
+   "nouls": {
+    "multi_file_design": 0.49,
+    "mechanical": 0.14,
+    "costly_failure": 0.56
+   },
+   "latencyMs": 790,
+   "cost": 0.000036078,
+   "chargedUsd": 0.000036078
+  },
+  {
+   "order": [
+    "opus",
+    "haiku",
+    "sonnet"
+   ],
+   "tier": "sonnet",
+   "p": 0.75,
+   "probabilities": {
+    "opus": 0.01,
+    "haiku": 0.24,
+    "sonnet": 0.75
+   },
+   "nouls": {
+    "multi_file_design": 0.49,
+    "mechanical": 0.17,
+    "costly_failure": 0.55
+   },
+   "latencyMs": 649,
+   "cost": 0.000036078,
+   "chargedUsd": 0.000036078
+  }
+ ],
+ "spentUsd": 0.00010823400000000001
+}

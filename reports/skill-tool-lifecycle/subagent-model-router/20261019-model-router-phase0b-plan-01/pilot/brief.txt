@@ -1,0 +1,11 @@
+You are asked to handle the task below. You have no access to any codebase and no tools. Work only from the text.
+
+Write your answer in this form:
+1. The change: the component or file it belongs to (write "unknown" if you do not know), then the code or the exact steps.
+2. Assumptions: list each one you made.
+3. Verification: how you would check the change.
+
+Keep the answer under 500 words.
+
+Task:
+<<TASK>>

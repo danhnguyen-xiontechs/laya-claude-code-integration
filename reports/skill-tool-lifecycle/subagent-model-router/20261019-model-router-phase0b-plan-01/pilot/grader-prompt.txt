@@ -1,0 +1,15 @@
+You grade one answer against a rubric. Use only the rubric and the task text. Do not assume anything beyond them.
+
+For each criterion C1 to C4, give "pass" or "fail". For each severe error E1 to E4, give "present" or "absent". Quote the sentence of the answer that supports your decision, or write "none". Then give "overall": "pass" or "fail", using the Overall section of the rubric.
+
+Reply with JSON only, no other text:
+{"C1":{"result":"pass|fail","quote":"..."},"C2":{"result":"pass|fail","quote":"..."},"C3":{"result":"pass|fail","quote":"..."},"C4":{"result":"pass|fail","quote":"..."},"E1":{"result":"present|absent","quote":"..."},"E2":{"result":"present|absent","quote":"..."},"E3":{"result":"present|absent","quote":"..."},"E4":{"result":"present|absent","quote":"..."},"overall":"pass|fail"}
+
+Rubric:
+<<RUBRIC>>
+
+Task:
+<<TASK>>
+
+Answer to grade:
+<<ANSWER>>

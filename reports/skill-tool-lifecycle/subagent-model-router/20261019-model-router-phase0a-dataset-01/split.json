@@ -1,0 +1,381 @@
+{
+  "version": "0A-v1",
+  "rule": "Group = bench task id, r4 case id, or real story id. No repo-change grouping is available in the sources, so the story is the group.",
+  "groups": {
+    "held-out": 0,
+    "prior-rounds": 24,
+    "reserve-unlabelled": 21
+  },
+  "assignmentsSha256": "8c9cb29bdbc4ba2016d74a3beaa09f3aedb4e6629b67de7d28542c0d4c3d4351",
+  "assignments": {
+    "d1-lru": {
+      "split": "prior-rounds",
+      "group": "bench:d1-lru",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "d2-ratelimit": {
+      "split": "prior-rounds",
+      "group": "bench:d2-ratelimit",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "d3-maplimit": {
+      "split": "prior-rounds",
+      "group": "bench:d3-maplimit",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "d4-expr": {
+      "split": "prior-rounds",
+      "group": "bench:d4-expr",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "d5-deps": {
+      "split": "prior-rounds",
+      "group": "bench:d5-deps",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "e1-locate": {
+      "split": "prior-rounds",
+      "group": "bench:e1-locate",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "e2-count": {
+      "split": "prior-rounds",
+      "group": "bench:e2-count",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "e3-importers": {
+      "split": "prior-rounds",
+      "group": "bench:e3-importers",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "e4-config": {
+      "split": "prior-rounds",
+      "group": "bench:e4-config",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "f1-paginate": {
+      "split": "prior-rounds",
+      "group": "bench:f1-paginate",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "f2-email": {
+      "split": "prior-rounds",
+      "group": "bench:f2-email",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "f3-days": {
+      "split": "prior-rounds",
+      "group": "bench:f3-days",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "f4-await": {
+      "split": "prior-rounds",
+      "group": "bench:f4-await",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "r1-rename": {
+      "split": "prior-rounds",
+      "group": "bench:r1-rename",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "r2-extract": {
+      "split": "prior-rounds",
+      "group": "bench:r2-extract",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "r3-promisify": {
+      "split": "prior-rounds",
+      "group": "bench:r3-promisify",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "t1-slugify-tests": {
+      "split": "prior-rounds",
+      "group": "bench:t1-slugify-tests",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "t2-csv-tests": {
+      "split": "prior-rounds",
+      "group": "bench:t2-csv-tests",
+      "heldOutEligible": false,
+      "reason": "bench outcomes already used in earlier rounds and the round-5 decision"
+    },
+    "c1-money": {
+      "split": "prior-rounds",
+      "group": "r4:c1-money",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "w1-ranges": {
+      "split": "prior-rounds",
+      "group": "r4:w1-ranges",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "w2-limiter": {
+      "split": "prior-rounds",
+      "group": "r4:w2-limiter",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "w3-template": {
+      "split": "prior-rounds",
+      "group": "r4:w3-template",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "w4-csv": {
+      "split": "prior-rounds",
+      "group": "r4:w4-csv",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "w5-pages": {
+      "split": "prior-rounds",
+      "group": "r4:w5-pages",
+      "heldOutEligible": false,
+      "reason": "round-4 weak-check evaluation already used this case"
+    },
+    "W-19279": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-19279",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-19358": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-19358",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-19424": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-19424",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-19427": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-19427",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20301": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20301",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20925": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20925",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20926": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20926",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20927": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20927",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20932": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20932",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20933": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20933",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-20934": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-20934",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21635": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21635",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21639": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21639",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21681": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21681",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21732": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21732",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21984": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21984",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21996": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21996",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-21998": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-21998",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-22016": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-22016",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-22063": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-22063",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    },
+    "W-22080": {
+      "split": "reserve-unlabelled",
+      "group": "real:W-22080",
+      "heldOutEligible": true,
+      "reason": "no outcomes or cost; reserve for 0B; grouped by story"
+    }
+  },
+  "sourceSha256": {
+    ".claude/skills/subagent-model-router/bench/results/route-jev.json": "63d81c3af1fb19bf49076eb4ecb1bc81dbb4a056402d269cfca3338af5a9c66b",
+    ".claude/skills/subagent-model-router/bench/results/route-none.json": "6ce476555576e26596154bc58fdcd1e78c854921a8e2234f2a9a90299c1b946c",
+    ".claude/skills/subagent-model-router/bench/results/runs-hf.jsonl": "30c7969c8905f84c32206fcc46225d01764c6e9fb239b0479a673d520d8df6d3",
+    ".claude/skills/subagent-model-router/bench/results/runs-pilot.jsonl": "c69523e30a67f03c7f6253bc076ce99e46cba3d3dc3fabdcacb744ff1d2b056f",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5A1.jsonl": "4a339780ca00956dd68093546d291f279bcba82f442939ccb2f992c721c81bb3",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5A2.jsonl": "98b420c7e6129ea5fc77f11f92b5d679ab1371ac085547a17707c5b72e7f0e89",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5B1.jsonl": "4c952f9416da1d38420f844475ecfb51a2ef852f1b9353be74e1c54bc0c06c0f",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5B1esc.jsonl": "c91ee343105c016feda5fa9c4b8cbd2c42d6e7779b9807996252ab4a7df36be3",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5B2.jsonl": "8b5b4eb385da2faa3797f32588548dd0ce281e05ba0406a0fa0083b42a4a816a",
+    ".claude/skills/subagent-model-router/bench/results/runs-r5B2esc.jsonl": "1cdfc7c1fcae95ea3a48bad33d5fc3dcdee712a2c45b41eb8a547c4af00f9b1a",
+    ".claude/skills/subagent-model-router/bench/tasks/d1-lru/check.mjs": "c07d5bed2ab90a9bcc46d320ff90fa4ce16a67b60d3f7509aedf89fffc3ec462",
+    ".claude/skills/subagent-model-router/bench/tasks/d1-lru/task.json": "00c41e07ff8269be541fad8fa2b9b6bb8714b17d61c301943da310dca8de2d5b",
+    ".claude/skills/subagent-model-router/bench/tasks/d2-ratelimit/check.mjs": "c07d5bed2ab90a9bcc46d320ff90fa4ce16a67b60d3f7509aedf89fffc3ec462",
+    ".claude/skills/subagent-model-router/bench/tasks/d2-ratelimit/task.json": "23fe37fe65a047bb66aff77f9dabf37b44310eb3cc8cec8d6b5786ec771bf8ff",
+    ".claude/skills/subagent-model-router/bench/tasks/d3-maplimit/check.mjs": "37c418a70c407bb15433bd3edecfd47284e055b721faeaf91ce470225c7f1307",
+    ".claude/skills/subagent-model-router/bench/tasks/d3-maplimit/task.json": "704bd64d24159113e6b0250ac40f66a08593f72ccbaf5fe4b4949141cf77fa14",
+    ".claude/skills/subagent-model-router/bench/tasks/d4-expr/check.mjs": "c07d5bed2ab90a9bcc46d320ff90fa4ce16a67b60d3f7509aedf89fffc3ec462",
+    ".claude/skills/subagent-model-router/bench/tasks/d4-expr/task.json": "409e37b1114da6d48875573eff3249872a2e639dc1e088b5b5744377eaf6c2be",
+    ".claude/skills/subagent-model-router/bench/tasks/d5-deps/check.mjs": "c07d5bed2ab90a9bcc46d320ff90fa4ce16a67b60d3f7509aedf89fffc3ec462",
+    ".claude/skills/subagent-model-router/bench/tasks/d5-deps/task.json": "0c43645848b6d8643c5dbc9c1e7771249fc07850036438ef1609f8c5a568a3fb",
+    ".claude/skills/subagent-model-router/bench/tasks/e1-locate/check.mjs": "3813bdfeb1dfb503d12ae1057392fc9e718e7fc4f033cda100aeacde7442bf7f",
+    ".claude/skills/subagent-model-router/bench/tasks/e1-locate/task.json": "bf7fd3592a5406366e007e47ae143a1a0f98f03d8742b5e350538ac1e04b97b4",
+    ".claude/skills/subagent-model-router/bench/tasks/e2-count/check.mjs": "399cb0bdcd3f3094de5e495559d110a39fec980a902b1fb7ee229cdb6cfefb67",
+    ".claude/skills/subagent-model-router/bench/tasks/e2-count/task.json": "f9c855c85e0361ab7d99c0f654e94056ed5d4c1171704ab09188550ab8998fbd",
+    ".claude/skills/subagent-model-router/bench/tasks/e3-importers/check.mjs": "e52ecb3c4337f72d15520073baa3f8c35b5271fe7e102516b9c013370d1b00c7",
+    ".claude/skills/subagent-model-router/bench/tasks/e3-importers/task.json": "8537587f72e7b8a26db8651388d1e70a944ae7cba223397982f088f80875af7f",
+    ".claude/skills/subagent-model-router/bench/tasks/e4-config/check.mjs": "17e0e32c7abdcccebaa65d725abe783cd8ac4aa2ef74a46dc812ea9a7b8edd38",
+    ".claude/skills/subagent-model-router/bench/tasks/e4-config/task.json": "2b4ae43c1347013458f31d0ccac990278ec96729fc6d446aa15ebcb6cf3ed7bd",
+    ".claude/skills/subagent-model-router/bench/tasks/f1-paginate/check.mjs": "37c418a70c407bb15433bd3edecfd47284e055b721faeaf91ce470225c7f1307",
+    ".claude/skills/subagent-model-router/bench/tasks/f1-paginate/task.json": "7825359defb85453f40c99b1c68069a6e87628ba32962c35b164019b3542baa6",
+    ".claude/skills/subagent-model-router/bench/tasks/f2-email/check.mjs": "37c418a70c407bb15433bd3edecfd47284e055b721faeaf91ce470225c7f1307",
+    ".claude/skills/subagent-model-router/bench/tasks/f2-email/task.json": "94742f3f132e4dfb13c333a6e9ee301bb086d23d1bdde1e05d5d55dffa5ab26a",
+    ".claude/skills/subagent-model-router/bench/tasks/f3-days/check.mjs": "bafc439bd70936dbc374f7d10414b9d9bb653d06a66b9085571c35a5a6ad0cc9",
+    ".claude/skills/subagent-model-router/bench/tasks/f3-days/task.json": "8b7876dde6229554d002bd3b30740a65936619bb388c3dcff5ce23707f0c37ca",
+    ".claude/skills/subagent-model-router/bench/tasks/f4-await/check.mjs": "37c418a70c407bb15433bd3edecfd47284e055b721faeaf91ce470225c7f1307",
+    ".claude/skills/subagent-model-router/bench/tasks/f4-await/task.json": "0dafb8efe8b56e2a7d59615086fd1084fccf2e43574495f881a662f16c4af05c",
+    ".claude/skills/subagent-model-router/bench/tasks/r1-rename/check.mjs": "4ee94bf188889b9ca0e4dd7b0a812a0055d6a809ee8284afe0fd1559f355c972",
+    ".claude/skills/subagent-model-router/bench/tasks/r1-rename/task.json": "02bf7d95dd8ee97986f84435699a3c517df34fd174b0aa1f7b90ecf3bc4dd6d6",
+    ".claude/skills/subagent-model-router/bench/tasks/r2-extract/check.mjs": "1eaf242e10f5e7c069d258ce83389cf5b7f82b7ca04519fbb0e8b24082fe784c",
+    ".claude/skills/subagent-model-router/bench/tasks/r2-extract/task.json": "95109154117ad5e86f19b7d25639932027358273f8726514ce89b5615b7b3c91",
+    ".claude/skills/subagent-model-router/bench/tasks/r3-promisify/check.mjs": "37c418a70c407bb15433bd3edecfd47284e055b721faeaf91ce470225c7f1307",
+    ".claude/skills/subagent-model-router/bench/tasks/r3-promisify/task.json": "aea90fdcb3e764f8947544e85d809953e1958cbd58b3798e603145193e03efa7",
+    ".claude/skills/subagent-model-router/bench/tasks/t1-slugify-tests/check.mjs": "1def7b82f8225fcb3cd8d4b17d158d4011749212b8a8f34f906fee12194a8b73",
+    ".claude/skills/subagent-model-router/bench/tasks/t1-slugify-tests/task.json": "4b54482db306520a9d8c0f82e12a80f55bac9edc1adcb8bab3be4ace41a6e5bb",
+    ".claude/skills/subagent-model-router/bench/tasks/t2-csv-tests/check.mjs": "d5b8fa1a700649ff99afbad19ee8a883c5bf2cf14aa6d897a084d4fdabb104ce",
+    ".claude/skills/subagent-model-router/bench/tasks/t2-csv-tests/task.json": "5e496b0e07b870cee8b601cc720718aa0954b1f25dfc1b1f1ff2a93a583802fc",
+    ".claude/skills/subagent-model-router/real/gov-hindsight.json": "4ef8dfe5ebd1eab533d91cdae7a9b122c0800791b99686dd080865dd206972f4",
+    ".claude/skills/subagent-model-router/real/gov-text.json": "ef0b27868eab51b319de0f4932f4fb2ff3bf67b96a23e405729f3a09d8ba8cfb",
+    ".claude/skills/subagent-model-router/real/stories-hindsight.json": "f99c3d938a1b35c4676bf6d1e2fda51fd45b4574c6f4548e0e292bffec62979c",
+    ".claude/skills/subagent-model-router/real/stories-text.json": "a7202787dc570df8b1f2fcfa832e8b9c3e6fd72f4fe5cad5a4f247de56da6203",
+    ".claude/skills/subagent-model-router/real/truth-effort.json": "1e438c5e72da01a0451e76e50f99931e8335d602d1b53ca040df1010c6c6ea5d",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-agent-01/evidence/cost.json": "b1e60678580d5960241b0c643fa3971eff96bc3b4ee93ecf78d971a0a3839ef0",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r2-agent-01/evidence/cost.json": "fc6ebababc68ed7ae03bb058080ea4c0c953fde58f6928c4b519ec7b8ce4e62c",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/cost.json": "73b46adc043adda84726de58fdf37aeb187843d17a2bfd16f30e3fac2c812ad5",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r3-agent-01/evidence/grades.json": "d1c20719b65fb851132ab18de868fccb71d0eefde951c761aacf198157c2d1dd",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/c1-money/case.json": "660220b5aa3b37e0f017e0dbb08fc0db0fa87c8518025e23dfd29c031441dbb9",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/c1-money/check.mjs": "03be1e83ba75fe8dc662fbecb7cdf0ee327c44094b965d127da04446551335e2",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/c1-money/hidden/strict.mjs": "78fce5dd08c62cc7ad0001e014068e1dd921a9d31caafe5b35478f4dcb188fb5",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/c1-money/task.md": "18ee29c3a3e40ccb526c79952e947af6f4648ec9185d6ab721fd12ece7c80f04",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w1-ranges/case.json": "5585564d6abbf637c9652e197ca4b58ad4c27d22a6bdb87d030f032681dbe7e2",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w1-ranges/check.mjs": "65a8ba43d27e4f876252d648b2b6859224c3924af6eaba5e2044e161e6c238a0",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w1-ranges/hidden/strict.mjs": "f298056d82f2cbad576abc25403455dbd2789482849b9ca10b5b6049ae2fa682",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w1-ranges/task.md": "f40010ab43c2ff94e4dcf3a2df396ed1a1db530452fc9818eafbca5c41e5c904",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w2-limiter/case.json": "6320ec042ad43ad87327f116cdfc3051f9d15d20902d3bec76985df6c67215f9",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w2-limiter/check.mjs": "de845b2838047cf7250bf24ea38eb5dadbbda40f846a422b05c5697897972050",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w2-limiter/hidden/strict.mjs": "f2f586efc728a4d16f279450068a08c07e9364fe67a51aa34623730fe772731d",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w2-limiter/task.md": "de58ec347df4a5019052a16b3df7c2cbfb46d5197fae53d022e627bbb8dd8114",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w3-template/case.json": "fdc36b3e6f3d7d6e45d38c735dd4263488ee16da269f5b96b313366213660e9e",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w3-template/check.mjs": "ebf42f8510d6519e5d8273e2b8e3799d3f95618bc823de21ccc89798078cde26",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w3-template/hidden/strict.mjs": "a58d290aa7c06cf7bd036a9f98282bfe46a4b23579c7ac06bf0c41b319d153b8",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w3-template/task.md": "5184ab8afa8f13b8532892df3eb0e59c027e9660c70dc5b1451dc968b1920b15",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w4-csv/case.json": "2c068e24e4b8f6c824f443de8ce2f7d66cd4237790bb9d40ad9145886719b791",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w4-csv/check.mjs": "408a6b938cc7075ad8eccb60581b75337470de072a18a60455e89cce1217bc85",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w4-csv/hidden/strict.mjs": "18022d7ce273c30f750ef679e8026a3370d686734d32d8a883c77c8c5e05338a",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w4-csv/task.md": "a6f5d9b7914538f2a161638c702f91bcf336ea2534ccfa8c339c85369011f766",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w5-pages/case.json": "784a732a9dc19003e645f115172beb2544e27295996ca377d6fda026daeb8f46",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w5-pages/check.mjs": "99942372155631188c34a70d3b6fd91ead6d66b19250d927295dbae419d3de6c",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w5-pages/hidden/strict.mjs": "66fc36430cea66b4f2643564e6e16679a9789ac4348ded18bda2fe21690ad4e7",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/cases/w5-pages/task.md": "9f1cc4327bf17a739656ac8ed2d59805536b5d265fc6b804d975be26ef22b30b",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep1/results.json": "0595d4d4972c85c6704408f291f9f7768d87a3b96cd8a03809414a25db1dcc1b",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/A-claude/rep2/results.json": "e9329f3a304cfb476a27f2e5f235926d0fecd3a928bedb615f53fcd7ef172723",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep1/results.json": "18d078c1df743e013aa88ab2eab5250c7280d746f61fbdf98f7845124ed07f78",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261018-model-router-r4-weakcheck-01/runs/B-claude-none/rep2/results.json": "f217086714070ee95e16d44b7b8fead6806cec2dd346e06311723c86cc503f71",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/evidence/bench-score-checked-jev.json": "2136b5dd86d9f4a4d3fff4e9b9dd08e0e53b6ec9b914e09c84c228579c8b30f0",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/evidence/offline-score.json": "885723a4c26a3cea061c90557244dce8ab78f8c649f77569bca3021d93012245",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep1/results.json": "338e41674ccb6f85d6442ff2cd360bd5fef48209d7e936ddcdf9beabae543ecd",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/A-claude/rep2/results.json": "34bb8d877413698923fd275fe48e1b2ed0ddcaa6c2ede55e991f1f25b14630d4",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep1/results.json": "aacb2f97ac1cf2684197f9c5ccdb82bf24b83bf54b0ffdcfc1b9c65533f6e47b",
+    "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-r5-jev-policy-01/runs/B-claude-jev/rep2/results.json": "5e955bd0331b59b78c5b1688b815b9186424be8c04b9e4c8be1e5c4a2eaf70fd"
+  },
+  "contamination": [
+    "held-out is empty: every task with outcomes (18 bench, 6 r4) was already used in earlier rounds or the round-5 decision.",
+    "real stories have no outcomes and no cost; they are an unlabelled reserve for 0B.",
+    "real hindsight governor profiles and the risk field derive from truth-effort PR data; they are not model inputs and are not used in any tier field.",
+    "route-jev answers were produced by JEV on the bench tasks before round 5; they are predictions, not outcomes.",
+    "round-5 label sets are not outcomes; they are kept as prior labels and are not used as minimum_sufficient_tier."
+  ],
+  "dedupe": "See coverage.json dedupe. Workflow aggregates are kept as aggregates, not counted as runs."
+}
