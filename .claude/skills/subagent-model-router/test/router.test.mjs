@@ -7,23 +7,28 @@ import {
   ruleFeatures, ruleTier, combine, consistency, orderings, buildRequest, route, loadConfig, maxTier, nextTier, TIERS,
 } from '../scripts/router.mjs';
 import { handle, definitionModel } from '../scripts/hook-pretooluse.mjs';
+import { sessionSpend } from '../scripts/spend-ledger.mjs';
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'smr-test-'));
-const cfgOf = (o = {}) => loadConfig({ env: {}, file: path.join(tmp, 'none.json'), overrides: { log: path.join(tmp, 'log.jsonl'), ...o } });
+// Each config gets its own ledger file, so tests never share spend and never touch the real home ledger.
+let ledgerN = 0;
+const cfgOf = (o = {}) => loadConfig({ env: {}, file: path.join(tmp, 'none.json'), overrides: { log: path.join(tmp, 'log.jsonl'), ledger: path.join(tmp, `ledger-${ledgerN++}.json`), ...o } });
 
-/** Fake provider: answers the tier question with `pick(order, callIndex)`; counts calls. */
-function fakeDecide(pick) {
+/** Fake provider: answers the tier question with `pick(order, callIndex)`; counts calls. `cost` is the USD the provider reports per call (omit → no cost). */
+function fakeDecide(pick, cost) {
   let n = 0;
   const fn = async ({ questions }) => {
     const order = Object.keys(questions.tier.criteria);
     const label = pick(order, n++);
     const probabilities = Object.fromEntries(order.map((t) => [t, t === label ? 0.97 : 0.015]));
-    return { ok: true, answers: { tier: { probabilities }, multi_file_design: { noul: 0.5 }, mechanical: { noul: 0.5 }, costly_failure: { noul: 0.5 } }, meta: { latencyMs: 5 } };
+    const meta = { latencyMs: 5, ...(cost === undefined ? {} : { cost }) };
+    return { ok: true, answers: { tier: { probabilities }, multi_file_design: { noul: 0.5 }, mechanical: { noul: 0.5 }, costly_failure: { noul: 0.5 } }, meta };
   };
   fn.calls = () => n;
   return fn;
 }
 const failing = async () => ({ ok: false, error: 'http 500', meta: { latencyMs: 3 } });
+const timingOut = async () => ({ ok: false, error: 'timeout', meta: { latencyMs: 8000 } });
 
 test('rule tiers: lookup → haiku, ordinary fix → sonnet, design/migration → opus', () => {
   assert.equal(ruleTier(ruleFeatures('Find every file that imports lodash and list them. Do not edit anything.')).tier, 'haiku');
@@ -118,13 +123,112 @@ test('route: stable cheap answer + cheap rule → haiku; k configurable', async 
   assert.equal(r.tier, 'haiku');
 });
 
-test('route: provider failure → null tier (keep default), mode off → no calls', async () => {
-  const r = await route({ task: 'x', cfg: cfgOf({ provider: 'jev' }), decideImpl: failing, log: false });
-  assert.equal(r.tier, null);
+test('route: provider failure → rule tier (rules_only) with fallback_reason; mode off → no calls', async () => {
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev' }), decideImpl: failing, log: false });
+  assert.equal(r.tier, 'haiku');
+  assert.equal(r.applied, 'rules_only');
+  assert.equal(r.fallback_reason, 'provider http 500');
   const fake = fakeDecide(() => 'haiku');
   const off = await route({ task: 'x', cfg: cfgOf({ mode: 'off', provider: 'jev' }), decideImpl: fake, log: false });
   assert.equal(off.tier, null);
   assert.equal(fake.calls(), 0);
+});
+
+test('route: a timeout falls back to the rule tier, even when the provider would raise it', async () => {
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev' }), decideImpl: timingOut, log: false });
+  assert.equal(r.tier, 'haiku');
+  assert.equal(r.fallback_reason, 'provider timeout');
+  assert.equal(r.providerCalls, 3);
+});
+
+test('route: a partial failure uses the good answers; no good answer → rule tier', async () => {
+  let n = 0;
+  const someFail = async (a) => (n++ === 0 ? timingOut() : fakeDecide(() => 'opus')(a));
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', policy: 'gate+sc', k: 3 }), decideImpl: someFail, log: false });
+  assert.equal(r.fallback_reason, undefined);
+  assert.equal(r.tier, 'opus'); // two good answers agree on opus, which is above the rule's haiku
+  assert.equal(r.applied, 'gate+sc');
+});
+
+test('route: an out-of-range tier answer is invalid output → rule tier', async () => {
+  const badTier = async () => ({ ok: true, answers: { tier: { probabilities: { expert: 0.9, opus: 0.1 } } }, meta: { latencyMs: 5 } });
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev' }), decideImpl: badTier, log: false });
+  assert.equal(r.tier, 'haiku');
+  assert.equal(r.applied, 'rules_only');
+  assert.equal(r.fallback_reason, 'provider no tier answer');
+});
+
+test('route: spend accumulates per session, a capped session stops calling, other sessions are unaffected', async () => {
+  const ledger = path.join(tmp, 'cap.json');
+  const cfg = cfgOf({ provider: 'jev', policy: 'jev', k: 1, maxUsdPerSession: 1, ledger });
+  const fake = fakeDecide(() => 'haiku', 0.5);
+  const a1 = await route({ task: 'Find the config file.', cfg, session: 'cap-a', decideImpl: fake, log: false });
+  assert.equal(a1.cost_usd, 0.5);
+  assert.equal(a1.applied, 'jev');
+  await route({ task: 'Find the config file.', cfg, session: 'cap-a', decideImpl: fake, log: false });
+  assert.deepEqual(sessionSpend(ledger, 'cap-a'), { usd: 1, calls: 2, unreported: 0 });
+  const a3 = await route({ task: 'Find the config file.', cfg, session: 'cap-a', decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 2); // the third route made no provider call
+  assert.equal(a3.providerCalls, 0);
+  assert.equal(a3.applied, 'rules_only');
+  assert.equal(a3.tier, 'haiku');
+  assert.match(a3.fallback_reason, /^usd cap reached/);
+  assert.equal(a3.cost_usd, 0);
+  const b = await route({ task: 'Find the config file.', cfg, session: 'cap-b', decideImpl: fake, log: false });
+  assert.equal(b.applied, 'jev');
+  assert.equal(fake.calls(), 3);
+});
+
+test('route: call cap stops calls; a provider that reports no cost is counted as unreported', async () => {
+  const ledger = path.join(tmp, 'calls.json');
+  const cfg = cfgOf({ provider: 'jev', policy: 'jev', k: 1, maxCallsPerSession: 2, ledger });
+  const fake = fakeDecide(() => 'haiku'); // no cost reported
+  const r1 = await route({ task: 'Find the config file.', cfg, session: 'calls', decideImpl: fake, log: false });
+  assert.equal(r1.cost_unreported, 1);
+  assert.equal(r1.cost_usd, 0);
+  await route({ task: 'Find the config file.', cfg, session: 'calls', decideImpl: fake, log: false });
+  const r3 = await route({ task: 'Find the config file.', cfg, session: 'calls', decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 2);
+  assert.match(r3.fallback_reason, /^call cap reached/);
+  assert.deepEqual(sessionSpend(ledger, 'calls'), { usd: 0, calls: 2, unreported: 2 });
+});
+
+test('route: a corrupt or wrong-shaped ledger fails closed (no provider call, ledger_error set)', async () => {
+  for (const [name, text] of [['corrupt.json', '{not json'], ['shape.json', '{"x":1}']]) {
+    const ledger = path.join(tmp, name);
+    fs.writeFileSync(ledger, text);
+    const fake = fakeDecide(() => 'opus');
+    const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', ledger }), session: 's', decideImpl: fake, log: false });
+    assert.equal(fake.calls(), 0);
+    assert.equal(r.tier, 'haiku');
+    assert.equal(r.applied, 'rules_only');
+    assert.match(r.fallback_reason, /^ledger error/);
+    assert.ok(r.ledger_error);
+  }
+});
+
+test('route: the log line carries cost_usd, fallback_reason and session, never the prompt', async () => {
+  const log = path.join(tmp, 'cost-log.jsonl');
+  const cfg = cfgOf({ provider: 'jev', policy: 'jev', k: 1, log, ledger: path.join(tmp, 'cost-ledger.json') });
+  await route({ task: 'SECRET-COST find x', cfg, session: 'log-s', decideImpl: fakeDecide(() => 'haiku', 0.02) });
+  await route({ task: 'SECRET-COST find x', cfg, session: 'log-s', decideImpl: failing });
+  const lines = fs.readFileSync(log, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.equal(lines.length, 2);
+  assert.equal(lines[0].cost_usd, 0.02);
+  assert.equal(lines[0].session, 'log-s');
+  assert.equal(lines[0].fallback_reason, undefined);
+  assert.equal(lines[1].fallback_reason, 'provider http 500');
+  assert.equal(lines[1].applied, 'rules_only');
+  assert.ok(!fs.readFileSync(log, 'utf8').includes('SECRET-COST'));
+});
+
+test('loadConfig: spend caps default to 2 USD and 60 calls; negative caps are rejected', () => {
+  const d = loadConfig({ env: {}, file: path.join(tmp, 'none.json') });
+  assert.equal(d.maxUsdPerSession, 2);
+  assert.equal(d.maxCallsPerSession, 60);
+  assert.equal(loadConfig({ env: {}, file: 'x', overrides: { maxUsdPerSession: 0 } }).maxUsdPerSession, 0);
+  assert.throws(() => loadConfig({ env: {}, file: 'x', overrides: { maxUsdPerSession: -1 } }), /maxUsdPerSession/);
+  assert.throws(() => loadConfig({ env: {}, file: 'x', overrides: { maxCallsPerSession: 'many' } }), /maxCallsPerSession/);
 });
 
 test('route logs one line without the prompt text', async () => {
@@ -214,9 +318,25 @@ test('hook leaves a subagent whose definition sets a model alone', async () => {
   assert.equal(inh.hookSpecificOutput.updatedInput.model, 'haiku');
 });
 
-test('hook with a failing provider keeps the default model', async () => {
+test('hook with a failing provider sets the rule tier (not the default model)', async () => {
   const out = await handle(hookInput({ prompt: 'find x' }), { cfg: cfgOf({ mode: 'apply', provider: 'jev' }), decideImpl: failing, home: tmp });
-  assert.equal(out, null);
+  assert.equal(out.hookSpecificOutput.updatedInput.model, 'haiku');
+});
+
+test('hook spend cap: a capped session gets the rule tier with no provider call', async () => {
+  const cfg = cfgOf({ mode: 'apply', provider: 'jev', policy: 'jev', k: 1, maxUsdPerSession: 0 });
+  const fake = fakeDecide(() => 'opus', 0.1);
+  const out = await handle(hookInput({ prompt: 'find x' }), { cfg, decideImpl: fake, home: tmp });
+  assert.equal(fake.calls(), 0);
+  assert.equal(out.hookSpecificOutput.updatedInput.model, 'haiku');
+});
+
+test('hook logs the session id from the hook input, not the base fields', async () => {
+  const log = path.join(tmp, 'hook-log.jsonl');
+  await handle(hookInput({ prompt: 'find x' }, { session_id: 'hook-sess' }), { cfg: cfgOf({ mode: 'shadow', provider: 'none', log }), home: tmp });
+  const rec = JSON.parse(fs.readFileSync(log, 'utf8').trim());
+  assert.equal(rec.session, 'hook-sess');
+  assert.equal(rec.source, 'hook');
 });
 
 // ess-be pilot (research/subagent-router-ess-be-pilot.md, finding 1): the fixed definition of done

@@ -3,5 +3,6 @@
   "provider": "none",
   "policy": null,
   "k": 3,
-  "timeoutMs": 8000
+  "timeoutMs": 8000,
+  "maxUsdPerSession": 2
 }

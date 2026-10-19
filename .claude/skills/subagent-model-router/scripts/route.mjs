@@ -3,10 +3,11 @@
 //
 //   node route.mjs --task "<subagent prompt>" [--type <subagent_type>] [--task-file f]
 //                  [--mode off|shadow|apply] [--provider none|jev|laya] [--policy rules|jev|gate|sc|gate+sc|checked]
-//                  [--k 3] [--json] [--cascade] [--escalate-from <tier>]
+//                  [--k 3] [--session <id>] [--json] [--cascade] [--escalate-from <tier>]
 //
-// Prints the tier to pass as the Agent tool's `model` (haiku|sonnet|opus), or nothing when the
-// caller should keep its default (mode off/shadow, or the provider failed). --json prints the
+// Prints the tier to pass as the Agent tool's `model` (haiku|sonnet|opus) in apply mode, or nothing in
+// shadow/off. A provider failure, timeout, invalid output or a spend/call cap falls back to the rule
+// tier (see fallback_reason in --json). --session keys the spend cap (default "cli"). --json prints the
 // whole decision record. --escalate-from <tier> prints the next tier for the cascade (or nothing).
 // --cascade: the caller promises to run the task's automatic check and call --escalate-from once when
 // it fails. It sets policy checked (no provider call for a checked task) unless --policy is given.
@@ -41,6 +42,6 @@ try {
   cfg = loadConfig({ overrides: { mode: args.mode, provider: args.provider, policy, k: args.k ? Number(args.k) : undefined } });
 } catch (e) { console.error(e.message); process.exit(2); }
 
-const rec = await route({ task, type: args.type ?? '', cfg, source: 'cli' });
+const rec = await route({ task, type: args.type ?? '', cfg, source: 'cli', session: args.session ?? 'cli' });
 if (args.json) console.log(JSON.stringify(rec, null, 2));
 else if (cfg.mode === 'apply' && rec.tier) console.log(rec.tier);

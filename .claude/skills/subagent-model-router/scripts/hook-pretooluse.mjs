@@ -35,18 +35,19 @@ export function definitionModel(type, cwd, home = os.homedir()) {
 export async function handle(input, { cfg = loadConfig(), decideImpl, env = process.env, home } = {}) {
   if (!input || !AGENT_TOOLS.has(input.tool_name)) return null;
   const ti = input.tool_input || {};
-  const base = { source: 'hook', session: input.session_id ?? null, tool_use_id: input.tool_use_id ?? null };
+  const base = { source: 'hook', tool_use_id: input.tool_use_id ?? null };
+  const session = input.session_id ?? 'hook'; // the spend cap is kept per session id
   if (cfg.mode === 'off') return null;
   if (ti.model) { // explicit model: log in shadow for the history, never override
-    await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg: { ...cfg, provider: 'none', policy: 'rules' }, decideImpl, env, extra: { ...base, skipped: 'caller-model', callerModel: ti.model } });
+    await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg: { ...cfg, provider: 'none', policy: 'rules' }, decideImpl, env, session, extra: { ...base, skipped: 'caller-model', callerModel: ti.model } });
     return null;
   }
   const defModel = definitionModel(ti.subagent_type, input.cwd, home);
   if (defModel && defModel !== 'inherit') {
-    await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg: { ...cfg, provider: 'none', policy: 'rules' }, decideImpl, env, extra: { ...base, skipped: 'definition-model', definitionModel: defModel } });
+    await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg: { ...cfg, provider: 'none', policy: 'rules' }, decideImpl, env, session, extra: { ...base, skipped: 'definition-model', definitionModel: defModel } });
     return null;
   }
-  const rec = await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg, decideImpl, env, extra: base });
+  const rec = await route({ task: ti.prompt ?? '', type: ti.subagent_type ?? '', cfg, decideImpl, env, session, extra: base });
   if (cfg.mode !== 'apply' || !rec.tier) return null;
   return {
     hookSpecificOutput: {
