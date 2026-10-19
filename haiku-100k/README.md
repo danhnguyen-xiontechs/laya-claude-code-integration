@@ -25,31 +25,25 @@ Every request is the fixed start (system prompt, tools, skills) plus the convers
 
 ## Install
 
-The plugin lives in the `haiku-100k/` folder of [danhnguyen-xiontechs/laya-claude-code-integration](https://github.com/danhnguyen-xiontechs/laya-claude-code-integration). Its marketplace file is in that folder, not at the repo root, so `claude plugin marketplace add danhnguyen-xiontechs/laya-claude-code-integration` does not work (`manifest_missing`). Add the `haiku-100k` folder from a local copy instead, in one of two ways.
-
-**1. From a clone you already have.** Point the marketplace at the folder:
+From GitHub, in one line (the repo root has a marketplace named `danhnguyen-xiontechs` that points to this folder):
 
 ```bash
-claude plugin marketplace add <path-to-clone>/haiku-100k
-claude plugin install haiku-100k@haiku-100k
+claude plugin marketplace add danhnguyen-xiontechs/laya-claude-code-integration --sparse .claude-plugin haiku-100k
+claude plugin install haiku-100k@danhnguyen-xiontechs
 ```
 
-**2. From GitHub, without the rest of the repo.** A sparse clone fetches only the plugin folder and the root files (about 1 MB):
+`--sparse` fetches only the marketplace file and this plugin, not the rest of the repo. To update later:
 
 ```bash
-git clone --depth 1 --filter=blob:none --sparse https://github.com/danhnguyen-xiontechs/laya-claude-code-integration.git
-cd laya-claude-code-integration
-git sparse-checkout set haiku-100k
-claude plugin marketplace add ./haiku-100k
-claude plugin install haiku-100k@haiku-100k
+claude plugin marketplace update danhnguyen-xiontechs
+claude plugin update haiku-100k@danhnguyen-xiontechs
 ```
 
-Keep the clone: the marketplace points at that folder. To update later, pull and refresh:
+From a clone you already have, add the repo root instead:
 
 ```bash
-git -C <path-to-clone> pull
-claude plugin marketplace update haiku-100k
-claude plugin update haiku-100k@haiku-100k
+claude plugin marketplace add <path-to-clone>
+claude plugin install haiku-100k@danhnguyen-xiontechs
 ```
 
 Then run `/haiku-100k:setup` once. The `haiku-build` skill comes with the plugin; it needs Node.js 22+ for its scripts. Function hooks need `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`.
