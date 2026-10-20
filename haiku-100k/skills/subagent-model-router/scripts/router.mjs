@@ -42,7 +42,7 @@ export const DEFAULTS = {
   ledger: DEFAULT_LEDGER, maxUsdPerSession: 2, maxCallsPerSession: 60, laya: {}, jev: {},
 };
 
-export function loadConfig({ env = process.env, file, overrides = {} } = {}) {
+export function loadConfig({ env = process.env, file, overrides = {}, defaultPolicy = 'checked' } = {}) {
   let cfg = {};
   const f = file ?? path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'config.json');
   try { cfg = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { /* optional */ }
@@ -59,7 +59,9 @@ export function loadConfig({ env = process.env, file, overrides = {} } = {}) {
   out.provider = String(out.provider).toLowerCase();
   if (!MODES.includes(out.mode)) throw new Error(`mode must be one of ${MODES.join(', ')} (got "${out.mode}")`);
   if (!ROUTER_PROVIDERS.includes(out.provider)) throw new Error(`provider must be one of ${ROUTER_PROVIDERS.join(', ')} (got "${out.provider}")`);
-  out.policy = out.policy ?? (out.provider === 'none' ? 'rules' : 'gate+sc');
+  // checked: Jev is asked only for tasks with no automatic check (the cascade covers the checked ones).
+  // defaultPolicy: the CLI uses checked; the PreToolUse hook passes gate+sc (it has no cascade to fall back on)
+  out.policy = out.policy ?? (out.provider === 'none' ? 'rules' : defaultPolicy);
   if (!POLICIES.includes(out.policy)) throw new Error(`policy must be one of ${POLICIES.join(', ')} (got "${out.policy}")`);
   if (out.provider === 'none' && out.policy !== 'rules') out.policy = 'rules';
   out.k = Math.max(1, Math.min(9, Math.floor(Number(out.k) || 1)));

@@ -83,7 +83,7 @@ no-op and `route.mjs` prints nothing.
 |---|---|---|
 | mode | `off` / `shadow` (log only) / `apply` | shadow |
 | provider | `none` (rules only) / `jev` / `laya` | none: `jev` sends each subagent prompt to OpenRouter, so turn it on deliberately |
-| policy | `rules` / `jev` / `gate` / `sc` / `gate+sc` | gate+sc (rules when provider none) |
+| policy | `rules` / `jev` / `gate` / `sc` / `gate+sc` / `checked` | checked with a provider in the CLI, gate+sc in the PreToolUse hook (rules when provider none) |
 | k | self-consistency calls (clamped 1–9) | 3 |
 | maxUsdPerSession | USD cap per session, from the spend ledger; reached → rule tier, no provider call | 2 |
 | maxCallsPerSession | provider calls per session; a batch that would pass it is refused | 60 |
