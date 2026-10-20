@@ -40,7 +40,7 @@ export function taskKind(prompt, type) {
   return 'other';
 }
 
-function readJsonl(f) {
+export function readJsonl(f) {
   const out = [];
   for (const line of fs.readFileSync(f, 'utf8').split('\n')) {
     if (!line.trim()) continue;
@@ -72,7 +72,7 @@ function usageByTier(lines, filter = () => true) {
   return acc;
 }
 
-function* walk(dir) {
+export function* walk(dir) {
   let ents;
   try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
   for (const e of ents) {

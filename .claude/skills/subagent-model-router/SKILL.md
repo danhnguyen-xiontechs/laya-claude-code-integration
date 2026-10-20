@@ -94,6 +94,10 @@ a sha1 of the prompt). The prompt text is never written.
   `~/.claude/projects/**/subagents/`. Writes to `~/.subagent-model-router/history/` (prompts stay local).
 - `bench/bench.mjs`: 18 synthetic tasks with automatic checks; `validate`, `prepare`, `check`,
   `route`, `score`. See README.
+- `scripts/label-outcomes.mjs`: outcome labels from real use. Joins the hook log (`tool_use_id`) with the
+  subagent transcripts: status, the last test/build run inside the subagent, and a later retry on a higher tier.
+  outcome pass / fail / unverified, and per router (rule, jev, final) whether its pick was same, over, under or
+  cheaper (unproven). Writes `~/.subagent-model-router/labels.jsonl` (no prompt text). `--since <ISO date>`.
 - `scripts/spend-ledger.mjs`: the per-session USD and call ledger (`~/.subagent-model-router/spend.json`)
   behind the caps. It has no lock: parallel routes can lose an update, so a burst may pass a cap slightly.
 - `scripts/decision-provider.mjs` duplicates `review-pr-jev-classify`. Both copies are kept in v1; merging

@@ -1,4 +1,6 @@
-# Phase 0B budget sheet (DRAFT, not approved)
+# Phase 0B budget sheet (DROPPED)
+
+**Dropped by the user, 2026-10-20.** No calibration run. Labels now come from real use: the router hook runs in shadow with provider jev on every repo, and `scripts/label-outcomes.mjs` joins its log with the subagent transcripts. The pilot below stays as a record.
 
 Status: planning only. No model has been called for 0B. This sheet needs the user's approval before any run. The split is in `split-0B.json` (version 0B-v1, assignments sha256 `b157d7be96f1c516065a0bbb06fbb34e462d6fb1f181c6ac2b3f551f1a917fa2`).
 
