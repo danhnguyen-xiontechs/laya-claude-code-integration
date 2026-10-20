@@ -61,7 +61,10 @@ const manifestPath = path.join(plugin, '.claude-plugin', 'plugin.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 const own = JSON.parse(fs.readFileSync(path.join(src, '.claude-plugin', 'plugin.json'), 'utf8'));
 manifest.types = './hooks/reliability/types.d.ts';
-manifest.userConfig = Object.fromEntries(Object.entries(own.userConfig).map(([k, v]) => [k, { ...v, title: `Reliability: ${v.title}` }]));
+const reliability = Object.fromEntries(Object.entries(own.userConfig).map(([k, v]) => [k, { ...v, title: `Reliability: ${v.title}` }]));
+// Keep the keys this script does not own (haiku-pace's), so a ship does not drop them.
+const kept = Object.fromEntries(Object.entries(manifest.userConfig ?? {}).filter(([k]) => !(k in reliability)));
+manifest.userConfig = { ...kept, ...reliability };
 out.set(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 
 let stale = 0;

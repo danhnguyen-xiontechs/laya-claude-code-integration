@@ -1,12 +1,13 @@
-// haiku-pace: per-step effort for Haiku model requests, plus a guard for Bash calls that would
-// hold a turn for minutes. Rules decide the routine steps for free; TypeSafe Jev is asked only on
-// pivot steps (turn start, after a failure, after a big edit). Every error falls back to the
-// session's own effort (or `high` on a pivot) and never blocks a request.
+// haiku-pace: per-step effort for Haiku and Sonnet model requests, plus a guard for Bash calls that
+// would hold a turn for minutes (every model). Rules decide the routine steps for free; TypeSafe Jev
+// is asked only on pivot steps (turn start, after a failure, after a big edit). Every error falls back
+// to the session's own effort (or `high` on a pivot) and never blocks a request. Opus is not paced.
 // Mode: userConfig paceMode (apply by default), /haiku-pace for this session, env HAIKU_PACE wins.
+// HAIKU_PACE=off is the kill switch for everything; /haiku-pace off keeps the long-command guard on.
 import type { EngineInterface, Register } from 'claude-code';
 import {
   type Effort, type PaceMode, type PaceOptions, type StepCall, actionOf, chooseEffort, classifyStep,
-  editedLinesOf, failureOf, guardCommand, isEffort, isReadOnlyCall, paceRequest, parsePace,
+  editedLinesOf, failureOf, guardCommand, guardStateOf, isEffort, isReadOnlyCall, paceRequest, parsePace,
   readPaceOptions, resolvePaceMode,
 } from './core.ts';
 import type { ChoiceAnswer } from '../reliability/core.ts';
@@ -15,28 +16,69 @@ const JEV_URL = 'https://openrouter.ai/api/alpha/decisions';
 const JEV_MODEL = 'typesafe/jev-1.13';
 const MAX_LOG = 1_000_000;
 
-const isHaiku = (model: string | undefined) => /haiku/i.test(model ?? '');
+/** Models whose requests get a per-step effort. Opus never reaches the turn.step hook. */
+const PACED = /haiku|sonnet/i;
 const TRACKED = ['Bash', 'PowerShell', 'Read', 'Grep', 'Glob', 'Edit', 'Write', 'NotebookEdit', 'WebFetch', 'WebSearch', 'ToolSearch', 'Skill', 'Agent'];
 
-type Loop = { model?: string; calls: StepCall[] };
+type Row = Record<string, unknown>;
+type Loop = { calls: StepCall[] };
 type ClassStats = { steps: number; ms: number[]; out: number[] };
 type Stats = { steps: number; changed: number; jevCalls: number; jevErrors: number; jevMs: number[]; guarded: number; byClass: Record<string, ClassStats> };
+type State = { mode: PaceMode; source: string; guard: 'deny' | 'log' | 'killed' };
 
 // Engine-handle helpers sit in this file: the runtime follows $ only into functions declared here.
 async function sessionId($: EngineInterface): Promise<string> {
   try { return (await $.session.id()) || 'unknown'; } catch { return 'unknown'; }
 }
 
-async function emit($: EngineInterface, o: PaceOptions, ev: Record<string, unknown>): Promise<void> {
+async function pathOf($: EngineInterface, o: PaceOptions): Promise<string | null> {
+  const sid = await sessionId($);
+  if (sid === 'unknown') return null;
+  return `${(o.telemetryDir || `${$.plugin.root}/telemetry`).replace(/\\/g, '/').replace(/\/+$/, '')}/pace-${sid}.jsonl`;
+}
+
+async function emit($: EngineInterface, o: PaceOptions, ev: Row): Promise<void> {
   if (!o.telemetry) return;
   try {
-    const sid = await sessionId($);
-    if (sid === 'unknown') return;
-    const path = `${(o.telemetryDir || `${$.plugin.root}/telemetry`).replace(/\\/g, '/').replace(/\/+$/, '')}/pace-${sid}.jsonl`;
+    const path = await pathOf($, o);
+    if (!path) return;
     let prev = await $.fs.read(path).catch(() => '');
     if (prev.length > MAX_LOG) prev = prev.slice(prev.indexOf('\n', prev.length / 2) + 1);
     await $.fs.write(path, prev + JSON.stringify({ ts: new Date(await $.clock.now()).toISOString(), ...ev }) + '\n');
   } catch { /* telemetry is best effort */ }
+}
+
+/** This session's telemetry rows, or null when telemetry is off or the session id is unknown. */
+async function rowsOf($: EngineInterface, o: PaceOptions): Promise<Row[] | null> {
+  if (!o.telemetry) return null;
+  try {
+    const path = await pathOf($, o);
+    if (!path) return null;
+    const text = await $.fs.read(path).catch(() => '');
+    return text.split('\n').flatMap((line) => { try { return line ? [JSON.parse(line) as Row] : []; } catch { return []; } });
+  } catch { return null; }
+}
+
+/** The status counts come from the same rows the Jev budget reads, so they cannot disagree. */
+function statsOfRows(rows: Row[]): Stats {
+  const s: Stats = { steps: 0, changed: 0, jevCalls: 0, jevErrors: 0, jevMs: [], guarded: 0, byClass: {} };
+  for (const r of rows) {
+    if (r.event === 'guard') { if (r.applied === true) s.guarded++; continue; }
+    if (r.event !== 'step') continue;
+    s.steps++;
+    if (r.applied === true) s.changed++;
+    if (typeof r.jevMs === 'number') { s.jevCalls++; s.jevMs.push(r.jevMs); }
+    if (typeof r.jevError === 'string') s.jevErrors++;
+    const c = (s.byClass[String(r.cls)] ??= { steps: 0, ms: [], out: [] });
+    c.steps++; c.ms.push(Number(r.ms) || 0); c.out.push(Number(r.out) || 0);
+  }
+  return s;
+}
+
+/** Jev calls this session: the file's count (it survives a reload), never below this process's count. */
+async function jevUsed($: EngineInterface, o: PaceOptions, inMemory: number): Promise<number> {
+  const rows = await rowsOf($, o);
+  return Math.max(inMemory, rows ? statsOfRows(rows).jevCalls : 0);
 }
 
 /** One decisions call (OpenRouter → TypeSafe Jev), raced against the timeout. The key is never logged. */
@@ -56,20 +98,21 @@ async function askJev($: EngineInterface, body: unknown, o: PaceOptions): Promis
   return Promise.race([call, timeout]);
 }
 
-/** env HAIKU_PACE, then /haiku-pace for this session, then userConfig paceMode. */
-async function modeOf($: EngineInterface, o: PaceOptions, override: PaceMode | undefined): Promise<{ mode: PaceMode; source: string }> {
-  const env = await $.env.get('HAIKU_PACE').catch(() => undefined);
-  const mode = resolvePaceMode(env ?? undefined, override, o.mode);
+/** env HAIKU_PACE, then /haiku-pace for this session, then userConfig paceMode. Never throws. */
+async function stateOf($: EngineInterface, o: PaceOptions, override: PaceMode | undefined): Promise<State> {
+  const env = (await $.env.get('HAIKU_PACE').catch(() => undefined)) ?? undefined;
+  const mode = resolvePaceMode(env, override, o.mode);
   const source = env && /^(off|shadow|apply)$/i.test(env.trim()) ? `env HAIKU_PACE=${env.trim()}` : override ? '/haiku-pace (this session)' : 'userConfig paceMode';
-  return { mode, source };
+  return { mode, source, guard: guardStateOf(env, mode) };
 }
 
-const p50 =(xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : 0);
+const p50 = (xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : 0);
 
-function statusText(mode: PaceMode, source: string, o: PaceOptions, s: Stats): string {
+function statusText(st: State, o: PaceOptions, s: Stats): string {
   const rows = Object.entries(s.byClass).map(([k, c]) => `  ${k.padEnd(7)} ${String(c.steps).padStart(4)} steps  p50 ${(p50(c.ms) / 1000).toFixed(1)} s  p50 out ${p50(c.out)} tok`);
+  const guard = st.guard === 'killed' ? 'off (HAIKU_PACE=off)' : st.guard === 'log' ? 'log only (shadow)' : 'on';
   return [
-    `haiku-pace: ${mode} (${source})`,
+    `haiku-pace: ${st.mode} (${st.source}); long-command guard ${guard}; models haiku, sonnet (opus not paced)`,
     `steps ${s.steps}, effort changed on ${s.changed}; Jev ${o.jev ? `${s.jevCalls}/${o.jevBudget} calls, ${s.jevErrors} errors, p50 ${p50(s.jevMs)} ms` : 'off'}; long commands stopped ${s.guarded}`,
     ...rows,
     'usage: /haiku-pace status | apply | shadow | off | auto',
@@ -91,25 +134,26 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
     const arg = String(e.args ?? '').trim().toLowerCase();
     if (arg === 'apply' || arg === 'shadow' || arg === 'off') override = arg;
     else if (arg === 'auto') override = undefined;
-    const { mode, source } = await modeOf($, o, override);
-    return { text: statusText(mode, source, o, stats) };
+    const st = await stateOf($, o, override);
+    const rows = await rowsOf($, o);
+    return { text: statusText(st, o, rows?.length ? statsOfRows(rows) : stats) };
   });
 
-  // Long-command guard, then the call's outcome for the next step's class.
-  // A matcher keeps this apart from haiku-100k's own unmatched tool.call (the 100k cut). Calls to
-  // other tools (MCP) are not tracked: a step after only those counts as `normal`.
+  // Long-command guard, then the call's outcome for the next step's class. Every model: a Bash call
+  // from Opus is guarded too. A matcher keeps this apart from haiku-100k's own unmatched tool.call.
+  // Calls to other tools (MCP) are not tracked: a step after only those counts as `normal`.
   on('tool.call', { tool: TRACKED }, async ($, e, next) => {
     const loop = loopOf(e.agentId);
     const input = e as unknown as Record<string, unknown>;
     const command = typeof input.command === 'string' ? input.command : undefined;
-    const model = loop.model ?? (e.agentId === undefined ? await $.session.model().catch(() => undefined) : undefined);
-    if (e.tool === 'Bash' && command && isHaiku(model)) {
-      const { mode } = await modeOf($, o, override);
-      const deny = mode === 'off' ? null : guardCommand(command, input.run_in_background === true);
+    if (e.tool === 'Bash' && command) {
+      const st = await stateOf($, o, override);
+      const deny = st.guard === 'killed' ? null : guardCommand(command, input.run_in_background === true);
       if (deny) {
-        stats.guarded++;
-        await emit($, o, { event: 'guard', mode, agentId: e.agentId ?? 'main', action: actionOf('Bash', input), applied: mode === 'apply' });
-        if (mode === 'apply') {
+        const applied = st.guard === 'deny';
+        if (applied) stats.guarded++;
+        await emit($, o, { event: 'guard', mode: st.mode, agentId: e.agentId ?? 'main', action: actionOf('Bash', input), applied });
+        if (applied) {
           loop.calls.push({ tool: 'Bash', action: actionOf('Bash', input), readOnly: false, failed: true, error: deny, editedLines: 0 });
           return { deny };
         }
@@ -126,21 +170,23 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
     return ran;
   }).catch(($, e, next) => next(e)); // fail open: a broken guard never blocks a tool
 
-  // Haiku requests only (the matcher); other models' steps never reach this hook.
-  on('turn.step', { model: /haiku/i }, async function* ($, e, next) {
+  // Haiku and Sonnet requests only (the matcher); Opus steps never reach this hook.
+  on('turn.step', { model: PACED }, async function* ($, e, next) {
     const loop = loopOf(e.agentId);
-    loop.model = e.model;
     const calls = loop.calls;
     loop.calls = [];
-    let mode: PaceMode = 'off';
-    try { mode = (await modeOf($, o, override)).mode; } catch { /* off */ }
-    if (mode === 'off' || !isEffort(e.effort)) return yield* next(e);
+    const st = await stateOf($, o, override);
+    // The matcher already leaves Opus out; this check keeps Opus untouched even if the hook is called directly.
+    if (!PACED.test(e.model ?? '') || st.mode === 'off' || !isEffort(e.effort)) return yield* next(e);
 
     const { cls, reason } = classifyStep(e.index, calls, o.bigEditLines);
+    const pivot = cls === 'pivot';
     let jev: ChoiceAnswer | null = null;
     let jevMs: number | undefined;
     let jevError: string | undefined;
-    if (cls === 'pivot' && o.jev && stats.jevCalls < o.jevBudget) {
+    let asked = false;
+    if (pivot && o.jev && (await jevUsed($, o, stats.jevCalls)) < o.jevBudget) {
+      asked = true;
       stats.jevCalls++;
       const t = await $.clock.now();
       try {
@@ -151,19 +197,30 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
       stats.jevMs.push(jevMs);
     }
     const { effort, source } = chooseEffort(cls, e.effort as Effort, jev, o.jevMinConfidence);
-    const send = mode === 'apply' && effort !== e.effort;
-    if (send) stats.changed++;
+    const applied = st.mode === 'apply' && effort !== e.effort;
+    if (applied) stats.changed++;
+    // Why a pivot's Jev answer did or did not decide the effort, for the telemetry and the status.
+    const why = !pivot ? undefined
+      : !o.jev ? 'jev_off'
+      : !asked ? 'budget_exhausted'
+      : source === 'explicit_high' ? 'explicit_xhigh'
+      : jevError ? `error:${jevError}`
+      : !jev ? 'no_answer'
+      : jev.p < o.jevMinConfidence ? 'low_confidence'
+      : jev.choice === e.effort ? 'jev_same_as_session'
+      : 'jev_chosen';
 
     const t0 = await $.clock.now();
-    const res = yield* next(send ? { ...e, effort } : e);
+    const res = yield* next(applied ? { ...e, effort } : e);
     const ms = (await $.clock.now()) - t0;
     const u = res.usage as (Record<string, number> & { model?: string }) | null;
     stats.steps++;
     const c = (stats.byClass[cls] ??= { steps: 0, ms: [], out: [] });
     c.steps++; c.ms.push(ms); c.out.push(u?.output_tokens ?? 0);
     await emit($, o, {
-      event: 'step', mode, agentId: e.agentId ?? 'main', turnId: e.turnId, index: e.index, cls, reason,
-      effortBefore: e.effort, effortChosen: effort, applied: send, source,
+      event: 'step', mode: st.mode, agentId: e.agentId ?? 'main', model: e.model, turnId: e.turnId, index: e.index, cls, reason,
+      effortBefore: e.effort, effortChosen: effort, applied, source,
+      ...(why ? { why } : {}),
       ...(jev ? { jev: jev.choice, jevP: Number(jev.p.toFixed(2)) } : {}), ...(jevError ? { jevError } : {}), ...(jevMs !== undefined ? { jevMs } : {}),
       ms, out: u?.output_tokens ?? null, cacheRead: u?.cache_read_input_tokens ?? null, cacheWrite: u?.cache_creation_input_tokens ?? null,
       stop: res.stopReason, tools: res.toolUses.length,

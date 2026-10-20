@@ -1,7 +1,7 @@
 {
   "name": "haiku-100k",
-  "version": "0.8.0",
-  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and haiku-pace (per-step effort for Haiku: low on routine read steps, TypeSafe Jev picks it on pivot steps; stops foreground commands that would hold a turn for minutes; /haiku-pace, HAIKU_PACE=off).",
+  "version": "0.8.1",
+  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and haiku-pace (per-step effort for Haiku and Sonnet, Opus untouched: low on routine read steps, TypeSafe Jev picks it on pivot steps; stops Bash calls that would hold a turn for minutes, every model; /haiku-pace, HAIKU_PACE=off).",
   "author": {
     "name": "Danh Nguyen"
   },
@@ -10,7 +10,7 @@
     "paceMode": {
       "type": "string",
       "title": "Pace: Mode",
-      "description": "Per-step effort for Haiku requests. apply: send the chosen effort; shadow: log it only; off. Env HAIKU_PACE and /haiku-pace override it.",
+      "description": "Per-step effort for Haiku and Sonnet requests (Opus is not paced). apply: send the chosen effort; shadow: log it only; off: no effort change, the long-command guard stays on. Env HAIKU_PACE and /haiku-pace override it; HAIKU_PACE=off disables the whole mod.",
       "default": "apply",
       "options": [
         "apply",

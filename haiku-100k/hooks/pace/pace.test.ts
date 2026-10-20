@@ -1,8 +1,9 @@
-import { expect, test } from 'claude-code/testing'
+import { expect, mock, test } from 'claude-code/testing'
 import {
-  chooseEffort, classifyStep, failureOf, guardCommand, isReadOnlyCall, paceRequest, parsePace,
+  chooseEffort, classifyStep, failureOf, guardCommand, guardStateOf, isReadOnlyCall, paceRequest, parsePace,
   readPaceOptions, resolvePaceMode, type StepCall,
 } from './core'
+import { registerPace } from './register'
 
 const call = (x: Partial<StepCall>): StepCall => ({ tool: 'Read', action: 'Read a.ts', readOnly: true, failed: false, error: '', editedLines: 0, ...x })
 
@@ -41,15 +42,30 @@ test('failures: nonzero exit, error result, failing test summary; the 100k size 
   expect(failureOf({ deny: 'Permission denied' }).failed).toBe(true)
 })
 
-test('guard: GNU timeout in ms, a foreground claude run and python - heredoc are stopped', () => {
+test('guard: GNU timeout in ms is stopped; GNU timeout in seconds, Windows timeout and plain text are not', () => {
   expect(guardCommand('timeout 300000 claude plugin test . 2>&1 | tail -30', true)).toContain('300000 seconds')
+  expect(guardCommand('cd x && timeout 300000 npm test', false)).toContain('300000 seconds')
+  expect(guardCommand('timeout --foreground 3600 npm test', false)).toContain('3600 seconds')
   expect(guardCommand('timeout 300 npm test', false)).toBe(null)
   expect(guardCommand('timeout -k 5 480 npm test', false)).toBe(null)
+  expect(guardCommand('timeout /t 300', false)).toBe(null)
+  expect(guardCommand('timeout /nobreak /t 3600', false)).toBe(null)
+  expect(guardCommand('echo timeout 300000', false)).toBe(null)
+  expect(guardCommand('npm run timeout 3600', false)).toBe(null)
   expect(guardCommand('claude plugin test ./haiku-100k > out.log', false)).toContain('run_in_background')
   expect(guardCommand('claude plugin test ./haiku-100k > out.log', true)).toBe(null)
   expect(guardCommand("cd x && python - <<'EOF' 2>/dev/null || node -e 1", false)).toContain('python -')
   expect(guardCommand('python script.py', false)).toBe(null)
   expect(guardCommand('npm test', false)).toBe(null)
+})
+
+test('guard state: HAIKU_PACE=off kills everything; /haiku-pace off keeps the guard; shadow only logs', () => {
+  expect(guardStateOf(undefined, 'apply')).toBe('deny')
+  expect(guardStateOf(undefined, 'off')).toBe('deny')
+  expect(guardStateOf(undefined, 'shadow')).toBe('log')
+  expect(guardStateOf('shadow', 'shadow')).toBe('log')
+  expect(guardStateOf('off', 'apply')).toBe('killed')
+  expect(guardStateOf(' OFF ', 'shadow')).toBe('killed')
 })
 
 test('Jev request is redacted and its answer parsed strictly', () => {
@@ -70,8 +86,69 @@ test('options and mode: apply by default, env wins over the session, the session
   expect(resolvePaceMode(undefined, undefined, 'apply')).toBe('apply')
 })
 
-test('a Bash call outside a Haiku session passes through the guard', async ($, on) => {
-  on('tool.call', () => ({ result: { stdout: 'ok', stderr: '', interrupted: false } } as never))
-  const r = await $.tool.call({ tool: 'Bash', command: 'timeout 300000 sleep 1' } as never)
-  expect(r.deny).toBe(undefined)
+test('the long-command guard applies to Opus too: a Bash call with a ms timeout is denied', async ($, on) => {
+  on('tool.call', () => ({ text: 'ran' } as never))
+  registerPace(on as never, { paceJev: false } as never)
+  const r = await $.tool.call({ tool: 'Bash', command: 'timeout 300000 sleep 1', model: 'claude-opus-5-5' } as never)
+  expect(String(r.deny)).toContain('300000 seconds')
+})
+
+// $.turn.step returns a lazy HookStream: the chain runs only as its chunks are read. A step is run by
+// reading it to the end and then taking its result. The base hook (registered last, so beneath pace)
+// records the effort it was handed and answers a plain response.
+async function runStep($: { turn: { step: (input: unknown) => AsyncIterable<unknown> & { result: Promise<unknown> } } }, input: Record<string, unknown>) {
+  const stream = $.turn.step(input)
+  for await (const _chunk of stream) { /* the base hook yields no chunks */ }
+  return stream.result
+}
+
+const answer = { turnId: 't', index: 0, answer: '', toolUses: [], stopReason: 'end_turn', usage: null }
+
+// The plugin under test registers its own pace hook from these options (the manifest defaults when not given).
+test('turn.step, Opus: pace does not run; the effort handed on is the session effort, unchanged (hook level)', { options: { paceMode: 'apply', paceJev: false } }, async ($, on) => {
+  const sent: string[] = []
+  mock.clock(on as never) // pace times its Jev and telemetry steps with $.clock.now
+  on('turn.step', async function* (_$, e) {
+    sent.push(String(e.effort))
+    return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
+  } as never)
+  // A turn-start pivot would be raised to high for Haiku or Sonnet; Opus keeps medium.
+  await runStep($ as never, { model: 'claude-opus-5-5', effort: 'medium', index: 0, turnId: 'opus-1', messageCount: 1 })
+  expect(sent).toEqual(['medium'])
+})
+
+test('turn.step, Sonnet, apply: a turn-start pivot is raised from medium to high (hook level)', { options: { paceMode: 'apply', paceJev: false } }, async ($, on) => {
+  const sent: string[] = []
+  mock.clock(on as never)
+  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  on('turn.step', async function* (_$, e) {
+    sent.push(String(e.effort))
+    return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
+  } as never)
+  await runStep($ as never, { model: 'claude-sonnet-5-5', effort: 'medium', index: 0, turnId: 'sonnet-1', messageCount: 1 })
+  expect(sent).toEqual(['high'])
+})
+
+test('turn.step, Sonnet, shadow: the same pivot is logged but the effort is left at medium (hook level)', { options: { paceMode: 'shadow', paceJev: false } }, async ($, on) => {
+  const sent: string[] = []
+  mock.clock(on as never)
+  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  on('turn.step', async function* (_$, e) {
+    sent.push(String(e.effort))
+    return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
+  } as never)
+  await runStep($ as never, { model: 'claude-sonnet-5-5', effort: 'medium', index: 0, turnId: 'sonnet-2', messageCount: 1 })
+  expect(sent).toEqual(['medium'])
+})
+
+test('turn.step, Sonnet, off: no effort change (hook level)', { options: { paceMode: 'off', paceJev: false } }, async ($, on) => {
+  const sent: string[] = []
+  mock.clock(on as never)
+  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  on('turn.step', async function* (_$, e) {
+    sent.push(String(e.effort))
+    return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
+  } as never)
+  await runStep($ as never, { model: 'claude-sonnet-5-5', effort: 'medium', index: 0, turnId: 'sonnet-3', messageCount: 1 })
+  expect(sent).toEqual(['medium'])
 })

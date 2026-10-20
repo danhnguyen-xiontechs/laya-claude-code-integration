@@ -37,6 +37,15 @@ export function resolvePaceMode(env: string | undefined, session: PaceMode | und
   return session ?? config;
 }
 
+/**
+ * The long-command guard is its own switch. HAIKU_PACE=off is the kill switch for the whole mod.
+ * Otherwise it denies in apply and off (adaptation off, guard still on) and only logs in shadow.
+ */
+export function guardStateOf(env: string | undefined, mode: PaceMode): 'deny' | 'log' | 'killed' {
+  if ((env ?? '').trim().toLowerCase() === 'off') return 'killed';
+  return mode === 'shadow' ? 'log' : 'deny';
+}
+
 const RANK: Record<Effort, number> = { low: 0, medium: 1, high: 2, xhigh: 3, max: 4 };
 export const isEffort = (v: unknown): v is Effort => typeof v === 'string' && v in RANK;
 
@@ -155,9 +164,17 @@ export const LONG_COMMANDS = /\bclaude\s+(?:plugin\s+(?:test|eval)\b|-p\b|--prin
 /** `python -` reading a heredoc: hung twice in Git Bash here (321 s in session 830cca7b). */
 export const STDIN_PYTHON = /\bpython3?(?:\.exe)?\s+-(?=\s|$)[^\n]*<</;
 
+/**
+ * GNU `timeout` as a command word: at the start of a line or after a shell separator (; && || | ( ),
+ * then options, then a bare integer of seconds. Not `echo timeout 300`, not `npm run timeout 300`,
+ * not a path such as `timeout/x`. Windows `timeout /t 300` has a `/` flag and never matches.
+ * This guard only runs on the Bash tool (Git Bash here), so the GNU reading is the right one.
+ */
+export const GNU_TIMEOUT = /(?:^|[;&|(]\s*)timeout\s+(?:-[a-zA-Z-]+(?:[ =]\S+)?\s+)*(\d+)(?![\w./])/gm;
+
 /** A deny text for a Bash call that would hold the turn for a long time, else null. */
 export function guardCommand(command: string, background: boolean): string | null {
-  for (const m of command.matchAll(/\btimeout\s+(?:-[a-zA-Z-]+(?:[ =]\S+)?\s+)*(\d+)(?![\w.])/g)) {
+  for (const m of command.matchAll(GNU_TIMEOUT)) {
     const n = Number(m[1]);
     if (n >= 3600)
       return `[haiku-pace] \`timeout ${n}\` is ${n} seconds (≈ ${(n / 3600).toFixed(1)} h): GNU timeout counts seconds, not milliseconds. Use e.g. \`timeout ${Math.max(1, Math.round(n / 1000))}\`, or run_in_background for a long job.`;
