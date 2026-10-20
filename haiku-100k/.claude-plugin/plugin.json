@@ -1,6 +1,6 @@
 {
   "name": "haiku-100k",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off).",
   "author": {
     "name": "Danh Nguyen"
@@ -106,6 +106,47 @@
       "type": "string",
       "title": "Reliability: Extra eligible commands",
       "description": "Comma-separated command prefixes treated as tests.",
+      "default": ""
+    },
+    "ruleC": {
+      "type": "boolean",
+      "title": "Reliability: Rule C: refusal loops",
+      "description": "In enforce mode, deny resending a call the harness refused, and any retry of an action the user denied (by another tool, shell or path) until /reliability allow lifts it.",
+      "default": true
+    },
+    "jevAdvisor": {
+      "type": "string",
+      "title": "Reliability: Jev Recovery Advisor",
+      "description": "off: no call. shadow: from the 2nd consecutive failure, ask TypeSafe Jev for one of 5 recovery actions and log it only. apply (enforce mode): carry the decision out inside the core limits. shadow/apply send a redacted incident summary (commands, short error text, no file contents) to TypeSafe Jev via OpenRouter (needs OPENROUTER_API_KEY) and cost money per call.",
+      "default": "off",
+      "options": [
+        "off",
+        "shadow",
+        "apply"
+      ]
+    },
+    "jevAdvisorMinConfidence": {
+      "type": "number",
+      "title": "Reliability: Jev advisor min probability",
+      "description": "next_step must reach this probability to be applied; below it the v0.2 behaviour stays.",
+      "default": 0.6
+    },
+    "includePromptInJev": {
+      "type": "boolean",
+      "title": "Reliability: Send the user prompt to Jev",
+      "description": "Adds the last user prompt (redacted, 300 chars) to the advisor request. Off by default.",
+      "default": false
+    },
+    "datasetCapture": {
+      "type": "boolean",
+      "title": "Reliability: Local failure dataset",
+      "description": "One sanitized line per failed attempt, refusal, Jev decision and incident end to attempts-YYYY-MM.jsonl (no tool output, no file contents, no prompt). Local only.",
+      "default": true
+    },
+    "datasetDir": {
+      "type": "string",
+      "title": "Reliability: Dataset folder",
+      "description": "Absolute folder for attempts-YYYY-MM.jsonl. Empty = ~/.claude/agent-reliability/dataset (outside the plugin and the repo).",
       "default": ""
     }
   }

@@ -1,7 +1,7 @@
 {
   "name": "agent-reliability",
-  "version": "0.2.0",
-  "description": "Stops unproductive retry loops: blocks a test/build that already failed the same way with nothing changed (Rule B), and after two failed recovery attempts asks for an Opus recovery agent, then the user (Rule A). Observe mode by default; AGENT_RELIABILITY=off is the kill switch.",
+  "version": "0.3.0",
+  "description": "Stops unproductive retry loops: blocks a test/build that already failed the same way with nothing changed (Rule B), refuses to resend refused calls and never works around a user denial (Rule C), escalates after failed recovery attempts (Rule A), and optionally asks TypeSafe Jev for the next recovery step from the 2nd failure (Jev Recovery Advisor: off / shadow / apply). Observe mode by default; AGENT_RELIABILITY=off is the kill switch.",
   "author": { "name": "Danh Nguyen" },
   "types": "./types/index.d.ts",
   "userConfig": {
@@ -20,6 +20,12 @@
     "jevTimeoutMs": { "type": "number", "title": "JEV timeout (ms)", "description": "Decision budget; on timeout the call is allowed.", "default": 4000 },
     "jevMinConfidence": { "type": "number", "title": "JEV min confidence", "description": "block_redundant_retry must reach this probability to block.", "default": 0.8 },
     "mainAgentOnly": { "type": "boolean", "title": "Main agent only", "description": "Leave subagent verification calls alone (subagents are tracked separately when off).", "default": true },
-    "extraEligible": { "type": "string", "title": "Extra eligible commands", "description": "Comma-separated command prefixes treated as tests.", "default": "" }
+    "extraEligible": { "type": "string", "title": "Extra eligible commands", "description": "Comma-separated command prefixes treated as tests.", "default": "" },
+    "ruleC": { "type": "boolean", "title": "Rule C: refusal loops", "description": "In enforce mode, deny resending a call the harness refused, and any retry of an action the user denied (by another tool, shell or path) until /reliability allow lifts it.", "default": true },
+    "jevAdvisor": { "type": "string", "title": "Jev Recovery Advisor", "description": "off: no call. shadow: from the 2nd consecutive failure, ask TypeSafe Jev for one of 5 recovery actions and log it only. apply (enforce mode): carry the decision out inside the core limits. shadow/apply send a redacted incident summary (commands, short error text, no file contents) to TypeSafe Jev via OpenRouter (needs OPENROUTER_API_KEY) and cost money per call.", "default": "off", "options": ["off", "shadow", "apply"] },
+    "jevAdvisorMinConfidence": { "type": "number", "title": "Jev advisor min probability", "description": "next_step must reach this probability to be applied; below it the v0.2 behaviour stays.", "default": 0.6 },
+    "includePromptInJev": { "type": "boolean", "title": "Send the user prompt to Jev", "description": "Adds the last user prompt (redacted, 300 chars) to the advisor request. Off by default.", "default": false },
+    "datasetCapture": { "type": "boolean", "title": "Local failure dataset", "description": "One sanitized line per failed attempt, refusal, Jev decision and incident end to attempts-YYYY-MM.jsonl (no tool output, no file contents, no prompt). Local only.", "default": true },
+    "datasetDir": { "type": "string", "title": "Dataset folder", "description": "Absolute folder for attempts-YYYY-MM.jsonl. Empty = ~/.claude/agent-reliability/dataset (outside the plugin and the repo).", "default": "" }
   }
 }

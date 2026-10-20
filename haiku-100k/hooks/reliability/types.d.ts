@@ -20,7 +20,37 @@ export type FailureRecord = {
 
 export type AuditEntry = { t: number; action: string; decision: string; reason: string; jev?: string };
 
-export type IncidentState = 'OPEN' | 'ESCALATION_REQUESTED' | 'ESCALATED' | 'NEEDS_USER' | 'CLOSED';
+export type IncidentState =
+  | 'OPEN' | 'ESCALATION_REQUESTED' | 'ESCALATED' | 'NEEDS_USER' | 'CLOSED'
+  /** 0.3, set only by an applied Jev decision: an external blocker / automatic recovery stopped. Never success. */
+  | 'BLOCKED' | 'STOPPED'
+  /** 0.3: a new user prompt ended the incident (resolution says how); kept for the report. */
+  | 'SUPERSEDED';
+
+/** One failed attempt of an incident, redacted, as the Jev advisor sees it. */
+export type Attempt = { tool: string; action: string; error: string; changes: string[] };
+
+/** The 5 recovery actions the Jev advisor chooses from. */
+export type NextAction = 'RETRY_NEW_STRATEGY' | 'ESCALATE_MODEL' | 'ASK_USER' | 'MARK_BLOCKED' | 'STOP_AND_REPORT';
+
+export type RefusalKind = 'harness_refusal' | 'user_denied';
+
+/** Rule C: a refused call. `core` = command key (Bash/PS), `raw` = the form refused, `file` = file key. */
+export type Refusal = {
+  n: number;
+  kind: RefusalKind;
+  /** harness only: the form was refused (another form may pass); false = the action needs approval. */
+  form: boolean;
+  agent: string;
+  tool: string;
+  label: string;
+  core?: string;
+  raw?: string;
+  file?: string;
+  at: number;
+  /** user_denied only: lifted by /reliability allow. */
+  lifted?: boolean;
+};
 
 export type Incident = {
   id: string;
@@ -43,6 +73,20 @@ export type Incident = {
   recoveryAgentId?: string;
   recoveryBackground?: boolean;
   recoveryDone?: boolean;
+  /** 0.3: 'verify' = Rule A verification (default), 'streak' = any other failing Bash/PS/Edit/Write key. */
+  kind?: 'verify' | 'streak';
+  /** 0.3: the last 4 failed attempts (redacted). */
+  attempts?: Attempt[];
+  /** 0.3: the current state was set by an applied Jev decision (else by Rule A). */
+  decidedBy?: 'jev';
+  /** 0.3: Jev already escalated this incident once. */
+  jevEscalated?: boolean;
+  /** 0.3: RETRY_NEW_STRATEGY applied: a near-identical rerun with nothing changed is denied. */
+  retryArmed?: { epoch: number; actions: string[] };
+  /** 0.3: opened after a NEEDS_USER that a prompt ended: budget 1. */
+  afterNeedsUser?: boolean;
+  /** 0.3: why it ended (SUPERSEDED: prompt_received; CLOSED: pass / success). */
+  resolution?: string;
   openedAt: number;
   updatedAt: number;
 };
@@ -61,6 +105,17 @@ export type GuardState = {
   modeOverride?: Mode;
   stats: { eligible: number; wouldBlock: number; blocked: number; jevCalls: number; jevErrors: number; escalations: number; failOpen: number };
   audit: AuditEntry[];
+  /** 0.3 Rule C. */
+  refusals: Refusal[];
+  nextRefusal: number;
+  /** 0.3: consecutive refusals per agent. */
+  refusalStreak: Record<string, number>;
+  /** 0.3: keys whose NEEDS_USER incident a prompt ended: the next incident on the key gets budget 1. */
+  needsUserKeys: string[];
+  /** 0.3: the last Jev advisor decisions, for /reliability. */
+  jevLog: { t: number; incident: string; action: string; decision: string; p: number; applied: string }[];
+  /** 0.3: the last user prompt, redacted (kept only when includePromptInJev). */
+  lastPrompt?: string;
 };
 
 declare module 'claude-code' {

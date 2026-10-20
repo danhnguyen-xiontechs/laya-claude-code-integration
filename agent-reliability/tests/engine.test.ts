@@ -63,10 +63,44 @@ test('a successful Edit between attempts lets the rerun through', ENFORCE, async
   expect(runs.length).toBe(3);
 });
 
-test('a permission denial is not recorded as a failure', ENFORCE, async ($, on) => {
+test('a permission denial is not a failure, and Rule C refuses to resend it', ENFORCE, async ($, on) => {
   const runs = fakeTools(on, () => 'perm');
-  for (let i = 0; i < 4; i++) await bash($, 'npm test');
-  expect(runs.length).toBe(4);
+  await bash($, 'npm test');
+  const second = await bash($, 'npm test');
+  expect(runs.length).toBe(1);
+  expect(second.deny ?? '').toContain('the user denied');
+  const r = await $.command.run({ command: 'reliability', args: '' } as never) as { text?: string };
+  expect(r.text ?? '').not.toContain('×'); // no Rule B failure record
+});
+
+test('Rule C: a user denial is not lifted by a new prompt, only by /reliability allow', ENFORCE, async ($, on) => {
+  const runs = fakeTools(on, () => 'perm');
+  on('prompt.submit', (_$, e) => ({ text: e.text }) as never);
+  await bash($, 'git push origin main');
+  await $.prompt.submit({ text: 'now fix the readme' } as never);
+  const again = await bash($, 'cd D:/repo && git push origin main 2>&1 | tail -5');
+  expect(again.deny ?? '').toContain('/reliability allow 1');
+  expect(runs.length).toBe(1);
+  await $.command.run({ command: 'reliability', args: 'allow 1' } as never);
+  await bash($, 'git push origin main');
+  expect(runs.length).toBe(2);
+});
+
+test('Rule C: a user-denied Edit also blocks Write on the same file', ENFORCE, async ($, on) => {
+  mock.clock(on);
+  let writes = 0;
+  on('tool.call', { tool: 'Edit' }, () => ({ isError: true as const, result: 'x', text: "The user doesn't want to proceed with this tool use. The tool use was rejected." }));
+  on('tool.call', { tool: 'Write' }, () => { writes++; return { result: { type: 'update', filePath: 'a', content: '', structuredPatch: [] } as never }; });
+  await $.tool.call({ tool: 'Edit', tool_use_id: 'toolu_d1', file_path: 'D:\\repo\\src\\a.ts', old_string: 'x', new_string: 'y' } as never);
+  const w = await $.tool.call({ tool: 'Write', tool_use_id: 'toolu_d2', file_path: '/d/repo/src/a.ts', content: 'y' } as never) as { deny?: string };
+  expect(writes).toBe(0);
+  expect(w.deny ?? '').toContain('the user denied');
+});
+
+test('cd-prefixed, piped verification is recognised; a piped run without a summary is not a pass', ENFORCE, async ($, on) => {
+  const runs = fakeTools(on);
+  for (let i = 0; i < 3; i++) await bash($, 'cd D:/proj && npm test 2>&1 | tail -20');
+  expect(runs.length).toBe(2); // the piped fails carry isError here; the third identical repeat is blocked
 });
 
 test('side-effect and compound commands are never guarded', ENFORCE, async ($, on) => {
@@ -232,6 +266,61 @@ test('Rule A lifecycle: ESCALATED only on spawn; no NEEDS_USER while recovery ru
 });
 
 /** Captures telemetry writes (path only) under a fixed session id; reads answer nothing. */
+/** A fake Jev decisions endpoint answering `next_step` with `action` at p 0.9; counts the calls. */
+function fakeJev(on: On, action: string) {
+  const calls: unknown[] = [];
+  const probs = Object.fromEntries(['RETRY_NEW_STRATEGY', 'ESCALATE_MODEL', 'ASK_USER', 'MARK_BLOCKED', 'STOP_AND_REPORT'].map((a) => [a, a === action ? 0.9 : 0.025]));
+  on('http.fetch', (_$, e) => {
+    calls.push(JSON.parse(String((e as { init?: { body?: string } }).init?.body ?? '{}')));
+    const answers = {
+      failure_kind: { choice: 'environment_or_external', probabilities: { environment_or_external: 0.8, real_failure: 0.2 } },
+      same_approach: { noul: 0.7 },
+      next_step: { choice: action, probabilities: probs },
+    };
+    return { value: { status: 200, ok: true, headers: {}, text: JSON.stringify({ answers }) } } as never;
+  });
+  return calls;
+}
+
+const AZ = 'Exit code 1\nERROR: Before you can run Azure DevOps commands, you need to run the login command(az login if using AAD/MSA identity else az devops login if using PAT token) to setup credentials.';
+
+test('advisor shadow: asked from the 2nd failure, logs only, never changes the call', { options: { mode: 'enforce', jevAdvisor: 'shadow' } }, async ($, on) => {
+  mock.env(on, { OPENROUTER_API_KEY: 'k' });
+  const calls = fakeJev(on, 'ASK_USER');
+  const runs: string[] = [];
+  mock.clock(on); fakeGit(on);
+  on('tool.call', { tool: 'Bash' }, (_$, e) => { runs.push(e.command); return { isError: true as const, result: AZ, text: AZ }; });
+  await bash($, 'az boards work-item show --id 27621');
+  expect(calls.length).toBe(0);
+  const second = await bash($, 'az boards work-item show --id 27621 --org https://dev.azure.com/x') as { context?: string[] };
+  expect(calls.length).toBe(1);
+  expect(second.context ?? []).toEqual([]);
+  await bash($, 'az boards work-item show --id 27621');
+  expect(runs.length).toBe(3);
+});
+
+test('advisor apply: ASK_USER becomes NEEDS_USER with a note; the key is held until the next prompt', { options: { mode: 'enforce', jevAdvisor: 'apply' } }, async ($, on) => {
+  mock.env(on, { OPENROUTER_API_KEY: 'k' });
+  const calls = fakeJev(on, 'ASK_USER');
+  const runs: string[] = [];
+  mock.clock(on); fakeGit(on);
+  on('prompt.submit', (_$, e) => ({ text: e.text }) as never);
+  on('tool.call', { tool: 'Bash' }, (_$, e) => { runs.push(e.command); return { isError: true as const, result: AZ, text: AZ }; });
+  await bash($, 'az boards work-item show --id 27621');
+  const second = await bash($, 'az boards work-item show --id 27621 --org https://dev.azure.com/x') as { context?: string[] };
+  expect((second.context ?? []).join(' ')).toContain('Jev: ASK_USER');
+  const third = await bash($, 'az boards work-item list');
+  expect(third.deny ?? '').toContain('needs the user');
+  expect(runs.length).toBe(2);
+  // A new prompt ends the wait, not the question: one attempt, then NEEDS_USER again, no new Jev call.
+  await $.prompt.submit({ text: 'I ran az login' } as never);
+  await bash($, 'az boards work-item show --id 27621');
+  const fifth = await bash($, 'az boards work-item show --id 27621');
+  expect(runs.length).toBe(3);
+  expect(fifth.deny ?? '').toContain('needs the user');
+  expect(calls.length).toBe(1);
+});
+
 function captureWrites(on: On): string[] {
   const paths: string[] = [];
   on('session.id', () => ({ value: 'sess1' }) as never);

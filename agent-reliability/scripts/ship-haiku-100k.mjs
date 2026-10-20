@@ -19,6 +19,7 @@ const FILES = [
   ['hooks/core.ts', 'core.ts'],
   ['hooks/incident.ts', 'incident.ts'],
   ['hooks/io.ts', 'io.ts'],
+  ['hooks/advisor.ts', 'advisor.ts'],
   ['hooks/register.ts', 'register.ts'],
   ['types/index.d.ts', 'types.d.ts'],
   ['tests/engine.test.ts', 'engine.test.ts'],
@@ -38,11 +39,19 @@ for (const [from, to] of FILES) {
 }
 
 // One hooks module per plugin and one unmatched session.start per event: haiku-100k's own
-// register.ts calls startSession from its session.start and registerHooks at its end (by hand).
+// register.ts writes startSession's registrations out in its session.start (the runtime cannot
+// follow $ into an imported startSession) and calls registerHooks at its end (by hand).
 const host = fs.readFileSync(path.join(plugin, 'hooks', 'register.ts'), 'utf8');
-if (!host.includes('startSession($)') || !host.includes('registerHooks(on, options)')) {
-  console.error('haiku-100k/hooks/register.ts must call startSession($) and registerHooks(on, options) from ./reliability/register.ts');
+if (!host.includes("name: 'reliability'") || !host.includes("name: 'retry-guard'") || !host.includes('RECOVERY_AGENT') || !host.includes('registerHooks(on, options)')) {
+  console.error('haiku-100k/hooks/register.ts must register /reliability, /retry-guard and RECOVERY_AGENT in session.start, and call registerHooks(on, options)');
   process.exit(1);
+}
+
+// Skills ship as they are, one folder each, into haiku-100k/skills/ (0.3: reliability-report).
+const skillsSrc = path.join(src, 'skills');
+if (fs.existsSync(skillsSrc)) {
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(path.join(dir, d.name)) : [path.join(dir, d.name)]));
+  for (const file of walk(skillsSrc)) out.set(path.join(plugin, 'skills', path.relative(skillsSrc, file)), fs.readFileSync(file, 'utf8'));
 }
 
 const manifestPath = path.join(plugin, '.claude-plugin', 'plugin.json');

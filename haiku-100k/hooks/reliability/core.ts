@@ -33,6 +33,18 @@ export type Options = {
   telemetryDir: string;
   /** Phase 0 diagnostics: filtered result fields to diag-<sid>.jsonl. Off unless set. */
   dumpRaw: boolean;
+  /** 0.3 Rule C: refused calls (harness / user) are not resent; user denials are never worked around. */
+  ruleC: boolean;
+  /** 0.3 Jev Recovery Advisor: off | shadow (decide + log) | apply (enforce mode only). */
+  jevAdvisor: 'off' | 'shadow' | 'apply';
+  /** next_step probability an advisor decision needs to be applied; below it v0.2 behaviour stays. */
+  jevAdvisorMinConfidence: number;
+  /** Send the last user prompt (redacted, 300 chars) to Jev. */
+  includePromptInJev: boolean;
+  /** Local sanitized attempt records (attempts-YYYY-MM.jsonl). */
+  datasetCapture: boolean;
+  /** Dataset folder; '' = ~/.claude/agent-reliability/dataset. */
+  datasetDir: string;
 };
 
 export const DEFAULTS: Options = {
@@ -53,6 +65,12 @@ export const DEFAULTS: Options = {
   telemetry: true,
   telemetryDir: '',
   dumpRaw: false,
+  ruleC: true,
+  jevAdvisor: 'off',
+  jevAdvisorMinConfidence: 0.6,
+  includePromptInJev: false,
+  datasetCapture: true,
+  datasetDir: '',
 };
 
 import type { AuditEntry, Category, FailureRecord, GuardState } from './types.d.ts';
@@ -62,6 +80,7 @@ export const emptyState = (): GuardState => ({
   schema: 2, epoch: 0, records: [], flaky: [], passed: [], incidents: [], nextIncident: 1,
   stats: { eligible: 0, wouldBlock: 0, blocked: 0, jevCalls: 0, jevErrors: 0, escalations: 0, failOpen: 0 },
   audit: [],
+  refusals: [], nextRefusal: 1, refusalStreak: {}, needsUserKeys: [], jevLog: [],
 });
 
 // ---------------------------------------------------------------- eligibility
@@ -82,6 +101,13 @@ const RUNNERS: [RegExp, Category][] = [
   [/^(mvn|\.\/mvnw) (test|verify)\b/, 'test_run'],
   [/^(gradle|\.\/gradlew) test\b/, 'test_run'],
   [/^claude plugin (test|validate)\b/, 'test_run'],
+  // 0.3, runner spellings seen in the transcript history
+  [/^(npm|pnpm) (--prefix|-C) \S+ (run )?test\b/, 'test_run'],
+  [/^(npm|pnpm) (--prefix|-C) \S+ run (build|typecheck|type-check|lint|check)\b/, 'build'],
+  [/^yarn --cwd \S+ (run )?test\b/, 'test_run'],
+  [/^py(thon)?(3|\.exe)? -m (pytest|unittest)\b/, 'test_run'],
+  [/^\S*\/python(3|\.exe)? -m (pytest|unittest)\b/, 'test_run'],
+  [/^uv run (pytest|python -m pytest)\b/, 'test_run'],
 ];
 
 /** Shell syntax the guard will not reason about: pipes, chains, redirects, substitutions, env prefixes, background. */
@@ -91,10 +117,67 @@ export function normalizeCommand(command: string): string {
   return command.trim().replace(/\\/g, '/').replace(/\s+/g, ' ').replace(/^\.\/node_modules\/\.bin\//, '');
 }
 
+export type Unwrapped = { core: string; cdPath: string | null; piped: boolean };
+
+const CD_PREFIX = /^\s*(?:cd(?:\s+\/d)?|Set-Location|Push-Location|sl|pushd)\s+(?:-(?:Literal)?Path\s+)?("[^"]+"|'[^']+'|[^\s;&|]+)\s*(?:&&|;)\s*/i;
+const TAIL_PIPE = /\s*\|\s*(?:tail|head|Select-Object|select)\b[^|;&<>`]*$/i;
+const MERGE_ERR = /\s*2>&1\s*$/;
+
+/**
+ * The command as the guard classifies it: a leading `cd <dir> &&` / `Set-Location <dir>;`, a trailing
+ * `2>&1` and a trailing `| tail|head|Select-Object …` are stripped. Classification and keys only:
+ * the command that runs is never changed. `piped`: the exit code is the pipe's, not the runner's.
+ */
+export function unwrapCommand(command: string): Unwrapped {
+  let c = String(command ?? '').trim();
+  let cdPath: string | null = null;
+  let piped = false;
+  for (let i = 0; i < 2; i++) {
+    const m = CD_PREFIX.exec(c);
+    if (!m) break;
+    cdPath = (m[1] ?? '').replace(/^["']|["']$/g, '').replace(/\\/g, '/');
+    c = c.slice(m[0].length);
+  }
+  for (let i = 0; i < 4; i++) {
+    const before = c;
+    c = c.replace(TAIL_PIPE, () => { piped = true; return ''; }).replace(MERGE_ERR, '');
+    if (c === before) break;
+  }
+  return { core: normalizeCommand(c), cdPath, piped };
+}
+
+/**
+ * A runner's own summary line, for a piped run whose exit code is the pipe's. 'fail' and 'pass'
+ * only on an explicit summary; null = no evidence (the run is then AMBIGUOUS).
+ */
+export function testSummaryOf(text: string): 'fail' | 'pass' | null {
+  const t = String(text ?? '').slice(-20_000);
+  const fail =
+    /ℹ fail [1-9]/.test(t) || /^✖ failing tests:/m.test(t) // node --test (the ℹ summary comes before the details a `tail` keeps)
+    || /\bTests?:?\s+[1-9]\d* failed/i.test(t) // jest, vitest
+    || /=+ .*\b[1-9]\d* (failed|errors?)\b.* in [\d.]+s/.test(t) // pytest
+    || /\bFailed!\s+-\s+Failed:\s+[1-9]/.test(t) // dotnet test
+    || /^FAIL\b/m.test(t) // go test, jest file line
+    || /test result: FAILED/.test(t) // cargo
+    || /\berror TS\d{4}\b/.test(t) // tsc
+    || /\bBuild FAILED\b/.test(t);
+  if (fail) return 'fail';
+  const pass =
+    /ℹ fail 0\b/.test(t)
+    || /\bTests?:?\s+\d+ passed/i.test(t)
+    || /=+ \d+ passed\b.* in [\d.]+s/.test(t)
+    || /\bPassed!\s+-\s+Failed:\s+0\b/.test(t)
+    || /test result: ok\./.test(t)
+    || /^ok\s+\S+/m.test(t);
+  return pass ? 'pass' : null;
+}
+
 /** The category of an eligible validation command, or null (then the guard does nothing). */
 export function classify(command: string, extraEligible = ''): Category | null {
-  if (typeof command !== 'string' || COMPOUND.test(command)) return null;
-  const c = normalizeCommand(command);
+  if (typeof command !== 'string') return null;
+  const u = unwrapCommand(command);
+  if (COMPOUND.test(u.core)) return null;
+  const c = u.core;
   for (const [re, cat] of RUNNERS) if (re.test(c)) return cat;
   for (const p of extraEligible.split(',').map((s) => s.trim()).filter(Boolean)) if (c === p || c.startsWith(`${p} `)) return 'test_run';
   return null;
@@ -289,18 +372,43 @@ export function jevRequest(record: FailureRecord, command: string, epochChanged:
 
 export type JevVerdict = { decision: JevDecision; confidence: number } | { error: string };
 
+export type ChoiceAnswer = { choice: string; p: number; probabilities: Record<string, number> };
+
+/**
+ * Strict validation of one decisions response: `spec` names each question and its fixed enum
+ * (choice) or 'noul'. Any missing, off-enum or out-of-range answer is an error, never a guess.
+ */
+export function parseAnswers(json: unknown, spec: Record<string, readonly string[] | 'noul'>): { answers: Record<string, ChoiceAnswer | number> } | { error: string } {
+  const all = (json as { answers?: Record<string, { choice?: unknown; noul?: unknown; probabilities?: Record<string, unknown> }> })?.answers;
+  if (!all || typeof all !== 'object') return { error: 'invalid: no answers' };
+  const answers: Record<string, ChoiceAnswer | number> = {};
+  for (const [name, kind] of Object.entries(spec)) {
+    const a = all[name];
+    if (!a || typeof a !== 'object') return { error: `invalid: no ${name} answer` };
+    if (kind === 'noul') {
+      if (typeof a.noul !== 'number' || !(a.noul >= 0 && a.noul <= 1)) return { error: `invalid: ${name} noul` };
+      answers[name] = a.noul;
+      continue;
+    }
+    const raw = a.probabilities ?? {};
+    const probabilities: Record<string, number> = {};
+    let best: string | null = null, p = -1;
+    for (const d of kind) { const v = raw[d]; if (typeof v === 'number') { probabilities[d] = v; if (v > p) { p = v; best = d; } } }
+    const choice = typeof a.choice === 'string' ? a.choice : best;
+    if (!choice || !kind.includes(choice)) return { error: `invalid: ${name} choice ${String(choice)}` };
+    const conf = typeof probabilities[choice] === 'number' ? (probabilities[choice] as number) : p;
+    if (!(conf >= 0 && conf <= 1)) return { error: `invalid: ${name} confidence` };
+    answers[name] = { choice, p: conf, probabilities };
+  }
+  return { answers };
+}
+
 /** Strict validation of a decisions response: fixed enum, numeric probabilities. */
 export function parseJev(json: unknown): JevVerdict {
-  const a = (json as { answers?: Record<string, { choice?: unknown; probabilities?: Record<string, unknown> }> })?.answers?.decision;
-  if (!a || typeof a !== 'object') return { error: 'invalid: no decision answer' };
-  const probs = a.probabilities ?? {};
-  let best: JevDecision | null = null, p = -1;
-  for (const d of JEV_DECISIONS) { const v = probs[d]; if (typeof v === 'number' && v > p) { p = v; best = d; } }
-  const choice = typeof a.choice === 'string' ? a.choice : best;
-  if (!choice || !(JEV_DECISIONS as readonly string[]).includes(choice)) return { error: `invalid: choice ${String(choice)}` };
-  const conf = typeof probs[choice] === 'number' ? (probs[choice] as number) : p;
-  if (!(conf >= 0 && conf <= 1)) return { error: 'invalid: confidence' };
-  return { decision: choice as JevDecision, confidence: conf };
+  const r = parseAnswers(json, { decision: JEV_DECISIONS });
+  if ('error' in r) return { error: r.error.replace('decision ', '') };
+  const a = r.answers.decision as ChoiceAnswer;
+  return { decision: a.choice as JevDecision, confidence: a.p };
 }
 
 /** Block only on a confident block_redundant_retry; everything else (errors included) allows. */
@@ -327,6 +435,12 @@ export function readOptions(raw: Readonly<Record<string, unknown>> = {}): Option
     telemetry: raw.telemetry !== false,
     telemetryDir: typeof raw.telemetryDir === 'string' ? raw.telemetryDir.trim() : '',
     dumpRaw: raw.dumpRaw === true,
+    ruleC: raw.ruleC !== false,
+    jevAdvisor: raw.jevAdvisor === 'shadow' || raw.jevAdvisor === 'apply' ? raw.jevAdvisor : 'off',
+    jevAdvisorMinConfidence: num('jevAdvisorMinConfidence', DEFAULTS.jevAdvisorMinConfidence),
+    includePromptInJev: raw.includePromptInJev === true,
+    datasetCapture: raw.datasetCapture !== false,
+    datasetDir: typeof raw.datasetDir === 'string' ? raw.datasetDir.trim() : '',
   };
 }
 
@@ -346,5 +460,14 @@ export function resolveMode(env: string | undefined, session: Mode | undefined, 
 export function upgradeState(v: unknown): GuardState {
   const s = v as Partial<GuardState> | undefined;
   if (!s || s.schema !== 2 || !Array.isArray(s.records) || typeof s.epoch !== 'number' || !Array.isArray(s.incidents)) return emptyState();
-  return s as GuardState;
+  // 0.2 → 0.3: same schema, new fields filled in.
+  const e = emptyState();
+  return {
+    ...(s as GuardState),
+    refusals: Array.isArray(s.refusals) ? s.refusals : e.refusals,
+    nextRefusal: typeof s.nextRefusal === 'number' ? s.nextRefusal : e.nextRefusal,
+    refusalStreak: s.refusalStreak && typeof s.refusalStreak === 'object' ? s.refusalStreak : e.refusalStreak,
+    needsUserKeys: Array.isArray(s.needsUserKeys) ? s.needsUserKeys : e.needsUserKeys,
+    jevLog: Array.isArray(s.jevLog) ? s.jevLog : e.jevLog,
+  };
 }

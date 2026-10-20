@@ -4,8 +4,9 @@
 //
 // Only erasable TypeScript here (Node type stripping imports this file in tests).
 
-import type { GuardState, Incident, IncidentState } from '../types/index.d.ts';
-export type { Incident, IncidentState };
+import type { Attempt, GuardState, Incident, IncidentState } from '../types/index.d.ts';
+import { testSummaryOf } from './core.ts';
+export type { Attempt, Incident, IncidentState };
 
 export type Classification = 'PASS' | 'FAIL' | 'EXPECTED_NONZERO' | 'USER_DENIED' | 'AMBIGUOUS';
 
@@ -15,13 +16,24 @@ export type RunView = { deny?: string; isError?: boolean; text?: string; result?
 const DENIED = /(permission|denied|doesn't want to proceed|rejected|not allowed)/i;
 const TIMED_OUT = /command timed out after/i;
 
-export function classifyRun(ran: RunView): { cls: Classification; reason: string } {
+/**
+ * `piped`: the command ended in `| tail/head/Select-Object`, so the exit code is the pipe's.
+ * A non-error piped run is then judged only by the runner's own summary line, else AMBIGUOUS.
+ */
+export function classifyRun(ran: RunView, piped = false): { cls: Classification; reason: string } {
   if (ran.deny !== undefined) return { cls: 'AMBIGUOUS', reason: 'denied_by_hook' };
-  const r = ran.result as { interrupted?: boolean; backgroundTaskId?: string; returnCodeInterpretation?: string } | undefined;
+  const r = ran.result as { interrupted?: boolean; backgroundTaskId?: string; returnCodeInterpretation?: string; stdout?: string } | undefined;
   if (r && typeof r === 'object') {
     if (r.interrupted || r.backgroundTaskId) return { cls: 'AMBIGUOUS', reason: 'interrupted_or_background' };
     if (!ran.isError && typeof r.returnCodeInterpretation === 'string' && r.returnCodeInterpretation)
       return { cls: 'EXPECTED_NONZERO', reason: `runtime:${r.returnCodeInterpretation.slice(0, 40)}` };
+  }
+  if (!ran.isError && piped) {
+    const out = ran.text ?? (r && typeof r === 'object' ? String(r.stdout ?? '') : String(ran.result ?? ''));
+    const sum = testSummaryOf(out);
+    if (sum === 'fail') return { cls: 'FAIL', reason: 'piped_summary_fail' };
+    if (sum === 'pass') return { cls: 'PASS', reason: 'piped_summary_pass' };
+    return { cls: 'AMBIGUOUS', reason: 'piped_no_summary' };
   }
   if (!ran.isError) return { cls: 'PASS', reason: 'no_error' };
   const text = ran.text ?? (typeof ran.result === 'string' ? ran.result : '');
@@ -40,7 +52,8 @@ export function classifyRun(ran: RunView): { cls: Classification; reason: string
 
 export type IncidentOptions = { maxRecoveryStrategies: number; ttlMinutes: number };
 
-const live = (i: Incident) => i.state !== 'CLOSED';
+const live = (i: Incident) => i.state !== 'CLOSED' && i.state !== 'SUPERSEDED';
+export const isLive = live;
 
 export function findIncident(s: GuardState, key: string): Incident | undefined {
   return s.incidents.find((i) => i.key === key && live(i));
@@ -66,7 +79,15 @@ export function onMutation(s: GuardState, agent: string, what: string): GuardSta
   return changed ? { ...s, incidents } : s;
 }
 
-export type FailFacts = { key: string; agent: string; action: string; errorKey: string; summary: string; epoch: number; token: string | null; now: number };
+export type FailFacts = {
+  key: string; agent: string; action: string; errorKey: string; summary: string; epoch: number; token: string | null; now: number;
+  /** 0.3: streak incidents (non-verification keys) and the attempt as the advisor sees it. */
+  kind?: 'verify' | 'streak';
+  attempt?: Omit<Attempt, 'changes'>;
+};
+
+const withAttempt = (prior: Incident | undefined, f: FailFacts): Attempt[] | undefined =>
+  f.attempt ? [...(prior?.attempts ?? []), { ...f.attempt, changes: prior?.pending.slice(-5) ?? [] }].slice(-4) : prior?.attempts;
 
 export type Transition = { s: GuardState; inc: Incident; event: string };
 
@@ -78,22 +99,25 @@ export type Transition = { s: GuardState; inc: Incident; event: string };
 export function onFail(s: GuardState, f: FailFacts, o: IncidentOptions): Transition {
   const prior = findIncident(s, f.key);
   if (!prior) {
+    // A prompt ended this key's NEEDS_USER: that answer gets one attempt (budget 1), no new loop.
+    const afterNeedsUser = s.needsUserKeys.includes(f.key);
     const inc: Incident = {
-      id: `inc-${s.nextIncident}`, key: f.key, agent: f.agent, action: f.action, state: 'OPEN',
+      id: `inc-${s.nextIncident}`, key: f.key, agent: f.agent, action: f.action, state: afterNeedsUser ? 'NEEDS_USER' : 'OPEN',
       fails: 1, strategies: [], pending: [], errorKey: f.errorKey, summary: f.summary,
       baseEpoch: f.epoch, baseToken: f.token, openedAt: f.now, updatedAt: f.now,
+      kind: f.kind ?? 'verify', attempts: withAttempt(undefined, f), ...(afterNeedsUser ? { afterNeedsUser: true } : {}),
     };
-    return { s: put({ ...s, nextIncident: s.nextIncident + 1 }, inc), inc, event: 'incident_opened' };
+    return { s: put({ ...s, nextIncident: s.nextIncident + 1 }, inc), inc, event: afterNeedsUser ? 'needs_user:after_prompt' : 'incident_opened' };
   }
   const strategies = prior.pending.length
     ? [...prior.strategies, { changes: prior.pending, errorKey: f.errorKey, summary: f.summary }].slice(-10)
     : prior.strategies;
   let inc: Incident = {
     ...prior, fails: prior.fails + 1, strategies, pending: [], errorKey: f.errorKey, summary: f.summary,
-    baseEpoch: f.epoch, baseToken: f.token, updatedAt: f.now,
+    baseEpoch: f.epoch, baseToken: f.token, updatedAt: f.now, attempts: withAttempt(prior, f),
   };
   let event = prior.pending.length ? 'strategy_failed' : 'repeat_failed';
-  if (inc.state === 'OPEN' && strategies.length >= o.maxRecoveryStrategies) {
+  if (inc.state === 'OPEN' && (inc.kind ?? 'verify') === 'verify' && strategies.length >= o.maxRecoveryStrategies) {
     inc = { ...inc, state: 'ESCALATION_REQUESTED' };
     event = 'escalation_due';
   } else if (inc.state === 'ESCALATION_REQUESTED' && !inc.recoveryAgentId) {
@@ -108,10 +132,11 @@ export function onFail(s: GuardState, f: FailFacts, o: IncidentOptions): Transit
 }
 
 export function onPass(s: GuardState, key: string, now: number): Transition | null {
-  const prior = findIncident(s, key);
-  if (!prior) return null;
-  const inc: Incident = { ...prior, state: 'CLOSED', updatedAt: now };
-  return { s: put(s, inc), inc, event: 'incident_closed' };
+  const s1 = s.needsUserKeys.includes(key) ? { ...s, needsUserKeys: s.needsUserKeys.filter((k) => k !== key) } : s;
+  const prior = findIncident(s1, key);
+  if (!prior) return s1 === s ? null : { s: s1, inc: { key } as Incident, event: 'needs_user_key_cleared' };
+  const inc: Incident = { ...prior, state: 'CLOSED', resolution: 'pass', updatedAt: now };
+  return { s: put(s1, inc), inc, event: 'incident_closed' };
 }
 
 /** The recovery agent was spawned: runtime evidence for ESCALATED. Picks the newest waiting incident. */
@@ -129,10 +154,20 @@ export function onRecoveryDone(s: GuardState, recoveryAgentId: string, now: numb
   return { s: put(s, inc), inc, event: 'recovery_done' };
 }
 
-/** A new user prompt: NEEDS_USER incidents have had their answer; close them. */
+/**
+ * A new user prompt ends the wait, never the question: every live incident except a running
+ * recovery (ESCALATED) becomes SUPERSEDED with `resolution: prompt_received` (never "approved").
+ * A key that was NEEDS_USER is remembered: its next incident gets budget 1 (onFail).
+ */
 export function onUserPrompt(s: GuardState, now: number): GuardState {
-  if (!s.incidents.some((i) => i.state === 'NEEDS_USER')) return s;
-  return { ...s, incidents: s.incidents.map((i) => (i.state === 'NEEDS_USER' ? { ...i, state: 'CLOSED' as const, updatedAt: now } : i)) };
+  const ending = s.incidents.filter((i) => live(i) && i.state !== 'ESCALATED');
+  if (!ending.length) return s;
+  const nu = ending.filter((i) => i.state === 'NEEDS_USER').map((i) => i.key);
+  return {
+    ...s,
+    needsUserKeys: [...new Set([...s.needsUserKeys, ...nu])].slice(-50),
+    incidents: s.incidents.map((i) => (ending.includes(i) ? { ...i, state: 'SUPERSEDED' as const, resolution: 'prompt_received', updatedAt: now } : i)),
+  };
 }
 
 // ---------------------------------------------------------------- before a verification
@@ -140,16 +175,28 @@ export function onUserPrompt(s: GuardState, now: number): GuardState {
 export type Gate =
   | { kind: 'none' }
   | { kind: 'escalate'; inc: Incident }
-  | { kind: 'needs_user'; inc: Incident };
+  | { kind: 'needs_user'; inc: Incident }
+  | { kind: 'hold'; inc: Incident }; // 0.3: BLOCKED / STOPPED (applied Jev decisions)
 
-/** Rule A gate for an eligible verification about to run. */
+/** Gate for a call on an incident's key (Rule A, and applied Jev decisions). */
 export function gateBefore(s: GuardState, key: string): Gate {
   const inc = findIncident(s, key);
   if (!inc) return { kind: 'none' };
   if (inc.state === 'NEEDS_USER') return { kind: 'needs_user', inc };
   if (inc.state === 'ESCALATION_REQUESTED') return { kind: 'escalate', inc };
+  if (inc.state === 'BLOCKED' || inc.state === 'STOPPED') return { kind: 'hold', inc };
   return { kind: 'none' };
 }
+
+/** BLOCKED lifts when the state changed since the decision (an edit, a mutating command). */
+export function liftBlocked(s: GuardState, key: string, epoch: number, now: number): GuardState {
+  const inc = findIncident(s, key);
+  if (!inc || inc.state !== 'BLOCKED' || inc.baseEpoch === epoch) return s;
+  return put(s, { ...inc, state: 'OPEN', decidedBy: undefined, updatedAt: now });
+}
+
+/** Store an incident as given (the advisor's applied decisions). */
+export const putIncident = put;
 
 /** Second attempt to verify while escalation is still only requested: the main loop is not escalating. */
 export function onEscalationIgnored(s: GuardState, key: string, now: number): Transition | null {

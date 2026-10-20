@@ -1,6 +1,7 @@
 import type { Register } from 'claude-code'
 // agent-reliability (retry-loop guard, observe by default): a shipped copy, see ./reliability.
-import { registerHooks, startSession } from './reliability/register.ts'
+import { registerHooks } from './reliability/register.ts'
+import { RECOVERY_AGENT, RECOVERY_PROMPT } from './reliability/incident.ts'
 
 // Keeps every Haiku model request under the 100k-token price step (input ≤ 100k is the cheap tier).
 // The engine's own auto-compact (window 100000 for Haiku, set in settings and in haiku-case.md) does the
@@ -54,7 +55,14 @@ export const register: Register = (on, options) => {
   // /haiku-100k:base — what the fixed start of every request is made of (as /context counts it), saved as JSON.
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'base', description: 'haiku-100k: save the context breakdown (what every request starts with) to ~/.claude/haiku-100k-base.json' })
-    await startSession($).catch(() => undefined) // /reliability, /retry-guard, the opus-recovery agent
+    // agent-reliability's session work, written out here: the runtime follows $ only within this file,
+    // so startSession($) cannot be imported. Keep in step with startSession in reliability/register.ts.
+    await $.command.register({ name: 'reliability', description: 'agent-reliability: status | observe | enforce | off | auto | reset | allow <n|all>' })
+    await $.command.register({ name: 'retry-guard', description: 'Alias of /reliability (status | reset), kept from retry-loop-breaker' })
+    await $.agent.register({
+      name: RECOVERY_AGENT, model: 'opus', prompt: RECOVERY_PROMPT,
+      description: 'Recovery engineer (Opus) for a verification that keeps failing after two recovery attempts. Only when agent-reliability asks for it.',
+    }).catch(() => undefined)
     return next(e)
   })
   on('command.run', { command: 'base' }, async $ => {
