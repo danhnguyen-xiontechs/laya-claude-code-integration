@@ -6,6 +6,7 @@
 // Only erasable TypeScript here (Node type stripping imports this file in tests).
 
 import type { Mode } from './types.d.ts';
+import { redact } from './redact.ts';
 export type { Mode };
 
 export type Options = {
@@ -340,19 +341,20 @@ export function denialText(r: FailureRecord, viaJev = false): string {
 export const JEV_DECISIONS = ['allow_retry', 'block_redundant_retry', 'uncertain_allow'] as const;
 export type JevDecision = (typeof JEV_DECISIONS)[number];
 
+/** The near-duplicate question. Every free-text field goes through the shared redaction policy. */
 export function jevRequest(record: FailureRecord, command: string, epochChanged: boolean) {
   return {
     state: {
       schema_version: '1.0',
       task_category: 'fix_failing_tests',
       previous_attempts: [{
-        action: record.normalized_action,
-        result: record.error_summary,
+        action: redact(record.normalized_action, 220),
+        result: redact(record.error_summary, 400),
         error_fingerprint: record.error_fingerprint,
         failed_times: record.repeat_count,
         state_changed_after_failure: epochChanged,
       }],
-      proposed_action: normalizeCommand(command),
+      proposed_action: redact(normalizeCommand(command), 220),
       new_diagnostic_evidence: false,
       transient_failure_signals: record.transient ? ['transient'] : [],
     },

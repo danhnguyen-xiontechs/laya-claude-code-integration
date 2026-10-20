@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
+import { redact as sharedRedact } from '../../../hooks/reliability/redact.ts';
 
 // ---------- args ----------
 const argv = process.argv.slice(2);
@@ -27,16 +28,11 @@ const JEV = flag('jev');
 const JEV_N = flag('jev-all') ? Infinity : Number(opt('jev-n', 60));
 
 // ---------- redaction ----------
+// One policy for everything that leaves the machine, shared with the runtime hooks (hooks/redact.ts,
+// the file haiku-100k ships next to this one). Only the reader's own login is masked here first,
+// because the runtime cannot know it.
 const USER_RE = (() => { try { const u = os.userInfo().username; return u ? new RegExp(u.split('').map((ch) => ch.toUpperCase() === ch.toLowerCase() && !/[0-9]/.test(ch) ? '[' + ch + ']' : ch).join(''), 'gi') : null; } catch { return null; } })();
-const redact = (s) => String(s ?? '')
-  .replace(USER_RE ?? /(?!)/g, '<user>')
-  .replace(/[A-Za-z]:[\\/]+Users[\\/]+[^\\/\s"']+/gi, '~')
-  .replace(/\/(?:home|Users)\/[^/\s"']+/g, '~')
-  .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,}/gi, '$1 <token>')
-  .replace(/\b(sk|pk|ghp|gho|xox[bap]|AKIA|eyJ)[A-Za-z0-9_-]{10,}/g, '<token>')
-  .replace(/\b(api[_-]?key|token|secret|password|passwd|pwd)(["']?\s*[:=]\s*["']?)[^\s"'&;]{4,}/gi, '$1$2<redacted>')
-  .replace(/[A-Za-z0-9_+/=-]{32,}/g, '<id>')
-  .replace(/\s+/g, ' ');
+const redact = (s, n) => sharedRedact(String(s ?? '').replace(USER_RE ?? /(?!)/g, '<user>'), n);
 const hash = (s) => crypto.createHash('sha256').update(String(s)).digest('hex').slice(0, 10);
 const textOf = (c) => typeof c === 'string' ? c : Array.isArray(c) ? c.map((x) => x.text ?? '').join('\n') : '';
 const by = (arr, f) => arr.reduce((m, x) => { const k = f(x); m[k] = (m[k] ?? 0) + 1; return m; }, {});
@@ -250,11 +246,11 @@ async function decideJev({ state, questions, timeoutMs = 20000 }) {
     const r = await fetch(JEV_URL, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` }, body: JSON.stringify({ model: JEV_MODEL, state, questions }), signal: AbortSignal.timeout(timeoutMs) });
     let json = null; try { json = await r.json(); } catch { /* non-JSON */ }
     const latencyMs = Date.now() - t0;
-    if (!r.ok) return { ok: false, error: `http ${r.status} ${String(json?.error?.message ?? '').slice(0, 100)}`, latencyMs, cost: 0 };
+    if (!r.ok) return { ok: false, error: `http ${r.status} ${String(json?.error?.message ?? '').slice(0, 100)}`, status: r.status, latencyMs, cost: 0 };
     const answers = {};
     for (const [n, a] of Object.entries(json?.answers ?? {})) if (a && typeof a === 'object') answers[n] = { probabilities: a.probabilities ?? {}, ...(typeof a.noul === 'number' ? { noul: a.noul } : {}) };
-    return { ok: true, answers, latencyMs, cost: json?.usage?.cost ?? 0, tokens: json?.usage?.input_tokens ?? 0 };
-  } catch (e) { return { ok: false, error: e?.name === 'TimeoutError' ? 'timeout' : String(e?.message ?? e).split('\n')[0].slice(0, 100), latencyMs: Date.now() - t0, cost: 0 }; }
+    return { ok: true, answers, status: r.status, latencyMs, cost: json?.usage?.cost ?? 0, tokens: json?.usage?.input_tokens ?? 0 };
+  } catch (e) { return { ok: false, error: e?.name === 'TimeoutError' ? 'timeout' : String(e?.message ?? e).split('\n')[0].slice(0, 100), status: null, latencyMs: Date.now() - t0, cost: 0 }; }
 }
 const QUESTIONS = {
   failure_kind: { type: 'choice', instructions: 'Look at the last entry of `attempts` (the most recent failed tool call and its error text). What kind of failure is it?', criteria: {
@@ -272,22 +268,31 @@ const QUESTIONS = {
     MARK_BLOCKED: 'An external blocker (service down, missing access, broken environment) prevents this step; stop retrying it, continue other parts or report the blocker.',
     STOP_AND_REPORT: 'The failing step is not essential or the failures are unrecoverable; stop automatic recovery and report the task as unresolved with what was tried.' } },
 };
+// The Jev state, redacted field by field. Attempt limits match the runtime advisor (advisorRequest:
+// action 220, error 400). `before` is offline only: the runtime advisor sends no before list, so it
+// has no runtime limit and 160 is just a cap for the report's own prompt.
+const jevState = (inc) => ({
+  before: (inc.before ?? []).map((b) => ({ tool: b.tool, action: redact(b.action, 160) })),
+  attempts: inc.attempts.slice(0, 2).map((a) => ({ tool: a.tool, action: redact(a.action, 220), error: redact(a.error, 400) })),
+});
 const topOf = (p = {}) => Object.entries(p).sort((a, b) => b[1] - a[1])[0] ?? [null, 0];
+const round3 = (p = {}) => Object.fromEntries(Object.entries(p).map(([k, v]) => [k, +Number(v).toFixed(3)]));
 let jevStats = null;
 if (JEV) {
   const pool = [...incidents.filter((i) => i.len >= 3), ...incidents.filter((i) => i.len === 2)].slice(0, JEV_N);
   const results = []; let next = 0;
   const worker = async () => { while (next < pool.length) { const inc = pool[next++];
     // Jev is asked at the 2nd failure, exactly like the runtime advisor: first two attempts only.
-    const state = { before: inc.before, attempts: inc.attempts.slice(0, 2).map((a) => ({ tool: a.tool, action: a.action, error: a.error })) };
+    const state = jevState(inc);
     const r = await decideJev({ state, questions: QUESTIONS }); results.push(r);
     if (r.ok) { const [fk, fp] = topOf(r.answers.failure_kind?.probabilities), [ns, np] = topOf(r.answers.next_step?.probabilities);
-      inc.jev = { label_source: 'jev', failure_kind: fk, failure_kind_p: +fp.toFixed(3), same_approach_noul: r.answers.same_approach?.noul ?? null, next_step: ns, next_step_p: +np.toFixed(3), latency_ms: r.latencyMs }; }
-    else inc.jev_error = r.error;
+      inc.jev = { label_source: 'jev', failure_kind: fk, failure_kind_p: +fp.toFixed(3), failure_kind_probs: round3(r.answers.failure_kind?.probabilities), same_approach_noul: r.answers.same_approach?.noul ?? null, next_step: ns, next_step_p: +np.toFixed(3), next_step_probs: round3(r.answers.next_step?.probabilities), latency_ms: r.latencyMs, status: r.status }; }
+    else { inc.jev_error = r.error; inc.jev_status = r.status ?? null; }
     process.stderr.write('.'); } };
   await Promise.all(Array.from({ length: 6 }, worker));
   const ok = results.filter((r) => r.ok), lat = ok.map((r) => r.latencyMs).sort((a, b) => a - b);
-  jevStats = { asked: results.length, ok: ok.length, failed: results.length - ok.length, cost: results.reduce((s, r) => s + (r.cost ?? 0), 0), tokens: ok.reduce((s, r) => s + (r.tokens ?? 0), 0), p50: lat[lat.length >> 1] ?? null, errors: [...new Set(results.filter((r) => !r.ok).map((r) => r.error))].slice(0, 3) };
+  const statuses = {}; for (const r of results) { const k = String(r.status ?? 'none'); statuses[k] = (statuses[k] ?? 0) + 1; }
+  jevStats = { asked: results.length, ok: ok.length, failed: results.length - ok.length, statuses, cost: results.reduce((s, r) => s + (r.cost ?? 0), 0), tokens: ok.reduce((s, r) => s + (r.tokens ?? 0), 0), p50: lat[lat.length >> 1] ?? null, p90: lat[Math.floor(lat.length * 0.9)] ?? null, max: lat[lat.length - 1] ?? null, errors: [...new Set(results.filter((r) => !r.ok).map((r) => r.error))].slice(0, 3) };
   process.stderr.write('\n');
   console.log(`jev: ${jevStats.ok}/${jevStats.asked} ok, p50 ${jevStats.p50}ms, ${jevStats.tokens} input tokens, cost $${jevStats.cost.toFixed(4)}`);
 }
@@ -358,10 +363,27 @@ md += `Examples (redacted):\n\n${missed.slice().sort((a, b) => b.len - a.len).sl
 md += `## 5. Jev decision distribution\n\n`;
 const jevInc = incidents.filter((i) => i.jev);
 if (jevInc.length) {
-  md += `Offline labels from this run (\`--jev\`, asked at the 2nd failure, \`label_source: jev\`; labels, not ground truth). Asked ${jevStats.asked}, answered ${jevStats.ok}; cost $${jevStats.cost.toFixed(4)}, p50 ${jevStats.p50} ms${jevStats.failed ? `; ${jevStats.failed} failed (${jevStats.errors.join('; ')})` : ''}.\n\n`;
-  md += table(sorted(by(jevInc, (i) => i.jev.next_step)).map(([k, v]) => [k, v, pct(v, jevInc.length)]), ['next_step', 'streaks', 'share']) + '\n';
-  md += table(sorted(by(jevInc, (i) => i.jev.failure_kind)).map(([k, v]) => [k, v, pct(v, jevInc.length)]), ['failure_kind', 'streaks', 'share']) + '\n';
-  md += `Examples:\n\n${jevInc.slice(0, 6).map((i) => `- ${i.jev.next_step} (p=${i.jev.next_step_p}, ${i.jev.failure_kind}): \`${one(i.attempts[1].action)}\``).join('\n')}\n\n`;
+  const n = jevInc.length, med = (a) => a[a.length >> 1];
+  const NEXT = Object.keys(QUESTIONS.next_step.criteria), KINDS = Object.keys(QUESTIONS.failure_kind.criteria);
+  md += `Offline labels from this run (\`--jev\`, asked at the 2nd failure, \`label_source: jev\`; labels, not ground truth).\n\n`;
+  md += `Asked ${jevStats.asked}, answered ${jevStats.ok}, failed ${jevStats.failed}${jevStats.failed ? ` (${jevStats.errors.join('; ')})` : ''}. HTTP status: ${Object.entries(jevStats.statuses).map(([k, v]) => `${k}: ${v}`).join(', ')}. Latency p50 ${jevStats.p50} ms, p90 ${jevStats.p90} ms, max ${jevStats.max} ms. Input tokens ${jevStats.tokens}. Cost $${jevStats.cost.toFixed(4)}.\n\n`;
+  // "chosen" = highest-probability option per streak; "mean" = average probability of that option across labelled streaks.
+  const probRows = (keys, probKey, pickKey) => keys.map((k) => {
+    const chosen = jevInc.filter((i) => i.jev[pickKey] === k).length;
+    const mean = jevInc.reduce((s, i) => s + (i.jev[probKey]?.[k] ?? 0), 0) / n;
+    return [k, chosen, pct(chosen, n), mean.toFixed(3)];
+  });
+  md += `next_step, all five options:\n\n${table(probRows(NEXT, 'next_step_probs', 'next_step'), ['next_step', 'chosen', 'share', 'mean probability'])}\n`;
+  md += `failure_kind, all six options:\n\n${table(probRows(KINDS, 'failure_kind_probs', 'failure_kind'), ['failure_kind', 'chosen', 'share', 'mean probability'])}\n`;
+  const noul = jevInc.map((i) => i.jev.same_approach_noul).filter((x) => typeof x === 'number').sort((a, b) => a - b);
+  md += `same_approach (noul, raw value as returned, ${noul.length} answered): ${noul.length ? `min ${noul[0]}, median ${med(noul)}, max ${noul[noul.length - 1]}` : 'none returned'}. No threshold is applied here.\n\n`;
+  const topFk = jevInc.map((i) => i.jev.failure_kind_p).sort((a, b) => a - b), topNs = jevInc.map((i) => i.jev.next_step_p).sort((a, b) => a - b);
+  md += `Confidence (top probability per streak): failure_kind min ${topFk[0]}, median ${med(topFk)}; next_step min ${topNs[0]}, median ${med(topNs)}.\n\n`;
+  md += `failure_kind × next_step (streaks, by chosen label):\n\n${table(KINDS.map((fk) => [fk, ...NEXT.map((ns) => jevInc.filter((i) => i.jev.failure_kind === fk && i.jev.next_step === ns).length)]), ['failure_kind', ...NEXT])}\n`;
+  const flagged = jevInc.filter((i) => i.jev.next_step === 'ASK_USER' || i.jev.next_step === 'MARK_BLOCKED');
+  md += `ASK_USER / MARK_BLOCKED: ${flagged.length} of ${n} streaks. What the transcript shows after the advice point is in section 6 (retrospective heuristic).\n\n`;
+  md += flagged.slice(0, 15).map((i) => `- ${i.jev.next_step} (p=${i.jev.next_step_p}, ${i.jev.failure_kind}) · first call: \`${one(i.attempts[0].action)}\` → ${one(i.attempts[0].error).slice(0, 100)} · further failed calls: ${i.len - 2} · next 3 calls all succeeded: ${i.recovered === true ? 'yes' : 'no'}`).join('\n') || '- none';
+  md += flagged.length > 15 ? `\n- … ${flagged.length - 15} more in incidents.jsonl\n\n` : '\n\n';
 } else md += `No offline labels in this run (add \`--jev\`; needs OPENROUTER_API_KEY, sends redacted attempts to TypeSafe Jev via OpenRouter and costs money).\n\n`;
 if (dsJev.length) md += `Runtime decisions recorded by the plugin (\`attempts-*.jsonl\`, ${dsJev.length} rows):\n\n${table(sorted(by(dsJev, (r) => r.jev_decision)).map(([k, v]) => [k, v]), ['jev_decision', 'rows'])}\n`;
 else md += `Runtime dataset: ${attemptsData.files ? `${attemptsData.files} file(s), no Jev decisions yet` : 'no attempts-*.jsonl found yet (written once the plugin runs with datasetCapture on)'}.\n\n`;
@@ -378,6 +400,12 @@ if (useful.length) {
     ['neutral', uc.neutral ?? 0, 'no clear signal either way'],
   ], ['reading', 'streaks', 'rule']) + '\n';
   md += `Misses to review:\n\n${useful.filter((x) => x.u === 'miss').slice(0, 6).map((x) => `- len ${x.i.len} ${x.i.agent}: \`${one(x.i.attempts[0].action)}\``).join('\n') || '- none'}\n\n`;
+  const nextDiffers = (i) => { const nx = i.attempts[2]?.action ?? i.after[0]?.action; return nx !== undefined && nx !== i.attempts[1].action; };
+  const jevNs = Object.keys(QUESTIONS.next_step.criteria);
+  md += `Decision vs what happened next, per recommended action (counts only, same heuristic):\n\n${table(jevNs.map((ns) => {
+    const rs = jevInc.filter((i) => i.jev.next_step === ns);
+    return [ns, rs.length, rs.reduce((s, i) => s + (i.len - 2), 0), rs.filter(nextDiffers).length, rs.filter((i) => i.recovered === true).length];
+  }), ['next_step', 'streaks', 'further failed calls', 'next call differed', 'next 3 calls all succeeded'])}\n`;
 } else md += `Needs \`--jev\` labels to compute.\n\n`;
 
 md += `## 7. Telemetry\n\n`;

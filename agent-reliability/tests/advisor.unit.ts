@@ -122,3 +122,10 @@ test('redact: home paths and secrets never reach Jev or the dataset', () => {
   assert.ok(!r.includes('someone'));
   assert.ok(!r.includes('sk-or-v1-abcdef'));
 });
+
+test('redact: drive paths reduce to their basename, emails to <email>', () => {
+  const r = redact('node --test D:\\Laya\\haiku-100k\\hooks\\reliability\\engine.test.ts mail dev.user@example.com', 300);
+  assert.equal(r, 'node --test <abs>/engine.test.ts mail <email>');
+  assert.equal(redact('cat D:/Laya/notes.md', 300), 'cat <abs>/notes.md');
+  assert.equal(redact('ran C:\\Users\\someone\\x.ts', 300), 'ran ~\\x.ts');
+});

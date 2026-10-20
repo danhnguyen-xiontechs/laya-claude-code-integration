@@ -1,12 +1,53 @@
 {
   "name": "haiku-100k",
-  "version": "0.7.0",
-  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off).",
+  "version": "0.8.0",
+  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (bmad-build flow on Haiku: Opus plans and reviews, Haiku builds and tests), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and haiku-pace (per-step effort for Haiku: low on routine read steps, TypeSafe Jev picks it on pivot steps; stops foreground commands that would hold a turn for minutes; /haiku-pace, HAIKU_PACE=off).",
   "author": {
     "name": "Danh Nguyen"
   },
   "types": "./hooks/reliability/types.d.ts",
   "userConfig": {
+    "paceMode": {
+      "type": "string",
+      "title": "Pace: Mode",
+      "description": "Per-step effort for Haiku requests. apply: send the chosen effort; shadow: log it only; off. Env HAIKU_PACE and /haiku-pace override it.",
+      "default": "apply",
+      "options": [
+        "apply",
+        "shadow",
+        "off"
+      ]
+    },
+    "paceJev": {
+      "type": "boolean",
+      "title": "Pace: Ask TypeSafe Jev on pivot steps",
+      "description": "Turn start, after a failure, after a big edit: Jev picks low / medium / high (OPENROUTER_API_KEY, costs per call). Off or unsure: high.",
+      "default": true
+    },
+    "paceJevBudget": {
+      "type": "number",
+      "title": "Pace: Jev calls per session",
+      "description": "Past this, pivot steps take the fallback (high) without asking.",
+      "default": 40
+    },
+    "paceJevTimeoutMs": {
+      "type": "number",
+      "title": "Pace: Jev timeout (ms)",
+      "description": "On timeout the pivot step takes the fallback (high).",
+      "default": 1500
+    },
+    "paceJevMinConfidence": {
+      "type": "number",
+      "title": "Pace: Jev min probability",
+      "description": "Jev's level is used only at or above this probability.",
+      "default": 0.6
+    },
+    "paceBigEditLines": {
+      "type": "number",
+      "title": "Pace: Big edit (lines)",
+      "description": "An Edit/Write of at least this many lines makes the next step a pivot (it verifies the change).",
+      "default": 30
+    },
     "mode": {
       "type": "string",
       "title": "Reliability: Mode",

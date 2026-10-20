@@ -7,18 +7,9 @@
 
 import type { Attempt, GuardState, Incident, IncidentState, NextAction, Refusal, RefusalKind } from './types.d.ts';
 import { type ChoiceAnswer, fnv, normalizeCommand, parseAnswers, similarity, unwrapCommand } from './core.ts';
+import { redact } from './redact.ts';
 export type { NextAction, Refusal, RefusalKind };
-
-// ---------------------------------------------------------------- redaction
-
-const HOME = /[A-Za-z]:[\\/]Users[\\/][^\\/\s"']+|\/(?:c\/)?Users\/[^/\s"']+|\/home\/[^/\s"']+/gi;
-const SECRET = /((?:api[_-]?key|token|secret|password|passwd|authorization|bearer)["']?\s*[=:]?\s*)["']?[^\s"']+|\b[A-Za-z0-9_-]{32,}\b/gi;
-
-/** Home paths, credentials and long ids masked; whitespace folded; cut to `n`. */
-export function redact(text: string, n: number): string {
-  return String(text ?? '').replace(HOME, '~').replace(SECRET, (_m, p?: string) => (p ? `${p}<redacted>` : '<id>'))
-    .replace(/\s+/g, ' ').trim().slice(0, n);
-}
+export { redact };
 
 // ---------------------------------------------------------------- Rule C: refusals
 
@@ -158,15 +149,17 @@ const SPEC = { failure_kind: FAILURE_KINDS, same_approach: 'noul', next_step: NE
 
 export type AdvisorContext = { subagent: boolean; strategiesUsed: number; maxStrategies: number; stateChangedSinceLast: boolean; prompt?: string };
 
-/** One request, three independent questions over the same redacted incident. */
+/** One request, three independent questions over the same redacted incident. Every free-text field goes through the shared policy here, whether or not it was redacted when stored. */
 export function advisorRequest(inc: Incident, ctx: AdvisorContext) {
   return {
     state: {
       agent: ctx.subagent ? 'subagent' : 'main agent',
-      ...(ctx.prompt ? { user_request: ctx.prompt } : {}),
-      failing_action: inc.action.slice(0, 160),
+      ...(ctx.prompt ? { user_request: redact(ctx.prompt, 300) } : {}),
+      failing_action: redact(inc.action, 160),
       consecutive_failures: inc.fails,
-      attempts: (inc.attempts ?? []).map((a: Attempt) => ({ tool: a.tool, action: a.action, error: a.error, changes_made_before: a.changes })),
+      attempts: (inc.attempts ?? []).map((a: Attempt) => ({
+        tool: a.tool, action: redact(a.action, 220), error: redact(a.error, 400), changes_made_before: (a.changes ?? []).map((c) => redact(c, 160)),
+      })),
       state_changed_since_last_failure: ctx.stateChangedSinceLast,
       recovery_budget: { strategies_used: ctx.strategiesUsed, max: ctx.maxStrategies },
     },

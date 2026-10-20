@@ -17,6 +17,7 @@ const check = process.argv.includes('--check');
 
 const FILES = [
   ['hooks/core.ts', 'core.ts'],
+  ['hooks/redact.ts', 'redact.ts'],
   ['hooks/incident.ts', 'incident.ts'],
   ['hooks/io.ts', 'io.ts'],
   ['hooks/advisor.ts', 'advisor.ts'],
@@ -51,7 +52,9 @@ if (!host.includes("name: 'reliability'") || !host.includes("name: 'retry-guard'
 const skillsSrc = path.join(src, 'skills');
 if (fs.existsSync(skillsSrc)) {
   const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(path.join(dir, d.name)) : [path.join(dir, d.name)]));
-  for (const file of walk(skillsSrc)) out.set(path.join(plugin, 'skills', path.relative(skillsSrc, file)), fs.readFileSync(file, 'utf8'));
+  // The shared redaction module sits at hooks/redact.ts in agent-reliability/ and at hooks/reliability/redact.ts in the plugin.
+  const skillText = (text) => text.replaceAll("'../../../hooks/redact.ts'", "'../../../hooks/reliability/redact.ts'");
+  for (const file of walk(skillsSrc)) out.set(path.join(plugin, 'skills', path.relative(skillsSrc, file)), skillText(fs.readFileSync(file, 'utf8')));
 }
 
 const manifestPath = path.join(plugin, '.claude-plugin', 'plugin.json');

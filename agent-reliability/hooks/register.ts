@@ -315,8 +315,6 @@ const withNote = <R extends { deny?: string; context?: readonly string[] }>(ran:
 const toOutcome = (cls: Classification, text: string): Outcome =>
   cls === 'FAIL' ? { kind: 'failed', text } : cls === 'PASS' ? { kind: 'passed' } : { kind: 'ignored', reason: cls };
 
-const SECRETISH = /([A-Za-z0-9_-]{24,}|(?:key|token|secret|password)\s*[=:]\s*\S+)/gi;
-
 async function command($: EngineInterface, o: Options, args: string, alias: boolean): Promise<{ text: string }> {
   const a = args.trim().toLowerCase();
   if (a === 'reset') {
@@ -379,7 +377,7 @@ async function dump($: EngineInterface, o: Options, ran: { isError?: true; text?
     const path = await logPath($, 'diag', o.telemetryDir);
     if (!path) return;
     const r = ran.result as Record<string, unknown> | string | undefined;
-    const text = String(ran.text ?? (typeof r === 'string' ? r : '')).replace(/[A-Za-z]:[\\/]Users[\\/][^\\/\s]+/g, '~').replace(SECRETISH, '<redacted>').slice(0, 200);
+    const text = redact(String(ran.text ?? (typeof r === 'string' ? r : '')), 200);
     await appendJsonl($, path, {
       ts: new Date().toISOString(), cls, isError: ran.isError === true,
       resultKeys: r && typeof r === 'object' ? Object.keys(r) : typeof r,
