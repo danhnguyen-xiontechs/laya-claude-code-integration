@@ -96,10 +96,11 @@ async function routeAll() {
   for (const id of listTasks()) {
     const task = loadTask(id);
     const prompt = subagentPrompt(task, '<workdir>');
-    const rule = ruleTier(ruleFeatures(prompt, task.type));
+    const features = ruleFeatures(prompt, task.type);
+    const rule = ruleTier(features);
     const t0 = Date.now();
     const answers = provider === 'none' ? [] : await Promise.all(orderings(k).map((order) => askOnce({ task: prompt, type: task.type, order, cfg })));
-    out[id] = { kind: task.kind, rule: rule.tier, why: rule.why, answers, wallMs: Date.now() - t0 };
+    out[id] = { kind: task.kind, rule: rule.tier, why: rule.why, features, answers, wallMs: Date.now() - t0 };
     console.log(`${id.padEnd(18)} rule ${rule.tier.padEnd(6)} ${provider} ${answers.map((a) => a.tier ?? a.error).join(',')}  ${Date.now() - t0}ms`);
   }
   fs.mkdirSync(RESULTS, { recursive: true });
@@ -115,6 +116,11 @@ export const ROUTERS = {
   'jev+gate': (r) => combine('gate', r.rule, r.answers),
   'jev+sc(k)': (r) => combine('sc', r.rule, r.answers),
   'jev+gate+sc': (r) => combine('gate+sc', r.rule, r.answers),
+  // the Jev default since round 5, same rule as route(): rules for tasks with a check and no hard verb, gate+sc otherwise
+  'checked+jev': (r) => {
+    if (!r.features) throw new Error('checked+jev needs r.features (regenerate route-jev.json)');
+    return combine('checked', r.rule, r.answers, r.features);
+  },
 };
 
 export function score(runs, routes) {

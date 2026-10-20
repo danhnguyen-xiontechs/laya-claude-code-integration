@@ -58,3 +58,16 @@ The v2 changes landed between `2b36911` (last v1) and `52f6583` (`git diff --sta
   2. Run the control session on Sonnet or Haiku. It only starts sessions, reads 5-line hand-backs and asks the user.
   3. Fix context-governor (per-call context from `$.session.usage()`, checked during the turn), so P2/P3 hand off before 150k.
   4. Fix `phase_usage.mjs` and the capsule row, so the report card is right without a manual re-measure.
+
+## 5. How accurate each number is
+
+| | v1 | v2 |
+|---|---|---|
+| Case agents (9.80M / 1.79M) | Measured from the agent transcripts. | Measured from the agent transcripts. |
+| Phase sessions (P2–P4) | Not split: one session per round. | Measured after each phase had ended, with `transcript_usage.mjs`. The `phase_usage.mjs` card was wrong (wrong `cwd`), so its figure is not used. |
+| Control session | **Estimate.** 96.4M shared over about 13 rounds, so about 7.4M per round. Not measured for this round. | Measured: 40 calls, 4.25M. |
+| Round total | Excludes the control share, so it is not the whole round. | Includes the control share. |
+| Same definition across versions? | **Not verified.** Assumed to match v2's token sum (input + output + cache read + cache write). | Same definition as the sums in §1. |
+| Known gaps | Control share is a guess; the round window is not checked. | 73k per-session start is an estimate (system prompt, skills, MCP tools). The earlier card reported 4.43M before re-measuring, so the card figure is not used. |
+
+**Net:** v2's numbers are measured, but the 73k start and the control share are estimates. v1's round total is measured for case agents only; its control share is a guess, so the −10% in §1 is a rough figure and can move by a few percent either way.

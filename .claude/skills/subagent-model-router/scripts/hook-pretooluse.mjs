@@ -32,7 +32,7 @@ export function definitionModel(type, cwd, home = os.homedir()) {
   return null;
 }
 
-export async function handle(input, { cfg = loadConfig(), decideImpl, env = process.env, home } = {}) {
+export async function handle(input, { cfg = loadConfig({ defaultPolicy: 'gate+sc' }), decideImpl, env = process.env, home } = {}) {
   if (!input || !AGENT_TOOLS.has(input.tool_name)) return null;
   const ti = input.tool_input || {};
   const base = { source: 'hook', tool_use_id: input.tool_use_id ?? null };

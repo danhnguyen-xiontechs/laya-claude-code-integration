@@ -14,10 +14,11 @@ const runs = {
   c: { haiku: run(false, 1), sonnet: run(false, 10), opus: run(true, 20) },
 };
 const ans = (t) => [{ tier: t }, { tier: t }, { tier: t }];
+const checked = { hasCheck: true, hard: false };
 const routes = {
-  a: { rule: 'haiku', answers: ans('haiku'), wallMs: 500 },
-  b: { rule: 'haiku', answers: ans('sonnet'), wallMs: 600 },
-  c: { rule: 'opus', answers: ans('sonnet'), wallMs: 700 },
+  a: { rule: 'haiku', answers: ans('haiku'), features: checked, wallMs: 500 },
+  b: { rule: 'haiku', answers: ans('sonnet'), features: { hasCheck: false, hard: false }, wallMs: 600 },
+  c: { rule: 'opus', answers: ans('sonnet'), features: checked, wallMs: 700 },
 };
 
 test('score: labels, pass rate, cost vs opus, cascade', () => {
@@ -37,6 +38,9 @@ test('score: labels, pass rate, cost vs opus, cascade', () => {
   assert.equal(row('jev+gate').costVsOpus, 31 / 60);
   // jev-only under-routes c
   assert.equal(row('jev-only').under, 1);
+  // checked: a and c have a check (rule tier, no Jev); b has none → gate+sc → sonnet
+  assert.equal(row('checked+jev').pass, 3);
+  assert.equal(row('checked+jev').costVsOpus, 31 / 60);
 });
 
 test('cached route-none.json matches the current rules on all 18 bench prompts', () => {

@@ -306,9 +306,22 @@ test('loadConfig: env and overrides, provider none forces rules', () => {
   const c = loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'apply', SUBAGENT_ROUTER_K: '5', SUBAGENT_ROUTER_PROVIDER: 'jev' }, file: path.join(tmp, 'none.json') });
   assert.equal(c.mode, 'apply');
   assert.equal(c.k, 5);
-  assert.equal(c.policy, 'gate+sc');
+  assert.equal(c.policy, 'checked'); // default with a provider: Jev only for tasks without a check
   assert.equal(loadConfig({ env: {}, file: 'x', overrides: { provider: 'none', policy: 'sc' } }).policy, 'rules');
   assert.throws(() => loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'bogus' }, file: 'x' }));
+});
+
+test('default path: provider jev with no policy routes checked; an unchecked task still asks Jev k times', async () => {
+  const cfg = loadConfig({ env: { SUBAGENT_ROUTER_PROVIDER: 'jev' }, file: path.join(tmp, 'none.json'), overrides: { log: path.join(tmp, 'log.jsonl') } });
+  assert.equal(cfg.policy, 'checked');
+  const fake = fakeDecide(() => 'sonnet');
+  const u = await route({ task: 'Find the config file.', cfg, decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 3);
+  assert.equal(u.providerCalls, 3);
+  const fake2 = fakeDecide(() => 'opus');
+  const c = await route({ task: 'Fix `paginate` in src/paginate.js. Run `node --test`.', cfg, decideImpl: fake2, log: false });
+  assert.equal(fake2.calls(), 0);
+  assert.equal(c.tier, 'haiku');
 });
 
 test('rule features: product names with a .js suffix are not files', () => {
@@ -376,6 +389,15 @@ test('hook leaves a subagent whose definition sets a model alone', async () => {
   assert.equal(await handle(hookInput({ prompt: 'find x', subagent_type: 'pinned' }), { cfg, home: tmp }), null);
   const inh = await handle(hookInput({ prompt: 'find x', subagent_type: 'inh' }), { cfg, home: tmp });
   assert.equal(inh.hookSpecificOutput.updatedInput.model, 'haiku');
+});
+
+test('hook default with provider jev is gate+sc, not checked: a checked prompt still asks k times', async () => {
+  const hookCfg = loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'apply', SUBAGENT_ROUTER_PROVIDER: 'jev' }, file: path.join(tmp, 'none.json'), defaultPolicy: 'gate+sc', overrides: { log: path.join(tmp, 'log.jsonl') } });
+  assert.equal(hookCfg.policy, 'gate+sc');
+  const fake = fakeDecide(() => 'sonnet');
+  const out = await handle(hookInput({ prompt: 'Fix `paginate` in src/paginate.js. Run `node --test`.' }), { cfg: hookCfg, decideImpl: fake, home: tmp });
+  assert.equal(fake.calls(), 3);
+  assert.equal(out.hookSpecificOutput.updatedInput.model, 'sonnet');
 });
 
 test('hook with a failing provider sets the rule tier (not the default model)', async () => {
