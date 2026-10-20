@@ -23,7 +23,7 @@ const TRACKED = ['Bash', 'PowerShell', 'Read', 'Grep', 'Glob', 'Edit', 'Write', 
 type Row = Record<string, unknown>;
 type Loop = { calls: StepCall[] };
 type ClassStats = { steps: number; ms: number[]; out: number[] };
-type Stats = { steps: number; changed: number; jevCalls: number; jevErrors: number; jevMs: number[]; guarded: number; byClass: Record<string, ClassStats> };
+type Stats = { steps: number; changed: number; jevCalls: number; jevErrors: number; jevMs: number[]; guarded: number; switches: Record<string, number>; byClass: Record<string, ClassStats> };
 type State = { mode: PaceMode; source: string; guard: 'deny' | 'log' | 'killed' };
 
 // Engine-handle helpers sit in this file: the runtime follows $ only into functions declared here.
@@ -61,12 +61,16 @@ async function rowsOf($: EngineInterface, o: PaceOptions): Promise<Row[] | null>
 
 /** The status counts come from the same rows the Jev budget reads, so they cannot disagree. */
 function statsOfRows(rows: Row[]): Stats {
-  const s: Stats = { steps: 0, changed: 0, jevCalls: 0, jevErrors: 0, jevMs: [], guarded: 0, byClass: {} };
+  const s: Stats = { steps: 0, changed: 0, jevCalls: 0, jevErrors: 0, jevMs: [], guarded: 0, switches: {}, byClass: {} };
   for (const r of rows) {
     if (r.event === 'guard') { if (r.applied === true) s.guarded++; continue; }
     if (r.event !== 'step') continue;
     s.steps++;
-    if (r.applied === true) s.changed++;
+    if (r.applied === true) {
+      s.changed++;
+      const k = `${r.effortBefore}→${r.effortChosen}`;
+      s.switches[k] = (s.switches[k] ?? 0) + 1;
+    }
     if (typeof r.jevMs === 'number') { s.jevCalls++; s.jevMs.push(r.jevMs); }
     if (typeof r.jevError === 'string') s.jevErrors++;
     const c = (s.byClass[String(r.cls)] ??= { steps: 0, ms: [], out: [] });
@@ -109,11 +113,13 @@ async function stateOf($: EngineInterface, o: PaceOptions, override: PaceMode | 
 const p50 = (xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)] : 0);
 
 function statusText(st: State, o: PaceOptions, s: Stats): string {
-  const rows = Object.entries(s.byClass).map(([k, c]) => `  ${k.padEnd(7)} ${String(c.steps).padStart(4)} steps  p50 ${(p50(c.ms) / 1000).toFixed(1)} s  p50 out ${p50(c.out)} tok`);
-  const guard = st.guard === 'killed' ? 'off (HAIKU_PACE=off)' : st.guard === 'log' ? 'log only (shadow)' : 'on';
+  const rows = Object.entries(s.byClass).map(([k, c]) => `  ${k.padEnd(7)} ${String(c.steps).padStart(4)}  p50 ${(p50(c.ms) / 1000).toFixed(1)} s  out ${p50(c.out)}`);
+  const guard = st.guard === 'killed' ? 'guard off (HAIKU_PACE=off)' : st.guard === 'log' ? 'guard log only (shadow)' : '';
+  const switches = Object.entries(s.switches).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ×${n}`);
   return [
-    `haiku-pace: ${st.mode} (${st.source}); long-command guard ${guard}; models haiku, sonnet (opus not paced)`,
-    `steps ${s.steps}, effort changed on ${s.changed}; Jev ${o.jev ? `${s.jevCalls}/${o.jevBudget} calls, ${s.jevErrors} errors, p50 ${p50(s.jevMs)} ms` : 'off'}; long commands stopped ${s.guarded}`,
+    `haiku-pace: ${st.mode} (${st.source})${guard ? `; ${guard}` : ''}`,
+    `effort: ${switches.length ? switches.join(', ') : 'no switches'}`,
+    `steps ${s.steps} · changed ${s.changed} · Jev ${o.jev ? `${s.jevCalls}/${o.jevBudget} (${s.jevErrors} err, p50 ${p50(s.jevMs)} ms)` : 'off'} · long commands stopped ${s.guarded}`,
     ...rows,
     'usage: /haiku-pace status | apply | shadow | off | auto',
   ].join('\n');
@@ -122,7 +128,7 @@ function statusText(st: State, o: PaceOptions, s: Stats): string {
 export function registerPace(on: Parameters<Register>[0], options: Parameters<Register>[1]): void {
   const o = readPaceOptions(options as Readonly<Record<string, unknown>>);
   const loops = new Map<string, Loop>();
-  const stats: Stats = { steps: 0, changed: 0, jevCalls: 0, jevErrors: 0, jevMs: [], guarded: 0, byClass: {} };
+  const stats: Stats = { steps: 0, changed: 0, jevCalls: 0, jevErrors: 0, jevMs: [], guarded: 0, switches: {}, byClass: {} };
   let override: PaceMode | undefined;
   const loopOf = (agentId?: string) => {
     const k = agentId ?? 'main';
@@ -198,7 +204,11 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
     }
     const { effort, source } = chooseEffort(cls, e.effort as Effort, jev, o.jevMinConfidence);
     const applied = st.mode === 'apply' && effort !== e.effort;
-    if (applied) stats.changed++;
+    if (applied) {
+      stats.changed++;
+      const k = `${e.effort}→${effort}`;
+      stats.switches[k] = (stats.switches[k] ?? 0) + 1;
+    }
     // Why a pivot's Jev answer did or did not decide the effort, for the telemetry and the status.
     const why = !pivot ? undefined
       : !o.jev ? 'jev_off'
