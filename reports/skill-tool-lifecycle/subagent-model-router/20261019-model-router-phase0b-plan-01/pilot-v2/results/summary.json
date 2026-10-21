@@ -1,0 +1,181 @@
+{
+ "storyId": "W-19279",
+ "lock": "v2",
+ "runnerSha256": "e5c3e84ee9bd9d9e259028c3fdc02a6fb8eadc061e48f9c20fcec41874e38642",
+ "ceilingUsd": 1.5,
+ "reuseV1": false,
+ "halt": null,
+ "spentUsd": {
+  "jev": 0.00010823400000000001,
+  "generation": 0.09794022,
+  "grading": 0.0724919,
+  "total": 0.170540354
+ },
+ "labelMap": {
+  "haiku": "B",
+  "sonnet": "C",
+  "opus": "A"
+ },
+ "jevPrediction": {
+  "tier": "sonnet",
+  "stable": true,
+  "votes": {
+   "sonnet": 3
+  },
+  "n": 3
+ },
+ "generation": {
+  "haiku": {
+   "label": "B",
+   "costUsd": 0.00221162,
+   "chargedUsd": 0.00221162,
+   "error": null,
+   "skipped": null,
+   "reusedFrom": null
+  },
+  "sonnet": {
+   "label": "C",
+   "costUsd": 0.0286442,
+   "chargedUsd": 0.0286442,
+   "error": null,
+   "skipped": null,
+   "reusedFrom": null
+  },
+  "opus": {
+   "label": "A",
+   "costUsd": 0.06708439999999999,
+   "chargedUsd": 0.06708439999999999,
+   "error": null,
+   "skipped": null,
+   "reusedFrom": null
+  }
+ },
+ "grading": {
+  "B": {
+   "grader": "claude-sonnet-5-5",
+   "error": null,
+   "parseError": null,
+   "parsed": {
+    "C1": {
+     "result": "pass",
+     "quote": "The fix is to start from the overtime records in the date range and keep only employees who have at least one."
+    },
+    "C2": {
+     "result": "pass",
+     "quote": "The start and end dates are both inclusive, and the date range is applied to the overtime records, not to a pre-computed total."
+    },
+    "C3": {
+     "result": "pass",
+     "quote": "The Overtime Eligible flag still controls who can enter overtime. This change affects display only."
+    },
+    "C4": {
+     "result": "pass",
+     "quote": "Empty state: a date range with no records shows an empty list, not a list of zeros."
+    },
+    "E1": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E2": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E3": {
+     "result": "absent",
+     "quote": "I have not run anything. I could not check the data, the code, or the F&O source."
+    },
+    "E4": {
+     "result": "absent",
+     "quote": "The fix is to start from the overtime records in the date range and keep only employees who have at least one."
+    },
+    "overall": "pass"
+   },
+   "costUsd": 0.0230973,
+   "chargedUsd": 0.0230973
+  },
+  "C": {
+   "grader": "claude-sonnet-5-5",
+   "error": null,
+   "parseError": null,
+   "parsed": {
+    "C1": {
+     "result": "pass",
+     "quote": "Change that to an inner join, or add an `EXISTS` filter... AND EXISTS (SELECT 1 FROM OvertimeRecords ot WHERE ot.EmployeeId = emp.Id AND ot.OvertimeDate >= @FromDate AND ot.OvertimeDate < DATEADD(day, 1, @ToDate))"
+    },
+    "C2": {
+     "result": "pass",
+     "quote": "Make the date comparison inclusive of the end date (28 Aug)... The date range is inclusive at both ends."
+    },
+    "C3": {
+     "result": "pass",
+     "quote": "Overtime Eligible stays as a condition, so the result is eligible employees who also have records."
+    },
+    "C4": {
+     "result": "pass",
+     "quote": "Test a range with no records. It should show an empty state, with no errors."
+    },
+    "E1": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E2": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E3": {
+     "result": "absent",
+     "quote": "I can't see the code, so this is the logic to change, not a patch."
+    },
+    "E4": {
+     "result": "absent",
+     "quote": "Change that to an inner join, or add an `EXISTS` filter."
+    },
+    "overall": "pass"
+   },
+   "costUsd": 0.0243133,
+   "chargedUsd": 0.0243133
+  },
+  "A": {
+   "grader": "claude-sonnet-5-5",
+   "error": null,
+   "parseError": null,
+   "parsed": {
+    "C1": {
+     "result": "pass",
+     "quote": "The fix is to show only employees who have at least one overtime record in the selected range."
+    },
+    "C2": {
+     "result": "pass",
+     "quote": "The From and To dates are both inclusive (24 Aug and 28 Aug both count)."
+    },
+    "C3": {
+     "result": "pass",
+     "quote": "Only the Overtime tab is in scope. Other Time and Attendance tabs keep their current behaviour."
+    },
+    "C4": {
+     "result": "pass",
+     "quote": "Pick a range with no overtime at all. The tab should show the empty state with no errors."
+    },
+    "E1": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E2": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "E3": {
+     "result": "absent",
+     "quote": "**Component:** unknown. Probably the WebESS Time and Attendance service or API that builds the employee list for the **Overtime** tab"
+    },
+    "E4": {
+     "result": "absent",
+     "quote": "none"
+    },
+    "overall": "pass"
+   },
+   "costUsd": 0.025081299999999997,
+   "chargedUsd": 0.025081299999999997
+  }
+ }
+}

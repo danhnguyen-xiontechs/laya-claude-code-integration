@@ -1,0 +1,42 @@
+{
+ "label": "C",
+ "model": "claude-sonnet-5-5",
+ "error": null,
+ "costUsd": 0.0286442,
+ "chargedUsd": 0.0286442,
+ "usage": {
+  "input_tokens": 2,
+  "cache_creation_input_tokens": 4346,
+  "cache_read_input_tokens": 3262,
+  "output_tokens": 1093,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 4346,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 1093,
+    "cache_read_input_tokens": 3262,
+    "cache_creation_input_tokens": 4346,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 4346
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "text": "1. **The change:** Component/file: unknown. It is most likely the WebESS Overtime tab's employee-list query or API, in the Time and Attendance module. It could also be the F&O-side service that WebESS calls. I can't see the code, so this is the logic to change, not a patch.\n\n Steps:\n 1. Find the code that builds the Overtime tab's employee list. It currently selects employees where `OvertimeEligible = Yes`, then left-joins overtime records and shows 0 when none exist.\n 2. Change that to an inner join, or add an `EXISTS` filter. The filter should look like this:\n\n```sql\nWHERE emp.OvertimeEligible = 1\n  AND EXISTS (\n    SELECT 1 FROM OvertimeRecords ot\n    WHERE ot.EmployeeId = emp.Id\n      AND ot.OvertimeDate >= @FromDate\n      AND ot.OvertimeDate <  DATEADD(day, 1, @ToDate)\n  )\n```\n\n For LINQ, use the equivalent: `employees.Where(e => e.OvertimeEligible && records.Any(r => r.EmployeeId == e.Id && r.Date >= from && r.Date <= to))`.\n\n 3. Keep the eligibility check if the business wants it. Otherwise \"has records in range\" alone is enough.\n 4. Make the date comparison inclusive of the end date (28 Aug), and use the same date field and time zone handling as the displayed totals.\n 5. Decide whether records with 0 hours or in a Rejected or Cancelled status count as records. Match whatever F&O treats as an overtime record.\n 6. Check that the empty-state message still shows when no employee matches, and that paging and total counts use the filtered list.\n\n2. **Assumptions:**\n - The list is built from an eligible-employee query joined to overtime records, and the join is an outer join that yields 0 rows.\n - The filtering can be done in WebESS or its API, not only in F&O.\n - \"Overtime record\" means any overtime entry in F&O dated within the selected range, whatever its status. I assume this because the ticket doesn't mention status.\n - Overtime Eligible stays as a condition, so the result is eligible employees who also have records.\n - The date range is inclusive at both ends.\n - Managers viewing their team's overtime use the same code path as the case in the ticket.\n\n3. **Verification:**\n - Use the ticket's data. For 24–28 Aug, the Overtime tab should show only Danh. Hammad, Long and Ruchika should no longer appear.\n - Widen the range to include a date where Hammad, Long or Ruchika has overtime in F&O. They should then appear with the correct hours.\n - Test boundaries: a record on 24 Aug and one on 28 Aug should both be included. A record on 23 Aug or 29 Aug should be excluded.\n - Test a range with no records. It should show an empty state, with no errors.\n - Test an employee with Overtime Eligible = No who has records, to confirm the behaviour you decided on in step 3.\n - Compare the WebESS list with the F&O overtime records for the same range.\n - Add a unit or integration test for the query covering the cases above. Run the existing Overtime tab tests for regressions, including paging and totals."
+}

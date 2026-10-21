@@ -1,0 +1,83 @@
+{
+  "version": "0B-map-v1",
+  "seedText": "0B-map-v1",
+  "seedSha256Prefix": "3b5e4b7c64943796",
+  "note": "Letter -> tier per story. Never shown to a grader. Read only for labels after grading.",
+  "map": {
+    "W-19279": {
+      "B": "haiku",
+      "C": "sonnet",
+      "A": "opus"
+    },
+    "W-19358": {
+      "B": "haiku",
+      "C": "sonnet",
+      "A": "opus"
+    },
+    "W-19427": {
+      "B": "haiku",
+      "A": "sonnet",
+      "C": "opus"
+    },
+    "W-20925": {
+      "A": "haiku",
+      "B": "sonnet",
+      "C": "opus"
+    },
+    "W-20926": {
+      "B": "haiku",
+      "A": "sonnet",
+      "C": "opus"
+    },
+    "W-20927": {
+      "A": "haiku",
+      "B": "sonnet",
+      "C": "opus"
+    },
+    "W-20932": {
+      "C": "haiku",
+      "B": "sonnet",
+      "A": "opus"
+    },
+    "W-20934": {
+      "B": "haiku",
+      "C": "sonnet",
+      "A": "opus"
+    },
+    "W-21635": {
+      "C": "haiku",
+      "B": "sonnet",
+      "A": "opus"
+    },
+    "W-21681": {
+      "C": "haiku",
+      "B": "sonnet",
+      "A": "opus"
+    },
+    "W-21996": {
+      "A": "haiku",
+      "B": "sonnet",
+      "C": "opus"
+    },
+    "W-21998": {
+      "B": "haiku",
+      "A": "sonnet",
+      "C": "opus"
+    },
+    "W-22016": {
+      "C": "haiku",
+      "A": "sonnet",
+      "B": "opus"
+    },
+    "W-22063": {
+      "C": "haiku",
+      "A": "sonnet",
+      "B": "opus"
+    },
+    "W-22080": {
+      "C": "haiku",
+      "B": "sonnet",
+      "A": "opus"
+    }
+  }
+}

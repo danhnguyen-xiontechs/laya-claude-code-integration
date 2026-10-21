@@ -1,0 +1,42 @@
+{
+ "grader": "claude-sonnet-5-5",
+ "error": null,
+ "parseError": null,
+ "parsed": {
+  "C1": {
+   "result": "pass",
+   "quote": "Change that to an inner join, or add an `EXISTS` filter... AND EXISTS (SELECT 1 FROM OvertimeRecords ot WHERE ot.EmployeeId = emp.Id AND ot.OvertimeDate >= @FromDate AND ot.OvertimeDate < DATEADD(day, 1, @ToDate))"
+  },
+  "C2": {
+   "result": "pass",
+   "quote": "Make the date comparison inclusive of the end date (28 Aug)... The date range is inclusive at both ends."
+  },
+  "C3": {
+   "result": "pass",
+   "quote": "Overtime Eligible stays as a condition, so the result is eligible employees who also have records."
+  },
+  "C4": {
+   "result": "pass",
+   "quote": "Test a range with no records. It should show an empty state, with no errors."
+  },
+  "E1": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E2": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E3": {
+   "result": "absent",
+   "quote": "I can't see the code, so this is the logic to change, not a patch."
+  },
+  "E4": {
+   "result": "absent",
+   "quote": "Change that to an inner join, or add an `EXISTS` filter."
+  },
+  "overall": "pass"
+ },
+ "costUsd": 0.0243133,
+ "chargedUsd": 0.0243133
+}

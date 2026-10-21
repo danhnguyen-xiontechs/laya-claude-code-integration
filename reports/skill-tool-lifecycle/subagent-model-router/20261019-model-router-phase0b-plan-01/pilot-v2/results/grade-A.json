@@ -1,0 +1,42 @@
+{
+ "grader": "claude-sonnet-5-5",
+ "error": null,
+ "parseError": null,
+ "parsed": {
+  "C1": {
+   "result": "pass",
+   "quote": "The fix is to show only employees who have at least one overtime record in the selected range."
+  },
+  "C2": {
+   "result": "pass",
+   "quote": "The From and To dates are both inclusive (24 Aug and 28 Aug both count)."
+  },
+  "C3": {
+   "result": "pass",
+   "quote": "Only the Overtime tab is in scope. Other Time and Attendance tabs keep their current behaviour."
+  },
+  "C4": {
+   "result": "pass",
+   "quote": "Pick a range with no overtime at all. The tab should show the empty state with no errors."
+  },
+  "E1": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E2": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E3": {
+   "result": "absent",
+   "quote": "**Component:** unknown. Probably the WebESS Time and Attendance service or API that builds the employee list for the **Overtime** tab"
+  },
+  "E4": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "overall": "pass"
+ },
+ "costUsd": 0.025081299999999997,
+ "chargedUsd": 0.025081299999999997
+}

@@ -1,0 +1,42 @@
+{
+ "label": "A",
+ "model": "claude-opus-5-5",
+ "error": null,
+ "costUsd": 0.06708439999999999,
+ "chargedUsd": 0.06708439999999999,
+ "usage": {
+  "input_tokens": 2,
+  "cache_creation_input_tokens": 4338,
+  "cache_read_input_tokens": 3262,
+  "output_tokens": 1586,
+  "output_tokens_details": {
+   "thinking_tokens": 93
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 4338,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 1586,
+    "cache_read_input_tokens": 3262,
+    "cache_creation_input_tokens": 4338,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 4338
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "text": "1. **The change**\n\n**Component:** unknown. Probably the WebESS Time and Attendance service or API that builds the employee list for the **Overtime** tab, or the matching F&O data entity or query.\n\n**Likely cause:** The list starts from all employees with **Overtime Eligible = Yes**. Overtime records are then outer-joined (LEFT JOIN) onto it, so eligible employees with no records still appear with 0. The fix is to show only employees who have at least one overtime record in the selected range.\n\n**Code (illustrative C#/LINQ; names are placeholders):**\n\n```csharp\n// Before (suspected): eligible employees, overtime left-joined -> zero rows shown\n// var result = eligibleEmployees\n//     .GroupJoin(overtimeRecords, e => e.PersonnelNumber, o => o.PersonnelNumber,\n//                (e, ots) => new { e, Total = ots.Sum(x => x.Hours) });\n\n// After: only employees with overtime records inside the selected range\nvar overtimeInRange = overtimeRecords\n    .Where(o => o.Date >= fromDate.Date && o.Date <= toDate.Date);\n\nvar result = eligibleEmployees\n    .Join(overtimeInRange,\n          e => e.PersonnelNumber,\n          o => o.PersonnelNumber,\n          (e, o) => new { e, o })\n    .GroupBy(x => x.e)\n    .Select(g => new OvertimeEmployeeDto\n    {\n        PersonnelNumber = g.Key.PersonnelNumber,\n        Name            = g.Key.Name,\n        TotalOvertime   = g.Sum(x => x.o.Hours),\n        Records         = g.Select(x => x.o).ToList()\n    })\n    .ToList();\n```\n\n**SQL equivalent:**\n\n```sql\nSELECT e.PersonnelNumber, e.Name, SUM(o.Hours) AS TotalOvertime\nFROM Employee e\nINNER JOIN OvertimeRecord o\n    ON o.PersonnelNumber = e.PersonnelNumber\n   AND o.WorkDate BETWEEN @FromDate AND @ToDate\nWHERE e.OvertimeEligible = 1\nGROUP BY e.PersonnelNumber, e.Name;\n```\n\n**Steps:**\n1. Find the method or query that fills the Overtime tab's employee list.\n2. Change the outer join to an inner join, or add a filter that keeps only employees with records in the range (`Records.Any()` or `EXISTS`).\n3. If the list is built on the frontend instead, filter out employees whose overtime list for the range is empty before rendering.\n4. Keep the eligibility check as it is. It still applies, but it is no longer enough on its own for an employee to appear.\n\n2. **Assumptions**\n- The list comes from eligible employees with overtime outer-joined onto it, which is why the extra rows show 0.\n- Overtime records come from F&O and have an employee key and a date that can be compared with the selected range.\n- The From and To dates are both inclusive (24 Aug and 28 Aug both count).\n- If an employee has records in the range that add up to 0 hours, they should still appear, because they do have records. If the business wants them hidden too, add `HAVING SUM(Hours) > 0`.\n- No other screen relies on this endpoint to list every eligible employee. If one does, add a parameter or a separate method instead of changing shared behaviour.\n- Only the Overtime tab is in scope. Other Time and Attendance tabs keep their current behaviour.\n\n3. **Verification**\n- **Repro case:** Select 24 Aug – 28 Aug. Only Danh should appear, and his total should match F&O. Hammad, Long and Ruchika should not appear.\n- **Edge dates:** Give an employee a record dated exactly on the From date and another on the To date. They should appear. A record one day outside the range should not make them appear.\n- **Empty range:** Pick a range with no overtime at all. The tab should show the empty state with no errors.\n- **Eligibility:** An employee with **Overtime Eligible = No** who has records should still be hidden, if that is how it works today.\n- **Regression:** Check that totals, paging, sorting and approval actions in the Overtime tab still work. Also check that other screens using the same service are unchanged.\n- **Automated tests:** Add a unit or integration test with mixed data (eligible with and without records, records inside and outside the range) and check the returned list."
+}

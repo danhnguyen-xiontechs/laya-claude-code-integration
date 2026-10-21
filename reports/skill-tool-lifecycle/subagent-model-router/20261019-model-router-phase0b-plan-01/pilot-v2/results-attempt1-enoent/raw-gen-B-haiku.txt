@@ -1,0 +1,7 @@
+
+--- stderr ---
+
+--- error ---
+spawnSync claude ENOENT
+--- exit ---
+null

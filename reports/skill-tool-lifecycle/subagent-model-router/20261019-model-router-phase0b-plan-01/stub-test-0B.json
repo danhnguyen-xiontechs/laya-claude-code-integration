@@ -1,0 +1,334 @@
+[
+  {
+    "name": "ok",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "complete",
+      "started": "2026-10-19T17:27:42.438Z",
+      "finished": "2026-10-19T17:27:47.003Z",
+      "spentUsd": 1.007556,
+      "calls": 93
+    },
+    "calls": 93,
+    "stub": 93,
+    "spent": 1.007556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "name": "error",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "call-error",
+      "message": "call-error: gen-W-19279-haiku: exit 1",
+      "started": "2026-10-19T17:27:47.102Z",
+      "spentUsd": 0.077556,
+      "calls": 1
+    },
+    "calls": 1,
+    "stub": 1,
+    "spent": 0.077556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (call-error): call-error: gen-W-19279-haiku: exit 1"
+  },
+  {
+    "name": "empty",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "empty",
+      "message": "empty: gen-W-19279-haiku: empty result",
+      "started": "2026-10-19T17:27:47.260Z",
+      "spentUsd": 0.087556,
+      "calls": 1
+    },
+    "calls": 1,
+    "stub": 1,
+    "spent": 0.087556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (empty): empty: gen-W-19279-haiku: empty result"
+  },
+  {
+    "name": "overcap",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "over-cap",
+      "message": "over-cap: gen-W-19279-haiku: cost 0.5 above per-call cap 0.1",
+      "started": "2026-10-19T17:27:47.412Z",
+      "spentUsd": 0.577556,
+      "calls": 1
+    },
+    "calls": 1,
+    "stub": 1,
+    "spent": 0.577556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (over-cap): over-cap: gen-W-19279-haiku: cost 0.5 above per-call cap 0.1"
+  },
+  {
+    "name": "reserve",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "reserve",
+      "message": "reserve: gen-W-19279-sonnet: spent 0.127556 + cap 0.4 > 0.2; no call made",
+      "started": "2026-10-19T17:27:47.559Z",
+      "spentUsd": 0.127556,
+      "calls": 1
+    },
+    "calls": 1,
+    "stub": 1,
+    "spent": 0.127556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`",
+      "`const STOP = 12;` → `const STOP = 0.2;`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (reserve): reserve: gen-W-19279-sonnet: spent 0.127556 + cap 0.4 > 0.2; no call made"
+  },
+  {
+    "name": "baseline-applied",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "reserve",
+      "message": "reserve: gen-W-19279-sonnet: spent 0.127556 + cap 0.4 > 0.5; no call made",
+      "started": "2026-10-19T17:27:47.722Z",
+      "spentUsd": 0.127556,
+      "calls": 1
+    },
+    "calls": 1,
+    "stub": 1,
+    "spent": 0.127556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`",
+      "`const STOP = 12;` → `const STOP = 0.5;`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (reserve): reserve: gen-W-19279-sonnet: spent 0.127556 + cap 0.4 > 0.5; no call made"
+  },
+  {
+    "name": "baseline-ignored",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "reserve",
+      "message": "reserve: gen-W-19279-opus: spent 0.100000 + cap 0.6 > 0.5; no call made",
+      "started": "2026-10-19T17:27:47.893Z",
+      "spentUsd": 0.1,
+      "calls": 2
+    },
+    "calls": 2,
+    "stub": 2,
+    "spent": 0.1,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`",
+      "`const STOP = 12;` → `const STOP = 0.5;`",
+      "`state.spent = state.baseline;` → `state.spent = 0;`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (reserve): reserve: gen-W-19279-opus: spent 0.100000 + cap 0.6 > 0.5; no call made"
+  },
+  {
+    "name": "baseline-missing",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "baseline-missing",
+      "message": "baseline-missing: baseline-ledger-0B.json is missing or unparseable; no call made",
+      "started": "2026-10-19T17:27:48.089Z",
+      "spentUsd": 0,
+      "calls": 0
+    },
+    "calls": 0,
+    "stub": 0,
+    "spent": 0,
+    "diffs": [
+      "removed from copy and lock: `baseline-ledger-0B.json`",
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (baseline-missing): baseline-missing: baseline-ledger-0B.json is missing or unparseable; no call made"
+  },
+  {
+    "name": "baseline-mismatch-sha",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "baseline-mismatch",
+      "message": "baseline-mismatch: rubric-second-read: source hash differs from ledger; no call made",
+      "started": "2026-10-19T17:27:48.166Z",
+      "spentUsd": 0,
+      "calls": 0
+    },
+    "calls": 0,
+    "stub": 0,
+    "spent": 0,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (baseline-mismatch): baseline-mismatch: rubric-second-read: source hash differs from ledger; no call made"
+  },
+  {
+    "name": "baseline-mismatch-total",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "baseline-mismatch",
+      "message": "baseline-mismatch: baseline-ledger-0B.json: total_usd is not the sum of its entries; no call made",
+      "started": "2026-10-19T17:27:48.250Z",
+      "spentUsd": 0,
+      "calls": 0
+    },
+    "calls": 0,
+    "stub": 0,
+    "spent": 0,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (baseline-mismatch): baseline-mismatch: baseline-ledger-0B.json: total_usd is not the sum of its entries; no call made"
+  },
+  {
+    "name": "missing-cost",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "complete",
+      "started": "2026-10-19T17:27:48.329Z",
+      "finished": "2026-10-19T17:27:53.148Z",
+      "spentUsd": 1.097556,
+      "calls": 93
+    },
+    "calls": 93,
+    "stub": 93,
+    "spent": 1.097556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "name": "heldout-story",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "held-out-id",
+      "message": "held-out-id: W-19279: a held-out id is in calibration text",
+      "started": "2026-10-19T17:27:53.251Z",
+      "spentUsd": 0.077556,
+      "calls": 0
+    },
+    "calls": 0,
+    "stub": 0,
+    "spent": 0.077556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (held-out-id): held-out-id: W-19279: a held-out id is in calibration text"
+  },
+  {
+    "name": "heldout-brief",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "held-out-id",
+      "message": "held-out-id: gen-W-19279-haiku: a held-out id is in the prompt; no call made",
+      "started": "2026-10-19T17:27:53.377Z",
+      "spentUsd": 0.077556,
+      "calls": 0
+    },
+    "calls": 0,
+    "stub": 0,
+    "spent": 0.077556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (held-out-id): held-out-id: gen-W-19279-haiku: a held-out id is in the prompt; no call made"
+  },
+  {
+    "name": "not-evaluable-skip",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "complete",
+      "started": "2026-10-19T17:27:53.482Z",
+      "finished": "2026-10-19T17:27:58.189Z",
+      "spentUsd": 1.007556,
+      "calls": 93
+    },
+    "calls": 93,
+    "stub": 93,
+    "spent": 1.007556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "name": "badgrade",
+    "ok": true,
+    "problems": [],
+    "status": {
+      "status": "incomplete",
+      "reason": "grader-malformed",
+      "message": "grader-malformed: grade-W-19279-haiku: reply is not JSON",
+      "started": "2026-10-19T17:27:58.287Z",
+      "spentUsd": 0.507556,
+      "calls": 43
+    },
+    "calls": 43,
+    "stub": 43,
+    "spent": 0.507556,
+    "diffs": [
+      "`const CLAUDE_BIN = 'C:/Users/ADMIN/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe';` → `const CLAUDE_BIN = \"C:\\\\Program Files\\\\nodejs\\\\node.exe\";`",
+      "`const PREFIX_ARGS = [];` → `const PREFIX_ARGS = [\"D:\\\\XionTechs\\\\Laya\\\\reports\\\\skill-tool-lifecycle\\\\subagent-model-router\\\\20261019-model-router-phase0b-plan-01\\\\stub-cli-0B.mjs\"];`"
+    ],
+    "exit": 1,
+    "stderr": "INCOMPLETE (grader-malformed): grader-malformed: grade-W-19279-haiku: reply is not JSON"
+  }
+]

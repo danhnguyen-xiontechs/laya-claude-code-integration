@@ -1,0 +1,42 @@
+{
+ "label": "B",
+ "model": "claude-haiku-5-5",
+ "error": null,
+ "costUsd": 0.00221162,
+ "chargedUsd": 0.00221162,
+ "usage": {
+  "input_tokens": 2,
+  "cache_creation_input_tokens": 5124,
+  "cache_read_input_tokens": 3262,
+  "output_tokens": 2308,
+  "output_tokens_details": {
+   "thinking_tokens": 1336
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 5124,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 2308,
+    "cache_read_input_tokens": 3262,
+    "cache_creation_input_tokens": 5124,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 5124
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "text": "**1. The change**\n\nComponent: **unknown**. I have no access to the WebESS code, so this is the logic the Overtime tab's data load should use. It most likely sits in the service or query that builds the Overtime list.\n\nThe cause is probably that the list starts from all employees with `Overtime Eligible = Yes` and attaches overtime data to each one, keeping employees who have no matching rows (shown as 0). The fix is to start from the overtime records in the date range and keep only employees who have at least one.\n\nPseudo-code:\n\n```\nemployees = getEmployees(OvertimeEligible = Yes)\nrecords   = getOvertimeRecords(startDate, endDate)   // F&O, date range applied here\n\nrows = employees\n  .map(e => ({ employee: e, records: records.filter(r => r.employeeId == e.id) }))\n  .filter(row => row.records.length > 0)\n```\n\nIf the list is built in SQL, use an `EXISTS` check instead of a left join:\n\n```sql\nSELECT e.*\nFROM Employee e\nWHERE e.OvertimeEligible = 1\n  AND EXISTS (\n    SELECT 1 FROM OvertimeRecord o\n    WHERE o.EmployeeId = e.Id\n      AND o.Date BETWEEN @StartDate AND @EndDate\n  )\n```\n\nDo not rely on filtering by total hours > 0 in the UI. That would hide a real record with 0 hours. Filter on whether a record exists in the range.\n\n**2. Assumptions**\n\n- The zero-hour rows come from a left join or a default-zero row built from the eligibility list.\n- The start and end dates are both inclusive, and the date range is applied to the overtime records, not to a pre-computed total.\n- A record with 0 hours that exists in F&O counts as an overtime record and stays visible.\n- The Overtime Eligible flag still controls who can enter overtime. This change affects display only.\n- Other tabs do not use this list and need no change.\n- I have not run anything. I could not check the data, the code, or the F&O source.\n\n**3. Verification**\n\n- Reproduce: select 24–28 Aug. Only Danh should appear. Hammad, Long, and Ruchika should not.\n- Boundary tests:\n  - An employee with a record on 24 Aug or 28 Aug appears.\n  - An employee with a record only on 23 Aug or 29 Aug does not appear.\n  - An eligible employee with no records at all does not appear.\n  - An employee with a 0-hour record in range appears, if that is the agreed behavior.\n- Empty state: a date range with no records shows an empty list, not a list of zeros.\n- Cross-check: run the F&O overtime query for the same range and compare the employee list with the WebESS output.\n- Unit-test the filter function, and integration-test the endpoint with a fixture that includes eligible employees with and without records.\n- Regression: confirm the other WebESS tabs and the eligibility flag behave as before."
+}

@@ -1,0 +1,22 @@
+You are grading one written answer against a rubric. You have no access to any codebase and no tools. Use only the task, the rubric and the answer below.
+
+For each criterion id listed under "Criterion ids", reply with an object:
+- R and D criteria: {"result": "pass" or "fail", "quote": "<text>"}
+- E criteria: {"result": "present" or "absent", "quote": "<text>"}
+
+"quote" is a passage copied character for character from the answer that your verdict relies on. If no passage applies, use "none". Do not paraphrase inside a quote.
+
+Set "overall" to "pass" or "fail" by the Overall section of the rubric. Do not change the rubric's rules and do not add criteria.
+
+Reply with one JSON object and nothing else. Its keys are the criterion ids below plus "overall".
+
+Criterion ids: <<IDS>>
+
+=== RUBRIC ===
+<<RUBRIC>>
+
+=== TASK ===
+<<TASK>>
+
+=== ANSWER ===
+<<ANSWER>>

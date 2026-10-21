@@ -1,0 +1,42 @@
+{
+ "grader": "claude-sonnet-5-5",
+ "error": null,
+ "parseError": null,
+ "parsed": {
+  "C1": {
+   "result": "pass",
+   "quote": "The fix is to start from the overtime records in the date range and keep only employees who have at least one."
+  },
+  "C2": {
+   "result": "pass",
+   "quote": "The start and end dates are both inclusive, and the date range is applied to the overtime records, not to a pre-computed total."
+  },
+  "C3": {
+   "result": "pass",
+   "quote": "The Overtime Eligible flag still controls who can enter overtime. This change affects display only."
+  },
+  "C4": {
+   "result": "pass",
+   "quote": "Empty state: a date range with no records shows an empty list, not a list of zeros."
+  },
+  "E1": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E2": {
+   "result": "absent",
+   "quote": "none"
+  },
+  "E3": {
+   "result": "absent",
+   "quote": "I have not run anything. I could not check the data, the code, or the F&O source."
+  },
+  "E4": {
+   "result": "absent",
+   "quote": "The fix is to start from the overtime records in the date range and keep only employees who have at least one."
+  },
+  "overall": "pass"
+ },
+ "costUsd": 0.0230973,
+ "chargedUsd": 0.0230973
+}

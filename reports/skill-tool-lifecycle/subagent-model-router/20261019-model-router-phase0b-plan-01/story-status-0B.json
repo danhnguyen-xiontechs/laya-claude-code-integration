@@ -1,0 +1,122 @@
+{
+  "version": "0B-status-v1",
+  "note": "Status per calibration story. No story text is in this file.",
+  "stories": [
+    {
+      "id": "W-19279",
+      "status": "pilot_exposed",
+      "reason": "Pilot v2 ran this story (spend 0.170540 USD). Pilot rubric locked. Runs for provenance only; excluded from every 0B conclusion."
+    },
+    {
+      "id": "W-19358",
+      "status": "not_evaluable",
+      "reason": "Full story text is not recoverable locally. Every local copy is cut off at 984 characters, mid-sentence. Rubric is locked from the visible part only. Recorded before any candidate call: no candidate, JEV or grading call is made for this story."
+    },
+    {
+      "id": "W-19427",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-20925",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-20926",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-20927",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-20932",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-20934",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-21635",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-21681",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-21996",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-21998",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-22016",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-22063",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    },
+    {
+      "id": "W-22080",
+      "status": "evaluable",
+      "reason": "Full task text present in the calibration file; rubric locked with one or more R criteria."
+    }
+  ],
+  "counts": {
+    "evaluable": 13,
+    "pilot_exposed": 1,
+    "not_evaluable": 1
+  },
+  "w19358Search": {
+    "visibleTextChars": 984,
+    "visibleTextSha256": "3dd130cb6cc1e7b1127ce3e6e097e485ab3eced00b8216e5d28cefe93fca2ec4",
+    "checked": [
+      {
+        "path": ".claude/skills/subagent-model-router/real/stories-text.json",
+        "taskChars": 984
+      },
+      {
+        "path": ".claude/skills/subagent-model-router/real/stories-hindsight.json",
+        "taskChars": 984
+      },
+      {
+        "path": ".claude/skills/subagent-model-router/real/gov-text.json",
+        "result": "id only, no text field"
+      },
+      {
+        "path": ".claude/skills/subagent-model-router/real/gov-hindsight.json",
+        "result": "id only, no text field"
+      },
+      {
+        "path": "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-phase0a-dataset-01/raw-sources.json",
+        "taskChars": 984
+      },
+      {
+        "path": "reports/skill-tool-lifecycle/subagent-model-router/20261019-model-router-phase0a-dataset-01/tasks.normalized.json",
+        "taskChars": 984
+      },
+      {
+        "path": "git f873c11:.claude/skills/subagent-model-router/real/stories-text.json",
+        "taskChars": 984
+      }
+    ],
+    "notes": "Every local copy is the same 984 characters. Only commit f873c11 touches stories-text.json. No ADO or external pull was made (needs separate approval).",
+    "result": "not recoverable locally; status not_evaluable"
+  }
+}

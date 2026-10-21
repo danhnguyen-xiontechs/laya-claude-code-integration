@@ -1,0 +1,14 @@
+{
+  "version": "0B-baseline-v1",
+  "note": "Spend already made before the runner starts. Counted in the runner stop and reserve check.",
+  "entries": [
+    {
+      "id": "rubric-second-read",
+      "model": "sonnet",
+      "source": "rubrics/second-read-raw.json",
+      "source_sha256": "7eebc084bb83654b14ef3f8dede313c4e1105242a271fb42a542a7965676a001",
+      "total_cost_usd": 0.0775562
+    }
+  ],
+  "total_usd": 0.0775562
+}

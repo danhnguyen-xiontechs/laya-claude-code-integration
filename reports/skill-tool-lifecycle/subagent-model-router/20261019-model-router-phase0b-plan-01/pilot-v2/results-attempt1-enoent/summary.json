@@ -1,0 +1,63 @@
+{
+ "storyId": "W-19279",
+ "lock": "v2",
+ "runnerSha256": "76b9e198590bf530c283ca68317e0ebdeaebe95390e94983789f59f02b105c20",
+ "ceilingUsd": 1.5,
+ "reuseV1": false,
+ "halt": {
+  "call": "gen-B-haiku",
+  "reason": "error: spawnSync claude ENOENT"
+ },
+ "spentUsd": {
+  "jev": 0,
+  "generation": 0,
+  "grading": 0,
+  "total": 0
+ },
+ "labelMap": {
+  "haiku": "B",
+  "sonnet": "C",
+  "opus": "A"
+ },
+ "jevPrediction": null,
+ "generation": {
+  "haiku": {
+   "label": "B",
+   "costUsd": null,
+   "chargedUsd": 0,
+   "error": "spawnSync claude ENOENT",
+   "skipped": null,
+   "reusedFrom": null
+  },
+  "sonnet": {
+   "label": "C",
+   "costUsd": null,
+   "chargedUsd": null,
+   "error": null,
+   "skipped": "halted at gen-B-haiku",
+   "reusedFrom": null
+  },
+  "opus": {
+   "label": "A",
+   "costUsd": null,
+   "chargedUsd": null,
+   "error": null,
+   "skipped": "halted at gen-B-haiku",
+   "reusedFrom": null
+  }
+ },
+ "grading": {
+  "B": {
+   "skipped": "no answer",
+   "generationError": "spawnSync claude ENOENT"
+  },
+  "C": {
+   "skipped": "halted at gen-B-haiku",
+   "generationError": null
+  },
+  "A": {
+   "skipped": "halted at gen-B-haiku",
+   "generationError": null
+  }
+ }
+}

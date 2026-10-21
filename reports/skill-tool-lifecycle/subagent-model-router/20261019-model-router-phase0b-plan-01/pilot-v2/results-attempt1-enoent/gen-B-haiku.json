@@ -1,0 +1,9 @@
+{
+ "label": "B",
+ "model": "claude-haiku-5-5",
+ "error": "spawnSync claude ENOENT",
+ "costUsd": null,
+ "chargedUsd": 0,
+ "usage": null,
+ "text": ""
+}
