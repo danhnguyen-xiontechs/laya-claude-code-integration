@@ -49,3 +49,6 @@ research/ab-1697/__pycache__/
 
 # agent-reliability: real-session telemetry (command keys, paths) - keep local
 agent-reliability/telemetry/
+
+# BMad project config/output (local)
+_bmad/
