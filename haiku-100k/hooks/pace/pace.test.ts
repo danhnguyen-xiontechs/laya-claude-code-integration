@@ -59,7 +59,7 @@ test('guard: GNU timeout in ms is stopped; GNU timeout in seconds, Windows timeo
   expect(guardCommand('npm test', false)).toBe(null)
 })
 
-test('guard state: HAIKU_PACE=off kills everything; /haiku-pace off keeps the guard; shadow only logs', () => {
+test('guard state: EFFORT_PACE=off kills everything; /effort-pace off keeps the guard; shadow only logs', () => {
   expect(guardStateOf(undefined, 'apply')).toBe('deny')
   expect(guardStateOf(undefined, 'off')).toBe('deny')
   expect(guardStateOf(undefined, 'shadow')).toBe('log')
@@ -120,7 +120,7 @@ test('turn.step, Opus: pace does not run; the effort handed on is the session ef
 test('turn.step, Sonnet, apply: a turn-start pivot is raised from medium to high (hook level)', { options: { paceMode: 'apply', paceJev: false } }, async ($, on) => {
   const sent: string[] = []
   mock.clock(on as never)
-  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  mock.env(on as never, {}) // EFFORT_PACE unset, so paceMode decides
   on('turn.step', async function* (_$, e) {
     sent.push(String(e.effort))
     return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
@@ -132,7 +132,7 @@ test('turn.step, Sonnet, apply: a turn-start pivot is raised from medium to high
 test('turn.step, Sonnet, shadow: the same pivot is logged but the effort is left at medium (hook level)', { options: { paceMode: 'shadow', paceJev: false } }, async ($, on) => {
   const sent: string[] = []
   mock.clock(on as never)
-  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  mock.env(on as never, {}) // EFFORT_PACE unset, so paceMode decides
   on('turn.step', async function* (_$, e) {
     sent.push(String(e.effort))
     return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step
@@ -144,7 +144,7 @@ test('turn.step, Sonnet, shadow: the same pivot is logged but the effort is left
 test('turn.step, Sonnet, off: no effort change (hook level)', { options: { paceMode: 'off', paceJev: false } }, async ($, on) => {
   const sent: string[] = []
   mock.clock(on as never)
-  mock.env(on as never, {}) // HAIKU_PACE unset, so paceMode decides
+  mock.env(on as never, {}) // EFFORT_PACE unset, so paceMode decides
   on('turn.step', async function* (_$, e) {
     sent.push(String(e.effort))
     return { ...answer, turnId: e.turnId, index: e.index } // the engine rejects a result for another step

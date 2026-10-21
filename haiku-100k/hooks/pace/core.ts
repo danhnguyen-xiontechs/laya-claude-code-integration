@@ -1,4 +1,4 @@
-// haiku-pace pure helpers: which effort a Haiku model request (turn.step) gets, and which Bash
+// effort-pace pure helpers: which effort a Haiku model request (turn.step) gets, and which Bash
 // calls are stopped before they run. register.ts holds everything that takes the engine handle ($).
 //
 // Why (session 830cca7b, 2026-10-20): ~70% of a Haiku turn was model time, mostly hidden thinking;
@@ -30,7 +30,7 @@ export function readPaceOptions(raw: Readonly<Record<string, unknown>> = {}): Pa
   };
 }
 
-/** env HAIKU_PACE=off|shadow|apply wins over the session's /haiku-pace, which wins over userConfig. */
+/** env EFFORT_PACE=off|shadow|apply wins over the session's /effort-pace, which wins over userConfig. */
 export function resolvePaceMode(env: string | undefined, session: PaceMode | undefined, config: PaceMode): PaceMode {
   const e = (env ?? '').trim().toLowerCase();
   if (e === 'off' || e === 'shadow' || e === 'apply') return e;
@@ -38,7 +38,7 @@ export function resolvePaceMode(env: string | undefined, session: PaceMode | und
 }
 
 /**
- * The long-command guard is its own switch. HAIKU_PACE=off is the kill switch for the whole mod.
+ * The long-command guard is its own switch. EFFORT_PACE=off is the kill switch for the whole mod.
  * Otherwise it denies in apply and off (adaptation off, guard still on) and only logs in shadow.
  */
 export function guardStateOf(env: string | undefined, mode: PaceMode): 'deny' | 'log' | 'killed' {
@@ -177,11 +177,11 @@ export function guardCommand(command: string, background: boolean): string | nul
   for (const m of command.matchAll(GNU_TIMEOUT)) {
     const n = Number(m[1]);
     if (n >= 3600)
-      return `[haiku-pace] \`timeout ${n}\` is ${n} seconds (≈ ${(n / 3600).toFixed(1)} h): GNU timeout counts seconds, not milliseconds. Use e.g. \`timeout ${Math.max(1, Math.round(n / 1000))}\`, or run_in_background for a long job.`;
+      return `[effort-pace] \`timeout ${n}\` is ${n} seconds (≈ ${(n / 3600).toFixed(1)} h): GNU timeout counts seconds, not milliseconds. Use e.g. \`timeout ${Math.max(1, Math.round(n / 1000))}\`, or run_in_background for a long job.`;
   }
   if (STDIN_PYTHON.test(command))
-    return '[haiku-pace] `python -` fed by a heredoc has hung this shell (Git Bash on Windows, 2026-10-20, twice): write the script to a file in the scratchpad and run `python <file>` (or `node <file>`).';
+    return '[effort-pace] `python -` fed by a heredoc has hung this shell (Git Bash on Windows, 2026-10-20, twice): write the script to a file in the scratchpad and run `python <file>` (or `node <file>`).';
   if (!background && LONG_COMMANDS.test(command))
-    return '[haiku-pace] this command runs a whole Claude session and takes minutes: rerun it with run_in_background: true (output to a file) and keep working; you are notified when it ends.';
+    return '[effort-pace] this command runs a whole Claude session and takes minutes: rerun it with run_in_background: true (output to a file) and keep working; you are notified when it ends.';
   return null;
 }

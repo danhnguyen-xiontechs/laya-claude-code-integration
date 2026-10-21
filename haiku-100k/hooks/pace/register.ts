@@ -1,9 +1,9 @@
-// haiku-pace: per-step effort for Haiku and Sonnet model requests, plus a guard for Bash calls that
+// effort-pace: per-step effort for Haiku and Sonnet model requests, plus a guard for Bash calls that
 // would hold a turn for minutes (every model). Rules decide the routine steps for free; TypeSafe Jev
 // is asked only on pivot steps (turn start, after a failure, after a big edit). Every error falls back
 // to the session's own effort (or `high` on a pivot) and never blocks a request. Opus is not paced.
-// Mode: userConfig paceMode (apply by default), /haiku-pace for this session, env HAIKU_PACE wins.
-// HAIKU_PACE=off is the kill switch for everything; /haiku-pace off keeps the long-command guard on.
+// Mode: userConfig paceMode (apply by default), /effort-pace for this session, env EFFORT_PACE wins.
+// EFFORT_PACE=off is the kill switch for everything; /effort-pace off keeps the long-command guard on.
 import type { EngineInterface, Register } from 'claude-code';
 import {
   type Effort, type PaceMode, type PaceOptions, type StepCall, actionOf, chooseEffort, classifyStep,
@@ -102,11 +102,12 @@ async function askJev($: EngineInterface, body: unknown, o: PaceOptions): Promis
   return Promise.race([call, timeout]);
 }
 
-/** env HAIKU_PACE, then /haiku-pace for this session, then userConfig paceMode. Never throws. */
+/** env EFFORT_PACE, then /effort-pace for this session, then userConfig paceMode. Never throws. */
 async function stateOf($: EngineInterface, o: PaceOptions, override: PaceMode | undefined): Promise<State> {
-  const env = (await $.env.get('HAIKU_PACE').catch(() => undefined)) ?? undefined;
+  // HAIKU_PACE is the pre-0.9 name, read as a fallback for one version.
+  const env = (await $.env.get('EFFORT_PACE').catch(() => undefined)) ?? (await $.env.get('HAIKU_PACE').catch(() => undefined)) ?? undefined;
   const mode = resolvePaceMode(env, override, o.mode);
-  const source = env && /^(off|shadow|apply)$/i.test(env.trim()) ? `env HAIKU_PACE=${env.trim()}` : override ? '/haiku-pace (this session)' : 'userConfig paceMode';
+  const source = env && /^(off|shadow|apply)$/i.test(env.trim()) ? `env EFFORT_PACE=${env.trim()}` : override ? '/effort-pace (this session)' : 'userConfig paceMode';
   return { mode, source, guard: guardStateOf(env, mode) };
 }
 
@@ -114,14 +115,14 @@ const p50 = (xs: number[]) => (xs.length ? [...xs].sort((a, b) => a - b)[Math.fl
 
 function statusText(st: State, o: PaceOptions, s: Stats): string {
   const rows = Object.entries(s.byClass).map(([k, c]) => `  ${k.padEnd(7)} ${String(c.steps).padStart(4)}  p50 ${(p50(c.ms) / 1000).toFixed(1)} s  out ${p50(c.out)}`);
-  const guard = st.guard === 'killed' ? 'guard off (HAIKU_PACE=off)' : st.guard === 'log' ? 'guard log only (shadow)' : '';
+  const guard = st.guard === 'killed' ? 'guard off (EFFORT_PACE=off)' : st.guard === 'log' ? 'guard log only (shadow)' : '';
   const switches = Object.entries(s.switches).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ×${n}`);
   return [
-    `haiku-pace: ${st.mode} (${st.source})${guard ? `; ${guard}` : ''}`,
+    `effort-pace: ${st.mode} (${st.source})${guard ? `; ${guard}` : ''}`,
     `effort: ${switches.length ? switches.join(', ') : 'no switches'}`,
     `steps ${s.steps} · changed ${s.changed} · Jev ${o.jev ? `${s.jevCalls}/${o.jevBudget} (${s.jevErrors} err, p50 ${p50(s.jevMs)} ms)` : 'off'} · long commands stopped ${s.guarded}`,
     ...rows,
-    'usage: /haiku-pace status | apply | shadow | off | auto',
+    'usage: /effort-pace status | apply | shadow | off | auto',
   ].join('\n');
 }
 
@@ -136,7 +137,8 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
     return loops.get(k)!;
   };
 
-  on('command.run', { command: 'haiku-pace' }, async ($, e) => {
+  // /haiku-pace is the pre-0.9 name: the same command, kept for one version.
+  on('command.run', { command: ['effort-pace', 'haiku-pace'] }, async ($, e) => {
     const arg = String(e.args ?? '').trim().toLowerCase();
     if (arg === 'apply' || arg === 'shadow' || arg === 'off') override = arg;
     else if (arg === 'auto') override = undefined;
