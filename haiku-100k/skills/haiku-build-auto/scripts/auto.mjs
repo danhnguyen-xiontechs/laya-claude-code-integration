@@ -17,8 +17,10 @@
 //          applies a re-review (its findings replace the open list), then: fix (next round) | finish | halt
 //        node auto.mjs halt   <runDir> "<condition>" [--reason "<text>"]
 //          ends the run blocked with that condition (exit 1)
-//        node auto.mjs finish <runDir>
-//          final status through status.mjs finalStatus (exit 1 when blocked)
+//        node auto.mjs finish <runDir> [--commit | --no-commit]
+//          final status through status.mjs finalStatus (exit 1 when blocked); a run that ends done or
+//          done_with_findings commits the working tree of the current directory on its branch (never pushed)
+//          when the run was dispatched by spec folder + story id (a factory story) or --commit is given
 //   Every command prints one JSON line. Exit 1 means the run is blocked; exit 2 is a usage error.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -56,6 +58,7 @@ export const CONDITIONS = {
   testsFail: 'tests still fail',
   loopExceeded: LOOP_EXCEEDED,
   ambiguous: 'ambiguous story file match',
+  commitFailed: 'commit failed',
   unexpected: 'unexpected error',
 };
 
@@ -170,7 +173,7 @@ export function specFileFor(specFolder, storyId, title = null) {
 }
 
 /** Writes <runDir>/result.json. Returns the written object (with exitCode: 1 when blocked, else 0). */
-export function writeResult(runDir, { status, condition = null, reason = null, specFile = null } = {}, now = new Date()) {
+export function writeResult(runDir, { status, condition = null, reason = null, specFile = null, commit = null } = {}, now = new Date()) {
   if (!TERMINAL.includes(status)) throw new Error(`not a terminal status: ${status}`);
   fs.mkdirSync(runDir, { recursive: true });
   const result = {
@@ -180,6 +183,7 @@ export function writeResult(runDir, { status, condition = null, reason = null, s
     exitCode: status === 'blocked' ? 1 : 0,
     runId: path.basename(path.resolve(runDir)),
     specFile,
+    commit: commit ? { committed: commit.committed === true, sha: commit.sha ?? null, reason: commit.reason ?? null } : null,
     at: now.toISOString(),
   };
   fs.writeFileSync(path.join(runDir, 'result.json'), JSON.stringify(result, null, 2));
@@ -233,7 +237,7 @@ export function writeBackSpec(file, { status, condition = null, reason = null, t
  * and the story spec write-back under folder+id dispatch (`dispatch`, else manifest.auto.dispatch).
  * Returns the result.json object.
  */
-export function endRun(runDir, { status, condition = null, reason = null }, { dispatch = null, now = new Date() } = {}) {
+export function endRun(runDir, { status, condition = null, reason = null }, { dispatch = null, now = new Date(), commit = null } = {}) {
   fs.mkdirSync(runDir, { recursive: true });
   const m = readManifest(runDir);
   const d = dispatch ?? m?.auto?.dispatch ?? null;
@@ -249,7 +253,7 @@ export function endRun(runDir, { status, condition = null, reason = null }, { di
     specFile = specFileFor(d.specFolder, d.storyId, d.title).file;
     writeBackSpec(specFile, { status, condition, reason, title: d.title, storyId: d.storyId, runDir }, now);
   }
-  return writeResult(runDir, { status, condition, reason, specFile }, now);
+  return writeResult(runDir, { status, condition, reason, specFile, commit: commit ?? m?.auto?.commit ?? null }, now);
 }
 
 /** Halts the run `blocked` with `condition` named. Returns the result.json object (exitCode 1). */
@@ -273,6 +277,77 @@ export function gitDiffText(cwd = process.cwd()) {
   } catch {
     return '';
   }
+}
+
+/**
+ * Commits every change of the working tree in cwd on the current branch, never pushing: the changed and
+ * untracked paths are staged one by one (never a whole folder) and committed with `message`. Paths under
+ * an `exclude` folder (the run folder, when it lies inside the repository) are left out of the commit.
+ * Returns { committed: true, sha, files, skipped } or { committed: false, reason: 'clean' | 'no git', skipped }.
+ * A git failure after a dirty status throws (the caller blocks the run as `commit failed`).
+ */
+export function gitCommitAll(cwd = process.cwd(), message = 'haiku-build-auto', { exclude = [] } = {}) {
+  const run = (args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 16 * 1024 * 1024 });
+  let status, top;
+  try {
+    top = run(['rev-parse', '--show-toplevel']).trim();
+    status = run(['status', '--porcelain', '--untracked-files=all', '-z']);
+  } catch {
+    return { committed: false, reason: 'no git', skipped: [] };
+  }
+  // Excluded folders as repo-relative prefixes (git status paths are relative to the top level, '/'-separated).
+  const norm = (p) => path.resolve(p).replace(/\\/g, '/').replace(/\/+$/, '');
+  const topNorm = norm(top);
+  const prefixes = exclude.map(norm).filter((p) => p === topNorm || p.startsWith(`${topNorm}/`)).map((p) => p.slice(topNorm.length + 1));
+  const excluded = (file) => prefixes.some((p) => p === '' || file === p || file.startsWith(`${p}/`));
+  // -z: NUL-separated "XY path" records; a rename or copy adds the old path as the next record.
+  const files = [], skipped = [];
+  const parts = status.split('\0').filter(Boolean);
+  for (let i = 0; i < parts.length; i += 1) {
+    const rec = parts[i];
+    const file = rec.slice(3);
+    (excluded(file) ? skipped : files).push(file);
+    if (rec[0] === 'R' || rec[0] === 'C') i += 1;
+  }
+  if (!files.length) return { committed: false, reason: 'clean', skipped };
+  run(['-c', 'core.safecrlf=false', 'add', '-A', '--', ...files]);
+  run(['commit', '-q', '--no-verify', '-m', message]);
+  return { committed: true, sha: run(['rev-parse', 'HEAD']).trim(), files, skipped };
+}
+
+/**
+ * Commit message of a finished run: the story title or the task's first line, then the run id and status.
+ * Returns the message text.
+ */
+export function commitMessage(m = {}, status = 'done') {
+  const subject = String(m.auto?.dispatch?.title || m.task || 'haiku-build-auto change').split('\n')[0].trim().slice(0, 72);
+  return `${subject}\n\nhaiku-build-auto run ${m.runId ?? '?'}: ${status}`;
+}
+
+/**
+ * Commits the finished run's working tree when the run ends done or done_with_findings and `commit` asks for
+ * it: true always, false never, 'auto' only under folder+id dispatch (a factory story; a free-intent run in
+ * a developer's checkout commits only when asked). The outcome goes to manifest.auto.commit and result.json.
+ * Returns the commit record, or null when nothing was attempted; throws AutoHalt `commit failed` on an error.
+ */
+export function commitRun(runDir, { status, commit = 'auto', gitCommit = (msg) => gitCommitAll(process.cwd(), msg, { exclude: [runDir] }), now = new Date() } = {}) {
+  const m = readManifest(runDir);
+  if (!m || status === 'blocked') return null;
+  const wanted = commit === true || (commit === 'auto' && Boolean(m.auto?.dispatch));
+  if (!wanted) return null;
+  const message = commitMessage(m, status);
+  let record;
+  try {
+    const r = gitCommit(message) ?? { committed: false, reason: 'no result' };
+    record = { ...r, message, at: now.toISOString() };
+  } catch (e) {
+    const last = String(e?.stderr || e?.message || e).split('\n').map((l) => l.trim()).filter(Boolean).at(-1) ?? String(e);
+    const reason = `${CONDITIONS.commitFailed}: ${last}`;
+    writeManifest(runDir, { ...m, auto: { ...(m.auto ?? {}), commit: { committed: false, reason, message, at: now.toISOString() } } });
+    throw new AutoHalt(CONDITIONS.commitFailed, reason);
+  }
+  writeManifest(runDir, { ...m, auto: { ...(m.auto ?? {}), commit: record } });
+  return record;
 }
 
 /** Joins the reviewers' JSON arrays into one array text; anything unparseable is joined raw (the save check fails it). */
@@ -344,6 +419,9 @@ async function intake({ runDir, task, startModel, dispatch, gitClean, preflight,
  *   runTests({ attempt, model }) -> { passed, failed, log?, command? }; a throw counts as a failed run.
  *   ask: JEV ask for jev_advice.mjs advise (tests inject it; HAIKU_BUILD_JEV=off makes no call).
  *   gitClean() -> boolean, gitDiff() -> diff text, preflight() -> { ok, message }, now() -> Date.
+ *   gitCommit(message) -> { committed, sha?, reason? }: commits the working tree at the end of a run that is
+ *     not blocked (the default leaves `runDir` out when it lies inside the repository); `commit` true always,
+ *     false never, 'auto' (default) under folder+id dispatch only. A throw blocks the run `commit failed`.
  * Dispatch: `task` (free intent), or `specFolder` + `storyId` + `title` (folder+id), or an existing
  * manifest in `runDir` (resume). Never asks the user. Returns the result.json object.
  */
@@ -351,6 +429,7 @@ export async function runAuto({
   runDir, task = null, startModel = null, specFolder = null, storyId = null, title = null,
   agent, runTests, ask = null, env = process.env,
   gitClean = () => gitIsClean(), gitDiff = () => gitDiffText(), preflight = () => haikuPreflight(), now = () => new Date(),
+  gitCommit = (message) => gitCommitAll(process.cwd(), message, { exclude: [runDir] }), commit = 'auto',
 } = {}) {
   if (!runDir) throw new Error('runAuto needs runDir');
   const dispatch = specFolder && storyId ? { specFolder, storyId: String(storyId), title } : null;
@@ -485,10 +564,11 @@ export async function runAuto({
       save();
     }
 
-    // 07 Present: the final status comes from status.mjs.
+    // 07 Present: the final status comes from status.mjs; a run that is not blocked commits its change.
     phase('07-present');
     const r = autoFinal({ missing: missingArtifacts(runDir), tests: m.tests, attempts: m.attempts, findings: m.review?.findings });
-    return endRun(runDir, r, { dispatch, now: now() });
+    const c = commitRun(runDir, { status: r.status, commit, gitCommit, now: now() });
+    return endRun(runDir, r, { dispatch, now: now(), commit: c });
   } catch (e) {
     if (e instanceof AutoHalt) return halt(runDir, e.condition, { reason: e.reason, dispatch, now: now() });
     const msg = String(e?.message ?? e).split('\n')[0];
@@ -501,7 +581,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args.splice(i, 2)[1] : null; };
   const usage = () => {
     console.log('usage: node auto.mjs start <runDir> [--model m] [--task "<text>"] [--spec-folder d --story-id id --title "<t>"]'
-      + ' | gate plan|review <runDir> <textFile> | round <runDir> [--re-review <file>] | halt <runDir> "<condition>" | finish <runDir>');
+      + ' | gate plan|review <runDir> <textFile> | round <runDir> [--re-review <file>] | halt <runDir> "<condition>" | finish <runDir> [--commit | --no-commit]');
     process.exit(2);
   };
   const out = (obj, code) => { console.log(JSON.stringify(obj)); process.exit(code); };
@@ -585,11 +665,20 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   }
 
   if (cmd === 'finish') {
+    const flag = (name) => { const i = args.indexOf(name); if (i < 0) return false; args.splice(i, 1); return true; };
+    const always = flag('--commit');
+    const never = flag('--no-commit');
     const [runDir] = args;
     if (!runDir) usage();
     const m = readManifest(runDir);
     const r = autoFinal({ missing: missingArtifacts(runDir), tests: m?.tests, attempts: m?.attempts, findings: m?.review?.findings });
-    ended(endRun(runDir, r));
+    try {
+      const c = commitRun(runDir, { status: r.status, commit: never ? false : always ? true : 'auto' });
+      ended(endRun(runDir, r, { commit: c }));
+    } catch (e) {
+      if (e instanceof AutoHalt) ended(halt(runDir, e.condition, { reason: e.reason }));
+      ended(halt(runDir, CONDITIONS.unexpected, { reason: `${CONDITIONS.unexpected}: ${e?.message ?? e}` }));
+    }
   }
 
   usage();

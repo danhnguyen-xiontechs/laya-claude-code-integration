@@ -60,7 +60,7 @@ export function noAsk() {
   return { ask: async (q) => { asked.push(q); throw new Error('network call attempted'); }, asked };
 }
 
-/** Base runAuto deps: clean tree, preflight ok, fixed diff, JEV off, a fresh run folder. */
+/** Base runAuto deps: clean tree, preflight ok, fixed diff, no real commit, JEV off, a fresh run folder. */
 export function baseDeps(over = {}) {
   const root = tmpDir();
   const runDir = path.join(root, 'reports', 'haiku-build', '20261022-fixture-01');
@@ -72,6 +72,7 @@ export function baseDeps(over = {}) {
     ask: noAsk().ask,
     gitClean: () => true,
     gitDiff: () => 'diff --git a/src/a.mjs b/src/a.mjs\n+export const flag = true;\n',
+    gitCommit: () => ({ committed: false, reason: 'fixture' }),
     preflight: () => ({ ok: true, message: 'preflight ok: fixture' }),
     ...over,
   };
