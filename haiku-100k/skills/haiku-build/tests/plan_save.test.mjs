@@ -59,13 +59,24 @@ test('fixture: a missing required heading fails and names the heading', () => {
   assert.equal(fs.existsSync(path.join(dir, 'spec.md')), false);
 });
 
-test('fixture: over 800 words fails, nothing is cut', () => {
+test('fixture: 800 to 1600 words is normal, no warning', () => {
   const dir = runDir();
-  const long = fixtureSpec(Array(820).fill('word').join(' '));
+  const r = savePlanSpec(dir, fixtureSpec(Array(1000).fill('word').join(' ')), { attempt: 1 });
+  assert.equal(r.ok, true);
+  assert.equal(r.warnings, undefined);
+  assert.equal(fs.existsSync(path.join(dir, 'spec.md')), true);
+});
+
+test('fixture: over 1600 words is saved whole with an oversized warning, never rejected', () => {
+  const dir = runDir();
+  const long = fixtureSpec(Array(1700).fill('word').join(' '));
   const r = savePlanSpec(dir, long, { attempt: 1 });
-  assert.equal(r.ok, false);
-  assert.match(r.reason, /^over 800 words/);
-  assert.equal(fs.existsSync(path.join(dir, 'spec.md')), false);
+  assert.equal(r.ok, true);
+  assert.match(r.warnings[0], /^oversized \(\d+ words\)/);
+  const m = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf8'));
+  assert.deepEqual(m.warnings, ['oversized']);
+  assert.equal(m.status, 'PLANNED');
+  assert.ok(fs.readFileSync(path.join(dir, 'spec.md'), 'utf8').includes('word word'));
 });
 
 test('fixture: a retry after a failed call is appended, not overwritten', () => {

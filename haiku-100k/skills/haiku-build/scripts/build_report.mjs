@@ -13,6 +13,9 @@ import { CSS } from './report_style.mjs';
 import { findTranscript } from './find_transcript.mjs';
 
 export const OPUS_WORD_LIMIT = 800;
+// A plan is never rejected for length (as bmad-build-auto does for its spec): 800-1600 words is normal,
+// over 1600 is saved with an `oversized` warning. The review arrays keep OPUS_WORD_LIMIT.
+export const PLAN_OVERSIZE_WORDS = 1600;
 export const DIFF_MAX_BYTES = 60_000;
 export const DIFF_MAX_LINES = 1500;
 
@@ -61,10 +64,9 @@ export function savePlanSpec(runDir, text, { attempt = 1 } = {}) {
   const check = !body
     ? { ok: false, words: 0, reason: 'empty output' }
     : (() => {
-        const words = checkOpusOutput(body);
-        if (!words.ok) return { ok: false, words: words.words, reason: words.reason };
+        const words = wordCount(body);
         const sections = checkSpecSections(body);
-        return { ok: sections.ok, words: words.words, reason: sections.reason };
+        return { ok: sections.ok, words, reason: sections.reason };
       })();
   const entry = {
     step: '02-plan',
@@ -74,13 +76,18 @@ export function savePlanSpec(runDir, text, { attempt = 1 } = {}) {
     sha256: check.ok ? crypto.createHash('sha256').update(body).digest('hex') : null,
     reason: check.reason,
   };
+  const oversized = check.ok && check.words > PLAN_OVERSIZE_WORDS;
+  if (oversized) {
+    entry.warnings = [`oversized (${check.words} words)`];
+    m.warnings = [...new Set([...(m.warnings ?? []), 'oversized'])];
+  }
   m.opusCalls = [...(m.opusCalls ?? []), entry];
   if (check.ok) {
     fs.writeFileSync(path.join(runDir, 'spec.md'), body + '\n');
     m.status = 'PLANNED';
   }
   fs.writeFileSync(mf, JSON.stringify(m, null, 2));
-  return { ok: check.ok, reason: check.reason, words: check.words, sha256: entry.sha256 };
+  return { ok: check.ok, reason: check.reason, words: check.words, sha256: entry.sha256, ...(oversized ? { warnings: entry.warnings } : {}) };
 }
 
 /**

@@ -61,7 +61,7 @@ Nothing is committed, pushed or opened as a PR unless you ask.
 - **Opus:** one call per run, the plan. A retry needs your OK and is logged.
 - **Sonnet:** three parallel reviewers, at most one implement fallback and at most one re-review.
 - **Closed packs:** the plan model and the reviewers never read files; the main session pastes what they need.
-- **Output:** the plan, and the three review arrays together, at most 800 words each, checked by a script. Over the limit is a failed call, never cut to fit.
+- **Output:** the three review arrays together are at most 800 words, checked by a script (over it is a failed call, never cut to fit). The plan is never rejected for length: over 1600 words it is saved with an `oversized` warning.
 - **Haiku:** every request is measured from the transcript. The report says `pass`, `fail` or `not_measured`; it never claims the limit held without data.
 
 ## Tested
