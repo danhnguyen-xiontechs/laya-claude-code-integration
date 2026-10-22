@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { diagnoseFailure, failedCount, lastDiagnostic } from './v3.mjs';
 
 /** Files every finished run must have, relative to the run folder. A missing one is a failure. */
 export const REQUIRED_ARTIFACTS = [
@@ -84,7 +85,16 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (!m) { console.log(JSON.stringify({ error: `missing required artifact: manifest.json in ${runDir}` })); process.exit(1); }
   const n = nextAttempt(attempts);
   if (cmd === 'record' && n.next) {
-    m.attempts = [...attempts, { ...n.next, ok: result === 'pass', at: new Date().toISOString() }];
+    const at = new Date().toISOString();
+    m.attempts = [...attempts, { ...n.next, ok: result === 'pass', at }];
+    if (result === 'fail') {
+      // Diagnostic of the failed rung: fingerprint of the test log, compared with the previous diagnostic.
+      const logFile = path.join(runDir, 'evidence', 'unit-tests.log');
+      const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : '';
+      const previous = lastDiagnostic(m, 'test');
+      const failed = m.tests?.failed ?? failedCount(log);
+      m.diagnostics = [...(m.diagnostics ?? []), diagnoseFailure({ kind: 'test', log, failed, previous, attempt: n.next.attempt, at })];
+    }
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));
     const after = nextAttempt(m.attempts);
     console.log(JSON.stringify({ recorded: n.next.attempt, ok: result === 'pass', next: after }));
