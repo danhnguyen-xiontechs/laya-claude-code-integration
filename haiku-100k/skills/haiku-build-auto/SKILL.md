@@ -1,11 +1,11 @@
 ---
 name: haiku-build-auto
-description: Unattended haiku-build v2. One invocation takes a change (spec folder + story id, free intent, or a run folder to resume) through the seven haiku-build stages to one terminal status (done, done_with_findings, blocked) with no human interaction; every stage decision comes from scripts/auto.mjs. Use when invoked by name or by a factory run.
+description: Unattended haiku-build v3. One invocation takes a change (spec folder + story id, free intent, or a run folder to resume) through the seven haiku-build stages to one terminal status (done, done_with_findings, blocked) with no human interaction; every stage decision comes from scripts/auto.mjs. Use when invoked by name or by a factory run.
 ---
 
 # haiku-build-auto
 
-The haiku-build v2 flow (Opus plan, Haiku implement and test, three parallel Sonnet reviewers, Haiku fix), run without a human. The stage mechanics are haiku-build's own step files; every point where haiku-build would ask the user is decided by `scripts/auto.mjs` instead.
+The haiku-build v3 flow (Opus plan, Haiku implement and test, three parallel Sonnet reviewers, Haiku fix), run without a human. The stage mechanics are haiku-build's own step files; every point where haiku-build would ask the user is decided by `scripts/auto.mjs` instead.
 
 `<skill-dir>` is this skill's folder and `<hb-dir>` is the sibling `haiku-build` skill folder (`<skill-dir>/../haiku-build`). Scripts are called by full path: `node "<skill-dir>/scripts/auto.mjs" ...`, `node "<hb-dir>/scripts/<name>.mjs" ...`.
 
