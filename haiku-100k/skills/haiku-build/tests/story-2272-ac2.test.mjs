@@ -86,3 +86,31 @@ test('2272 AC2 failed plan and review hand-backs record diagnostics', () => {
   assert.equal(saveOpus('review', dir, bad, { attempt: 1 }).ok, true);
   assert.equal(readM(dir).diagnostics.length, 3, 'a passing hand-back adds none');
 });
+
+test('2272 AC2 hand-back retry with other model text is a repeat', () => {
+  const dir = fixture(null);
+  const bad = path.join(dir, 'evidence', 'handback.txt');
+  fs.writeFileSync(bad, '{"not": "an array", "first": "attempt text"}');
+  assert.equal(saveOpus('review', dir, bad, { attempt: 1 }).ok, false);
+  fs.writeFileSync(bad, '{"still": "not an array", "second": "different words entirely"}');
+  assert.equal(saveOpus('review', dir, bad, { attempt: 2, approvedBy: 'auto' }).ok, false);
+  const d = readM(dir).diagnostics;
+  assert.equal(d.length, 2);
+  assert.ok(d[0].fingerprint);
+  assert.equal(d[1].fingerprint, d[0].fingerprint, 'same check reason, same fingerprint');
+  assert.equal(d[1].repeated, true);
+  assert.equal(d[1].category, 'review-invalid');
+});
+
+test('2272 AC2 record fail reads the failed count from the fresh log first', () => {
+  const dir = fixture('tests 5 pass 2 fail 3');
+  const mf = path.join(dir, 'manifest.json');
+  fs.writeFileSync(mf, JSON.stringify({ ...readM(dir), tests: { passed: 4, failed: 1 } }));
+  assert.equal(record(dir).status, 0);
+  assert.equal(readM(dir).diagnostics[0].failed, 3, 'log count wins over stale m.tests.failed');
+
+  const noCount = fixture('something broke without a summary');
+  fs.writeFileSync(path.join(noCount, 'manifest.json'), JSON.stringify({ ...readM(noCount), tests: { passed: 0, failed: 2 } }));
+  assert.equal(record(noCount).status, 0);
+  assert.equal(readM(noCount).diagnostics[0].failed, 2, 'falls back to m.tests.failed');
+});

@@ -30,3 +30,20 @@ test('2272 AC5 shared contracts and modes preserved', async () => {
   fs.writeFileSync(file, SPEC);
   assert.throws(() => saveOpus('plan', dir, file, { attempt: 2 }), /approved/);
 });
+
+test('2272 AC5 auto passes context to review calls only, without the diff', async () => {
+  const a = fakeAgent();
+  const deps = baseDeps({ agent: a.agent, env: { HAIKU_BUILD_JEV: 'off' }, runTests: fakeTests([true]).runTests, gitDiff: () => 'diff --git a/src/a.mjs b/src/a.mjs\n+export const UNIQUE_DIFF_MARKER = 1;\n' });
+  await runAuto(deps);
+  const plan = a.calls.filter((c) => c.role === 'plan');
+  const review = a.calls.filter((c) => c.role === 'review');
+  assert.ok(plan.length > 0 && review.length > 0);
+  for (const c of plan) assert.equal(c.context, undefined, 'plan gets no context');
+  for (const c of review) {
+    assert.equal(typeof c.context, 'string');
+    assert.match(c.context, /## Acceptance criteria/);
+    assert.doesNotMatch(c.context, /## Diff|UNIQUE_DIFF_MARKER/, 'review prompt carries the diff in its own DIFF slot');
+  }
+  const ctx = readJson(path.join(deps.runDir, 'evidence', 'context.json'));
+  assert.match(ctx.parts.diff.data.text, /UNIQUE_DIFF_MARKER/, 'context.json keeps the diff part for reuse');
+});

@@ -13,12 +13,13 @@ import { CSS } from './report_style.mjs';
 import { findTranscript } from './find_transcript.mjs';
 import { parseAcMap, acSummary, runMetrics } from './v3.mjs';
 
+// capDiff and its limits live in v3.mjs (no import cycle); re-exported here for existing callers.
+export { capDiff, DIFF_MAX_BYTES, DIFF_MAX_LINES } from './v3.mjs';
+
 export const OPUS_WORD_LIMIT = 800;
 // A plan is never rejected for length (as bmad-build-auto does for its spec): 800-1600 words is normal,
 // over 1600 is saved with an `oversized` warning. The review arrays keep OPUS_WORD_LIMIT.
 export const PLAN_OVERSIZE_WORDS = 1600;
-export const DIFF_MAX_BYTES = 60_000;
-export const DIFF_MAX_LINES = 1500;
 
 export const wordCount = (t = '') => t.trim().split(/\s+/).filter(Boolean).length;
 
@@ -127,19 +128,6 @@ export function saveReview(runDir, text, { attempt = 1 } = {}) {
   return { ok, reason, words: words.words, findings: ok ? m.review.findings.length : 0, sha256: entry.sha256 };
 }
 
-export function capDiff(diff, { maxBytes = DIFF_MAX_BYTES, maxLines = DIFF_MAX_LINES } = {}) {
-  const sections = diff.split(/^(?=diff --git )/m).filter(Boolean);
-  let bytes = 0, lines = 0;
-  const kept = [], omitted = [];
-  for (const s of sections) {
-    const name = (s.match(/^diff --git a\/(\S+)/) ?? [, '(unknown)'])[1];
-    const b = Buffer.byteLength(s), l = s.split('\n').length;
-    if (bytes + b <= maxBytes && lines + l <= maxLines) { kept.push(s); bytes += b; lines += l; }
-    else omitted.push(name);
-  }
-  return { text: kept.join(''), omitted, truncated: omitted.length > 0 };
-}
-
 /** Run status, one value. Order: plan failure, failing tests, skipped review, fixed, reported. */
 export function runStatus(m) {
   if (m.planFailed) return 'PLAN_FAILED';
@@ -181,7 +169,7 @@ export function renderHtml(m, u) {
   const traceability = map
     ? `<h2>AC traceability</h2><p>${sum.mapped} of ${sum.total} AC mapped.</p><table><tr><th>AC</th><th>Target</th><th>Test</th><th>Command</th></tr>${acRows}</table>${unverified.length ? `<p class="warn">Unverified: ${esc(unverified.map((a) => `${a.id} (missing ${a.missing.join(', ')})`).join('; '))}</p>` : '<p>Every AC has a target, a test and a command.</p>'}`
     : '<h2>AC traceability</h2><p>not measured</p>';
-  const mt = runMetrics(m);
+  const mt = m.metrics ?? runMetrics(m);
   const stageRows = mt.stages.length
     ? mt.stages.map((st) => `<tr><td>${esc(st.phase)}</td><td>${st.ms == null ? 'not measured' : String(st.ms)}</td></tr>`).join('')
     : '<tr><td colspan="2">not measured</td></tr>';

@@ -92,7 +92,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       const logFile = path.join(runDir, 'evidence', 'unit-tests.log');
       const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : '';
       const previous = lastDiagnostic(m, 'test');
-      const failed = m.tests?.failed ?? failedCount(log);
+      // The fresh log first: m.tests may still hold the previous rung's count.
+      const failed = failedCount(log) ?? m.tests?.failed ?? null;
       m.diagnostics = [...(m.diagnostics ?? []), diagnoseFailure({ kind: 'test', log, failed, previous, attempt: n.next.attempt, at })];
     }
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));

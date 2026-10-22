@@ -9,10 +9,30 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { capDiff } from './build_report.mjs';
 
-/** Names of the context bundle parts, in render order. */
-export const PART_NAMES = ['acs', 'locations', 'diff', 'tests'];
+/** Names of the context bundle parts, in render order (the diff last, so the render cap drops it first). */
+export const PART_NAMES = ['acs', 'locations', 'tests', 'diff'];
+
+/** Review diff cap (step 05 DIFF slot): bytes and lines. build_report.mjs re-exports both. */
+export const DIFF_MAX_BYTES = 60_000;
+export const DIFF_MAX_LINES = 1500;
+
+/**
+ * Caps a unified diff at whole files: keeps file sections while both limits hold and names the rest.
+ * Returns { text, omitted: [file names], truncated }. build_report.mjs re-exports it.
+ */
+export function capDiff(diff, { maxBytes = DIFF_MAX_BYTES, maxLines = DIFF_MAX_LINES } = {}) {
+  const sections = String(diff ?? '').split(/^(?=diff --git )/m).filter(Boolean);
+  let bytes = 0, lines = 0;
+  const kept = [], omitted = [];
+  for (const s of sections) {
+    const name = (s.match(/^diff --git a\/(\S+)/) ?? [, '(unknown)'])[1];
+    const b = Buffer.byteLength(s), l = s.split('\n').length;
+    if (bytes + b <= maxBytes && lines + l <= maxLines) { kept.push(s); bytes += b; lines += l; }
+    else omitted.push(name);
+  }
+  return { text: kept.join(''), omitted, truncated: omitted.length > 0 };
+}
 
 const AC_LINE = /^\s*(?:[-*]\s+)?\**(AC\d+[a-z]?)\**\s*[:.]/;
 const CHECKED_BY = /checked by\s+`([^`]+)`(?:\s+"([^"]+)")?/i;
@@ -225,10 +245,12 @@ export function refreshContext(bundle, sources = {}) {
 }
 
 /**
- * Text for the review CONTEXT slot, capped at maxBytes (default 10240) in UTF-8.
- * Acceptance criteria, locations, the capped diff and the tests, in that order.
+ * Text for the CONTEXT slot of an agent call, capped at maxBytes (default 10240) in UTF-8.
+ * Acceptance criteria, locations, tests, then the diff, so a large diff never pushes the test evidence out.
+ * includeDiff: false leaves the diff out (for a prompt that carries the diff in its own DIFF slot).
+ * The diff part is capped on its own to the bytes the other parts leave; a cut part ends in a truncated note.
  */
-export function renderContext(bundle, { maxBytes = 10240 } = {}) {
+export function renderContext(bundle, { maxBytes = 10240, includeDiff = true } = {}) {
   const parts = isBundle(bundle) ? bundle.parts : {};
   const out = [];
   if (parts.acs) {
@@ -240,17 +262,25 @@ export function renderContext(bundle, { maxBytes = 10240 } = {}) {
     const d = parts.locations.data ?? {};
     out.push('', '## Locations', ...((d.targets ?? []).length ? d.targets.map((t) => `- ${t}`) : ['(none)']));
   }
-  if (parts.diff) {
-    const d = parts.diff.data ?? {};
-    out.push('', '## Diff', d.text ?? '');
-    if (d.truncated) out.push(`(omitted: ${(d.omitted ?? []).join(', ')})`);
-  }
   if (parts.tests) out.push('', '## Tests', JSON.stringify(parts.tests.data ?? null));
-  const text = out.join('\n');
-  if (Buffer.byteLength(text, 'utf8') <= maxBytes) return text;
   const note = '\n[context truncated]';
-  const keep = Math.max(0, maxBytes - Buffer.byteLength(note, 'utf8'));
-  return Buffer.from(text, 'utf8').subarray(0, keep).toString('utf8').replace(/�$/, '') + note;
+  const cut = (text, limit) => {
+    if (Buffer.byteLength(text, 'utf8') <= limit) return text;
+    const keep = Math.max(0, limit - Buffer.byteLength(note, 'utf8'));
+    return Buffer.from(text, 'utf8').subarray(0, keep).toString('utf8').replace(/�$/, '') + note;
+  };
+  const head = out.join('\n').replace(/^\n+/, '');
+  if (!includeDiff || !parts.diff) return cut(head, maxBytes);
+  const d = parts.diff.data ?? {};
+  const diffLines = ['## Diff', d.text ?? ''];
+  if (d.truncated) diffLines.push(`(omitted: ${(d.omitted ?? []).join(', ')})`);
+  const sep = head ? '\n\n' : '';
+  const left = maxBytes - Buffer.byteLength(head + sep, 'utf8');
+  // No room for even the diff heading: the other parts keep the whole budget and the diff is left out.
+  if (left < Buffer.byteLength(`## Diff${note}`, 'utf8')) {
+    return Buffer.byteLength(head + note, 'utf8') <= maxBytes ? head + note : cut(head, maxBytes);
+  }
+  return head + sep + cut(diffLines.join('\n'), left);
 }
 
 /** Milliseconds between two ISO times, or null when either is missing or invalid. */

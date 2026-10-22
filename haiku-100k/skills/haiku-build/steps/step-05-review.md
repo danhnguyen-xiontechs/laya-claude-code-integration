@@ -7,14 +7,14 @@ The phase window `05-review` was opened at the end of step 04.
 1. **Build the review pack** (in the main session):
    - `SPEC:` the full `spec.md`, all sections.
    - `ANSWERS:` every entry of `planAnswers` in `manifest.json`, as `question → answer (section)`. Leave it empty if there are none.
-   - `DIFF:` `evidence/diff.patch` through `capDiff()` in `scripts/build_report.mjs`: 60 KB and 1500 lines, whole files only. List the omitted file names in `OMITTED:`.
+   - `DIFF:` `evidence/diff.patch` through `capDiff()` in `scripts/v3.mjs` (re-exported by `scripts/build_report.mjs`): 60 KB and 1500 lines, whole files only. List the omitted file names in `OMITTED:`.
    - `TESTS:` the test summary from the manifest, the ladder rungs used (`attempts`), and the full text of each failing test.
    - `CONTEXT:` capped at 10 KB in total, in this order, so the reviewers judge the change against code they can see rather than guessing:
      1. the full current body of each function or method a hunk changes (the diff shows only a few lines around the change);
      2. the full current text of each changed test file (the diff does not show unchanged tests);
      3. signatures or snippets the diff calls, chosen by you.
      Name anything left out for the cap under `OMITTED:`.
-   `CONTEXT:` may come from the reusable bundle `evidence/context.json` (written by `node "<skill-dir>/scripts/v3.mjs" context <runDir>`, rendered by `renderContext`). Refresh it with the same command after step 06 changes code; reviewers see the same text either way.
+   `CONTEXT:` may come from the reusable bundle `evidence/context.json` (written by `node "<skill-dir>/scripts/v3.mjs" context <runDir>`, rendered by `renderContext`: ACs, locations, tests, then the diff, so the 10 KB cap cuts the diff first; `includeDiff: false` leaves the diff out, since `DIFF:` already carries it). Refresh it with the same command after step 06 changes code; reviewers see the same text either way.
    Paste the pack into `prompts/review.md`. Reviewers never read files, so the pack must contain the diff text itself.
 2. **Call the reviewers in parallel.** In one message, three Agent tool calls, each `model: "sonnet"` (`05-review` in `manifest.routing`), `run_in_background: false`, the filled prompt as the whole prompt with `LENS:` set to `blind-hunter`, `edge-case-hunter` and `verification-gap` respectively. Each returns one JSON array in the format of `prompts/review.md`. Never use `tasks/*.output` as evidence: whether the review arrived is decided by `evidence/review-raw.json`, then the transcript.
 3. **Save and check, in the turn the answers arrive, before anything else.** Concatenate the three arrays into one JSON array, unchanged otherwise, and write it to a file (for example `evidence/review-handback.txt`). Then run:

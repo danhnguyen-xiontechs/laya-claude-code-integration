@@ -31,7 +31,7 @@ import { advise, jevMode } from '../../haiku-build/scripts/jev_advice.mjs';
 import { saveOpus } from '../../haiku-build/scripts/save_opus.mjs';
 import { checkReviewJson } from '../../haiku-build/scripts/build_report.mjs';
 import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
-import { parseAcMap, diagnoseFailure, lastDiagnostic, validateContext, refreshContext as refreshBundle, renderContext, runMetrics } from '../../haiku-build/scripts/v3.mjs';
+import { parseAcMap, diagnoseFailure, lastDiagnostic, refreshContext as refreshBundle, renderContext, runMetrics } from '../../haiku-build/scripts/v3.mjs';
 
 /** The only statuses a run can end in. */
 export const TERMINAL = ['done', 'done_with_findings', 'blocked'];
@@ -63,8 +63,11 @@ export const CONDITIONS = {
 /** The three review lenses of stage 05, one Sonnet reviewer each. */
 export const LENSES = ['blind-hunter', 'edge-case-hunter', 'verification-gap'];
 
-/** Agent roles that receive the rendered context bundle (plan, review, fix and re-review calls). */
-const CONTEXT_ROLES = new Set(['plan', 'review', 'fix', 're-review']);
+/**
+ * Agent roles that receive the rendered context bundle (review, fix and re-review calls). Plan is left out: it
+ * builds the spec the bundle's ACs come from. The render leaves the diff out: the review prompt has its own DIFF slot.
+ */
+const CONTEXT_ROLES = new Set(['review', 'fix', 're-review']);
 
 export const HAIKU_BUILD_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'haiku-build');
 
@@ -345,7 +348,8 @@ async function intake({ runDir, task, startModel, dispatch, gitClean, preflight,
 
 /**
  * One unattended run, start to terminal status, with every outside effect injected:
- *   agent({ stage, model, role, attempt?, round?, lens?, runDir, task, findings? }) -> hand-back text
+ *   agent({ stage, model, role, attempt?, round?, lens?, runDir, task, findings?, context? }) -> hand-back text
+ *     (context: the rendered v3 context bundle, without the diff, on review, fix and re-review calls).
  *     (02-plan: spec text; 05-review and the 06-fix re-review: a JSON array of findings; others: ignored).
  *     Missing or throwing: blocked `no subagents`.
  *   runTests({ attempt, model }) -> { passed, failed, log?, command? }; a throw counts as a failed run.
@@ -373,7 +377,7 @@ export async function runAuto({
     const phase = (id) => { m = startPhase(reload(), id, now()); save(); };
     const model = (id) => m.routing?.stages?.find((s) => s.id === id)?.model ?? null;
     const call = async (req) => {
-      const extra = CONTEXT_ROLES.has(req.role) ? { context: renderContext(contextBundle()) } : {};
+      const extra = CONTEXT_ROLES.has(req.role) ? { context: renderContext(contextBundle(), { includeDiff: false }) } : {};
       try {
         const out = await agent({ runDir, task: m.task, ...extra, ...req });
         return typeof out === 'string' ? out : JSON.stringify(out ?? '');
@@ -390,7 +394,7 @@ export async function runAuto({
       let prev = null;
       try { prev = JSON.parse(readOr(ctxFile, 'null')); } catch { prev = null; }
       const src = { specText: readOr(specPath), answers: m.planAnswers ?? [], diff: readOr(diffPath), tests: readOr(logPath, null), files: [] };
-      const bundle = refreshBundle(validateContext(prev, src).bundle, src);
+      const bundle = refreshBundle(prev, src);
       fs.writeFileSync(ctxFile, JSON.stringify(bundle, null, 2));
       return bundle;
     };

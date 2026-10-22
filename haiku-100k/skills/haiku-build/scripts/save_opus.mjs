@@ -23,8 +23,9 @@ export function saveOpus(kind, runDir, textFile, { attempt = 1, approvedBy = nul
   if ((attempt > 1 || !r.ok) && fs.existsSync(mf)) {
     const m = JSON.parse(fs.readFileSync(mf, 'utf8'));
     if (attempt > 1) Object.assign(m.opusCalls.at(-1), { retryApprovedBy: approvedBy, retryAt: now.toISOString() });
-    // A failed hand-back gets the same diagnostic as a failed test rung: the check reason plus the text.
-    if (!r.ok) m.diagnostics = [...(m.diagnostics ?? []), diagnoseFailure({ kind, log: `${r.reason}\n${text}`, previous: lastDiagnostic(m, kind), attempt, at: now.toISOString() })];
+    // A failed hand-back gets the same diagnostic as a failed test rung. Fingerprint and category use the check
+    // reason only: a retry that fails the same check with other model text is a repeat.
+    if (!r.ok) m.diagnostics = [...(m.diagnostics ?? []), diagnoseFailure({ kind, log: String(r.reason ?? ''), previous: lastDiagnostic(m, kind), attempt, at: now.toISOString() })];
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));
   }
   return r;

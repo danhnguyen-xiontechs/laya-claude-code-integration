@@ -37,6 +37,40 @@ test('2272 AC3 plan and review reuse one bundle', () => {
   assert.equal(refreshed.version, 3);
 });
 
+test('2272 AC3 large diff keeps ACs, locations and tests in the capped render', () => {
+  const s = sources();
+  const big = Array.from({ length: 6 }, (_, i) => `diff --git a/src/f${i}.mjs b/src/f${i}.mjs\n${`+${'x'.repeat(40)}\n`.repeat(200)}`).join('');
+  assert.ok(Buffer.byteLength(big) > 10240);
+  const bundle = buildContext({ ...s, diff: big });
+  const text = renderContext(bundle, { maxBytes: 10240 });
+  assert.ok(Buffer.byteLength(text, 'utf8') <= 10240);
+  assert.match(text, /## Acceptance criteria[\s\S]*AC1/);
+  assert.match(text, /## Locations[\s\S]*src\/a\.mjs/);
+  assert.match(text, /## Tests[\s\S]*"failed":0/);
+  assert.ok(text.indexOf('## Tests') < text.indexOf('## Diff'), 'diff renders after the tests');
+  assert.match(text, /\[context truncated\]$/);
+
+  const noDiff = renderContext(bundle, { includeDiff: false });
+  assert.doesNotMatch(noDiff, /## Diff/);
+  assert.match(noDiff, /## Tests/);
+  assert.doesNotMatch(noDiff, /truncated/);
+
+  const small = renderContext(buildContext(s));
+  assert.match(small, /## Diff[\s\S]*export const flag/);
+  assert.doesNotMatch(small, /truncated/);
+});
+
+test('2272 AC3 refresh of an unchanged bundle reuses every part', () => {
+  const s = sources();
+  const bundle = buildContext(s);
+  assert.deepEqual(refreshContext(bundle, s), bundle);
+  const changed = { ...s, tests: { passed: 0, failed: 1 } };
+  const r = refreshContext(bundle, changed);
+  assert.equal(r.parts.acs, bundle.parts.acs, 'acs part reused');
+  assert.notEqual(r.parts.tests.hash, bundle.parts.tests.hash, 'tests part rebuilt');
+  assert.deepEqual(r.parts.tests.data, { passed: 0, failed: 1 });
+});
+
 test('2272 AC3 malformed or absent bundle falls back to a fresh build', () => {
   const s = sources();
   for (const bad of [null, undefined, 'junk', { version: 2 }, { version: 3, parts: 'x' }]) {

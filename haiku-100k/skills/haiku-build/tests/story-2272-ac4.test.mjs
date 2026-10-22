@@ -41,3 +41,24 @@ test('2272 AC4 report lists run metrics', () => {
   assert.match(bhtml, /Run metrics/);
   assert.match(bhtml, /not measured/);
 });
+
+test('2272 AC4 report uses stored manifest metrics instead of recomputing', () => {
+  const stored = {
+    stages: [{ phase: '05-review', ms: 7777 }],
+    attempts: { total: 4, failed: 3, byModel: { haiku: 3, sonnet: 1 } },
+    tests: { passed: 9, failed: 0 },
+    repeats: 2,
+  };
+  const m = { ...base, status: 'REPORTED', phases: [{ phase: '02-plan', from: T0, to: T1 }], attempts: [], metrics: stored };
+  const html = renderHtml(m, {});
+  assert.match(html, /05-review<\/td><td>7777/);
+  assert.doesNotMatch(html, /02-plan<\/td><td>5000/);
+  assert.match(html, /Repeated failure fingerprints: 2/);
+});
+
+test('2272 AC4 capDiff is shared from v3.mjs and re-exported by build_report.mjs', async () => {
+  const v3 = await import('../scripts/v3.mjs');
+  const br = await import('../scripts/build_report.mjs');
+  assert.equal(br.capDiff, v3.capDiff);
+  assert.equal(br.DIFF_MAX_BYTES, v3.DIFF_MAX_BYTES);
+});

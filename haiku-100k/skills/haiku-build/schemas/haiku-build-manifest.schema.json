@@ -183,11 +183,6 @@
         "repeats": { "type": "integer" }
       }
     },
-    "context": {
-      "description": "v3: reusable context bundle written to evidence/context.json by v3.mjs context; the manifest keeps only its version (additive, optional)",
-      "type": "object",
-      "properties": { "version": { "const": 3 }, "parts": { "type": "object" } }
-    },
     "tests": {
       "type": "object",
       "properties": {
