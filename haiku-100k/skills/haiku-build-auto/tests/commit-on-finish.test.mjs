@@ -1,5 +1,5 @@
-// A run that ends done or done_with_findings commits its working tree on the current branch (never pushed),
-// so a factory story branch carries the change; a blocked run, a free-intent run without --commit and
+// A run that ends done or done_with_findings commits its working tree on the current branch (never pushed,
+// no PR, as bmad-build-auto does), so a factory story branch carries the change; a blocked run and
 // commit: false leave the tree alone, and a commit error blocks the run as `commit failed`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -80,8 +80,8 @@ test('commit: a blocked run never commits', async () => {
   assert.equal(calls, 0);
 });
 
-test("commit: a free-intent run commits only when commit is true; 'auto' and false make no call", async () => {
-  for (const [commit, expected] of [['auto', 0], [false, 0], [true, 1], [undefined, 0]]) {
+test('commit: a free-intent run commits too; only commit: false makes no call', async () => {
+  for (const [commit, expected] of [[false, 0], [true, 1], [undefined, 1]]) {
     let calls = 0;
     const deps = baseDeps({ ...fakeAgent(), ...fakeTests([true]), gitCommit: () => { calls += 1; return { committed: true, sha: 'y' }; }, ...(commit === undefined ? {} : { commit }) });
     const res = await runAuto(deps);
@@ -221,7 +221,7 @@ test('commitRun: real repo end to end through runAuto with the default gitCommit
   }
 });
 
-test('CLI finish: commits the cwd under folder+id dispatch, --no-commit leaves it, --commit forces a free-intent run', () => {
+test('CLI finish: commits the cwd, with or without dispatch; --no-commit leaves it', () => {
   const manifest = (dispatch) => ({
     schemaVersion: 1, runId: 'fin', tool: 'haiku-build', status: 'REVIEWED', task: 'cli task', opusCalls: [], phases: [], haiku: {},
     attempts: [{ attempt: 'T1', ok: true }], tests: { passed: 1, failed: 0 }, review: { status: 'done', findings: [] },
@@ -262,13 +262,10 @@ test('CLI finish: commits the cwd under folder+id dispatch, --no-commit leaves i
   assert.equal(out.commit, null);
   assert.notEqual(git(repo, 'status', '--porcelain', '--untracked-files=all'), '');
 
-  // free intent: no commit unless --commit.
+  // free intent: committed as well, with the task as subject.
   repo = tmpRepo();
   fs.writeFileSync(path.join(repo, 'n.txt'), 'n\n');
   out = finish(repo, runDirFor(null));
-  assert.equal(out.commit, null);
-  assert.notEqual(git(repo, 'status', '--porcelain', '--untracked-files=all'), '');
-  out = finish(repo, runDirFor(null), '--commit');
   assert.equal(out.commit.committed, true);
   assert.equal(git(repo, 'status', '--porcelain', '--untracked-files=all'), '');
   assert.equal(git(repo, 'log', '-1', '--format=%s'), 'cli task');
