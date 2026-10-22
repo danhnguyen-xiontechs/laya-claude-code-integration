@@ -17,13 +17,15 @@ Goal: get one spec from Opus and save it as `spec.md`.
    - contain the four required headings (`checkSpecSections`): Goal & Intent, Tasks & Acceptance Criteria, Red Checks, Verification;
    - give each behaviour change a `red:` line.
 
+   v3: after `spec.md` is saved, `node "<skill-dir>/scripts/v3.mjs" acmap <runDir>/spec.md` prints the AC traceability (`acMap`, each AC's target, test and command). Show any `missing` entry in the step 07 report. It is information only: it does not block the plan.
+
    Write the returned text unchanged to a file (for example `evidence/plan-opus-raw.md`), then save it with:
 
    ```bash
    node "<skill-dir>/scripts/save_opus.mjs" plan <runDir> <runDir>/evidence/plan-opus-raw.md --attempt <n>
    ```
 
-   It calls `savePlanSpec` from `scripts/build_report.mjs`, which runs the same checks, writes `spec.md` only when they pass, sets `status` to `PLANNED` and appends the call to `opusCalls` with `words`, `ok`, `sha256` and `reason`. Never write `spec.md` by hand. An empty result is a failed call (`reason: "empty output"`), not a skipped one.
+   It calls `savePlanSpec` from `scripts/build_report.mjs`, which runs the same checks, writes `spec.md` only when they pass, sets `status` to `PLANNED` and appends the call to `opusCalls` with `words`, `ok`, `sha256` and `reason`. Never write `spec.md` by hand. An empty result is a failed call (`reason: "empty output"`), not a skipped one. v3: a failed save also appends a diagnostic (`kind: "plan"`, `fingerprint`, `category`, `progress`, `repeated`) to `manifest.json` `diagnostics`; mention `repeated: true` when you ask about a retry.
 5. **If it fails**, ask the user once, in one line: `[R] retry` or `[S] skip`, and say why it failed (not parseable, a required heading missing).
    - `[R]`: call Opus again and save its text with `save_opus.mjs plan ... --attempt 2 --approved-by "<the user's words>"`. The script records `retryApprovedBy` and `retryAt` on that entry, and refuses a retry without `--approved-by`. Only one retry is offered; if it fails again, ask the same question once more.
    - `[S]`: set `planFailed: true`, `planFailure: "<reason>"`, `status: "PLAN_FAILED"`. Do not write `spec.md`. Go to step 07 to write the `INCOMPLETE` report (final status `blocked`). Do not build.

@@ -7,13 +7,14 @@ The phase window `05-review` was opened at the end of step 04.
 1. **Build the review pack** (in the main session):
    - `SPEC:` the full `spec.md`, all sections.
    - `ANSWERS:` every entry of `planAnswers` in `manifest.json`, as `question → answer (section)`. Leave it empty if there are none.
-   - `DIFF:` `evidence/diff.patch` through `capDiff()` in `scripts/build_report.mjs`: 60 KB and 1500 lines, whole files only. List the omitted file names in `OMITTED:`.
+   - `DIFF:` `evidence/diff.patch` through `capDiff()` in `scripts/v3.mjs` (re-exported by `scripts/build_report.mjs`): 60 KB and 1500 lines, whole files only. List the omitted file names in `OMITTED:`.
    - `TESTS:` the test summary from the manifest, the ladder rungs used (`attempts`), and the full text of each failing test.
    - `CONTEXT:` capped at 10 KB in total, in this order, so the reviewers judge the change against code they can see rather than guessing:
      1. the full current body of each function or method a hunk changes (the diff shows only a few lines around the change);
      2. the full current text of each changed test file (the diff does not show unchanged tests);
      3. signatures or snippets the diff calls, chosen by you.
      Name anything left out for the cap under `OMITTED:`.
+   `CONTEXT:` may come from the reusable bundle `evidence/context.json` (written by `node "<skill-dir>/scripts/v3.mjs" context <runDir>`, rendered by `renderContext`: ACs, locations, tests, then the diff, so the 10 KB cap cuts the diff first; `includeDiff: false` leaves the diff out, since `DIFF:` already carries it). Refresh it with the same command after step 06 changes code; reviewers see the same text either way.
    Paste the pack into `prompts/review.md`. Reviewers never read files, so the pack must contain the diff text itself.
 2. **Call the reviewers in parallel.** In one message, three Agent tool calls, each `model: "sonnet"` (`05-review` in `manifest.routing`), `run_in_background: false`, the filled prompt as the whole prompt with `LENS:` set to `blind-hunter`, `edge-case-hunter` and `verification-gap` respectively. Each returns one JSON array in the format of `prompts/review.md`. Never use `tasks/*.output` as evidence: whether the review arrived is decided by `evidence/review-raw.json`, then the transcript.
 3. **Save and check, in the turn the answers arrive, before anything else.** Concatenate the three arrays into one JSON array, unchanged otherwise, and write it to a file (for example `evidence/review-handback.txt`). Then run:
@@ -22,7 +23,7 @@ The phase window `05-review` was opened at the end of step 04.
    node "<skill-dir>/scripts/save_opus.mjs" review <runDir> <runDir>/evidence/review-handback.txt --attempt <n>
    ```
 
-   The script name is historical (from v1); it saves any review hand-back. It keeps the raw text in `evidence/review-raw.json` and checks it: one JSON array (`checkReviewJson`), each item with `severity` (`Major` or `Minor`), `lens`, `finding`, `ref`, and 800 words or fewer in total (`checkOpusOutput`). It appends a save record to `opusCalls` with `step: "04-review"` (also a historical name: it is the review save record, not an Opus call) and the measured `words` and `sha256`; never write that entry by hand. On a pass it writes `evidence/review.json`, sets `review: { "status": "done", "findings": [...] }` with `resolution: "open"` on each finding, and sets `status` to `REVIEWED`. An empty array is a valid result.
+   The script name is historical (from v1); it saves any review hand-back. It keeps the raw text in `evidence/review-raw.json` and checks it: one JSON array (`checkReviewJson`), each item with `severity` (`Major` or `Minor`), `lens`, `finding`, `ref`, and 800 words or fewer in total (`checkOpusOutput`). It appends a save record to `opusCalls` with `step: "04-review"` (also a historical name: it is the review save record, not an Opus call) and the measured `words` and `sha256`; never write that entry by hand. On a pass it writes `evidence/review.json`, sets `review: { "status": "done", "findings": [...] }` with `resolution: "open"` on each finding, and sets `status` to `REVIEWED`. An empty array is a valid result. v3: a failed save also appends a diagnostic (`kind: "review"`, `fingerprint`, `category`, `progress`, `repeated`) to `manifest.json` `diagnostics`, as a failed test rung does.
 4. **If the save fails**, ask the user in one line: `[R] retry` or `[S] skip`, and say why.
    - `[R]`: call the reviewers again, once, and save with `save_opus.mjs review ... --attempt 2 --approved-by "<the user's words>"`. The script records `retryApprovedBy` and `retryAt`.
    - `[S]`: set `review: { "status": "skipped", "findings": [] }`, `status: "REVIEW_SKIPPED"` and `decision: "not_approved_report"`. The report will say the code was not independently reviewed. `evidence/review.json` is then missing, so the final status is `blocked` (step 07). Skip the triage and step 06; go to step 07.

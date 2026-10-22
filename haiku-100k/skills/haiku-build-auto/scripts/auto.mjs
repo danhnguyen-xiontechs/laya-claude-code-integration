@@ -31,6 +31,7 @@ import { advise, jevMode } from '../../haiku-build/scripts/jev_advice.mjs';
 import { saveOpus } from '../../haiku-build/scripts/save_opus.mjs';
 import { checkReviewJson } from '../../haiku-build/scripts/build_report.mjs';
 import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
+import { parseAcMap, diagnoseFailure, lastDiagnostic, refreshContext as refreshBundle, renderContext, runMetrics } from '../../haiku-build/scripts/v3.mjs';
 
 /** The only statuses a run can end in. */
 export const TERMINAL = ['done', 'done_with_findings', 'blocked'];
@@ -61,6 +62,12 @@ export const CONDITIONS = {
 
 /** The three review lenses of stage 05, one Sonnet reviewer each. */
 export const LENSES = ['blind-hunter', 'edge-case-hunter', 'verification-gap'];
+
+/**
+ * Agent roles that receive the rendered context bundle (review, fix and re-review calls). Plan is left out: it
+ * builds the spec the bundle's ACs come from. The render leaves the diff out: the review prompt has its own DIFF slot.
+ */
+const CONTEXT_ROLES = new Set(['review', 'fix', 're-review']);
 
 export const HAIKU_BUILD_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'haiku-build');
 
@@ -170,7 +177,7 @@ export function specFileFor(specFolder, storyId, title = null) {
 }
 
 /** Writes <runDir>/result.json. Returns the written object (with exitCode: 1 when blocked, else 0). */
-export function writeResult(runDir, { status, condition = null, reason = null, specFile = null } = {}, now = new Date()) {
+export function writeResult(runDir, { status, condition = null, reason = null, specFile = null, acMap = null, metrics = null } = {}, now = new Date()) {
   if (!TERMINAL.includes(status)) throw new Error(`not a terminal status: ${status}`);
   fs.mkdirSync(runDir, { recursive: true });
   const result = {
@@ -181,6 +188,8 @@ export function writeResult(runDir, { status, condition = null, reason = null, s
     runId: path.basename(path.resolve(runDir)),
     specFile,
     at: now.toISOString(),
+    acMap,
+    metrics,
   };
   fs.writeFileSync(path.join(runDir, 'result.json'), JSON.stringify(result, null, 2));
   return result;
@@ -237,8 +246,9 @@ export function endRun(runDir, { status, condition = null, reason = null }, { di
   fs.mkdirSync(runDir, { recursive: true });
   const m = readManifest(runDir);
   const d = dispatch ?? m?.auto?.dispatch ?? null;
+  let closed = m;
   if (m) {
-    const closed = endPhase(m, now);
+    closed = endPhase(m, now);
     writeManifest(runDir, {
       ...closed, finalStatus: status, finalReason: reason ?? condition ?? null,
       auto: { ...(m.auto ?? {}), status, condition: status === 'blocked' ? condition : null },
@@ -249,7 +259,7 @@ export function endRun(runDir, { status, condition = null, reason = null }, { di
     specFile = specFileFor(d.specFolder, d.storyId, d.title).file;
     writeBackSpec(specFile, { status, condition, reason, title: d.title, storyId: d.storyId, runDir }, now);
   }
-  return writeResult(runDir, { status, condition, reason, specFile }, now);
+  return writeResult(runDir, { status, condition, reason, specFile, acMap: closed?.acMap ?? null, metrics: runMetrics(closed ?? {}) }, now);
 }
 
 /** Halts the run `blocked` with `condition` named. Returns the result.json object (exitCode 1). */
@@ -338,7 +348,8 @@ async function intake({ runDir, task, startModel, dispatch, gitClean, preflight,
 
 /**
  * One unattended run, start to terminal status, with every outside effect injected:
- *   agent({ stage, model, role, attempt?, round?, lens?, runDir, task, findings? }) -> hand-back text
+ *   agent({ stage, model, role, attempt?, round?, lens?, runDir, task, findings?, context? }) -> hand-back text
+ *     (context: the rendered v3 context bundle, without the diff, on review, fix and re-review calls).
  *     (02-plan: spec text; 05-review and the 06-fix re-review: a JSON array of findings; others: ignored).
  *     Missing or throwing: blocked `no subagents`.
  *   runTests({ attempt, model }) -> { passed, failed, log?, command? }; a throw counts as a failed run.
@@ -361,23 +372,40 @@ export async function runAuto({
     if (typeof runTests !== 'function') throw new AutoHalt(CONDITIONS.noTestRunner);
     let m = manifest;
     const save = () => writeManifest(runDir, m);
+    const specPath = path.join(runDir, 'spec.md');
     const reload = () => { m = readManifest(runDir); return m; };
     const phase = (id) => { m = startPhase(reload(), id, now()); save(); };
     const model = (id) => m.routing?.stages?.find((s) => s.id === id)?.model ?? null;
     const call = async (req) => {
+      const extra = CONTEXT_ROLES.has(req.role) ? { context: renderContext(contextBundle(), { includeDiff: false }) } : {};
       try {
-        const out = await agent({ runDir, task: m.task, ...req });
+        const out = await agent({ runDir, task: m.task, ...extra, ...req });
         return typeof out === 'string' ? out : JSON.stringify(out ?? '');
       } catch (e) {
         throw new AutoHalt(CONDITIONS.noSubagents, `${CONDITIONS.noSubagents}: ${req.stage} ${String(e?.message ?? e).split('\n')[0]}`);
       }
     };
-    const writeDiff = () => fs.writeFileSync(path.join(runDir, 'evidence', 'diff.patch'), String(gitDiff() ?? ''));
+    const diffPath = path.join(runDir, 'evidence', 'diff.patch');
+    const logPath = path.join(runDir, 'evidence', 'unit-tests.log');
+    const ctxFile = path.join(runDir, 'evidence', 'context.json');
+    const readOr = (f, d = '') => (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : d);
+    // v3 context bundle: rebuilds only the parts whose sources changed, and stores it at evidence/context.json.
+    const contextBundle = () => {
+      let prev = null;
+      try { prev = JSON.parse(readOr(ctxFile, 'null')); } catch { prev = null; }
+      const src = { specText: readOr(specPath), answers: m.planAnswers ?? [], diff: readOr(diffPath), tests: readOr(logPath, null), files: [] };
+      const bundle = refreshBundle(prev, src);
+      fs.writeFileSync(ctxFile, JSON.stringify(bundle, null, 2));
+      return bundle;
+    };
+    const writeDiff = () => { fs.writeFileSync(diffPath, String(gitDiff() ?? '')); contextBundle(); };
+    let lastLog = '';
     const test = async (req) => {
       let t;
       try { t = await runTests(req); } catch (e) { t = { passed: 0, failed: 1, log: `test runner threw: ${e?.message ?? e}` }; }
       const failed = Number(t?.failed ?? 0);
-      fs.writeFileSync(path.join(runDir, 'evidence', 'unit-tests.log'), String(t?.log ?? `passed ${t?.passed ?? 0} failed ${failed}`));
+      lastLog = String(t?.log ?? `passed ${t?.passed ?? 0} failed ${failed}`);
+      fs.writeFileSync(path.join(runDir, 'evidence', 'unit-tests.log'), lastLog);
       m.tests = { command: t?.command ?? null, passed: Number(t?.passed ?? 0), failed };
       return failed === 0;
     };
@@ -400,6 +428,8 @@ export async function runAuto({
       }
     }
 
+    if (fs.existsSync(specPath)) { m.acMap = parseAcMap(fs.readFileSync(specPath, 'utf8')); save(); }
+
     // 03 Implement + 04 Test: Haiku, then the fixed ladder T1, T2, sonnet-retry, T3.
     if (!nextAttempt(m.attempts ?? []).done) {
       if (!(m.attempts ?? []).length) {
@@ -418,7 +448,7 @@ export async function runAuto({
         if ((m.attempts ?? []).length) {
           if (rung.model === 'sonnet') {
             const used = (m.jev?.calls ?? []).filter((c) => c.called).length;
-            const a = await advise({ point: 'recovery', baseline: 'fix-code', choices: ['fix-code', 'fix-test', 'rewrite'], state: m.tests ? `failed ${m.tests.failed}` : '', used, env, ...(ask ? { ask } : {}) });
+            const a = await advise({ point: 'recovery', baseline: 'fix-code', choices: ['fix-code', 'fix-test', 'rewrite'], state: [m.tests ? `failed ${m.tests.failed}` : '', lastDiagnostic(m, 'test')?.summary ?? ''].filter(Boolean).join('; '), used, env, ...(ask ? { ask } : {}) });
             const { used: _u, ...entry } = a;
             m.jev = { mode: m.jev?.mode ?? 'apply', calls: [...(m.jev?.calls ?? []), { ...entry, at: now().toISOString() }] };
             save();
@@ -429,7 +459,9 @@ export async function runAuto({
           writeDiff();
         }
         const ok = await test({ attempt: rung.attempt, model: rung.model });
-        m.attempts = [...(m.attempts ?? []), { ...rung, ok, at: now().toISOString() }];
+        const at = now().toISOString();
+        m.attempts = [...(m.attempts ?? []), { ...rung, ok, at }];
+        if (!ok) m.diagnostics = [...(m.diagnostics ?? []), diagnoseFailure({ kind: 'test', log: lastLog, failed: m.tests?.failed ?? null, previous: lastDiagnostic(m, 'test'), attempt: rung.attempt, at })];
         m.status = ok ? 'TESTS_PASS' : 'TESTS_FAIL';
         save();
       }
