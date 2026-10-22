@@ -7,6 +7,7 @@
 //
 // Usage: node status.mjs <runDir> next              prints the next ladder attempt (exit 1 when refused)
 //        node status.mjs <runDir> record pass|fail  records the next ladder attempt in manifest.attempts
+//                                                   (exit 1 when that record uses up the ladder: a failed T3)
 //        node status.mjs <runDir> final             writes manifest.finalStatus (exit 1 when blocked)
 //   Prints one JSON line.
 import fs from 'node:fs';
@@ -85,8 +86,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (cmd === 'record' && n.next) {
     m.attempts = [...attempts, { ...n.next, ok: result === 'pass', at: new Date().toISOString() }];
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));
-    console.log(JSON.stringify({ recorded: n.next.attempt, ok: result === 'pass', next: nextAttempt(m.attempts) }));
-    process.exit(0);
+    const after = nextAttempt(m.attempts);
+    console.log(JSON.stringify({ recorded: n.next.attempt, ok: result === 'pass', next: after }));
+    process.exit(after.refused ? 1 : 0);
   }
   console.log(JSON.stringify(n));
   process.exit(n.refused || (cmd === 'record' && !n.next) ? 1 : 0);
