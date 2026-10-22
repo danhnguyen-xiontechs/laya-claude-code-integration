@@ -3,7 +3,7 @@ name: haiku-build
 description: Build one change with the bmad-build flow, the main session on Haiku (haiku-100k base). Opus plans the spec (its only call), Haiku implements and runs unit tests on a fixed retry ladder, parallel Sonnet reviewers review the diff and the main session triages the findings, Haiku fixes with at most one Sonnet re-review, and a script sets the final status (done, done_with_findings, blocked). Use when the user wants bmad-build on Haiku.
 ---
 
-# haiku-build (v2)
+# haiku-build (v3)
 
 The bmad-build flow in seven stages, each routed to a model by a script. Opus is used only for the plan. Implement, test and fix run on Haiku; the review runs on parallel Sonnet reviewers. Every run is measured from the session transcript, including a per-request check that no Haiku request went over 100k input tokens.
 
@@ -80,6 +80,8 @@ All scripts print one summary line and are run as `node "<skill-dir>/scripts/<na
 - `scripts/usage_by_phase.mjs <session.jsonl> <manifest.json>`: per-phase usage and the per-request Haiku check.
 - `scripts/report_style.mjs`: the report's CSS.
 - `templates/spec.md`: spec layout: nine sections (Goal & Intent, Boundaries, Assumptions / Blocking Questions, Code Map, Behavior & Edge Cases, Tasks & Acceptance Criteria, Red Checks, Verification, Implementation Notes). Target 500–700 words.
+
+v3 helpers live in `scripts/v3.mjs` (node:crypto, node:fs, node:path only): `parseAcMap` and `acSummary` build the AC traceability map, `diagnoseFailure` and `failedCount` record a fingerprinted failure per ladder rung and per failed plan or review hand-back (`save_opus.mjs`), `lastDiagnostic` gives the previous one of the same kind, `buildContext`, `validateContext`, `refreshContext` and `renderContext` keep the reusable context bundle at `evidence/context.json`, and `runMetrics` summarises stages, attempts and repeats. `status.mjs`, `build_report.mjs` and the auto driver import them.
 
 ## Tests
 

@@ -138,6 +138,56 @@
         }
       }
     },
+    "diagnostics": {
+      "description": "v3: one entry per failed test attempt (status.mjs record fail, auto.mjs) and per failed plan or review hand-back (save_opus.mjs) (additive, optional)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["attempt", "kind", "fingerprint", "category", "failed", "progress", "repeated", "summary", "at"],
+        "properties": {
+          "attempt": { "type": ["string", "integer", "null"], "description": "ladder rung (T1, T2, ...) for a test, hand-back attempt number for plan or review" },
+          "kind": { "type": "string" },
+          "fingerprint": { "type": ["string", "null"], "description": "sha256 of the normalised log; null when the log is empty or missing" },
+          "category": { "enum": ["test-failure", "assertion", "syntax", "missing-module", "timeout", "review-invalid", "plan-invalid", "unknown"] },
+          "failed": { "type": ["integer", "null"] },
+          "progress": { "enum": ["first", "same", "improved", "worse", "changed"] },
+          "repeated": { "type": "boolean" },
+          "summary": { "type": "string" },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "acMap": {
+      "description": "v3: AC traceability from v3.mjs parseAcMap; null when the spec is not known (additive, optional)",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["id", "text", "target", "test", "command", "missing"],
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "target": { "type": ["string", "null"] },
+          "test": { "type": ["string", "null"] },
+          "command": { "type": ["string", "null"] },
+          "missing": { "type": "array", "items": { "enum": ["target", "test", "command"] } }
+        }
+      }
+    },
+    "metrics": {
+      "description": "v3: run metrics from v3.mjs runMetrics; a missing measurement is null (additive, optional)",
+      "type": "object",
+      "properties": {
+        "stages": { "type": "array", "items": { "type": "object", "required": ["phase", "ms"], "properties": { "phase": { "type": "string" }, "ms": { "type": ["integer", "null"] } } } },
+        "attempts": { "type": "object", "properties": { "total": { "type": "integer" }, "failed": { "type": "integer" }, "byModel": { "type": "object" } } },
+        "tests": { "type": ["object", "null"], "properties": { "passed": { "type": ["integer", "null"] }, "failed": { "type": ["integer", "null"] } } },
+        "repeats": { "type": "integer" }
+      }
+    },
+    "context": {
+      "description": "v3: reusable context bundle written to evidence/context.json by v3.mjs context; the manifest keeps only its version (additive, optional)",
+      "type": "object",
+      "properties": { "version": { "const": 3 }, "parts": { "type": "object" } }
+    },
     "tests": {
       "type": "object",
       "properties": {

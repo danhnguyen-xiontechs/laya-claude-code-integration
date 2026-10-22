@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { usageByPhase } from './usage_by_phase.mjs';
 import { CSS } from './report_style.mjs';
 import { findTranscript } from './find_transcript.mjs';
+import { parseAcMap, acSummary, runMetrics } from './v3.mjs';
 
 export const OPUS_WORD_LIMIT = 800;
 // A plan is never rejected for length (as bmad-build-auto does for its spec): 800-1600 words is normal,
@@ -173,6 +174,21 @@ export function renderHtml(m, u) {
     ? `<table><tr><th>Question</th><th>Answer</th><th>Spec section changed</th></tr>${answers.map((a) => `<tr><td>${esc(a.question)}</td><td>${esc(a.answer)}</td><td>${esc(a.section)}</td></tr>`).join('')}</table>`
     : '<p>No blocking questions were asked; the spec was built as written.</p>';
   const h = m.haiku ?? {};
+  const map = Array.isArray(m.acMap) ? m.acMap : null;
+  const sum = map ? acSummary(map) : null;
+  const acRows = (map ?? []).map((a) => `<tr><td>${esc(a.id)}</td><td>${esc(a.target ?? 'missing')}</td><td>${esc(a.test ?? 'missing')}</td><td>${esc(a.command ?? 'missing')}</td></tr>`).join('');
+  const unverified = (map ?? []).filter((a) => a.missing?.length);
+  const traceability = map
+    ? `<h2>AC traceability</h2><p>${sum.mapped} of ${sum.total} AC mapped.</p><table><tr><th>AC</th><th>Target</th><th>Test</th><th>Command</th></tr>${acRows}</table>${unverified.length ? `<p class="warn">Unverified: ${esc(unverified.map((a) => `${a.id} (missing ${a.missing.join(', ')})`).join('; '))}</p>` : '<p>Every AC has a target, a test and a command.</p>'}`
+    : '<h2>AC traceability</h2><p>not measured</p>';
+  const mt = runMetrics(m);
+  const stageRows = mt.stages.length
+    ? mt.stages.map((st) => `<tr><td>${esc(st.phase)}</td><td>${st.ms == null ? 'not measured' : String(st.ms)}</td></tr>`).join('')
+    : '<tr><td colspan="2">not measured</td></tr>';
+  const byModel = Object.entries(mt.attempts.byModel).map(([k, v]) => `${esc(k)}: ${v}`).join(', ') || 'not measured';
+  const testsCell = mt.tests ? `${num(mt.tests.passed)} passed, ${num(mt.tests.failed)} failed` : 'not measured';
+  const metricsHtml = `<h2>Run metrics</h2><table><tr><th>Phase</th><th>Milliseconds</th></tr>${stageRows}</table>`
+    + `<p>Attempts: ${num(mt.attempts.total)} total, ${num(mt.attempts.failed)} failed (${byModel}). Tests: ${testsCell}. Repeated failure fingerprints: ${num(mt.repeats)}.</p>`;
   return `<!doctype html><html><head><meta charset="utf-8"><title>haiku-build ${esc(m.runId)}</title><style>${CSS()}
 .warn{color:#8a4b00;background:#fff4e0;padding:6px 10px;border-radius:4px}</style></head><body>
 <h1>haiku-build: ${esc(m.runId)}</h1>
@@ -189,6 +205,8 @@ ${notice}
 <h2>Usage per phase</h2>
 <table><tr><th>Phase</th><th>Turns</th><th>Haiku tokens</th><th>Opus tokens</th><th>Opus calls</th><th>All turns</th></tr>${phaseRows}</table>
 ${unassigned}${overlap}
+${traceability}
+${metricsHtml}
 <p class="muted">Tokens = input + cache read + cache write + output per model class. A missing number is "not measured", never zero.</p>
 </body></html>`;
 }
@@ -229,7 +247,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const u = usageByPhase({ mainFile: t.path, phases: m0.phases ?? [] });
   fs.mkdirSync(path.join(dir, 'evidence'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'evidence', 'phase-usage.json'), JSON.stringify(u, null, 2));
-  const m = measure(m0, u);
+  const m1 = measure(m0, u);
+  const specFile = path.join(dir, 'spec.md');
+  const m = { ...m1, acMap: fs.existsSync(specFile) ? parseAcMap(fs.readFileSync(specFile, 'utf8')) : (m0.acMap ?? null), metrics: runMetrics(m1) };
   fs.writeFileSync(mf, JSON.stringify(m, null, 2));
   fs.writeFileSync(path.join(dir, 'report.html'), renderHtml(m, u));
   console.log(`report: ${m.status}, decision ${m.decision ?? 'none'}, Haiku limit ${m.haiku.input_limit_verification} -> ${path.join(dir, 'report.html')}`);
