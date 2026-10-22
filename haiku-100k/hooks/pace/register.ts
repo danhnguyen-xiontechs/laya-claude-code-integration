@@ -1,12 +1,13 @@
-// effort-pace: per-step effort for Haiku and Sonnet model requests, plus a guard for Bash calls that
-// would hold a turn for minutes (every model). Rules decide the routine steps for free; TypeSafe Jev
-// is asked only on pivot steps (turn start, after a failure, after a big edit). Every error falls back
-// to the session's own effort (or `high` on a pivot) and never blocks a request. Opus is not paced.
+// effort-pace: per-step effort for Haiku, Sonnet and Opus model requests, plus a guard for Bash calls
+// that would hold a turn for minutes (every model). Rules decide the routine steps for free; TypeSafe
+// Jev is asked only on pivot steps (turn start, after a failure, after a big edit) of Haiku and Sonnet.
+// Every error falls back to the session's own effort (or `high` on a pivot) and never blocks a request.
+// Opus (paceOpus, on by default) is capped at medium: easy → low, pivot → medium, never raised to high.
 // Mode: userConfig paceMode (apply by default), /effort-pace for this session, env EFFORT_PACE wins.
 // EFFORT_PACE=off is the kill switch for everything; /effort-pace off keeps the long-command guard on.
 import type { EngineInterface, Register } from 'claude-code';
 import {
-  type Effort, type PaceMode, type PaceOptions, type StepCall, actionOf, chooseEffort, classifyStep,
+  type Effort, type PaceMode, type PaceOptions, type StepCall, actionOf, capOf, chooseEffort, classifyStep,
   editedLinesOf, failureOf, guardCommand, guardStateOf, isEffort, isReadOnlyCall, paceRequest, parsePace,
   readPaceOptions, resolvePaceMode,
 } from './core.ts';
@@ -16,8 +17,8 @@ const JEV_URL = 'https://openrouter.ai/api/alpha/decisions';
 const JEV_MODEL = 'typesafe/jev-1.13';
 const MAX_LOG = 1_000_000;
 
-/** Models whose requests get a per-step effort. Opus never reaches the turn.step hook. */
-const PACED = /haiku|sonnet/i;
+/** Models whose requests get a per-step effort; Opus only when paceOpus is on (checked in the hook). */
+const PACED = /haiku|sonnet|opus/i;
 const TRACKED = ['Bash', 'PowerShell', 'Read', 'Grep', 'Glob', 'Edit', 'Write', 'NotebookEdit', 'WebFetch', 'WebSearch', 'ToolSearch', 'Skill', 'Agent'];
 
 type Row = Record<string, unknown>;
@@ -178,17 +179,18 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
     return ran;
   }).catch(($, e, next) => next(e)); // fail open: a broken guard never blocks a tool
 
-  // Haiku and Sonnet requests only (the matcher); Opus steps never reach this hook.
+  // Haiku, Sonnet and Opus requests (the matcher); Opus is left alone when paceOpus is off.
   on('turn.step', { model: PACED }, async function* ($, e, next) {
     const loop = loopOf(e.agentId);
     const calls = loop.calls;
     loop.calls = [];
     const st = await stateOf($, o, override);
-    // The matcher already leaves Opus out; this check keeps Opus untouched even if the hook is called directly.
-    if (!PACED.test(e.model ?? '') || st.mode === 'off' || !isEffort(e.effort)) return yield* next(e);
+    const cap = capOf(e.model);
+    if (!PACED.test(e.model ?? '') || (cap && !o.opus) || st.mode === 'off' || !isEffort(e.effort)) return yield* next(e);
 
     const { cls, reason } = classifyStep(e.index, calls, o.bigEditLines);
-    const pivot = cls === 'pivot';
+    // A capped model (Opus) never asks Jev: its pivot effort is the cap, so the answer could not matter.
+    const pivot = cls === 'pivot' && !cap;
     let jev: ChoiceAnswer | null = null;
     let jevMs: number | undefined;
     let jevError: string | undefined;
@@ -204,7 +206,7 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
       jevMs = (await $.clock.now()) - t;
       stats.jevMs.push(jevMs);
     }
-    const { effort, source } = chooseEffort(cls, e.effort as Effort, jev, o.jevMinConfidence);
+    const { effort, source } = chooseEffort(cls, e.effort as Effort, jev, o.jevMinConfidence, cap);
     const applied = st.mode === 'apply' && effort !== e.effort;
     if (applied) {
       stats.changed++;
@@ -212,7 +214,8 @@ export function registerPace(on: Parameters<Register>[0], options: Parameters<Re
       stats.switches[k] = (stats.switches[k] ?? 0) + 1;
     }
     // Why a pivot's Jev answer did or did not decide the effort, for the telemetry and the status.
-    const why = !pivot ? undefined
+    const why = cls !== 'pivot' ? undefined
+      : cap ? 'capped'
       : !o.jev ? 'jev_off'
       : !asked ? 'budget_exhausted'
       : source === 'explicit_high' ? 'explicit_xhigh'

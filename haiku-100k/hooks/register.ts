@@ -2,7 +2,7 @@ import type { Register } from 'claude-code'
 // agent-reliability (retry-loop guard, observe by default): a shipped copy, see ./reliability.
 import { registerHooks } from './reliability/register.ts'
 import { RECOVERY_AGENT, RECOVERY_PROMPT } from './reliability/incident.ts'
-// effort-pace: per-step effort for Haiku and Sonnet (rules + Jev on pivot steps) and the long-command guard.
+// effort-pace: per-step effort for Haiku, Sonnet and Opus (rules + Jev on pivot steps) and the long-command guard.
 import { registerPace } from './pace/register.ts'
 
 // Keeps every Haiku model request under the 100k-token price step (input ≤ 100k is the cheap tier).
@@ -60,7 +60,7 @@ export const register: Register = (on, options) => {
     // agent-reliability's session work, written out here: the runtime follows $ only within this file,
     // so startSession($) cannot be imported. Keep in step with startSession in reliability/register.ts.
     await $.command.register({ name: 'reliability', description: 'agent-reliability: status | observe | enforce | off | auto | reset | allow <n|all>' })
-    await $.command.register({ name: 'effort-pace', description: 'effort-pace: status | apply | shadow | off | auto (per-step effort for Haiku and Sonnet)' })
+    await $.command.register({ name: 'effort-pace', description: 'effort-pace: status | apply | shadow | off | auto (per-step effort for Haiku, Sonnet and Opus)' })
     await $.command.register({ name: 'haiku-pace', description: 'Alias of /effort-pace, kept for one version' })
     await $.command.register({ name: 'retry-guard', description: 'Alias of /reliability (status | reset), kept from retry-loop-breaker' })
     await $.agent.register({

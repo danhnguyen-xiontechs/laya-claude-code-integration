@@ -14,12 +14,13 @@ export type StepClass = 'easy' | 'normal' | 'pivot';
 /** One tool call of the previous step, as the next step's effort is decided from it. */
 export type StepCall = { tool: string; action: string; readOnly: boolean; failed: boolean; error: string; editedLines: number };
 
-export type PaceOptions = { mode: PaceMode; jev: boolean; jevBudget: number; jevTimeoutMs: number; jevMinConfidence: number; bigEditLines: number; telemetry: boolean; telemetryDir: string };
+export type PaceOptions = { mode: PaceMode; opus: boolean; jev: boolean; jevBudget: number; jevTimeoutMs: number; jevMinConfidence: number; bigEditLines: number; telemetry: boolean; telemetryDir: string };
 
 export function readPaceOptions(raw: Readonly<Record<string, unknown>> = {}): PaceOptions {
   const num = (k: string, d: number) => (typeof raw[k] === 'number' && Number.isFinite(raw[k]) ? (raw[k] as number) : d);
   return {
     mode: raw.paceMode === 'shadow' || raw.paceMode === 'off' ? raw.paceMode : 'apply',
+    opus: raw.paceOpus !== false,
     jev: raw.paceJev !== false,
     jevBudget: Math.max(0, Math.round(num('paceJevBudget', 40))),
     jevTimeoutMs: Math.max(200, num('paceJevTimeoutMs', 1500)),
@@ -48,6 +49,14 @@ export function guardStateOf(env: string | undefined, mode: PaceMode): 'deny' | 
 
 const RANK: Record<Effort, number> = { low: 0, medium: 1, high: 2, xhigh: 3, max: 4 };
 export const isEffort = (v: unknown): v is Effort => typeof v === 'string' && v in RANK;
+const lower = (a: Effort, b: Effort): Effort => (RANK[a] <= RANK[b] ? a : b);
+
+/**
+ * The highest effort this mod sends a model, or null for no cap. Opus thinks well at low and
+ * medium, so a paced Opus step stays between the two: easy → low, pivot → medium, a normal step
+ * keeps the session's effort but never above medium. Jev is not asked for a capped model.
+ */
+export const capOf = (model: string | undefined): Effort | null => (/opus/i.test(model ?? '') ? 'medium' : null);
 
 // ---------------------------------------------------------------- reading a tool call
 
@@ -109,11 +118,17 @@ export const pivotFallback = (current: Effort): Effort => (RANK[current] >= RANK
 
 /**
  * The effort to send. Never touches a session or caller that asked for xhigh/max (an explicit
- * choice to think hard); easy lowers to low; a pivot takes Jev's level when sure, else the fallback.
+ * choice to think hard); easy lowers to low; with a cap (Opus) a pivot gets the cap and a normal
+ * step at most the cap; otherwise a pivot takes Jev's level when sure, else the fallback.
  */
-export function chooseEffort(cls: StepClass, current: Effort, jev: ChoiceAnswer | null, minP: number): { effort: Effort; source: string } {
+export function chooseEffort(cls: StepClass, current: Effort, jev: ChoiceAnswer | null, minP: number, cap: Effort | null = null): { effort: Effort; source: string } {
   if (RANK[current] >= RANK.xhigh) return { effort: current, source: 'explicit_high' };
   if (cls === 'easy') return { effort: 'low', source: 'rule' };
+  if (cap) {
+    if (cls === 'pivot') return { effort: cap, source: 'cap' };
+    const capped = lower(current, cap);
+    return { effort: capped, source: capped === current ? 'unchanged' : 'cap' };
+  }
   if (cls === 'pivot') {
     if (jev && jev.p >= minP && isEffort(jev.choice)) return { effort: jev.choice, source: 'jev' };
     return { effort: pivotFallback(current), source: jev ? 'jev_low_confidence' : 'fallback' };

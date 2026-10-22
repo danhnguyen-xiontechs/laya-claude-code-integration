@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 import {
-  chooseEffort, classifyStep, failureOf, guardCommand, guardStateOf, isReadOnlyCall, paceRequest, parsePace,
+  capOf, chooseEffort, classifyStep, failureOf, guardCommand, guardStateOf, isReadOnlyCall, paceRequest, parsePace,
   readPaceOptions, resolvePaceMode, type StepCall,
 } from './core'
 import { registerPace } from './register'
@@ -22,6 +22,19 @@ test('effort: easy goes low, pivots take Jev when sure, else at least high; xhig
   expect(chooseEffort('pivot', 'medium', null, 0.6)).toEqual({ effort: 'high', source: 'fallback' })
   expect(chooseEffort('normal', 'medium', null, 0.6).effort).toBe('medium')
   expect(chooseEffort('easy', 'max', null, 0.6).effort).toBe('max')
+})
+
+test('Opus is capped at medium: easy low, pivot medium, normal never above medium, xhigh/max untouched', () => {
+  expect(capOf('claude-opus-5-5')).toBe('medium')
+  expect(capOf('claude-sonnet-5-5')).toBe(null)
+  expect(chooseEffort('easy', 'high', null, 0.6, 'medium')).toEqual({ effort: 'low', source: 'rule' })
+  expect(chooseEffort('pivot', 'high', { choice: 'high', p: 0.9, probabilities: {} }, 0.6, 'medium')).toEqual({ effort: 'medium', source: 'cap' })
+  expect(chooseEffort('pivot', 'low', null, 0.6, 'medium').effort).toBe('medium')
+  expect(chooseEffort('normal', 'high', null, 0.6, 'medium')).toEqual({ effort: 'medium', source: 'cap' })
+  expect(chooseEffort('normal', 'low', null, 0.6, 'medium')).toEqual({ effort: 'low', source: 'unchanged' })
+  expect(chooseEffort('pivot', 'xhigh', null, 0.6, 'medium').effort).toBe('xhigh')
+  expect(readPaceOptions({}).opus).toBe(true)
+  expect(readPaceOptions({ paceOpus: false }).opus).toBe(false)
 })
 
 test('read-only detection: inspection pipelines yes, writes and installs no', () => {
