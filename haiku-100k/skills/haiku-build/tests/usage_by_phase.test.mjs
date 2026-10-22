@@ -25,7 +25,7 @@ function fixture(mainLines, subLines = {}) {
 const phases = [
   { phase: '01-intake', from: '2026-10-19T10:00:00Z', to: '2026-10-19T10:10:00Z' },
   { phase: '02-plan', from: '2026-10-19T10:10:00Z', to: '2026-10-19T10:20:00Z' },
-  { phase: '03-build-test', from: '2026-10-19T10:20:00Z', to: '2026-10-19T10:40:00Z' },
+  { phase: '03-implement', from: '2026-10-19T10:20:00Z', to: '2026-10-19T10:40:00Z' },
 ];
 
 test('contextOf sums the three input fields, as the hook does', () => {
