@@ -11,10 +11,89 @@
       "enum": ["INTAKE", "PLANNED", "BUILT", "TESTS_PASS", "TESTS_FAIL", "REVIEWED", "PLAN_FAILED", "REVIEW_SKIPPED", "FIXED", "REPORTED", "INCOMPLETE"]
     },
     "task": { "type": "string" },
-    "decision": { "enum": ["fix_and_report", "not_approved_report", "re_verify_only", null] },
+    "finalStatus": {
+      "description": "v2 final status, written only by scripts/status.mjs final; never takes JEV input",
+      "enum": ["done", "done_with_findings", "blocked"]
+    },
+    "finalReason": { "type": ["string", "null"], "description": "why: the missing artifact, the used-up ladder, failing tests or the open-finding count" },
+    "routing": {
+      "type": "object",
+      "description": "written by scripts/routing.mjs --write; every stage has a model",
+      "required": ["main", "stages"],
+      "properties": {
+        "start": { "enum": ["haiku", "sonnet", "opus", "fable", null] },
+        "main": { "enum": ["haiku", "sonnet", "opus", "fable"] },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "model"],
+            "properties": {
+              "id": { "enum": ["01-intake", "02-plan", "03-implement", "04-test", "05-review", "06-fix", "07-present"] },
+              "model": { "enum": ["haiku", "sonnet", "opus", "fable"] },
+              "fallback": {
+                "description": "the one extra model call the stage may make: 03-implement one Sonnet fallback, 06-fix at most one Sonnet re-review; null elsewhere",
+                "oneOf": [
+                  { "type": "null" },
+                  {
+                    "type": "object",
+                    "required": ["model", "role", "max"],
+                    "properties": {
+                      "model": { "const": "sonnet" },
+                      "role": { "enum": ["implement", "re-review"] },
+                      "max": { "const": 1 }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "switchQuestion": { "type": ["string", "null"], "description": "only for an Opus or Fable start: \"switch main session to Sonnet?\"" },
+        "switchAnswer": { "type": ["string", "null"], "description": "the user's one answer; kept once stored" }
+      }
+    },
+    "attempts": {
+      "type": "array",
+      "description": "test runs on the retry ladder T1, T2, sonnet-retry, T3, recorded by scripts/status.mjs record",
+      "items": {
+        "type": "object",
+        "required": ["attempt", "model", "ok"],
+        "properties": {
+          "attempt": { "enum": ["T1", "T2", "sonnet-retry", "T3"] },
+          "model": { "enum": ["haiku", "sonnet"] },
+          "ok": { "type": "boolean" },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "jev": {
+      "type": "object",
+      "description": "optional JEV advice, written by scripts/jev_advice.mjs; advisory only, never a status",
+      "properties": {
+        "mode": { "enum": ["apply", "off"] },
+        "calls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["point", "choice", "source", "called", "reason"],
+            "properties": {
+              "point": { "enum": ["intake", "recovery", "triage"] },
+              "choice": { "type": "string" },
+              "source": { "enum": ["jev", "baseline"] },
+              "called": { "type": "boolean" },
+              "reason": { "type": "string" },
+              "confidence": { "type": ["number", "null"] },
+              "at": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "decision": { "enum": ["fix_and_report", "not_approved_report", "re_verify_only", null], "description": "set by the main session in stage 05 from the triage (fix_and_report or re_verify_only), or not_approved_report when the review was skipped or the plan failed; never a user question" },
     "planAnswers": {
       "type": "array",
-      "description": "answers to the spec's blocking questions (section 3); authoritative for Build, Review and the report",
+      "description": "answers to the spec's blocking questions (section 3); authoritative for Implement, Review and the report",
       "items": {
         "type": "object",
         "required": ["question", "answer", "section"],
@@ -30,12 +109,12 @@
     "transcript": { "type": ["string", "null"], "description": "main session .jsonl; subagents read from <session>/subagents/" },
     "opusCalls": {
       "type": "array",
-      "description": "every Opus call, retries included",
+      "description": "every Opus call (the plan, stage 02-plan), retries included, plus the review save record that scripts/save_opus.mjs review (build_report.mjs saveReview) writes for stage 05-review; the review itself runs on Sonnet",
       "items": {
         "type": "object",
         "required": ["step", "attempt", "words", "ok"],
         "properties": {
-          "step": { "enum": ["02-plan", "04-review"] },
+          "step": { "enum": ["02-plan", "04-review"], "description": "02-plan: the Opus plan call. 04-review: the review save record written by saveReview (historical v1 name), not an Opus call" },
           "attempt": { "type": "integer", "minimum": 1 },
           "words": { "type": ["integer", "null"] },
           "ok": { "type": "boolean" },
@@ -52,7 +131,7 @@
         "type": "object",
         "required": ["phase", "from", "to"],
         "properties": {
-          "phase": { "enum": ["01-intake", "02-plan", "03-build-test", "04-review", "05-decide-report"] },
+          "phase": { "enum": ["01-intake", "02-plan", "03-implement", "04-test", "05-review", "06-fix", "07-present"], "description": "the seven v2 stages, opened by scripts/phase.mjs" },
           "from": { "type": "string", "format": "date-time" },
           "to": { "type": "string", "format": "date-time" },
           "model": { "type": "string" }
