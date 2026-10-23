@@ -43,6 +43,16 @@ Nothing to work from (no task, no folder+id title, no resumable run) halts `inte
    - exit 1: a Major was still open after round 3: `review repair loop exceeded 3 iterations`. Stop.
 6. **Present (07).** `node "<skill-dir>/scripts/auto.mjs" finish <runDir>` from the repository root (the directory whose working tree holds the change), then `node "<hb-dir>/scripts/build_report.mjs" <runDir>`. `finish` takes the final status from haiku-build's `status.mjs` (`finalStatus`): `blocked` when a required artifact is missing or tests fail, `done_with_findings` when only findings remain open (Minor), else `done`. A run that is not blocked then commits the working tree (`--no-commit` leaves it), leaving out the run folder itself when it lies inside the repository: `result.json` and `manifest.auto.commit` carry the sha. Never run `git commit` yourself. Report the status, its condition, the commit (or that none was made) and the report path in four lines.
 
+## The haiku-build v3 flow
+
+Auto runs the v3 helpers of haiku-build, all scripts, no extra model call and no question to the user:
+
+- **Diagnostics.** Each failed test run (`test`), plan hand-back (`plan`) and review hand-back (`review`) that fails is recorded in `manifest.diagnostics` by `auto.mjs`. The Haiku fix request and the Sonnet retry get the recovery state (`failed N; last <stage> <attempt>: <category> <fingerprint> <progress> (repeat n)`) as their `diagnostics`.
+- **Trace.** After the plan is saved, `auto.mjs` runs `trace.mjs` on `spec.md` and stores `manifest.trace`. Unmapped ACs are reported in the trace and never count as evidence; they do not change the terminal status by themselves.
+- **Context bundle.** The plan, each review attempt and each re-review get one bundle from `context_bundle.mjs` (`evidence/context-bundle.json`, at most 12000 bytes). The three lens reviewers of one attempt share one bundle object; the re-review gets a rebuilt bundle when the diff has changed.
+
+"Never asks" still holds: the diagnostics, trace and bundle are written, never shown as a question.
+
 ## Blocking conditions
 
 `preflight failed`, `dirty working tree`, `intent gap`, `ambiguous story file match`, `no subagents`, `plan failed twice`, `review failed twice`, `retry ladder used up`, `tests still fail`, `review repair loop exceeded 3 iterations`, `commit failed`. Each one ends the run `blocked`, exit 1.
