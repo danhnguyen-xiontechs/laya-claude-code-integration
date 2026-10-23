@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { usageByPhase } from './usage_by_phase.mjs';
 import { CSS } from './report_style.mjs';
 import { findTranscript } from './find_transcript.mjs';
+import { traceEvidence } from './trace.mjs';
 
 export const OPUS_WORD_LIMIT = 800;
 // A plan is never rejected for length (as bmad-build-auto does for its spec): 800-1600 words is normal,
@@ -153,6 +154,55 @@ export function runStatus(m) {
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const num = (v) => (v == null ? 'not measured' : v.toLocaleString('en-US'));
 
+/** Milliseconds from a phase's from to its to, or null when either is missing or not a date. */
+function phaseMs(p) {
+  const a = Date.parse(p?.from), b = Date.parse(p?.to);
+  return Number.isFinite(a) && Number.isFinite(b) ? b - a : null;
+}
+
+/**
+ * Run measures that are known: phase times (null when not measurable), test counts, the AC trace counts, failures
+ * repeated at least twice (by fingerprint) and attempt counts. A missing source gives null or an empty list.
+ * @param {object} m manifest object
+ * @returns {{stages: {phase: string, ms: number|null}[], tests: object|null, trace: object|null,
+ *   repeatedFailures: {fingerprint: string, category: string, count: number}[], attempts: {total: number, failed: number}}}
+ */
+export function runMetrics(m = {}) {
+  const attempts = m.attempts ?? [];
+  const groups = new Map();
+  for (const d of m.diagnostics ?? []) groups.set(d.fingerprint, [...(groups.get(d.fingerprint) ?? []), d]);
+  const repeatedFailures = [...groups.entries()]
+    .filter(([, list]) => list.length >= 2)
+    .map(([fingerprint, list]) => ({ fingerprint, category: list[0].category, count: list.length }));
+  return {
+    stages: (m.phases ?? []).map((p) => ({ phase: p.phase, ms: phaseMs(p) })),
+    tests: m.tests ? { passed: m.tests.passed ?? null, failed: m.tests.failed ?? null } : null,
+    trace: m.trace ? { mapped: m.trace.mapped, unmapped: m.trace.unmapped?.length ?? 0 } : null,
+    repeatedFailures,
+    attempts: { total: attempts.length, failed: attempts.filter((a) => !a.ok).length },
+  };
+}
+
+function metricsSection(m) {
+  const metrics = runMetrics(m);
+  const stageRows = metrics.stages
+    .filter((s) => s.ms != null)
+    .map((s) => `<tr><td>${esc(s.phase)}</td><td>${num(Math.round(s.ms / 1000))} s</td></tr>`).join('');
+  const repeatRows = metrics.repeatedFailures
+    .map((r) => `<tr><td>Repeated failure: ${esc(r.category)}</td><td>${esc(r.fingerprint)} seen ${num(r.count)} times</td></tr>`).join('');
+  return `<table><tr><th>Measure</th><th>Value</th></tr>${stageRows}${repeatRows}<tr><td>Attempts</td><td>${num(metrics.attempts.total)} (${num(metrics.attempts.failed)} failed)</td></tr></table>`;
+}
+
+function traceSection(m) {
+  if (!m.trace?.acs) return '<p>not measured</p>';
+  const evidence = Object.fromEntries(traceEvidence(m.trace, m.tests).map((e) => [e.id, e.evidence]));
+  const rows = m.trace.acs.map((a) => {
+    const shown = a.status === 'mapped' ? esc(evidence[a.id]) : 'UNMAPPED &mdash; not evidence';
+    return `<tr><td>${esc(a.id)}</td><td>${esc(a.text)}</td><td>${esc(a.target ?? '-')}</td><td>${esc(a.verify ?? '-')}</td><td>${shown}</td></tr>`;
+  }).join('');
+  return `<table><tr><th>AC</th><th>Text</th><th>Target</th><th>Verified by</th><th>Evidence</th></tr>${rows}</table>`;
+}
+
 export function renderHtml(m, u) {
   const status = runStatus(m);
   const notice = m.planFailed
@@ -181,6 +231,8 @@ ${notice}
 <p>${esc(m.task)}</p>
 <h2>Verification</h2>
 <p>Unit tests: ${num(m.tests?.passed)} passed, ${num(m.tests?.failed)} failed (${esc(m.tests?.command ?? '')}).</p>
+<h2>Run metrics</h2>${metricsSection(m)}
+<h2>AC traceability</h2>${traceSection(m)}
 <h2>Decisions</h2>${decisions}
 <h2>Review</h2>${review}
 <h2>Haiku input limit (100k per request)</h2>
@@ -199,6 +251,7 @@ export function measure(m, u) {
     ...m,
     status: runStatus(m),
     haiku: { ...u.haiku, haiku_request_count: u.haiku.request_count, haiku_requests_over_100k: u.haiku.requests_over_100k },
+    metrics: runMetrics(m),
   };
 }
 

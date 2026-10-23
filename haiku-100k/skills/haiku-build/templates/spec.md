@@ -33,8 +33,10 @@ Ordered tasks. Each file gives what changes, why, and what must stay true.
 - `src/example.js` — validate input before processing; keep the existing caller contract; reject invalid input with a `TypeError`.
 
 Acceptance criteria are observable behaviour, each checkable by a command or a test. "Tests pass" is not a criterion.
-- AC1: `parseList("a,,b")` returns `["a","b"]`, checked by `test/list.test.mjs` "skips empty items".
+- AC1: `parseList("a,,b")` returns `["a","b"]` (`src/example.js` parse list; checked by `node --test test/list.test.mjs` "skips empty items").
 - AC2: ...
+
+Each AC needs both an implementation target (a backticked source path, not a test file) and a verification named after "Checked by" (a test file, optionally with a test name in quotes). `scripts/trace.mjs` reports an AC without either as `unmapped`; an unmapped AC never counts as evidence.
 
 ## 7. Red Checks (required)
 One `red:` line per behaviour change: a test or check that fails before the change and passes after it.

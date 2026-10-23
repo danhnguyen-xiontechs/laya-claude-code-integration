@@ -12,3 +12,8 @@ Goal: get the unit tests green within the fixed retry ladder, and record every r
 5. **Record** in `manifest.json`: `tests: { "command", "passed", "failed" }` and `status`: `TESTS_PASS`, `TESTS_FAIL`, or `BUILT` if no tests exist. Then open the next window: `node "<skill-dir>/scripts/phase.mjs" <runDir> start 05-review`.
 
 Nothing is committed or pushed. Go to step 05.
+
+## v3 additions
+
+- Each failed test run is recorded by `status.mjs <runDir> record fail --log evidence/unit-tests.log` as a diagnostics entry (stage `test`, attempt `T<n>`). A passed run uses `record pass`.
+- The Haiku fix and the Sonnet retry requests carry the recovery state from `manifest.diagnostics` (`failed N; last test T<n>: <category> <fingerprint> <progress> (repeat n)`). Use it to pick the next fix; do not repeat an approach whose repeat count is above 1.

@@ -6,7 +6,10 @@
 // blocked run names its condition and exits 1. Every end writes <runDir>/result.json; under folder+id
 // dispatch (spec folder + story id) the story spec gets its `status` updated and `## Auto Run Result`.
 // The haiku-build v2 scripts do the rest: status.mjs (ladder, final status), routing.mjs, preflight.mjs,
-// jev_advice.mjs and save_opus.mjs.
+// jev_advice.mjs and save_opus.mjs. The v3 helpers add: diagnostics.mjs (every failed test run, hand-back and
+// gate failure is recorded in manifest.diagnostics; the Haiku fix and Sonnet retry requests get the recovery
+// state), trace.mjs (manifest.trace after the plan is saved) and context_bundle.mjs (one shared review bundle
+// per review attempt, the plan request's bundle, and the re-review's bundle).
 //
 // Usage: node auto.mjs start  <runDir> [--model <startModel>] [--task "<text>"]
 //                             [--spec-folder <dir> --story-id <id> --title "<title from stories.yaml>"]
@@ -33,6 +36,9 @@ import { advise, jevMode } from '../../haiku-build/scripts/jev_advice.mjs';
 import { saveOpus } from '../../haiku-build/scripts/save_opus.mjs';
 import { checkReviewJson } from '../../haiku-build/scripts/build_report.mjs';
 import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
+import { buildTrace } from '../../haiku-build/scripts/trace.mjs';
+import { recordFailure, recoveryState } from '../../haiku-build/scripts/diagnostics.mjs';
+import { getBundle } from '../../haiku-build/scripts/context_bundle.mjs';
 
 /** The only statuses a run can end in. */
 export const TERMINAL = ['done', 'done_with_findings', 'blocked'];
@@ -453,8 +459,10 @@ export async function runAuto({
       let t;
       try { t = await runTests(req); } catch (e) { t = { passed: 0, failed: 1, log: `test runner threw: ${e?.message ?? e}` }; }
       const failed = Number(t?.failed ?? 0);
-      fs.writeFileSync(path.join(runDir, 'evidence', 'unit-tests.log'), String(t?.log ?? `passed ${t?.passed ?? 0} failed ${failed}`));
+      const logText = String(t?.log ?? `passed ${t?.passed ?? 0} failed ${failed}`);
+      fs.writeFileSync(path.join(runDir, 'evidence', 'unit-tests.log'), logText);
       m.tests = { command: t?.command ?? null, passed: Number(t?.passed ?? 0), failed };
+      if (failed > 0) recordFailure(m, { stage: 'test', attempt: req.attempt, log: logText });
       return failed === 0;
     };
 
@@ -465,15 +473,21 @@ export async function runAuto({
         const attempt = handBackFailures(m, 'plan') + 1;
         const gate0 = handBackGate('plan', attempt - 1);
         if (gate0.action === 'halt') throw new AutoHalt(gate0.condition);
-        const text = await call({ stage: '02-plan', model: model('02-plan'), role: 'plan', attempt, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'plan-opus.md') });
+        const context = getBundle(runDir, { stage: 'plan', task: m.task }).bundle;
+        const text = await call({ stage: '02-plan', model: model('02-plan'), role: 'plan', attempt, context, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'plan-opus.md') });
         const file = path.join(runDir, 'evidence', `plan-raw-${attempt}.md`);
         fs.writeFileSync(file, text);
-        saveOpus('plan', runDir, file, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null, now: now() });
+        const saved = saveOpus('plan', runDir, file, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null, now: now() });
         reload();
+        if (!saved.ok) { recordFailure(m, { stage: 'plan', attempt, log: String(saved.reason ?? 'plan hand-back rejected') }); save(); }
         const gate = handBackGate('plan', handBackFailures(m, 'plan'));
         if (gate.action === 'halt') throw new AutoHalt(gate.condition);
         if (fs.existsSync(path.join(runDir, 'spec.md')) && m.opusCalls.at(-1)?.ok) break;
       }
+    }
+    if (fs.existsSync(path.join(runDir, 'spec.md'))) {
+      m.trace = buildTrace(fs.readFileSync(path.join(runDir, 'spec.md'), 'utf8'));
+      save();
     }
 
     // 03 Implement + 04 Test: Haiku, then the fixed ladder T1, T2, sonnet-retry, T3.
@@ -494,13 +508,14 @@ export async function runAuto({
         if ((m.attempts ?? []).length) {
           if (rung.model === 'sonnet') {
             const used = (m.jev?.calls ?? []).filter((c) => c.called).length;
-            const a = await advise({ point: 'recovery', baseline: 'fix-code', choices: ['fix-code', 'fix-test', 'rewrite'], state: m.tests ? `failed ${m.tests.failed}` : '', used, env, ...(ask ? { ask } : {}) });
+            const failedCount = m.tests?.failed ?? 0;
+            const a = await advise({ point: 'recovery', baseline: 'fix-code', choices: ['fix-code', 'fix-test', 'rewrite'], state: recoveryState(m, failedCount), used, env, ...(ask ? { ask } : {}) });
             const { used: _u, ...entry } = a;
             m.jev = { mode: m.jev?.mode ?? 'apply', calls: [...(m.jev?.calls ?? []), { ...entry, at: now().toISOString() }] };
             save();
-            await call({ stage: '03-implement', model: 'sonnet', role: 'sonnet-retry', approach: a.choice });
+            await call({ stage: '03-implement', model: 'sonnet', role: 'sonnet-retry', approach: a.choice, diagnostics: recoveryState(m, failedCount) });
           } else {
-            await call({ stage: '04-test', model: rung.model, role: 'fix-tests', attempt: rung.attempt });
+            await call({ stage: '04-test', model: rung.model, role: 'fix-tests', attempt: rung.attempt, diagnostics: recoveryState(m, m.tests?.failed ?? 0) });
           }
           writeDiff();
         }
@@ -518,11 +533,14 @@ export async function runAuto({
         const attempt = handBackFailures(m, 'review') + 1;
         const gate0 = handBackGate('review', attempt - 1);
         if (gate0.action === 'halt') throw new AutoHalt(gate0.condition);
-        const texts = await Promise.all(LENSES.map((lens) => call({ stage: '05-review', model: model('05-review'), role: 'review', lens, attempt, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'review.md') })));
+        writeDiff();
+        const context = getBundle(runDir, { stage: 'review', task: m.task }).bundle;
+        const texts = await Promise.all(LENSES.map((lens) => call({ stage: '05-review', model: model('05-review'), role: 'review', lens, attempt, context, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'review.md') })));
         const file = path.join(runDir, 'evidence', `review-handback-${attempt}.txt`);
         fs.writeFileSync(file, mergeReviews(texts));
-        saveOpus('review', runDir, file, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null, now: now() });
+        const saved = saveOpus('review', runDir, file, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null, now: now() });
         reload();
+        if (!saved.ok) { recordFailure(m, { stage: 'review', attempt, log: String(saved.reason ?? 'review hand-back rejected') }); save(); }
         const gate = handBackGate('review', handBackFailures(m, 'review'));
         if (gate.action === 'halt') throw new AutoHalt(gate.condition);
         if (m.review?.status === 'done' && m.opusCalls.at(-1)?.ok) break;
@@ -542,7 +560,7 @@ export async function runAuto({
       writeDiff();
       let ok = await test({ attempt: `fix-${d.round}`, model: model('06-fix') });
       if (!ok) {
-        await call({ stage: '06-fix', model: model('06-fix'), role: 'fix-tests', round: d.round });
+        await call({ stage: '06-fix', model: model('06-fix'), role: 'fix-tests', round: d.round, diagnostics: recoveryState(m, m.tests?.failed ?? 0) });
         writeDiff();
         ok = await test({ attempt: `fix-${d.round}-retry`, model: model('06-fix') });
       }
@@ -550,7 +568,8 @@ export async function runAuto({
       if (!ok) throw new AutoHalt(CONDITIONS.testsFail);
       let parsed = null;
       for (let i = 1; i <= 2 && !parsed; i++) {
-        const text = await call({ stage: '06-fix', model: 'sonnet', role: 're-review', lens: 'blind-hunter', round: d.round, attempt: i, findings: open, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'review.md') });
+        const context = getBundle(runDir, { stage: 'review', task: m.task }).bundle;
+        const text = await call({ stage: '06-fix', model: 'sonnet', role: 're-review', lens: 'blind-hunter', round: d.round, attempt: i, findings: open, context, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'review.md') });
         fs.writeFileSync(path.join(runDir, 'evidence', 're-review.json'), text);
         const c = checkReviewJson(text);
         if (c.ok) parsed = c.findings;
@@ -622,6 +641,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       saved = saveOpus(kind, runDir, textFile, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null });
     } catch (e) {
       out({ ok: false, reason: e.message }, 2);
+    }
+    if (!saved.ok) {
+      const mm = readManifest(runDir);
+      recordFailure(mm, { stage: kind, attempt, log: String(saved.reason ?? 'hand-back rejected') });
+      writeManifest(runDir, mm);
     }
     const gate = saved.ok ? { action: 'continue' } : handBackGate(kind, handBackFailures(readManifest(runDir), kind));
     if (gate.action === 'halt') ended(halt(runDir, gate.condition, { reason: `${gate.condition}: ${saved.reason}` }));

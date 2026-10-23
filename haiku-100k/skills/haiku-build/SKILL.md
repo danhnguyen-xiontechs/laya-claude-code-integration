@@ -3,9 +3,11 @@ name: haiku-build
 description: Build one change with the bmad-build flow, the main session on Haiku (haiku-100k base). Opus plans the spec (its only call), Haiku implements and runs unit tests on a fixed retry ladder, parallel Sonnet reviewers review the diff and the main session triages the findings, Haiku fixes with at most one Sonnet re-review, and a script sets the final status (done, done_with_findings, blocked). Use when the user wants bmad-build on Haiku.
 ---
 
-# haiku-build (v2)
+# haiku-build (v3)
 
 The bmad-build flow in seven stages, each routed to a model by a script. Opus is used only for the plan. Implement, test and fix run on Haiku; the review runs on parallel Sonnet reviewers. Every run is measured from the session transcript, including a per-request check that no Haiku request went over 100k input tokens.
+
+**v3 note.** v3 adds three helpers on top of v2, all scripts only, with no new model call: every failed test run, hand-back and gate failure is kept in `manifest.diagnostics` (`scripts/diagnostics.mjs`), so a fix request carries the recovery state instead of a guess; `scripts/trace.mjs` maps each acceptance criterion to its target and its verification and stores the result as `manifest.trace` (an unmapped AC is flagged, never counted as evidence); and `scripts/context_bundle.mjs` builds one bounded context bundle (at most 12000 bytes) per stage from the spec and the diff, stored in `evidence/context-bundle.json` and reused while the sources are unchanged.
 
 ## Requirements
 
@@ -61,9 +63,12 @@ evidence/diff.patch        # stages 03, 04 and 06
 evidence/unit-tests.log    # stages 04 and 06
 evidence/review.json       # stage 05
 evidence/re-review.json    # stage 06, only when the Sonnet re-review ran
+evidence/context-bundle.json  # v3: built by context_bundle.mjs, reused while its sources are unchanged
 evidence/phase-usage.json  # built by build_report.mjs
 report.html                # built by build_report.mjs, never hand-written
 ```
+
+v3 manifest fields: `diagnostics` (one entry per failed test run or hand-back: stage, attempt, fingerprint, category, passed, failed, progress, repeatCount, at) and `trace` (from `trace.mjs`).
 
 ## Scripts
 
@@ -73,6 +78,9 @@ All scripts print one summary line and are run as `node "<skill-dir>/scripts/<na
 - `scripts/routing.mjs <startModel> [--switch yes|no] [--plan-advice opus|sonnet] [--write <runDir>]`: the model and fallback of every stage and the switch question, stored as `manifest.routing` (stage 01).
 - `scripts/status.mjs <runDir> next | record pass|fail | final`: the retry ladder (stages 04, 06) and the final status (stage 07).
 - `scripts/jev_advice.mjs <runDir> <intake|recovery|triage> <baseline> <choices> [--state "<text>"]`: optional JEV advice through `subagent-model-router/scripts/decision-provider.mjs`, logged in `manifest.jev` (stages 01, 04, 05).
+- `scripts/diagnostics.mjs`: `recordFailure` and `recoveryState` (library). `status.mjs <runDir> record fail --log <file>` stores a failed test run as a diagnostics entry (stage `test`, attempt `T<n>`); the Haiku fix and Sonnet retry requests carry the recovery state, e.g. `failed 1; last test T1: <category> <fingerprint> <progress> (repeat 1)`.
+- `scripts/trace.mjs <runDir>`: reads `spec.md`, writes `manifest.trace`, prints `{ok, total, mapped, unmapped}` (unmapped is a count). Reports only; never changes the status.
+- `scripts/context_bundle.mjs <runDir> [--stage s] [--task t]`: writes or reuses `evidence/context-bundle.json`, prints `{reused, bytes, invalidated, reason?, file}`.
 - `scripts/find_transcript.mjs <runId> --write <runDir>`: finds the session transcript and stores it as `manifest.transcript` (stage 01).
 - `scripts/phase.mjs <runDir> start <phase> | end`: opens and closes phase windows (`01-intake` .. `07-present`) with the real clock. Never type a timestamp.
 - `scripts/save_opus.mjs plan|review <runDir> <textFile> [--attempt N --approved-by "<words>"]`: saves a plan or review hand-back, checks it, and records the `opusCalls` entry (stages 02 and 05). The name is historical: the review it saves comes from the Sonnet reviewers.
