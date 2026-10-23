@@ -13,3 +13,8 @@ The phase window `06-fix` was opened at the end of step 05.
 7. **Open the next window:** `node "<skill-dir>/scripts/phase.mjs" <runDir> start 07-present`. Go to step 07.
 
 Nothing is committed or pushed.
+
+## v3 additions
+
+- The Haiku fix request carries the recovery state from `manifest.diagnostics` (see step 04).
+- After the fix, save the new diff, then build the re-review bundle with `context_bundle.mjs <runDir> --stage review`. A changed diff rebuilds the bundle; `invalidated` in its output names what changed. The Sonnet re-review uses that bundle.

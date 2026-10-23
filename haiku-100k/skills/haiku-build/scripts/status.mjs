@@ -8,11 +8,15 @@
 // Usage: node status.mjs <runDir> next              prints the next ladder attempt (exit 1 when refused)
 //        node status.mjs <runDir> record pass|fail  records the next ladder attempt in manifest.attempts
 //                                                   (exit 1 when that record uses up the ladder: a failed T3)
+//        node status.mjs <runDir> record fail --log <file>
+//                                                   also records the failure fingerprint in manifest.diagnostics
+//                                                   (ignored on pass or when the log file is missing)
 //        node status.mjs <runDir> final             writes manifest.finalStatus (exit 1 when blocked)
 //   Prints one JSON line.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { recordFailure } from './diagnostics.mjs';
 
 /** Files every finished run must have, relative to the run folder. A missing one is a failure. */
 export const REQUIRED_ARTIFACTS = [
@@ -67,7 +71,10 @@ export function finalStatus({ missing = [], tests = {}, attempts = [], findings 
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const [runDir, cmd, result] = process.argv.slice(2);
+  const rawArgs = process.argv.slice(2);
+  const logAt = rawArgs.indexOf('--log');
+  const logFile = logAt === -1 ? null : rawArgs[logAt + 1];
+  const [runDir, cmd, result] = logAt === -1 ? rawArgs : [...rawArgs.slice(0, logAt), ...rawArgs.slice(logAt + 2)];
   if (!runDir || !['next', 'record', 'final'].includes(cmd) || (cmd === 'record' && !['pass', 'fail'].includes(result))) {
     console.log('usage: node status.mjs <runDir> next | record pass|fail | final');
     process.exit(2);
@@ -85,6 +92,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const n = nextAttempt(attempts);
   if (cmd === 'record' && n.next) {
     m.attempts = [...attempts, { ...n.next, ok: result === 'pass', at: new Date().toISOString() }];
+    if (result === 'fail' && logFile && fs.existsSync(logFile)) {
+      recordFailure(m, { stage: 'test', attempt: n.next.attempt, log: fs.readFileSync(logFile, 'utf8') });
+    }
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));
     const after = nextAttempt(m.attempts);
     console.log(JSON.stringify({ recorded: n.next.attempt, ok: result === 'pass', next: after }));

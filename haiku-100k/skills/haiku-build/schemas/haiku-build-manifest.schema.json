@@ -167,6 +167,100 @@
         }
       }
     },
+    "trace": {
+      "type": "object",
+      "description": "optional, written by scripts/trace.mjs: AC-to-target traceability; an unmapped AC is never evidence; never changes status",
+      "properties": {
+        "acs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "text", "status"],
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" },
+              "target": { "type": ["string", "null"] },
+              "verify": { "type": ["string", "null"] },
+              "status": { "enum": ["mapped", "unmapped"] },
+              "missing": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "mapped": { "type": "integer" },
+        "unmapped": { "type": "array", "items": { "type": "string" } },
+        "ok": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "description": "optional, appended by scripts/diagnostics.mjs and status.mjs record fail --log: one entry per recorded failure; never changes status",
+      "items": {
+        "type": "object",
+        "required": ["stage", "attempt", "fingerprint", "category", "progress", "repeatCount", "at"],
+        "properties": {
+          "stage": { "type": "string" },
+          "attempt": { "type": "string" },
+          "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{12}$" },
+          "category": { "enum": ["missing-module", "syntax", "timeout", "assertion", "test-failure", "plan-rejected", "review-rejected", "unknown"] },
+          "passed": { "type": ["integer", "null"] },
+          "failed": { "type": ["integer", "null"] },
+          "progress": { "enum": ["first", "repeated", "improved", "worse", "changed"] },
+          "repeatCount": { "type": "integer", "minimum": 1 },
+          "at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "optional, computed by build_report.mjs runMetrics: phase times, test counts, trace counts, repeated failures, attempt counts; a missing measure is null or omitted, never fabricated",
+      "properties": {
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["phase", "ms"],
+            "properties": {
+              "phase": { "type": "string" },
+              "ms": { "type": ["number", "null"] }
+            }
+          }
+        },
+        "tests": {
+          "type": ["object", "null"],
+          "properties": {
+            "passed": { "type": ["integer", "null"] },
+            "failed": { "type": ["integer", "null"] }
+          }
+        },
+        "trace": {
+          "type": ["object", "null"],
+          "properties": {
+            "mapped": { "type": "integer" },
+            "unmapped": { "type": "integer" }
+          }
+        },
+        "repeatedFailures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["fingerprint", "category", "count"],
+            "properties": {
+              "fingerprint": { "type": "string" },
+              "category": { "type": "string" },
+              "count": { "type": "integer", "minimum": 2 }
+            }
+          }
+        },
+        "attempts": {
+          "type": "object",
+          "properties": {
+            "total": { "type": "integer" },
+            "failed": { "type": "integer" }
+          }
+        }
+      }
+    },
     "haiku": {
       "type": "object",
       "description": "computed by build_report.mjs from the transcript, never typed by hand",

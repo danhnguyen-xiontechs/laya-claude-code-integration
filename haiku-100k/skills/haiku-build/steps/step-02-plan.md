@@ -33,3 +33,9 @@ Goal: get one spec from Opus and save it as `spec.md`.
 7. **Show the user a short summary**: the goal and the acceptance criteria, five lines at most, and any answers recorded. Do not wait for approval. Open the next window with `node "<skill-dir>/scripts/phase.mjs" <runDir> start 03-implement` and continue to step 03.
 
 Do not edit the spec's content yourself. If it is wrong, the user chooses a retry or the report records it.
+
+## v3 additions
+
+- Before the plan call, build the context bundle: `node "<skill-dir>/scripts/context_bundle.mjs" <runDir> --stage plan --task "<task>"`. Paste its bundle, not the raw sources, into the plan prompt; it is at most 12000 bytes and is reused while its sources are unchanged.
+- After `save_opus.mjs plan` saves a spec, run `node "<skill-dir>/scripts/trace.mjs" <runDir>`. Each AC must name an implementation target (a backticked source path) and a verification ("Checked by"). An unmapped AC is listed in `manifest.trace`; fix the spec's AC line and re-run trace before implement.
+- A plan hand-back that fails its check is recorded in `manifest.diagnostics` (stage `plan`), not only in `opusCalls`.

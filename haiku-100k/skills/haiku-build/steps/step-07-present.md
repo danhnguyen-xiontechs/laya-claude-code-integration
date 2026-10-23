@@ -24,3 +24,8 @@ Goal: compute the final status from the run folder, build the report from measur
    - a link to `report.html`.
 
 Nothing is committed or pushed. If the user wants a commit, they ask for it.
+
+## v3 additions
+
+- The report shows `manifest.diagnostics` (every failed test run and hand-back, with its category and attempt) and `manifest.trace` (each AC mapped or unmapped, with its target and verification).
+- `evidence/context-bundle.json` is evidence of what the reviewers were shown; it is listed with the other evidence files and is not hand-edited.

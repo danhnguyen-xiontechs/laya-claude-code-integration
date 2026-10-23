@@ -39,3 +39,9 @@ The phase window `05-review` was opened at the end of step 04.
    Use the printed `choice` as the severity. The script keeps the current severity when JEV is off, errors, times out (3000 ms), answers below confidence 0.8, has used its 3 calls, or would lower it: triage advice can only keep or raise a severity. JEV never rejects a finding, passes an acceptance criterion or sets a status.
 7. **Set the next step.** Findings to fix: `decision: "fix_and_report"`. No findings, or all rejected or open: `decision: "re_verify_only"`. The decision follows from the triage; the user is not asked. Save the triage in `manifest.json` `review.findings` (severity, resolution, reason).
 8. **Show the triage** in one table (severity, lens, finding, triage) and one line of counts. Open the next window: `node "<skill-dir>/scripts/phase.mjs" <runDir> start 06-fix`. Go to step 06.
+
+## v3 additions
+
+- Run `writeDiff` (the current `evidence/diff.patch`) before the review, then build the review bundle: `node "<skill-dir>/scripts/context_bundle.mjs" <runDir> --stage review --task "<task>"`. The three lens prompts of one attempt share that one bundle.
+- A review hand-back that fails its check is recorded in `manifest.diagnostics` (stage `review`) as well as in `opusCalls`.
+- Trace: `manifest.trace` shows each AC as mapped or unmapped. An unmapped AC is listed in the report; it is never counted as passing evidence.
