@@ -15,7 +15,7 @@ Goal: compute the final status from the run folder, build the report from measur
    node "<skill-dir>/scripts/build_report.mjs" <runDir>
    ```
 
-   The script measures the run from the transcript, fills the Haiku limit fields and writes `report.html`, with a **Decisions** section for each `planAnswers` entry. Read its one summary line only.
+   The script measures the run from the transcript, fills the Haiku limit fields and writes `report.html`, with a **Decisions** section for each `planAnswers` entry. v3 adds an **Acceptance criteria** section (each AC with target, verify and status; an unmapped AC shows `unmapped`, never `pass`) and a **Run metrics** section (per-stage durations, attempt counts, test outcomes, repeated failures), stored as `manifest.metrics` (`scripts/run_metrics.mjs`). Data the run does not hold is left out and named, never estimated. Read its one summary line only.
 4. **Final message to the user**, in five lines at most:
    - final status and its reason;
    - unit tests passed/failed, and the last ladder rung used;

@@ -32,9 +32,9 @@ An I/O matrix for inputs, outputs and errors that one criterion cannot express.
 Ordered tasks. Each file gives what changes, why, and what must stay true.
 - `src/example.js` — validate input before processing; keep the existing caller contract; reject invalid input with a `TypeError`.
 
-Acceptance criteria are observable behaviour, each checkable by a command or a test. "Tests pass" is not a criterion.
-- AC1: `parseList("a,,b")` returns `["a","b"]`, checked by `test/list.test.mjs` "skips empty items".
-- AC2: ...
+Acceptance criteria are observable behaviour, each checkable by a command or a test. "Tests pass" is not a criterion. Every AC names its implementation `target:` (file or function) and its `verify:` (the command or test that checks it), in this exact form; an AC without either is `unmapped` (warning `ac-unmapped`) and never counts as passing.
+- AC1: `parseList("a,,b")` returns `["a","b"]` — target: `src/list.mjs`; verify: `node --test test/list.test.mjs`
+- AC2: ... — target: `<file or function>`; verify: `<command or test>`
 
 ## 7. Red Checks (required)
 One `red:` line per behaviour change: a test or check that fails before the change and passes after it.

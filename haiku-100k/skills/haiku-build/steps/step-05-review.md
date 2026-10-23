@@ -4,7 +4,13 @@ Goal: an independent review of the diff by three Sonnet reviewers in parallel, o
 
 The phase window `05-review` was opened at the end of step 04.
 
-1. **Build the review pack** (in the main session):
+1. **Build the review pack** (in the main session). First refresh the context bundle (v3); sections whose inputs did not change since the plan are reused:
+
+   ```bash
+   node "<skill-dir>/scripts/context_bundle.mjs" <runDir> 05-review
+   ```
+
+   Paste `evidence/context-bundle.txt` under `BUNDLE:` (ACs with target and verify, code locations, the capped diff, test evidence and failure records). Then add:
    - `SPEC:` the full `spec.md`, all sections.
    - `ANSWERS:` every entry of `planAnswers` in `manifest.json`, as `question → answer (section)`. Leave it empty if there are none.
    - `DIFF:` `evidence/diff.patch` through `capDiff()` in `scripts/build_report.mjs`: 60 KB and 1500 lines, whole files only. List the omitted file names in `OMITTED:`.
@@ -23,7 +29,7 @@ The phase window `05-review` was opened at the end of step 04.
    ```
 
    The script name is historical (from v1); it saves any review hand-back. It keeps the raw text in `evidence/review-raw.json` and checks it: one JSON array (`checkReviewJson`), each item with `severity` (`Major` or `Minor`), `lens`, `finding`, `ref`, and 800 words or fewer in total (`checkOpusOutput`). It appends a save record to `opusCalls` with `step: "04-review"` (also a historical name: it is the review save record, not an Opus call) and the measured `words` and `sha256`; never write that entry by hand. On a pass it writes `evidence/review.json`, sets `review: { "status": "done", "findings": [...] }` with `resolution: "open"` on each finding, and sets `status` to `REVIEWED`. An empty array is a valid result.
-4. **If the save fails**, ask the user in one line: `[R] retry` or `[S] skip`, and say why.
+4. **If the save fails**, record it (`node "<skill-dir>/scripts/failure.mjs" record <runDir> review <n> <file with the printed reason>`), then ask the user in one line: `[R] retry` or `[S] skip`, and say why.
    - `[R]`: call the reviewers again, once, and save with `save_opus.mjs review ... --attempt 2 --approved-by "<the user's words>"`. The script records `retryApprovedBy` and `retryAt`.
    - `[S]`: set `review: { "status": "skipped", "findings": [] }`, `status: "REVIEW_SKIPPED"` and `decision: "not_approved_report"`. The report will say the code was not independently reviewed. `evidence/review.json` is then missing, so the final status is `blocked` (step 07). Skip the triage and step 06; go to step 07.
 5. **Triage each finding against the code.** Read the file itself, not only the diff (the diff does not show unchanged tests or callers).

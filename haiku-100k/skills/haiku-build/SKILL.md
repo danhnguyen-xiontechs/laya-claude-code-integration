@@ -3,9 +3,11 @@ name: haiku-build
 description: Build one change with the bmad-build flow, the main session on Haiku (haiku-100k base). Opus plans the spec (its only call), Haiku implements and runs unit tests on a fixed retry ladder, parallel Sonnet reviewers review the diff and the main session triages the findings, Haiku fixes with at most one Sonnet re-review, and a script sets the final status (done, done_with_findings, blocked). Use when the user wants bmad-build on Haiku.
 ---
 
-# haiku-build (v2)
+# haiku-build (v3)
 
 The bmad-build flow in seven stages, each routed to a model by a script. Opus is used only for the plan. Implement, test and fix run on Haiku; the review runs on parallel Sonnet reviewers. Every run is measured from the session transcript, including a per-request check that no Haiku request went over 100k input tokens.
+
+**v3** adds four helpers that this skill and `haiku-build-auto` share (one contract for both modes): an AC map that traces every acceptance criterion to its target and verify command (`scripts/ac_map.mjs`), a failure record with a normalized fingerprint, category and progress for every failed attempt (`scripts/failure.mjs`), one context bundle reused by the Plan and Review inputs (`scripts/context_bundle.mjs`), and run metrics in the report (`scripts/run_metrics.mjs`). The retry ladder, quality gates, questions and final statuses are unchanged.
 
 ## Requirements
 
@@ -46,6 +48,10 @@ The bmad-build flow in seven stages, each routed to a model by a script. Opus is
   - Plan fails and user picks `[S]`: stop the build, status `PLAN_FAILED`, final status `blocked`, `INCOMPLETE` report. Never assume a spec.
   - Review fails and user picks `[S]`: status `REVIEW_SKIPPED`; `evidence/review.json` is missing, so the final status is `blocked`, and the report says the code was **not independently reviewed**.
 - **100k input rule.** Every Haiku request stays under 100k input tokens (`/haiku-100k:setup` run once per machine). For broad searches, use `haiku-100k:haiku-case`. The limit is checked per request from the transcript (`scripts/usage_by_phase.mjs`). Without transcript data the report says `not_measured`; never claim the limit held without it.
+- **AC traceability (v3).** Every AC in section 6 of the spec names a `target:` (file or function) and a `verify:` (command or test). `save_opus.mjs plan` records the map as `manifest.acMap`; an AC without either is listed in `acMap.unmapped` with the warning `ac-unmapped` (the plan is still saved). The report shows each AC with target, verify and status; an unmapped AC shows `unmapped`, never `pass`.
+- **Failure records (v3).** Every failed test run (`status.mjs record fail`, which also stores `passed` / `failed` on the attempt), and every failed plan or review hand-back (`failure.mjs record`), appends to `manifest.failures`: fingerprint (paths, line numbers, timestamps and durations normalized away), category, and progress vs the previous attempt of that kind (`first`, `none`, `improved`, `regressed`, `changed`). `failure.mjs state` is the text for the existing JEV recovery `--state` and the Sonnet retry; it adds no JEV call.
+- **Context bundle (v3).** `context_bundle.mjs <runDir> <stage>` builds `evidence/context-bundle.json` (ACs, code locations, diff, evidence) before the plan call and before each review or re-review; a section whose inputs did not change is reused. It stays within 64 KB; omitted diff files are named.
+- **Missing data is never invented.** Metrics the run does not hold are left out and listed under `metrics.missing`.
 - **No commit, no push, no PR** unless the user asks.
 - **Quiet output.** One summary line per script. Never paste long logs or diffs into chat; point to the file.
 - **Tests run offline.** The unit test command comes from `spec.md`.
@@ -61,6 +67,7 @@ evidence/diff.patch        # stages 03, 04 and 06
 evidence/unit-tests.log    # stages 04 and 06
 evidence/review.json       # stage 05
 evidence/re-review.json    # stage 06, only when the Sonnet re-review ran
+evidence/context-bundle.json  # stages 02, 05, 06 (context_bundle.mjs); .txt is its prompt text
 evidence/phase-usage.json  # built by build_report.mjs
 report.html                # built by build_report.mjs, never hand-written
 ```
@@ -71,15 +78,19 @@ All scripts print one summary line and are run as `node "<skill-dir>/scripts/<na
 
 - `scripts/preflight.mjs [--settings <file>]`: Node 22+ and haiku-100k setup check; exit 1 with a message when the run cannot start (stage 01).
 - `scripts/routing.mjs <startModel> [--switch yes|no] [--plan-advice opus|sonnet] [--write <runDir>]`: the model and fallback of every stage and the switch question, stored as `manifest.routing` (stage 01).
-- `scripts/status.mjs <runDir> next | record pass|fail | final`: the retry ladder (stages 04, 06) and the final status (stage 07).
+- `scripts/status.mjs <runDir> next | record pass|fail [--log <file>] | final`: the retry ladder (stages 04, 06) and the final status (stage 07); `record` stores the log's pass/fail counts and, on `fail`, a failure record.
+- `scripts/ac_map.mjs <runDir|spec.md>`: the AC map (target and verify per AC) and each AC's status; exit 1 when an AC is unmapped (stages 02, 07).
+- `scripts/failure.mjs record <runDir> <plan|build|test|review> <attempt> <logFile> [--stage <id>] | state <runDir>`: a failure record in `manifest.failures`, and the one-line recovery state (stages 02, 04, 05, 06).
+- `scripts/context_bundle.mjs <runDir> <stage> [--facts <file>]`: builds or refreshes `evidence/context-bundle.json` and `.txt` for the Plan or Review input (stages 02, 05, 06).
+- `scripts/run_metrics.mjs <runDir>`: per-stage durations, attempt counts, test outcomes, repeated failures and AC counts (also stored by `build_report.mjs` as `manifest.metrics`).
 - `scripts/jev_advice.mjs <runDir> <intake|recovery|triage> <baseline> <choices> [--state "<text>"]`: optional JEV advice through `subagent-model-router/scripts/decision-provider.mjs`, logged in `manifest.jev` (stages 01, 04, 05).
 - `scripts/find_transcript.mjs <runId> --write <runDir>`: finds the session transcript and stores it as `manifest.transcript` (stage 01).
 - `scripts/phase.mjs <runDir> start <phase> | end`: opens and closes phase windows (`01-intake` .. `07-present`) with the real clock. Never type a timestamp.
 - `scripts/save_opus.mjs plan|review <runDir> <textFile> [--attempt N --approved-by "<words>"]`: saves a plan or review hand-back, checks it, and records the `opusCalls` entry (stages 02 and 05). The name is historical: the review it saves comes from the Sonnet reviewers.
-- `scripts/build_report.mjs <runDir>`: measures the run, writes `phase-usage.json`, rewrites `manifest.json` measured fields, writes `report.html`.
+- `scripts/build_report.mjs <runDir>`: measures the run, writes `phase-usage.json`, rewrites `manifest.json` measured fields (`metrics` included), writes `report.html` with the Acceptance criteria and Run metrics sections.
 - `scripts/usage_by_phase.mjs <session.jsonl> <manifest.json>`: per-phase usage and the per-request Haiku check.
 - `scripts/report_style.mjs`: the report's CSS.
-- `templates/spec.md`: spec layout: nine sections (Goal & Intent, Boundaries, Assumptions / Blocking Questions, Code Map, Behavior & Edge Cases, Tasks & Acceptance Criteria, Red Checks, Verification, Implementation Notes). Target 500–700 words.
+- `templates/spec.md`: spec layout: nine sections (Goal & Intent, Boundaries, Assumptions / Blocking Questions, Code Map, Behavior & Edge Cases, Tasks & Acceptance Criteria, Red Checks, Verification, Implementation Notes). Target 500–700 words. Each AC line names `target:` and `verify:`.
 
 ## Tests
 

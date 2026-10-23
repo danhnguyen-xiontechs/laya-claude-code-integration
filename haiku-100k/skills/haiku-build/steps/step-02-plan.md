@@ -3,9 +3,16 @@
 Goal: get one spec from Opus and save it as `spec.md`.
 
 1. **Gather repo facts (Haiku).** Use Read, Grep and Glob in the main session. For a broad search, use `haiku-100k:haiku-case` with `model: "haiku"`, `effort: "xhigh"`, and a brief that asks for a short list of facts. Keep REPO FACTS under about 3k tokens: file paths, existing function signatures, the unit test command.
-2. **Build the pack.** Paste into `prompts/plan-opus.md`:
+2. **Build the pack.** Write the repo facts to a file (for example `evidence/repo-facts.txt`) and build the context bundle (v3):
+
+   ```bash
+   node "<skill-dir>/scripts/context_bundle.mjs" <runDir> 02-plan --facts <runDir>/evidence/repo-facts.txt
+   ```
+
+   It writes `evidence/context-bundle.json` and its prompt text `evidence/context-bundle.txt`, and logs the use in `manifest.contextBundle`. Paste into `prompts/plan-opus.md`:
    - `TASK:` the description from step 01.
    - `REPO FACTS:` the list from step 1.
+   - `CONTEXT:` the text of `evidence/context-bundle.txt`.
    - `TEMPLATE:` the contents of `templates/spec.md`.
 3. **Call the plan model.** Agent tool, `model:` the `02-plan` model in `manifest.routing` (`opus` unless the intake advice picked `sonnet`), `effort: "medium"`, `run_in_background: false`, the filled prompt as the whole prompt. Foreground only, so the result arrives in the same turn. Take the returned text as it is. Do not retype, trim or summarise it.
    - **Save the hand-back in the turn it arrives** (step 4, `savePlanSpec`), before any other work. A compaction can drop it from context at any time; once it is on disk, it is safe.
@@ -24,6 +31,8 @@ Goal: get one spec from Opus and save it as `spec.md`.
    ```
 
    It calls `savePlanSpec` from `scripts/build_report.mjs`, which runs the same checks, writes `spec.md` only when they pass, sets `status` to `PLANNED` and appends the call to `opusCalls` with `words`, `ok`, `sha256` and `reason`. Never write `spec.md` by hand. An empty result is a failed call (`reason: "empty output"`), not a skipped one.
+   - **AC map (v3).** On a pass it also records `manifest.acMap` (`scripts/ac_map.mjs`): each AC with its `target` and `verify`. An AC without either is named in `acMap.unmapped` with the warning `ac-unmapped`; the plan is still saved and the run goes on, but that AC is shown as `unmapped` in the report and never counts as passing. Mention any unmapped AC in the summary of item 7.
+   - **Failure record (v3).** When the save fails, record it before asking: write the printed `reason` to a file and run `node "<skill-dir>/scripts/failure.mjs" record <runDir> plan <n> <reasonFile>`.
 5. **If it fails**, ask the user once, in one line: `[R] retry` or `[S] skip`, and say why it failed (not parseable, a required heading missing).
    - `[R]`: call Opus again and save its text with `save_opus.mjs plan ... --attempt 2 --approved-by "<the user's words>"`. The script records `retryApprovedBy` and `retryAt` on that entry, and refuses a retry without `--approved-by`. Only one retry is offered; if it fails again, ask the same question once more.
    - `[S]`: set `planFailed: true`, `planFailure: "<reason>"`, `status: "PLAN_FAILED"`. Do not write `spec.md`. Go to step 07 to write the `INCOMPLETE` report (final status `blocked`). Do not build.
