@@ -6,13 +6,19 @@
 // done_with_findings if a finding is open, else done.
 //
 // Usage: node status.mjs <runDir> next              prints the next ladder attempt (exit 1 when refused)
-//        node status.mjs <runDir> record pass|fail  records the next ladder attempt in manifest.attempts
-//                                                   (exit 1 when that record uses up the ladder: a failed T3)
+//        node status.mjs <runDir> record pass|fail [--log <file>]
+//                                                   records the next ladder attempt in manifest.attempts
+//                                                   (exit 1 when that record uses up the ladder: a failed T3);
+//                                                   v3: the attempt gets `passed` / `failed` parsed from the
+//                                                   log (default evidence/unit-tests.log) when parseable, and
+//                                                   a `fail` appends a failure record (failure.mjs) to
+//                                                   manifest.failures
 //        node status.mjs <runDir> final             writes manifest.finalStatus (exit 1 when blocked)
 //   Prints one JSON line.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { testCounts, recordFailure } from './failure.mjs';
 
 /** Files every finished run must have, relative to the run folder. A missing one is a failure. */
 export const REQUIRED_ARTIFACTS = [
@@ -67,9 +73,12 @@ export function finalStatus({ missing = [], tests = {}, attempts = [], findings 
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const [runDir, cmd, result] = process.argv.slice(2);
+  const args = process.argv.slice(2);
+  const li = args.indexOf('--log');
+  const logArg = li >= 0 ? args.splice(li, 2)[1] : null;
+  const [runDir, cmd, result] = args;
   if (!runDir || !['next', 'record', 'final'].includes(cmd) || (cmd === 'record' && !['pass', 'fail'].includes(result))) {
-    console.log('usage: node status.mjs <runDir> next | record pass|fail | final');
+    console.log('usage: node status.mjs <runDir> next | record pass|fail [--log <file>] | final');
     process.exit(2);
   }
   const mf = path.join(runDir, 'manifest.json');
@@ -84,10 +93,20 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (!m) { console.log(JSON.stringify({ error: `missing required artifact: manifest.json in ${runDir}` })); process.exit(1); }
   const n = nextAttempt(attempts);
   if (cmd === 'record' && n.next) {
-    m.attempts = [...attempts, { ...n.next, ok: result === 'pass', at: new Date().toISOString() }];
+    const logFile = logArg ?? path.join(runDir, 'evidence', 'unit-tests.log');
+    const log = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : '';
+    const counts = testCounts(log);
+    const ok = result === 'pass';
+    m.attempts = [...attempts, {
+      ...n.next, ok,
+      ...(counts.passed != null ? { passed: counts.passed } : {}), ...(counts.failed != null ? { failed: counts.failed } : {}),
+      at: new Date().toISOString(),
+    }];
+    const failure = ok ? null : recordFailure(m, { kind: 'test', stage: '04-test', attempt: n.next.attempt, text: log, ...counts });
     fs.writeFileSync(mf, JSON.stringify(m, null, 2));
     const after = nextAttempt(m.attempts);
-    console.log(JSON.stringify({ recorded: n.next.attempt, ok: result === 'pass', next: after }));
+    const f = failure ? { failure: { fingerprint: failure.fingerprint, category: failure.category, progress: failure.progress, repeatCount: failure.repeatCount } } : {};
+    console.log(JSON.stringify({ recorded: n.next.attempt, ok, next: after, ...f }));
     process.exit(after.refused ? 1 : 0);
   }
   console.log(JSON.stringify(n));

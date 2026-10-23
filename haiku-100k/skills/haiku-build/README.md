@@ -1,6 +1,6 @@
 # haiku-build
 
-A bmad-build style workflow for Claude Code (v2, seven stages) that implements, tests and fixes on **Haiku 5.5**, calls **Opus** only once, to write the spec, and reviews the diff with three parallel **Sonnet** reviewers. Every stage is routed to a model by a script, test runs follow a fixed retry ladder, and a script sets the final status. Every Haiku request is checked against the 100k input-token price step.
+A bmad-build style workflow for Claude Code (v3, seven stages) that implements, tests and fixes on **Haiku 5.5**, calls **Opus** only once, to write the spec, and reviews the diff with three parallel **Sonnet** reviewers. Every stage is routed to a model by a script, test runs follow a fixed retry ladder, and a script sets the final status. Every Haiku request is checked against the 100k input-token price step.
 
 ```text
 01 Intake (main session) -> 02 Plan (Opus) -> 03 Implement (Haiku, 1 Sonnet fallback) -> 04 Test (Haiku)
@@ -13,6 +13,8 @@ A bmad-build style workflow for Claude Code (v2, seven stages) that implements, 
 - **Retry ladder:** T1 (Haiku), T2 (Haiku), one Sonnet retry (the implement fallback), T3 (Haiku). A failure after T3 makes the run `blocked`; no further retry.
 - **Final status:** `blocked` when a required artifact is missing (named) or tests still fail; `done_with_findings` when a finding is open; else `done`.
 - **JEV (optional):** `HAIKU_BUILD_JEV=apply|off` (default `apply`) gives advice at intake, recovery and triage only, at most 3 calls, used only at confidence 0.8 or more within 3000 ms. It never sets a status, passes an acceptance criterion or lowers a severity.
+
+- **v3 (shared with haiku-build-auto):** every AC names a `target:` and a `verify:` and is traced to the report (an AC without them is `unmapped`, never `pass`); every failed attempt gets a failure record with a normalized fingerprint, a category and progress vs the previous attempt, which also feeds the JEV recovery state; the Plan and Review inputs reuse one context bundle (`evidence/context-bundle.json`, at most 64 KB, rebuilt per section only when its inputs change); the report adds per-stage durations, attempt counts, test outcomes and repeated failures. Data a run does not hold is left out and named, never estimated.
 
 Each run writes a folder with `spec.md`, the diff, test logs, the review, `manifest.json` and a `report.html` built from measured data only.
 
@@ -66,7 +68,7 @@ Nothing is committed, pushed or opened as a PR unless you ask.
 
 ## Tested
 
-The live runs below used v1 (five steps), whose review and decision steps v2 replaces. The v2 routing, retry ladder, final status, JEV advice and preflight are covered by unit tests (`tests/story-2268-ac*.test.mjs`) and have not yet been run live.
+The live runs below used v1 (five steps), whose review and decision steps v2 replaces. The v2 routing, retry ladder, final status, JEV advice and preflight are covered by unit tests (`tests/story-2268-ac*.test.mjs`) and have not yet been run live. The v3 AC map, failure records, context bundle and run metrics are covered by unit tests (`tests/story-2272-ac*.test.mjs`) only.
 
 | Check | Result |
 |---|---|
@@ -94,5 +96,5 @@ Not confirmed live: **a review with no findings** (re-verify only). In v1, even 
 | `prompts/review.md` | the Sonnet reviewer prompt (one lens per reviewer, JSON array output) |
 | `templates/spec.md` | the 9-section spec Opus fills in |
 | `schemas/haiku-build-manifest.schema.json` | `manifest.json` layout |
-| `scripts/*.mjs` | preflight, stage routing, retry ladder and final status, JEV advice, transcript lookup, phase windows, hand-back saving, measurement, report |
+| `scripts/*.mjs` | preflight, stage routing, retry ladder and final status, JEV advice, transcript lookup, phase windows, hand-back saving, measurement, report; v3: AC map (`ac_map.mjs`), failure records (`failure.mjs`), context bundle (`context_bundle.mjs`), run metrics (`run_metrics.mjs`) |
 | `tests/*.test.mjs` | unit tests for every script |

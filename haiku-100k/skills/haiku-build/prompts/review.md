@@ -9,9 +9,10 @@ Input (pasted by the main session):
 - DIFF: the diff text, capped at 60 KB / 1500 lines (whole files only). OMITTED lists files left out; say in the output what you could not cover.
 - TESTS: the unit test summary, and the full text of each failing test.
 - CONTEXT: extra snippets the main session chose (max 10 KB).
+- BUNDLE: the context bundle (`evidence/context-bundle.txt`, built by `context_bundle.mjs`, max 64 KB): each AC with its target and verify (an `[unmapped]` AC is a finding), code locations with hunk lines, and the failure records of the run (fingerprint, category, progress). It may replace DIFF and TESTS when the main session pastes it instead.
 
 Check the DIFF against the spec first (every lens):
-- Each acceptance criterion in section 6 is met by the diff, or it is a finding.
+- Each acceptance criterion in section 6 is met by the diff at its `target:` and checked by its `verify:`, or it is a finding.
 - Each row of the I/O matrix in section 5 is handled, or it is a finding.
 - A change to a file outside section 6, or against a constraint in section 2, is a finding (lens: blind-hunter).
 

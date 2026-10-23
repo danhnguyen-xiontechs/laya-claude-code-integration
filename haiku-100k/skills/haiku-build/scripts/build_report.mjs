@@ -3,7 +3,8 @@
 //
 // Usage: node build_report.mjs <runDir>
 //   reads <runDir>/manifest.json (+ manifest.transcript for usage), writes evidence/phase-usage.json,
-//   rewrites manifest.json (status and Haiku 100k fields), writes report.html. Prints one summary line.
+//   rewrites manifest.json (status, Haiku 100k fields and the v3 metrics), writes report.html with the
+//   Acceptance criteria and Run metrics sections. Prints one summary line.
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
@@ -11,6 +12,8 @@ import { fileURLToPath } from 'node:url';
 import { usageByPhase } from './usage_by_phase.mjs';
 import { CSS } from './report_style.mjs';
 import { findTranscript } from './find_transcript.mjs';
+import { acMap, acEvidence } from './ac_map.mjs';
+import { runMetrics } from './run_metrics.mjs';
 
 export const OPUS_WORD_LIMIT = 800;
 // A plan is never rejected for length (as bmad-build-auto does for its spec): 800-1600 words is normal,
@@ -56,6 +59,8 @@ export function checkReviewJson(text) {
  * The text must be the Agent result returned to the main session (a foreground call), never a stand-in.
  * Empty, over-limit or section-less output is recorded as a failed call and spec.md is not written.
  * On success the manifest status becomes PLANNED and the sha256 of the saved text is recorded.
+ * v3: the AC map of the saved spec goes to manifest.acMap; an AC without target or verify adds the warning
+ * `ac-unmapped` (the plan is still saved; the check itself is unchanged).
  */
 export function savePlanSpec(runDir, text, { attempt = 1 } = {}) {
   const mf = path.join(runDir, 'manifest.json');
@@ -81,13 +86,26 @@ export function savePlanSpec(runDir, text, { attempt = 1 } = {}) {
     entry.warnings = [`oversized (${check.words} words)`];
     m.warnings = [...new Set([...(m.warnings ?? []), 'oversized'])];
   }
+  let unmapped = [];
+  if (check.ok) {
+    const map = acMap(body);
+    m.acMap = map;
+    unmapped = map.unmapped;
+    if (unmapped.length) {
+      entry.warnings = [...(entry.warnings ?? []), `ac-unmapped (${unmapped.join(', ')})`];
+      m.warnings = [...new Set([...(m.warnings ?? []), 'ac-unmapped'])];
+    }
+  }
   m.opusCalls = [...(m.opusCalls ?? []), entry];
   if (check.ok) {
     fs.writeFileSync(path.join(runDir, 'spec.md'), body + '\n');
     m.status = 'PLANNED';
   }
   fs.writeFileSync(mf, JSON.stringify(m, null, 2));
-  return { ok: check.ok, reason: check.reason, words: check.words, sha256: entry.sha256, ...(oversized ? { warnings: entry.warnings } : {}) };
+  return {
+    ok: check.ok, reason: check.reason, words: check.words, sha256: entry.sha256,
+    ...(entry.warnings ? { warnings: entry.warnings } : {}), ...(unmapped.length ? { unmapped } : {}),
+  };
 }
 
 /**
@@ -173,6 +191,26 @@ export function renderHtml(m, u) {
     ? `<table><tr><th>Question</th><th>Answer</th><th>Spec section changed</th></tr>${answers.map((a) => `<tr><td>${esc(a.question)}</td><td>${esc(a.answer)}</td><td>${esc(a.section)}</td></tr>`).join('')}</table>`
     : '<p>No blocking questions were asked; the spec was built as written.</p>';
   const h = m.haiku ?? {};
+  const acRows = acEvidence(m.acMap, { tests: m.tests });
+  const acs = m.acMap
+    ? `<table><tr><th>AC</th><th>Behaviour</th><th>Target</th><th>Verify</th><th>Status</th></tr>${acRows.map((r) => `<tr><td>${esc(r.id)}</td><td>${esc(r.text)}</td><td>${esc(r.target ?? 'missing')}</td><td>${esc(r.verify ?? 'missing')}</td><td>${esc(r.status)}</td></tr>`).join('') || '<tr><td colspan="5">No acceptance criteria found in the spec.</td></tr>'}</table>`
+      + (m.acMap.unmapped?.length ? `<p class="warn">Unmapped (no target or verify; never counted as passing): ${esc(m.acMap.unmapped.join(', '))}</p>` : '')
+    : '<p>No AC map recorded (no saved spec).</p>';
+  const met = m.metrics ?? runMetrics(m);
+  const secs = (v) => (v == null ? 'not measured' : `${(v / 1000).toFixed(1)} s`);
+  const stageRows = Object.entries(met.stages ?? {}).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${secs(v)}</td></tr>`).join('');
+  const att = met.attempts ?? {};
+  const runs = (met.tests?.runs ?? []).map((r) => `${esc(r.attempt)} ${r.ok ? 'pass' : 'fail'}${r.failed != null ? ` (${num(r.passed)} passed, ${num(r.failed)} failed)` : ''}`).join(', ');
+  const repeated = (met.repeatedFailures ?? []).map((g) => `<tr><td>${esc(g.fingerprint)}</td><td>${esc(g.kind)}</td><td>${esc(g.category)}</td><td>${num(g.count)}</td><td>${esc(g.attempts.join(', '))}</td></tr>`).join('');
+  const metrics = [
+    stageRows ? `<table><tr><th>Stage</th><th>Duration</th></tr>${stageRows}</table>` : '',
+    met.attempts ? `<p>Attempts: tests ${num(att.tests)}, plan ${num(att.plan)}, review ${num(att.review)}${att.fixRounds != null ? `, fix rounds ${num(att.fixRounds)}` : ''}.</p>` : '',
+    met.tests?.final ? `<p>Final tests: ${num(met.tests.final.passed)} passed, ${num(met.tests.final.failed)} failed.</p>` : '',
+    runs ? `<p>Test runs: ${runs}.</p>` : '',
+    met.failures != null ? `<p>Failures recorded: ${num(met.failures)}.</p>` : '',
+    repeated ? `<p class="warn">Repeated failures (same fingerprint twice or more):</p><table><tr><th>Fingerprint</th><th>Kind</th><th>Category</th><th>Count</th><th>Attempts</th></tr>${repeated}</table>` : '',
+    met.missing?.length ? `<p class="muted">Not available (left out): ${esc(met.missing.join(', '))}.</p>` : '',
+  ].join('');
   return `<!doctype html><html><head><meta charset="utf-8"><title>haiku-build ${esc(m.runId)}</title><style>${CSS()}
 .warn{color:#8a4b00;background:#fff4e0;padding:6px 10px;border-radius:4px}</style></head><body>
 <h1>haiku-build: ${esc(m.runId)}</h1>
@@ -181,8 +219,10 @@ ${notice}
 <p>${esc(m.task)}</p>
 <h2>Verification</h2>
 <p>Unit tests: ${num(m.tests?.passed)} passed, ${num(m.tests?.failed)} failed (${esc(m.tests?.command ?? '')}).</p>
+<h2>Acceptance criteria</h2>${acs}
 <h2>Decisions</h2>${decisions}
 <h2>Review</h2>${review}
+<h2>Run metrics</h2>${metrics}
 <h2>Haiku input limit (100k per request)</h2>
 <table><tr><th>Requests</th><th>Over 100k</th><th>Max input</th><th>Verification</th></tr>
 <tr><td>${num(h.haiku_request_count)}</td><td>${num(h.haiku_requests_over_100k)}</td><td>${num(h.max_haiku_input_tokens)}</td><td>${esc(h.input_limit_verification)}${h.reason ? ` (${esc(h.reason)})` : ''}</td></tr></table>
@@ -193,11 +233,12 @@ ${unassigned}${overlap}
 </body></html>`;
 }
 
-/** Sets the measured fields on the manifest (never typed by hand) and returns it. */
+/** Sets the measured fields on the manifest (never typed by hand), the v3 run metrics included, and returns it. */
 export function measure(m, u) {
   return {
     ...m,
     status: runStatus(m),
+    metrics: runMetrics(m),
     haiku: { ...u.haiku, haiku_request_count: u.haiku.request_count, haiku_requests_over_100k: u.haiku.requests_over_100k },
   };
 }
