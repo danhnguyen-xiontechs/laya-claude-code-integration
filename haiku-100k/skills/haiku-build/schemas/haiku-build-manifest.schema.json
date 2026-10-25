@@ -63,8 +63,96 @@
           "attempt": { "enum": ["T1", "T2", "sonnet-retry", "T3"] },
           "model": { "enum": ["haiku", "sonnet"] },
           "ok": { "type": "boolean" },
+          "passed": { "type": "integer", "description": "v3: passing tests of this run, parsed from the log; absent when not parseable" },
+          "failed": { "type": "integer", "description": "v3: failing tests of this run, parsed from the log; absent when not parseable" },
           "at": { "type": "string", "format": "date-time" }
         }
+      }
+    },
+    "warnings": { "type": "array", "items": { "enum": ["oversized", "ac-unmapped"] }, "description": "plan warnings written by savePlanSpec" },
+    "acMap": {
+      "type": "object",
+      "description": "v3: AC traceability of spec.md, written by savePlanSpec (scripts/ac_map.mjs); an unmapped AC never counts as passing",
+      "required": ["acs", "unmapped", "ok"],
+      "properties": {
+        "acs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "text", "target", "verify", "missing"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^AC\\d+$" },
+              "text": { "type": "string" },
+              "target": { "type": ["string", "null"] },
+              "verify": { "type": ["string", "null"] },
+              "missing": { "type": "array", "items": { "enum": ["target", "verify"] } }
+            }
+          }
+        },
+        "unmapped": { "type": "array", "items": { "type": "string" } },
+        "ok": { "type": "boolean" },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "description": "v3: one record per failed plan, build, test or review attempt (scripts/failure.mjs)",
+      "items": {
+        "type": "object",
+        "required": ["kind", "fingerprint", "category", "progress", "repeatCount"],
+        "properties": {
+          "kind": { "enum": ["plan", "build", "test", "review"] },
+          "stage": { "type": ["string", "null"] },
+          "attempt": { "type": ["string", "null"] },
+          "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+          "category": { "enum": ["timeout", "environment", "syntax", "missing-file", "runtime", "assertion", "handback-empty", "handback-format", "handback-oversize", "unknown"] },
+          "passed": { "type": ["integer", "null"] },
+          "failed": { "type": ["integer", "null"] },
+          "progress": { "enum": ["first", "none", "improved", "regressed", "changed"] },
+          "repeatCount": { "type": "integer", "minimum": 1 },
+          "summary": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "contextBundle": {
+      "type": "object",
+      "description": "v3: uses of evidence/context-bundle.json (scripts/context_bundle.mjs); reused and rebuilt name its sections",
+      "properties": {
+        "file": { "type": "string" },
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "stage": { "type": ["string", "null"] },
+              "reused": { "type": "array", "items": { "enum": ["acs", "codeLocations", "diff", "evidence"] } },
+              "rebuilt": { "type": "array", "items": { "enum": ["acs", "codeLocations", "diff", "evidence"] } },
+              "bytes": { "type": "integer", "maximum": 65536 }
+            }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "v3: run metrics (scripts/run_metrics.mjs), written by build_report.mjs and haiku-build-auto endRun; unavailable measurements are omitted and named in missing",
+      "required": ["missing"],
+      "properties": {
+        "stages": { "type": "object", "additionalProperties": { "type": ["integer", "null"] }, "description": "ms per phase; null for an open or unparsable window" },
+        "attempts": {
+          "type": "object",
+          "properties": {
+            "tests": { "type": "integer" },
+            "plan": { "type": "integer" },
+            "review": { "type": "integer" },
+            "fixRounds": { "type": "integer" }
+          }
+        },
+        "tests": { "type": "object", "properties": { "final": { "type": "object" }, "runs": { "type": "array" } } },
+        "failures": { "type": "integer" },
+        "repeatedFailures": { "type": "array" },
+        "acs": { "type": "object" },
+        "missing": { "type": "array", "items": { "type": "string" } }
       }
     },
     "jev": {

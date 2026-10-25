@@ -7,6 +7,8 @@ description: Unattended haiku-build v2. One invocation takes a change (spec fold
 
 The haiku-build v2 flow (Opus plan, Haiku implement and test, three parallel Sonnet reviewers, Haiku fix), run without a human. The stage mechanics are haiku-build's own step files; every point where haiku-build would ask the user is decided by `scripts/auto.mjs` instead.
 
+**v3 helpers (shared with manual haiku-build, same contract).** `auto.mjs` imports haiku-build's `ac_map.mjs` (through `savePlanSpec`: `manifest.acMap`, warning `ac-unmapped`), `failure.mjs` (a record in `manifest.failures` for every failed plan, review, re-review and test run; the recovery advice `state` is `recoveryState`, and the `sonnet-retry` / `fix-tests` requests carry the last record as `failure`), `context_bundle.mjs` (built before the plan call, each review attempt and each re-review, passed to the subagent as `context`) and `run_metrics.mjs` (`manifest.metrics` and `result.json.metrics` at every end, blocked runs included). No new JEV call, no new question; the ladder, gates and statuses are unchanged.
+
 `<skill-dir>` is this skill's folder and `<hb-dir>` is the sibling `haiku-build` skill folder (`<skill-dir>/../haiku-build`). Scripts are called by full path: `node "<skill-dir>/scripts/auto.mjs" ...`, `node "<hb-dir>/scripts/<name>.mjs" ...`.
 
 ## Unattended rules
@@ -51,14 +53,14 @@ Nothing to work from (no task, no folder+id title, no resumable run) halts `inte
 
 Every end (`finish` or `halt`) writes:
 
-- `<runDir>/result.json`: `status`, `condition` (null unless blocked), `reason`, `exitCode`, `runId`, `specFile`, `commit` (`{ committed, sha, reason }`, null when no commit was attempted), `at`;
+- `<runDir>/result.json`: `status`, `condition` (null unless blocked), `reason`, `exitCode`, `runId`, `specFile`, `commit` (`{ committed, sha, reason }`, null when no commit was attempted), `metrics` (per-stage durations, attempt counts, test outcomes, repeated failures; unavailable ones listed in `metrics.missing`), `at`;
 - `manifest.json` `finalStatus` / `finalReason`, `auto.status` / `auto.condition` and `auto.commit` (`committed`, `sha`, `files`, `message`, `at`);
 - under folder+id dispatch, the story spec `<specFolder>/stories/<id>-<slug>.md`: frontmatter `status` set to the terminal status and the result appended under `## Auto Run Result` (the file is created when missing). More than one file matching `<id>-*.md` halts `ambiguous story file match` and writes to `<id>-ambiguous.md`.
 
 ## Scripts
 
 - `scripts/auto.mjs start | gate plan|review | round | halt <condition> | finish`: the stage gates above; one JSON line each. Its exports (`runAuto`, `autoRouting`, `handBackGate`, `reviewRound`, `autoFinal`, `specFileFor`, `writeResult`, `writeBackSpec`, `halt`, `commitRun`, `gitCommitAll`) drive a whole run with the Agent tool, the test runner and JEV injected.
-- Reused from haiku-build: `status.mjs` (ladder, final status), `routing.mjs`, `preflight.mjs`, `jev_advice.mjs`, `save_opus.mjs`, `phase.mjs`, `build_report.mjs`.
+- Reused from haiku-build: `status.mjs` (ladder, final status), `routing.mjs`, `preflight.mjs`, `jev_advice.mjs`, `save_opus.mjs`, `phase.mjs`, `build_report.mjs`, and the v3 helpers `ac_map.mjs`, `failure.mjs`, `context_bundle.mjs`, `run_metrics.mjs`. In stage-by-stage mode, build the bundle with `node "<hb-dir>/scripts/context_bundle.mjs" <runDir> <stage>` before the plan and review calls (stages 2, 4, 5); `gate` and `round` record failed hand-backs and invalid re-reviews themselves.
 
 ## Tests
 
