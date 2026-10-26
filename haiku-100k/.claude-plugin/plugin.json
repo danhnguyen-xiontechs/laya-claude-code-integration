@@ -1,6 +1,6 @@
 {
   "name": "haiku-100k",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (v2, seven stages: Opus plans, Haiku implements and tests on a retry ladder, Sonnet reviews, a script sets the final status), haiku-build-auto (the same flow unattended: no questions, one terminal status done / done_with_findings / blocked, the change committed on the current branch at the end, never pushed), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and effort-pace (per-step effort for Haiku, Sonnet and Opus: low on routine read steps, TypeSafe Jev picks it on pivot steps of Haiku/Sonnet, Opus is capped at medium and never raised to high; stops Bash calls that would hold a turn for minutes, every model; /effort-pace, EFFORT_PACE=off; /haiku-pace still works).",
   "author": {
     "name": "Danh Nguyen"

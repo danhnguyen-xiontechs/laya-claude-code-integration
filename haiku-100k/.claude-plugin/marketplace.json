@@ -8,7 +8,7 @@
     {
       "name": "haiku-100k",
       "source": "./",
-      "version": "0.13.1",
+      "version": "0.13.2",
       "description": "Keeps every Haiku request under the 100k-token price step (agent, setup command, guard hook), ships the haiku-build workflow skill (v2) and its unattended variant haiku-build-auto, the subagent-model-router skill (off by default), and agent-reliability (retry-loop guard with Opus escalation, observe by default)."
     }
   ]
