@@ -173,8 +173,25 @@ export function parsePace(json: unknown): ChoiceAnswer | { error: string } {
 
 // ---------------------------------------------------------------- long-command guard
 
-/** Commands that take minutes: run them in the background so the turn is not held. */
-export const LONG_COMMANDS = /\bclaude\s+(?:plugin\s+(?:test|eval)\b|-p\b|--print\b)/;
+/**
+ * Commands that take minutes: run them in the background so the turn is not held.
+ * `claude` must be the command word: at the start of a line or after ; & | ( ` $( , behind any of
+ * VAR=x, env, nohup, time, command, exec, npx, `timeout [opts] N`, and maybe a path or .exe/.cmd.
+ * Matched on shellWords(), so `grep 'claude -p'`, `echo "… | claude -p"` and heredoc bodies do not count.
+ */
+export const LONG_COMMANDS = new RegExp(
+  '(?:^|[;&|(`]|\\$\\()\\s*'
+  + '(?:(?:\\w+=\\S*|env|nohup|time|command|exec|npx|timeout(?:\\s+-[a-zA-Z-]+(?:[ =]\\S+)?)*\\s+\\d+[smhd]?)\\s+)*'
+  + '(?:\\S*[\\\\/])?claude(?:\\.exe|\\.cmd)?\\s+(?:plugin\\s+(?:test|eval)\\b|-p\\b|--print\\b)',
+  'm',
+);
+
+/** The command with heredoc bodies dropped and quoted strings emptied, so only shell words are left. */
+export function shellWords(command: string): string {
+  return command
+    .replace(/(<<-?\s*(['"]?)(\w+)\2[^\n]*)\n[\s\S]*?\n[ \t]*\3[ \t]*(?=\n|$)/g, '$1')
+    .replace(/'[^']*'|"(?:\\.|[^"\\])*"/g, "''");
+}
 
 /** `python -` reading a heredoc: hung twice in Git Bash here (321 s in session 830cca7b). */
 export const STDIN_PYTHON = /\bpython3?(?:\.exe)?\s+-(?=\s|$)[^\n]*<</;
@@ -196,7 +213,7 @@ export function guardCommand(command: string, background: boolean): string | nul
   }
   if (STDIN_PYTHON.test(command))
     return '[effort-pace] `python -` fed by a heredoc has hung this shell (Git Bash on Windows, 2026-10-20, twice): write the script to a file in the scratchpad and run `python <file>` (or `node <file>`).';
-  if (!background && LONG_COMMANDS.test(command))
+  if (!background && LONG_COMMANDS.test(shellWords(command)))
     return '[effort-pace] this command runs a whole Claude session and takes minutes: rerun it with run_in_background: true (output to a file) and keep working; you are notified when it ends.';
   return null;
 }

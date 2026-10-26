@@ -72,6 +72,31 @@ test('guard: GNU timeout in ms is stopped; GNU timeout in seconds, Windows timeo
   expect(guardCommand('npm test', false)).toBe(null)
 })
 
+test('guard: claude -p only counts as the command word, not inside grep patterns, strings or heredocs', () => {
+  const long = (c: string) => guardCommand(c, false)
+  for (const c of [
+    'claude -p "fix it" > out.log',
+    'cd x && claude --print hi',
+    'ls; claude plugin eval ./p',
+    'git status | claude -p summarise',
+    'FOO=1 timeout 600 claude -p hi',
+    'env A=b nohup npx claude -p hi',
+    '/c/tools/claude.exe -p hi',
+    'out=$(claude -p hi)',
+    "cat <<'EOF' > a.md\nnotes about claude -p\nEOF\nclaude -p hi",
+  ]) expect(long(c)).toContain('run_in_background')
+  for (const c of [
+    "P='CLAUDE_CONFIG_DIR|claude -p\\b|--bare'; grep -rlE \"$P\" .",
+    'grep -n "claude -p" README.md',
+    "rg 'claude plugin test' docs",
+    'echo "run: x | claude -p"',
+    'git commit -m "guard: claude -p in grep is fine"',
+    "cat <<'EOF' > a.md\nthen run claude -p hi\nEOF",
+    'grep -rn claude-p .',
+    'myclaude -p hi',
+  ]) expect(long(c)).toBe(null)
+})
+
 test('guard state: EFFORT_PACE=off kills everything; /effort-pace off keeps the guard; shadow only logs', () => {
   expect(guardStateOf(undefined, 'apply')).toBe('deny')
   expect(guardStateOf(undefined, 'off')).toBe('deny')
