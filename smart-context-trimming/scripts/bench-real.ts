@@ -4,7 +4,7 @@
 // build/test summary lines. A case passes when none of them is lost. Writes reports/bench-real.json and prints a table.
 import fs from 'node:fs';
 import path from 'node:path';
-import { DEFAULTS, byteLen, decideAndBuild, planTrim, splitLines } from '../hooks/trim-core.ts';
+import { DEFAULTS, byteLen, decideAndBuild, planTrim, splitLines } from '../../haiku-100k/hooks/trim/core.ts';
 
 const dir = process.argv[2];
 if (!dir) { console.error('usage: node scripts/bench-real.ts <dir>'); process.exit(2); }

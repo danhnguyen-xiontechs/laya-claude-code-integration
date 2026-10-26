@@ -9,7 +9,7 @@
 // heads + first frames, fatal lines, summaries, exit status) are always kept,
 // whatever Jev says, so a bad decision can only make the output longer.
 //
-// Only erasable TypeScript: scripts/bench.ts and tests/*.spec.ts import this
+// Only erasable TypeScript: smart-context-trimming/scripts/bench.ts and its tests/*.spec.ts import this
 // file under Node's type stripping, so bench, tests and the mod run one copy.
 
 export type Mode = 'observe' | 'enforce' | 'off';

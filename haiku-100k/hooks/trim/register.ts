@@ -1,6 +1,8 @@
 // smart-context-trimming: compacts long Bash test/build output before Claude reads it.
+// Source of truth since haiku-100k 0.14.0; bench, fixtures and the node spec stay in
+// smart-context-trimming/ and import ./core.ts from here.
 //
-// Phase 0 (Claude Code 2.1.295 types, proven live with `claude -p --plugin-dir`):
+// Phase 0 (Claude Code 2.1.295 types, proven live with a --plugin-dir headless run):
 //   - a successful Bash call answers { ref, result: { stdout, stderr, interrupted, ... }, text };
 //     a hook's own { result: { ...result, stdout } } is validated against Bash's output
 //     schema and is what the model reads.
@@ -12,15 +14,35 @@
 //   - permission denials ({ deny }), interrupted, image, background and core-persisted
 //     results pass through untouched; unmatched commands are never inspected.
 //
-// Modes: observe (default: measure + save raw, change nothing), enforce, off.
-// Session switch: /smart-trim off|observe|enforce|status. Env SMART_TRIM_MODE overrides
-// the setting at session start.
+// Modes: enforce (default in haiku-100k), observe (measure + save raw, change nothing), off.
+// userConfig trimMode / trimMinLines / trimMinBytes / trimJev / trimJevTimeoutMs /
+// trimJevMinConfidence / trimRawTtlHours. Session switch: /smart-trim off|observe|enforce|status
+// (registered in ../register.ts). Env SMART_TRIM_MODE overrides the setting.
 import type { EngineInterface, Register } from 'claude-code'
-import { DEFAULTS, classify, decideAndBuild } from './trim-core.ts'
-import type { Mode, Options } from './trim-core.ts'
+import { DEFAULTS, classify, decideAndBuild } from './core.ts'
+import type { Mode, Options } from './core.ts'
 
 type Metric = Record<string, unknown>
 
+const MODES: readonly Mode[] = ['off', 'observe', 'enforce']
+const isMode = (v: unknown): v is Mode => typeof v === 'string' && (MODES as readonly string[]).includes(v)
+const num = (v: unknown, d: number) => (typeof v === 'number' && Number.isFinite(v) ? v : d)
+
+/** haiku-100k's trim* userConfig → the core's Options (enforce unless the user picked otherwise). */
+export function readTrimOptions(raw: Record<string, unknown> = {}): Options {
+  return {
+    ...DEFAULTS,
+    mode: isMode(raw.trimMode) ? raw.trimMode : 'enforce',
+    minLines: num(raw.trimMinLines, DEFAULTS.minLines),
+    minBytes: num(raw.trimMinBytes, DEFAULTS.minBytes),
+    useJev: typeof raw.trimJev === 'boolean' ? raw.trimJev : DEFAULTS.useJev,
+    maxJevLatencyMs: num(raw.trimJevTimeoutMs, DEFAULTS.maxJevLatencyMs),
+    minJevConfidence: num(raw.trimJevMinConfidence, DEFAULTS.minJevConfidence),
+    rawOutputTtlHours: num(raw.trimRawTtlHours, DEFAULTS.rawOutputTtlHours),
+  }
+}
+
+// Engine-handle helpers sit in this file: the runtime follows $ only into functions declared here.
 let dir: string | null = null
 
 async function baseDir($: EngineInterface): Promise<string | null> {
@@ -30,39 +52,47 @@ async function baseDir($: EngineInterface): Promise<string | null> {
   return dir
 }
 
-export const register: Register = (on, options) => {
-  const opt: Options = { ...DEFAULTS, ...(options as Partial<Options>) }
-  let sessionMode: Mode | null = null
+/** Expired raw logs are emptied (the fs API has no delete). Best effort, once per session. */
+async function sweepRaw($: EngineInterface, ttlHours: number): Promise<void> {
+  try {
+    const d = await baseDir($)
+    if (!d || !(await $.fs.exists(`${d}/raw`))) return
+    const cutoff = Date.now() - ttlHours * 3_600_000
+    for (const f of await $.fs.list(`${d}/raw`)) if (f.kind === 'file' && f.size > 0 && f.mtimeMs < cutoff) await $.fs.write(`${d}/raw/${f.name}`, '')
+  } catch { /* best effort */ }
+}
+
+type Session = { mode: Mode | null; started: boolean }
+
+/** Session work, on the first Bash call or /smart-trim: the env switch, then the raw-log sweep. */
+async function startTrim($: EngineInterface, s: Session, ttlHours: number): Promise<void> {
+  if (s.started) return
+  s.started = true
+  const env = (await $.env.get('SMART_TRIM_MODE').catch(() => undefined))?.trim().toLowerCase()
+  if (s.mode === null && isMode(env)) s.mode = env
+  await sweepRaw($, ttlHours)
+}
+
+export function registerTrim(on: Parameters<Register>[0], options: Parameters<Register>[1]): void {
+  const opt = readTrimOptions(options as Record<string, unknown>)
+  const s: Session = { mode: null, started: false }
   const metrics: Metric[] = []
   const stamp = new Date().toISOString().replace(/[:.]/g, '-')
 
-  on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'smart-trim', description: 'Smart context trimming: off | observe | enforce | status' })
-    const env = (await $.env.get('SMART_TRIM_MODE'))?.trim().toLowerCase()
-    if (env === 'off' || env === 'observe' || env === 'enforce') sessionMode = env
-    // TTL: expired raw logs are emptied (the fs API has no delete).
-    try {
-      const d = await baseDir($)
-      if (d && (await $.fs.exists(`${d}/raw`))) {
-        const cutoff = Date.now() - opt.rawOutputTtlHours * 3_600_000
-        for (const f of await $.fs.list(`${d}/raw`)) if (f.kind === 'file' && f.size > 0 && f.mtimeMs < cutoff) await $.fs.write(`${d}/raw/${f.name}`, '')
-      }
-    } catch { /* best effort */ }
-    return next(e)
-  })
-
   on('command.run', { command: 'smart-trim' }, async ($, e) => {
+    await startTrim($, s, opt.rawOutputTtlHours)
     const a = e.args.trim().toLowerCase()
-    if (a === 'off' || a === 'observe' || a === 'enforce') sessionMode = a
-    else if (a === 'on') sessionMode = 'enforce'
-    const mode = sessionMode ?? opt.mode
+    if (isMode(a)) s.mode = a
+    else if (a === 'on') s.mode = 'enforce'
+    const mode = s.mode ?? opt.mode
     const trimmed = metrics.filter((m) => m.action === 'trim')
     const saved = trimmed.reduce((s, m) => s + (Number(m.bytesIn) - Number(m.bytesOut)), 0)
     return { text: `smart-trim: mode ${mode}; ${metrics.length} eligible call(s), ${trimmed.length} trimmable, ${saved} bytes ${mode === 'enforce' ? 'saved' : 'would be saved'}. Raw logs: ${(await baseDir($)) ?? '(none)'}/raw` }
   })
 
   on('tool.call', { tool: 'Bash' }, async ($, e, next) => {
-    const mode = sessionMode ?? opt.mode
+    await startTrim($, s, opt.rawOutputTtlHours)
+    const mode = s.mode ?? opt.mode
     if (mode === 'off' || !classify(e.command)) return next(e)
     const ran = await next(e)
     try {

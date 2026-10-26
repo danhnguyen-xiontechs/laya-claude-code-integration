@@ -6,7 +6,7 @@
   "engines": { "node": ">=22.18" },
   "scripts": {
     "test": "node --test \"tests/*.spec.ts\"",
-    "test:engine": "claude plugin test .",
+    "test:engine": "cd .. && claude plugin test ./haiku-100k",
     "bench": "node scripts/bench.ts"
   }
 }

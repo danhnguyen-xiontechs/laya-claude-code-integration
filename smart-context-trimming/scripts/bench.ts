@@ -3,8 +3,8 @@
 //   node scripts/bench.ts --live     + real TypeSafe Jev calls (OPENROUTER_API_KEY), at most --max-calls (10)
 // Writes reports/bench.json and prints a markdown table.
 import fs from 'node:fs';
-import { DEFAULTS, byteLen, decideAndBuild, planTrim } from '../hooks/trim-core.ts';
-import type { Fetcher } from '../hooks/trim-core.ts';
+import { DEFAULTS, byteLen, decideAndBuild, planTrim } from '../../haiku-100k/hooks/trim/core.ts';
+import type { Fetcher } from '../../haiku-100k/hooks/trim/core.ts';
 import { FIXTURES } from '../tests/fixtures.ts';
 
 const live = process.argv.includes('--live');

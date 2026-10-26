@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DEFAULTS, buildJevRequest, decideAndBuild, parseJevResponse, planTrim, redact, splitLines } from '../hooks/trim-core.ts';
-import type { Fetcher } from '../hooks/trim-core.ts';
+import { DEFAULTS, buildJevRequest, decideAndBuild, parseJevResponse, planTrim, redact, splitLines } from '../../haiku-100k/hooks/trim/core.ts';
+import type { Fetcher } from '../../haiku-100k/hooks/trim/core.ts';
 import { FIXTURES } from './fixtures.ts';
 
 const opt = { ...DEFAULTS, useJev: true };

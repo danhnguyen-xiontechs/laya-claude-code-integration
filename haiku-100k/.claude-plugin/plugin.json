@@ -1,7 +1,7 @@
 {
   "name": "haiku-100k",
-  "version": "0.13.2",
-  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (v2, seven stages: Opus plans, Haiku implements and tests on a retry ladder, Sonnet reviews, a script sets the final status), haiku-build-auto (the same flow unattended: no questions, one terminal status done / done_with_findings / blocked, the change committed on the current branch at the end, never pushed), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and effort-pace (per-step effort for Haiku, Sonnet and Opus: low on routine read steps, TypeSafe Jev picks it on pivot steps of Haiku/Sonnet, Opus is capped at medium and never raised to high; stops Bash calls that would hold a turn for minutes, every model; /effort-pace, EFFORT_PACE=off; /haiku-pace still works).",
+  "version": "0.14.0",
+  "description": "Keeps every Haiku request under the 100k-token price step: a haiku-case agent that compacts at 100k, a /haiku-100k:setup command for main Haiku sessions, a hook that cuts oversized tool results and flags any request over 100k, the haiku-build skill (v2, seven stages: Opus plans, Haiku implements and tests on a retry ladder, Sonnet reviews, a script sets the final status), haiku-build-auto (the same flow unattended: no questions, one terminal status done / done_with_findings / blocked, the change committed on the current branch at the end, never pushed), the subagent-model-router skill (picks haiku / sonnet / opus per subagent; not registered by default), and agent-reliability (stops unproductive test/build retry loops, Opus recovery escalation; observe mode by default, /reliability, AGENT_RELIABILITY=off), and effort-pace (per-step effort for Haiku, Sonnet and Opus: low on routine read steps, TypeSafe Jev picks it on pivot steps of Haiku/Sonnet, Opus is capped at medium and never raised to high; stops Bash calls that would hold a turn for minutes, every model; /effort-pace, EFFORT_PACE=off; /haiku-pace still works), and smart-context-trimming (long Bash test/build output compacted to the lines that matter, raw output kept on disk; enforce by default, /smart-trim, trimMode off turns it off).",
   "author": {
     "name": "Danh Nguyen"
   },
@@ -195,6 +195,53 @@
       "title": "Reliability: Dataset folder",
       "description": "Absolute folder for attempts-YYYY-MM.jsonl. Empty = ~/.claude/agent-reliability/dataset (outside the plugin and the repo).",
       "default": ""
+    },
+    "trimMode": {
+      "type": "string",
+      "title": "Trim: Mode",
+      "description": "smart-context-trimming: long Bash test/build output is compacted to the lines that matter (errors, failed tests, stack heads, summary); the raw output is kept in ~/.claude/smart-context-trimming/raw. enforce: trim. observe: measure only. off: nothing. Env SMART_TRIM_MODE and /smart-trim override it.",
+      "default": "enforce",
+      "options": [
+        "enforce",
+        "observe",
+        "off"
+      ]
+    },
+    "trimMinLines": {
+      "type": "number",
+      "title": "Trim: Min lines",
+      "description": "Outputs shorter than this (and under Min bytes) stay unchanged.",
+      "default": 250
+    },
+    "trimMinBytes": {
+      "type": "number",
+      "title": "Trim: Min bytes",
+      "description": "Outputs smaller than this (and under Min lines) stay unchanged.",
+      "default": 20000
+    },
+    "trimJev": {
+      "type": "boolean",
+      "title": "Trim: Use TypeSafe Jev",
+      "description": "In enforce mode, ask Jev (OPENROUTER_API_KEY) which optional lines to keep (repeated warnings, deep stack frames); a redacted excerpt of at most 12 KB is sent. Off = rules only, no network. Jev can never drop an error line.",
+      "default": true
+    },
+    "trimJevTimeoutMs": {
+      "type": "number",
+      "title": "Trim: Jev timeout (ms)",
+      "description": "Past this, the rule result is used.",
+      "default": 8000
+    },
+    "trimJevMinConfidence": {
+      "type": "number",
+      "title": "Trim: Jev min confidence",
+      "description": "Below this, the rule result is used.",
+      "default": 0.6
+    },
+    "trimRawTtlHours": {
+      "type": "number",
+      "title": "Trim: Raw log TTL (hours)",
+      "description": "Raw logs older than this are emptied at the next session's first Bash call.",
+      "default": 24
     }
   }
 }

@@ -4,6 +4,8 @@ import { registerHooks } from './reliability/register.ts'
 import { RECOVERY_AGENT, RECOVERY_PROMPT } from './reliability/incident.ts'
 // effort-pace: per-step effort for Haiku, Sonnet and Opus (rules + Jev on pivot steps) and the long-command guard.
 import { registerPace } from './pace/register.ts'
+// smart-context-trimming: compacts long Bash test/build output (rules, optional Jev), enforce by default.
+import { registerTrim } from './trim/register.ts'
 
 // Keeps every Haiku model request under the 100k-token price step (input ≤ 100k is the cheap tier).
 // The engine's own auto-compact (window 100000 for Haiku, set in settings and in haiku-case.md) does the
@@ -63,6 +65,7 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'effort-pace', description: 'effort-pace: status | apply | shadow | off | auto (per-step effort for Haiku, Sonnet and Opus)' })
     await $.command.register({ name: 'haiku-pace', description: 'Alias of /effort-pace, kept for one version' })
     await $.command.register({ name: 'retry-guard', description: 'Alias of /reliability (status | reset), kept from retry-loop-breaker' })
+    await $.command.register({ name: 'smart-trim', description: 'Smart context trimming: off | observe | enforce | status' })
     await $.agent.register({
       name: RECOVERY_AGENT, model: 'opus', prompt: RECOVERY_PROMPT,
       description: 'Recovery engineer (Opus) for a verification that keeps failing after two recovery attempts. Only when agent-reliability asks for it.',
@@ -106,4 +109,5 @@ export const register: Register = (on, options) => {
 
   registerPace(on, options) // per-step effort for Haiku (userConfig paceMode / paceJev …)
   registerHooks(on, options) // agent-reliability's other hooks (userConfig mode/ruleA/telemetryDir…)
+  registerTrim(on, options) // smart-context-trimming (userConfig trimMode / trimMinLines / trimJev …)
 }
