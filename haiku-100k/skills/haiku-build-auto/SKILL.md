@@ -19,7 +19,7 @@ The haiku-build v2 flow (Opus plan, Haiku implement and test, three parallel Son
 - **Three terminal statuses only:** `done`, `done_with_findings`, `blocked`. Every run ends in exactly one, written by `auto.mjs` (`finish` or `halt`), never typed by hand.
 - **`blocked` names its condition and exits 1.** On any blocking condition run `node "<skill-dir>/scripts/auto.mjs" halt <runDir> "<condition>"` and stop.
 - **Subagents are mandatory.** If the Agent tool is unavailable or a subagent call fails, halt with `no subagents`. Run every subagent in the foreground (`run_in_background: false`), all calls of one stage in one message.
-- **Commit at the end, never push, no PR** (as bmad-build-auto). A run that ends `done` or `done_with_findings` commits every change of the working tree on the current branch, by `auto.mjs finish` itself. Nothing is committed before the end, and a `blocked` run leaves the tree as it is. A commit error ends the run `blocked` (`commit failed`). No halt after planning; one story per invocation.
+- **Commit at the end, never push, no PR** (as bmad-build-auto). A run that ends `done` or `done_with_findings` commits every change of the working tree on the current branch, by `auto.mjs finish` itself. Nothing is committed before the end, and a `blocked` run leaves the tree as it is. A commit error ends the run `blocked` (`commit failed`). One story per invocation; the only halt after planning is plan-only mode (below).
 - **Quiet output.** One line per script; point to files, never paste logs or diffs.
 
 ## Dispatch
@@ -31,6 +31,12 @@ The haiku-build v2 flow (Opus plan, Haiku implement and test, three parallel Son
 | Resume | an existing run folder | `start` finds `manifest.json` and continues from the first stage without its output (`spec.md`, a passing ladder rung, `review`, `auto.fixRounds`). |
 
 Nothing to work from (no task, no folder+id title, no resumable run) halts `intent gap`.
+
+**Plan at intake (xt-factory `planAtIntake`).** Under folder+id dispatch:
+
+- **Plan-only mode**: the prompt says `Halt after planning.` Run Start and Plan (stages 1-2; put the prompt's planning instructions, such as the Code Map paths and the `## Contracts` section, into `TASK:` of the plan prompt), then `node "<skill-dir>/scripts/auto.mjs" plan-only <runDir>`: it writes the plan as the story spec with status `ready-for-dev` and you stop. No implement, no review, no `finish`, no commit. A planner with blocking questions it cannot settle from the spec halts `intent gap` with them instead (`auto.mjs halt <runDir> "intent gap" --reason "<the questions>"`): at intake a person answers them.
+- **Reuse**: `start` prints `plan: reused` when the story spec was planned and accepted at intake (status `ready-for-dev`): the plan is already `spec.md`, so skip stage 2 and go to Implement.
+- **Refresh**: `start` prints `plan: refreshed` and `previousPlan` when the story spec is `draft` with a `## Replan note` (the files it planned changed since): run stage 2 on the routed model (Sonnet) with the text of `previousPlan` added to the plan prompt as `PREVIOUS PLAN:`; keep its intent and change only what the note names.
 
 ## Stage order
 

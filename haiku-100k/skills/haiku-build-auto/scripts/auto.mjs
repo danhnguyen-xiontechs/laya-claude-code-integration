@@ -21,11 +21,18 @@
 //          applies a re-review (its findings replace the open list), then: fix (next round) | finish | halt
 //        node auto.mjs halt   <runDir> "<condition>" [--reason "<text>"]
 //          ends the run blocked with that condition (exit 1)
+//        node auto.mjs plan-only <runDir>
+//          xt-factory plan-at-intake: after the plan passed its gate, writes it as the story spec
+//          (status ready-for-dev) and stops; nothing is built, nothing committed
 //        node auto.mjs finish <runDir> [--no-commit]
 //          final status through status.mjs finalStatus (exit 1 when blocked); a run that ends done or
 //          done_with_findings commits the working tree of the current directory on its branch, as
 //          bmad-build-auto does (never pushed, no PR); --no-commit leaves the tree as it is
 //   Every command prints one JSON line. Exit 1 means the run is blocked; exit 2 is a usage error.
+//   Plan at intake (xt-factory): under folder+id dispatch a new run adopts a story spec planned at
+//   intake: status ready-for-dev = the plan is saved as attempt 1 without a plan call ("plan: reused");
+//   status draft with a "## Replan note" = the plan stage runs on Sonnet with the previous plan
+//   ("plan: refreshed", evidence/previous-plan.md).
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -35,7 +42,7 @@ import { routeStages } from '../../haiku-build/scripts/routing.mjs';
 import { preflight as haikuPreflight } from '../../haiku-build/scripts/preflight.mjs';
 import { advise, jevMode } from '../../haiku-build/scripts/jev_advice.mjs';
 import { saveOpus } from '../../haiku-build/scripts/save_opus.mjs';
-import { checkReviewJson } from '../../haiku-build/scripts/build_report.mjs';
+import { checkReviewJson, checkSpecSections } from '../../haiku-build/scripts/build_report.mjs';
 import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
 import { recordFailure, recoveryState } from '../../haiku-build/scripts/failure.mjs';
 import { useBundle } from '../../haiku-build/scripts/context_bundle.mjs';
@@ -177,6 +184,77 @@ export function specFileFor(specFolder, storyId, title = null) {
   if (matches.length > 1) return { file: path.join(dir, own), ambiguous: true, matches };
   if (matches.length === 1) return { file: path.join(dir, matches[0]), ambiguous: false, matches };
   return { file: path.join(dir, `${storyId}-${slugify(title) || 'unresolved'}.md`), ambiguous: false, matches };
+}
+
+/** Story spec status a plan made at intake carries (xt-factory plan-at-intake, as bmad-build-auto's). */
+export const PLANNED_STATUS = 'ready-for-dev';
+
+/**
+ * A story spec planned at intake for a folder+id dispatch: { kind: 'reuse', file, spec } when its
+ * status is ready-for-dev, { kind: 'refresh', file, spec, text } when it is draft with a
+ * "## Replan note", else null (no file, another format, or a story spec of an earlier run).
+ * `spec` is the plan without frontmatter, Replan note and Auto Run Result; it must pass savePlanSpec.
+ */
+export function storyPlan(dispatch) {
+  if (!dispatch) return null;
+  const { file, ambiguous } = specFileFor(dispatch.specFolder, dispatch.storyId, dispatch.title);
+  if (ambiguous || !fs.existsSync(file)) return null;
+  const raw = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+  const fm = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
+  const status = fm ? /^status:\s*['"]?([\w-]+)/m.exec(fm[1])?.[1] ?? null : null;
+  const body = raw.slice(fm ? fm[0].length : 0);
+  const spec = body.split(/^## (?:Auto Run Result|Replan note)[ \t]*$/m)[0].trim();
+  if (!checkSpecSections(spec).ok) return null;
+  if (status === PLANNED_STATUS) return { kind: 'reuse', file, spec };
+  if (status === 'draft' && /^## Replan note[ \t]*$/m.test(body)) return { kind: 'refresh', file, spec, text: body.trim() };
+  return null;
+}
+
+/**
+ * A new run takes over a plan made at intake (storyPlan): reuse saves it as the plan hand-back
+ * (attempt 1, `opusCalls[].source: "intake"`), refresh keeps it as evidence/previous-plan.md and
+ * routes the plan stage to Sonnet. Sets manifest.auto.plan. Returns the kind, or null.
+ */
+export function adoptPlan(runDir, plan, now = new Date()) {
+  if (!plan) return null;
+  if (plan.kind === 'reuse') {
+    const file = path.join(runDir, 'evidence', 'plan-intake.md');
+    fs.writeFileSync(file, plan.spec);
+    const saved = saveOpus('plan', runDir, file, { attempt: 1, now });
+    if (!saved.ok) return null; // not a valid plan after all: the plan stage runs as usual
+    const m = readManifest(runDir);
+    Object.assign(m.opusCalls.at(-1), { source: 'intake', from: plan.file });
+    m.auto = { ...(m.auto ?? {}), plan: 'reused' };
+    writeManifest(runDir, m);
+    return 'reused';
+  }
+  const m = readManifest(runDir);
+  const prev = path.join(runDir, 'evidence', 'previous-plan.md');
+  fs.writeFileSync(prev, plan.text);
+  m.routing = { ...m.routing, stages: (m.routing?.stages ?? []).map((st) => (st.id === '02-plan' ? { ...st, model: 'sonnet' } : st)) };
+  m.auto = { ...(m.auto ?? {}), plan: 'refreshed', previousPlan: prev };
+  writeManifest(runDir, m);
+  return 'refreshed';
+}
+
+/**
+ * Plan at intake: the plan of this run (spec.md, past its gate) becomes the story spec with status
+ * ready-for-dev, the run status PLANNED. No result.json: the build of the story is a later run.
+ * Returns { ok, file } or throws.
+ */
+export function planOnly(runDir, { now = new Date() } = {}) {
+  const m = readManifest(runDir);
+  if (!m) throw new Error(`missing required artifact: manifest.json in ${runDir}`);
+  const d = m.auto?.dispatch;
+  if (!d) throw new Error('plan-only needs a folder+id dispatch (--spec-folder, --story-id, --title)');
+  const spec = path.join(runDir, 'spec.md');
+  if (!fs.existsSync(spec)) throw new Error('no spec.md: the plan has not passed its gate');
+  const { file, ambiguous } = specFileFor(d.specFolder, d.storyId, d.title);
+  if (ambiguous) throw new Error(`${CONDITIONS.ambiguous}: ${file}`);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, `---\nstatus: '${PLANNED_STATUS}'\nformat: haiku-spec\n---\n\n${fs.readFileSync(spec, 'utf8').trim()}\n`);
+  writeManifest(runDir, { ...m, status: 'PLANNED', auto: { ...(m.auto ?? {}), planOnly: { file, at: now.toISOString() } } });
+  return { ok: true, file };
 }
 
 /** Writes <runDir>/result.json. Returns the written object (with exitCode: 1 when blocked, else 0). */
@@ -418,6 +496,7 @@ async function intake({ runDir, task, startModel, dispatch, gitClean, preflight,
   const m = newManifest(runDir, intent, autoRouting(startModel, { planAdvice: advice.choice }), dispatch, now());
   m.jev = { mode: jevMode(env), calls: [{ ...entry, at: now().toISOString() }] };
   writeManifest(runDir, startPhase(m, '01-intake', now()));
+  adoptPlan(runDir, storyPlan(dispatch), now());
   return { manifest: readManifest(runDir), resumed: false };
 }
 
@@ -486,7 +565,7 @@ export async function runAuto({
         const gate0 = handBackGate('plan', attempt - 1);
         if (gate0.action === 'halt') throw new AutoHalt(gate0.condition);
         const context = bundle('02-plan');
-        const text = await call({ stage: '02-plan', model: model('02-plan'), role: 'plan', attempt, context, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'plan-opus.md') });
+        const text = await call({ stage: '02-plan', model: model('02-plan'), role: 'plan', attempt, context, promptFile: path.join(HAIKU_BUILD_DIR, 'prompts', 'plan-opus.md'), ...(m.auto?.previousPlan ? { previousPlan: m.auto.previousPlan } : {}) });
         const file = path.join(runDir, 'evidence', `plan-raw-${attempt}.md`);
         fs.writeFileSync(file, text);
         const saved = saveOpus('plan', runDir, file, { attempt, approvedBy: attempt > 1 ? AUTO_APPROVER : null, now: now() });
@@ -605,7 +684,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const opt = (name) => { const i = args.indexOf(name); return i >= 0 ? args.splice(i, 2)[1] : null; };
   const usage = () => {
     console.log('usage: node auto.mjs start <runDir> [--model m] [--task "<text>"] [--spec-folder d --story-id id --title "<t>"]'
-      + ' | gate plan|review <runDir> <textFile> | round <runDir> [--re-review <file>] | halt <runDir> "<condition>" | finish <runDir> [--no-commit]');
+      + ' | gate plan|review <runDir> <textFile> | round <runDir> [--re-review <file>] | plan-only <runDir> | halt <runDir> "<condition>" | finish <runDir> [--no-commit]');
     process.exit(2);
   };
   const out = (obj, code) => { console.log(JSON.stringify(obj)); process.exit(code); };
@@ -629,6 +708,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       out({
         ok: true, resumed, runId: m.runId, status: m.status, main: m.routing?.main,
         stages: (m.routing?.stages ?? []).map((s) => `${s.id}:${s.model}`).join(' '), switchAnswer: m.routing?.switchAnswer ?? null,
+        plan: m.auto?.plan ?? null, ...(m.auto?.previousPlan ? { previousPlan: m.auto.previousPlan } : {}),
       }, 0);
     } catch (e) {
       if (e instanceof AutoHalt) ended(halt(runDir, e.condition, { reason: e.reason, dispatch }));
@@ -686,6 +766,12 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     writeManifest(runDir, m);
     if (d.action === 'halt') ended(halt(runDir, d.condition));
     out(d, 0);
+  }
+
+  if (cmd === 'plan-only') {
+    const [runDir] = args;
+    if (!runDir) usage();
+    try { out(planOnly(runDir), 0); } catch (e) { out({ ok: false, reason: e.message }, 1); }
   }
 
   if (cmd === 'halt') {
