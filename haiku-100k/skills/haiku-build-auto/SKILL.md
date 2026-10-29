@@ -21,6 +21,7 @@ The haiku-build v2 flow (Opus plan, Haiku implement and test, three parallel Son
 - **Subagents are mandatory.** If the Agent tool is unavailable or a subagent call fails, halt with `no subagents`. Run every subagent in the foreground (`run_in_background: false`), all calls of one stage in one message.
 - **Commit at the end, never push, no PR** (as bmad-build-auto). A run that ends `done` or `done_with_findings` commits every change of the working tree on the current branch, by `auto.mjs finish` itself. Nothing is committed before the end, and a `blocked` run leaves the tree as it is. A commit error ends the run `blocked` (`commit failed`). One story per invocation; the only halt after planning is plan-only mode (below).
 - **Quiet output.** One line per script; point to files, never paste logs or diffs.
+- **Several repositories (xt-factory `XT_FACTORY_REPOS`).** A factory story that spans repos runs you in a story folder holding one worktree per repo; that folder is in none of them (the git repo around it, if any, is not yours: never commit there, never treat its untracked files as the story's). `XT_FACTORY_REPOS` lists the worktrees (separated by `;` on Windows, `:` elsewhere): `start` checks each one is clean, `finish` commits each one that changed (same message), and the review diff covers all of them. Run your own git commands (intent-to-add, `evidence/diff.patch`) in each listed worktree, concatenating the diffs. Never skip `start` or `finish` because of the folder layout: they handle it.
 
 ## Dispatch
 
