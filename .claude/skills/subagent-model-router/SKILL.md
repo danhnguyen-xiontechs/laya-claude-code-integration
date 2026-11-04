@@ -44,6 +44,13 @@ rules (`--provider none`) + the cascade matched always-opus's pass rate at ~20% 
 gate+sc was also 100% but cost ~51%, because it sends most coding tasks to sonnet. Use Jev gate+sc for
 tasks WITHOUT an automatic check, where no cascade can catch a miss.
 
+The `signals` policy (default with a provider since this change, not benchmarked yet): one call; Jev answers
+five narrow yes/no questions with criteria (`read_only`, `fully_specified`, `cross_file`, `open_design`,
+`unknown_cause`) next to the facts the rules found (files named, ACs, a check). `signalTier()` turns them into
+a tier in code. With a check and the cascade the signals may only lower the rule tier; without that safety net
+(and always in the PreToolUse hook) they may only raise it, except to haiku for a read-only task. A noul counts
+only at or above `signalThreshold` (0.6). Before `apply`, re-record `bench/results/route-jev.json` and score `signals+jev`.
+
 **2. As a PreToolUse hook (automatic).** `scripts/hook-pretooluse.mjs` (matcher `Agent`) sets
 `model` when the caller did not set one and the agent definition has no `model` of its own.
 Shadow mode (the default) only logs. The README has the settings snippet; it is not
@@ -69,7 +76,7 @@ does the same for one shell. With mode `off` the hook is a no-op and `route.mjs`
 |---|---|---|
 | mode | `off` / `shadow` (log only) / `apply` | shadow |
 | provider | `none` (rules only) / `jev` / `laya` | none: `jev` sends each subagent prompt to OpenRouter, so turn it on deliberately |
-| policy | `rules` / `jev` / `gate` / `sc` / `gate+sc` / `checked` | checked with a provider in the CLI, gate+sc in the PreToolUse hook (rules when provider none) |
+| policy | `rules` / `jev` / `gate` / `sc` / `gate+sc` / `checked` / `signals` | signals with a provider (the hook with `cascade: false`), rules when provider none |
 | k | self-consistency calls (clamped 1–9) | 3 |
 | maxUsdPerSession | USD cap per session, from the spend ledger; reached → rule tier, no provider call | 2 |
 | maxCallsPerSession | provider calls per session; a batch that would pass it is refused | 60 |
