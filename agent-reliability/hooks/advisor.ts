@@ -250,8 +250,11 @@ export function advisorRequest(inc: Incident, ctx: AdvisorContext) {
 export type Advice = { failureKind: ChoiceAnswer; sameApproach: number; signals: Record<Signal, number>; nextStep: ChoiceAnswer };
 
 /** The SIGNALS → one action, in code (the policy is here, not in a Jev prompt). `NO_ACTION`: the agent is making progress, say nothing. */
-export function decideNext(sig: Record<Signal, number>, t: number, strategiesUsed: number): ChoiceAnswer {
+export function decideNext(sig: Record<Signal, number>, t: number, strategiesUsed: number, h: { headless?: boolean; maxStrategies?: number } = {}): ChoiceAnswer {
   const pick = (choice: string, p: number): ChoiceAnswer => ({ choice, p, probabilities: { ...sig } });
+  // Headless (an xt-factory agent, nobody to answer): asking is the last resort. While recovery budget is
+  // left and the need for the user is not clear-cut, the agent gets a recovery note and tries again.
+  if (sig.needs_user >= t && h.headless && sig.needs_user < USER_ONLY && strategiesUsed < (h.maxStrategies ?? 2)) return pick('RECOVER_BEFORE_ASKING', sig.needs_user);
   if (sig.needs_user >= t) return pick('ASK_USER', sig.needs_user);
   if (sig.outside_agent >= t) return pick('MARK_BLOCKED', sig.outside_agent);
   if (sig.optional_step >= t) return pick('STOP_AND_REPORT', sig.optional_step);
@@ -260,11 +263,14 @@ export function decideNext(sig: Record<Signal, number>, t: number, strategiesUse
   return pick('NO_ACTION', 1 - Math.max(sig.same_cause, sig.needs_user, sig.outside_agent, sig.optional_step));
 }
 
-export function parseAdvice(json: unknown, policy: { threshold: number; strategiesUsed: number } = { threshold: 0.6, strategiesUsed: 0 }): Advice | { error: string } {
+/** At or above this `needs_user`, a headless agent stops and reports at once (credentials, approval, a product decision). */
+export const USER_ONLY = 0.85;
+
+export function parseAdvice(json: unknown, policy: { threshold: number; strategiesUsed: number; headless?: boolean; maxStrategies?: number } = { threshold: 0.6, strategiesUsed: 0 }): Advice | { error: string } {
   const r = parseAnswers(json, SPEC);
   if ('error' in r) return r;
   const signals = Object.fromEntries(SIGNALS.map((s) => [s, r.answers[s] as number])) as Record<Signal, number>;
-  return { failureKind: r.answers.failure_kind as ChoiceAnswer, sameApproach: signals.same_approach, signals, nextStep: decideNext(signals, policy.threshold, policy.strategiesUsed) };
+  return { failureKind: r.answers.failure_kind as ChoiceAnswer, sameApproach: signals.same_approach, signals, nextStep: decideNext(signals, policy.threshold, policy.strategiesUsed, { headless: policy.headless, maxStrategies: policy.maxStrategies }) };
 }
 
 /** Whether the advisor may be asked about this incident now (states with a decision pending: no). */
@@ -288,13 +294,23 @@ export type Decision = {
  * Advice → core action, inside the core's limits: below the confidence floor, past the budget,
  * or a second escalation → 'none'. Never allows anything, never closes an incident.
  */
-export function applyDecision(inc: Incident, a: Advice, p: { minConfidence: number; subagent: boolean; maxStrategies: number }): Decision {
+export function applyDecision(inc: Incident, a: Advice, p: { minConfidence: number; subagent: boolean; maxStrategies: number; headless?: boolean }): Decision {
   const act = a.nextStep.choice as NextAction;
   const pr = a.nextStep.p.toFixed(2);
   const tried = (inc.attempts ?? []).map((x) => x.action.slice(0, 60)).join(' | ');
   const head = `[agent-reliability] Jev: ${act} (p=${pr}, ${a.failureKind.choice})`;
   if ((a.nextStep.choice as string) === 'NO_ACTION') return { action: 'none', note: '', reason: 'no_signal' };
   if (a.nextStep.p < p.minConfidence) return { action: 'none', note: '', reason: `low_confidence ${pr}` };
+  // Headless: recover first (a retry note, a near-identical rerun refused), ask only when that is spent.
+  if ((a.nextStep.choice as string) === 'RECOVER_BEFORE_ASKING') {
+    if (inc.strategies.length >= p.maxStrategies) return { action: 'none', note: '', reason: 'budget_spent' };
+    return {
+      action: 'RETRY_NEW_STRATEGY', reason: 'recover_before_asking',
+      note: `[agent-reliability] Jev: this may need the user (p=${pr}, ${a.failureKind.choice}), but nobody can answer in this unattended run. Recover first: read what the error asks for, look for a local way (a config or env value the repo documents, a test double, a different command), then try a materially different attempt. A near-identical rerun will be refused. Already tried: ${tried}`,
+    };
+  }
+  if (act === 'ASK_USER' && p.headless)
+    return { action: act, state: 'STOPPED', note: `${head}: this unattended run cannot get past it without a person. Stop working on this step now and end with a short report that starts with "needs-user:" and says what is needed, what failed and what was tried. Do not claim it works. Already tried: ${tried}`, reason: 'needs_user_headless' };
   switch (act) {
     case 'RETRY_NEW_STRATEGY':
       if (inc.strategies.length >= p.maxStrategies) return { action: 'none', note: '', reason: 'budget_spent' };

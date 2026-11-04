@@ -115,6 +115,22 @@ test('decideNext: narrow signals → one action, user and outside blockers first
   assert.equal(applyDecision(inc(), { ...advice('x'), nextStep: decideNext(quiet, 0.6, 1) }, P).reason, 'no_signal');
 });
 
+test('headless (xt-factory): recover before asking; ask only when clear-cut or the budget is spent, and then stop with needs-user', () => {
+  const h = { headless: true, maxStrategies: 2 };
+  assert.equal(decideNext({ ...quiet, needs_user: 0.7 }, 0.6, 0, h).choice, 'RECOVER_BEFORE_ASKING');
+  assert.equal(decideNext({ ...quiet, needs_user: 0.9 }, 0.6, 0, h).choice, 'ASK_USER'); // credentials, approval: at once
+  assert.equal(decideNext({ ...quiet, needs_user: 0.7 }, 0.6, 2, h).choice, 'ASK_USER'); // recovery spent
+  assert.equal(decideNext({ ...quiet, needs_user: 0.7 }, 0.6, 0).choice, 'ASK_USER'); // interactive: unchanged
+  const rec = applyDecision(inc(), { ...advice('x'), nextStep: decideNext({ ...quiet, needs_user: 0.7 }, 0.6, 0, h) }, { ...P, headless: true });
+  assert.equal(rec.action, 'RETRY_NEW_STRATEGY');
+  assert.equal(rec.reason, 'recover_before_asking');
+  assert.equal(rec.state, undefined);
+  const ask = applyDecision(inc(), advice('ASK_USER'), { ...P, headless: true });
+  assert.equal(ask.state, 'STOPPED'); // not NEEDS_USER: no prompt will ever come
+  assert.match(ask.note, /needs-user:/);
+  assert.equal(applyDecision(inc(), advice('ASK_USER'), P).state, 'NEEDS_USER');
+});
+
 test('parseAdvice: needs every signal noul; advisorRequest asks them as nouls with true/false criteria', () => {
   const ans = { failure_kind: { choice: 'real_failure', probabilities: { real_failure: 0.9 } }, ...Object.fromEntries(Object.entries(quiet).map(([k, v]) => [k, { noul: v }])) };
   const ok = parseAdvice({ answers: ans });

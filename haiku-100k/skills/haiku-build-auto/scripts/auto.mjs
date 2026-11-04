@@ -47,6 +47,7 @@ import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
 import { recordFailure, recoveryState } from '../../haiku-build/scripts/failure.mjs';
 import { useBundle } from '../../haiku-build/scripts/context_bundle.mjs';
 import { runMetrics } from '../../haiku-build/scripts/run_metrics.mjs';
+import { routeStage } from './task-routing.mjs';
 
 /** The only statuses a run can end in. */
 export const TERMINAL = ['done', 'done_with_findings', 'blocked'];
@@ -773,7 +774,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     }
     const gate = saved.ok ? { action: 'continue' } : handBackGate(kind, handBackFailures(readManifest(runDir), kind));
     if (gate.action === 'halt') ended(halt(runDir, gate.condition, { reason: `${gate.condition}: ${saved.reason}` }));
-    out({ kind, attempt, ok: saved.ok, reason: saved.reason, ...gate, ...(failure ? { failure: { fingerprint: failure.fingerprint, category: failure.category, progress: failure.progress } } : {}) }, 0);
+    // The task router picks the Implement model once the plan is accepted (task-routing.mjs).
+    const routed = saved.ok && kind === 'plan' ? await routeStage(runDir, 'implement').catch(() => null) : null;
+    out({ kind, attempt, ok: saved.ok, reason: saved.reason, ...gate, ...(routed ? { implementModel: routed.tier, routedBy: routed.source } : {}), ...(failure ? { failure: { fingerprint: failure.fingerprint, category: failure.category, progress: failure.progress } } : {}) }, 0);
   }
 
   if (cmd === 'round') {
@@ -800,7 +803,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (d.action === 'fix') m.auto = { ...(m.auto ?? {}), fixRounds: d.round };
     writeManifest(runDir, m);
     if (d.action === 'halt') ended(halt(runDir, d.condition));
-    out(d, 0);
+    // The task router picks the Fix model for the first fix round (one decision per run, cached).
+    const routed = d.action === 'fix' ? await routeStage(runDir, 'fix').catch(() => null) : null;
+    out({ ...d, ...(routed ? { fixModel: routed.tier, routedBy: routed.source } : {}) }, 0);
   }
 
   if (cmd === 'plan-only') {

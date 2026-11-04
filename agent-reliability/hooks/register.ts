@@ -270,14 +270,16 @@ async function advise($: EngineInterface, o: Options, mode: Mode, key: string, a
   };
   const t0 = Date.now();
   const r = await postJev($, advisorRequest(inc, ctx), o);
-  const v = 'error' in r ? r : parseAdvice(r.json, { threshold: o.jevAdvisorMinConfidence, strategiesUsed: inc.strategies.length });
+  // An xt-factory agent (XT_FACTORY_AGENT=1) runs unattended: nobody answers a question (advisor.ts decideNext).
+  const headless = (await $.env.get('XT_FACTORY_AGENT').catch(() => undefined)) === '1';
+  const v = 'error' in r ? r : parseAdvice(r.json, { threshold: o.jevAdvisorMinConfidence, strategiesUsed: inc.strategies.length, headless, maxStrategies: o.maxRecoveryStrategies });
   const jevMs = Date.now() - t0;
   await mutate($, (st) => ({ ...st, stats: { ...st.stats, jevCalls: st.stats.jevCalls + 1, jevErrors: st.stats.jevErrors + ('error' in v ? 1 : 0) } }));
   if ('error' in v) {
     await emit($, o, { ...base, event: 'jev_advice', status: v.error, advisor: adv, incidentId: inc.id, fallback_action: 'v0.2', jevMs });
     return undefined;
   }
-  const d = applyDecision(inc, v, { minConfidence: o.jevAdvisorMinConfidence, subagent: agent !== 'main', maxStrategies: o.maxRecoveryStrategies });
+  const d = applyDecision(inc, v, { minConfidence: o.jevAdvisorMinConfidence, subagent: agent !== 'main', maxStrategies: o.maxRecoveryStrategies, headless });
   const apply = adv === 'apply' && d.action !== 'none';
   const now = await $.clock.now();
   let applied: Incident | undefined;
