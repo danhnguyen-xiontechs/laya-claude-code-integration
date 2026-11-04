@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { classify, emptyState, testSummaryOf, unwrapCommand } from '../hooks/core.ts';
 import { classifyRun } from '../hooks/incident.ts';
 import {
-  type Advice, applyDecision, callKeys, fileKey, liftDenials, matchRefusal, recordRefusal, redact, refusalOf, writeTargetOf,
+  type Advice, advisorRequest, applyDecision, callKeys, decideNext, errorExcerpt, fileKey, parseAdvice, liftDenials, matchRefusal, recordRefusal, redact, refusalOf, writeTargetOf,
 } from '../hooks/advisor.ts';
 import type { Incident } from '../types/index.d.ts';
 
@@ -96,8 +96,44 @@ const inc = (over: Partial<Incident> = {}): Incident => ({
   errorKey: 'err-1', summary: 'ERROR: Before you can run Azure DevOps commands', baseEpoch: 0, baseToken: null, openedAt: 0, updatedAt: 0,
   kind: 'streak', attempts: [{ tool: 'Bash', action: 'az boards work-item show --id 27621', error: 'ERROR: … run the login command', changes: [] }], ...over,
 });
+const quiet = { same_cause: 0.1, same_approach: 0.1, needs_user: 0.1, outside_agent: 0.1, stuck_on_code: 0.1, optional_step: 0.1 };
 const advice = (choice: string, p = 0.9): Advice => ({
-  failureKind: { choice: 'environment_or_external', p: 0.8, probabilities: {} }, sameApproach: 0.7, nextStep: { choice, p, probabilities: { [choice]: p } },
+  failureKind: { choice: 'environment_or_external', p: 0.8, probabilities: {} }, sameApproach: 0.7, signals: quiet, nextStep: { choice, p, probabilities: { [choice]: p } },
+});
+
+test('decideNext: narrow signals → one action, user and outside blockers first, silence when the agent progresses', () => {
+  const d = (over: Partial<typeof quiet>, used = 1) => decideNext({ ...quiet, ...over }, 0.6, used).choice;
+  assert.equal(d({ needs_user: 0.9, outside_agent: 0.9 }), 'ASK_USER');
+  assert.equal(d({ outside_agent: 0.8 }), 'MARK_BLOCKED');
+  assert.equal(d({ optional_step: 0.7 }), 'STOP_AND_REPORT');
+  assert.equal(d({ stuck_on_code: 0.8, same_cause: 0.8 }), 'ESCALATE_MODEL');
+  assert.equal(d({ stuck_on_code: 0.8, same_cause: 0.8, same_approach: 0.8 }, 0), 'RETRY_NEW_STRATEGY'); // no real strategy yet: no escalation
+  assert.equal(d({ same_cause: 0.9, same_approach: 0.9 }), 'RETRY_NEW_STRATEGY');
+  // the 0.3 failure: a new error each time (same_cause low) gets no advice, whatever same_approach says
+  assert.equal(d({ same_cause: 0.2, same_approach: 0.95 }), 'NO_ACTION');
+  assert.equal(d({ same_cause: 0.9, same_approach: 0.3 }), 'NO_ACTION');
+  assert.equal(applyDecision(inc(), { ...advice('x'), nextStep: decideNext(quiet, 0.6, 1) }, P).reason, 'no_signal');
+});
+
+test('parseAdvice: needs every signal noul; advisorRequest asks them as nouls with true/false criteria', () => {
+  const ans = { failure_kind: { choice: 'real_failure', probabilities: { real_failure: 0.9 } }, ...Object.fromEntries(Object.entries(quiet).map(([k, v]) => [k, { noul: v }])) };
+  const ok = parseAdvice({ answers: ans });
+  assert.ok(!('error' in ok) && ok.nextStep.choice === 'NO_ACTION');
+  const { same_cause: _drop, ...missing } = ans;
+  assert.ok('error' in parseAdvice({ answers: missing }));
+  const q = advisorRequest(inc(), { subagent: false, strategiesUsed: 0, maxStrategies: 2, stateChangedSinceLast: false }).questions as Record<string, { type: string; criteria?: Record<string, string> }>;
+  for (const k of Object.keys(quiet)) { assert.equal(q[k]?.type, 'noul'); assert.deepEqual(Object.keys(q[k]?.criteria ?? {}), ['true', 'false']); }
+  assert.equal('next_step' in q, false);
+});
+
+test('advisor state: the error keeps its tail and says whether it repeats the previous fingerprint', () => {
+  const long = `Exit code 1\n${'✔ passing test\n'.repeat(200)}AssertionError: expected 3 to equal 4`;
+  assert.ok(errorExcerpt(long).endsWith('AssertionError: expected 3 to equal 4'));
+  assert.ok(errorExcerpt(long).startsWith('Exit code 1'));
+  const two = inc({ attempts: [{ tool: 'Bash', action: 'npm test', error: 'e', changes: [], errorKey: 'fp1' }, { tool: 'Bash', action: 'npm test', error: 'e', changes: ['Edit a.ts'], errorKey: 'fp1' }] });
+  const st = advisorRequest(two, { subagent: false, strategiesUsed: 1, maxStrategies: 2, stateChangedSinceLast: true }).state as { attempts: { error_identical_to_previous?: boolean }[] };
+  assert.equal(st.attempts[0]?.error_identical_to_previous, undefined);
+  assert.equal(st.attempts[1]?.error_identical_to_previous, true);
 });
 const P = { minConfidence: 0.6, subagent: false, maxStrategies: 2 };
 

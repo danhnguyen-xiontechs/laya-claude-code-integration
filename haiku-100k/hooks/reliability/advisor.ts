@@ -145,20 +145,40 @@ export function streakKey(scope: string, k: CallKeys): string {
 export const FAILURE_KINDS = ['real_failure', 'informational_nonzero', 'harness_refusal', 'user_refusal', 'agent_mistake', 'environment_or_external'] as const;
 export const NEXT_ACTIONS = ['RETRY_NEW_STRATEGY', 'ESCALATE_MODEL', 'ASK_USER', 'MARK_BLOCKED', 'STOP_AND_REPORT'] as const;
 
-const SPEC = { failure_kind: FAILURE_KINDS, same_approach: 'noul', next_step: NEXT_ACTIONS } as const;
+/**
+ * 0.4: Jev answers narrow yes/no judgments; `decideNext` (code) turns them into one action.
+ * The 0.3 single `next_step` choice said RETRY_NEW_STRATEGY on 20 of 23 real incidents, also when
+ * `same_approach` was ≥0.85, and nothing combined the two.
+ */
+export const SIGNALS = ['same_cause', 'same_approach', 'needs_user', 'outside_agent', 'stuck_on_code', 'optional_step'] as const;
+export type Signal = typeof SIGNALS[number];
+
+const SPEC = { failure_kind: FAILURE_KINDS, ...Object.fromEntries(SIGNALS.map((s) => [s, 'noul'])) } as Record<string, readonly string[] | 'noul'>;
+
+/** What the error shows, for Jev: runners print the cause last (assertion, summary), so keep the head and the tail. */
+export function errorExcerpt(text: string, head = 160, tail = 440): string {
+  const t = redact(text);
+  return t.length <= head + tail + 5 ? t : `${t.slice(0, head)} … ${t.slice(-tail)}`;
+}
 
 export type AdvisorContext = { subagent: boolean; strategiesUsed: number; maxStrategies: number; stateChangedSinceLast: boolean; prompt?: string };
 
-/** One request, three independent questions over the same redacted incident. Every free-text field goes through the shared policy here, whether or not it was redacted when stored. */
+/**
+ * One request over the same redacted incident: the failure kind plus the SIGNALS nouls, asked
+ * together. Observed facts (error fingerprint repeated, changes made) go in the state as facts;
+ * Jev judges only what code cannot. Every free-text field goes through the shared redact policy.
+ */
 export function advisorRequest(inc: Incident, ctx: AdvisorContext) {
+  const atts = inc.attempts ?? [];
   return {
     state: {
       agent: ctx.subagent ? 'subagent' : 'main agent',
       ...(ctx.prompt ? { user_request: redact(ctx.prompt, 300) } : {}),
       failing_action: redact(inc.action, 160),
       consecutive_failures: inc.fails,
-      attempts: (inc.attempts ?? []).map((a: Attempt) => ({
-        tool: a.tool, action: redact(a.action, 220), error: redact(a.error, 400), changes_made_before: (a.changes ?? []).map((c) => redact(c, 160)),
+      attempts: atts.map((a: Attempt, i: number) => ({
+        tool: a.tool, action: redact(a.action, 220), error: redact(a.error, 620), changes_made_before: (a.changes ?? []).map((c) => redact(c, 160)),
+        ...(i > 0 && a.errorKey && atts[i - 1]?.errorKey ? { error_identical_to_previous: a.errorKey === atts[i - 1]?.errorKey } : {}),
       })),
       state_changed_since_last_failure: ctx.stateChangedSinceLast,
       recovery_budget: { strategies_used: ctx.strategiesUsed, max: ctx.maxStrategies },
@@ -176,31 +196,76 @@ export function advisorRequest(inc: Incident, ctx: AdvisorContext) {
           environment_or_external: 'Something outside the code: network, rate limit, timeout, missing credentials or login, service down, browser/page not ready, an OS permission.',
         },
       },
+      same_cause: {
+        type: 'noul',
+        instructions: 'Compare the error of the last entry of `attempts` with the error of the entry before it. Do both fail for the same underlying cause?',
+        criteria: {
+          true: 'The same root problem: the same failing test or assertion, the same missing file, symbol, module or command, the same rejected parameter. Different line numbers, timestamps, paths or wording still count as the same cause.',
+          false: 'A different problem: the earlier error is gone and a new one appears (for example the build now passes and a test fails, or a different test or file fails), or the attempts are about different things.',
+        },
+      },
       same_approach: {
         type: 'noul',
-        instructions: 'Across `attempts`, is the agent essentially repeating the same approach (the same command or the same idea with trivial spelling changes) rather than trying a materially different approach each time?',
-      },
-      next_step: {
-        type: 'choice',
-        instructions: 'The agent has failed the consecutive `attempts` listed. Given the errors, the changes made between attempts and `recovery_budget`, what should a supervisor tell the agent to do next?',
+        instructions: 'Across `attempts` and the `changes_made_before` of each, is the agent repeating the same approach rather than trying a materially different one?',
         criteria: {
-          RETRY_NEW_STRATEGY: 'The cause is visible in the errors and the agent can fix it itself: correct the path, quoting, flag, tool choice or code, then try a materially different attempt. Not a repeat of a failed one.',
-          ESCALATE_MODEL: 'A genuine code or design problem that the agent keeps failing to understand after real, different attempts; a stronger model should diagnose the root cause.',
-          ASK_USER: 'Progress needs a human: the user refused something, or credentials, a login, a permission, an approval, a product decision or an environment fix only the user can give.',
-          MARK_BLOCKED: 'An external dependency or condition outside the agent and the user right now (service down, rate limit, missing remote resource, broken upstream) prevents progress; retrying soon will not help.',
-          STOP_AND_REPORT: 'More automatic attempts are not worth it: the failing step is optional, informational or a poll, or the attempts show no new idea; stop and report the step as unresolved with what was tried.',
+          true: 'The same command or the same idea again, with trivial changes: other quoting, flags that do not touch the cause, a rerun after edits unrelated to the error.',
+          false: 'Each attempt tries something materially different aimed at the error: another tool or command, a fix to the code or path the error names, a different hypothesis.',
+        },
+      },
+      needs_user: {
+        type: 'noul',
+        instructions: 'Does getting past this failure need something only the user can give?',
+        criteria: {
+          true: 'An approval or permission, credentials or a login, a decision about the product or the task, or a fix on the machine or account only the user can make.',
+          false: 'The agent can get past it with its own tools and the information it has, or the blocker is an outside service the user cannot fix either.',
+        },
+      },
+      outside_agent: {
+        type: 'noul',
+        instructions: 'Is the failure caused by something outside the code and outside the agent\'s control right now, so that retrying soon will not help?',
+        criteria: {
+          true: 'A service down or unreachable, network or DNS failure, rate limit or quota, a missing remote resource, a broken upstream dependency, a timeout of an outside system.',
+          false: 'The cause is in the code, the command, the path, the local setup the agent can change, or it is not clear from the errors.',
+        },
+      },
+      stuck_on_code: {
+        type: 'noul',
+        instructions: 'Is this a genuine problem in the project code or design (failing tests, compile or type errors, wrong results) that the agent has already attacked with materially different attempts without getting closer?',
+        criteria: {
+          true: 'A real code failure, at least two different attempts at it, and the errors show no progress toward the cause.',
+          false: 'Not a code problem (a mechanical mistake, environment, permission), or the agent has not yet really tried, or the errors show progress.',
+        },
+      },
+      optional_step: {
+        type: 'noul',
+        instructions: 'Is the failing step optional for the task: informational, a probe, a poll, or a check whose failure the task can live with?',
+        criteria: {
+          true: 'A lookup that found nothing, a status poll, an optional lint or cleanup, a probe for whether something exists, a nonzero exit that carries the answer.',
+          false: 'The task needs this step to succeed: its build, tests, a required command or file change.',
         },
       },
     },
   };
 }
 
-export type Advice = { failureKind: ChoiceAnswer; sameApproach: number; nextStep: ChoiceAnswer };
+export type Advice = { failureKind: ChoiceAnswer; sameApproach: number; signals: Record<Signal, number>; nextStep: ChoiceAnswer };
 
-export function parseAdvice(json: unknown): Advice | { error: string } {
+/** The SIGNALS → one action, in code (the policy is here, not in a Jev prompt). `NO_ACTION`: the agent is making progress, say nothing. */
+export function decideNext(sig: Record<Signal, number>, t: number, strategiesUsed: number): ChoiceAnswer {
+  const pick = (choice: string, p: number): ChoiceAnswer => ({ choice, p, probabilities: { ...sig } });
+  if (sig.needs_user >= t) return pick('ASK_USER', sig.needs_user);
+  if (sig.outside_agent >= t) return pick('MARK_BLOCKED', sig.outside_agent);
+  if (sig.optional_step >= t) return pick('STOP_AND_REPORT', sig.optional_step);
+  if (sig.stuck_on_code >= t && sig.same_cause >= t && strategiesUsed >= 1) return pick('ESCALATE_MODEL', Math.min(sig.stuck_on_code, sig.same_cause));
+  if (sig.same_cause >= t && sig.same_approach >= t) return pick('RETRY_NEW_STRATEGY', Math.min(sig.same_cause, sig.same_approach));
+  return pick('NO_ACTION', 1 - Math.max(sig.same_cause, sig.needs_user, sig.outside_agent, sig.optional_step));
+}
+
+export function parseAdvice(json: unknown, policy: { threshold: number; strategiesUsed: number } = { threshold: 0.6, strategiesUsed: 0 }): Advice | { error: string } {
   const r = parseAnswers(json, SPEC);
   if ('error' in r) return r;
-  return { failureKind: r.answers.failure_kind as ChoiceAnswer, sameApproach: r.answers.same_approach as number, nextStep: r.answers.next_step as ChoiceAnswer };
+  const signals = Object.fromEntries(SIGNALS.map((s) => [s, r.answers[s] as number])) as Record<Signal, number>;
+  return { failureKind: r.answers.failure_kind as ChoiceAnswer, sameApproach: signals.same_approach, signals, nextStep: decideNext(signals, policy.threshold, policy.strategiesUsed) };
 }
 
 /** Whether the advisor may be asked about this incident now (states with a decision pending: no). */
@@ -229,11 +294,12 @@ export function applyDecision(inc: Incident, a: Advice, p: { minConfidence: numb
   const pr = a.nextStep.p.toFixed(2);
   const tried = (inc.attempts ?? []).map((x) => x.action.slice(0, 60)).join(' | ');
   const head = `[agent-reliability] Jev: ${act} (p=${pr}, ${a.failureKind.choice})`;
+  if ((a.nextStep.choice as string) === 'NO_ACTION') return { action: 'none', note: '', reason: 'no_signal' };
   if (a.nextStep.p < p.minConfidence) return { action: 'none', note: '', reason: `low_confidence ${pr}` };
   switch (act) {
     case 'RETRY_NEW_STRATEGY':
       if (inc.strategies.length >= p.maxStrategies) return { action: 'none', note: '', reason: 'budget_spent' };
-      return { action: act, note: `${head}: change the approach; a near-identical rerun with nothing changed will be refused. Already tried: ${tried}`, reason: 'retry' };
+      return { action: act, note: `${head}: the last attempts fail for the same cause with the same approach. Change the approach: fix what the error names, or try a materially different command; a near-identical rerun with nothing changed will be refused. Already tried: ${tried}`, reason: 'retry' };
     case 'ESCALATE_MODEL':
       if (inc.jevEscalated) return { action: 'none', note: '', reason: 'already_escalated' };
       if (p.subagent)
@@ -309,6 +375,7 @@ export function datasetRecord(e: DatasetEvent, now: number): Record<string, unkn
     ...(e.advice ? {
       jev_failure_kind: e.advice.failureKind.choice,
       jev_same_approach: Number(e.advice.sameApproach.toFixed(3)),
+      jev_signals: Object.fromEntries(Object.entries(e.advice.signals ?? {}).map(([k, v]) => [k, Number(v.toFixed(3))])),
       jev_decision: e.advice.nextStep.choice,
       p: Number(e.advice.nextStep.p.toFixed(3)),
       jev_probabilities: Object.fromEntries(Object.entries(e.advice.nextStep.probabilities).map(([k, v]) => [k, Number(v.toFixed(3))])),

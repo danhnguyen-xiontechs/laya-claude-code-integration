@@ -28,7 +28,8 @@ export type IncidentState =
   | 'SUPERSEDED';
 
 /** One failed attempt of an incident, redacted, as the Jev advisor sees it. */
-export type Attempt = { tool: string; action: string; error: string; changes: string[] };
+/** `errorKey` (0.4): the error fingerprint of this attempt, so the advisor state can say whether it repeats the previous one. */
+export type Attempt = { tool: string; action: string; error: string; changes: string[]; errorKey?: string };
 
 /** The 5 recovery actions the Jev advisor chooses from. */
 export type NextAction = 'RETRY_NEW_STRATEGY' | 'ESCALATE_MODEL' | 'ASK_USER' | 'MARK_BLOCKED' | 'STOP_AND_REPORT';

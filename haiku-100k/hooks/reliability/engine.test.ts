@@ -267,16 +267,19 @@ test('Rule A lifecycle: ESCALATED only on spawn; no NEEDS_USER while recovery ru
 });
 
 /** Captures telemetry writes (path only) under a fixed session id; reads answer nothing. */
-/** A fake Jev decisions endpoint answering `next_step` with `action` at p 0.9; counts the calls. */
+/** A fake Jev decisions endpoint whose signal nouls make the advisor policy pick `action`; counts the calls. */
 function fakeJev(on: On, action: string) {
   const calls: unknown[] = [];
-  const probs = Object.fromEntries(['RETRY_NEW_STRATEGY', 'ESCALATE_MODEL', 'ASK_USER', 'MARK_BLOCKED', 'STOP_AND_REPORT'].map((a) => [a, a === action ? 0.9 : 0.025]));
+  const hot: Record<string, string[]> = {
+    ASK_USER: ['needs_user'], MARK_BLOCKED: ['outside_agent'], STOP_AND_REPORT: ['optional_step'],
+    ESCALATE_MODEL: ['stuck_on_code', 'same_cause'], RETRY_NEW_STRATEGY: ['same_cause', 'same_approach'],
+  };
   on('http.fetch', (_$, e) => {
     calls.push(JSON.parse(String((e as { init?: { body?: string } }).init?.body ?? '{}')));
     const answers = {
       failure_kind: { choice: 'environment_or_external', probabilities: { environment_or_external: 0.8, real_failure: 0.2 } },
-      same_approach: { noul: 0.7 },
-      next_step: { choice: action, probabilities: probs },
+      ...Object.fromEntries(['same_cause', 'same_approach', 'needs_user', 'outside_agent', 'stuck_on_code', 'optional_step']
+        .map((s) => [s, { noul: (hot[action] ?? []).includes(s) ? 0.9 : 0.1 }])),
     };
     return { value: { status: 200, ok: true, headers: {}, text: JSON.stringify({ answers }) } } as never;
   });

@@ -54,6 +54,53 @@
       "description": "An Edit/Write of at least this many lines makes the next step a pivot (it verifies the change).",
       "default": 30
     },
+    "trimMode": {
+      "type": "string",
+      "title": "Trim: Mode",
+      "description": "smart-context-trimming: long Bash test/build output is compacted to the lines that matter (errors, failed tests, stack heads, summary); the raw output is kept in ~/.claude/smart-context-trimming/raw. enforce: trim. observe: measure only. off: nothing. Env SMART_TRIM_MODE and /smart-trim override it.",
+      "default": "enforce",
+      "options": [
+        "enforce",
+        "observe",
+        "off"
+      ]
+    },
+    "trimMinLines": {
+      "type": "number",
+      "title": "Trim: Min lines",
+      "description": "Outputs shorter than this (and under Min bytes) stay unchanged.",
+      "default": 250
+    },
+    "trimMinBytes": {
+      "type": "number",
+      "title": "Trim: Min bytes",
+      "description": "Outputs smaller than this (and under Min lines) stay unchanged.",
+      "default": 20000
+    },
+    "trimJev": {
+      "type": "boolean",
+      "title": "Trim: Use TypeSafe Jev",
+      "description": "In enforce mode, ask Jev (OPENROUTER_API_KEY) which optional lines to keep (repeated warnings, deep stack frames); a redacted excerpt of at most 12 KB is sent. Off = rules only, no network. Jev can never drop an error line.",
+      "default": true
+    },
+    "trimJevTimeoutMs": {
+      "type": "number",
+      "title": "Trim: Jev timeout (ms)",
+      "description": "Past this, the rule result is used.",
+      "default": 8000
+    },
+    "trimJevMinConfidence": {
+      "type": "number",
+      "title": "Trim: Jev min confidence",
+      "description": "Below this, the rule result is used.",
+      "default": 0.6
+    },
+    "trimRawTtlHours": {
+      "type": "number",
+      "title": "Trim: Raw log TTL (hours)",
+      "description": "Raw logs older than this are emptied at the next session's first Bash call.",
+      "default": 24
+    },
     "mode": {
       "type": "string",
       "title": "Reliability: Mode",
@@ -195,53 +242,6 @@
       "title": "Reliability: Dataset folder",
       "description": "Absolute folder for attempts-YYYY-MM.jsonl. Empty = ~/.claude/agent-reliability/dataset (outside the plugin and the repo).",
       "default": ""
-    },
-    "trimMode": {
-      "type": "string",
-      "title": "Trim: Mode",
-      "description": "smart-context-trimming: long Bash test/build output is compacted to the lines that matter (errors, failed tests, stack heads, summary); the raw output is kept in ~/.claude/smart-context-trimming/raw. enforce: trim. observe: measure only. off: nothing. Env SMART_TRIM_MODE and /smart-trim override it.",
-      "default": "enforce",
-      "options": [
-        "enforce",
-        "observe",
-        "off"
-      ]
-    },
-    "trimMinLines": {
-      "type": "number",
-      "title": "Trim: Min lines",
-      "description": "Outputs shorter than this (and under Min bytes) stay unchanged.",
-      "default": 250
-    },
-    "trimMinBytes": {
-      "type": "number",
-      "title": "Trim: Min bytes",
-      "description": "Outputs smaller than this (and under Min lines) stay unchanged.",
-      "default": 20000
-    },
-    "trimJev": {
-      "type": "boolean",
-      "title": "Trim: Use TypeSafe Jev",
-      "description": "In enforce mode, ask Jev (OPENROUTER_API_KEY) which optional lines to keep (repeated warnings, deep stack frames); a redacted excerpt of at most 12 KB is sent. Off = rules only, no network. Jev can never drop an error line.",
-      "default": true
-    },
-    "trimJevTimeoutMs": {
-      "type": "number",
-      "title": "Trim: Jev timeout (ms)",
-      "description": "Past this, the rule result is used.",
-      "default": 8000
-    },
-    "trimJevMinConfidence": {
-      "type": "number",
-      "title": "Trim: Jev min confidence",
-      "description": "Below this, the rule result is used.",
-      "default": 0.6
-    },
-    "trimRawTtlHours": {
-      "type": "number",
-      "title": "Trim: Raw log TTL (hours)",
-      "description": "Raw logs older than this are emptied at the next session's first Bash call.",
-      "default": 24
     }
   }
 }
