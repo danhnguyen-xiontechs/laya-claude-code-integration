@@ -179,6 +179,13 @@ Whether the decisions help at runtime is what the shadow pilot measures. The dat
 - A resent `touch` that needed approval was refused by Rule C.
 - An interactive user Deny was not produced (headless cannot); engine tests cover that path.
 
+## Run m4 in a real factory run (2026-11-04, measured, one run)
+Real xt-factory run m4 on ADO 2317 (main 0.15.0, organizer on, 13 tasks), with trim enforce + Jev, reliability enforce + apply (headless), router hook apply and `tasks.router` on: wall 67.6 min, $6.09, 7/14 pack tests failed (triage: env).
+- **Trim:** 3 eligible calls, all `below_threshold`, 0 bytes cut (factory tasks are small, outputs 1-4 KB).
+- **Reliability:** 11 incidents opened, none reached a 2nd failure on one key, so no Jev advice and no block (factory retries, triage and send-backs take over first).
+- **Task router:** rules decided 11 of 13 tasks; Jev was asked twice and both times answered "signals unsure -> current"; the only change was T13 haiku -> sonnet.
+- **Conclusion:** no measurable benefit in this run. The time went to a 19.6-min system sleep during ac-check, false scope holds and env test failures. One run only, not an A/B.
+
 ## Test
 
 ```bash

@@ -2,7 +2,8 @@
 // is accepted, `auto.mjs gate plan`) and Fix (`auto.mjs round` with action fix). It may move that stage
 // from haiku to sonnet when the change looks likely to fail on haiku (saving a wasted ladder rung), or keep
 // haiku; it never touches the Opus plan or the Sonnet review. One decision per run + phase, cached in
-// manifest.taskRouting; any error keeps the existing model. HAIKU_BUILD_TASK_ROUTER=off turns it off,
+// manifest.taskRouting; any error keeps the existing model. OFF by default (opt-in): only
+// HAIKU_BUILD_TASK_ROUTER=on turns it on (run m4 showed no measurable benefit); with it on,
 // HAIKU_BUILD_TASK_ROUTER_PROVIDER=none keeps it on the rules only.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,7 +13,7 @@ const FILE_RE = /(?:[\w.-]+[\\/])*[\w.-]+\.(?:m?[jt]sx?|py|cs|java|go|rs|rb|php|
 const CHECK_RE = /\b(dotnet test|npm (run )?test|node --test|pytest|go test|cargo test|jest|vitest|mvn test|gradle\w* test)\b/i;
 export const STAGE_OF = { implement: '03-implement', fix: '06-fix' };
 
-export const routerMode = (env = process.env) => (String(env.HAIKU_BUILD_TASK_ROUTER ?? 'on').trim().toLowerCase() === 'off' ? 'off' : 'on');
+export const routerMode = (env = process.env) => (String(env.HAIKU_BUILD_TASK_ROUTER ?? 'off').trim().toLowerCase() === 'on' ? 'on' : 'off');
 
 const readJson = (f) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
 
