@@ -25,7 +25,7 @@ import {
 } from './incident.ts';
 import {
   type CallKeys, type DatasetEvent, advisorEligible, advisorRequest, applyDecision, callKeys,
-  datasetRecord, holdText, liftDenials, matchRefusal, onNotRefused, parseAdvice, recordRefusal, redact,
+  datasetRecord, errorExcerpt, holdText, liftDenials, matchRefusal, onNotRefused, parseAdvice, recordRefusal, redact,
   refusalOf, refusalText, repeatsFailedAttempt, retryRepeatText, streakKey,
 } from './advisor.ts';
 import { sha256 } from './io.ts';
@@ -271,14 +271,16 @@ async function advise($: EngineInterface, o: Options, mode: Mode, key: string, a
   };
   const t0 = Date.now();
   const r = await postJev($, advisorRequest(inc, ctx), o);
-  const v = 'error' in r ? r : parseAdvice(r.json);
+  // An xt-factory agent (XT_FACTORY_AGENT=1) runs unattended: nobody answers a question (advisor.ts decideNext).
+  const headless = (await $.env.get('XT_FACTORY_AGENT').catch(() => undefined)) === '1';
+  const v = 'error' in r ? r : parseAdvice(r.json, { threshold: o.jevAdvisorMinConfidence, strategiesUsed: inc.strategies.length, headless, maxStrategies: o.maxRecoveryStrategies });
   const jevMs = Date.now() - t0;
   await mutate($, (st) => ({ ...st, stats: { ...st.stats, jevCalls: st.stats.jevCalls + 1, jevErrors: st.stats.jevErrors + ('error' in v ? 1 : 0) } }));
   if ('error' in v) {
     await emit($, o, { ...base, event: 'jev_advice', status: v.error, advisor: adv, incidentId: inc.id, fallback_action: 'v0.2', jevMs });
     return undefined;
   }
-  const d = applyDecision(inc, v, { minConfidence: o.jevAdvisorMinConfidence, subagent: agent !== 'main', maxStrategies: o.maxRecoveryStrategies });
+  const d = applyDecision(inc, v, { minConfidence: o.jevAdvisorMinConfidence, subagent: agent !== 'main', maxStrategies: o.maxRecoveryStrategies, headless });
   const apply = adv === 'apply' && d.action !== 'none';
   const now = await $.clock.now();
   let applied: Incident | undefined;
@@ -479,7 +481,7 @@ export function registerHooks(on: Parameters<Register>[0], options: Parameters<R
       let t: Transition | null = null;
       await mutate($, (s) => {
         t = onFail(s, { key, agent, action: short, errorKey: fp, summary, epoch: s.epoch, token: null, now: at, kind: 'streak',
-          attempt: { tool, action: redact(short, 220), error: redact(text, 400) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
+          attempt: { tool, action: redact(short, 220), error: errorExcerpt(text) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
         return t.s;
       });
       const tr = t as Transition | null;
@@ -598,7 +600,7 @@ export function registerHooks(on: Parameters<Register>[0], options: Parameters<R
         let t: Transition | null = null;
         await mutate($, (s) => {
           t = onFail(s, { key, agent, action, errorKey: fp, summary, epoch: s.epoch, token: null, now: at, kind: 'streak',
-            attempt: { tool, action: redact(k.raw ?? action, 220), error: redact(text, 400) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
+            attempt: { tool, action: redact(k.raw ?? action, 220), error: errorExcerpt(text) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
           return t.s;
         });
         const tr = t as Transition | null;
@@ -665,7 +667,7 @@ export function registerHooks(on: Parameters<Register>[0], options: Parameters<R
           const st0 = prior?.baseToken && after && after !== prior.baseToken ? { ...s, epoch: s.epoch + 1 } : s;
           const st1 = recordAfter(prune(st0, at, o), scope, action, category!, toOutcome(cls, text), at, o);
           tr = onFail(st1, { key, agent, action, errorKey: fp, summary, epoch: st1.epoch, token: after, now: at, kind: 'verify',
-            attempt: { tool, action: redact(k.raw ?? action, 220), error: redact(text, 400) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
+            attempt: { tool, action: redact(k.raw ?? action, 220), error: errorExcerpt(text) } }, { maxRecoveryStrategies: o.maxRecoveryStrategies, ttlMinutes: o.failureRecordTtlMinutes });
           return tr.s;
         });
       } else if (cls === 'PASS') {

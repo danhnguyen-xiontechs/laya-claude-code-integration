@@ -85,3 +85,12 @@ A `haiku-100k:haiku-case` subagent read a 20-chunk file of about 240k tokens in 
 - Keep `apply` off. The next evidence needs advice shown in shadow mode, with outcomes recorded over time, not more offline labels.
 - Fix the `user_denied` rule in `classify()` first.
 - Runtime and offline redaction share one policy (`hooks/reliability/redact.ts`): home and drive paths (drive paths keep only the file name), emails, Azure DevOps organizations, tokens and secrets, and long ids. The offline report also masks the reader's username; the runtime does not mask bare usernames. Azure project names are not masked. The advisor and near-duplicate payloads were checked by a local capture (counts only), prompt on and off.
+
+**Since agent-reliability 0.4 (not measured yet).** The five-way `next_step` choice is gone. Jev now answers six yes/no nouls (`same_cause`, `same_approach`, `needs_user`, `outside_agent`, `stuck_on_code`, `optional_step`), and code turns them into one action, or into no advice while the agent is making progress. The errors sent are head plus tail, with a flag for a repeated fingerprint. The figures above are from the 0.3 questions. Before `apply`, label the incidents and run `node agent-reliability/scripts/eval-advisor.mjs template|live|score`.
+
+## Task router, run m4 (2026-11-04, measured, one run)
+Real xt-factory run m4 on ADO 2317 (main 0.15.0, organizer on, 13 tasks), with trim enforce + Jev, reliability enforce + apply (headless), router hook apply and `tasks.router` on: wall 67.6 min, $6.09, 7/14 pack tests failed (triage: env).
+- **Trim:** 3 eligible calls, all `below_threshold`, 0 bytes cut (factory tasks are small, outputs 1-4 KB).
+- **Reliability:** 11 incidents opened, none reached a 2nd failure on one key, so no Jev advice and no block (factory retries, triage and send-backs take over first).
+- **Task router:** rules decided 11 of 13 tasks; Jev was asked twice and both times answered "signals unsure -> current"; the only change was T13 haiku -> sonnet.
+- **Conclusion:** no measurable benefit in this run. The time went to a 19.6-min system sleep during ac-check, false scope holds and env test failures. One run only, not an A/B.

@@ -56,8 +56,12 @@ const ALLOW: [Category, RegExp][] = [
   ['other_build', /\b(cargo\s+build|go\s+build|mvn\s+(package|compile)|gradle\w*\s+build|make\b)/],
 ];
 
-/** The user already limited the output, or it is output that must stay exact. */
-const EXCLUDE = /\|\s*(head|tail|grep|rg|findstr|Select-String|Select-Object|jq|wc|less|more)\b|>\s*\S|\bgit\s+(diff|show|log)\b|--no-trim\b|SMART_TRIM_SKIP/;
+/**
+ * The user already limited the output, or it is output that must stay exact.
+ * A stdout redirect to a file (`> f`, `>> f`, `1> f`, `*> f`) counts; stream merges and stderr
+ * redirects (`2>&1`, `>&2`, `2>/dev/null`) and `=>` / `->` do not, so `dotnet test 2>&1` is trimmed.
+ */
+const EXCLUDE = /\|\s*(head|tail|grep|rg|findstr|Select-String|Select-Object|jq|wc|less|more)\b|(?<![\d&=\->])(?:1|\*)?>>?(?!&)\s*\S|\bgit\s+(diff|show|log)\b|--no-trim\b|SMART_TRIM_SKIP/;
 
 export function classify(command: string): Category | null {
   if (EXCLUDE.test(command)) return null;
@@ -319,11 +323,14 @@ export function parseJevResponse(raw: string, askCount: number): { ok: true; dec
   return { ok: true, decision: { strategy: best, confidence: Number(p.toFixed(4)), selected } };
 }
 
-/** Applies a validated decision on top of the rule plan. Mandatory ids can never be dropped. */
+/**
+ * Applies a validated decision on top of the rule plan. It only widens the rule keep-set
+ * (mandatory ids and the rule's warning groups are never dropped), so `errors_only` = the rule plan.
+ */
 export function applyJev(plan: Plan, d: JevDecision, minConfidence: number): Plan {
   if (d.confidence < minConfidence) return { ...plan, reason: 'jev_low_confidence' };
   if (d.strategy === 'keep_full_output') return { ...plan, action: 'pass', reason: 'jev_keep_full' };
-  const keep = new Set(plan.candidates.filter((c) => c.mandatory).map((c) => c.id));
+  const keep = new Set(plan.keep);
   for (const i of d.selected) { const c = plan.ask[i]; if (c) keep.add(c.id); }
   if (d.strategy === 'errors_and_stack') for (const c of plan.ask) if (c.kind === 'stack_tail') keep.add(c.id);
   if (d.strategy === 'errors_and_warnings') for (const c of plan.ask) if (c.kind === 'warning') keep.add(c.id);

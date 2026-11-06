@@ -9,7 +9,9 @@
 //   self-consistency  — ask k times with the option order rotated; if the k top labels are all the
 //                       same, take that label; if they disagree, the rule tier is kept and the
 //                       record is flagged `unstable`.
-// Policies (pick with `policy`): rules | jev | gate | sc | gate+sc (default when a provider is set) | checked.
+// Policies (pick with `policy`): rules | jev | gate | sc | gate+sc | checked | signals (default when a provider is set).
+// signals: one call; five criteria-backed nouls set a tier in code (signalTier), which may only lower the
+// rule tier of a task with a check and a cascade, and only raise it otherwise (read-only → haiku aside).
 // checked: a task with an automatic check (tests, acceptance) and no hard verb gets the rule tier with no
 // provider call; any other task gets gate+sc. The orchestrator must run the check and escalate once on
 // failure (route.mjs --cascade). The PreToolUse hook never uses it.
@@ -24,7 +26,7 @@ import { DEFAULT_LEDGER, sessionSpend, addSpend, round } from './spend-ledger.mj
 export const TIERS = ['haiku', 'sonnet', 'opus'];
 export const MODES = ['off', 'shadow', 'apply'];
 export const ROUTER_PROVIDERS = ['none', 'jev', 'laya'];
-export const POLICIES = ['rules', 'jev', 'gate', 'sc', 'gate+sc', 'checked'];
+export const POLICIES = ['rules', 'jev', 'gate', 'sc', 'gate+sc', 'checked', 'signals'];
 export const DEFAULT_LOG = path.join(os.homedir(), '.subagent-model-router', 'log.jsonl');
 
 const rank = (t) => TIERS.indexOf(t);
@@ -40,9 +42,11 @@ export const nextTier = (t) => TIERS[rank(t) + 1] ?? null;
 export const DEFAULTS = {
   mode: 'shadow', provider: 'none', policy: null, k: 3, timeoutMs: 8000, log: DEFAULT_LOG,
   ledger: DEFAULT_LEDGER, maxUsdPerSession: 2, maxCallsPerSession: 60, laya: {}, jev: {},
+  // signals: the noul threshold, and whether a failed check escalates (route.mjs --cascade; the hook: no)
+  signalThreshold: 0.6, cascade: true,
 };
 
-export function loadConfig({ env = process.env, file, overrides = {}, defaultPolicy = 'checked' } = {}) {
+export function loadConfig({ env = process.env, file, overrides = {}, defaultPolicy = 'signals' } = {}) {
   let cfg = {};
   const f = file ?? path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'config.json');
   try { cfg = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { /* optional */ }
@@ -59,12 +63,14 @@ export function loadConfig({ env = process.env, file, overrides = {}, defaultPol
   out.provider = String(out.provider).toLowerCase();
   if (!MODES.includes(out.mode)) throw new Error(`mode must be one of ${MODES.join(', ')} (got "${out.mode}")`);
   if (!ROUTER_PROVIDERS.includes(out.provider)) throw new Error(`provider must be one of ${ROUTER_PROVIDERS.join(', ')} (got "${out.provider}")`);
-  // checked: Jev is asked only for tasks with no automatic check (the cascade covers the checked ones).
-  // defaultPolicy: the CLI uses checked; the PreToolUse hook passes gate+sc (it has no cascade to fall back on)
+  // signals (default with a provider): one call, the nouls set the tier in code; they may lower a checked
+  // task (the cascade covers a miss) and only raise an unchecked one. The PreToolUse hook passes cascade: false.
   out.policy = out.policy ?? (out.provider === 'none' ? 'rules' : defaultPolicy);
   if (!POLICIES.includes(out.policy)) throw new Error(`policy must be one of ${POLICIES.join(', ')} (got "${out.policy}")`);
   if (out.provider === 'none' && out.policy !== 'rules') out.policy = 'rules';
   out.k = Math.max(1, Math.min(9, Math.floor(Number(out.k) || 1)));
+  out.signalThreshold = Math.max(0.5, Math.min(0.95, Number(out.signalThreshold) || 0.6));
+  out.cascade = out.cascade !== false && out.cascade !== 'false';
   out.maxUsdPerSession = Number(out.maxUsdPerSession);
   out.maxCallsPerSession = Math.floor(Number(out.maxCallsPerSession));
   if (!(out.maxUsdPerSession >= 0)) throw new Error(`maxUsdPerSession must be a number >= 0 (got "${out.maxUsdPerSession}")`);
@@ -169,11 +175,63 @@ export const TIER_CRITERIA = {
   sonnet: 'Ordinary, well-specified coding in one area: implementing or fixing a function or a few related files, writing tests for given behaviour, a local refactor. Needs some reasoning but the approach is clear.',
   opus: 'Hard or open-ended work: design or architecture decisions, refactors or migrations across many modules, debugging a failure with an unknown cause, concurrency, security or performance work, or anything where a subtle mistake is costly.',
 };
+/**
+ * Narrow yes/no judgments about the task, each with true/false criteria, asked in the same request as
+ * `tier`. signalTier() and the `signals` policy turn them into a tier in code. The earlier three nouls
+ * had no criteria and sat near 0.4–0.75 whatever the task, so nothing used them.
+ */
 export const NOULS = {
-  multi_file_design: 'Doing this task well needs reasoning across several files or making design decisions.',
-  mechanical: 'This task is mechanical or fully specified: the steps or the exact change are given.',
-  costly_failure: 'A wrong or subtly broken result from this task would be costly or hard to notice.',
+  read_only: {
+    instructions: 'Does the subagent only read, search, list, summarise or run given commands, without changing any file?',
+    criteria: { true: 'A lookup, search, review or report; any command it runs is given in the task.', false: 'It must create, edit or delete code, tests, config or docs.' },
+  },
+  fully_specified: {
+    instructions: 'Does the task spell out the exact change: which files or functions, and what they must do?',
+    criteria: { true: 'The files or symbols and the behaviour are named; the subagent mostly carries out the given steps.', false: 'The subagent must work out where the change goes or what exactly it should be.' },
+  },
+  cross_file: {
+    instructions: 'Does doing the task well need understanding how several files, modules or services fit together, beyond the files it names?',
+    criteria: { true: 'Shared contracts, call chains across modules, data flowing through several layers, a change that ripples to other code.', false: 'The work stays inside the named files or one small area.' },
+  },
+  open_design: {
+    instructions: 'Must the subagent make a design decision the task leaves open: an approach, an API or data shape, an architecture, a trade-off?',
+    criteria: { true: 'Choosing between approaches, defining a new interface, schema or structure, weighing alternatives.', false: 'The approach is given or obvious; only the implementation remains.' },
+  },
+  unknown_cause: {
+    instructions: 'Is the task to find and fix a failure whose cause is not known yet?',
+    criteria: { true: 'A failing, flaky, crashing or wrong behaviour to diagnose, with no cause named in the task.', false: 'No diagnosis needed, or the task names the cause.' },
+  },
 };
+export const SIGNALS = Object.keys(NOULS);
+
+/**
+ * Nouls → tier, in code. A noul counts only at or above `t` (near 0.5 means unsure, so it does not
+ * fire). opus needs an open problem that spans the code; haiku needs read-only or a fully specified
+ * change in one area. Returns null when a signal is missing.
+ */
+export function signalTier(n, t = 0.6) {
+  if (!n || SIGNALS.some((k) => typeof n[k] !== 'number')) return null;
+  const on = (k) => n[k] >= t;
+  if ((on('open_design') || on('unknown_cause')) && on('cross_file')) return 'opus';
+  if (on('read_only') && !on('unknown_cause')) return 'haiku';
+  if (on('fully_specified') && !on('cross_file') && !on('open_design') && !on('unknown_cause')) return 'haiku';
+  return 'sonnet';
+}
+
+const lower = (a, b) => (rank(a) <= rank(b) ? a : b);
+
+/**
+ * The `signals` policy. With a check and a cascade, a miss costs one retry, so the signals may only
+ * lower the rule tier (that is where the savings are). Without that safety net they may only raise it,
+ * except to haiku for a read-only task. Returns null without a usable answer.
+ */
+export function signalsCombine(ruleT, nouls, { cascade = true, hasCheck = false, threshold = 0.6 } = {}) {
+  const s = signalTier(nouls, threshold);
+  if (!s) return null;
+  if (cascade && hasCheck) return lower(ruleT, s);
+  if (s === 'haiku' && nouls.read_only >= threshold) return 'haiku';
+  return maxTier(ruleT, s);
+}
 
 /** k orderings of the tiers: rotations first (each tier in each position), then reversals. */
 export function orderings(k) {
@@ -182,13 +240,19 @@ export function orderings(k) {
   return Array.from({ length: k }, (_, i) => all[i % all.length]);
 }
 
+/** The request: the task plus what code already knows about it (named files, ACs, a check), as facts. */
 export function buildRequest(task, type, order = TIERS) {
   const clip = (s, n) => (s.length > n ? `${s.slice(0, n)} …[truncated]` : s);
-  const state = { text: `Subagent type: ${type || 'general-purpose'}\nSubagent task:\n${clip(String(task), 6000)}` };
+  const f = ruleFeatures(task, type);
+  const state = {
+    subagent_type: type || 'general-purpose',
+    task: clip(String(task), 6000),
+    facts: { files_named: f.files, acceptance_criteria: f.acs, has_automatic_check: f.hasCheck, says_read_only: f.readOnly },
+  };
   const criteria = Object.fromEntries(order.map((t) => [t, TIER_CRITERIA[t]]));
   const questions = {
     tier: { type: 'choice', instructions: 'Which is the cheapest model tier that will reliably complete this subagent task?', criteria },
-    ...Object.fromEntries(Object.entries(NOULS).map(([k, v]) => [k, { type: 'noul', instructions: v }])),
+    ...Object.fromEntries(Object.entries(NOULS).map(([k, v]) => [k, { type: 'noul', ...v }])),
   };
   return { state, questions };
 }
@@ -227,10 +291,15 @@ export function consistency(answers) {
  *   gate+sc → max(rule, self-consistency tier), again the rule tier when they disagree
  *   checked → rule tier when the task has a check and no hard verb (no provider call, see
  *             checkedSkipsProvider); otherwise gate+sc
+ *   signals → signalsCombine over the first answer's nouls (opts: cascade, threshold; features.hasCheck)
  * Provider unavailable → null (route() falls back to the rule tier and records why).
  */
-export function combine(policy, ruleT, answers = [], features = null) {
+export function combine(policy, ruleT, answers = [], features = null, opts = {}) {
   if (policy === 'rules') return ruleT;
+  if (policy === 'signals') {
+    const a = answers.find((x) => x && !x.error);
+    return a ? signalsCombine(ruleT, a.nouls, { ...opts, hasCheck: Boolean(features?.hasCheck) }) : null;
+  }
   if (policy === 'checked') {
     if (features && checkedSkipsProvider(features)) return ruleT;
     policy = 'gate+sc';
@@ -282,7 +351,7 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
   // checked skips the provider for a task with a check; otherwise it is gate+sc
   const skipProvider = cfg.policy === 'checked' && checkedSkipsProvider(features);
   const policy = cfg.policy === 'checked' ? (skipProvider ? 'rules' : 'gate+sc') : cfg.policy;
-  const n = policy === 'jev' || policy === 'gate' ? 1 : cfg.k;
+  const n = policy === 'jev' || policy === 'gate' || policy === 'signals' ? 1 : cfg.k;
   let answers = [];
   let fallback = null;
   let ledgerError = null;
@@ -297,7 +366,7 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
   }
   const failed = answers.find((a) => a.error);
   if (answers.length && answers.every((a) => a.error)) fallback = `provider ${failed.error}`;
-  const tier = combine(policy, rule.tier, answers) ?? rule.tier;
+  const tier = combine(policy, rule.tier, answers, features, { cascade: cfg.cascade, threshold: cfg.signalThreshold }) ?? rule.tier;
   const cons = answers.some((a) => !a.error) ? consistency(answers) : null;
   const usd = answers.reduce((s, a) => s + (typeof a.cost === 'number' ? a.cost : 0), 0);
   const unreported = answers.filter((a) => typeof a.cost !== 'number').length;
@@ -312,6 +381,7 @@ export async function route({ task, type = '', cfg = loadConfig(), decideImpl, e
     rule: { tier: rule.tier, score: rule.score, why: rule.why },
     features,
     answers: answers.map((a) => (a.error ? { error: a.error } : { tier: a.tier, p: a.p, nouls: a.nouls, latencyMs: a.latencyMs })),
+    ...(policy === 'signals' ? { signalTier: signalTier(answers.find((a) => !a.error)?.nouls, cfg.signalThreshold), cascade: cfg.cascade } : {}),
     consistency: cons ?? undefined,
     unstable: Boolean(cons?.unstable),
     cost_usd: round(usd),

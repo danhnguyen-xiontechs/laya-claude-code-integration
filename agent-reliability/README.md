@@ -25,7 +25,7 @@ A Claude Code mod (function hooks) that stops unproductive retry loops. This is 
     - The same action is refused by any route: Bash ↔ PowerShell on the same command (with or without a `cd`), and Edit ↔ Write ↔ NotebookEdit on the same file. A simple shell write (`> f`, `Out-File f`) to that file is refused too.
     - It is **never lifted automatically**: not by a new prompt, not by time, not by Jev. Only the user lifts it, with `/reliability allow <n|all>` or `/reliability reset`, and the normal permission prompt still applies afterwards.
   - After 3 refusals in a row in one agent, the refusal text (enforce mode) tells the agent to stop and report.
-- **Jev Recovery Advisor (0.3, `jevAdvisor`: off | shadow | apply).** From the **2nd consecutive failure** of any key (a verification, another Bash/PS command family, or an Edit/Write on a file; main agent and subagents), the mod asks TypeSafe Jev one request with three questions: `failure_kind`, `same_approach`, and `next_step`, one of `RETRY_NEW_STRATEGY | ESCALATE_MODEL | ASK_USER | MARK_BLOCKED | STOP_AND_REPORT`.
+- **Jev Recovery Advisor (0.3, `jevAdvisor`: off | shadow | apply).** From the **2nd consecutive failure** of any key (a verification, another Bash/PS command family, or an Edit/Write on a file; main agent and subagents), the mod asks TypeSafe Jev one request: `failure_kind` (a choice) and six yes/no nouls, `same_cause`, `same_approach`, `needs_user`, `outside_agent`, `stuck_on_code`, `optional_step`. Code (`decideNext`, threshold `jevAdvisorMinConfidence`) turns them into one of `ASK_USER | MARK_BLOCKED | STOP_AND_REPORT | ESCALATE_MODEL | RETRY_NEW_STRATEGY`, in that order, or into no advice at all when the agent is making progress (the error changed, or the approach did). Since 0.4: the 0.3 single `next_step` choice said RETRY_NEW_STRATEGY on 20 of 23 real incidents. The state now carries the head and the tail of each error and whether its fingerprint repeats the previous one. `scripts/eval-advisor.mjs` checks the advisor offline against hand labels before `apply`.
   - **When Jev is not asked:** while the incident already has a decision pending (NEEDS_USER, ESCALATION_REQUESTED, ESCALATED, BLOCKED, STOPPED), while a user denial is live in that agent, or on an exact Rule B repeat.
   - `shadow` logs the decision (telemetry `jev_advice`, with `would_apply`) and changes nothing.
   - `apply` acts only in enforce mode, and only when `p ≥ jevAdvisorMinConfidence` (0.6). The decision is a note appended to the failed result that Claude reads, and the core carries it out:
@@ -178,6 +178,13 @@ Whether the decisions help at runtime is what the shadow pilot measures. The dat
 - In apply + enforce mode, ASK_USER (p=1.00) became NEEDS_USER, and Claude quoted the note.
 - A resent `touch` that needed approval was refused by Rule C.
 - An interactive user Deny was not produced (headless cannot); engine tests cover that path.
+
+## Run m4 in a real factory run (2026-11-04, measured, one run)
+Real xt-factory run m4 on ADO 2317 (main 0.15.0, organizer on, 13 tasks), with trim enforce + Jev, reliability enforce + apply (headless), router hook apply and `tasks.router` on: wall 67.6 min, $6.09, 7/14 pack tests failed (triage: env).
+- **Trim:** 3 eligible calls, all `below_threshold`, 0 bytes cut (factory tasks are small, outputs 1-4 KB).
+- **Reliability:** 11 incidents opened, none reached a 2nd failure on one key, so no Jev advice and no block (factory retries, triage and send-backs take over first).
+- **Task router:** rules decided 11 of 13 tasks; Jev was asked twice and both times answered "signals unsure -> current"; the only change was T13 haiku -> sonnet.
+- **Conclusion:** no measurable benefit in this run. The time went to a 19.6-min system sleep during ac-check, false scope holds and env test failures. One run only, not an A/B.
 
 ## Test
 

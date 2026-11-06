@@ -87,7 +87,7 @@ export type FailFacts = {
 };
 
 const withAttempt = (prior: Incident | undefined, f: FailFacts): Attempt[] | undefined =>
-  f.attempt ? [...(prior?.attempts ?? []), { ...f.attempt, changes: prior?.pending.slice(-5) ?? [] }].slice(-4) : prior?.attempts;
+  f.attempt ? [...(prior?.attempts ?? []), { ...f.attempt, errorKey: f.errorKey, changes: prior?.pending.slice(-5) ?? [] }].slice(-4) : prior?.attempts;
 
 export type Transition = { s: GuardState; inc: Incident; event: string };
 

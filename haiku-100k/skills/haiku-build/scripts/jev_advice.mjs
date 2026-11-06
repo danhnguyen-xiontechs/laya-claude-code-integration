@@ -25,14 +25,45 @@ export function jevMode(env = process.env) {
 
 const labelsOf = (choices) => (Array.isArray(choices) ? choices : Object.keys(choices ?? {}));
 
+/**
+ * What each point asks and what each label means. Before this a label was its own criterion
+ * ("fix-code": "fix-code") under "Which choice fits best?", so JEV had nothing to judge by.
+ * A label without a definition here keeps its name as the criterion.
+ */
+export const POINT_SPECS = {
+  intake: {
+    question: 'Which model should write the implementation plan for this change? Pick the cheaper sonnet unless the task clearly needs deeper design reasoning.',
+    criteria: {
+      opus: 'Open-ended or cross-cutting design: several modules or services, a new contract, schema or migration, concurrency, security, or requirements that must be interpreted.',
+      sonnet: 'Well-specified work in one area: the files, behaviour and acceptance criteria are named, and the plan mostly sequences known edits and tests.',
+    },
+  },
+  recovery: {
+    question: 'The tests still fail after the implementation and a fix attempt. Given the failure fingerprint, category, progress and repeats in the state, what should the next retry change?',
+    criteria: {
+      'fix-code': 'The tests are right and the failure points at the product code: a wrong value, a missing branch, an exception in the code under test.',
+      'fix-test': 'The product code does what the spec asks and the test itself is wrong: a wrong expectation, setup, fixture, mock, test name or test-runner filter.',
+      rewrite: 'The attempts repeat the same failure with no progress, or the approach cannot meet the spec: discard it and implement the change another way.',
+    },
+  },
+  triage: {
+    question: 'How severe is this review finding for merging the change?',
+    criteria: {
+      Minor: 'Style, naming, a small readability or maintainability issue, or a defect only in an unlikely edge case; safe to merge and fix later.',
+      Major: 'A real defect on a reachable path, a broken acceptance criterion or contract, a security, data-loss or concurrency risk, or a missing test for changed behaviour.',
+    },
+  },
+};
+
 /** Default ask: one JEV choice question through decide(); returns { label, confidence } or throws. */
-export async function askJev({ state, choices, question, env = process.env, timeoutMs = TIMEOUT_MS }) {
+export async function askJev({ point, state, choices, question, env = process.env, timeoutMs = TIMEOUT_MS }) {
   const { decide, top } = await import('../../subagent-model-router/scripts/decision-provider.mjs');
-  const criteria = Array.isArray(choices) ? Object.fromEntries(choices.map((c) => [c, c])) : choices;
+  const spec = POINT_SPECS[point] ?? {};
+  const criteria = Array.isArray(choices) ? Object.fromEntries(choices.map((c) => [c, spec.criteria?.[c] ?? c])) : choices;
   const r = await decide({
     provider: 'jev', env, timeoutMs,
     state: { text: String(state ?? '') },
-    questions: { pick: { type: 'choice', instructions: question ?? 'Which choice fits best?', criteria } },
+    questions: { pick: { type: 'choice', instructions: question ?? spec.question ?? 'Which choice fits best?', criteria } },
   });
   if (!r.ok) throw new Error(r.error);
   const ans = r.answers?.pick ?? {};

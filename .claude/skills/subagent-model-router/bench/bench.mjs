@@ -121,6 +121,13 @@ export const ROUTERS = {
     if (!r.features) throw new Error('checked+jev needs r.features (regenerate route-jev.json)');
     return combine('checked', r.rule, r.answers, r.features);
   },
+  // the default since the signals policy: one call, criteria-backed nouls set the tier; the bench has a check
+  // per task and a cascade, so the signals can only lower. Needs a route-jev.json recorded with the new nouls
+  // (an older file has other noul names, so every task keeps its rule tier).
+  'signals+jev': (r) => {
+    if (!r.features) throw new Error('signals+jev needs r.features (regenerate route-jev.json)');
+    return combine('signals', r.rule, r.answers, r.features, { cascade: true });
+  },
 };
 
 export function score(runs, routes) {

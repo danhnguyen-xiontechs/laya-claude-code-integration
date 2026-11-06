@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import {
   ruleFeatures, ruleTier, combine, consistency, orderings, buildRequest, route, escalate, loadConfig, maxTier, nextTier, TIERS,
+  SIGNALS, signalTier, signalsCombine,
 } from '../scripts/router.mjs';
 import { handle, definitionModel } from '../scripts/hook-pretooluse.mjs';
 import { sessionSpend } from '../scripts/spend-ledger.mjs';
@@ -16,15 +17,19 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'smr-test-'));
 let ledgerN = 0;
 const cfgOf = (o = {}) => loadConfig({ env: {}, file: path.join(tmp, 'none.json'), overrides: { log: path.join(tmp, 'log.jsonl'), ledger: path.join(tmp, `ledger-${ledgerN++}.json`), ...o } });
 
-/** Fake provider: answers the tier question with `pick(order, callIndex)`; counts calls. `cost` is the USD the provider reports per call (omit → no cost). */
-function fakeDecide(pick, cost) {
+/**
+ * Fake provider: answers the tier question with `pick(order, callIndex)`; counts calls. `cost` is the USD
+ * the provider reports per call (omit → no cost). `nouls` overrides the signal answers (default 0.5, unsure).
+ */
+function fakeDecide(pick, cost, nouls = {}) {
   let n = 0;
   const fn = async ({ questions }) => {
     const order = Object.keys(questions.tier.criteria);
     const label = pick(order, n++);
     const probabilities = Object.fromEntries(order.map((t) => [t, t === label ? 0.97 : 0.015]));
     const meta = { latencyMs: 5, ...(cost === undefined ? {} : { cost }) };
-    return { ok: true, answers: { tier: { probabilities }, multi_file_design: { noul: 0.5 }, mechanical: { noul: 0.5 }, costly_failure: { noul: 0.5 } }, meta };
+    const sig = Object.fromEntries(SIGNALS.map((k) => [k, { noul: nouls[k] ?? 0.5 }]));
+    return { ok: true, answers: { tier: { probabilities }, ...sig }, meta };
   };
   fn.calls = () => n;
   return fn;
@@ -168,7 +173,7 @@ test('route.mjs --escalate-from: prints the next tier once for a task, then noth
 
 test('route: k calls, option order shuffled, position-biased provider → unstable → rule tier', async () => {
   const fake = fakeDecide((order) => order[0]); // always answers the first option shown
-  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', k: 3 }), decideImpl: fake, log: false });
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', policy: 'gate+sc', k: 3 }), decideImpl: fake, log: false });
   assert.equal(fake.calls(), 3);
   assert.equal(r.consistency.stable, false);
   assert.equal(r.unstable, true);
@@ -178,7 +183,7 @@ test('route: k calls, option order shuffled, position-biased provider → unstab
 
 test('route: stable cheap answer + cheap rule → haiku; k configurable', async () => {
   const fake = fakeDecide(() => 'haiku');
-  const r = await route({ task: 'List the files under docs/. Do not edit anything.', cfg: cfgOf({ provider: 'jev', k: 5 }), decideImpl: fake, log: false });
+  const r = await route({ task: 'List the files under docs/. Do not edit anything.', cfg: cfgOf({ provider: 'jev', policy: 'gate+sc', k: 5 }), decideImpl: fake, log: false });
   assert.equal(fake.calls(), 5);
   assert.equal(r.tier, 'haiku');
 });
@@ -195,7 +200,7 @@ test('route: provider failure → rule tier (rules_only) with fallback_reason; m
 });
 
 test('route: a timeout falls back to the rule tier, even when the provider would raise it', async () => {
-  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev' }), decideImpl: timingOut, log: false });
+  const r = await route({ task: 'Find the config file.', cfg: cfgOf({ provider: 'jev', policy: 'gate+sc' }), decideImpl: timingOut, log: false });
   assert.equal(r.tier, 'haiku');
   assert.equal(r.fallback_reason, 'provider timeout');
   assert.equal(r.providerCalls, 3);
@@ -306,22 +311,62 @@ test('loadConfig: env and overrides, provider none forces rules', () => {
   const c = loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'apply', SUBAGENT_ROUTER_K: '5', SUBAGENT_ROUTER_PROVIDER: 'jev' }, file: path.join(tmp, 'none.json') });
   assert.equal(c.mode, 'apply');
   assert.equal(c.k, 5);
-  assert.equal(c.policy, 'checked'); // default with a provider: Jev only for tasks without a check
+  assert.equal(c.policy, 'signals'); // default with a provider: one call, the nouls set the tier in code
   assert.equal(loadConfig({ env: {}, file: 'x', overrides: { provider: 'none', policy: 'sc' } }).policy, 'rules');
   assert.throws(() => loadConfig({ env: { SUBAGENT_ROUTER_MODE: 'bogus' }, file: 'x' }));
 });
 
-test('default path: provider jev with no policy routes checked; an unchecked task still asks Jev k times', async () => {
+test('default path: provider jev with no policy routes signals: one call, the nouls decide, checked tasks too', async () => {
   const cfg = loadConfig({ env: { SUBAGENT_ROUTER_PROVIDER: 'jev' }, file: path.join(tmp, 'none.json'), overrides: { log: path.join(tmp, 'log.jsonl') } });
-  assert.equal(cfg.policy, 'checked');
-  const fake = fakeDecide(() => 'sonnet');
-  const u = await route({ task: 'Find the config file.', cfg, decideImpl: fake, log: false });
-  assert.equal(fake.calls(), 3);
-  assert.equal(u.providerCalls, 3);
-  const fake2 = fakeDecide(() => 'opus');
+  assert.equal(cfg.policy, 'signals');
+  // an unchecked task the rules call sonnet; Jev says an open design across modules → raised to opus
+  const fake = fakeDecide(() => 'sonnet', undefined, { open_design: 0.9, cross_file: 0.85, read_only: 0.05 });
+  const u = await route({ task: 'Add caching to the order service.', cfg, decideImpl: fake, log: false });
+  assert.equal(fake.calls(), 1);
+  assert.equal(u.rule.tier, 'sonnet');
+  assert.equal(u.tier, 'opus');
+  assert.equal(u.signalTier, 'opus');
+  // a checked task (cascade on): an opus signal cannot raise it; only lowering is allowed
+  const fake2 = fakeDecide(() => 'opus', undefined, { open_design: 0.9, cross_file: 0.9 });
   const c = await route({ task: 'Fix `paginate` in src/paginate.js. Run `node --test`.', cfg, decideImpl: fake2, log: false });
-  assert.equal(fake2.calls(), 0);
+  assert.equal(fake2.calls(), 1);
   assert.equal(c.tier, 'haiku');
+  // unsure nouls (0.5) fire nothing: sonnet signal, the rule tier stays
+  const r = await route({ task: 'Add caching to the order service.', cfg, decideImpl: fakeDecide(() => 'haiku'), log: false });
+  assert.equal(r.tier, 'sonnet');
+});
+
+test('signalTier: opus needs an open problem across the code; haiku needs read-only or a spelled-out one-area change', () => {
+  const s = (o) => signalTier({ read_only: 0.1, fully_specified: 0.1, cross_file: 0.1, open_design: 0.1, unknown_cause: 0.1, ...o });
+  assert.equal(s({ open_design: 0.9, cross_file: 0.9 }), 'opus');
+  assert.equal(s({ unknown_cause: 0.8, cross_file: 0.7 }), 'opus');
+  assert.equal(s({ open_design: 0.9 }), 'sonnet'); // open but local
+  assert.equal(s({ read_only: 0.9 }), 'haiku');
+  assert.equal(s({ read_only: 0.9, unknown_cause: 0.9 }), 'sonnet'); // a diagnosis is not a plain lookup
+  assert.equal(s({ fully_specified: 0.9 }), 'haiku');
+  assert.equal(s({ fully_specified: 0.9, cross_file: 0.8 }), 'sonnet');
+  assert.equal(s({}), 'sonnet');
+  assert.equal(signalTier({ read_only: 0.9 }), null); // a missing signal: no signal tier
+});
+
+test('signalsCombine: with a check and a cascade it only lowers; without, it only raises (read-only haiku aside)', () => {
+  const N = { read_only: 0.1, fully_specified: 0.9, cross_file: 0.1, open_design: 0.1, unknown_cause: 0.1 }; // → haiku
+  const O = { ...N, fully_specified: 0.1, open_design: 0.9, cross_file: 0.9 }; // → opus
+  const R = { ...N, read_only: 0.9, fully_specified: 0.1 }; // → haiku, read-only
+  assert.equal(signalsCombine('sonnet', N, { cascade: true, hasCheck: true }), 'haiku');
+  assert.equal(signalsCombine('haiku', O, { cascade: true, hasCheck: true }), 'haiku');
+  assert.equal(signalsCombine('sonnet', N, { cascade: true, hasCheck: false }), 'sonnet'); // no check: no lowering
+  assert.equal(signalsCombine('sonnet', N, { cascade: false, hasCheck: true }), 'sonnet'); // the hook: no cascade
+  assert.equal(signalsCombine('sonnet', O, { cascade: false, hasCheck: false }), 'opus');
+  assert.equal(signalsCombine('sonnet', R, { cascade: false, hasCheck: false }), 'haiku');
+  assert.equal(signalsCombine('sonnet', N, { threshold: 0.95, cascade: true, hasCheck: true }), 'sonnet'); // 0.9 < 0.95: nothing fires
+  assert.equal(signalsCombine('sonnet', {}, {}), null);
+});
+
+test('buildRequest: facts from the rules go in the state; every signal is a noul with true/false criteria', () => {
+  const { state, questions } = buildRequest('Fix src/a.js and src/b.js. Run node --test.', 'general-purpose');
+  assert.deepEqual(state.facts, { files_named: 2, acceptance_criteria: 0, has_automatic_check: true, says_read_only: false });
+  for (const k of SIGNALS) { assert.equal(questions[k].type, 'noul'); assert.deepEqual(Object.keys(questions[k].criteria), ['true', 'false']); }
 });
 
 test('rule features: product names with a .js suffix are not files', () => {

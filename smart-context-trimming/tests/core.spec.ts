@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { DEFAULTS, buildJevRequest, decideAndBuild, parseJevResponse, planTrim, redact, splitLines } from '../../haiku-100k/hooks/trim/core.ts';
+import { DEFAULTS, buildJevRequest, classify, decideAndBuild, parseJevResponse, planTrim, redact, splitLines } from '../../haiku-100k/hooks/trim/core.ts';
 import type { Fetcher } from '../../haiku-100k/hooks/trim/core.ts';
 import { FIXTURES } from './fixtures.ts';
 
@@ -63,6 +63,20 @@ test('jev "drop everything" cannot drop mandatory evidence', async () => {
     const out = await decideAndBuild({ command: f.command, text: f.text, opt, statusLine: 'x', rawPath: null, jev: jevWith(okJev(plan.ask.length, 'errors_only', 0.99, 0)) });
     for (const c of f.critical) assert.ok((out.built?.text ?? f.text).includes(c), `${f.name} lost: ${c}`);
   }
+});
+
+test('jev errors_only never drops the warning groups the rules kept', async () => {
+  for (const f of trimmable) {
+    const plan = planTrim(f.command, f.text, opt);
+    if (!plan.ask.length) continue;
+    const out = await decideAndBuild({ command: f.command, text: f.text, opt, statusLine: 'x', rawPath: null, jev: jevWith(okJev(plan.ask.length, 'errors_only', 0.99, 0)) });
+    for (const id of plan.keep) assert.ok(out.plan.keep.includes(id), `${f.name} dropped rule-kept ${id}`);
+  }
+});
+
+test('classify: stream merges and stderr redirects still trim, stdout to a file does not', () => {
+  for (const c of ['dotnet test 2>&1', 'dotnet build 2>&1', 'npm test 2>/dev/null', 'dotnet test >&2', 'node --test 2>&1 | tee']) assert.ok(classify(c), c);
+  for (const c of ['dotnet test > out.txt', 'dotnet test >> log.txt', 'dotnet test 1> out.txt', 'dotnet test *> all.txt', 'dotnet test 2>&1 > out.txt']) assert.equal(classify(c), null, c);
 });
 
 test('jev keep_full_output → original passes through', async () => {

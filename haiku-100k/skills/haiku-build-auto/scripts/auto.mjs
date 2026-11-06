@@ -47,6 +47,7 @@ import { startPhase, endPhase } from '../../haiku-build/scripts/phase.mjs';
 import { recordFailure, recoveryState } from '../../haiku-build/scripts/failure.mjs';
 import { useBundle } from '../../haiku-build/scripts/context_bundle.mjs';
 import { runMetrics } from '../../haiku-build/scripts/run_metrics.mjs';
+import { routeStage } from './task-routing.mjs';
 
 /** The only statuses a run can end in. */
 export const TERMINAL = ['done', 'done_with_findings', 'blocked'];
@@ -407,6 +408,41 @@ export function gitCommitAll(cwd = process.cwd(), message = 'haiku-build-auto', 
 }
 
 /**
+ * The repositories a run checks and commits: XT_FACTORY_REPOS (path.delimiter-separated folders, set by
+ * xt-factory for a story spanning several repos, whose builder runs in a story folder that is in none of
+ * them) when set, else [cwd] (the repository around the working folder, as before).
+ */
+export function workRepos(env = process.env, cwd = process.cwd()) {
+  const list = String(env?.XT_FACTORY_REPOS ?? '').split(path.delimiter).map((s) => s.trim()).filter(Boolean);
+  return list.length ? list : [cwd];
+}
+
+/** True when every repository of `repos` has a clean working tree. */
+export function gitIsCleanAll(repos = workRepos()) {
+  return repos.every((dir) => gitIsClean(dir));
+}
+
+/** The working-tree diff of each repository (one repo: its plain diff; several: each under a `# repo: <dir>` header). */
+export function gitDiffAll(repos = workRepos()) {
+  if (repos.length === 1) return gitDiffText(repos[0]);
+  return repos.map((dir) => { const d = gitDiffText(dir); return d ? `# repo: ${dir}\n${d}` : ''; }).filter(Boolean).join('\n');
+}
+
+/**
+ * gitCommitAll in each repository of `repos` with the same message. One repo: its own record. Several:
+ * { committed (any), sha (the first commit's), repos: [{ dir, ...record }], files, skipped } or
+ * { committed: false, reason: 'clean', repos }. The first git failure throws (the run blocks `commit failed`).
+ */
+export function gitCommitRepos(repos = workRepos(), message = 'haiku-build-auto', { exclude = [] } = {}) {
+  if (repos.length === 1) return gitCommitAll(repos[0], message, { exclude });
+  const per = repos.map((dir) => ({ dir, ...gitCommitAll(dir, message, { exclude }) }));
+  const skipped = per.flatMap((r) => r.skipped ?? []);
+  const done = per.filter((r) => r.committed);
+  if (!done.length) return { committed: false, reason: 'clean', repos: per, skipped };
+  return { committed: true, sha: done[0].sha, repos: per, files: done.flatMap((r) => r.files.map((f) => `${path.basename(r.dir)}/${f}`)), skipped };
+}
+
+/**
  * Commit message of a finished run: the story title or the task's first line, then the run id and status.
  * Returns the message text.
  */
@@ -420,7 +456,7 @@ export function commitMessage(m = {}, status = 'done') {
  * does; `commit: false` skips it). The outcome goes to manifest.auto.commit and result.json.
  * Returns the commit record, or null when nothing was attempted; throws AutoHalt `commit failed` on an error.
  */
-export function commitRun(runDir, { status, commit = true, gitCommit = (msg) => gitCommitAll(process.cwd(), msg, { exclude: [runDir] }), now = new Date() } = {}) {
+export function commitRun(runDir, { status, commit = true, gitCommit = (msg) => gitCommitRepos(workRepos(), msg, { exclude: [runDir] }), now = new Date() } = {}) {
   const m = readManifest(runDir);
   if (!m || status === 'blocked' || commit === false) return null;
   const message = commitMessage(m, status);
@@ -517,8 +553,8 @@ async function intake({ runDir, task, startModel, dispatch, gitClean, preflight,
 export async function runAuto({
   runDir, task = null, startModel = null, specFolder = null, storyId = null, title = null,
   agent, runTests, ask = null, env = process.env,
-  gitClean = () => gitIsClean(), gitDiff = () => gitDiffText(), preflight = () => haikuPreflight(), now = () => new Date(),
-  gitCommit = (message) => gitCommitAll(process.cwd(), message, { exclude: [runDir] }), commit = true,
+  gitClean = () => gitIsCleanAll(workRepos(env)), gitDiff = () => gitDiffAll(workRepos(env)), preflight = () => haikuPreflight(), now = () => new Date(),
+  gitCommit = (message) => gitCommitRepos(workRepos(env), message, { exclude: [runDir] }), commit = true,
 } = {}) {
   if (!runDir) throw new Error('runAuto needs runDir');
   const dispatch = specFolder && storyId ? { specFolder, storyId: String(storyId), title } : null;
@@ -702,7 +738,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const dispatch = specFolder && storyId ? { specFolder, storyId, title } : null;
     try {
       const { manifest: m, resumed, finished } = await intake({
-        runDir, task, startModel, dispatch, gitClean: () => gitIsClean(), preflight: () => haikuPreflight(), env: process.env, ask: null, now: () => new Date(),
+        runDir, task, startModel, dispatch, gitClean: () => gitIsCleanAll(workRepos()), preflight: () => haikuPreflight(), env: process.env, ask: null, now: () => new Date(),
       });
       if (finished) out({ resumed: true, finished: true, finalStatus: m.finalStatus }, m.finalStatus === 'blocked' ? 1 : 0);
       out({
@@ -738,7 +774,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     }
     const gate = saved.ok ? { action: 'continue' } : handBackGate(kind, handBackFailures(readManifest(runDir), kind));
     if (gate.action === 'halt') ended(halt(runDir, gate.condition, { reason: `${gate.condition}: ${saved.reason}` }));
-    out({ kind, attempt, ok: saved.ok, reason: saved.reason, ...gate, ...(failure ? { failure: { fingerprint: failure.fingerprint, category: failure.category, progress: failure.progress } } : {}) }, 0);
+    // The task router picks the Implement model once the plan is accepted (task-routing.mjs).
+    const routed = saved.ok && kind === 'plan' ? await routeStage(runDir, 'implement').catch(() => null) : null;
+    out({ kind, attempt, ok: saved.ok, reason: saved.reason, ...gate, ...(routed ? { implementModel: routed.tier, routedBy: routed.source } : {}), ...(failure ? { failure: { fingerprint: failure.fingerprint, category: failure.category, progress: failure.progress } } : {}) }, 0);
   }
 
   if (cmd === 'round') {
@@ -765,7 +803,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (d.action === 'fix') m.auto = { ...(m.auto ?? {}), fixRounds: d.round };
     writeManifest(runDir, m);
     if (d.action === 'halt') ended(halt(runDir, d.condition));
-    out(d, 0);
+    // The task router picks the Fix model for the first fix round (one decision per run, cached).
+    const routed = d.action === 'fix' ? await routeStage(runDir, 'fix').catch(() => null) : null;
+    out({ ...d, ...(routed ? { fixModel: routed.tier, routedBy: routed.source } : {}) }, 0);
   }
 
   if (cmd === 'plan-only') {
